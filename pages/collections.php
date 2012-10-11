@@ -595,9 +595,9 @@ elseif ($k!="")
 
 <!--Resource panels-->
 <?php if ($collection_dropdown_user_access_mode){?>
-<div id="CollectionSpaceExp">
+<div id="CollectionSpace" class="CollectionSpaceExp">
 <?php } else { ?>
-<div id="CollectionSpace">
+<div id="CollectionSpace" class="CollectionSpace">
 <?php } ?>
 
 <?php 

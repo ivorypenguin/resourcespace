@@ -76,8 +76,9 @@ option {font-size:11px;}
 /*Collection layout*/
 #CollectionMenu{width: 166px;position: absolute;left: 25px;top: 6px;text-align:left;}
 #CollectionMenuExp{width: 216px;position: absolute;left: 25px;top: 6px;text-align:left;}
-#CollectionSpace{position: absolute;left: 199px;top: 6px;font-size: 0.95em;text-align:left;}
-#CollectionSpaceExp{position: absolute;left: 249px;top: 6px;font-size: 0.95em;text-align:left;}
+#CollectionSpace{font-size: 0.95em;text-align:left;}
+.CollectionSpace{position: absolute;left: 199px;top: 6px;}
+.CollectionSpaceExp {position: absolute;left: 249px;top: 6px;font-size: 0.95em;text-align:left;}
 .CollectBack h2 {font-size: 1.3em;}
 #CollectionMenu ul {padding:0.2em 0;margin:0;list-style:none;}
 #CollectionMenu li {padding:0;margin:0px 8px 1px 0px;float:left;white-space:nowrap;}
