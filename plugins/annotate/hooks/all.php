@@ -53,5 +53,12 @@ function HookAnnotateAllCollectiontoolcompact1($collection, $count_result,$cinfo
     <option value="<?php echo $collection?>|0|0|../plugins/annotate/pages/annotate_pdf_config.php?col=<?php echo $collection ?>|main|false">&gt;&nbsp;<?php echo $lang['pdfwithnotes']?>...</option><?php
 }
 
+function HookAnnotateAllAdditionalheaderjs(){
+	global $baseurl;
+?>
+<link rel="stylesheet" type="text/css" media="screen,projection,print" href="<?php echo $baseurl?>/plugins/annotate/lib/jquery/css/annotation.css"/>
+
+<script type="text/javascript" src="<?php echo $baseurl?>/plugins/annotate/lib/jquery/js/jquery.annotate.js"></script>
+<?php }
 
 ?>

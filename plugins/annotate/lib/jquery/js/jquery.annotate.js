@@ -4,9 +4,12 @@ var button_ok = "";
 var button_cancel = "";
 var button_delete = "";
 var button_add = "";
+var button_toggle="";
 var error_saving = "";
 var error_deleting = "";
-
+function isInt(value) { 
+    return !isNaN(parseInt(value)) && (parseFloat(value) == parseInt(value)); 
+}
 (function($) {
 
     $.fn.annotateImage = function(options) {
@@ -27,7 +30,8 @@ var error_deleting = "";
         this.editable = opts.editable;
         this.useAjax = opts.useAjax;
         this.notes = opts.notes;
-
+		this.toggle= opts.toggle;
+		
         // Add the canvas
         this.canvas = $('<div class="image-annotate-canvas"><div class="image-annotate-view"></div><div class="image-annotate-edit"><div class="image-annotate-edit-area"></div></div></div>');
         this.canvas.children('.image-annotate-edit').hide();
@@ -41,20 +45,6 @@ var error_deleting = "";
         this.canvas.children('.image-annotate-view, .image-annotate-edit').height(this.height());
         this.canvas.children('.image-annotate-view, .image-annotate-edit').width(this.width());
 
-        // Add the behavior: hide/show the notes when hovering the picture
-        this.canvas.hover(function() {
-            if ($(this).children('.image-annotate-edit').css('display') == 'none') {
-                $(this).children('.image-annotate-view').show();
-            }
-        }, function() {
-            $(this).children('.image-annotate-view').hide();
-        });
-
-        this.canvas.children('.image-annotate-view').hover(function() {
-            $(this).show();
-        }, function() {
-            $(this).hide();
-        });
 
         // load the notes
         if (this.useAjax) {
@@ -62,17 +52,63 @@ var error_deleting = "";
         } else {
             $.fn.annotateImage.load(this);
         }
-
-        // Add the "Add a note" button
+        
+       /*
+        this.canvas.children('.image-annotate-view').hover(function() {image.canvas.css({"overflow":"visible"});
+            $(this).show();
+        }, function() {image.canvas.css({"overflow":"hidden"});
+          if (image.toggle==false){   $(this).hide();}
+        });this.canvas.children('.image-annotate-note').hover(function() {image.canvas.css({"overflow":"visible"});
+            $(this).show();
+        }, function() {image.canvas.css({"overflow":"hidden"});
+          if (image.toggle==false){   $(this).hide();}
+        });		*/
+        
+        
+        // Add the image actions
         if (this.editable) {
-            this.button = $('<a class="image-annotate-add" id="image-annotate-add" href="#">' + button_add + '</a>');
+			this.button = $('<div class="image-actions" id="image-actions">');
+			this.canvas.append(this.button);$('#image-actions').hide();
+			
+			            this.button = $('<a class="image-annotate-add" id="image-annotate-add" href="#" style="display:inline;">' + button_add + '</a>');
             this.button.css({width: 'auto', 'padding-right': '5px'});
             this.button.click(function() {
                 $.fn.annotateImage.add(image);
+                return false;
             });
-            this.canvas.after(this.button);
+            $('#image-actions').append(this.button);
+			
+            this.button = $('<a class="image-annotate-toggle" id="image-annotate-toggle" href="#" style="display:inline;">');
+            this.button.css({width: 'auto', 'padding-right': '5px'});this.button.click(function() {
+                $.fn.annotateImage.toggle(image);
+            }); 
+            this.button.css({});
+            $('#image-actions').append(this.button);
+            $.fn.annotateImage.toggle(image); 
+            $.fn.annotateImage.toggle(image);
+           
+            $('#image-actions').hover(function(){
+				toTop('#image-actions');
+			});
         }
-
+        
+        // Add the behavior: hide/show the notes when hovering the picture
+        this.canvas.hover(function() {
+			image.canvas.css({"overflow":"visible"});
+            if ($(this).children('.image-annotate-edit').css('display') == 'none') {
+               $(this).children('.image-annotate-view').show();
+               $('#image-actions').show();
+               toTop('#image-actions');
+            }
+        }, function() {
+			image.canvas.css({"overflow":"hidden"});
+            if (image.toggle==false){   
+				$(this).children('.image-annotate-view').hide();
+				$(this).children('.image-annotate-note','.image-annotate-toggle').hide();
+            }
+            $('#image-actions').hide();
+        });
+        
         // Hide the original
         this.hide();
 
@@ -119,6 +155,11 @@ var error_deleting = "";
         ///	</summary>
         for (var i = 0; i < image.notes.length; i++) {
             image.notes[image.notes[i]] = new $.fn.annotateView(image, image.notes[i]);
+        }  
+        // load the default toggle
+        if (image.toggle==true){
+			$('.image-annotate-view').show();
+            $('.image-annotate-note').show();
         }
     };
 
@@ -137,13 +178,33 @@ var error_deleting = "";
         ///	</summary>        
         if (image.mode == 'view') {
             image.mode = 'edit';
-
             // Create/prepare the editable note elements
             var editable = new $.fn.annotateEdit(image);
 
             $.fn.annotateImage.createSaveButton(editable, image);
             $.fn.annotateImage.createCancelButton(editable, image);
         }
+    };
+    
+    $.fn.annotateImage.toggle = function(image) {
+        ///	<summary>
+        ///		Toggle notes
+        ///	</summary>        
+		if (image.mode == 'view') {
+			if (image.toggle==false){
+				image.toggle=true;
+				$('#image-annotate-toggle').html('<a class="image-annotate-toggle" id="image-annotate-toggle" href="#" onclick="return false;">' + button_toggle_off + '</a>');
+				SetCookie ('annotate_toggle',true);
+				$('.image-annotate-view').show();
+				$('.image-annotate-note').show();
+			} else {
+				image.toggle=false;
+				$('#image-annotate-toggle').html('<a class="image-annotate-toggle" id="image-annotate-toggle" href="#" onclick="return false;">' + button_toggle + '</a>');
+				SetCookie ('annotate_toggle',false);
+                $('.image-annotate-view').hide();
+			    $('.image-annotate-note').hide();
+		    }
+       }
     };
 
     $.fn.annotateImage.createSaveButton = function(editable, image, note) {
@@ -184,9 +245,14 @@ var error_deleting = "";
                 image.notes.push(editable.note);
             }
 
-            editable.destroy();
+            editable.destroy();					
+            if (image.toggle==true){$('.image-annotate-view').show();$('.image-annotate-note').show();
+            
+            
+            }
         });
         editable.form.append(ok);
+        
     };
 
     $.fn.annotateImage.createCancelButton = function(editable, image) {
@@ -223,14 +289,29 @@ var error_deleting = "";
         ///		Defines an editable annotation area.
         ///	</summary>
         this.image = image;
-
+        console.log(image);
+		var top=30;
+		var left=30;
         if (note) {
             this.note = note;
         } else {
             var newNote = new Object();
+           
+           // check if there is an identical note position, and offset it.
+           for (var x=0;x<image.notes.length;x++) {
+			  if(typeof image.notes[x]['left']!=="undefined") {
+			
+				if (image.notes[x]['left']==left && image.notes[x]['top']==top){ 
+					top=top+15;
+					left=left+15;
+					x=0;// reset the loop to find further overlaps recursively
+				}
+			  } 
+			}
+			
             newNote.id = "new";
-            newNote.top = 30;
-            newNote.left = 30;
+            newNote.top = top;
+            newNote.left = left;
             newNote.width = 30;
             newNote.height = 30;
             newNote.text = "";
@@ -246,6 +327,7 @@ var error_deleting = "";
         this.area.css('top', this.note.top + 'px');
 
         // Show the edition canvas and hide the view canvas
+        $('#image-actions').hide();
         image.canvas.children('.image-annotate-view').hide();
         image.canvas.children('.image-annotate-edit').show();
 
@@ -308,23 +390,39 @@ var error_deleting = "";
         // Add the area
         this.area = $('<div class="image-annotate-area' + (this.editable ? ' image-annotate-area-editable' : '') + '"><div></div></div>');
         image.canvas.children('.image-annotate-view').prepend(this.area);
-
+		
+        image.canvas.children('.image-annotate-view').prepend(this.area);
+        
         // Add the note
-        this.form = $('<div class="image-annotate-note">' + note.text + '</div>');
+        this.form = $('<div class="image-annotate-note" style="width:auto">' + note.text + '</div>');
         this.form.hide();
         image.canvas.children('.image-annotate-view').append(this.form);
         this.form.children('span.actions').hide();
+
+		
 
         // Set the position and size of the note
         this.setPosition();
 
         // Add the behavior: hide/display the note when hovering the area
         var annotation = this;
-        this.area.hover(function() {
-            annotation.show();
+
+		// fix z-index when multiple notes are visible
+		this.area.hover(function() {
+            annotation.show(); 
+            toTop(annotation.area);
+            toTop(annotation.form);
         }, function() {
-            annotation.hide();
+			annotation.hide(); 
         });
+        this.form.hover(function() {
+            annotation.show(); 
+            toTop(annotation.area);
+            toTop(annotation.form);
+        }, function() {
+			annotation.hide();
+        });
+	
 
         // Edit a note feature
         if (this.editable) {
@@ -332,8 +430,24 @@ var error_deleting = "";
             this.area.click(function() {
                 form.edit();
             });
+            this.form.click(function() {
+                form.edit();
+            });
         }
     };
+
+    function toTop(element){
+		var index_highest = 50;   
+			$(".image-annotate-area,.image-annotate-note,.image-actions").each(function() {
+				var index_current = parseInt($(this).css("z-index"), 10);
+				//console.log(index_current );
+				if(index_current > index_highest) {
+				index_highest = index_current;
+				}
+			});
+		//console.log('highest '+index_highest);
+		$(element).css({'z-index':index_highest+1});
+	};
 
     $.fn.annotateView.prototype.setPosition = function() {
         ///	<summary>
@@ -351,7 +465,7 @@ var error_deleting = "";
         ///	<summary>
         ///		Highlights the annotation
         ///	</summary>
-        this.form.fadeIn(250);
+       this.form.fadeIn(50);
         if (!this.editable) {
             this.area.addClass('image-annotate-area-hover');
         } else {
@@ -363,7 +477,7 @@ var error_deleting = "";
         ///	<summary>
         ///		Removes the highlight from the annotation.
         ///	</summary>      
-        this.form.fadeOut(250);
+        if (this.image.toggle==false){this.form.fadeOut(50);}
         this.area.removeClass('image-annotate-area-hover');
         this.area.removeClass('image-annotate-area-editable-hover');
     };
@@ -402,6 +516,7 @@ var error_deleting = "";
                         data: form.serialize(),
                         error: function(e) { alert(error_deleting) }
                     });
+                    
                 }
 
                 annotation.image.mode = 'view';
@@ -411,6 +526,7 @@ var error_deleting = "";
             editable.form.append(del);
 
             $.fn.annotateImage.createCancelButton(editable, this.image);
+            
         }
     };
 
@@ -449,6 +565,9 @@ var error_deleting = "";
         this.note.text = text;
         this.note.id = editable.note.id;
         this.editable = true;
+            
+        toTop(this.area);
+        toTop(this.form);
     };
 
 })(jQuery);

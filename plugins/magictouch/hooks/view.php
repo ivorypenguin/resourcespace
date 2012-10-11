@@ -15,7 +15,7 @@ if (in_array("annotate",$plugins)){
     global $annotate_rt_exclude;
     if (in_array($resource['file_extension'],$annotate_ext_exclude)){return false;}
     if (in_array($resource['resource_type'],$annotate_rt_exclude)){return false;}  
-    if (getval("annotate","")!=""){
+    if (getval("annotate","off")!='off'){
         return false;
     }
 }
@@ -56,17 +56,21 @@ if (!file_exists($largeurl_path)) {
     return false; # Requires an original large JPEG file.
 }  ?>
 
-<div style="float:left;">
+<div id="wrapper" style="display:block;clear:none;float:left;margin: 0px ;">
+	
 <div class="Picture">
 <a href="<?php echo $largeurl?>" class="MagicTouch"><img src="<?php echo $imageurl?>" GALLERYIMG="no" id="previewimage" /></a>
-</div><br />
-    
+</div>
+
+<div style="clear:left;float:right;margin-right:10px;margin-top:-5px;"> 
 <?php
 // annotate plugin compatibility
-if (in_array("annotate",$plugins)&&$k==""){?><a style="display:inline;clear:left;float:left;" href="<?php echo $baseurl?>/pages/view.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&k=<?php echo $k?>&annotate=true" onClick="return CentralSpaceLoad(this);">&gt;&nbsp;<?php echo $lang['annotations']?></a><br /><br /><?php }
+if (in_array("annotate",$plugins)&&$k==""){?><a href="<?php echo $baseurl?>/pages/view.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&k=<?php echo $k?>" onClick="setCookie('annotate','on');return CentralSpaceLoad(this);">&gt;&nbsp;<?php echo $lang['annotations']?></a><br /><br /><?php }
 ?>
-<script type="text/javascript">if(typeof MagicTouch=="object") {MagicTouch.refresh();} else {console.log("MagicTouch not loaded");}</script>
 </div>
+</div>
+<script type="text/javascript">if(typeof MagicTouch=="object") {MagicTouch.refresh();} else {console.log("MagicTouch not loaded");}</script>
+
 <?php
     return true;
 }

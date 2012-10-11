@@ -13,7 +13,8 @@ $lang["error-saving"]="An error occurred saving that annotation.";
 $lang["error-deleting"]="An error occurred deleting that annotation.";
 
 $lang["action-add_note"]="Add Annotation";
-
+$lang["action-toggle-on"]="Show All";
+$lang["action-toggle-off"]="Hide All";
 $lang["note-1"]="1 annotation";
 $lang["note-2"]="%number annotations"; # %number will be replaced, e.g. 3 notes
 
