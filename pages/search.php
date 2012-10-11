@@ -264,13 +264,10 @@ if (substr($search,0,11)=="!collection")
 	if (!$collectiondata){?>
 		<script>alert('<?php echo $lang["error-collectionnotfound"];?>');document.location='<?php echo $baseurl_short?>pages/home.php'</script>
 	<?php } 
-	if ($collection_reorder_caption)
-		{
 	# Check to see if this user can edit (and therefore reorder) this resource
-		if (($userref==$collectiondata["user"]) || ($collectiondata["allow_changes"]==1) || (checkperm("h")))
-			{
-			$allow_reorder=true;
-			}
+	if (($userref==$collectiondata["user"]) || ($collectiondata["allow_changes"]==1) || (checkperm("h")))
+		{
+		$allow_reorder=true;
 		}
 	}
 
