@@ -90,7 +90,7 @@ function DisplayTheme($themes=array())
 		}
 		?>
         <table><tr><td style="margin:0px;padding:0px;">
-		<h1 ><?php if ($themes_category_split_pages && $themes_category_split_pages_parents)
+	<h1 ><?php if (($themes_category_split_pages && $themes_category_split_pages_parents) && !$theme_direct_jump)
 			{
 			if ($themes_category_split_pages_parents_root_node){?><a href="<?php echo $baseurl_short?>pages/themes.php"  onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["themes"];?></a> / <?php } 
 			$themescrumbs="";
@@ -256,7 +256,7 @@ include "../include/header.php";
 <form method=get id="themeform" action="<?php echo $baseurl_short?>pages/themes.php">
 <input type="hidden" name="lastlevelchange" id="lastlevelchange" value="">
 
-<?php if (!$themes_category_split_pages) { ?>
+<?php if (!$themes_category_split_pages && !$theme_direct_jump) { ?>
   <h1><?php echo htmlspecialchars(getval("title",$lang["themes"]),ENT_QUOTES)?></h1>
   <p><?php echo text("introtext")?></p>
 <?php } ?>
@@ -266,13 +266,12 @@ include "../include/header.php";
 	# Display title and description when 'direct jump' mode is enabled.
 	$text=text("introtext");
 	$title=htmlspecialchars(getval("title",$lang["themes"]),ENT_QUOTES);
-
 	if (count($themes)>0)
 		{
 		$title=i18n_get_translated($themes[count($themes)-1]);
-		if ($text=="") {$text=text("introtext" . $themes[count($themes)-1]);}
+		$text=text("introtext" . $themes[count($themes)-1]);
+		if ($text=="") {$text=text("introtext");}
 		}
-
 	?>
   <h1><?php echo $title ?></h1>
   <p><?php echo $text ?></p>
