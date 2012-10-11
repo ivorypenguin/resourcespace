@@ -15,7 +15,7 @@ function HookResourceConnectSearchBeforesearchresults2()
 	}
 */
 
-function HookResourceConnectSearchRepleacesearchresults()
+function HookResourceConnectSearchReplacesearchresults()
 	{
 	global $lang,$language,$resourceconnect_affiliates,$baseurl,$resourceconnect_selected,$search,$resourceconnect_this,$resourceconnect_treat_local_system_as_affiliate;
 	if (!checkperm("resourceconnect")) {return false;}

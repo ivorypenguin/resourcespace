@@ -341,7 +341,7 @@ if ($display_user_rating_stars && $k=="")
 
 
 # Hook to replace all search results (used by ResourceConnect plugin, allows search mechanism to be entirely replaced)
-if (!hook("repleacesearchresults")) {
+if (!hook("replacesearchresults")) {
 
 if ($allow_reorder && $display!="list")
 	{
