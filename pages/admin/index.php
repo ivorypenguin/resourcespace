@@ -18,9 +18,9 @@ overflow:hidden;
 window.onresize=function(event){
 	resizeadmin();
 		}	
-window.onload=function(event){
+
 	resizeadmin();
-		}			
+					
 function resizeadmin(){
 	var maxheight=window.innerHeight-<?php echo $topsize?>;
     if (isNaN(maxheight)){maxheight=document.documentElement.clientHeight-<?php echo $topsize?>;}
