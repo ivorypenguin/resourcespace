@@ -344,7 +344,7 @@ if ($display_user_rating_stars && $k=="")
 			});
 		jQuery.ajax({
 		  type: 'GET',
-		  url: 'search.php?search=!collection<?php echo $usercollection ?>&reorder=true',
+		  url: 'search.php?search=!collection<?php echo $collection ?>&reorder=true',
 		  data: {order:JSON.stringify(newOrder)},
 		  success: function(){
 			parent.collections.location.reload();
