@@ -117,12 +117,46 @@
 <div class="PanelShadow"></div>
 </div>
 <?php if ($allow_reorder && $display!="list") { 
-# Javascript drag/drop enabling.
 ?>
-<script type="text/javascript">
-new Draggable('ResourceShell<?php echo $ref?>',{handle: 'IconReorder', revert: true});
-Droppables.add('ResourceShell<?php echo $ref?>',{accept: 'ResourcePanelShell', onDrop: function(element) {ReorderResources(element.id,<?php echo $ref?>);}, hoverclass: 'ReorderHover'});
-</script>
+	<script type="text/javascript">
+	function ReorderResources(idsInOrder)
+		{
+		var newOrder = [];
+		jQuery.each(idsInOrder, function() {
+			newOrder.push(this.substring(13));
+			});
+		jQuery.ajax({
+			type: 'GET',
+		  	url: 'search.php?search=!collection<?php echo $usercollection ?>&reorder=true',
+		  	data: {order:JSON.stringify(newOrder)},
+		  	success: function(){
+				parent.collections.location.reload();
+				}
+			});
+		}
+
+		jQuery(document).ready(function() {
+			jQuery('#CentralSpace').sortable({
+				items: ".ResourcePanelShell",
+
+				start: function (event, ui)
+					{
+					InfoBoxEnabled=false;
+					if (jQuery('#InfoBox')) {jQuery('#InfoBox').hide();}
+					},
+
+				stop: function(event, ui)
+					{
+					InfoBoxEnabled=true;
+					var idsInOrder = jQuery('#CentralSpace').sortable("toArray");
+					ReorderResources(idsInOrder);
+					}
+			});
+			jQuery('.CollectionPanelShell').disableSelection();
+
+		});
+
+	</script>
 <?php } ?> 
 <?php } ?>
 

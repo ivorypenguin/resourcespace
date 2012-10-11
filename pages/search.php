@@ -277,15 +277,13 @@ if (substr($search,0,11)=="!collection")
 # Include function for reordering
 if ($allow_reorder && $display!="list")
 	{
-	$url=$baseurl_short."pages/search.php?search=" . urlencode($search) ;
 	# Also check for the parameter and reorder as necessary.
-	$reorder=getvalescaped("reorder","");
-	if ($reorder!="")
+	$reorder=getvalescaped("reorder",false);
+	if ($reorder)
 		{
-		$r=explode("-",$reorder);
-		$wait=swap_collection_order(substr($r[0],13),$r[1],substr($search,11));
-        refresh_collection_frame();
-		?><script>document.location='<?php echo $url?>';top.collections.location.href='<?php echo $baseurl_short?>pages/collections.php?ref=<?php echo substr($search,11);?>';</script><?php
+		$neworder=json_decode(getvalescaped("order",false));
+		update_collection_order($neworder,$usercollection);
+		exit("SUCCESS");
 		}
 	}
 
@@ -341,19 +339,7 @@ if ($display_user_rating_stars && $k=="")
 
 
 # Hook to replace all search results (used by ResourceConnect plugin, allows search mechanism to be entirely replaced)
-if (!hook("replacesearchresults")) {
-
-if ($allow_reorder && $display!="list")
-	{
-	$url=$baseurl_short."pages/search.php?search=" . urlencode($search) ;
-	?>
-	<script type="text/javascript">
-	function ReorderResources(id1,id2)
-		{
-		document.location='<?php echo $url?>&reorder=' + id1 + '-' + id2;
-		}
-	</script><?php
-	}
+if (!hook("replacesearchresults")) { 
 
 # Extra CSS to support more height for titles on thumbnails.
 if (isset($result_title_height))
@@ -709,7 +695,6 @@ if (true) # Always show search header now.
 			<?php if ($display=="thumbs" && is_array($result)) { ?>
 				
 				<?php if ($orderbyrating) { ?><div class="KeyStar"><?php echo $lang["verybestresources"]?></div><?php } ?>
-				<?php if ($allow_reorder) { ?><div class="KeyReorder"><?php echo $lang["reorderresources"]?></div><?php } ?>
 				<?php if ($allow_reorder || (substr($search,0,11)=="!collection")) { ?><div class="KeyComment"><?php echo $lang["addorviewcomments"]?></div><?php } ?>
 				<?php if ($allow_share) { ?><div class="KeyEmail"><?php echo $lang["emailresource"]?></div><?php } ?>
 			<?php } ?>
