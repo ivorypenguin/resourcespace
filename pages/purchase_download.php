@@ -34,7 +34,7 @@ if (!$valid)
 	?>
     <p><?php echo $lang["waitingforpaymentauthorisation"] ?></p>
 	   
-	<form method="post" action="purchase_download.php">
+	<form method="post" action="<?php echo $baseurl_short?>pages/purchase_download.php">
 	<input type="submit" name="reload" value="&nbsp;&nbsp;&nbsp;<?php echo $lang["reload"] ?>&nbsp;&nbsp;&nbsp;">
 	</form>
 	<?php
@@ -57,7 +57,7 @@ else
 		$title=get_data_by_field($resource["ref"],$view_title_field);
 		?><td><h2><?php echo i18n_get_translated($title) ?></h2></td>
 		<td class="DownloadButton">
-		<a href="download.php?ref=<?php echo $resource["ref"] ?>&size=<?php echo $size ?>"><?php echo $lang["action-download"]?></a>
+		<a href="<?php echo $baseurl_short?>pages/download.php?ref=<?php echo $resource["ref"] ?>&size=<?php echo $size ?>"><?php echo $lang["action-download"]?></a>
 		</td>
 		</tr><?php	
 		}

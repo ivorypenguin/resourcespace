@@ -16,7 +16,7 @@ if (getval("submitted","")!="")
 	{
 	# Save research request data
 	save_research_request($ref);
-	redirect ("pages/team/team_research.php?reload=true&nc=" . time());
+	redirect ($baseurl_short."pages/team/team_research.php?reload=true&nc=" . time());
 	}
 
 # Fetch research request data
@@ -27,7 +27,7 @@ include "../../include/header.php";
 <div class="BasicsBox">
 <h1><?php echo $lang["editresearchrequest"]?></h1>
 
-<form method="post" action="team_research_edit.php" onSubmit="return CentralSpacePost(this,true);">
+<form method="post" action="<?php echo $baseurl_short?>pages/team/team_research_edit.php" onSubmit="return CentralSpacePost(this,true);">
 <input type=hidden name="submitted" value="true">
 <input type=hidden name="ref" value="<?php echo $ref?>">
 

@@ -131,7 +131,7 @@ else
             <!-- param name="CODE"    value="wjhk.jupload2.JUploadApplet" / -->
             <!-- param name="ARCHIVE" value="wjhk.jupload.jar" / -->
             <!-- param name="type"    value="application/x-java-applet;version=1.5" /  -->
-            <param name="postURL" value="upload_java.php?collection_add=<?php echo $collection_add?>&user=<?php echo urlencode($username."|".$session_hash)?>&resource_type=<?php echo $resource_type?>&no_exif=<?php echo getval("no_exif","") ?>&autorotate=<?php echo getval('autorotate','') ?>&replace_resource=<?php echo $replace_resource?>" />
+            <param name="postURL" value="<?php echo $baseurl_short?>pages/upload_java.php?collection_add=<?php echo $collection_add?>&user=<?php echo urlencode($username."|".$session_hash)?>&resource_type=<?php echo $resource_type?>&no_exif=<?php echo getval("no_exif","") ?>&autorotate=<?php echo getval('autorotate','') ?>&replace_resource=<?php echo $replace_resource?>" />
             <param name="allowedFileExtensions" value="<?php echo $allowed?>">
             <param name="nbFilesPerRequest" value="1">
             <param name="allowHttpPersistent" value="false">
@@ -148,7 +148,7 @@ else
             # If not using frameless collections, refresh the bottom frame after upload.
             ?>
             <param name="afterUploadTarget" value="collections">
-            <param name="afterUploadURL" value="collections.php">
+            <param name="afterUploadURL" value="<?php echo $baseurl_short?>pages/collections.php">
             <?php } ?>
 
             Java 1.5 or higher plugin required. 

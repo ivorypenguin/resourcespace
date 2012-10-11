@@ -46,7 +46,7 @@ if (getval("createblank","")!=""){
     if ($ref==""){
         $ref=copy_resource(0-$userref);
     }
-    redirect("pages/edit.php?refreshcollectionframe=true&ref=" . $ref."&search=".urlencode($search)."&offset=".$offset."&order_by=".$order_by."&sort=".$sort."&archive=".$archive);
+    redirect($baseurl_short."pages/edit.php?refreshcollectionframe=true&ref=" . $ref."&search=".urlencode($search)."&offset=".$offset."&order_by=".$order_by."&sort=".$sort."&archive=".$archive);
 }
 
 #handle posts
@@ -63,7 +63,7 @@ if (array_key_exists("userfile",$_FILES))
 		resource_log($ref,"u",0);
 
 		$status=upload_file($ref,(getval("no_exif","")!=""),false,(getval("autorotate","")!=""));
-		redirect("pages/edit.php?refreshcollectionframe=true&ref=" . $ref."&search=".urlencode($search)."&offset=".$offset."&order_by=".$order_by."&sort=".$sort."&archive=".$archive);
+		redirect($baseurl_short."pages/edit.php?refreshcollectionframe=true&ref=" . $ref."&search=".urlencode($search)."&offset=".$offset."&order_by=".$order_by."&sort=".$sort."&archive=".$archive);
 		}	
 	}
 
@@ -128,8 +128,8 @@ else
 ?>
 <?php hook("upload_page_top"); ?>
 <?php if ($ref!=""){?><p>
-	<a href="edit.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>">&lt;&nbsp;<?php echo $lang["backtoeditresource"]?></a><br / >
-	<a href="view.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>">&lt;&nbsp;<?php echo $lang["backtoresourceview"]?></a>
+	<a href="<?php echo $baseurl_short?>pages/edit.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>">&lt;&nbsp;<?php echo $lang["backtoeditresource"]?></a><br / >
+	<a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>">&lt;&nbsp;<?php echo $lang["backtoresourceview"]?></a>
 </p>
 <?php } ?>
 <h1><?php echo $titleh1 ?></h1>
@@ -158,7 +158,7 @@ function check(filename) {
 }
 </script>
 
-<form method="post" class="form" enctype="multipart/form-data" action="upload.php">
+<form method="post" class="form" enctype="multipart/form-data" action="<?php echo $baseurl_short?>pages/upload.php">
 <input type="hidden" name="ref" value="<?php echo $ref ?>" />
 <input type="hidden" name="resource_type" value="<?php echo $resource_type ?>" />
 <input type="hidden" name="archive" value="<?php echo $archive ?>" />
@@ -213,7 +213,7 @@ if (getvalescaped("upload_a_file","")!="" || getvalescaped("replace_file","")!="
 
 <?php if (!$hide_uploadertryother) { ?>
 <br />
-<p>&gt; <a href="upload_plupload.php?replace_resource=<?php echo $ref ?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>"><?php echo $lang["uploadertryplupload"]?></a></p>
+<p>&gt; <a href="<?php echo $baseurl_short?>pages/upload_plupload.php?replace_resource=<?php echo $ref ?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>"><?php echo $lang["uploadertryplupload"]?></a></p>
 <?php } ?>
 
 </form>

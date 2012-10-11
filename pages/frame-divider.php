@@ -7,8 +7,8 @@ include "../include/general.php";
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <title>Divider</title>
-<link href="../css/global.css" rel="stylesheet" type="text/css" media="screen,projection,print" />
-<link href="../css/Col-<?php echo (isset($userfixedtheme) && $userfixedtheme!="")?$userfixedtheme:getval("colourcss","greyblu")?>.css" rel="stylesheet" type="text/css" media="screen,projection,print" id="colourcss"/>
+<link href="<?php echo $baseurl_short?>css/global.css" rel="stylesheet" type="text/css" media="screen,projection,print" />
+<link href="<?php echo $baseurl_short?>css/Col-<?php echo (isset($userfixedtheme) && $userfixedtheme!="")?$userfixedtheme:getval("colourcss","greyblu")?>.css" rel="stylesheet" type="text/css" media="screen,projection,print" id="colourcss"/>
 <!--[if lte IE 6]> <link href="../css/globalIE.css" rel="stylesheet" type="text/css"  media="screen,projection,print" /> <![endif]-->
 <!--[if lte IE 5.6]> <link href="../css/globalIE5.css" rel="stylesheet" type="text/css"  media="screen,projection,print" /> <![endif]-->
 <?php

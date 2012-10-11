@@ -26,7 +26,7 @@ if (($ref=="") && ($lower==""))
 	for ($n=1;$n<=$max;$n+=1000)
 		{
 		$upper=$n+999;if ($upper>$max) {$upper=$max;}
-		?><p><a href="spider.php?password=<?php echo $password?>&lower=<?php echo $n?>&higher=<?php echo $upper?>"><?php echo $n?> to <?php echo $upper?></a></p><?php
+		?><p><a href="<?php echo $baseurl_short?>pages/spider.php?password=<?php echo $password?>&lower=<?php echo $n?>&higher=<?php echo $upper?>"><?php echo $n?> to <?php echo $upper?></a></p><?php
 		}
 	?></body></html><?php
 	}
@@ -45,7 +45,7 @@ if ($lower!="")
 		if (in_array($access,$spider_access))
 			{
 			?>
-			<a href="spider.php?password=<?php echo $password?>&ref=<?php echo $list[$n]?>"><?php echo $list[$n]?></a>
+			<a href="<?php echo $baseurl_short?>pages/spider.php?password=<?php echo $password?>&ref=<?php echo $list[$n]?>"><?php echo $list[$n]?></a>
 			<?php
 			}
 		}

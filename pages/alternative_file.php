@@ -36,7 +36,7 @@ if (getval("name","")!="")
 	# Save file data
 	save_alternative_file($resource,$ref);
 	hook ("savealternatefiledata");
-	redirect ("pages/alternative_files.php?ref=$resource&search=".urlencode($search)."&offset=$offset&order_by=$order_by&sort=$sort&archive=$archive");
+	redirect ($baseurl_short."pages/alternative_files.php?ref=$resource&search=".urlencode($search)."&offset=$offset&order_by=$order_by&sort=$sort&archive=$archive");
 	}
 
 	
@@ -44,9 +44,9 @@ include "../include/header.php";
 ?>
 <div class="BasicsBox">
 <p>
-<a href="alternative_files.php?ref=<?php echo $resource?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>">&lt;&nbsp;<?php echo $lang["backtomanagealternativefiles"]?></a><br / >
-<a href="edit.php?ref=<?php echo $resource?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>">&lt;&nbsp;<?php echo $lang["backtoeditresource"]?></a><br / >
-<a href="view.php?ref=<?php echo $resource?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>">&lt;&nbsp;<?php echo $lang["backtoresourceview"]?></a>
+<a href="<?php echo $baseurl_short?>pages/alternative_files.php?ref=<?php echo $resource?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>">&lt;&nbsp;<?php echo $lang["backtomanagealternativefiles"]?></a><br / >
+<a href="<?php echo $baseurl_short?>pages/edit.php?ref=<?php echo $resource?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>">&lt;&nbsp;<?php echo $lang["backtoeditresource"]?></a><br / >
+<a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $resource?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>">&lt;&nbsp;<?php echo $lang["backtoresourceview"]?></a>
 </p>
 <?php if ($alternative_file_resource_preview){ 
 		$imgpath=get_resource_path($resourcedata['ref'],true,"col",false);
@@ -59,7 +59,7 @@ include "../include/header.php";
 <h1><?php echo $lang["editalternativefile"]?></h1>
 
 
-<form method="post" class="form" id="fileform" enctype="multipart/form-data" action="alternative_file.php">
+<form method="post" class="form" id="fileform" enctype="multipart/form-data" action="<?php echo $baseurl_short?>pages/alternative_file.php">
 <input type="hidden" name="MAX_FILE_SIZE" value="500000000">
 <input type=hidden name=ref value="<?php echo $ref?>">
 <input type=hidden name=resource value="<?php echo $resource?>">

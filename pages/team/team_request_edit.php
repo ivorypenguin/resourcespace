@@ -17,7 +17,7 @@ if (getval("submitted","")!="")
 	{
 	# Save research request data
 	save_request($ref);
-	redirect ("pages/team/team_request.php?reload=true&nc=" . time());
+	redirect ($baseurl_short."pages/team/team_request.php?reload=true&nc=" . time());
 	}
 
 # Fetch research request data
@@ -26,7 +26,7 @@ if ($request===false) {exit("Request $ref not found.");}
 	
 include "../../include/header.php";
 ?>
-<p><a href="team_request.php"  onClick="return CentralSpaceLoad(this,true);">&lt; <?php echo $lang["back"] ?></a></p>
+<p><a href="<?php echo $baseurl_short?>pages/team/team_request.php"  onClick="return CentralSpaceLoad(this,true);">&lt; <?php echo $lang["back"] ?></a></p>
 <div class="BasicsBox">
 <h1><?php echo $lang["editrequestorder"]?></h1>
 
@@ -40,7 +40,7 @@ else
 	{
 	?>
 	
-<form method=post action="team_request_edit.php" onSubmit="return CentralSpacePost(this,true);">
+<form method=post action="<?php echo $baseurl_short?>pages/team/team_request_edit.php" onSubmit="return CentralSpacePost(this,true);">
 <input type=hidden name=ref value="<?php echo $ref?>" />
 <input type=hidden name="submitted" value="yes" />
 
@@ -54,8 +54,8 @@ else
 <div class="clearerleft"> </div></div>
 
 <? if(!hook("disprequesteditems")): ?>
-<div class="Question"><label><?php echo $lang["requesteditems"]?></label><div class="Fixed"><a <?php if ($frameless_collections) { ?>href="../search.php?search=<?php echo urlencode("!collection" . $request["collection"]) ?>"
-<?php } else {?>href="../collections.php?collection=<?php echo $request["collection"]?>" target="collections"<?php }?>>&gt;&nbsp;<?php echo $lang["action-select"]?></a></div>
+<div class="Question"><label><?php echo $lang["requesteditems"]?></label><div class="Fixed"><a <?php if ($frameless_collections) { ?>href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $request["collection"]) ?>"
+<?php } else {?>href="<?php echo $baseurl_short?>pages/collections.php?collection=<?php echo $request["collection"]?>" target="collections"<?php }?>>&gt;&nbsp;<?php echo $lang["action-select"]?></a></div>
 <? endif; ?>
 <div class="clearerleft"> </div></div>
 
@@ -68,7 +68,7 @@ if (isset($warn_field_request_approval))
 		{
 		?>
 		<div class="Question">
-		<div class="FormError"><?php echo str_replace("%","<a href='../view.php?ref=" . $warning["resource"] . "'>" . $warning["resource"] . "</a>",$lang["warningrequestapprovalfield"]) ?><br/><?php echo $warning["value"] ?></div>
+		<div class="FormError"><?php echo str_replace("%","<a href=".$baseurl_short."pages/view.php?ref=" . $warning["resource"] . "'>" . $warning["resource"] . "</a>",$lang["warningrequestapprovalfield"]) ?><br/><?php echo $warning["value"] ?></div>
 		<div class="clearerleft"> </div></div>
 		<?php
 		}

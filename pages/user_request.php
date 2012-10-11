@@ -21,7 +21,7 @@ if (getval("save","")!="")
 	elseif (user_email_exists(getval("email","")))
 		{
 		# E-mail already exists
-		$error=$lang["accountemailalreadyexists"];$error_extra="<br/><a href=\"user_password.php?email=" . urlencode(getval("email","")) . "\">" . $lang["forgottenpassword"] . "</a>";
+		$error=$lang["accountemailalreadyexists"];$error_extra="<br/><a href=\"".$baseurl_short."pages/user_password.php?email=" . urlencode(getval("email","")) . "\">" . $lang["forgottenpassword"] . "</a>";
 		}
 	else
 		{
@@ -39,7 +39,7 @@ if (getval("save","")!="")
 			
 		if ($try===true)
 			{
-			redirect("pages/done.php?text=user_request");
+			redirect($baseurl_short."pages/done.php?text=user_request");
 			}
 		else
 			{
@@ -53,7 +53,7 @@ include "../include/header.php";
 <h1><?php echo $lang["requestuserlogin"]?></h1>
 <p><?php echo text("introtext")?></p>
 
-<form method="post" action="user_request.php">  
+<form method="post" action="<?php echo $baseurl_short?>pages/user_request.php">  
 
 <?php if (!hook("replacemain")) { /* BEGIN hook Replacemain */ ?>
 

@@ -37,15 +37,15 @@ if (getval("submitted","")!="")
 	if (getval("redirect","")!="")
 		{
 		if (getval("addlevel","")=="yes"){
-			redirect ("pages/collection_edit.php?ref=".$ref."&addlevel=yes");
+			redirect ($baseurl_short."pages/collection_edit.php?ref=".$ref."&addlevel=yes");
 			}		
 		else if ((getval("theme","")!="") || (getval("newtheme","")!=""))
 			{
-			redirect ("pages/themes.php?manage=true");
+			redirect ($baseurl_short."pages/themes.php?manage=true");
 			}
 		else
 			{
-			redirect ("pages/collection_manage.php?offset=".$offset."&col_order_by=".$col_order_by."&sort=".$sort."&find=".urlencode($find)."&reload=true");
+			redirect ($baseurl_short."pages/collection_manage.php?offset=".$offset."&col_order_by=".$col_order_by."&sort=".$sort."&find=".urlencode($find)."&reload=true");
 			}
 		}
 	else
@@ -62,7 +62,7 @@ include "../include/header.php";
 <div class="BasicsBox">
 <h1><?php echo $lang["editcollection"]?></h1>
 <p><?php echo text("introtext")?></p>
-<form method=post id="collectionform" action="collection_edit.php" onSubmit="return CentralSpacePost(this,true);">
+<form method=post id="collectionform" action="<?php echo $baseurl_short?>pages/collection_edit.php" onSubmit="return CentralSpacePost(this,true);">
 <input type=hidden name=redirect id=redirect value=yes>
 <input type=hidden name=ref value="<?php echo $ref?>">
 <input type=hidden name="submitted" value="true">
@@ -310,7 +310,7 @@ if ($enable_collection_copy)
 <div class="Question">
 <label><?php echo $lang["collectionlog"]?></label>
 <div class="Fixed">
-<a href="collection_log.php?ref=<?php echo $ref?>"><?php echo $lang["log"]?> &gt;</a>
+<a href="<?php echo $baseurl_short?>pages/collection_log.php?ref=<?php echo $ref?>"><?php echo $lang["log"]?> &gt;</a>
 </div>
 <div class="clearerleft"> </div>
 </div>

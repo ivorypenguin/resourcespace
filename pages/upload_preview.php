@@ -36,7 +36,7 @@ $maxsize="200000000"; #200MB
 if (array_key_exists("userfile",$_FILES))
     {
 	$status=upload_preview($ref);
-	redirect("pages/edit.php?refreshcollectionframe=true&ref=" . $ref."&search=".urlencode($search)."&offset=".$offset."&order_by=".$order_by."&sort=".$sort."&archive=".$archive);
+	redirect($baseurl_short."pages/edit.php?refreshcollectionframe=true&ref=" . $ref."&search=".urlencode($search)."&offset=".$offset."&order_by=".$order_by."&sort=".$sort."&archive=".$archive);
     }
     
 include "../include/header.php";

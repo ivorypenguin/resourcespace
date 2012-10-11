@@ -11,7 +11,7 @@ $ref=getvalescaped("ref","",true);
 # if bypass sharing page option is on, redirect to e-mail
 if ($bypass_share_screen)
 	{
-	header( 'Location:collection_email.php?ref='.$ref ) ;
+	header( 'Location:'.$baseurl_short.'pages/collection_email.php?ref='.$ref ) ;
 	}
 
 $collection=get_collection($ref);
@@ -43,7 +43,7 @@ include "../include/header.php";
 
 
 <div class="BasicsBox"> 
-<form method=post id="collectionform" action="collection_share.php">
+<form method=post id="collectionform" action="<?php echo $baseurl_short?>pages/collection_share.php">
 <input type="hidden" name="ref" id="ref" value="<?php echo $ref ?>">
 <input type="hidden" name="deleteaccess" id="deleteaccess" value="">
 <input type="hidden" name="generateurl" id="generateurl" value="">
@@ -53,9 +53,9 @@ include "../include/header.php";
 <div class="VerticalNav">
 <ul>
 
-<li><a href="collection_email.php?ref=<?php echo $ref?>"><?php echo $lang["emailcollection"]?></a></li>
+<li><a href="<?php echo $baseurl_short?>pages/collection_email.php?ref=<?php echo $ref?>"><?php echo $lang["emailcollection"]?></a></li>
 
-<li><a href="collection_share.php?ref=<?php echo $ref?>&generateurl=true"><?php echo $lang["generateurl"]?></a></li>
+<li><a href="<?php echo $baseurl_short?>pages/collection_share.php?ref=<?php echo $ref?>&generateurl=true"><?php echo $lang["generateurl"]?></a></li>
 
 <?php hook("extra_share_options") ?>
 
@@ -135,7 +135,7 @@ include "../include/header.php";
 		<div class="Question">
 		<label for="users"><?php echo $lang["attachedusers"]?></label>
 		<div class="Fixed"><?php echo (($collection["users"]=="")?$lang["noattachedusers"]:htmlspecialchars($collection["users"])); ?><br /><br />
-		<a href="collection_edit.php?ref=<?php echo $ref; ?>">&gt;&nbsp;<?php echo $lang["action-edit"];?></a>
+		<a href="<?php echo $baseurl_short?>pages/collection_edit.php?ref=<?php echo $ref; ?>">&gt;&nbsp;<?php echo $lang["action-edit"];?></a>
 		</div>
 		<div class="clearerleft"> </div>
 		</div>

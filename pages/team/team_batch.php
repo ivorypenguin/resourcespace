@@ -18,7 +18,7 @@ $collection_add = getvalescaped("collection_add","");
 	<h1><?php echo $titleh1 ?></h1>
 	<h2><?php echo $titleh2 ?></h2>
 
-	<form method="post" action="team_batch_select.php?resource_type=<?php echo $resource_type?>">
+	<form method="post" action="<?php echo $baseurl_short?>pages/team/team_batch_select.php?resource_type=<?php echo $resource_type?>">
 	<input type="hidden" name="no_exif" value="<?php echo getval("no_exif","")?>">
 	<input type="hidden" name="autorotate" value="<?php echo getval("autorotate","")?>">
 	<input type="hidden" name="collection_add" value="<?php echo $collection_add?>">

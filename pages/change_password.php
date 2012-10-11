@@ -13,7 +13,7 @@ if (getval("save","")!="")
 		$message=change_password(getvalescaped("password",""));
 		if ($message===true)
 			{
-			redirect("pages/" . ($use_theme_as_home?'themes.php':$default_home_page));
+			redirect($baseurl_short."pages/" . ($use_theme_as_home?$baseurl_short.'pages/themes.php':$default_home_page));
 			}
 		else
 			{
@@ -30,7 +30,7 @@ include "../include/header.php";
 
 	<?php if (getval("expired","")!="") { ?><div class="FormError">!! <?php echo $lang["password_expired"]?> !!</div><?php } ?>
 
-	<form method="post" action="change_password.php">
+	<form method="post" action="<?php echo $baseurl_short?>pages/change_password.php">
 	<input type="hidden" name="expired" value="<?php echo getvalescaped("expired","")?>">
 	<div class="Question">
 	<label for="password"><?php echo $lang["newpassword"]?></label>

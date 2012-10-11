@@ -167,7 +167,7 @@ jQuery(document).ready( function ()
 
 <?php if ($home_themeheaders && $enable_themes) { ?>
 	<div class="HomePanel"><div class="HomePanelIN">
-	<h2><a href="themes.php"><?php echo $lang["themes"]?></a></h2>
+	<h2><a href="<?php echo $baseurl_short?>pages/themes.php"><?php echo $lang["themes"]?></a></h2>
 	<?php echo text("themes")?>
 	<br />	<br />
 	<select style="width:140px;" onChange="window.location=this.value;">
@@ -177,12 +177,12 @@ jQuery(document).ready( function ()
 	for ($n=0;$n<count($headers);$n++)
 		{
 		?>
-		<option value="themes.php?header=<?php echo urlencode($headers[$n])?>"><?php echo i18n_get_translated(str_replace("*","",$headers[$n]))?></option>
+		<option value="<?php echo $baseurl_short?>pages/themes.php?header=<?php echo urlencode($headers[$n])?>"><?php echo i18n_get_translated(str_replace("*","",$headers[$n]))?></option>
 		<?php
 		}
 	?>
 	</select>
-	<br />&gt;&nbsp;<a href="themes.php"><?php echo $lang["viewall"] ?></a>
+	<br />&gt;&nbsp;<a href="<?php echo $baseurl_short?>pages/themes.php"><?php echo $lang["viewall"] ?></a>
 	</div>
 	<div class="PanelShadow"></div>
 	</div>
@@ -191,7 +191,7 @@ jQuery(document).ready( function ()
 
 <?php if ($home_themes && $enable_themes) { ?>
 	<div class="HomePanel"><div class="HomePanelIN">
-	<h2><a href="themes.php"><?php echo $lang["themes"]?></a></h2>
+	<h2><a href="<?php echo $baseurl_short?>pages/themes.php"><?php echo $lang["themes"]?></a></h2>
 	<?php echo text("themes")?>
 	</div>
 	<div class="PanelShadow"></div>
@@ -200,7 +200,7 @@ jQuery(document).ready( function ()
 	
 <?php if ($home_mycollections && !checkperm("b")) { ?>
 	<div class="HomePanel"><div class="HomePanelIN">
-	<h2><a href="collection_manage.php"><?php echo $lang["mycollections"]?></a></h2>
+	<h2><a href="<?php echo $baseurl_short?>pages/collection_manage.php"><?php echo $lang["mycollections"]?></a></h2>
 	<?php echo text("mycollections")?>
 	</div>
 	<div class="PanelShadow">
@@ -210,7 +210,7 @@ jQuery(document).ready( function ()
 
 <?php if ($home_advancedsearch) { ?>
 	<div class="HomePanel"><div class="HomePanelIN">
-	<h2><a href="search_advanced.php"><?php echo $lang["advancedsearch"]?></a></h2>
+	<h2><a href="<?php echo $baseurl_short?>pages/search_advanced.php"><?php echo $lang["advancedsearch"]?></a></h2>
 	<?php echo text("advancedsearch")?>
 	</div>
 	<div class="PanelShadow"></div>
@@ -219,7 +219,7 @@ jQuery(document).ready( function ()
 
 <?php if ($home_mycontributions && (checkperm("d") || (checkperm("c") && checkperm("e0")))) { ?>
 	<div class="HomePanel"><div class="HomePanelIN">
-	<h2><a href="contribute.php"><?php echo $lang["mycontributions"]?></a></h2>
+	<h2><a href="<?php echo $baseurl_short?>pages/contribute.php"><?php echo $lang["mycontributions"]?></a></h2>
 	<?php echo text("mycontributions")?>
 	</div>
 	<div class="PanelShadow"></div>
@@ -228,7 +228,7 @@ jQuery(document).ready( function ()
 
 <?php if ($home_helpadvice) { ?>
 	<div class="HomePanel"><div class="HomePanelIN">
-	<h2><a href="help.php"><?php echo $lang["helpandadvice"]?></a></h2>
+	<h2><a href="<?php echo $baseurl_short?>pages/help.php"><?php echo $lang["helpandadvice"]?></a></h2>
 	<?php echo text("help")?>
 	</div>
 	<div class="PanelShadow"></div>
@@ -265,10 +265,10 @@ foreach ($home_collections as $home_collection)
 	<div class="HomePanelPromotedImageWrap">
 	
 	<div style="padding-top:<?php echo floor((155-$home_collection["thumb_height"])/2) ?>px;">
-	<a href="search.php?search=!collection<?php echo $home_collection["ref"] ?>" onClick="return CentralSpaceLoad(this,true);"><img class="ImageBorder" src="<?php echo get_resource_path($home_collection["home_page_image"],false,"thm",false) ?>" width="<?php echo $home_collection["thumb_width"] ?>" height="<?php echo $home_collection["thumb_height"] ?>" /></div>
+	<a href="<?php echo $baseurl_short?>pages/search.php?search=!collection<?php echo $home_collection["ref"] ?>" onClick="return CentralSpaceLoad(this,true);"><img class="ImageBorder" src="<?php echo get_resource_path($home_collection["home_page_image"],false,"thm",false) ?>" width="<?php echo $home_collection["thumb_width"] ?>" height="<?php echo $home_collection["thumb_height"] ?>" /></div>
 	</div>
 		
-	<p><a href="search.php?search=!collection<?php echo $home_collection["ref"] ?>" onClick="return CentralSpaceLoad(this,true);"><?php echo i18n_get_translated($home_collection["home_page_text"]) ?></a></p>
+	<p><a href="<?php echo $baseurl_short?>pages/search.php?search=!collection<?php echo $home_collection["ref"] ?>" onClick="return CentralSpaceLoad(this,true);"><?php echo i18n_get_translated($home_collection["home_page_text"]) ?></a></p>
 	
 	</div>
 	<div class="PanelShadow"></div>

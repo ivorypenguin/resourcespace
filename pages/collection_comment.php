@@ -27,7 +27,7 @@ if (getval("save","")!="")
 	save_collection_resource_comment($ref,$collection,$comment,$rating);
 	if ($k=="")
 		{
-		redirect ("pages/search.php?refreshcollectionframe=true&search=!collection" . $collection);
+		redirect ($baseurl_short."pages/search.php?refreshcollectionframe=true&search=!collection" . $collection);
 		}
 	else
 		{
@@ -54,7 +54,7 @@ if (file_exists($imagepath)){?>
 
 <?php if (!hook("replacecollectioncommentform")) { ?>
 
-<form method="post" action="collection_comment.php">
+<form method="post" action="<?php echo $baseurl_short?>pages/collection_comment.php">
 <input type="hidden" name="ref" value="<?php echo $ref?>">
 <input type="hidden" name="k" value="<?php echo $k?>">
 <input type="hidden" name="collection" value="<?php echo $collection?>">

@@ -16,8 +16,8 @@ $colname=$colinfo["name"];
 ?>
 
 <div class="BasicsBox">
-<?php if ($back_to_collections_link != "") { ?><div style="float:right;"><a href="collection_manage.php"><strong><?php echo $back_to_collections_link ?></strong> </a></div> <?php } ?>
-<h1><?php echo $lang["collectionlog"];?> - <a <?php if ($frameless_collections && !checkperm("b")){ ?>href onclick="ChangeCollection(<?php echo $ref;?>);"<?php } else {?>href="collections.php?collection=<?php echo $ref;?>" target="collections"<?php }?>><?php echo @$colname;?></a></h1>
+<?php if ($back_to_collections_link != "") { ?><div style="float:right;"><a href="<?php echo $baseurl_short?>pages/collection_manage.php"><strong><?php echo $back_to_collections_link ?></strong> </a></div> <?php } ?>
+<h1><?php echo $lang["collectionlog"];?> - <a <?php if ($frameless_collections && !checkperm("b")){ ?>href onclick="ChangeCollection(<?php echo $ref;?>);"<?php } else {?>href="<?php echo $baseurl_short?>pages/collections.php?collection=<?php echo $ref;?>" target="collections"<?php }?>><?php echo @$colname;?></a></h1>
 
 </div>
 
@@ -52,7 +52,7 @@ for ($n=0;$n<count($log);$n++)
 			echo $newnotes;
 		}
 		?></td>
-	<td><?php if ($log[$n]['resource']!=0){?><a href='view.php?ref=<?php echo $log[$n]["resource"]?>'><?php echo $log[$n]["resource"]?></a><?php } ?></td>
+	<td><?php if ($log[$n]['resource']!=0){?><a href='<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $log[$n]["resource"]?>'><?php echo $log[$n]["resource"]?></a><?php } ?></td>
 	<td><?php echo i18n_get_translated($log[$n]["title"])?></td>
 	</tr> 
 <?php } ?>

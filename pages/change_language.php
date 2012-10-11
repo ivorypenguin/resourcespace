@@ -15,7 +15,7 @@ if (getval("save","")!="")
 		setcookie("language","");
 		}
 
-	redirect(getval("uri","pages/" . ($use_theme_as_home?'themes.php':$default_home_page)));
+	redirect(getval("uri",$baseurl_short."pages/" . ($use_theme_as_home?$baseurl_short.'pages/themes.php':$default_home_page)));
 	}
 include "../include/header.php";
 ?>
@@ -23,7 +23,7 @@ include "../include/header.php";
 <h1><?php echo $lang["languageselection"]?></h1>
 <p><?php echo text("introtext")?></p>
   
-<form method="post" target="_top" action="change_language.php">  
+<form method="post" target="_top" action="<?php echo $baseurl_short?>pages/change_language.php">  
 <div class="Question">
 <label for="password"><?php echo $lang["language"]?></label>
 <select class="stdwidth" name="language">

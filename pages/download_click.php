@@ -17,8 +17,8 @@ include "../include/header.php";
     <p>&nbsp;</p>
     <p>&nbsp;</p>
     
-    <p><a href="search.php">&gt;&nbsp;<?php echo $lang["backtosearch"]?></a></p>
-    <p><a href="home.php">&gt;&nbsp;<?php echo $lang["backtohome"]?></a></p>
+    <p><a href="<?php echo $baseurl_short?>pages/search.php">&gt;&nbsp;<?php echo $lang["backtosearch"]?></a></p>
+    <p><a href="<?php echo $baseurl_short?>pages/home.php">&gt;&nbsp;<?php echo $lang["backtohome"]?></a></p>
 </div>
 
 <?php

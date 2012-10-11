@@ -29,7 +29,7 @@ if ((!checkperm("e" . $resource["archive"])) && ($ref>0)) {exit ("Permission den
 if (getval("newfile","")!="")
 	{
 	$newfile=add_alternative_file($ref,getvalescaped("newfile",""));
-	redirect("pages/alternative_file.php?resource=$ref&ref=$newfile&search=".urlencode($search)."&offset=$offset&order_by=$order_by&sort=$sort&archive=$archive");
+	redirect($baseurl_short."pages/alternative_file.php?resource=$ref&ref=$newfile&search=".urlencode($search)."&offset=$offset&order_by=$order_by&sort=$sort&archive=$archive");
 	}
 
 # Handle deleting a file
@@ -42,8 +42,8 @@ include "../include/header.php";
 ?>
 <div class="BasicsBox">
 <p>
-<a href="edit.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>">&lt;&nbsp;<?php echo $lang["backtoeditresource"]?></a><br / >
-<a href="view.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>">&lt;&nbsp;<?php echo $lang["backtoresourceview"]?></a>
+<a href="<?php echo $baseurl_short?>pages/edit.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>">&lt;&nbsp;<?php echo $lang["backtoeditresource"]?></a><br / >
+<a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>">&lt;&nbsp;<?php echo $lang["backtoresourceview"]?></a>
 </p>
 	<?php if ($alternative_file_resource_preview){ 
 		$imgpath=get_resource_path($resource['ref'],true,"col",false);
@@ -55,7 +55,7 @@ include "../include/header.php";
 <h1><?php echo $lang["managealternativefilestitle"]?></h1>
 </div>
 
-<form method=post id="fileform" action="alternative_files.php?ref=<?php echo $ref ?>">
+<form method=post id="fileform" action="<?php echo $baseurl_short?>pages/alternative_files.php?ref=<?php echo $ref ?>">
 <input type=hidden name="filedelete" id="filedelete" value="">
 
 <div class="Listview">
@@ -90,7 +90,7 @@ for ($n=0;$n<count($files);$n++)
 	
 	<a href="#" onclick="if (confirm('<?php echo $lang["filedeleteconfirm"]?>')) {document.getElementById('filedelete').value='<?php echo $files[$n]["ref"]?>';document.getElementById('fileform').submit();} return false;">&gt;&nbsp;<?php echo $lang["action-delete"]?></a>
 
-	&nbsp;<a href="alternative_file.php?resource=<?php echo $ref?>&ref=<?php echo $files[$n]["ref"]?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>">&gt;&nbsp;<?php echo $lang["action-edit"]?></a>
+	&nbsp;<a href="<?php echo $baseurl_short?>pages/alternative_file.php?resource=<?php echo $ref?>&ref=<?php echo $files[$n]["ref"]?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>">&gt;&nbsp;<?php echo $lang["action-edit"]?></a>
 
         <?php hook("refreshinfo"); ?>
 	
@@ -106,7 +106,7 @@ for ($n=0;$n<count($files);$n++)
 <!--Create a new file-->
 <div class="BasicsBox">
     <h1><?php echo $lang["addalternativefile"]?></h1>
-    <form method="post" action="alternative_files.php">
+    <form method="post" action="<?php echo $baseurl_short?>pages/alternative_files.php">
 		<div class="Question">
 			<label for="newcollection"><?php echo $lang["name"]?></label>
 			<div class="tickset">
@@ -115,7 +115,7 @@ for ($n=0;$n<count($files);$n++)
 			</div>
 		<div class="clearerleft"> </div>
 		<br />
-		<p><a href="upload_plupload.php?alternative=<?php echo $ref ?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>">&gt;&nbsp;<?php echo $lang["alternativebatchupload"] ?></a></p>
+		<p><a href="<?php echo $baseurl_short?>pages/upload_plupload.php?alternative=<?php echo $ref ?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>">&gt;&nbsp;<?php echo $lang["alternativebatchupload"] ?></a></p>
 	    </div>
 	</form>
 </div>

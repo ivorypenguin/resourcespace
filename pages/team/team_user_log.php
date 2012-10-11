@@ -62,7 +62,7 @@ for ($n=$offset;(($n<count($log))&& ($n<($offset+$per_page)));$n++)
 	<!--List Item-->
 	<tr>
 	<td><?php echo $log[$n]["date"]?></td>
-	<td><a href='../view.php?ref=<?php echo $log[$n]["resourceid"]?>'><?php echo $log[$n]["resourceid"]?></a></td>
+	<td><a href='<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $log[$n]["resourceid"]?>'><?php echo $log[$n]["resourceid"]?></a></td>
 	<td><?php echo i18n_get_translated($log[$n]["resourcetitle"])?></td>
 	<td><?php echo $lang["log-" . $log[$n]["type"]];
 

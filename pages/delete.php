@@ -44,7 +44,7 @@ if (getval("save","")!="")
 		
 		hook("custompostdeleteresource");
 		
-		redirect("pages/done.php?text=deleted&refreshcollection=true&search=".urlencode($search)."&offset=".$offset."&order_by=".$order_by."&sort=".$sort."&archive=".$archive);
+		redirect($baseurl_short."pages/done.php?text=deleted&refreshcollection=true&search=".urlencode($search)."&offset=".$offset."&order_by=".$order_by."&sort=".$sort."&archive=".$archive);
 		}
 	}
 include "../include/header.php";
@@ -64,13 +64,13 @@ else
 ?>
 
 <div class="BasicsBox"> 
-  <p><a href="view.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>">&lt; <?php echo $lang["backtoresourceview"]?></a></p>
+  <p><a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>">&lt; <?php echo $lang["backtoresourceview"]?></a></p>
   <h1><?php echo $lang["deleteresource"]?></h1>
   <p><?php echo text("introtext")?></p>
   
   <?php if ($resource["archive"]==3) { ?><p><strong><?php echo $lang["finaldeletion"] ?></strong></p><?php } ?>
   
-	<form method="post" action="delete.php">  
+	<form method="post" action="<?php echo $baseurl_short?>pages/delete.php">  
 	<input type=hidden name=ref value="<?php echo $ref?>">
 	
 	<div class="Question">

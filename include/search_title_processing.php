@@ -78,38 +78,38 @@ if ($search_titles)
 		$searchq=substr($search,5);
 		$searchq=explode(",",$searchq);
 		$searchq=$searchq[0];
-        $search_title = '<h1 class="searchcrumbs"><a href=search.php?search=!last'.$searchq.$parameters_string.'>'.str_replace('%qty',$searchq,$lang["n_recent"]).'</a>'.$searchcrumbs.'</h1> ';
+        $search_title = '<h1 class="searchcrumbs"><a href='.$baseurl_short.'pages/search.php?search=!last'.$searchq.$parameters_string.'>'.str_replace('%qty',$searchq,$lang["n_recent"]).'</a>'.$searchcrumbs.'</h1> ';
         }
     elseif (substr($search,0,8)=="!related")
         {
         $resource=substr($search,8);
 		$resource=explode(",",$resource);
 		$resource=$resource[0];
-        $search_title = '<h1 class="searchcrumbs"><a href=search.php?search=!related'.$resource.$parameters_string.'>'.$lang["relatedresources"].' - '.$lang['id'].$resource.'</a>'.$searchcrumbs.'</h1> ';
+        $search_title = '<h1 class="searchcrumbs"><a href='.$baseurl_short.'pages/search.php?search=!related'.$resource.$parameters_string.'>'.$lang["relatedresources"].' - '.$lang['id'].$resource.'</a>'.$searchcrumbs.'</h1> ';
         }
     elseif (substr($search,0,7)=="!unused")
         {
 		$refinements=str_replace(","," / ",substr($search,7,strlen($search)));	
-        $search_title = '<h1 class="searchcrumbs"><a href=search.php?search=!unused'.$parameters_string.'>'.$lang["uncollectedresources"].'</a>'.$searchcrumbs.'</h1>';
+        $search_title = '<h1 class="searchcrumbs"><a href='.$baseurl_short.'pages/search.php?search=!unused'.$parameters_string.'>'.$lang["uncollectedresources"].'</a>'.$searchcrumbs.'</h1>';
         }
     elseif (substr($search,0,11)=="!duplicates")
         {
-        $search_title = '<h1 class="searchcrumbs"><a href=search.php?search=!duplicates'.$parameters_string.'>'.$lang["duplicateresources"].'</a>'.$searchcrumbs.'</h1> ';
+        $search_title = '<h1 class="searchcrumbs"><a href='.$baseurl_short.'pages/search.php?search=!duplicates'.$parameters_string.'>'.$lang["duplicateresources"].'</a>'.$searchcrumbs.'</h1> ';
         }
     elseif (substr($search,0,5)=="!list")
         {
 		$resources=substr($search,5);
 		$resources=explode(",",$resources);
 		$resources=$resources[0];	
-        $search_title = '<h1 class="searchcrumbs"><a href=search.php?search=!list'.$resources.$parameters_string.'>'.$lang["listresources"].$resources.'</a>'.$searchcrumbs.'</h1> ';
+        $search_title = '<h1 class="searchcrumbs"><a href='.$baseurl_short.'pages/search.php?search=!list'.$resources.$parameters_string.'>'.$lang["listresources"].$resources.'</a>'.$searchcrumbs.'</h1> ';
         }    
     elseif (substr($search,0,15)=="!archivepending")
         {
-        $search_title = '<h1 class="searchcrumbs"><a href=search.php?search=!archivepending'.$parameters_string.'>'.$lang["resourcespendingarchive"].'</a>'.$searchcrumbs.'</h1> ';
+        $search_title = '<h1 class="searchcrumbs"><a href='.$baseurl_short.'pages/search.php?search=!archivepending'.$parameters_string.'>'.$lang["resourcespendingarchive"].'</a>'.$searchcrumbs.'</h1> ';
         }
     elseif (substr($search,0,12)=="!userpending")
 		{
-		$search_title = '<h1 class="searchcrumbs"><a href=search.php?search=!userpending'.$parameters_string.'>'.$lang["userpending"].'</a>'.$searchcrumbs.'</h1> ';
+		$search_title = '<h1 class="searchcrumbs"><a href='.$baseurl_short.'pages/search.php?search=!userpending'.$parameters_string.'>'.$lang["userpending"].'</a>'.$searchcrumbs.'</h1> ';
 		}
     elseif (substr($search,0,14)=="!contributions")
         {
@@ -122,13 +122,13 @@ if ($search_titles)
             switch ($archive)
                 {
                 case -2:
-                    $search_title = '<h1 class="searchcrumbs"><a href=search.php?search=!contributions'.$cuser.$parameters_string.'>'.$lang["contributedps"].'</a>'.$searchcrumbs.'</h1> ';
+                    $search_title = '<h1 class="searchcrumbs"><a href='.$baseurl_short.'pages/search.php?search=!contributions'.$cuser.$parameters_string.'>'.$lang["contributedps"].'</a>'.$searchcrumbs.'</h1> ';
                     break;
                 case -1:
-                    $search_title = '<h1 class="searchcrumbs"><a href=search.php?search=!contributions'.$cuser.$parameters_string.'>'.$lang["contributedpr"].'</a>'.$searchcrumbs.'</h1> ';
+                    $search_title = '<h1 class="searchcrumbs"><a href='.$baseurl_short.'pages/search.php?search=!contributions'.$cuser.$parameters_string.'>'.$lang["contributedpr"].'</a>'.$searchcrumbs.'</h1> ';
                     break;
                 case -0:
-                    $search_title = '<h1 class="searchcrumbs"><a href=search.php?search=!contributions'.$cuser.$parameters_string.'>'.$lang["contributedsubittedl"].'</a>'.$searchcrumbs.'</h1> ';
+                    $search_title = '<h1 class="searchcrumbs"><a href='.$baseurl_short.'pages/search.php?search=!contributions'.$cuser.$parameters_string.'>'.$lang["contributedsubittedl"].'</a>'.$searchcrumbs.'</h1> ';
                     break;
                 }
             }
@@ -138,30 +138,30 @@ if ($search_titles)
         switch ($archive)
             {
             case -2:
-                $search_title = '<h1 class="searchcrumbs"><a href=search.php?search='.$parameters_string.'>'.$lang["userpendingsubmission"].'</a>'.$searchcrumbs.'</h1> ';
+                $search_title = '<h1 class="searchcrumbs"><a href='.$baseurl_short.'pages/search.php?search='.$parameters_string.'>'.$lang["userpendingsubmission"].'</a>'.$searchcrumbs.'</h1> ';
                 break;
             case -1:
-                $search_title = '<h1 class="searchcrumbs"><a href=search.php?search='.$parameters_string.'>'.$lang["userpending"].'</a>'.$searchcrumbs.'</h1> ';
+                $search_title = '<h1 class="searchcrumbs"><a href='.$baseurl_short.'pages/search.php?search='.$parameters_string.'>'.$lang["userpending"].'</a>'.$searchcrumbs.'</h1> ';
                 break;
             case 2:
-                $search_title = '<h1 class="searchcrumbs"><a href=search.php?search='.$parameters_string.'>'.$lang["archiveonlysearch"].'</a>'.$searchcrumbs.'</h1> ';
+                $search_title = '<h1 class="searchcrumbs"><a href='.$baseurl_short.'pages/search.php?search='.$parameters_string.'>'.$lang["archiveonlysearch"].'</a>'.$searchcrumbs.'</h1> ';
                 break;
             case 3:
-                $search_title = '<h1 class="searchcrumbs"><a href=search.php?search='.$parameters_string.'>'.$lang["deletedresources"].'</a>'.$searchcrumbs.'</h1> ';
+                $search_title = '<h1 class="searchcrumbs"><a href='.$baseurl_short.'pages/search.php?search='.$parameters_string.'>'.$lang["deletedresources"].'</a>'.$searchcrumbs.'</h1> ';
                 break;
             }
         }
     else if (substr($search,0,1)!="!")
 		{ 
-		$search_title = '<h1 class="searchcrumbs"><a href=search.php?search='.$parameters_string.'></a>'.$searchcrumbs.'</h1> '; 
+		$search_title = '<h1 class="searchcrumbs"><a href='.$baseurl_short.'pages/search.php?search='.$parameters_string.'></a>'.$searchcrumbs.'</h1> '; 
 		}   
 	
 	hook("addspecialsearchtitle");
 	
 	// extra collection title links
 	if (substr($search,0,11)=="!collection"){
-		if ($k=="" && !checkperm("b")){$search_title_links='<a href="collections.php?collection='.$collectiondata["ref"].'" target="collections">&gt;&nbsp;'.$lang["selectcollection"].'</a>&nbsp;&nbsp;';}
-		if (count($result)!=0 && $k==""&&$preview_all){$search_title_links.='<a href="preview_all.php?ref='.$collectiondata["ref"].'&order_by='.$order_by.'&sort='.$sort.'&archive='.$archive.'&k='.$k.'">&gt;&nbsp;'.$lang['preview_all'].'</a>';}
+		if ($k=="" && !checkperm("b")){$search_title_links='<a href="'.$baseurl_short.'pages/collections.php?collection='.$collectiondata["ref"].'" target="collections">&gt;&nbsp;'.$lang["selectcollection"].'</a>&nbsp;&nbsp;';}
+		if (count($result)!=0 && $k==""&&$preview_all){$search_title_links.='<a href="'.$baseurl_short.'pages/preview_all.php?ref='.$collectiondata["ref"].'&order_by='.$order_by.'&sort='.$sort.'&archive='.$archive.'&k='.$k.'">&gt;&nbsp;'.$lang['preview_all'].'</a>';}
 		$search_title.='</div>';
 		if ($display!="list"){$search_title_links.= '<br /><br />';}
 	}

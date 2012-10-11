@@ -24,7 +24,7 @@ $count=$results[0]["total_resources"];
 include ("../include/header.php");
 
 ?>
-<p><a href="search.php?search=<?php echo urlencode(getval("search","")) ?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&k=<?php echo $k?>">&lt; <?php echo $lang["back"] ?></a></p>
+<p><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode(getval("search","")) ?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&k=<?php echo $k?>">&lt; <?php echo $lang["back"] ?></a></p>
 
 <h1><?php echo $lang["searchitemsdiskusage"] ?></h1>
 <p><?php echo $lang["matchingresourceslabel"] . ": " . number_format($count)  ?>

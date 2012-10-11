@@ -38,7 +38,7 @@ include "../include/header.php";
   <h1><?php echo $lang["requestcollection"]?></h1>
   <p><?php echo text("introtext")?></p>
   
-	<form method="post" action="collection_request.php">  
+	<form method="post" action="<?php echo $baseurl_short?>pages/collection_request.php">  
 	<input type=hidden name=ref value="<?php echo $ref?>">
 	
 	<div class="Question">
@@ -141,7 +141,7 @@ if (isset($custom_request_fields))
 	<div class="QuestionSubmit">
 	<?php if ($error) { ?><div class="FormError">!! <?php echo $error ?> !!</div><?php } ?>
 	<label for="buttons"> </label>			
-	<input name="cancel" type="button" value="&nbsp;&nbsp;<?php echo $lang["cancel"]?>&nbsp;&nbsp;" onclick="document.location='search.php?search=!collection<?php echo $ref?>';"/>&nbsp;
+	<input name="cancel" type="button" value="&nbsp;&nbsp;<?php echo $lang["cancel"]?>&nbsp;&nbsp;" onclick="document.location='<?php echo $baseurl_short?>pages/search.php?search=!collection<?php echo $ref?>';"/>&nbsp;
 	<input name="save" type="submit" value="&nbsp;&nbsp;<?php echo $lang["requestcollection"]?>&nbsp;&nbsp;" />
 	</div>
 	</form>

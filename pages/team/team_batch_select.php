@@ -77,7 +77,7 @@ include "../../include/header.php";
 <h2><?php echo $titleh2 ?></h2>
 <p><?php echo $use_local ? $lang["intro-local_upload"] : $lang["intro-ftp_upload"] ?></p>
 
-<form method="post" action="team_batch_upload.php">
+<form method="post" action="<?php echo $baseurl_short?>pages/team/team_batch_upload.php">
 <input type="hidden" name="ftp_server" value="<?php echo getval("ftp_server","")?>">
 <input type="hidden" name="ftp_username" value="<?php echo getval("ftp_username","")?>">
 <input type="hidden" name="ftp_password" value="<?php echo getval("ftp_password","")?>">

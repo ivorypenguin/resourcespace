@@ -52,7 +52,7 @@ if (isset($_POST['submit']))
 <div class="RecordBox">
 <div class="RecordPanel">
 <div class="Title"><?php echo $lang['location-title']; ?></div>
-<p>&gt;&nbsp;<a href="view.php?ref=<?php echo $ref?>"><?php echo $lang['backtoview']; ?></a></p>
+<p>&gt;&nbsp;<a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $ref?>"><?php echo $lang['backtoview']; ?></a></p>
 
 <!-- Drag mode selector -->
 <div id="GeoDragMode">
@@ -165,7 +165,7 @@ if (!hook("makemarker")) {
 hook("rendermapfooter");
 ?>
 <p><?php echo $lang['location-details']; ?></p>
-<form id="map-form" method="post" action="geo_edit.php">
+<form id="map-form" method="post" action="<?php echo $baseurl_short?>pages/geo_edit.php">
 <input name="ref" type="hidden" value="<?php echo $ref; ?>" />
 <input name="map-zoom" type="hidden" value="<?php echo $zoom ?>" id="map-zoom" />
 <?php echo $lang['latlong']; ?>: <input name="geo-loc" type="text" size="50" value="<?php echo $resource["geo_long"]==""?"":($resource["geo_lat"] . "," . $resource["geo_long"]) ?>" id="map-input" />

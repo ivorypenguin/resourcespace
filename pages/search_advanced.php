@@ -68,7 +68,7 @@ if (getval("submitted","")=="yes")
 		# Log this			
 		daily_stat("Advanced search",$userref);
 
-		redirect("pages/search.php?search=" . urlencode($search) . "&archive=" . $archive);
+		redirect($baseurl_short."pages/search.php?search=" . urlencode($search) . "&archive=" . $archive);
 		}
 	}
 

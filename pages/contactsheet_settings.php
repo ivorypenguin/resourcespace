@@ -9,7 +9,7 @@ $collectiondata= get_collection($collection);
 
 include "../include/header.php";
 ?>
-<script src="../lib/js/contactsheet.js" type="text/javascript"></script>
+<script src="<?php echo $baseurl_short?>lib/js/contactsheet.js" type="text/javascript"></script>
 <script>
 contactsheet_previewimage_prefix = '<?php echo addslashes($storageurl) ?>';
 jQuery(document).ready (function () 
@@ -30,7 +30,7 @@ jQuery(document).ready (function ()
  contactsheet.php makes just the first page of the pdf (with col size images) 
  and then thumbnails it for the ajax request. This creates a very small but helpful 
  preview image that can be judged before initiating a download of sometimes several MB.-->
-<form method=post name="contactsheetform" id="contactsheetform" action="ajax/contactsheet.php" >
+<form method=post name="contactsheetform" id="contactsheetform" action="<?php echo $baseurl_short?>pages/ajax/contactsheet.php" >
 <input type=hidden name="c" value="<?php echo $collection?>">
 
 <!--<div name="error" id="error"></div>-->

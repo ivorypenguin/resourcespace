@@ -16,7 +16,7 @@ if (getval("save","")!="")
 		daily_stat("New research request",0);
 
 		send_research_request();
-		redirect("pages/done.php?text=research_request");
+		redirect($baseurl_short."pages/done.php?text=research_request");
 		}
 	}
 
@@ -26,7 +26,7 @@ include "../include/header.php";
 <div class="BasicsBox">
 <h1><?php echo $lang["researchrequest"]?></h1>
 <p class="tight"><?php echo text("introtext")?></p>
-<form method="post" action="research_request.php">
+<form method="post" action="<?php echo $baseurl_short?>pages/research_request.php">
 
 <?php if (getval("assign","")!="") { ?>
 <div class="Question">

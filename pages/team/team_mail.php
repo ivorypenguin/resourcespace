@@ -29,7 +29,7 @@ include "../../include/header.php";
 ?>
 <div class="BasicsBox">
 <h1><?php echo $lang["sendbulkmail"]?></h1>
-<form id="myform" method="post" action="team_mail.php">
+<form id="myform" method="post" action="<?php echo $baseurl_short?>pages/team/team_mail.php">
 
 <?php if (isset($error)) { ?><div class="FormError"><?php echo $error?></div><?php } ?>
 

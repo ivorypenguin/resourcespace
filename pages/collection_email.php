@@ -46,7 +46,7 @@ if (getval("save","")!="")
 			daily_stat("E-mailed collection",$cref);
 		}
 		if (!hook("replacecollectionemailredirect")){
-			redirect("pages/done.php?text=collection_email");
+			redirect($baseurl_short."pages/done.php?text=collection_email");
 			}
 		}
 	}

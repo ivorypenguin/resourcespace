@@ -16,7 +16,7 @@ $usagecomment=getval("usagecomment","");
 
 if ($download_usage && getval("usage","")=="" && !$direct_download)
 	{
-	redirect("pages/download_usage.php?ref=" . $ref  . "&size=" . $size . "&ext=" . $ext . "&k=" . $k . "&alternative=" . $alternative);
+	redirect($baseurl_short."pages/download_usage.php?ref=" . $ref  . "&size=" . $size . "&ext=" . $ext . "&k=" . $k . "&alternative=" . $alternative);
 	}
 
 if (!($url=hook("getdownloadurl", "", array($ref, $size, $ext, 1, $alternative)))) // used in remotedownload-plugin
@@ -55,11 +55,11 @@ if (!$save_as)
     <h1><?php echo $lang["downloadinprogress"]?></h1>
     <p><?php echo text("introtext")?></p>
 	<?php } ?>
-    <p><a href="view.php?ref=<?php echo $ref?>&k=<?php echo $k?>&search=<?php echo urlencode(getval("search",""))?>&offset=<?php echo urlencode(getval("offset",""))?>&order_by=<?php echo urlencode(getval("order_by",""))?>&sort=<?php echo urlencode(getval("sort",""))?>&archive=<?php echo urlencode(getval("archive",""))?>">&gt;&nbsp;<?php echo $lang["backtoresourceview"]?></a></p>
-    <p><a href="search.php?k=<?php echo $k?>&search=<?php echo urlencode(getval("search",""))?>&offset=<?php echo urlencode(getval("offset",""))?>&order_by=<?php echo urlencode(getval("order_by",""))?>&sort=<?php echo urlencode(getval("sort",""))?>&archive=<?php echo urlencode(getval("archive",""))?>">&gt;&nbsp;<?php echo $lang["backtoresults"]?></a></p>
+    <p><a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $ref?>&k=<?php echo $k?>&search=<?php echo urlencode(getval("search",""))?>&offset=<?php echo urlencode(getval("offset",""))?>&order_by=<?php echo urlencode(getval("order_by",""))?>&sort=<?php echo urlencode(getval("sort",""))?>&archive=<?php echo urlencode(getval("archive",""))?>">&gt;&nbsp;<?php echo $lang["backtoresourceview"]?></a></p>
+    <p><a href="<?php echo $baseurl_short?>pages/search.php?k=<?php echo $k?>&search=<?php echo urlencode(getval("search",""))?>&offset=<?php echo urlencode(getval("offset",""))?>&order_by=<?php echo urlencode(getval("order_by",""))?>&sort=<?php echo urlencode(getval("sort",""))?>&archive=<?php echo urlencode(getval("archive",""))?>">&gt;&nbsp;<?php echo $lang["backtoresults"]?></a></p>
     
     <?php if ($k=="") { ?>
-    <p><a href="home.php">&gt;&nbsp;<?php echo $lang["backtohome"]?></a></p>
+    <p><a href="<?php echo $baseurl_short?>pages/home.php">&gt;&nbsp;<?php echo $lang["backtohome"]?></a></p>
     <?php } ?>
 </div>
 

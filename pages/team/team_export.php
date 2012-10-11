@@ -39,7 +39,7 @@ include "../../include/header.php";
   <h2>&nbsp;</h2>
   <h1><?php echo $lang["exportdata"]?></h1>
   
-<form method="post" action="team_export.php">
+<form method="post" action="<?php echo $baseurl_short?>pages/team/team_export.php">
 <div class="Question">
 <label for="type"><?php echo $lang["exporttype"]?></label>
 <select id="type" name="type" class="stdwidth">

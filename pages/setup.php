@@ -673,7 +673,7 @@ if ((isset($_REQUEST['submit'])) && (!isset($errors))){
 }
 else{
 ?>
-<form action="setup.php" method="POST">
+<form action="<?php echo $baseurl_short?>pages/setup.php" method="POST">
 <?php echo $config_windows==true?'<input type="hidden" name="config_windows" value="true"/>':'' ?>
 	<div id="intro">
 			<div id="preconfig">

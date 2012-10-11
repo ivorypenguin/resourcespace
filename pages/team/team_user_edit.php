@@ -43,7 +43,7 @@ if (getval("loginas","")!="")
 	# Log in as this user
 	# A user key must be generated to enable login using the MD5 hash as the password.
 	?>
-	<form method="post" action="../../login.php" id="autologin" target="_top">
+	<form method="post" action="<?php echo $baseurl_short?>login.php" id="autologin" target="_top">
 	<input type="hidden" name="username" value="<?php echo $user["username"]?>">
 	<input type="hidden" name="password" value="<?php echo $user["password"]?>">
 	<input type="hidden" name="userkey" value="<?php echo md5($user["username"] . $scramble_key)?>">
@@ -61,7 +61,7 @@ if (getval("loginas","")!="")
 <h1><?php echo $lang["edituser"]?></h1>
 <?php if (isset($error)) { ?><div class="FormError">!! <?php echo $error?> !!</div><?php } ?>
 
-<form method=post action="team_user_edit.php">
+<form method=post action="<?php echo $baseurl_short?>pages/team/team_user_edit.php">
 <input type=hidden name=ref value="<?php echo $ref?>">
 <input type=hidden name=backurl value="<?php echo getval("backurl", $baseurl_short . "pages/team/team_user.php?nc=" . time())?>">
 
@@ -147,7 +147,7 @@ if (!hook("ticktoemailpassword")) {
 
 <?php if ($user["approved"]==1 && !hook("loginasuser")) { ?>
 <div class="Question"><label><?php echo $lang["login"]?></label>
-<div class="Fixed"><a href="team_user_edit.php?ref=<?php echo $ref?>&loginas=true">&gt;&nbsp;<?php echo $lang["clicktologinasthisuser"]?></a></div>
+<div class="Fixed"><a href="<?php echo $baseurl_short?>pages/team/team_user_edit.php?ref=<?php echo $ref?>&loginas=true">&gt;&nbsp;<?php echo $lang["clicktologinasthisuser"]?></a></div>
 <div class="clearerleft"> </div></div>
 <?php } ?>
 

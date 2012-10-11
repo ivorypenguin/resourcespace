@@ -34,7 +34,7 @@ include "../include/header.php";
 
 ?>
 <div class="BasicsBox"> 
-<form method=post id="themeform" action="theme_category_share.php">
+<form method=post id="themeform" action="<?php echo $baseurl_short?>pages/theme_category_share.php">
 <input type="hidden" name="generateurl" id="generateurl" value="">
 
 <div class="VerticalNav">
@@ -118,7 +118,7 @@ else
 		
 		//Display existing shares for collections in theme
 		if ($showexisting=="")
-			{ echo "<p><a href=\"theme_category_share.php" . $linksuffix . "&showexisting=true\">> " . $lang["showexistingthemeshares"] . "</a></p>";}
+			{ echo "<p><a href=\"".$baseurl_short."pages/theme_category_share.php" . $linksuffix . "&showexisting=true\">> " . $lang["showexistingthemeshares"] . "</a></p>";}
 		else 
 			{
 			foreach($collectionstoshare as $collection)

@@ -50,7 +50,7 @@ if (getval("countonly","")!="")
 else
 	{
 	# redirect to the search page.
-	redirect ("pages/search.php?search=" . urlencode(join(", ",$search)) . "&resetrestypes=yes&resource" . $resource_type . "=yes");
+	redirect ($baseurl_short."pages/search.php?search=" . urlencode(join(", ",$search)) . "&resetrestypes=yes&resource" . $resource_type . "=yes");
 	}
 
 ?>

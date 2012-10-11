@@ -23,7 +23,7 @@ include "../include/header.php";
   for ($n=0;$n<count($sections);$n++)
   	{
   	?>
-  	<li><a href="help.php?section=<?php echo urlencode($sections[$n])?>"><?php echo htmlspecialchars($sections[$n])?></a></li>
+  	<li><a href="<?php echo $baseurl_short?>pages/help.php?section=<?php echo urlencode($sections[$n])?>"><?php echo htmlspecialchars($sections[$n])?></a></li>
   	<?php
   	}
   ?>
@@ -34,7 +34,7 @@ include "../include/header.php";
   <h2>&nbsp;</h2>
   <h1><?php echo $section?></h1>
   <p><?php echo text($section)?></p>
-  <p><a href="help.php">&gt; <?php echo $lang["backtohelphome"]?></a></p>
+  <p><a href="<?php echo $baseurl_short?>pages/help.php">&gt; <?php echo $lang["backtohelphome"]?></a></p>
 <?php } ?>
 <?php } // end hook replacehelp?>
 

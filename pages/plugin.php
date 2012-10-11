@@ -21,7 +21,7 @@ if (!is_plugin_activated(escape_check($plugin_query[0]))){
 }
 if (isset($plugin_query[1])){
     if(preg_match('/[\/]/', $plugin_query[1])) die ('Invalid plugin page.');
-    $page_path = "../plugins/{$plugin_query[0]}/pages/{$plugin_query[1]}.php";
+    $page_path = $baseurl_short."plugins/{$plugin_query[0]}/pages/{$plugin_query[1]}.php";
     if(file_exists($page_path)){
         include $page_path;
     }

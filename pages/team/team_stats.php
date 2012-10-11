@@ -43,7 +43,7 @@ include "../../include/header.php";
 
 if (getval("print","")!="") { # Launch printable page in an iframe
 ?>
-<iframe width=1 height=1 style="visibility:hidden" src="team_stats_print.php?year=<?php echo $year?>&groupselect=<?php echo $groupselect?>&groups=<?php echo join("_",$groups)?>"></iframe>
+<iframe width=1 height=1 style="visibility:hidden" src="<?php echo $baseurl_short?>pages/team/team_stats_print.php?year=<?php echo $year?>&groupselect=<?php echo $groupselect?>&groups=<?php echo join("_",$groups)?>"></iframe>
 <?php } ?>
 
 <div class="BasicsBox"> 
@@ -51,7 +51,7 @@ if (getval("print","")!="") { # Launch printable page in an iframe
   <h1><?php echo $lang["viewstatistics"]?></h1>
   <p><?php echo text("introtext")?></p>
   
-  <form method="post" action="team_stats.php" onSubmit="return CentralSpacePost(this);">
+  <form method="post" action="<?php echo $baseurl_short?>pages/team/team_stats.php" onSubmit="return CentralSpacePost(this);">
 	<div class="Question">
 <label for="activity_type"><?php echo $lang["activity"]?></label><select id="activity_type" name="activity_type" class="shrtwidth">
 <?php $types=get_stats_activity_types(); 
@@ -136,7 +136,7 @@ else {document.getElementById('groupselector').style.display='block';}">
 	<?php if ($activity_type!="") { ?>	
 	<br/>
 	<div class="BasicsBox">
-	<img style="border:1px solid black;" src="../graph.php?activity_type=<?php echo urlencode($activity_type)?>&year=<?php echo $year?>&month=<?php echo $month ?>&groupselect=<?php echo $groupselect?>&groups=<?php echo join("_",$groups)?>" width=700 height=350>
+	<img style="border:1px solid black;" src="<?php echo $baseurl_short?>pages/graph.php?activity_type=<?php echo urlencode($activity_type)?>&year=<?php echo $year?>&month=<?php echo $month ?>&groupselect=<?php echo $groupselect?>&groups=<?php echo join("_",$groups)?>" width=700 height=350>
 	</div>
 	<?php } ?>
 	

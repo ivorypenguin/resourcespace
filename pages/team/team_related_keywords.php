@@ -52,9 +52,9 @@ for ($n=$offset;(($n<count($keywords)) && ($n<($offset+$per_page)));$n++)
 	{
 	?>
 	<tr>
-	<td><div class="ListTitle"><a href="team_related_keywords_edit.php?keyword=<?php echo $keywords[$n]["keyword"]?>"><?php echo $keywords[$n]["keyword"]?></div></td>
+	<td><div class="ListTitle"><a href="<?php echo $baseurl_short?>pages/team/team_related_keywords_edit.php?keyword=<?php echo $keywords[$n]["keyword"]?>"><?php echo $keywords[$n]["keyword"]?></div></td>
 	<td><?php echo tidy_trim(htmlspecialchars($keywords[$n]["related"]),45)?></td>
-	<td><div class="ListTools"><a href="team_related_keywords_edit.php?keyword=<?php echo $keywords[$n]["keyword"]?>">&gt;&nbsp;<?php echo $lang["action-edit"]?> </a></div></td>
+	<td><div class="ListTools"><a href="<?php echo $baseurl_short?>pages/team/team_related_keywords_edit.php?keyword=<?php echo $keywords[$n]["keyword"]?>">&gt;&nbsp;<?php echo $lang["action-edit"]?> </a></div></td>
 	</tr>
 	<?php
 	}
@@ -67,7 +67,7 @@ for ($n=$offset;(($n<count($keywords)) && ($n<($offset+$per_page)));$n++)
 
 
 <div class="BasicsBox">
-    <form method="post" action="team_related_keywords.php">
+    <form method="post" action="<?php echo $baseurl_short?>pages/team/team_related_keywords.php">
 		<div class="Question">
 			<label for="find"><?php echo $lang["searchkeyword"]?></label>
 			<div class="tickset">
@@ -80,7 +80,7 @@ for ($n=$offset;(($n<count($keywords)) && ($n<($offset+$per_page)));$n++)
 </div>
 
 <div class="BasicsBox">
-    <form method="post" action="team_related_keywords_edit.php">
+    <form method="post" action="<?php echo $baseurl_short?>pages/team/team_related_keywords_edit.php">
 		<div class="Question">
 			<label for="create"><?php echo $lang["newkeywordrelationship"]?></label>
 			<div class="tickset">

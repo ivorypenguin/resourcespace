@@ -455,9 +455,9 @@ function ajax_download()
 	document.getElementById('progressdiv').style.display='block';
 	var ifrm = document.getElementById('downloadiframe');
 	
-    ifrm.src = "collection_download.php?submitted=true&"+jQuery('#myform').serialize();
+    ifrm.src = "<?php echo $baseurl_short?>pages/collection_download.php?submitted=true&"+jQuery('#myform').serialize();
     
-	progress= jQuery("progress3").PeriodicalUpdater("ajax/collection_download_progress.php?id=<?php echo $uniqid?>", {
+	progress= jQuery("progress3").PeriodicalUpdater("<?php echo $baseurl_short?>pages/ajax/collection_download_progress.php?id=<?php echo $uniqid?>", {
         method: 'post',          // method; get or post
         data: '',               //  e.g. {name: "John", greeting: "hello"}
         minTimeout: 500,       // starting value for the timeout in milliseconds
@@ -501,7 +501,7 @@ function ajax_download()
 <?php } ?>
 
 <?php if (!$use_zip_extension){?>
-	<form id='myform' action="collection_download.php?submitted=true" method=post>
+	<form id='myform' action="<?php echo $baseurl_short?>pages/collection_download.php?submitted=true" method=post>
 <?php } else { ?>
 	<form id='myform'>
 <?php } ?>

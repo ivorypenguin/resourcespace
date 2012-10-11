@@ -14,16 +14,16 @@ include "../../include/header.php";
   
 	<div class="VerticalNav">
 	<ul>
-	<li><a target="main" href="../edit.php?ref=-<?php echo $userref?>&single=true&archive=2"><?php echo $lang["newarchiveresource"]?></a></li>
+	<li><a target="main" href="<?php echo $baseurl_short?>pages/edit.php?ref=-<?php echo $userref?>&single=true&archive=2"><?php echo $lang["newarchiveresource"]?></a></li>
 
-	<li><a href="../search_advanced.php?archive=2"><?php echo $lang["searcharchivedresources"]?></a></li>
+	<li><a href="<?php echo $baseurl_short?>pages/search_advanced.php?archive=2"><?php echo $lang["searcharchivedresources"]?></a></li>
 
-	<li><a href="../search.php?search=<?php echo urlencode("!archivepending")?>"><?php echo $lang["viewresourcespendingarchive"]?></a></li>
+	<li><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!archivepending")?>"><?php echo $lang["viewresourcespendingarchive"]?></a></li>
 
 	</ul>
 	</div>
 	
-	<p><a href="team_home.php">&gt;&nbsp;<?php echo $lang["backtoteamhome"]?></a></p>
+	<p><a href="<?php echo $baseurl_short?>pages/team/team_home.php">&gt;&nbsp;<?php echo $lang["backtoteamhome"]?></a></p>
   </div>
 
 <?php

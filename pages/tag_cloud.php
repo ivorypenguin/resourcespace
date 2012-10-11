@@ -39,7 +39,7 @@ $max=max($tags);$min=min($tags);$range=$max-$min;if ($range==0) {$range=1;}
 foreach($tags as $tag=>$count)
 	{
 	$fs=10+floor((($count-$min)/$range)*35)
-	?><span style="font-size:<?php echo $fs?>px;padding:1px;"><a href="search.php?search=<?php echo urlencode($tag)?>&resetrestypes=1"><?php echo str_replace(" ","&nbsp;",$tag)?></a></span> <?php
+	?><span style="font-size:<?php echo $fs?>px;padding:1px;"><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($tag)?>&resetrestypes=1"><?php echo str_replace(" ","&nbsp;",$tag)?></a></span> <?php
 	}
 ?>
 </div>

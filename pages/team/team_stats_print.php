@@ -27,7 +27,7 @@ for ($n=0;$n<count($types);$n++)
 	?>
 	<hr>
 	<!--<h2><?php echo $types[$n]?></h2>-->
-	<p><img src="../graph.php?activity_type=<?php echo urlencode($types[$n])?>&year=<?php echo $year?>&groupselect=<?php echo $groupselect?>&groups=<?php echo $groups?>" width=600 height=250></p>
+	<p><img src="<?php echo $baseurl_short?>pages/graph.php?activity_type=<?php echo urlencode($types[$n])?>&year=<?php echo $year?>&groupselect=<?php echo $groupselect?>&groups=<?php echo $groups?>" width=600 height=250></p>
 	<?php
 	}
 ?>

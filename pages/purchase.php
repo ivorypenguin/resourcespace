@@ -19,7 +19,7 @@ if (getval("purchaseonaccount","")!="" && $userrequestmode==3)
 	set_user_collection($userref,$newcollection);
 	
 	# Redirect to basket (old) collection for download.
-	redirect("pages/purchase_download.php?collection=" . $oldcollection);
+	redirect($baseurl_short."pages/purchase_download.php?collection=" . $oldcollection);
 	}
 
 
@@ -35,7 +35,7 @@ if (getval("submit","")=="")
 	  <h1><?php echo $lang["buynow"]?></h1>
 	  <p><?php echo $lang["buynowintro"]?></p>
 	   
-	<form method="post" action="purchase.php">
+	<form method="post" action="<?php echo $baseurl_short?>pages/purchase.php">
 	<table class="InfoTable">
 	<?php 
 	$showbuy=false;
@@ -203,7 +203,7 @@ else
 		{
 		# Invoice payment.
 		?>
-		<form method="post" action="purchase.php" onsubmit="return confirm('<?php echo $lang["areyousurepayaccount"] ?>');">
+		<form method="post" action="<?php echo $baseurl_short?>pages/purchase.php" onsubmit="return confirm('<?php echo $lang["areyousurepayaccount"] ?>');">
 		<p><input type="submit" name="purchaseonaccount"  value="&nbsp;&nbsp;&nbsp;<?php echo $lang["purchaseonaccount"]?>&nbsp;&nbsp;&nbsp;"></p>		
 		</form>
 		<?php

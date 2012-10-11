@@ -32,27 +32,27 @@ $options=get_field_options_with_stats($field);
 
 <div class="BasicsBox"> 
 <p>
-<a href="team_fields.php">&lt;&nbsp;<?php echo $lang["backtofieldlist"]?></a>
+<a href="<?php echo $baseurl_short?>pages/team/team_fields.php">&lt;&nbsp;<?php echo $lang["backtofieldlist"]?></a>
 </p>
 <h1><?php echo $lang["managefieldoptions"] . ": " . $fieldinfo["title"] ?></h1>
   
 <?php if ($show_all_languages)
 	{
   	?>
-  	<p>&gt;&nbsp;<a href="team_fields_edit.php?field=<?php echo $field?>&show_all_languages="><?php echo $lang["hidealllanguages"]?></a></p>
+  	<p>&gt;&nbsp;<a href="<?php echo $baseurl_short?>pages/team/team_fields_edit.php?field=<?php echo $field?>&show_all_languages="><?php echo $lang["hidealllanguages"]?></a></p>
 	<?php
   	}
   else
   	{
 	?>
-  	<p>&gt;&nbsp;<a href="team_fields_edit.php?field=<?php echo $field?>&show_all_languages=true"><?php echo $lang["showalllanguages"]?></a></p>
+  	<p>&gt;&nbsp;<a href="<?php echo $baseurl_short?>pages/team/team_fields_edit.php?field=<?php echo $field?>&show_all_languages=true"><?php echo $lang["showalllanguages"]?></a></p>
   	<?php
   	}
 ?>
   
 </div>
 
-<form method=post action="team_fields_edit.php">
+<form method=post action="<?php echo $baseurl_short?>pages/team/team_fields_edit.php">
 <input type=hidden name="show_all_languages" value="<?php echo $show_all_languages?"true":""?>">
 <input type=hidden name="save" value="true">
 
@@ -130,7 +130,7 @@ for ($n=0;$n<count($options);$n++)
 </form>
 
 <div class="BasicsBox">
-    <form method="post" action="team_fields_edit.php">
+    <form method="post" action="<?php echo $baseurl_short?>pages/team/team_fields_edit.php">
 		<div class="Question">
 			<label for="newkeyword"><?php echo $lang["addkeyword"]?></label>
 			<div class="tickset">
