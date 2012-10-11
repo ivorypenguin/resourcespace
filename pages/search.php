@@ -333,7 +333,59 @@ if ($display_user_rating_stars && $k=="")
 	<?php
 	}
 
+	if ($allow_reorder && $display!="list" && $order_by=="relevance") {
+?>
+	<script type="text/javascript">
+	function ReorderResources(idsInOrder)
+		{
+		var newOrder = [];
+		jQuery.each(idsInOrder, function() {
+			newOrder.push(this.substring(13));
+			});
+		jQuery.ajax({
+		  type: 'GET',
+		  url: 'search.php?search=!collection<?php echo $usercollection ?>&reorder=true',
+		  data: {order:JSON.stringify(newOrder)},
+		  success: function(){
+			parent.collections.location.reload();
+			} 
+		});
+		}		
+		jQuery(document).ready(function() {
+			jQuery('#CentralSpace').sortable({
+				items: ".ResourcePanelShell, .ResourcePanelShellLarge, .ResourcePanelShellSmall",
 
+				start: function (event, ui)
+					{
+					InfoBoxEnabled=false;
+					if (jQuery('#InfoBox')) {jQuery('#InfoBox').hide();}
+					if (jQuery('#InfoBoxCollection')) {jQuery('#InfoBoxCollection').hide();}
+					},
+
+				update: function(event, ui)
+					{
+					InfoBoxEnabled=true;
+					var idsInOrder = jQuery('#CentralSpace').sortable("toArray");
+					ReorderResources(idsInOrder);
+					}
+			});
+			jQuery('.ResourcePanelShell').disableSelection();
+			jQuery('.ResourcePanelShellLarge').disableSelection();
+			jQuery('.ResourcePanelShellSmall').disableSelection();			
+		});			
+	</script>
+<?php }
+	else { ?>
+	<script type="text/javascript">
+	jQuery(document).ready(function() {
+			jQuery('.ui-sortable').sortable('disable');
+			jQuery('.ResourcePanelShell').enableSelection();
+			jQuery('.ResourcePanelShellLarge').enableSelection();
+			jQuery('.ResourcePanelShellSmall').enableSelection();
+			
+		});	
+	</script>
+	<?php }
 
 # Hook to replace all search results (used by ResourceConnect plugin, allows search mechanism to be entirely replaced)
 if (!hook("replacesearchresults")) { 

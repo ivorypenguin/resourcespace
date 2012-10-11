@@ -156,7 +156,7 @@
 		
 		<?php if ($allow_share && $k=="") { ?><span class="IconEmail"><a href="resource_email.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&k=<?php echo $k?>"   onClick="return CentralSpaceLoad(this,true);" title="<?php echo $lang["emailresource"]?>"><img src="../gfx/interface/sp.gif" alt="" width="16" height="12" /></a></span><?php } ?>
 		<?php if (isset($result[$n][$rating]) && $result[$n][$rating]>0) { ?><div class="IconStar"></div><?php } ?>
-		<?php if ($k==""){?><?php if ($collection_reorder_caption && $allow_reorder) { ?>
+		<?php if ($k==""){?><?php if ($collection_reorder_caption || $collection_commenting) { ?>
 		<span class="IconComment"><a href="collection_comment.php?ref=<?php echo $ref?>&collection=<?php echo substr($search,11)?>"  onClick="return CentralSpaceLoad(this,true);" title="<?php echo $lang["addorviewcomments"]?>"><img src="../gfx/interface/sp.gif" alt="" width="14" height="12" /></a></span>		
 		<?php } ?>	
 		<?php } hook("xlargesearchicon");?>
@@ -167,51 +167,6 @@
 		<?php } // end hook replaceresourcetoolsxl ?>
 	</div>
 <div class="PanelShadow"></div>
-<?php if ($allow_reorder && $display!="list") { 
-?>
-	<script type="text/javascript">
-	function ReorderResources(idsInOrder)
-		{
-		var newOrder = [];
-		jQuery.each(idsInOrder, function() {
-			newOrder.push(this.substring(13));
-			}); 
-		jQuery.ajax({
-		  type: 'GET',
-		  url: 'search.php?search=!collection<?php echo $usercollection ?>&reorder=true',
-		  data: {order:JSON.stringify(newOrder)},
-		  success: function(){
-				parent.collections.location.reload();
-				}
-		});		
-		}
-		
-		jQuery(document).ready(function() {
-			jQuery('#CentralSpace').sortable({
-				items: ".ResourcePanelShellLarge",
-
-				start: function (event, ui)
-					{
-					InfoBoxEnabled=false;
-					if (jQuery('#InfoBox')) {jQuery('#InfoBox').hide();}
-					},
-
-				stop: function(event, ui)
-					{
-					InfoBoxEnabled=true;
-					var idsInOrder = jQuery('#CentralSpace').sortable("toArray");
-					ReorderResources(idsInOrder);
-					}
-			});
-			jQuery('.ResourcePanelShell').disableSelection();
-			jQuery('.ResourcePanelShellLarge').disableSelection();
-			
-		});	
-		
-		
-	</script>
-<?php }  ?>
-
 </div>
  
 <?php } ?>
