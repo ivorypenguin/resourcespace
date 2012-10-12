@@ -279,7 +279,7 @@ if ($allow_reorder && $display!="list")
 	if ($reorder)
 		{
 		$neworder=json_decode(getvalescaped("order",false));
-		update_collection_order($neworder,$collection);
+		update_collection_order($neworder,$collection,$offset);
 		exit("SUCCESS");
 		}
 	}

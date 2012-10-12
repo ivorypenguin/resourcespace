@@ -1052,19 +1052,19 @@ function swap_collection_order($resource1,$resource2,$collection)
 
 	}
 
-function update_collection_order($neworder,$collection)
+function update_collection_order($neworder,$collection,$offset=0)
 	{
 	if (!is_array($neworder)) {
 		exit ("Error: invalid input to update collection function.");
 	}
 
 	$updatesql= "update collection_resource set sortorder=(case resource ";
-	$counter = 1;
+	$counter = 1 + $offset;
 	foreach ($neworder as $colresource){
 		$updatesql.= "when '$colresource' then '$counter' ";
 		$counter++;
 	}
-	$updatesql.= "else NULL END) WHERE collection='$collection'";
+	$updatesql.= "else sortorder END) WHERE collection='$collection'";
 	sql_query($updatesql);
 	}
 	
