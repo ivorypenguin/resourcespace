@@ -43,6 +43,37 @@ else
 	$basket=false;
 	}
 
+$collection=getvalescaped("collection","",true);
+$entername=getvalescaped("entername","");
+
+# ------------ Change the collection, if a collection ID has been provided ----------------
+if ($collection!="")
+	{
+	hook("prechangecollection");
+	#change current collection
+	
+	if ($k=="" && $collection==-1)
+		{
+		# Create new collection
+		if ($entername!=""){ $name=$entername;} 
+		else { $name=get_mycollection_name($userref);}
+		$new=create_collection ($userref,$name);
+		set_user_collection($userref,$new);
+		
+		# Log this
+		daily_stat("New collection",$userref);
+		}
+	else
+		{
+		# Switch the existing collection
+		if ($k=="") {set_user_collection($userref,$collection);}
+		$usercollection=$collection;
+		}
+
+	hook("postchangecollection");
+	}
+
+	
 # Load collection info.
 $cinfo=get_collection($usercollection);
 	
@@ -101,39 +132,7 @@ for ($n=0;$n<count($plugins);$n++)
 	}
 ?>
 
-<?php
-$collection=getvalescaped("collection","",true);
-$entername=getvalescaped("entername","");
 
-
-# ------------ Change the collection, if a collection ID has been provided ----------------
-if ($collection!="")
-	{
-	hook("prechangecollection");
-	#change current collection
-	
-	if ($k=="" && $collection==-1)
-		{
-		# Create new collection
-		if ($entername!=""){ $name=$entername;} 
-		else { $name=get_mycollection_name($userref);}
-		$new=create_collection ($userref,$name);
-		set_user_collection($userref,$new);
-		
-		# Log this
-		daily_stat("New collection",$userref);
-		}
-	else
-		{
-		# Switch the existing collection
-		if ($k=="") {set_user_collection($userref,$collection);}
-		$usercollection=$collection;
-		}
-
-	hook("postchangecollection");
-	}
-
-?>
 <script src="<?php echo $baseurl?>/lib/js/jquery-1.7.2.min.js?css_reload_key=<?php echo $css_reload_key?>" type="text/javascript"></script>
 <script src="<?php echo $baseurl?>/lib/js/jquery-ui-1.8.20.custom.min.js?css_reload_key=<?php echo $css_reload_key?>" type="text/javascript"></script>
 <!--[if lte IE 7]><script src="<?php echo $baseurl?>/lib/js/json2.js?css_reload_key=<?php echo $css_reload_key?>" type="text/javascript"></script><![endif]-->
@@ -697,9 +696,9 @@ if ($count_result>0)
 		<?php
 				} //end hook replaceremovelink 
 			} # End of remove link condition 
-		 } # End of k="" condition 
+		?></div><?php 
+		} # End of k="" condition 
 		 ?>
-		</div>
 		</div>
 		<?php
 		} # End of ResourceView hook
