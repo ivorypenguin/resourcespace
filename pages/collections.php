@@ -189,7 +189,16 @@ if ($allow_reorder)
 		
 		
 	</script>
-<?php } ?>
+<?php } 
+
+else { ?>
+	<script type="text/javascript">
+	jQuery(document).ready(function() {
+			jQuery('.ui-sortable').sortable('disable');
+			jQuery('.CollectionPanelShell').enableSelection();			
+		});	
+	</script>
+	<?php } ?>
 
 <script type="text/javascript">
 function ToggleThumbs()

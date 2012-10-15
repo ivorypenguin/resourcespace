@@ -347,7 +347,7 @@ if ($display_user_rating_stars && $k=="")
 		  url: 'search.php?search=!collection<?php echo $collection ?>&reorder=true',
 		  data: {order:JSON.stringify(newOrder)},
 		  success: function(){
-		  <?php if ($usercollection==$collection) { ?>
+		  <?php if (isset($usercollection) && ($usercollection==$collection)) { ?>
 			parent.collections.location.reload();
 		  <?php } ?>
 			} 
