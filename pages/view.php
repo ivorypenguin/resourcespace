@@ -1152,7 +1152,7 @@ for ($n=0;$n<count($keywords);$n++)
 <div class="clearerleft"> </div>
 <br />
 <input name="search" type="submit" value="&nbsp;&nbsp;<?php echo $lang["searchbutton"]?>&nbsp;&nbsp;" id="dosearch"/>
-
+<iframe src="blank.html" frameborder=0 scrolling=no width=1 height=1 style="visibility:hidden;" name="resultcount" id="resultcount"></iframe>
 </form>
 <div class="clearerleft"> </div>
 </div>
