@@ -1118,7 +1118,7 @@ if ($enable_find_similar) { ?>
 
 <?php } ?>
 <script type="text/javascript">
-function UpdateResultCount()
+function UpdateFSResultCount()
 	{
 	// set the target of the form to be the result count iframe and submit
 
@@ -1145,7 +1145,7 @@ for ($n=0;$n<count($keywords);$n++)
 	{
 	?>
 	<div class="SearchSimilar"><input type=checkbox name="keyword_<?php echo urlencode($keywords[$n])?>" value="yes"
-	<?php if (in_array($keywords[$n],$searchwords)) {?>checked<?php } ?> onClick="UpdateResultCount();">&nbsp;<?php echo $keywords[$n]?></div>
+	<?php if (in_array($keywords[$n],$searchwords)) {?>checked<?php } ?> onClick="UpdateFSResultCount();">&nbsp;<?php echo $keywords[$n]?></div>
 	<?php
 	}
 ?>
