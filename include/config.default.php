@@ -1671,6 +1671,9 @@ $qlpreview_exclude_extensions=array("tif","tiff");
 # Log developer debug information to the debug log (filestore/tmp/debug.txt)?
 $debug_log=false;
 
+# Debug log location. Optional. Used to specify a full path to debug file. Ensure folder permissions allow write access by web service account
+#$debug_log_location="d:/logs/resourcespace.log";
+#$debug_log_location="/var/log/resourcespace/resourcespace.log";
 
 # Enable Metadata Templates. This should be set to the ID of the resource type that you intend to use for metadata templates.
 # Metadata templates can be selected on the resource edit screen to pre-fill fields.

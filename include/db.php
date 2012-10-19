@@ -1109,12 +1109,18 @@ function debug($text)
 	{
 	# Output some text to a debug file.
 	# For developers only
-	global $debug_log;
+	global $debug_log, $debug_log_location;
 	if (!$debug_log) {return true;} # Do not execute if switched off.
 	
 	# Cannot use the general.php: get_temp_dir() method here since general may not have been included.
-	$f=fopen(get_debug_log_dir() . "/debug.txt","a");
-	fwrite($f,$text . "\n");
+	if (isset($debug_log_location))
+		{
+		$debugdir = dirname($debug_log_location);
+		if (!is_dir($debugdir)){mkdir($debugdir, 0755, true);}
+		$f=fopen($debug_log_location,"a");
+		}
+	else {$f=fopen(get_debug_log_dir() . "/debug.txt","a");}
+	fwrite($f,date("Y-m-d H:i:s") . " " . $text . "\n");
 	fclose ($f);
 	return true;
 	}
