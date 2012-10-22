@@ -86,7 +86,7 @@ function SwapCSS(css){
 
 <?php } ?>
 
-<div id="FooterNavRight" class="OxColourPale"><?php echo text("footer")?></div>
+<div id="FooterNavRightBottom" class="OxColourPale"><?php echo text("footer")?></div>
 
 <div class="clearer"></div>
 </div>
