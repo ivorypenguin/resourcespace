@@ -620,9 +620,7 @@ if ($enable_add_collection_on_upload)
 			?>
 		</div>
 		<!-- end select theme -->
-		
-		</div>
-		
+				
 		<?php 	
 		} // end if checkperm h 
 	} // end if public collections enabled
@@ -1073,9 +1071,10 @@ if ($multiple && !$disable_geocoding)
 if (!$multiple && $ref>0) {EditNav();}
 ?>
 
+</div>
+
 </form>
 <?php if (!$is_template) { ?><p><sup>*</sup> <?php echo $lang["requiredfield"]?></p><?php } ?>
-</div>
 
 <?php if (isset($show_error)){
 	foreach ($save_errors as $save_error_field=>$save_error_message)
