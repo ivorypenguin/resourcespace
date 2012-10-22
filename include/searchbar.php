@@ -151,7 +151,7 @@ if (!$basic_simple_search)
 		if (checkcount==tickboxes.length){jQuery('#rttickall').attr('checked',true);}	
 	}
 	</script>
-	<div class="tick"><input type='checkbox' id='rttickall' name='rttickall' checked="true" onclick='jQuery("#form1 :checkbox").each (function(index,Element) {jQuery(Element).attr("checked",(jQuery("#rttickall").attr("checked")=="checked"));}); HideInapplicableSimpleSearchFields(true); '/>&nbsp;<?php echo $lang['all']?></div>
+	<div class="tick"><input type='checkbox' id='rttickall' name='rttickall' checked onclick='jQuery("#form1 :checkbox").each (function(index,Element) {jQuery(Element).attr("checked",(jQuery("#rttickall").attr("checked")=="checked"));}); HideInapplicableSimpleSearchFields(true); '/>&nbsp;<?php echo $lang['all']?></div>
 	<?php }?>
 	<?php
 	$rt=explode(",",@$restypes);
