@@ -535,7 +535,7 @@ function collections_comparator_desc($a, $b)
 if (!function_exists("get_themes")){
 function get_themes($themes=array(""))
 	{	
-	$themes_order_by=getvalescaped("saved_themes_order_by","name");
+	$themes_order_by=getvalescaped("col_order_by",getvalescaped("saved_themes_order_by","name"));
 	$sort=getvalescaped("sort",getvalescaped("saved_themes_sort","ASC"));	
 		
 	# Return a list of themes under a given header (theme category).
