@@ -1091,7 +1091,7 @@ if (!$multiple && $ref>0) {EditNav();}
 
 ?>
 <!--<p><a href="view.php?ref=<?php echo $ref?>">Back to view</a></p>-->
-<? hook("autolivejs"); ?>
+<?php hook("autolivejs"); ?>
 <?php
 include "../include/footer.php";
 ?>
