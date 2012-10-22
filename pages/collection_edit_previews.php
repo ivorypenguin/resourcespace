@@ -69,6 +69,7 @@ include "../include/header.php";
 <h1><?php echo $lang["editresourcepreviews"]?></h1>
 <p><?php echo text("introtext")?></p>
 <form method=post id="collectionform" action="<?php echo $baseurl_short?>pages/collection_edit_previews.php">
+<input type=hidden value='<?php echo $ref?>' name="ref" id="ref"/>
 
 <?php if (!checkperm("F*")) { ?>
 <div class="Question">
