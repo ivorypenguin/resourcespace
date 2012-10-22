@@ -314,7 +314,7 @@ function EditNav() # Create a function so this can be repeated at the end of the
 ?>
 </script>
 
-<form method="post" action="<?php echo $baseurl_short?>pages/edit.php?ref=<?php echo $ref?>&uploader=<?php echo getval("uploader","") ?>&single=<?php echo getval("single","") ?>&local=<?php echo getval("local","") ?>&search=<?php echo urlencode($search)?>&amp;offset=<?php echo $offset?>&amp;order_by=<?php echo $order_by?>&amp;sort=<?php echo $sort?>&amp;archive=<?php echo $archive?>&amp;collection=<?php echo $collection ?>&amp;metadatatemplate=<?php echo getval("metadatatemplate","") ?>" id="mainform">
+<form method="post" action="<?php echo $baseurl_short?>pages/edit.php?ref=<?php echo $ref?>&amp;uploader=<?php echo getval("uploader","") ?>&amp;single=<?php echo getval("single","") ?>&amp;local=<?php echo getval("local","") ?>&amp;search=<?php echo urlencode($search)?>&amp;offset=<?php echo $offset?>&amp;order_by=<?php echo $order_by?>&amp;sort=<?php echo $sort?>&amp;archive=<?php echo $archive?>&amp;collection=<?php echo $collection ?>&amp;metadatatemplate=<?php echo getval("metadatatemplate","") ?>" id="mainform">
 <div class="BasicsBox"> 
 <input type="hidden" name="submitted" value="true">
 <?php 
@@ -454,7 +454,6 @@ $titleh2 = str_replace(array("%number","%subtitle"), array("1", $lang["specifyde
 	# User edit template. Show the save / clear buttons at the top too, to avoid unnecessary scrolling.
 	?>
 	<div class="QuestionSubmit">
-	<label for="buttons"> </label>
 	<input name="resetform" type="submit" value="<?php echo $lang["clearbutton"]?>" />&nbsp;
 	<input name="save" type="submit" value="&nbsp;&nbsp;<?php echo $lang["next"]?>&nbsp;&nbsp;" /><br><br>
 	<div class="clearerleft"> </div>
@@ -801,7 +800,7 @@ for ($n=0;$n<count($fields);$n++)
 		# When editing multiple, give option to select Replace All Text or Find and Replace
 		?>
 		<div class="Question" id="modeselect_<?php echo $n?>" style="display:none;padding-bottom:0;margin-bottom:0;">
-		<label><?php echo $lang["editmode"]?></label>
+		<label for="modeselectinput"><?php echo $lang["editmode"]?></label>
 		<select id="modeselectinput_<?php echo $n?>" name="modeselect_<?php echo $fields[$n]["ref"]?>" class="stdwidth" onChange="var fr=document.getElementById('findreplace_<?php echo $n?>');var q=document.getElementById('question_<?php echo $n?>');if (this.value=='FR') {fr.style.display='block';q.style.display='none';} else {fr.style.display='none';q.style.display='block';}">
 		<option value="RT"><?php echo $lang["replacealltext"]?></option>
 		<?php if ($fields[$n]["type"]==0 || $fields[$n]["type"]==1 || $fields[$n]["type"]==5) { 
@@ -1063,7 +1062,6 @@ if ($multiple && !$disable_geocoding)
 	
 	
 	<div class="QuestionSubmit">
-	<label for="buttons"> </label>
 	<input name="resetform" type="submit" value="<?php echo $lang["clearbutton"]?>" />&nbsp;
 	<input <?php if ($multiple) { ?>onclick="return confirm('<?php echo $lang["confirmeditall"]?>');"<?php } ?> name="save" type="submit" value="&nbsp;&nbsp;<?php echo ($ref>0)?$lang["save"]:$lang["next"]?>&nbsp;&nbsp;" /><br><br>
 	<div class="clearerleft"> </div>
