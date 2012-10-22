@@ -242,8 +242,11 @@ $resource_title_pages=array("view","delete","log","alternative_file","alternativ
 }
    
 
-?>
 
+
+if (getval("ajax","")=="") { 
+	// don't show closing tags if we're in ajax mode
+	?>
 </body>
 </html>
-
+<?php } // end if ajax ?>
