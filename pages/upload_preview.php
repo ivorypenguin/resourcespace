@@ -58,7 +58,7 @@ function check(filename) {
 </script>
 <form method="post" class="form" enctype="multipart/form-data" action="upload_preview.php">
 <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $maxsize?>">
-
+<input type="hidden" name="ref" value="<?php echo $ref?>">
 <br/>
 <?php if ($status!="") { ?><?php echo $status?><?php } ?>
 <div id="invalid" style="display:none;" class="FormIncorrect"><?php echo str_replace_formatted_placeholder("%extensions", "JPG", $lang['invalidextension_mustbe-extensions']); ?></div>
