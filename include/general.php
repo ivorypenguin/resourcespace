@@ -2631,7 +2631,7 @@ function strip_extension($name)
 
 
 
-function get_nopreview_icon($resource_type,$extension,$col_size,$contactsheet=false,$pluginpage=false)
+function get_nopreview_icon($resource_type,$extension,$col_size,$deprecated1=false,$deprecated2=false)
 	{
 	# Returns the path (relative to the gfx folder) of a suitable folder to represent
 	# a resource with the given resource type or extension
@@ -2642,9 +2642,7 @@ function get_nopreview_icon($resource_type,$extension,$col_size,$contactsheet=fa
 	global $language;
 	
 	$col=($col_size?"_col":"");
-	$folder="../gfx/";
-	if ($contactsheet){$folder="../../gfx/";}
-	if ($pluginpage){$folder="../../../gfx/";}
+	$folder=dirname(dirname(__FILE__)) . "/gfx/";
 	
 	# Metadata template? Always use icon for 'mdtr', although typically no file will be attached.
 	global $metadata_template_resource_type;

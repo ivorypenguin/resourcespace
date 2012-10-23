@@ -250,3 +250,21 @@ from user u join usergroup g on u.usergroup=g.ref
 
 order by username;"
 13,"Expired Resources","select distinct resource.ref 'Resource ID',resource.field8 'Resource Title',resource_data.value 'Expires' from resource join resource_data on resource.ref=resource_data.resource join resource_type_field on resource_data.resource_type_field=resource_type_field.ref where resource_type_field.type=6 and value>=date('[from-y]-[from-m]-[from-d]') and value<=adddate(date('[to-y]-[to-m]-[to-d]'),1) and length(value)>0 and resource.ref>0 order by resource.ref;"
+14,"Resources created - with thumbnails","select
+r.ref 'thumbnail',
+rl.date 'Date / Time',
+concat(u.username,' (',u.fullname,' )') 'Created By User',
+g.name 'User Group',
+r.ref 'Resource ID',
+r.view_title_field 'Resource Title'
+
+from
+resource_log rl
+join resource r on r.ref=rl.resource
+left outer join user u on rl.user=u.ref
+left outer join usergroup g on u.usergroup=g.ref
+where
+rl.type='c'
+and
+rl.date>=date('[from-y]-[from-m]-[from-d]') and rl.date<=adddate(date('[to-y]-[to-m]-[to-d]'),1)
+order by rl.date;"

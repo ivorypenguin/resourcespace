@@ -237,7 +237,7 @@ else
 $textbox="<input type=\"text\" id=\"email_days\" name=\"email_days\" size=\"4\" value=\"7\">";
 echo str_replace("?",$textbox,$lang["emaileveryndays"]);
 ?>
-&nbsp;&nbsp;<input name="createemail" type="submit" value="&nbsp;&nbsp;<?php echo $lang["create"] ?>&nbsp;&nbsp;" />
+&nbsp;&nbsp;<input name="createemail" type="submit" onClick="do_download=true;" value="&nbsp;&nbsp;<?php echo $lang["create"] ?>&nbsp;&nbsp;" />
 
 <div class="clearerleft"> </div>
 </div>
