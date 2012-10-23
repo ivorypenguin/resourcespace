@@ -518,7 +518,7 @@ if (($ffmpeg_fullpath!=false) && !isset($newfile) && in_array($extension, $ffmpe
 			{ $snapshottime = 0; }
 
         if(!hook("previewpskipthumb")): 
-        $output = run_command($ffmpeg_fullpath . " -i " . escapeshellarg($file) . " -f image2 -vframes 1 -ss ".$snapshottime." " . escapeshellarg($target));
+        $output = run_command($ffmpeg_fullpath . " -loglevel panic -i " . escapeshellarg($file) . " -f image2 -vframes 1 -ss ".$snapshottime." " . escapeshellarg($target));
         endif;
 
         if (file_exists($target)) 
