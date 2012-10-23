@@ -23,8 +23,20 @@ function HookPosixldapauthAllExternalauth($uname, $pword)
 		{
 			return false;
 		}
+		if (!isset($ldapauth['ldapgroupcontainer']))
+		{
+			$ldapauth['ldapgroupcontainer'] = "";
+		}
+		if (!isset($ldapauth['ldapmemberfield']))
+		{
+			$ldapauth['ldapmemberfield'] = "";	
+		}
+			if (!isset($ldapauth['ldapmemberfieldtype']))
+		{
+			$ldapauth['ldapmemberfieldtype'] = 0;	
+		}
 	}
-		
+	
 	if ($uname != "" && $pword != "") 
 	{
 		// pass the config to the class
@@ -119,7 +131,7 @@ function HookPosixldapauthAllExternalauth($uname, $pword)
 									if ($arrLdapGrp['enabled'])
 									{
 										// get the group name and check group membership	
-										if ($objLdapAuth->checkGroupByName($ldapGrpName,$ldapauth['ldaptype']))
+										if ($objLdapAuth->checkGroupByName($ldapGrpName,$ldapauth['ldaptype'],$ldapauth['ldapgroupcontainer'],$ldapauth['ldapmemberfield'],$ldapauth['ldapmemberfieldtype']))
 										{
 											if ( $match )
 											{
