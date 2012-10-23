@@ -200,12 +200,12 @@ class ldapAuth
 	* @access public
 	*/
 	
-	function checkGroupByName($groupName, $ldapType=0)
+	function checkGroupByName($groupName, $ldapType=0,$groupContainer="",$memField="",$memFieldType=0)
 	{
 		$found = false;
 		
 		$gid = "(cn=" . $groupName . ")";
-		
+		//error_log(  __FILE__ . " " . __METHOD__ . " " . __LINE__ ." - memFieldType: ".$memFieldType);
 		
 		// check to see what type of directory we are using, and set parameters accordingly.
 		// $memField $ userField allow us to reference different variables in this class.
@@ -213,17 +213,53 @@ class ldapAuth
 		if ($ldapType == 1)
 		{
 			// set the parameters for AD
-			$attributes = array ("member");
+			// check to see if we are overriding the member field in the schema
+			if ($memField == "") 
+			{
+				$memField = "member";
+				$attributes = array ("member");
+			} else {
+				$attributes = array ($memField);
+			}
 			$dn = $this->ldapconfig['basedn'];
-			$memField = "member";
 			$userField = "ldaprdn";
 			
 		} else {
 			// Set for LDAP
-			$attributes = array ("memberuid");
-			$dn = "cn=groups," . $this->ldapconfig['basedn'];
-			$memField = "memberuid";
+			// check to see if we are overriding the member field in the schema
+			if ($memField == "") 
+			{
+				$memField = "memberuid";
+				$attributes = array ("memberuid");
+			} else {
+				$attributes = array ($memField);
+			}
+			
+			if (($groupContainer != "") && ($groupContainer != null) && ($groupContainer != " "))  
+			{
+				error_log(  __FILE__ . " " . __METHOD__ . " " . __LINE__ ." - Changed group DN to: ".$groupContainer);
+				$dn = $groupContainer;
+			} else {
+				$dn = "cn=groups," . $this->ldapconfig['basedn'];
+			}
+			
 			$userField = "userName";
+		}
+		
+		//check for member field type overide!
+		if ($memFieldType != 0)
+		{
+			switch ($memFieldType)
+			{
+				case 1:
+					$userField = "userName";
+					break;
+				case 2:
+					$userField = "ldaprdn";
+					break;
+				default:
+					error_log(  __FILE__ . " " . __METHOD__ . " " . __LINE__ ." - Unknown Member Field Type: ".$memFieldType);	
+			}			
 		}
 		
 		// search for the group
@@ -232,14 +268,22 @@ class ldapAuth
 		}
 		$info = ldap_get_entries($this->ldapconn, $search);
 		
-		
 		// cycle through the group memebers to see if we can find the user.
-		foreach ($info[0][$memField] as $member)
+		// we check each part of the returned array to find the member field identify as the array might not be in order!
+		// This also helps prevent it bombing if it can't find the member field identifier, ie it's been overridden wrongly.
+		foreach ($info as $level1) 
 		{
-			if ($member == $this->$userField) { $found = true; }
-				
+			if ( (isset ($level1[0])) && ($level1[0] == $memField) )
+			{
+				// we've found the members array, so cycle through them.
+				foreach ($level1[$memField] as $member)
+				{
+					// $this->$userfiled will be expanded to either $this->ldaprdn or $this->userName
+					if ($member == $this->$userField) { $found = true; }		
+				}
+			}
 		}
-		
+
 		if ($found)
 		{
 			return 1;
@@ -274,16 +318,18 @@ class ldapAuth
 			$filter = "(&(objectCategory=group))";
 		} else {
 			$attributes = array("cn","gidnumber");
-			if ($groupContainer != "") 
+			
+			if (($groupContainer != "") && ($groupContainer != null) && ($groupContainer != " ")) 
 			{
-				error_log( " ldapauth:ldap_clas.php:listGroups() line 279 - Changed group DN to: ".$groupContainer);
+				error_log(  __FILE__ . " " . __METHOD__ . " " . __LINE__ ." - Changed group DN to: ".$groupContainer);
 				$dn = $groupContainer;
 			} else {
 				$dn = "cn=groups," . $this->ldapconfig['basedn'];
 			}
 			$filter = "cn=*";
+			
 		}
-		error_log( " ldapauth:ldap_clas.php:listGroups() line 286 - ldap_search ( ". $dn . "," . $filter . ")");
+		error_log(  __FILE__ . " " . __METHOD__ . " " . __LINE__ ." - ldap_search ( ". $dn . "," . $filter . ")");
 		//print_r($this->ldapconfig);
 		
 		if (!($sr = ldap_search($this->ldapconn, $dn, $filter,$attributes)))
@@ -291,7 +337,7 @@ class ldapAuth
 				return ("ldap_search($this->ldapconn, $dn, $filter,$attributes)) failed, please check settings");
 		}
 		
-		error_log( " ldapauth:ldap_clas.php:listGroups() line 292 - attempting to get entries");
+		error_log( __FILE__ . " " .__METHOD__ . " " .__LINE__." - attempting to get entries");
 		if (!$info = ldap_get_entries($this->ldapconn, $sr))
 		{
 			return ("ldap_get_entries($this->ldapconn, $sr)) failed");	
@@ -302,7 +348,7 @@ class ldapAuth
 			return ("ldap search successfuil, but 0 groups found");	
 		}
 		
-		error_log( " ldapauth:ldap_clas.php:listGroups() line 295 - ".$info["count"]." entries returned");
+		error_log(  __FILE__ . " " . __METHOD__ . " " . __LINE__ ." - ".$info["count"]." entries returned");
 		
 		// create an array to return of each entry.
 		for ($i=0; $i < $info["count"]; $i++) 

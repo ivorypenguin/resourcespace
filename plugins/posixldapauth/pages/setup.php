@@ -26,6 +26,8 @@ if (getval("submit","")!="") {
 	$ldapauth['rootpass'] = $_POST['rootpass'];
 	$ldapauth['addomain'] = $_POST['addomain'];
 	$ldapauth['ldapgroupcontainer'] = $_POST['ldapgroupcontainer'];
+	$ldapauth['ldapmemberfield'] = $_POST['ldapmemberfield'];
+	$ldapauth['ldapmemberfieldtype'] = $_POST['ldapmemberfieldtype'];
 	
 	if (isset($_POST['ldapGroupName']))
 	{
@@ -66,8 +68,14 @@ if (getval("submit","")!="") {
 	{
 		$ldapauth['ldapgroupcontainer'] = "";	
 	}
-	
-
+	if (!isset($ldapauth['ldapmemberfield']))
+	{
+		$ldapauth['ldapmemberfield'] = "";	
+	}
+	if (!isset($ldapauth['ldapmemberfieldtype']))
+	{
+		$ldapauth['ldapmemberfieldtype'] = 0;	
+	}
 }
 
 //$ldapauth['ldaptype'] = 1;
@@ -186,8 +194,23 @@ include "../../../include/header.php";
 	    </tr>
 	       <tr id="tldapgroupcontainer">
 	    	<th><label for="ldapgroupcontainer">Group Container:</label></th>
-	    	<td><input id="ldapgroupcontainer" name="ldapgroupcontainer" type="text" value="<?php echo $ldapauth['ldapgroupcontainer']; ?> " size="30" /> Leave blank for default OSX Server mapping</td>
+	    	<td><input id="ldapgroupcontainer" name="ldapgroupcontainer" type="text" value="<?php echo $ldapauth['ldapgroupcontainer']; ?>" size="30" /> Leave blank for default OSX Server mapping</td>
 	    </tr>
+	    <tr id="tldapmemberfield">
+	    	<th><label for="ldapmemberfield">Member Field:</label></th>
+	    	<td><input id="ldapmemberfield" name="ldapmemberfield" type="text" value="<?php echo $ldapauth['ldapmemberfield']; ?>" size="30" /> Use to Overide the group containers member field</td>
+	    </tr>
+	    <tr>
+	  		<th><label for="ldaptype">Member Field Type:</label></th>
+	  		<td>
+	  			<select id='ldapmemberfieldtype' name='ldapmemberfieldtype'>
+	  			<option value=0 <?php if($ldapauth['ldapmemberfieldtype'] == 0) {echo "selected"; } ?> >Default</option>
+	  			<option value=1 <?php if($ldapauth['ldapmemberfieldtype'] == 1) {echo "selected"; } ?> >User Name</option>
+	  			<option value=1 <?php if($ldapauth['ldapmemberfieldtype'] == 2) {echo "selected"; } ?> >RDN</option>
+	  			</select> 
+	  			Use to change the content of the Group Member Field.
+	  		</td>
+	  	</tr>
 	    <tr id="tloginfield">
 	    	<th><label for="loginfield">Login Field:</label></th>
 	    	<td><input id="loginfield" name="loginfield" type="text" value="<?php echo $ldapauth['loginfield']; ?>" size="30" /></td>
