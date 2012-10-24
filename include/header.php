@@ -65,16 +65,15 @@ jQuery.noConflict();
 <!-- end of jQuery / jQueryUI load -->
 
 <script type="text/javascript">
-	rewriteUrlsDebug=false;
-	ajaxCollections=false;
 <?php if ($ajax_url_rewrites){ ?>
-	rewriteUrls=true;<?php if ($ajax_url_rewrite_debug){?>rewriteUrlsDebug=true;<?php } ?>
+	rewriteUrls=true;
+	<?php if ($ajax_url_rewrite_debug){?>rewriteUrlsDebug=true;<?php } ?>
 <?php } else { ?>
-rewriteUrls=false;rewriteUrlsDebug=false;
+	rewriteUrls=false;rewriteUrlsDebug=false;
 <?php } ?>
 <?php if ($ajax_collections){?>
 	ajaxCollections=true;
-<?php } ?>
+<?php } else { ?> ajaxCollections=false;<?php } ?>
 </script>
 
 <script src="<?php echo $baseurl?>/lib/js/category_tree.js?css_reload_key=<?php echo $css_reload_key?>" type="text/javascript"></script>
