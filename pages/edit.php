@@ -526,10 +526,14 @@ if ($enable_add_collection_on_upload)
 	<div class="Question" id="question_collectionadd">
 	<label for="collection_add"><?php echo $lang["addtocollection"]?></label>
 	<select name="collection_add" id="collection_add" class="stdwidth">
-	<?php if ($upload_add_to_new_collection_opt) { ?><option value="-1" <?php if ($upload_add_to_new_collection){ ?>selected <?php }?>>(<?php echo $lang["createnewcollection"]?>)</option><?php } ?>
+	<?php if ($upload_add_to_new_collection_opt && $collection_allow_creation) { ?><option value="-1" <?php if ($upload_add_to_new_collection){ ?>selected <?php }?>>(<?php echo $lang["createnewcollection"]?>)</option><?php } ?>
 	<?php if ($upload_do_not_add_to_new_collection_opt) { ?><option value="" <?php if (!$upload_add_to_new_collection){ ?>selected <?php }?>><?php echo $lang["batchdonotaddcollection"]?></option><?php } ?>
 	<?php
-	$list=get_user_collections($userref);
+	if ($upload_force_mycollection)
+		{
+		$list=get_user_collections($userref,"My Collection");}
+	else
+		{$list=get_user_collections($userref);}
 	$currentfound=false;
 	
         // make sure it's possible to set the collection with collection_add (compact style "upload to this collection"
@@ -573,7 +577,7 @@ if ($enable_add_collection_on_upload)
 		
 			}
 		}
-	if (!$currentfound)
+	if (!$currentfound && !$upload_force_mycollection)
 		{
 		# The user's current collection has not been found in their list of collections (perhaps they have selected a theme to edit). Display this as a separate item.
 		$cc=get_collection($usercollection);

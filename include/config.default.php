@@ -799,6 +799,8 @@ $upload_add_to_new_collection_opt=true;
 $upload_do_not_add_to_new_collection_opt=true;
 # Batch Uploads, require that a collection name is entered, to override the Upload<timestamp> default behavior
 $upload_collection_name_required=false;
+#Batch uploads - always upload to My Collection
+$upload_force_mycollection=false;
 
 # When batch uploading, enable the 'copy resource data from existing resource' feature
 $enable_copy_data_from=true;
@@ -1963,4 +1965,5 @@ $ajax_url_rewrites=false;
 $ajax_url_rewrite_debug=false;
 $ajax_collections=false; // this automatically turns on $frameless_collections (though the original frameless collection behavior is mostly overridden)
 
-
+# Allow users to create new collections. Set to false to prevent creation of new collections.
+$collection_allow_creation=true;

@@ -571,8 +571,11 @@ elseif ($k!="")
 				<?php
 				}
 			}
-		?>
-		<option value="-1">(<?php echo $lang["createnewcollection"]?>)</option>
+		
+		if ($collection_allow_creation) { ?>
+			<option value="-1">(<?php echo $lang["createnewcollection"]?>)</option>
+		<?php } ?>
+
 		</select>
 		<input type=text id="entername" name="entername" style="display:none;" class="SearchWidth" onUnfocus="document.getElementById('colselect').submit();">
 		</div>			

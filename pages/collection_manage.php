@@ -23,7 +23,7 @@ if (!in_array($col_order_by,$collection_valid_order_bys)) {$col_order_by="create
 if (array_key_exists("find",$_POST)) {$offset=0;} # reset page counter when posting
 
 $name=getvalescaped("name","");
-if ($name!="")
+if ($name!="" && $collection_allow_creation)
 	{
 	# Create new collection
 	$new=create_collection ($userref,$name);
@@ -408,21 +408,23 @@ if (!hook('collectionaccessmode')) {
 </div>
 
 <!--Create a collection-->
-<div class="BasicsBox">
-    <h1><?php echo $lang["createnewcollection"]?></h1>
-    <p class="tight"><?php echo text("newcollection")?></p>
-    <form method="post" action="<?php echo $baseurl_short?>pages/collection_manage.php">
-		<div class="Question">
-			<label for="newcollection"><?php echo $lang["collectionname"]?></label>
-			<div class="tickset">
-			 <div class="Inline"><input type=text name="name" id="newcollection" value="" maxlength="100" class="shrtwidth"></div>
-			 <div class="Inline"><input name="Submit" type="submit" value="&nbsp;&nbsp;<?php echo $lang["create"]?>&nbsp;&nbsp;" /></div>
+<?php if ($collection_allow_creation) { ?>
+	<div class="BasicsBox">
+		<h1><?php echo $lang["createnewcollection"]?></h1>
+		<p class="tight"><?php echo text("newcollection")?></p>
+		<form method="post" action="<?php echo $baseurl_short?>pages/collection_manage.php">
+			<div class="Question">
+				<label for="newcollection"><?php echo $lang["collectionname"]?></label>
+				<div class="tickset">
+				 <div class="Inline"><input type=text name="name" id="newcollection" value="" maxlength="100" class="shrtwidth"></div>
+				 <div class="Inline"><input name="Submit" type="submit" value="&nbsp;&nbsp;<?php echo $lang["create"]?>&nbsp;&nbsp;" /></div>
+				</div>
+			<div class="clearerleft"> </div>
 			</div>
-		<div class="clearerleft"> </div>
-	    </div>
-	</form>
-</div>
-
+		</form>
+	</div>
+<?php } ?>
+ 
 <!--Find a collection-->
 <?php if (!$public_collections_header_only){?>
 <?php if($enable_public_collections){?>
