@@ -97,10 +97,10 @@ $n=0;
 # Append extra search parameters from the quick search.
 if (!$config_search_for_number || !is_numeric($search)) # Don't do this when the search query is numeric, as users typically expect numeric searches to return the resource with that ID and ignore country/date filters.
 	{
-	// For the simple search fields, collect from the GET request and assemble into the search string.
-	reset ($_POST);
+	// For the simple search fields, collect from the GET and POST requests and assemble into the search string.
+	reset ($_POST);reset($_GET);
 
-	foreach ($_POST as $key=>$value)
+	foreach (array_merge($_GET, $_POST) as $key=>$value)
 		{
 		if (is_string($value))
 		  {
@@ -201,7 +201,8 @@ if (getval("resetrestypes","")=="")
 else
 	{ 
 	$restypes="";
-	reset($_POST);foreach ($_POST as $key=>$value)
+	reset($_POST);reset($_GET);foreach (array_merge($_GET, $_POST) as $key=>$value)
+
 		{
 		if ($key=="rttickall" && $value=="on"){$restypes="";break;}	
 		if (substr($key,0,8)=="resource") {if ($restypes!="") {$restypes.=",";} $restypes.=substr($key,8);}
