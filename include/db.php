@@ -1023,6 +1023,7 @@ function register_plugin($plugin)
 		}
 
 	# Also include plugin hook file for this page.
+	if ($pagename=="collections_frameless_loader"){$pagename="collections";}
 	$hookpath=dirname(__FILE__)."/../plugins/" . $plugin . "/hooks/" . $pagename . ".php";
 	if (file_exists($hookpath)) {include $hookpath;}
 	

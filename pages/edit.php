@@ -620,7 +620,7 @@ if ($enable_add_collection_on_upload)
 			?>
 		</div>
 		<!-- end select theme -->
-				
+		</div>		
 		<?php 	
 		} // end if checkperm h 
 	} // end if public collections enabled

@@ -2,13 +2,15 @@
 
 $theme=((isset($userfixedtheme) && $userfixedtheme!=""))?$userfixedtheme:getval("colourcss",$defaulttheme);
 
+// frameless collections is automatically true if ajax_collections is on
+if ($ajax_collections){$frameless_collections=true;}
+
 # Do not display header / footer when dynamically loading CentralSpace contents.
 if (getval("ajax","")=="") { 
 
-
 // blank starsearch cookie in case $star_search was turned off
 setcookie("starsearch","");
-if ($collections_compact_style && $frameless_collections){echo "error. collections_compact_style and frameless_collections are currently incompatible";}
+
 // cookies have to go above the header output
 if ($display_user_rating_stars && $star_search){
 	# if seardch is not a special search (ie. !recent), use starsearchvalue.
@@ -23,8 +25,7 @@ if ($display_user_rating_stars && $star_search){
 	    }
 	}
 ?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
-<html>
-<?php if ($include_rs_header_info){?>
+<html>	<?php if ($include_rs_header_info){?>
 <!--<?php hook("copyrightinsert");?>
 ResourceSpace version <?php echo $productversion?>
 
@@ -47,23 +48,34 @@ http://www.resourcespace.org/
 
 <!-- Load jQuery and jQueryUI -->
 <script src="<?php echo $baseurl?>/lib/js/jquery-1.7.2.min.js?css_reload_key=<?php echo $css_reload_key?>" type="text/javascript"></script>
-<script type="text/javascript">
-jQuery.noConflict();
-</script>
+
 <script src="<?php echo $baseurl?>/lib/js/jquery-ui-1.8.20.custom.min.js?css_reload_key=<?php echo $css_reload_key?>" type="text/javascript"></script>
 <script src="<?php echo $baseurl?>/lib/js/easyTooltip.js?css_reload_key=<?php echo $css_reload_key?>" type="text/javascript"></script>
 <link type="text/css" href="<?php echo $baseurl?>/css/ui-lightness/jquery-ui-1.8.20.custom.css?css_reload_key=<?php echo $css_reload_key?>" rel="stylesheet" />
+
+<?php if ($use_zip_extension){?><script type="text/javascript" src="<?php echo $baseurl?>/lib/js/jquery-periodical-updater.js"></script><?php } ?>
+<script type="text/javascript" src="<?php echo $baseurl?>/lib/js/contactsheet.js"></script>
+<script>
+contactsheet_previewimage_prefix = '<?php echo addslashes($storageurl)?>';
+</script>
+<script type="text/javascript">
+jQuery.noConflict();
+</script>
+
 <!-- end of jQuery / jQueryUI load -->
 
-<script type="text/javascript">rewriteUrlsDebug=false;
+<script type="text/javascript">
+	rewriteUrlsDebug=false;
+	ajaxCollections=false;
 <?php if ($ajax_url_rewrites){ ?>
 	rewriteUrls=true;<?php if ($ajax_url_rewrite_debug){?>rewriteUrlsDebug=true;<?php } ?>
 <?php } else { ?>
 rewriteUrls=false;rewriteUrlsDebug=false;
 <?php } ?>
+<?php if ($ajax_collections){?>
+	ajaxCollections=true;
+<?php } ?>
 </script>
-
-<script src="<?php echo $baseurl?>/lib/js/global.js?css_reload_key=<?php echo $css_reload_key?>" type="text/javascript"></script>
 
 <script src="<?php echo $baseurl?>/lib/js/category_tree.js?css_reload_key=<?php echo $css_reload_key?>" type="text/javascript"></script>
 <script type="text/javascript" src="<?php echo $baseurl?>/lib/ckeditor/ckeditor.js"></script>
@@ -72,13 +84,21 @@ rewriteUrls=false;rewriteUrlsDebug=false;
 <script src="https://maps.google.com/maps/api/js?v=3.2&sensor=false"></script>
 <?php } ?>
 
-<?php if ($frameless_collections) { ?>
-<script src="<?php echo $baseurl?>/lib/js/frameless_collections.js?css_reload_key=<?php echo $css_reload_key?>" type="text/javascript"></script>
+<?php if ($frameless_collections) { ?><link rel="stylesheet" type="text/css" 
+href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/themes/base/jquery-ui.css"/>
+	<?php if ($ajax_collections){?>
+		<script src="<?php echo $baseurl?>/lib/js/ajax_collections.js?css_reload_key=<?php echo $css_reload_key?>" type="text/javascript"></script>
+	<?php } else { ?>
+		<script src="<?php echo $baseurl?>/lib/js/frameless_collections.js?css_reload_key=<?php echo $css_reload_key?>" type="text/javascript"></script>
+	<?php } ?>
 <?php } ?>
 <script type="text/javascript">
 var baseurl_short="<?php echo $baseurl_short?>";
 var baseurl="<?php echo $baseurl?>";
 </script>
+
+
+<script src="<?php echo $baseurl_short?>lib/js/global.js?css_reload_key=<?php echo $css_reload_key?>" type="text/javascript"></script>
 
 <?php hook("additionalheaderjs");?>
 
@@ -124,6 +144,7 @@ if (!top.collections) {document.location='<?php echo $baseurl?>/index.php?url=' 
 </head>
 
 <body <?php if (isset($bodyattribs)) { ?><?php echo $bodyattribs?><?php } ?>>
+
 <?php hook("bodystart"); ?>
 
 <?php

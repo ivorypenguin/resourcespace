@@ -221,14 +221,18 @@ function refresh_collection_frame($collection="")
 	{
 	# Refresh the collections frame
 	# Only works when we are using a frameset.
-	global $frameless_collections;
-	if (!$frameless_collections)
+	global $frameless_collections,$ajax_collections,$baseurl,$headerinsert,$baseurl;
+	if (!$frameless_collections && !$ajax_collections)
 		{
-		global $headerinsert,$baseurl;
 		$headerinsert.="<script  type=\"text/javascript\">
 		parent.collections.location.replace(\"" . $baseurl . "/pages/collections.php" . ((getval("k","")!="")?"?collection=" . getval("collection",$collection) . "&k=" . getval("k","") . "&":"?") . "nc=" . time() . "\");
 		</script>";
 		}
+	if ($ajax_collections){
+		$headerinsert.="<script  type=\"text/javascript\">
+		CollectionDivLoad(\"" . $baseurl . "/pages/collections.php" . ((getval("k","")!="")?"?collection=" . getval("collection",$collection) . "&k=" . getval("k","") . "&":"?") . "nc=" . time() . "\");
+		</script>";
+		}	
 	}
 	
 if (!function_exists("search_public_collections")){	

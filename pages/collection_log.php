@@ -52,7 +52,7 @@ for ($n=0;$n<count($log);$n++)
 			echo $newnotes;
 		}
 		?></td>
-	<td><?php if ($log[$n]['resource']!=0){?><a href='<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $log[$n]["resource"]?>'><?php echo $log[$n]["resource"]?></a><?php } ?></td>
+	<td><?php if ($log[$n]['resource']!=0){?><a onClick="return CentralSpaceLoad(this,true);" href='<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $log[$n]["resource"]?>'><?php echo $log[$n]["resource"]?></a><?php } ?></td>
 	<td><?php echo i18n_get_translated($log[$n]["title"])?></td>
 	</tr> 
 <?php } ?>

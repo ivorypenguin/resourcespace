@@ -96,6 +96,8 @@ function SwapCSS(css){
 
 <?php echo $extrafooterhtml; ?>
 
+
+
 <?php } // end ajax ?>
 
 
@@ -247,6 +249,65 @@ $resource_title_pages=array("view","delete","log","alternative_file","alternativ
 if (getval("ajax","")=="") { 
 	// don't show closing tags if we're in ajax mode
 	?>
+	
+<?php if ($pagename!="login" && $pagename!="preview_all" && $ajax_collections){?>
+<div id="CollectionDiv" class="CollectBack" onload="UpdateCollectionDisplay();" style="position:fixed;bottom:0;width:100%;border-top:5px solid black;height:<?php echo $collection_frame_height ?>px;overflow:scroll;overflow-x: hidden;">Loading...</div>
+<script type="text/javascript">
+	collection_frame_height=<?php echo $collection_frame_height?>;
+function getWindowHeight() {
+	var windowHeight = 0;
+	if (typeof(window.innerHeight) == 'number') {
+		windowHeight = window.innerHeight;
+	}
+	else {
+		if (document.documentElement && document.documentElement.clientHeight) {
+			windowHeight = document.documentElement.clientHeight;
+		}
+		else {
+			if (document.body && document.body.clientHeight) {
+				windowHeight = document.body.clientHeight;
+			}
+		}
+	}
+	return windowHeight;
+}
+		
+function setContent() {
+	if (document.getElementById) {
+		var windowHeight = getWindowHeight();
+		if (windowHeight > 0) {
+			var contentElement = document.getElementById('CollectionDiv');
+			var contentHeight = contentElement.offsetHeight;
+			if (windowHeight - contentHeight > 0) {
+				contentElement.style.position = 'fixed';
+				
+				height = (windowHeight - collection_frame_height )+ 'px';
+				contentElement.style.top = height;
+				jQuery('body').css("padding-bottom",collection_frame_height +"px");
+				jQuery('#CollectionDiv').animate({
+					top: height
+				}, 700, function() {
+					// Animation complete.
+					});
+			
+			}
+			else {
+				contentElement.style.position = 'static';
+			}
+		}
+	}
+}
+
+window.onload = function() {
+	setContent();UpdateCollectionDisplay();
+}
+window.onresize = function() {
+	setContent();
+}
+</script>
+<?php } // end ajax_collections ?>	
+	
+	
 </body>
 </html>
-<?php } // end if ajax ?>
+<?php } // end if !ajax ?>

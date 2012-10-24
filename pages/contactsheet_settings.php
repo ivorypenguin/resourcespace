@@ -9,16 +9,6 @@ $collectiondata= get_collection($collection);
 
 include "../include/header.php";
 ?>
-<script src="<?php echo $baseurl_short?>lib/js/contactsheet.js" type="text/javascript"></script>
-<script>
-contactsheet_previewimage_prefix = '<?php echo addslashes($storageurl) ?>';
-jQuery(document).ready (function () 
-	{
-	jQuery().rsContactSheet('preview');	
-	}
-	);
-
-</script>
 
 <div class="BasicsBox" >
 <div class="BasicsBox" style="float:left;margin-bottom:0;" >
@@ -133,10 +123,11 @@ foreach ($all_field_info as $sortable_field)
 <div >
 	<!-- this is the container for some Ajax fun. The image will go here...-->
 <?php $cs_size=explode("x",$contact_sheet_preview_size);$height=$cs_size[1];?>
-<?php if ($contact_sheet_previews==true){?><div style="float:left;padding:0px -50px 15px 0;height:<?php echo $height?>px;margin-top:-15px;margin-right:-50px"><img id="previewimage" name="previewimage"/></div><?php } ?>
+<?php if ($contact_sheet_previews==true){?><div style="float:left;padding:0px -50px 15px 0;height:<?php echo $height?>px;margin-top:-15px;margin-right:-50px"><img id="previewimage" name="previewimage" src=""/></div><?php } ?>
 
 	</div>
 	</div>
+	<script type="text/javascript">	jQuery().rsContactSheet('preview');	</script>
 <?php		
 include "../include/footer.php";
 ?>

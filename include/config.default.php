@@ -1961,3 +1961,6 @@ $request_senduserupdates=true;
 # and perhaps other experiments within the ajax loaded context
 $ajax_url_rewrites=false;
 $ajax_url_rewrite_debug=false;
+$ajax_collections=false; // this automatically turns on $frameless_collections (though the original frameless collection behavior is mostly overridden)
+
+

@@ -591,7 +591,8 @@ if (!$basic_simple_search)
 	<?php if ($pagename!="login" && $pagename!="user_password" && $pagename!="user_request" && $frameless_collections && !checkperm("b"))
 		{ 
 		# Support for frameless collections.
-
+		if (!$ajax_collections){
+			
 		# Ensure collections functions loaded.
 		include_once dirname(__FILE__)."/collections_functions.php";
 
@@ -603,20 +604,23 @@ if (!$basic_simple_search)
 		# Requires feedback?
 		$feedback=$cinfo["request_feedback"];
 		?>
+		
 		<div id="ResearchBoxPanel">
 		<div class="SearchSpace">
         <h2><?php echo $lang["mycollections"]?></h2>
 		
 		<div id="CollectionFrameless"></div>
 			<div class="clearer"> </div>
-		</div>
-		</div>
 		<div class="PanelShadow"></div>
+
+		
+		</div>
+		</div>
 		
 		<script type="text/javascript">
 		UpdateCollectionDisplay();
 		</script>
-		<?php
+		<?php } // end if not ajax_collections
 		}
 	?>
 

@@ -10,9 +10,9 @@
 // frame [main or collections] - which frame to redirect to (main or collections)
 // refresh [collections, main, both, or false]
 
-include_once("../include/search_functions.php");
-include_once("../include/resource_functions.php");
-include_once("../include/collections_functions.php");
+include_once(dirname(__FILE__)."/../include/search_functions.php");
+include_once(dirname(__FILE__)."/../include/resource_functions.php");
+include_once(dirname(__FILE__)."/../include/collections_functions.php");
 global $baseurl,$baseurl_short;
 
 $offset=getvalescaped("offset",0);
@@ -21,7 +21,7 @@ $col_order_by=getvalescaped("col_order_by","name");
 $order_by=getvalescaped("order_by","relevance");
 $sort=getval("sort","ASC");
 $main_pages=array("search","collection_manage","collection_public","themes");
-
+$uniqid=uniqid();
 
 // get collection information (different pages need different treatment) 
 if (($pagename=="search" || $pagename=="preview_all") && isset($search) && substr($search,0,11)=="!collection"){
@@ -44,7 +44,7 @@ elseif ($pagename=="themes"){
     $feedback=$cinfo["request_feedback"];
     $k="";
     }    
-else if ($pagename=="collections"){
+else if ($pagename=="collections"||$pagename=="collections_frameless_loader"){
     $collection=$usercollection;$colresult=$result;
 }
 if ($pagename=="search" && isset($resources) && is_array($resources)){$colresult=$resources;$cinfo=get_collection($collections[$n]['ref']);$feedback=$cinfo["request_feedback"];$collection_results=true;$collection=$collections[$n]['ref'];}
@@ -79,7 +79,7 @@ if ($pagename=="search" || $pagename=="collections"){?>
 			?> class="SearchWidth" style="margin:0;"<?php 
 		} 
 	}
-if ($pagename=='collection_manage' || $pagename=='collection_public' || $pagename=='themes' || $pagename=="view" || isset($collection_results)){ $colvalue="document.getElementById('colactionselect".$collections[$n]['ref']."').value"; } else { $colvalue="document.getElementById('colactionselect').value"; }?> class="ListDropdown" name="colactionselect<?php if ($pagename=='collection_manage' || $pagename=='collection_public' || $pagename=='themes' || $pagename=="view" || isset($collection_results)){echo $collections[$n]['ref'];}?>" id="colactionselect<?php if ($pagename=='collection_manage' || $pagename=='collection_public' || $pagename=='themes' || $pagename=="view" || isset($collection_results)){echo $collections[$n]['ref'];}?>" <?php if ($pagename=="search" && $display=="xlthumbs"){?>style="margin:-5px 0px 0px 5px"<?php } ?> <?php if ($pagename=="search" && ( $display=="thumbs" || $display=="smallthumbs")){?>style="margin:-5px 0px 0px 4px "<?php } ?> onchange="colAction(<?php echo $colvalue?>);<?php echo $colvalue?>='';">
+$colvalue="document.getElementById('".$uniqid."colactionselect').value";?> class="ListDropdown" name="<?php echo $uniqid?>colactionselect" id="<?php echo $uniqid?>colactionselect" <?php if ($pagename=="search" && $display=="xlthumbs"){?>style="margin:-5px 0px 0px 5px"<?php } ?> <?php if ($pagename=="search" && ( $display=="thumbs" || $display=="smallthumbs")){?>style="margin:-5px 0px 0px 4px "<?php } ?> onchange="colAction(<?php echo $colvalue?>);<?php echo $colvalue?>='';">
 
  
 <option id="resetcolaction" value=""><?php echo $lang['select'];?></option>
@@ -240,7 +240,7 @@ if ($show_edit_all_link && $count_result>0 && $col_editable) { ?>
 
 
     </select>
-    <?php if ($pagename=="collections"){?><?php if ($thumbs=="show") { ?><br /><br /><a href="<?php echo $baseurl_short?>pages/collections.php?thumbs=hide" onClick="ToggleThumbs();">&gt;&nbsp;<?php echo $lang["hidethumbnails"]?></a><?php } ?><?php if ($thumbs=="hide") { ?>&nbsp;&nbsp;&nbsp;<a href="<?php echo $baseurl_short?>pages/collections.php?thumbs=show" onClick="ToggleThumbs();">&gt;&nbsp;<?php echo $lang["showthumbnails"]?></a><?php } ?></div><?php } ?>
+    <?php if ($pagename=="collections"){?><?php if ($thumbs=="show") { ?><br /><br /><a onClick="ToggleThumbs();return CollectionDivLoad(this);" href="<?php echo $baseurl_short?>pages/collections.php?thumbs=hide">&gt;&nbsp;<?php echo $lang["hidethumbnails"]?></a><?php } ?><?php if ($thumbs=="hide") { ?>&nbsp;&nbsp;&nbsp;<a href="<?php echo $baseurl_short?>pages/collections.php?thumbs=show" onClick="ToggleThumbs();return CollectionDivLoad(this);">&gt;&nbsp;<?php echo $lang["showthumbnails"]?></a><?php } ?></div><?php } ?>
 <?php if ($pagename!="collection_manage" && $pagename!="collection_public" && $pagename!="themes"){?>
 
 </form>

@@ -114,8 +114,8 @@ include ("../include/search_title_processing.php");
 <script type="text/javascript">
 function ReorderResources(id1,id2)
     {
-    top.main.location.href='<?php echo $baseurl_short?>pages/preview_all.php?reorder=' + id1 + '-' + id2+'&ref=<?php echo $colref?>&vertical=<?php echo $vertical?>&search=<?php echo urlencode($search)?>&order_by=<?php echo $order_by?>&archive=<?php echo $archive?>&k=<?php echo $k?>&sort=<?php echo $sort?>';
-    top.collections.location.href='<?php echo $baseurl_short?>pages/collections.php?ref=<?php echo $colref?>';
+    CentralSpaceLoad('<?php echo $baseurl_short?>pages/preview_all.php?reorder=' + id1 + '-' + id2+'&ref=<?php echo $colref?>&vertical=<?php echo $vertical?>&search=<?php echo urlencode($search)?>&order_by=<?php echo $order_by?>&archive=<?php echo $archive?>&k=<?php echo $k?>&sort=<?php echo $sort?>');
+    CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?ref=<?php echo $colref?>');
     }
 </script>
 <br/>
@@ -258,7 +258,9 @@ if (maxheight><?php echo $imageheight?>){
 
 <script type="text/javascript">
 <?php if ($preview_all_hide_collections){ ?>
-	top.collections.location.href="<?php echo $baseurl ?>/pages/collections.php?ref=<?php echo $ref ?>&search=<?php echo $search?>&order_by=<?php echo $order_by?>&archive=<?php echo $archive?>&k=<?php echo $k?>&sort=<?php echo $sort?>&thumbs=hide";<?php } ?>
+	CollectionDivLoad("<?php echo $baseurl ?>/pages/collections.php?ref=<?php echo $ref ?>&search=<?php echo $search?>&order_by=<?php echo $order_by?>&archive=<?php echo $archive?>&k=<?php echo $k?>&sort=<?php echo $sort?>&thumbs=hide");
+	<?php if (!$ajax_collections){?>top.document.getElementById("topframe").rows="*<?php if ($collection_resize!=true) {?>,3<?php } ?>,33";<?php } ?>
+<?php } ?>
 
 	window.onresize=function(event){
 	var maxheight=window.innerHeight-<?php echo $heightmod?>;

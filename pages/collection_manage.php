@@ -338,18 +338,18 @@ if (!hook('collectionaccessmode')) {
         <div class="ListTools">
         <?php if ($collections_compact_style){
         include("collections_compact_style.php"); } else {
-?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $collections[$n]["ref"])?>">&gt;&nbsp;<?php echo $lang["viewall"]?></a>
-	&nbsp;<a <?php if ($frameless_collections && !checkperm("b")){ ?>href onclick="ChangeCollection(<?php echo $collections[$n]["ref"]?>);"
+?><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $collections[$n]["ref"])?>">&gt;&nbsp;<?php echo $lang["viewall"]?></a>
+	&nbsp;<a <?php if ($frameless_collections && !checkperm("b")){ ?>href="#" onclick="ChangeCollection(<?php echo $collections[$n]["ref"]?>);"
 		<?php } elseif ($autoshow_thumbs) {?>onclick=" top.document.getElementById('topframe').rows='*<?php if ($collection_resize!=true) {?>,3<?php } ?>,138'; return true;"
 		href="collections.php?collection=<?php echo $collections[$n]["ref"]?>&amp;thumbs=show" target="collections"
 		<?php } else {?>href="collections.php?collection=<?php echo $collections[$n]["ref"]?>" target="collections"<?php }?>>&gt;&nbsp;<?php echo $lang["action-select"]?></a>
 	<?php if (isset($zipcommand) || $collection_download) { ?>
-	&nbsp;<a href="<?php echo $baseurl_short?>pages/collection_download.php?collection=<?php echo $collections[$n]["ref"]?>"
+	&nbsp;<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_download.php?collection=<?php echo $collections[$n]["ref"]?>"
 	>&gt;&nbsp;<?php echo $lang["action-download"]?></a>
 	<?php } ?>
 	
 	<?php if ($contact_sheet==true && $manage_collections_contact_sheet_link) { ?>
-    &nbsp;<a href="<?php echo $baseurl_short?>pages/contactsheet_settings.php?ref=<?php echo $collections[$n]["ref"]?>">&gt;&nbsp;<?php echo $lang["contactsheet"]?></a>
+    &nbsp;<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/contactsheet_settings.php?ref=<?php echo $collections[$n]["ref"]?>">&gt;&nbsp;<?php echo $lang["contactsheet"]?></a>
 	<?php } ?>
 
 	<?php if ($manage_collections_share_link && $allow_share && (checkperm("v") || checkperm ("g"))) { ?> &nbsp;<a href="<?php echo $baseurl_short?>pages/collection_share.php?ref=<?php echo $collections[$n]["ref"]?>" target="main" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["share"]?></a><?php } ?>

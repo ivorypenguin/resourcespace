@@ -44,7 +44,7 @@
 		<?php if ($resource_type_column){?><td <?php hook("listviewcolumnstyle");?>><?php if (array_key_exists($result[$n]["resource_type"],$rtypes)) { ?><?php echo $rtypes[$result[$n]["resource_type"]]?><?php } ?></td><?php } ?>
 		<?php if ($date_column){?><td <?php hook("listviewcolumnstyle");?>><?php echo nicedate($result[$n]["creation_date"],false,true)?></td><?php } ?>
 		<?php hook("addlistviewcolumn");?>
-		<td <?php hook("listviewcolumnstyle");?>><div class="ListTools"><a <?php if ($infobox) { ?>onmouseover="InfoBoxSetResource(<?php echo $ref?>);"onmouseout="InfoBoxSetResource(0);"<?php } ?> href="<?php echo $url?>">&gt;&nbsp;<?php echo $lang["action-view"]?></a> &nbsp;<?php
+		<td <?php hook("listviewcolumnstyle");?>><div class="ListTools"><a  onClick="return CentralSpaceLoad(this);" <?php if ($infobox) { ?>onmouseover="InfoBoxSetResource(<?php echo $ref?>);"onmouseout="InfoBoxSetResource(0);"<?php } ?> href="<?php echo $url?>">&gt;&nbsp;<?php echo $lang["action-view"]?></a> &nbsp;<?php
 
 		if (!hook("replacelistviewaddtocollectionlink")){
 		if (!checkperm("b")&& $k=="") { ?>
@@ -52,7 +52,7 @@
 		<?php } ?>
 		<?php } ?>
 
-		<?php if ($allow_share && $k=="") { ?><a class="nowrap" href="resource_email.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&k=<?php echo $k?>">&gt;&nbsp;<?php echo $lang["action-email"]?></a><?php } ?></div></td>
+		<?php if ($allow_share && $k=="") { ?><a class="nowrap" onClick="return CentralSpaceLoad(this);" href="resource_email.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&k=<?php echo $k?>">&gt;&nbsp;<?php echo $lang["action-email"]?></a><?php } ?></div></td>
 		
 		
 		</tr>

@@ -20,9 +20,14 @@ window.onresize=function(event){
 		}	
 
 	resizeadmin();
+jQuery('#CollectionDiv').onresize=function(event){
+	resizeadmin();
+		}	
+
+	resizeadmin();	
 					
 function resizeadmin(){
-	var maxheight=window.innerHeight-<?php echo $topsize?>;
+	var maxheight=window.innerHeight-<?php echo $topsize?>-50;
     if (isNaN(maxheight)){maxheight=document.documentElement.clientHeight-<?php echo $topsize?>;}
     var maxwidth=window.innerWidth-<?php echo $lfsize + 45?>;
 	if (isNaN(maxwidth)){maxwidth=document.documentElement.clientWidth-<?php echo $lfsize + 45?>;}

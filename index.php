@@ -80,7 +80,7 @@ if (getval("url","")!="")
 	}
 
 # If not using framesets, redirect instead.
-if (checkperm("b") || $frameless_collections) {redirect($topurl);}
+if (checkperm("b") || $frameless_collections || $ajax_collections) {redirect($topurl);}
 
 ?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
 <html>

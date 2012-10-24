@@ -25,7 +25,6 @@ return $nb;
 if ($use_zip_extension){
 	// set the time limit to unlimited, default 300 is not sufficient here.
 	set_time_limit(0);
-	$headerinsert="<script type=\"text/javascript\" src=\"".$baseurl."/lib/js/jquery-periodical-updater.js\"></script>";
 }
 
 function update_zip_progress_file($note){
