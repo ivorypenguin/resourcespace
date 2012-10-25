@@ -159,7 +159,6 @@ if ($direct_download && !$save_as){
 	</script>";
 	}
 	
-	
 # Show the header/sidebar
 include "../include/header.php";
 
@@ -1100,8 +1099,7 @@ if (count($result)>0)
 
 
 
-<?php 
-if ($enable_find_similar) { ?>
+<?php if ($enable_find_similar) { ?>
 <!--Panel for search for similar resources-->
 <div class="RecordBox">
 <div class="RecordPanel"> 
@@ -1164,6 +1162,7 @@ for ($n=0;$n<count($keywords);$n++)
 
 
 <?php } # end of block that requires search permissions
+
 
 include "../include/footer.php";
 ?>
