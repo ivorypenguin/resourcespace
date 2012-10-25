@@ -54,6 +54,7 @@ http://www.resourcespace.org/
 <link type="text/css" href="<?php echo $baseurl?>/css/ui-lightness/jquery-ui-1.8.20.custom.css?css_reload_key=<?php echo $css_reload_key?>" rel="stylesheet" />
 
 <?php if ($use_zip_extension){?><script type="text/javascript" src="<?php echo $baseurl?>/lib/js/jquery-periodical-updater.js"></script><?php } ?>
+<?php if ($contact_sheet){?>
 <script type="text/javascript" src="<?php echo $baseurl?>/lib/js/contactsheet.js"></script>
 <script>
 contactsheet_previewimage_prefix = '<?php echo addslashes($storageurl)?>';
@@ -61,6 +62,7 @@ contactsheet_previewimage_prefix = '<?php echo addslashes($storageurl)?>';
 <script type="text/javascript">
 jQuery.noConflict();
 </script>
+<?php } ?>
 
 <!-- end of jQuery / jQueryUI load -->
 

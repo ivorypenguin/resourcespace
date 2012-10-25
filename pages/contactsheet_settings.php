@@ -19,12 +19,12 @@ include "../include/header.php";
 <!-- each time the form is modified, the variables are sent to contactsheet.php with preview=true
  contactsheet.php makes just the first page of the pdf (with col size images) 
  and then thumbnails it for the ajax request. This creates a very small but helpful 
- preview image that can be judged before initiating a download of sometimes several MB.-->
+ preview image that can be judged before initiating a download of sometimes several MB.--></div>
 <form method=post name="contactsheetform" id="contactsheetform" action="<?php echo $baseurl_short?>pages/ajax/contactsheet.php" >
 <input type=hidden name="c" value="<?php echo $collection?>">
 
 <!--<div name="error" id="error"></div>-->
-</div><div style="clear:left;"> </div>
+<div style="clear:left;"> </div>
 <div class="BasicsBox" style="width:450px;float:left;margin-top:0;" >
 <div class="Question">
 	<label><?php echo $lang["collectionname"]?></label><div class="Fixed"><?php echo i18n_get_translated($collectiondata['name'])?></div>
@@ -126,7 +126,7 @@ foreach ($all_field_info as $sortable_field)
 <?php if ($contact_sheet_previews==true){?><div style="float:left;padding:0px -50px 15px 0;height:<?php echo $height?>px;margin-top:-15px;margin-right:-50px"><img id="previewimage" name="previewimage" src=""/></div><?php } ?>
 
 	</div>
-	</div>
+	</div>	
 	<script type="text/javascript">	jQuery().rsContactSheet('preview');	</script>
 <?php		
 include "../include/footer.php";
