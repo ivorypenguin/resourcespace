@@ -268,6 +268,13 @@ $filename_field=51;
 $imagemagick_preserve_profiles=false;
 $imagemagick_quality=90; # JPEG quality (0=worst quality/lowest filesize, 100=best quality/highest filesize)
 
+# Colorspace usage
+# Use "RGB" for ImageMagick versions before 6.7.6-4
+# Use "RGB" for GraphicsMagick
+# Use "sRGB" for ImageMagick version 6.7.6-4 and newer
+$imagemagick_colorspace="RGB";
+
+
 # To use the Ghostscript command -dUseCIEColor or not (generally true but added in some cases where scripts might want to turn it off).
 $dUseCIEColor=true;
 
@@ -305,7 +312,7 @@ $ffmpeg_preview_min_width=32;
 $ffmpeg_preview_min_height=18;
 $ffmpeg_preview_max_width=480;
 $ffmpeg_preview_max_height=270;
-$ffmpeg_preview_options="-f flv -ar 22050 -b 650k -ab 32 -ac 1";
+$ffmpeg_preview_options="-f flv -ar 22050 -b 650k -ab 32k -ac 1";
 
 # If uploaded file is FLV, should we transcode it anyway?
 $ffmpeg_preview_force=false;
@@ -1835,6 +1842,7 @@ $search_public_collections_ref=true;
 # $calibre_path="/usr/bin";
 # Files with these extensions will be passed to calibre (if enabled above) for conversion to PDF and auto thumb-preview generation.
 $calibre_extensions=array("epub","mobi","lrf","pdb","chm","cbr","cbz");
+
 
 
 

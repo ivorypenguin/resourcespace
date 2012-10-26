@@ -752,7 +752,7 @@ function create_previews($ref,$thumbonly=false,$extension="jpg",$previewonly=fal
 
 function create_previews_using_im($ref,$thumbonly=false,$extension="jpg",$previewonly=false,$previewbased=false,$alternative=-1)
 	{
-	global $imagemagick_path,$imagemagick_preserve_profiles,$imagemagick_quality;
+	global $imagemagick_path,$imagemagick_preserve_profiles,$imagemagick_quality,$imagemagick_colorspace;
 
 	$icc_transform_complete=false;
 	debug("create_previews_using_im(ref=$ref,thumbonly=$thumbonly,extension=$extension,previewonly=$previewonly,previewbased=$previewbased,alternative=$alternative)");
@@ -889,7 +889,7 @@ function create_previews_using_im($ref,$thumbonly=false,$extension="jpg",$previe
 				} else {
 					// use existing strategy for color profiles
 					# Preserve colour profiles? (omit for smaller sizes)   
-					$profile="+profile \"*\" -colorspace RGB"; # By default, strip the colour profiles ('+' is remove the profile, confusingly)
+					$profile="+profile \"*\" -colorspace ".$imagemagick_colorspace; # By default, strip the colour profiles ('+' is remove the profile, confusingly)
 					if ($imagemagick_preserve_profiles && $id!="thm" && $id!="col" && $id!="pre" && $id!="scr") {$profile="";}
 				}
 
