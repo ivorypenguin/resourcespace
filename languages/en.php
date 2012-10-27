@@ -116,7 +116,6 @@ $lang["property-index_this_field"]="Index this field";
 $lang["information-enable_partial_indexing"]="Partial keyword indexing (prefix+infix indexing) should be used sparingly as it will significantly increase the index size. See the wiki for details.";
 $lang["property-enable_partial_indexing"]="Enable partial indexing";
 $lang["information-shorthand_name"]="Important: Shorthand name must be set for the field to appear on Advanced Search. It must contain only lowercase alphabetical characters - no spaces, numbers or symbols.";
-$lang["information-tooltip_text"]="Tooltip text: Text that will appear in simple/advanced search when the cursor hovers over the field";
 $lang["property-shorthand_name"]="Shorthand name";
 $lang["property-display_field"]="Display field";
 $lang["property-enable_advanced_search"]="Enable advanced search";
@@ -125,11 +124,16 @@ $lang["property-use_for_find_similar_searching"]="Use for find similar searching
 $lang["property-iptc_equiv"]="Iptc equiv";
 $lang["property-display_template"]="Display template";
 $lang["property-value_filter"]="Value filter";
+$lang["property-regexp_filter"]="Regexp filter";
+$lang["information-regexp_filter"]="Regular Expression filtering - e.g. '[A-Z]+' will ensure only upper case letters can be entered.";
+$lang["information-regexp_fail"]="The entered value was not in the required format.";
 $lang["property-tab_name"]="Tab name";
 $lang["property-smart_theme_name"]="Smart theme name";
 $lang["property-exiftool_field"]="Exiftool field";
 $lang["property-exiftool_filter"]="Exiftool filter";
 $lang["property-help_text"]="Help text";
+$lang["property-tooltip_text"]="Tooltip text";
+$lang["information-tooltip_text"]="Tooltip text: Text that will appear in simple/advanced search when the cursor hovers over the field";
 $lang["information-display_as_dropdown"]="Checkbox lists and dropdown boxes: display as a dropdown box on the advanced search? (the default is to display both as checkbox lists on the advanced search page to enable OR functionality)";
 $lang["property-display_as_dropdown"]="Display as dropdown";
 $lang["property-external_user_access"]="External user access";
@@ -140,7 +144,7 @@ $lang["property-omit_when_copying"]="Omit when copying";
 
 $lang["property-query"]="Query";
 
-$lang["information-id"]="Note: 'Id' below MUST be set to a three character unique code";
+$lang["information-id"]="Note: 'Id' below MUST be set to a three character unique code.";
 $lang["property-id"]="Id";
 $lang["property-width"]="Width";
 $lang["property-height"]="Height";
@@ -474,7 +478,7 @@ $lang["log-t"]="Transformed file";
 $lang["log-s"]="Change status";
 $lang["log-a"]="Change access";
 $lang["log-r"]="Reverted metadata";
-$lang["log-missinglang"]="[type] (missing lang)";
+$lang["log-missinglang"]="[type] (missing lang)"; # [type] will be replaced.
 
 $lang["backtoresourceview"]="Back to resource view";
 
@@ -1606,8 +1610,6 @@ $lang["descending"] = "Descending";
 $lang["sort-type"] = "Sort Type";
 $lang["collection-order"] = "Collection Order";
 $lang["save-error"]="!! Error auto saving - please save manually !!";
-$lang["information-regexp_filter"]="Regular Expression filtering - e.g. '[A-Z]+' will ensure only upper case letters can be entered.";
-$lang["information-regexp_fail"]="The entered value was not in the required format.";
 
 $lang["theme_home_promote"]="Promote on the home page?";
 $lang["theme_home_page_text"]="Home page text";

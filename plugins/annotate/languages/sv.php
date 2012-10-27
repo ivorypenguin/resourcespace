@@ -1,19 +1,21 @@
 <?php
 # Swedish
 # Language File for the Annotate Plugin
-# Updated by Henrik Frizén 20120429 for svn r3351
+# Updated by Henrik Frizén 20121027 for svn r3869
 # -------
 #
 #
 $lang['annotations']="Noteringar";
 $lang['pdfwithnotes']="Pdf med noteringar";
-$lang["annotatepdfconfig"]="Noteringar som pdf";
-$lang["annotatepdfintrotext"]="Välj önskad arkstorlek för pdf-filen innehållande en sammanställning av noteringarna.";
+$lang["annotatepdfconfig"]="Pdf med noteringar";
+$lang["annotatepdfintrotext"]="Välj önskad arkstorlek för pdf-filen med noteringar.";
 
 $lang["error-saving"]="Ett fel uppstod när noteringen sparades.";
 $lang["error-deleting"]="Ett fel uppstod när noteringen togs bort.";
 
 $lang["action-add_note"]="Lägg till notering";
+$lang["action-toggle-on"]="Visa alla";
+$lang["action-toggle-off"]="Dölj alla";
 
 $lang["note-1"]="1 notering";
 $lang["note-2"]="%number noteringar"; # %number will be replaced, e.g. 3 notes
@@ -27,4 +29,5 @@ $lang["annotate_public_view"] = "Visa noteringar offentligt för delade samlinga
 $lang["annotate_show_author"] = "Visa vem som gjort noteringarna, vid visning av förhandsgranskningar:";
 
 $lang["annotate_font"]="Typsnitt:";
-
+$lang["annotate_pdf_output"]="Möjlighet att spara pdf med noteringar (experimentell):";
+$lang["annotate_pdf_output_only_annotated"]="Inkludera endast material med noteringar, i sparad pdf:";

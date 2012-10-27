@@ -1,7 +1,7 @@
 <?php
 # Swedish
 # Language File for the Transform Plugin
-# Updated by Henrik Frizén 20120429 for svn r3351
+# Updated by Henrik Frizén 20121027 for svn r3869
 # -------
 #
 #
@@ -34,6 +34,7 @@ $lang['priorversion']="Tidigare version";
 $lang['replaced']="Ersattes";
 $lang['replaceslideshowimage']="Ersätt bild i bildspel";
 $lang['slideshowsequencenumber']="Ordningsnummer (1, 2, 3 etc.)";
+$lang['slideshowmakelink']="Länka bilden i bildspelet till visning av materialet";
 $lang['transformcrophelp']="Ange eventuell beskärning genom att rita en rektangulär markering direkt på bilden till vänster.";
 $lang['originalsize']="Originalstorlek";
 $lang['allow_upscale']="Tillåt förstoring?";
