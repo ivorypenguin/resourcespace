@@ -85,7 +85,7 @@ if ($k=="") { ?>
 <!--Title row-->	
 <tr class="ListviewTitleStyle">
 <td width="5%"><?php echo $lang["date"]?></td>
-<td width="5%"><?php echo "ref" ?></td>
+<td width="5%"><?php echo $lang["requestorderid"]?></td>
 <td width="5%"><?php echo $lang["user"]?></td>
 <td width="25%"><?php echo $lang["comments"]?></td>
 <td width="10%"><?php echo $lang["status"]?></td>
