@@ -304,6 +304,7 @@ $lang["emailcollection"]="E-mail Collection";
 $lang["collectionname"]="Collection Name";
 $lang["collectionid"]="Collection ID";
 $lang["collectionidprefix"]="Col_ID";
+$lang["_dupe"]="_dupe";
 $lang["emailtousers"]="E-mail to users<br><br><b>For existing users</b> start typing the user's name to search, click the user when found and then click plus<br><br><b>For non-registered users</b> type the e-mail address then click plus";
 $lang["removecollectionareyousure"]="Are you sure you wish to remove this collection from your list?";
 $lang["managemycollections"]="Manage 'My Collections'";

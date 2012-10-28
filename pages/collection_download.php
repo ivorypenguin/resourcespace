@@ -215,7 +215,7 @@ if ($submitted != "")
 								$filename_ext=$path_parts['extension'];
 								$filename_wo=$path_parts['filename'];
 								$x=findDuplicates($filenames,$filename);
-								$filename=$filename_wo."_dupe".$x.".".$filename_ext;
+								$filename=$filename_wo.$lang["_dupe"].$x.".".$filename_ext;
 							}
 						}
 						//add original file name to array

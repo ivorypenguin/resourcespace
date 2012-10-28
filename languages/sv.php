@@ -26,7 +26,7 @@
 # En första version av översättningen skapades av Henrik Frizén (förnamn.efternamn utan accenttecken i e-postboxen.Sveriges landskod) 20110124 för version 2295
 #
 # Senast uppdaterad av [Namn] [Datum] för version [svn-version], [kommentar]
-# Senast uppdaterad av Henrik Frizén 20121027 för version 3869
+# Senast uppdaterad av Henrik Frizén 20121029 för version 3873
 #
 #
 # User group names (for the default user groups)
@@ -329,6 +329,7 @@ $lang["emailcollection"]="Dela samling via e-post";
 $lang["collectionname"]="Samlingsnamn";
 $lang["collectionid"]="Samlingsnr";
 $lang["collectionidprefix"]="Saml_nr";
+$lang["_dupe"]="_dubblett";
 $lang["emailtousers"]="Mottagare<br><br><b>För mottagare med användarkonto:</b> Ange några bokstäver i användarens namn för att söka, klicka sedan på den hittade användaren och därefter på <b>+</b><br><br><b>För mottagare utan användarkonto:</b> Ange en e-postadress och klicka på <b>+</b>";
 $lang["removecollectionareyousure"]="Vill du avlägsna den här samlingen från listan?";
 $lang["managemycollections"]="Hantera Mina samlingar";
