@@ -409,7 +409,7 @@ $theme_images_number=1; # How many to auto-select (if none chosen manually)
 $theme_images_align_right=false; # Align theme images to the right on the themes page? (particularly useful when there are multiple theme images)
 $show_theme_collection_stats=false; # Show count of themes and resources in theme category
 
-# How many levels of theme category to show.F
+# How many levels of theme category to show.
 # If this is set to more than one, a dropdown box will appear to allow browsing of theme sub-levels
 $theme_category_levels=1;
 
