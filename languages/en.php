@@ -668,6 +668,7 @@ $lang["resource-1"]="resource";
 $lang["resource-2"]="resources";
 $lang["status-note"]="NOTE";
 $lang["action-changelanguage"]="Change Language";
+$lang["loading"]="Loading...";
 
 # Pager
 $lang["next"]="Next";

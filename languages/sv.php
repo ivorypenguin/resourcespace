@@ -26,7 +26,7 @@
 # En första version av översättningen skapades av Henrik Frizén (förnamn.efternamn utan accenttecken i e-postboxen.Sveriges landskod) 20110124 för version 2295
 #
 # Senast uppdaterad av [Namn] [Datum] för version [svn-version], [kommentar]
-# Senast uppdaterad av Henrik Frizén 20121029 för version 3873
+# Senast uppdaterad av Henrik Frizén 20121029 för version 3874
 #
 #
 # User group names (for the default user groups)
@@ -693,6 +693,7 @@ $lang["resource-1"]="material";
 $lang["resource-2"]="material";
 $lang["status-note"]="OBSERVERA";
 $lang["action-changelanguage"]="Byt språk";
+$lang["loading"]="Läser in …";
 
 # Pager
 $lang["next"]="Nästa";
