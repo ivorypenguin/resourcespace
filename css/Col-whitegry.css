@@ -2,7 +2,7 @@ body,html {color:#737373;background: #FFF;}
 h2 {color: #000000;}
 h1 {color: #000000;}
 .CollectDivide {color:#FFFFFF;background: #000000 url(../gfx/whitegry/interface/CollectDivide.gif) repeat-x;}
-.CollectBack {color:#FFFFFF;background: #293340 url(../gfx/whitegry/interface/CollectBack.gif) repeat-x fixed;}
+.CollectBack {color:#FFFFFF;background: #293340 url(../gfx/whitegry/interface/CollectBack.gif) repeat-x;}
 
 a:link {color:#737373;}
 a:visited {color:#737373;}
