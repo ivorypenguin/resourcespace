@@ -1616,3 +1616,4 @@ $lang["save-error"]="!! Error auto saving - please save manually !!";
 $lang["theme_home_promote"]="Promote on the home page?";
 $lang["theme_home_page_text"]="Home page text";
 $lang["theme_home_page_image"]="Home page image";
+$lang["ref-title"] = "%ref - %title"; # %ref and %title will be replaced, e.g. 3 - Sunset

@@ -26,7 +26,7 @@
 # En första version av översättningen skapades av Henrik Frizén (förnamn.efternamn utan accenttecken i e-postboxen.Sveriges landskod) 20110124 för version 2295
 #
 # Senast uppdaterad av [Namn] [Datum] för version [svn-version], [kommentar]
-# Senast uppdaterad av Henrik Frizén 20121029 för version 3874
+# Senast uppdaterad av Henrik Frizén 20121029 för version 3876
 #
 #
 # User group names (for the default user groups)
@@ -1641,3 +1641,4 @@ $lang["save-error"]="Varning! Ändringarna kunde inte sparas automatiskt &ndash;
 $lang["theme_home_promote"]="Puffa för på startsidan?";
 $lang["theme_home_page_text"]="Pufftext";
 $lang["theme_home_page_image"]="Puffbild";
+$lang["ref-title"] = "%ref &ndash; %title"; # %ref and %title will be replaced, e.g. 3 - Sunset

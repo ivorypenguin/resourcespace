@@ -231,7 +231,7 @@ if (checkperm("h") && $collection['public']==1)
 		<?php foreach ($resources as $resource)
 			{
 			?>
-			<option value="<?php echo $resource["ref"] ?>" <?php if ($resource["ref"]==$collection["home_page_image"]) { ?>selected<?php } ?>><?php echo $resource["ref"] ?> - <?php echo $resource["field" . $view_title_field] ?></option>
+			<option value="<?php echo $resource["ref"] ?>" <?php if ($resource["ref"]==$collection["home_page_image"]) { ?>selected<?php } ?>><?php echo str_replace(array("%ref", "%title"), array($resource["ref"], i18n_get_translated($resource["field" . $view_title_field])), $lang["ref-title"]) ?></option>
 			<?php
 			}
 		?>
