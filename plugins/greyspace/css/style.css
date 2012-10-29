@@ -1,4 +1,4 @@
-/* Color scheme ***************************************************************
+/* Colour scheme **************************************************************
 Blue, dark:		#000080 (details - e.g. meter value)
 Blue, medium:	#0000C0 (user links: link/visted)
 Blue, bright:	#0000E0	(user links: hover/active)
@@ -25,7 +25,7 @@ White, bright:	#FFFFFF (white backgrounds - e.g. pull down selections, links: ho
 
 
 /* Default definitions ***************************************************** */
-body,html {color: #E0E0E0; background: #303030 url(../gfx/interface/back.png) repeat-x 0px 0px;}
+body, html {color: #E0E0E0; background: #303030 url(../gfx/interface/back.png) repeat-x 0px 0px;}
 h1 {color: #E0E0E0;} /* Page titles, e.g. in login page */
 h2 {color: #E0E0E0;} /* Sub titles */
 p {color: #E0E0E0;} /* Introtexts */
@@ -40,7 +40,7 @@ input[readonly] {color: #E0E0E0;} /* Read-only form fields */
 .highlight {color: #252525; background: #FFFF00;} /* Highlight, e.g. of search results */
 .NewFlag {color: #00FF00;} /* Flag for new items e.g. for new themes */
 .OxColourPale {color: #A0A0A0;} /* Misc texts - e.g. in footer text and for descriptions in the page Research Request */
-.searchcrumbs a {color:#F0F0F0; font-weight: bold;} /* Search titles */
+.searchcrumbs a {color: #F0F0F0; font-weight: bold;} /* Search titles */
 .meter-value {background-color: #000080;} /* Progress bar, e.g. for single file upload */
 
 
@@ -83,6 +83,12 @@ input[readonly] {color: #E0E0E0;} /* Read-only form fields */
 #FooterNavRight a:visited {color: #F0F0F0; background: none;}
 #FooterNavRight a:hover {color: #FFFFFF; background: none;}
 #FooterNavRight a:active {color: #FFFFFF; background: none;}
+
+#FooterNavRightBottom {color: #A0A0A0; background: none;} /* Footer, right */
+#FooterNavRightBottom  a:link {color: #F0F0F0; background: none;} /* Footer, right links */
+#FooterNavRightBottom  a:visited {color: #F0F0F0; background: none;}
+#FooterNavRightBottom  a:hover {color: #FFFFFF; background: none;}
+#FooterNavRightBottom  a:active {color: #FFFFFF; background: none;}
 
 .HorizontalNav a /* Horisontal navigation links, e.g. top links in header. */
 	{
@@ -157,10 +163,10 @@ input[readonly] {color: #E0E0E0;} /* Read-only form fields */
 /* The cell bottom border should have a distinct colour for the list to look good if it is empty. */
 .Listview tr {background: #505050 url(../gfx/interface/listblend.gif) repeat-x 0px 0px;} /* Cell background */
 
-.Listview .ListviewStyle td .ListTitle a:link {color:#F0F0F0; background: none;} /* Text colour for title column */
-.Listview .ListviewStyle td .ListTitle a:visited {color:#F0F0F0; background: none;}
-.Listview .ListviewStyle td .ListTools a:link {color:#F0F0F0; background: none;}
-.Listview .ListviewStyle td .ListTools a:visited {color:#F0F0F0; background: none;}
+.Listview .ListviewStyle td .ListTitle a:link {color: #F0F0F0; background: none;} /* Text colour for title column */
+.Listview .ListviewStyle td .ListTitle a:visited {color: #F0F0F0; background: none;}
+.Listview .ListviewStyle td .ListTools a:link {color: #F0F0F0; background: none;}
+.Listview .ListviewStyle td .ListTools a:visited {color: #F0F0F0; background: none;}
 
 .Listview .ListviewStyle tr:hover {background: #C0C0C0;} /* Row hovering background highlight for all columns */
 .Listview .ListviewStyle tr:hover td {color: #252525; background: none;} /* Row hovering text colour highlight for all columns but title and tools */
@@ -172,7 +178,7 @@ input[readonly] {color: #E0E0E0;} /* Read-only form fields */
 .Listview .ListviewStyle tr.ListviewTitleStyle td.Selected a {color: #FFFFFF; background: #303030;} /* Header link text colour and background for sorting column */
 .Listview .ListviewStyle tr.ListviewTitleStyle td .ListTools {color: #E0E0E0; background: #303030;} /* Header text colour and background for tools column */
 
-.Listview .ListviewStyle tr.ListviewBoxedTitleStyle td {color:#E0E0E0; background: #505050;} /* Header text colour and background, for all columns but tools. For list inside panels, e.g. in themes page */
+.Listview .ListviewStyle tr.ListviewBoxedTitleStyle td {color: #E0E0E0; background: #505050;} /* Header text colour and background, for all columns but tools. For list inside panels, e.g. in themes page */
 
 .Listview .ListviewStyle tr td .ListTitle .ListViewSubTable tr /* Subtable background, e.g. in edit fields page */
 	{
@@ -230,10 +236,10 @@ input[readonly] {color: #E0E0E0;} /* Read-only form fields */
 	}
 .NoFind p {color: #E0E0E0; background: none;}
 .NoFind a:link {color: #F0F0F0; background: none; text-decoration: underline;}
-.NoFind a:visited {color:#F0F0F0; background: none; text-decoration: underline;}
-.NoFind a:hover {color:#FFFFFF; background: none; text-decoration: underline;}
-.NoFind a:active {color:#FFFFFF; background: none; text-decoration: underline;}
-.NoFind .highlight {color:#252525; background: #FFFF00;}
+.NoFind a:visited {color: #F0F0F0; background: none; text-decoration: underline;}
+.NoFind a:hover {color: #FFFFFF; background: none; text-decoration: underline;}
+.NoFind a:active {color: #FFFFFF; background: none; text-decoration: underline;}
+.NoFind .highlight {color: #252525; background: #FFFF00;}
 
 
 /* Basic page ************************************************************** */
@@ -245,10 +251,10 @@ input[readonly] {color: #E0E0E0;} /* Read-only form fields */
 .BasicsBox p a:visited {color: #F0F0F0; background: none;}
 .BasicsBox p a:hover {color: #FFFFFF; background: none;}
 .BasicsBox p a:active {color: #FFFFFF; background: none;}
-.BasicsBox a:link {color: #F0F0F0; background: none;} /* Links */
-.BasicsBox a:visited {color: #F0F0F0; background: none;}
-.BasicsBox a:hover {color: #FFFFFF; background: none;}
-.BasicsBox a:active {color: #FFFFFF; background: none;}
+.BasicsBox a:link {color: #F0F0F0;} /* Links */
+.BasicsBox a:visited {color: #F0F0F0;}
+.BasicsBox a:hover {color: #FFFFFF;}
+.BasicsBox a:active {color: #FFFFFF;}
 
 .BasicsBox .HorizontalNav li
 	{
@@ -665,6 +671,95 @@ input[readonly] {color: #E0E0E0;} /* Read-only form fields */
 .StarCurrent {background: transparent url(../gfx/interface/RatingStarWhite.gif) no-repeat;}
 .StarWhite {background: transparent url(../gfx/interface/RatingStarWhite.gif) no-repeat;;}
 .StarGrey {background: transparent url(../gfx/interface/RatingStarGrey.gif) no-repeat;;}
+
+
+/* Plupload **************************************************************** */
+.plupload_container /* Plupload panel */
+	{
+	-moz-border-radius: 5px; -khtml-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px;
+	border-top: 1px solid #E0E0E0;
+	border-right: 1px solid #252525;
+	border-bottom: 1px solid #252525;
+	border-left: 1px solid #E0E0E0;
+	background: #505050 url('../gfx/interface/recordpanel.gif') repeat-x;
+	-webkit-box-shadow: 4px 5px 5px rgba(0, 0, 0, .18); -moz-box-shadow: 4px 5px 5px rgba(0, 0, 0, .18); box-shadow: 4px 5px 5px rgba(0, 0, 0, .18);
+	}
+
+a.plupload_button.plupload_add, a.plupload_button.plupload_start /* Buttons - common definitions */
+	{
+	-moz-border-radius: 5px; -khtml-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px;
+	border: 1px solid #C0C0C0;
+	background-image: url('../gfx/interface/buttons.png');
+	}
+
+a.plupload_button.plupload_add:link, a.plupload_button.plupload_add:visited, a.plupload_button.plupload_start:link, a.plupload_button.plupload_start:visited /* Buttons with start button enabled */
+	{
+	color: #252525;
+	background-color: #C0C0C0;
+	}
+a.plupload_button.plupload_add:hover, a.plupload_button.plupload_add:active, a.plupload_button.plupload_start:hover, a.plupload_button.plupload_start:active
+	{
+	color: #000000;
+	background-color: #E0E0E0;
+	}
+
+a.plupload_button.plupload_start.plupload_disabled:link, a.plupload_button.plupload_start.plupload_disabled:visited, a.plupload_button.plupload_start.plupload_disabled:hover, a.plupload_button.plupload_start.plupload_disabled:active /* Buttons with start button disabled */
+	{
+	color: #252525;
+	background-color: #C0C0C0;
+	background-image: url('../gfx/interface/buttons-disabled.png');
+	}
+
+.plupload_scroll .plupload_filelist /* Filelist, border and background */
+	{
+	padding-bottom: 1px;
+	border: 2px groove #252525;
+	background: #E0E0E0;
+	}
+
+.plupload_filelist li /* Filelist, helptext and file borders */
+	{
+	border-bottom: 1px solid #808080;
+	color: #252525;
+	background: #E0E0E0;
+	}
+
+.plupload_filelist_header, .plupload_filelist_footer /* Filelist, header and footer */
+	{
+	border: none;
+	color: #E0E0E0;
+	background: none;
+	}
+
+li.plupload_delete  /* Filelist, files */
+	{
+	background: #A0A0A0 url('../gfx/interface/backgrounds.png') repeat-x 0 -156px;
+	}
+
+li.plupload_uploading /* Filelist, file currently being uploaded */
+	{
+	background: #C0C0C0 url('../gfx/interface/backgrounds.png') repeat-x 0 -238px;
+	}
+
+.plupload_filelist .plupload_file_name /*Filelist, filename */
+	{
+	color: #252525;
+	background: none;
+	}
+
+.plupload_file_status {color: #000080;} /* Filelist, file upload status */
+.plupload_file_status span {color: #E0E0E0;} /* Filelist, total upload status */
+
+li.plupload_delete a {background: url('../gfx/interface/delete.png');} /* Icon: Remove file from list */
+li.plupload_done a {background: url('../gfx/interface/accept.png');} /* Icon: File uploaded */
+li.plupload_failed a {background: url('../gfx/interface/error.png');} /* Icon: Upload error */
+
+.plupload_progress_container /* Upload progress meter */
+	{
+	border: 2px groove #252525;
+	background: #C0C0C0;
+	}
+.plupload_progress_bar {background: #000080;}
 
 
 /* Plugins ***************************************************************** */
