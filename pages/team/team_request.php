@@ -38,7 +38,7 @@ $jumpcount=1;
 <div class="Listview">
 <table border="0" cellspacing="0" cellpadding="0" class="ListviewStyle">
 <tr class="ListviewTitleStyle">
-<? if(!hook("requestlistheader")): ?>
+<?php if(!hook("requestlistheader")): ?>
 <td><?php echo $lang["requestorderid"]?></td>
 <td><?php echo $lang["username"]?></td>
 <td><?php echo $lang["fullname"]?></td>
@@ -48,7 +48,7 @@ $jumpcount=1;
 <td><?php echo $lang["assignedto"]?></td>
 <td><?php echo $lang["status"]?></td>
 <td><div class="ListTools"><?php echo $lang["tools"]?></div></td>
-<? endif; ?>
+<?php endif; ?>
 </tr>
 
 <?php
@@ -59,7 +59,7 @@ for ($n=$offset;(($n<count($requests)) && ($n<($offset+$per_page)));$n++)
 	{
 	?>
 	<tr>
-<? if(!hook("requestlistitems")): ?>
+<?php if(!hook("requestlistitems")): ?>
 	<td><?php echo $requests[$n]["ref"]?></td>
 	<td><?php echo $requests[$n]["username"] ?></td>
 	<td><?php echo $requests[$n]["fullname"] ?></td>
@@ -69,7 +69,7 @@ for ($n=$offset;(($n<count($requests)) && ($n<($offset+$per_page)));$n++)
 	<td><?php echo $requests[$n]["assigned_to_username"] ?></td>
 	<td><?php echo $lang["resourcerequeststatus" . $requests[$n]["status"]] ?></td>
 	<td><div class="ListTools"><a href="<?php echo $baseurl_short?>pages/team/team_request_edit.php?ref=<?php echo $requests[$n]["ref"]?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["action-edit"]?></a></a></div></td>
-<? endif; ?>
+<?php endif; ?>
 	</tr>
 	<?php
 	}

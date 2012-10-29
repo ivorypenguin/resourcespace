@@ -53,10 +53,10 @@ else
 <div class="Question"><label><?php echo $lang["comments"]?></label><div class="Fixed"><?php echo nl2br($request["comments"]) ?></div>
 <div class="clearerleft"> </div></div>
 
-<? if(!hook("disprequesteditems")): ?>
+<?php if(!hook("disprequesteditems")): ?>
 <div class="Question"><label><?php echo $lang["requesteditems"]?></label><div class="Fixed"><a <?php if ($frameless_collections) { ?>href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $request["collection"]) ?>"
 <?php } else {?>href="<?php echo $baseurl_short?>pages/collections.php?collection=<?php echo $request["collection"]?>" target="collections"<?php }?>>&gt;&nbsp;<?php echo $lang["action-select"]?></a></div>
-<? endif; ?>
+<?php endif; ?>
 <div class="clearerleft"> </div></div>
 
 <?php

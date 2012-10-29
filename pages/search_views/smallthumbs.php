@@ -93,7 +93,7 @@
 		<?php } ?>
 		<?php } ?>
 		<?php } // end hook replaceresourcetoolssmall ?>
-<? hook("smallthumbicon"); ?>	
+<?php hook("smallthumbicon"); ?>
 <div class="clearer"></div></div>	
 <div class="PanelShadow"></div></div>
 		 

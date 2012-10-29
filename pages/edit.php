@@ -412,7 +412,7 @@ else
 <?php } else { ?>
 <option value="restore"><?php echo $lang["retrypreviews"]?></option>
 <?php } ?>
-<? hook("moretweakingopt"); ?>
+<?php hook("moretweakingopt"); ?>
 </select>
 <div class="clearerleft"> </div>
 </div>
