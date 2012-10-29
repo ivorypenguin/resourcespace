@@ -865,6 +865,7 @@ for ($n=0;$n<count($fields);$n++)
 <?php echo $extra?>
 </div>
 </div>
+<?php hook("renderafterresourcedetails"); ?>
 <!-- end of tabbed panel-->
 </div></div>
 <div class="PanelShadow"></div>

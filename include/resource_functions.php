@@ -872,7 +872,9 @@ function delete_resource($ref)
 			collection_log($in_collections[$n]['collection'],'d',$in_collections[$n]['resource']);
 			}
 		}
-		
+
+	hook("beforedeleteresourcefromdb");
+
 	# Delete all database entries
 	sql_query("delete from resource where ref='$ref'");
 	sql_query("delete from resource_data where resource='$ref'");

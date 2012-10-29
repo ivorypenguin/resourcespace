@@ -90,6 +90,9 @@ function upload_file($ref,$no_exif=false,$revert=false,$autorotate=false)
 
 	if (!$revert){ 
     # Remove existing file, if present
+
+    hook("beforeremoveexistingfile", "", array( "resourceId" => $ref ) );
+
     $old_extension=sql_value("select file_extension value from resource where ref='$ref'","");
     if ($old_extension!="")	
     	{
