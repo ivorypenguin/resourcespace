@@ -2324,12 +2324,15 @@ function auto_create_user_account()
 	elseif (count($auto_approve_domains)>0)
 		{
 		# Check e-mail domain.
-		foreach ($auto_approve_domains as $domain)
+		foreach ($auto_approve_domains as $domain=>$set_usergroup)
 			{
 			if (substr(strtolower($email),strlen($email)-strlen($domain)-1)==("@" . strtolower($domain)))
 				{
 				# E-mail domain match.
 				$approve=true;
+				
+				# If user group is supplied, set this
+				if (is_numeric($set_usergroup)) {$usergroup=$set_usergroup;}
 				}
 			}
 		}

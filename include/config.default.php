@@ -1081,13 +1081,19 @@ $global_permissions="";
 $user_account_auto_creation=false;
 $user_account_auto_creation_usergroup=2; # which user group for auto-created accounts? (see also $registration_group_select - allows users to select the group themselves).
 
-# Automatically approve account requests (created via $user_account_auto_creation above)?
+# Automatically approve ALL account requests (created via $user_account_auto_creation above)?
 $auto_approve_accounts=false;
 
 # Automatically approve accounts that have e-mails ending in given domain names.
 # E.g. $auto_approve_domains=array("mycompany.com","othercompany.org");
 #
 # NOTE - only used if $user_account_auto_creation=true above.
+# Do not use with $auto_approve_accounts above as it will override this parameter and approve all accounts regardless of e-mail domain.
+#
+# Optional additional feature... place users in groups depending on email domain. Use syntax:
+# $auto_approve_domains=array("mycompany.com"=>2,"othercompany.org"=>3);
+# Where 2 and 3 are the ID numbers for the respective user groups.
+
 $auto_approve_domains=array();
 
 # Display a larger preview image on the edit page?
