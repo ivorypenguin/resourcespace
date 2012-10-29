@@ -39,12 +39,6 @@ http://www.resourcespace.org/
 <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
 <title><?php echo htmlspecialchars($applicationname)?></title>
 <link rel="icon" type="image/png" href="<?php echo $baseurl."/".$header_favicon?>" />
-<link href="<?php echo $baseurl?>/css/global.css?css_reload_key=<?php echo $css_reload_key?>" rel="stylesheet" type="text/css" media="screen,projection,print" />
-<?php if (!hook("adjustcolortheme")){ ?>
-<link href="<?php echo $baseurl?>/css/Col-<?php echo (isset($userfixedtheme) && $userfixedtheme!="")?$userfixedtheme:getval("colourcss",$defaulttheme)?>.css?css_reload_key=<?php echo $css_reload_key?>" rel="stylesheet" type="text/css" media="screen,projection,print" id="colourcss" />
-<?php } ?>
-<?php if ($pagename!="preview_all"){?><!--[if lte IE 7]> <link href="<?php echo $baseurl?>/css/globalIE.css?css_reload_key=<?php echo $css_reload_key?>" rel="stylesheet" type="text/css"  media="screen,projection,print" /> <![endif]--><?php } ?>
-<!--[if lte IE 5.6]> <link href="<?php echo $baseurl?>/css/globalIE5.css?css_reload_key=<?php echo $css_reload_key?>" rel="stylesheet" type="text/css"  media="screen,projection,print" /> <![endif]-->
 
 <!-- Load jQuery and jQueryUI -->
 <script src="<?php echo $baseurl?>/lib/js/jquery-1.7.2.min.js?css_reload_key=<?php echo $css_reload_key?>" type="text/javascript"></script>
@@ -104,6 +98,18 @@ var baseurl="<?php echo $baseurl?>";
 <?php hook("additionalheaderjs");?>
 
 <?php
+echo $headerinsert;
+$extrafooterhtml="";
+?>
+
+<link href="<?php echo $baseurl?>/css/global.css?css_reload_key=<?php echo $css_reload_key?>" rel="stylesheet" type="text/css" media="screen,projection,print" />
+<?php if (!hook("adjustcolortheme")){ ?>
+<link href="<?php echo $baseurl?>/css/Col-<?php echo (isset($userfixedtheme) && $userfixedtheme!="")?$userfixedtheme:getval("colourcss",$defaulttheme)?>.css?css_reload_key=<?php echo $css_reload_key?>" rel="stylesheet" type="text/css" media="screen,projection,print" id="colourcss" />
+<?php } ?>
+<?php if ($pagename!="preview_all"){?><!--[if lte IE 7]> <link href="<?php echo $baseurl?>/css/globalIE.css?css_reload_key=<?php echo $css_reload_key?>" rel="stylesheet" type="text/css"  media="screen,projection,print" /> <![endif]--><?php } ?>
+<!--[if lte IE 5.6]> <link href="<?php echo $baseurl?>/css/globalIE5.css?css_reload_key=<?php echo $css_reload_key?>" rel="stylesheet" type="text/css"  media="screen,projection,print" /> <![endif]-->
+
+<?php
 # Include CSS files for for each of the plugins too (if provided)
 for ($n=0;$n<count($plugins);$n++)
 	{
@@ -123,11 +129,6 @@ for ($n=0;$n<count($plugins);$n++)
 		<?php
 		}	
 	}
-?>
-
-<?php
-echo $headerinsert;
-$extrafooterhtml="";
 ?>
 
 <?php
