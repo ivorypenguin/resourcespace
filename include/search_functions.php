@@ -993,6 +993,7 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
 		case 0: # -------- Text boxes
 		case 1:
 		case 5:
+		case 8:
 		?><input class="<?php echo $class ?>" type=text name="field_<?php echo $field["ref"]?>" value="<?php echo htmlspecialchars($value)?>" <?php if ($autoupdate) { ?>onChange="UpdateResultCount();"<?php } ?> onKeyPress="if (!(updating)) {setTimeout('UpdateResultCount()',2000);updating=true;}"><?php
 		break;
 	
@@ -1262,6 +1263,7 @@ function search_form_to_search_query($fields,$fromsearchbar=false)
 			case 0: # -------- Text boxes
 			case 1:
 			case 5:
+			case 8:
 			$name="field_" . $fields[$n]["ref"];
 			$value=getvalescaped($name,"");
 			if ($value!="")
