@@ -24,8 +24,8 @@ $message=str_replace("[toaddress]",$checkmail_email,$message);
 $subjectfield=sql_value("select title value from resource_type_field where ref='$checkmail_subject_field'","");
 $bodyfield=sql_value("select title value from resource_type_field where ref='$checkmail_body_field'","");
 
-$message=str_replace("[subjectfield]",i18n_get_translated($subjectfield),$message);
-$message=str_replace("[bodyfield]",i18n_get_translated($bodyfield),$message);
+$message=str_replace("[subjectfield]",lang_or_i18n_get_translated($subjectfield, "fieldtitle-"),$message);
+$message=str_replace("[bodyfield]",lang_or_i18n_get_translated($bodyfield, "fieldtitle-"),$message);
 
 $access=$checkmail_default_access;
 $access=$lang["access$access"];

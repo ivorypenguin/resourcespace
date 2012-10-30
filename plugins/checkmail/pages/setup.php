@@ -10,7 +10,7 @@ $plugin_name = 'checkmail';
 $page_heading = $lang['checkmail_configuration'];
 $last_checkmail=sql_value("select value from sysvars where name='last_checkmail'",""); 
 $now=sql_value("select now() value","");
-if (!extension_loaded("imap")){$page_intro="Step One: Install php imap extension!<br /><br />";}
+if (!extension_loaded("imap")){$page_intro=$lang['checkmail_install_php_imap_extension']."<br /><br />";}
 else if ($last_checkmail==""){
 	$page_intro = $lang['checkmail_cronhelp']."<br /><br />";
 } else {
