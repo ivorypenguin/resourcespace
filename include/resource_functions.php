@@ -1917,7 +1917,7 @@ function get_edit_access($resource,$status=-999,$metadata=false)
 	if (!checkperm("e" . $status)) {return false;} # Must have edit permission to this resource first and foremost, before checking the filter.
 	
 	$gotmatch=false;
-	if (trim($usereditfilter)=="")
+	if (trim($usereditfilter)=="" || $status<0) # No filter set, or resource is still in a User Contributed state in which case the edit filter should not be applied.
 		{
 		$gotmatch = true;
 		}
