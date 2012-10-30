@@ -215,7 +215,7 @@ function display_extension_status($extension)
         }
     else
         {
-        $result = $lang["status-error"];
+        $result = $lang["status-fail"];
         }
 
     ?><tr><td colspan="2">php-<?php echo $extension ?></td>
