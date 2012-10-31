@@ -1279,7 +1279,7 @@ function change_collection_link($collection)
 	global $frameless_collections,$lang;
 	if ($frameless_collections)
 		{
-		return "<a href=\"#\" onClick=\"ChangeCollection('" . $collection . "');return false;\">";
+		return "<a href=\"#\" onClick=\"ChangeCollection('" . $collection . "','<?php echo $k ?>');return false;\">";
 		}
 	else
 		{

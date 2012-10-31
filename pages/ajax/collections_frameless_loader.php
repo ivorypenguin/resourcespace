@@ -93,7 +93,7 @@ $feedback=$cinfo["request_feedback"];
 <div id="CollectionFramelessDropTitle"><?php echo $lang["currentcollection"]?>:&nbsp;</div>				
 <div id="CollectionFramelessDrop">
 
-<select id="colselect" name="collection" class="SearchWidth" onchange="ChangeCollection(document.getElementById('colselect').value);">
+<select id="colselect" name="collection" class="SearchWidth" onchange="ChangeCollection(document.getElementById('colselect').value,'<?php echo $k ?>');">
 <?php
 $found=false;
 $list=get_user_collections($userref);

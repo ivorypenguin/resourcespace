@@ -17,7 +17,7 @@ $colname=$colinfo["name"];
 
 <div class="BasicsBox">
 <?php if ($back_to_collections_link != "") { ?><div style="float:right;"><a href="<?php echo $baseurl_short?>pages/collection_manage.php"><strong><?php echo $back_to_collections_link ?></strong> </a></div> <?php } ?>
-<h1><?php echo $lang["collectionlog"];?> - <a <?php if ($frameless_collections && !checkperm("b")){ ?>href onclick="ChangeCollection(<?php echo $ref;?>);"<?php } else {?>href="<?php echo $baseurl_short?>pages/collections.php?collection=<?php echo $ref;?>" target="collections"<?php }?>><?php echo @$colname;?></a></h1>
+<h1><?php echo $lang["collectionlog"];?> - <a <?php if ($frameless_collections && !checkperm("b")){ ?>href onclick="ChangeCollection(<?php echo $ref;?>,'<?php echo $k ?>');"<?php } else {?>href="<?php echo $baseurl_short?>pages/collections.php?collection=<?php echo $ref;?>" target="collections"<?php }?>><?php echo @$colname;?></a></h1>
 
 </div>
 

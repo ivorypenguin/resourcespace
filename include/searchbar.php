@@ -618,7 +618,7 @@ if (!$basic_simple_search)
 		</div>
 		
 		<script type="text/javascript">
-		UpdateCollectionDisplay();
+		UpdateCollectionDisplay('<?php echo $k ?>');
 		</script>
 		<?php } // end if not ajax_collections
 		}

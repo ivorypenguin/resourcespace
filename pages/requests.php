@@ -62,7 +62,7 @@ for ($n=$offset;(($n<count($requests)) && ($n<($offset+$per_page)));$n++)
 	<div class="ListTools">
 	<?php if ($requests[$n]["collection_id"] > 0){ // only show tools if the collection still exists ?>
 		<a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $requests[$n]["collection"])?>">&gt;&nbsp;<?php echo $lang["action-view"]?></a>
-        &nbsp;<a <?php if ($frameless_collections && !checkperm("b")){ ?>href onclick="ChangeCollection(<?php echo $requests[$n]["collection"]?>);"
+        &nbsp;<a <?php if ($frameless_collections && !checkperm("b")){ ?>href onclick="ChangeCollection(<?php echo $requests[$n]["collection"]?>,'<?php echo $k ?>');"
                 <?php } elseif ($autoshow_thumbs) {?>onclick=" top.document.getElementById('topframe').rows='*<?php if ($collection_resize!=true) {?>,3<?php } ?>,138'; return true;"
                 href="<?php echo $baseurl_short?>pages/collections.php?collection=<?php echo $requests[$n]["collection"]?>&amp;thumbs=show" target="collections"
                 <?php } else {?>href="<?php echo $baseurl_short?>pages/collections.php?collection=<?php echo $requests[$n]["collection"]?>" target="collections"<?php }?>>&gt;&nbsp;<?php echo $lang["action-select"]?></a>
