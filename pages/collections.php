@@ -527,9 +527,9 @@ elseif ($k!="")
 
 <?php if (!hook("thumbsmenu")) { ?>
   <?php if (!hook("replacecollectiontitle")) { ?><h2 id="CollectionsPanelHeader"><?php if ($collections_compact_style){?><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_manage.php" target="main"><?php } ?><?php echo $lang["mycollections"]?><?php if ($collections_compact_style){?></a><?php } ?></h2><?php } ?>
-  <form method="get" id="colselect">
+  <form method="get" id="colselect" onsubmit="CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?collection=-1&k=<?php echo $k?>&entername='+jQuery('#entername').val());return false;">
 		<div class="SearchItem" style="padding:0;margin:0;"><?php echo $lang["currentcollection"]?>&nbsp;(<strong><?php echo $count_result?></strong>&nbsp;<?php if ($count_result==1){echo $lang["item"];} else {echo $lang["items"];}?>): 
-		<select name="collection" id="collection" onchange="if(document.getElementById('collection').value==-1){document.getElementById('entername').style.display='block';document.getElementById('entername').focus();return false;} <?php if (($frameless_collections || $ajax_collections) && !checkperm("b")){ ?>href="#" onclick="ChangeCollection(jQuery(this).val());<?php } else { ?>document.getElementById('colselect').submit();<?php } ?>"<?php if ($collection_dropdown_user_access_mode){?>class="SearchWidthExp"<?php } else { ?> class="SearchWidth"<?php } ?>>
+		<select name="collection" id="collection" onchange="if(document.getElementById('collection').value==-1){document.getElementById('entername').style.display='block';document.getElementById('entername').focus();return false;} <?php if (($frameless_collections || $ajax_collections) && !checkperm("b")){ ?>ChangeCollection(jQuery(this).val());<?php } else { ?>document.getElementById('colselect').submit();<?php } ?>" <?php if ($collection_dropdown_user_access_mode){?>class="SearchWidthExp"<?php } else { ?> class="SearchWidth"<?php } ?>>
 		<?php
 		$list=get_user_collections($userref);
 		$found=false;
@@ -580,7 +580,7 @@ elseif ($k!="")
 		<?php } ?>
 
 		</select>
-		<input type=text id="entername" name="entername" style="display:none;" class="SearchWidth" onUnfocus="document.getElementById('colselect').submit();">
+		<input type=text id="entername" name="entername" style="display:none;" <?php if ($collection_dropdown_user_access_mode){?>class="SearchWidthExp"<?php } else { ?> class="SearchWidth"<?php } ?>>
 		</div>			
   </form>
 
@@ -901,9 +901,9 @@ elseif ($k!="")
 <!--Collection Dropdown-->	
 <div id="CollectionMinDropTitle"><?php echo $lang["currentcollection"]?>:&nbsp;</div>				
 <div id="CollectionMinDrop">
-<form id="colselect" method="get" target="<?php echo $baseurl_short?>pages/collections.php">
+ <form method="get" id="colselect" onsubmit="CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=<?php echo $thumbs?>&collection=-1&k=<?php echo $k?>&entername='+jQuery('#entername').val());return false;">
 		<div class="MinSearchItem">
-		<select name="collection" id="collection" <?php if ($collection_dropdown_user_access_mode){?>class="SearchWidthExp"<?php } else { ?> class="SearchWidth"<?php } ?> onchange="if(document.getElementById('collection').value==-1){document.getElementById('entername').style.display='inline';document.getElementById('entername').focus();return false;} <?php if ($ajax_collections && !checkperm("b")){ ?>href="#" onclick="ChangeCollection(jQuery(this).val());<?php } else { ?>document.getElementById('colselect').submit();<?php } ?>">
+		<select name="collection" id="collection" <?php if ($collection_dropdown_user_access_mode){?>class="SearchWidthExp"<?php } else { ?> class="SearchWidth"<?php } ?> onchange="if(document.getElementById('collection').value==-1){document.getElementById('entername').style.display='inline';document.getElementById('entername').focus();return false;} <?php if ($ajax_collections && !checkperm("b")){ ?>ChangeCollection(jQuery(this).val());<?php } else { ?>document.getElementById('colselect').submit();<?php } ?>">
 		<?php
 		$found=false;
 		$list=get_user_collections($userref);
@@ -948,7 +948,7 @@ elseif ($k!="")
 		?>
 		<option value="-1">(<?php echo $lang["createnewcollection"]?>)</option>
 		</select>
-		<input type=text id="entername" name="entername" style="display:inline;display:none;" class="SearchWidth" onUnfocus="document.getElementById('colselect').submit();">
+		<input type=text id="entername" name="entername" style="display:inline;display:none;" class="SearchWidth">
 		</div>				
   </form>
 </div>
