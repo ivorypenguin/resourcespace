@@ -251,7 +251,7 @@ if (getval("ajax","")=="") {
 	?>
 	
 <?php if ($pagename!="login" && $pagename!="user_request" && $pagename!="user_password" &&  $pagename!="done" && $pagename!="preview_all" && $ajax_collections){?>
-<div id="CollectionDiv" class="CollectBack AjaxCollect" onload="UpdateCollectionDisplay('<?php echo $k ?>');" style="height:<?php echo $collection_frame_height ?>px;"><?php echo $lang["loading"]?></div>
+<div id="CollectionDiv" class="CollectBack AjaxCollect" onload="UpdateCollectionDisplay('<?php echo isset($k)?$k:"" ?>');" style="height:<?php echo $collection_frame_height ?>px;"><?php echo $lang["loading"]?></div>
 <script type="text/javascript">
 	collection_frame_height=<?php echo $collection_frame_height?>;
 function getWindowHeight() {
@@ -303,7 +303,7 @@ window.onload = function() {
 }
 <?php } else { ?>
 window.onload = function() {
-	setContent();UpdateCollectionDisplay();
+	setContent();UpdateCollectionDisplay('<?php echo isset($k)?$k:"" ?>');
 }
 <?php } ?>
 
