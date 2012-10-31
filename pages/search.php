@@ -561,7 +561,7 @@ if (true) # Always show search header now.
 	        $collections_compact_style_titleview=true;
 	        include("collections_compact_style.php");
 	        $collection_compact_style_titleview=false;
-	        ?><br /><br />
+	        ?><br />
 	    <?php } /*end if a collection search and compact_style - action selector*/ ?>    
     <?php }
     	}
@@ -588,7 +588,7 @@ if (true) # Always show search header now.
 		<?php 
 		}
 	}
-	echo $search_title_links;
+	if (!$collections_compact_style){echo $search_title_links;}
 
 	hook("beforesearchresults2");
 	hook("beforesearchresultsexpandspace");
