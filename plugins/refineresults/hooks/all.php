@@ -29,8 +29,8 @@ function HookRefineresultsSearchBeforesearchresultsexpandspace()
 	global $baseurl_short,$lang,$search,$k,$archive;
 	if ($k!="") {return false;}
 	?>
-	<div class="clearerleft"></div>
-	<div class="RecordBox" id="RefineResults" style="display:none;">
+	
+	<div class="RecordBox clearerleft" id="RefineResults" style="display:none;">
 	<div class="RecordPanel">  
 	
 	<form method="post" action="<?php echo $baseurl_short?>pages/search.php">
