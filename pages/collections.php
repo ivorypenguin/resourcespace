@@ -447,7 +447,9 @@ if ($count_result>$max_collection_thumbs && $k=="")
 	{
 	?>
 	<script type="text/javascript">
+	<?php if (getval("nowarn","")=="") { ?>
 	alert("<?php echo $lang["maxcollectionthumbsreached"]?>");
+	<?php } ?>
 	window.setTimeout("ToggleThumbs();CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=hide')");
 	</script>
 	<?php

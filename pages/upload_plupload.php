@@ -346,7 +346,7 @@ jQuery(document).ready(function () {
 		if(!uploader.files.length && uploader.features.dragdrop && uploader.settings.dragdrop)	{jQuery('#plupload_instructions').html('<?php echo $lang["intro-plupload_dragdrop"] ?>');}
 	<?php }
 
-	if ($usercollection==$collection_add) { ?>uploader.bind('FileUploaded', function(up, file) {CollectionDivLoad("<?php echo $baseurl . '/pages/collections.php?nc=' . time() ?>");});
+	if ($usercollection==$collection_add) { ?>uploader.bind('FileUploaded', function(up, file) {CollectionDivLoad("<?php echo $baseurl . '/pages/collections.php?nowarn=true&nc=' . time() ?>");});
 		<?php } ?>
 
 	//add flag so that upload_plupload.php can tell if this is the last file.
