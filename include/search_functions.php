@@ -651,6 +651,8 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 		{
 		if ($orig_order=="relevance") {$order_by="c.sortorder asc,c.date_added desc,r.ref";}
 		$colcustperm=$sql_join;
+		$colcustfilter=$sql_filter; // to avoid allowing this sql_filter to be modified by the $access_override search in the smart collection update below!!!
+		
 		if (getval("k","")!="") {$sql_filter="ref>0";} # Special case if a key has been provided.
 		
 		# Extract the collection number
@@ -689,7 +691,7 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 				} 
 			}		
 
-		return sql_query($sql_prefix . "select distinct c.date_added,c.comment,c.purchase_size,c.purchase_complete,r.hit_count score,length(c.comment) commentset, $select from resource r  join collection_resource c on r.ref=c.resource $colcustperm  where c.collection='" . $collection . "' and $sql_filter group by r.ref order by $order_by" . $sql_suffix,false,$fetchrows);
+		return sql_query($sql_prefix . "select distinct c.date_added,c.comment,c.purchase_size,c.purchase_complete,r.hit_count score,length(c.comment) commentset, $select from resource r  join collection_resource c on r.ref=c.resource $colcustperm  where c.collection='" . $collection . "' and $colcustfilter group by r.ref order by $order_by" . $sql_suffix,false,$fetchrows);
 		}
 	
 	# View Related
