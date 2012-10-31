@@ -82,7 +82,12 @@
 			}
 		?>
 		
-		<div class="ResourcePanelIcons"><?php if ($display_resource_id_in_thumbnail && $ref>0) { echo $ref; } else { ?>&nbsp;<?php } ?></div>	
+		<div class="ResourcePanelIcons">
+		<?php if(!hook("thumbscheckboxes")){?>
+		<?php if ($use_checkboxes_for_selection){?><input type="checkbox" id="check<?php echo $ref?>" class="checkselect" <?php if (in_array($ref,$collectionresources)){ ?>checked<?php } ?> onclick="if (jQuery('#check<?php echo $ref?>').attr('checked')=='checked'){ <?php if ($frameless_collections){?>AddResourceToCollection(<?php echo $ref?>);<?php }else {?>parent.collections.location.href='collections.php?add=<?php echo $ref?>';<?php }?> } else if (jQuery('#check<?php echo $ref?>').attr('checked')!='checked'){<?php if ($frameless_collections){?>RemoveResourceFromCollection(<?php echo $ref?>);<?php }else {?>parent.collections.location.href='collections.php?remove=<?php echo $ref?>';<?php }?> <?php if ($frameless_collections && isset($collection)){?>document.location.href='?search=<?php echo urlencode($search)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo $revsort?>&archive=<?php echo $archive?>&offset=<?php echo $offset?>';<?php } ?> }">&nbsp;<?php } ?>
+		<?php } # end hook thumbscheckboxes?>
+		<?php if ($display_resource_id_in_thumbnail && $ref>0) { echo $ref; } else { ?>&nbsp;<?php } ?>
+		</div>	
 
 		<?php if (!hook("replaceresourcetools")){?>
 		<?php if (!hook("replacefullscreenpreviewicon")){?>
@@ -108,9 +113,8 @@
 		<?php } ?>
 		<?php } 
 		hook("largesearchicon");?><div class="clearer"></div>
-		<?php if(!hook("thumbscheckboxes")){?>
-		<?php if ($use_checkboxes_for_selection){?><input type="checkbox" id="check<?php echo $ref?>" class="checkselect" <?php if (in_array($ref,$collectionresources)){ ?>checked<?php } ?> onclick="if (jQuery('#check<?php echo $ref?>').attr('checked')=='checked'){ <?php if ($frameless_collections){?>AddResourceToCollection(<?php echo $ref?>);<?php }else {?>parent.collections.location.href='collections.php?add=<?php echo $ref?>';<?php }?> } else if (jQuery('#check<?php echo $ref?>').attr('checked')!='checked'){<?php if ($frameless_collections){?>RemoveResourceFromCollection(<?php echo $ref?>);<?php }else {?>parent.collections.location.href='collections.php?remove=<?php echo $ref?>';<?php }?> <?php if ($frameless_collections && isset($collection)){?>document.location.href='?search=<?php echo urlencode($search)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo $revsort?>&archive=<?php echo $archive?>&offset=<?php echo $offset?>';<?php } ?> }"><?php } ?>
-		<?php } # end hook thumbscheckboxes?>
+
+
 		<?php } // end hook replaceresourcetools ?>
 
 	</div>
