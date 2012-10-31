@@ -299,7 +299,7 @@ function setContent() {
 }
 <?php if ($k!="" && isset($usercollection)) { ?>
 window.onload = function() {
-	setContent();ChangeCollection(<?php echo $usercollection; ?>);
+	setContent();ChangeCollection(<?php echo $usercollection; ?>,'<?php echo $k ?>');
 }
 <?php } else { ?>
 window.onload = function() {
