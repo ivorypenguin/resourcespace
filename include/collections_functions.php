@@ -539,8 +539,11 @@ function collections_comparator_desc($a, $b)
 if (!function_exists("get_themes")){
 function get_themes($themes=array(""))
 	{	
-	$themes_order_by=getvalescaped("col_order_by",getvalescaped("saved_themes_order_by","name"));
+	$themes_order_by=getvalescaped("themes_order_by",getvalescaped("saved_themes_order_by","name"));
 	$sort=getvalescaped("sort",getvalescaped("saved_themes_sort","ASC"));	
+	
+	global $themes_column_sorting;
+	if (!$themes_column_sorting){$themes_order_by="name";$sort="ASC";} // necessary to avoid using a cookie that can't be changed if this is turned off.
 		
 	# Return a list of themes under a given header (theme category).
 	$sql="select *,(select count(*) from collection_resource cr where cr.collection=c.ref) c from collection c  where c.theme='" . escape_check($themes[0]) . "' ";
@@ -560,7 +563,7 @@ function get_themes($themes=array(""))
 	$order_sort="";
 	if ($themes_order_by!="name"){$order_sort=" order by $themes_order_by $sort";}
 	$sql.=" and c.public=1    $order_sort;";
-	
+
 	$collections=sql_query($sql);
 	if ($themes_order_by=="name"){
 		if ($sort=="ASC"){usort($collections, 'collections_comparator');}
