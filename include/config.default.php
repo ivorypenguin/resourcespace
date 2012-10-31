@@ -1977,7 +1977,7 @@ $request_senduserupdates=true;
 # and perhaps other experiments within the ajax loaded context
 $ajax_url_rewrites=false;
 $ajax_url_rewrite_debug=false;
-$ajax_collections=false; // this automatically turns on $frameless_collections (though the original frameless collection behavior is mostly overridden)
+$ajax_collections=true; // this automatically turns on $frameless_collections (though the original frameless collection behavior is mostly overridden)
 
 # Allow users to create new collections. Set to false to prevent creation of new collections.
 $collection_allow_creation=true;
