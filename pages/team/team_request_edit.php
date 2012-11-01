@@ -54,7 +54,7 @@ else
 <div class="clearerleft"> </div></div>
 
 <?php if(!hook("disprequesteditems")): ?>
-<div class="Question"><label><?php echo $lang["requesteditems"]?></label><div class="Fixed"><a href="#" onclick="ChangeCollection(<?php echo $request["collection"]?>);">&gt;&nbsp;<?php echo $lang["action-select"]?></a></div>
+<div class="Question"><label><?php echo $lang["requesteditems"]?></label><div class="Fixed"><a href="#" onclick="ChangeCollection(<?php echo $request["collection"]?>,'');">&gt;&nbsp;<?php echo $lang["action-select"]?></a></div>
 <?php endif; ?>
 <div class="clearerleft"> </div></div>
 
