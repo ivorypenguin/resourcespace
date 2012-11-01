@@ -1205,7 +1205,7 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
 				}
 			  ?>
 			</select>	
-			</div><div><label></label><label><?php echo $lang["todate"]?></label><select name="<?php echo $name?>_endyear" class="SearchWidth" style="width:100px;" <?php if ($autoupdate) { ?>onChange="UpdateResultCount();"<?php } ?>>
+			</div><br><div><label></label><label><?php echo $lang["todate"]?></label><select name="<?php echo $name?>_endyear" class="SearchWidth" style="width:100px;" <?php if ($autoupdate) { ?>onChange="UpdateResultCount();"<?php } ?>>
 			  <option value=""><?php echo $lang["anyyear"]?></option>
 			  <?php
 			  $y=date("Y");

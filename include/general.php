@@ -2897,8 +2897,6 @@ function payment_set_complete($collection)
 		resource_log($resource["resource"],"p",0,"","","",0,$resource["purchase_size"],$resource["purchase_price"]);
 		}
 	
-	# Rename so that can be viewed on my purchases page
-	sql_query("update collection set name= '" . date("Y-m-d") . "' where ref='$collection'");
 	return true;
 
 	}
