@@ -171,8 +171,9 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 	if ($keysearch)
 		{
 		for ($n=0;$n<count($keywords);$n++)
-			{
+			{			
 			$keyword=$keywords[$n];
+			
 			if (substr($keyword,0,1)!="!")
 				{
 				global $date_field;
@@ -194,11 +195,40 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 						{
 						if ($sql_filter!="") {$sql_filter.=" and ";}
 						$sql_filter.="r.field$date_field like '" . $kw[1] . "%' ";
+						}												
+					elseif ($kw[0]=="startdate")
+						{
+						if ($sql_filter!="") {$sql_filter.=" and ";}
+						$sql_filter.="r.field$date_field >= '" . $kw[1] . "' ";
+						}
+					elseif ($kw[0]=="enddate")
+						{
+						if ($sql_filter!="") {$sql_filter.=" and ";}
+						$sql_filter.="r.field$date_field <= '" . $kw[1] . " 23:59:59' ";
+						}	
+					# Additional date range filtering
+					elseif (substr($kw[0],0,5)=="range")
+						{
+						$rangefield=substr($kw[0],6);
+						$daterange=false;
+						if (strpos($kw[1],"start")!==FALSE )
+							{
+							$rangestart=str_replace(" ","-",$kw[1]);
+							if ($sql_filter!="") {$sql_filter.=" and ";}
+							$sql_filter.="rd.value >= '" . substr($rangestart,strpos($rangestart,"start")+5,10) . "'";
+							}
+						if (strpos($kw[1],"end")!==FALSE )
+							{
+							$rangeend=str_replace(" ","-",$kw[1]);
+							if ($sql_filter!="") {$sql_filter.=" and ";}
+							$sql_filter.="rd.value <= '" . substr($rangeend,strpos($rangeend,"end")+3,10) . " 23:59:59'";
+							}
+						$sql_join.=" join resource_data rd on rd.resource=r.ref and rd.resource_type_field='" . $rangefield . "'";
 						}
 					else
 						{
 						$ckeywords=explode(";",$kw[1]);
-						
+
 						# Fetch field info
 						$fieldinfo=sql_query("select ref,type from resource_type_field where name='" . escape_check($kw[0]) . "'",0);
 						if (count($fieldinfo)==0)
@@ -209,14 +239,15 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 							{
 							$fieldinfo=$fieldinfo[0];
 							}
-						
+						$field=$fieldinfo["ref"];
+
 						# Special handling for dates
-						if ($fieldinfo["type"]==4 || $fieldinfo["type"]==6) 
+						if ($fieldinfo["type"]==4 || $fieldinfo["type"]==6 || $fieldinfo["type"]==10) 
 							{
 							$ckeywords=array(str_replace(" ","-",$kw[1]));
 							}
-						
-						$field=$fieldinfo["ref"];
+
+
 
 						#special SQL generation for category trees to use AND instead of OR
 						if(
@@ -228,11 +259,10 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 								$keyref=resolve_keyword($ckeywords[$m]);
 								if (!($keyref===false)) {
 									$c++;
-		
+
 									# Add related keywords
 									$related=get_related_keywords($keyref);
 									$relatedsql="";
-									
 									for ($r=0;$r<count($related);$r++)
 										{
 										$relatedsql.=" or k" . $c . ".keyword='" . $related[$r] . "'";
@@ -240,11 +270,10 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 									# Form join
 									//$sql_join.=" join (SELECT distinct k".$c.".resource,k".$c.".hit_count from resource_keyword k".$c." where k".$c.".keyword='$keyref' $relatedsql) t".$c." ";
 									$sql_join.=" join resource_keyword k" . $c . " on k" . $c . ".resource=r.ref and k" . $c . ".resource_type_field='" . $field . "' and (k" . $c . ".keyword='$keyref' $relatedsql)";
-	
-	
+
 									if ($score!="") {$score.="+";}
 									$score.="k" . $c . ".hit_count";
-									
+
 									# Log this
 									daily_stat("Keyword usage",$keyref);
 								}							
@@ -968,7 +997,7 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
 	# $name		the input name to use in the form (post name)
 	# $value	the default value to set for this field, if any
 	
-	global $auto_order_checkbox,$lang,$category_tree_open,$minyear;
+	global $auto_order_checkbox,$lang,$category_tree_open,$minyear,$daterange_search;
 	$name="field_" . $field["ref"];
 	
 	if (!$forsearchbar)
@@ -1122,47 +1151,137 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
 		break;
 		
 		case 4:
-		case 6: # ----- Date types
-		$found_year='';$found_month='';$found_day='';
-		$s=explode("-",$value);
-		if (count($s)>=3)
+		case 6: 
+		case 10: # ----- Date types
+		$found_year='';$found_month='';$found_day='';$found_start_year='';$found_start_month='';$found_start_day='';$found_end_year='';$found_end_month='';$found_end_day='';
+		if ($daterange_search)
+			{
+			$startvalue=substr($value,strpos($value,"start")+5,10);
+			$ss=explode(" ",$startvalue);
+			if (count($ss)>=3)
+				{
+				$found_start_year=$ss[0];
+				$found_start_month=$ss[1];
+				$found_start_day=$ss[2];
+				}
+			$endvalue=substr($value,strpos($value,"end")+3,10);
+			$se=explode(" ",$endvalue);
+			if (count($se)>=3)
+				{
+				$found_end_year=$se[0];
+				$found_end_month=$se[1];
+				$found_end_day=$se[2];
+				}
+			?>
+			<!--  date range search start -->			
+			<div><label><?php echo $lang["fromdate"]?></label>
+			<select name="<?php echo $name?>_startyear" class="SearchWidth" style="width:100px;" <?php if ($autoupdate) { ?>onChange="UpdateResultCount();"<?php } ?>>
+			  <option value=""><?php echo $lang["anyyear"]?></option>
+			  <?php
+			  $y=date("Y");
+			  for ($d=$y;$d>=$minyear;$d--)
+				{
+				?><option <?php if ($d==$found_start_year) { ?>selected<?php } ?>><?php echo $d?></option><?php
+				}
+			  ?>
+			</select>
+			<select name="<?php echo $name?>_startmonth" class="SearchWidth" style="width:100px;" <?php if ($autoupdate) { ?>onChange="UpdateResultCount();"<?php } ?>>
+			  <option value=""><?php echo $lang["anymonth"]?></option>
+			  <?php
+			  for ($d=1;$d<=12;$d++)
+				{
+				$m=str_pad($d,2,"0",STR_PAD_LEFT);
+				?><option <?php if ($d==$found_start_month) { ?>selected<?php } ?> value="<?php echo $m?>"><?php echo $lang["months"][$d-1]?></option><?php
+				}
+			  ?>
+			</select>
+			<select name="<?php echo $name?>_startday" class="SearchWidth" style="width:100px;" <?php if ($autoupdate) { ?>onChange="UpdateResultCount();"<?php } ?>>
+			  <option value=""><?php echo $lang["anyday"]?></option>
+			  <?php
+			  for ($d=1;$d<=31;$d++)
+				{
+				$m=str_pad($d,2,"0",STR_PAD_LEFT);
+				?><option <?php if ($d==$found_start_day) { ?>selected<?php } ?> value="<?php echo $m?>"><?php echo $m?></option><?php
+				}
+			  ?>
+			</select>	
+			</div><div><label></label><label><?php echo $lang["todate"]?></label><select name="<?php echo $name?>_endyear" class="SearchWidth" style="width:100px;" <?php if ($autoupdate) { ?>onChange="UpdateResultCount();"<?php } ?>>
+			  <option value=""><?php echo $lang["anyyear"]?></option>
+			  <?php
+			  $y=date("Y");
+			  for ($d=$y;$d>=$minyear;$d--)
+				{
+				?><option <?php if ($d==$found_end_year ) { ?>selected<?php } ?>><?php echo $d?></option><?php
+				}
+			  ?>
+			</select>
+			<select name="<?php echo $name?>_endmonth" class="SearchWidth" style="width:100px;" <?php if ($autoupdate) { ?>onChange="UpdateResultCount();"<?php } ?>>
+			  <option value=""><?php echo $lang["anymonth"]?></option>
+			  <?php
+			  $md=date("n");
+			  for ($d=1;$d<=12;$d++)
+				{
+				$m=str_pad($d,2,"0",STR_PAD_LEFT);
+				?><option <?php if ($d==$found_end_month) { ?>selected<?php } ?> value="<?php echo $m?>"><?php echo $lang["months"][$d-1]?></option><?php
+				}
+			  ?>
+			</select>
+			<select name="<?php echo $name?>_endday" class="SearchWidth" style="width:100px;" <?php if ($autoupdate) { ?>onChange="UpdateResultCount();"<?php } ?>>
+			  <option value=""><?php echo $lang["anyday"]?></option>
+			  <?php
+			  $td=date("d");
+			  for ($d=1;$d<=31;$d++)
+				{
+				$m=str_pad($d,2,"0",STR_PAD_LEFT);
+				?><option <?php if ($d==$found_end_day) { ?>selected<?php } ?> value="<?php echo $m?>"><?php echo $m?></option><?php
+				}
+			  ?>
+			</select>
+			<!--  date range search end date-->			
+			</div>
+			<?php }
+		else
+			{
+			$s=explode("-",$value);
+			if (count($s)>=3)
 			{
 			$found_year=$s[0];
 			$found_month=$s[1];
 			$found_day=$s[2];
 			}
-		?>		
-		<select name="<?php echo $name?>_year" class="SearchWidth" style="width:100px;" <?php if ($autoupdate) { ?>onChange="UpdateResultCount();"<?php } ?>>
-		  <option value=""><?php echo $lang["anyyear"]?></option>
-		  <?php
-		  $y=date("Y");
-		  for ($d=$minyear;$d<=$y;$d++)
-			{
-			?><option <?php if ($d==$found_year) { ?>selected<?php } ?>><?php echo $d?></option><?php
-			}
-		  ?>
-		</select>
-		<select name="<?php echo $name?>_month" class="SearchWidth" style="width:100px;" <?php if ($autoupdate) { ?>onChange="UpdateResultCount();"<?php } ?>>
-		  <option value=""><?php echo $lang["anymonth"]?></option>
-		  <?php
-		  for ($d=1;$d<=12;$d++)
-			{
-			$m=str_pad($d,2,"0",STR_PAD_LEFT);
-			?><option <?php if ($d==$found_month) { ?>selected<?php } ?> value="<?php echo $m?>"><?php echo $lang["months"][$d-1]?></option><?php
-			}
-		  ?>
-		</select>
-		<select name="<?php echo $name?>_day" class="SearchWidth" style="width:100px;" <?php if ($autoupdate) { ?>onChange="UpdateResultCount();"<?php } ?>>
-		  <option value=""><?php echo $lang["anyday"]?></option>
-		  <?php
-		  for ($d=1;$d<=31;$d++)
-			{
-			$m=str_pad($d,2,"0",STR_PAD_LEFT);
-			?><option <?php if ($d==$found_day) { ?>selected<?php } ?> value="<?php echo $m?>"><?php echo $m?></option><?php
-			}
-		  ?>
-		</select>
-		<?php		
+			?>		
+			<select name="<?php echo $name?>_year" class="SearchWidth" style="width:100px;" <?php if ($autoupdate) { ?>onChange="UpdateResultCount();"<?php } ?>>
+			  <option value=""><?php echo $lang["anyyear"]?></option>
+			  <?php
+			  $y=date("Y");
+			  for ($d=$minyear;$d<=$y;$d++)
+				{
+				?><option <?php if ($d==$found_year) { ?>selected<?php } ?>><?php echo $d?></option><?php
+				}
+			  ?>
+			</select>
+			<select name="<?php echo $name?>_month" class="SearchWidth" style="width:100px;" <?php if ($autoupdate) { ?>onChange="UpdateResultCount();"<?php } ?>>
+			  <option value=""><?php echo $lang["anymonth"]?></option>
+			  <?php
+			  for ($d=1;$d<=12;$d++)
+				{
+				$m=str_pad($d,2,"0",STR_PAD_LEFT);
+				?><option <?php if ($d==$found_month) { ?>selected<?php } ?> value="<?php echo $m?>"><?php echo $lang["months"][$d-1]?></option><?php
+				}
+			  ?>
+			</select>
+			<select name="<?php echo $name?>_day" class="SearchWidth" style="width:100px;" <?php if ($autoupdate) { ?>onChange="UpdateResultCount();"<?php } ?>>
+			  <option value=""><?php echo $lang["anyday"]?></option>
+			  <?php
+			  for ($d=1;$d<=31;$d++)
+				{
+				$m=str_pad($d,2,"0",STR_PAD_LEFT);
+				?><option <?php if ($d==$found_day) { ?>selected<?php } ?> value="<?php echo $m?>"><?php echo $m?></option><?php
+				}
+			  ?>
+			</select>
+			<?php }
+					
 		break;
 		
 		
@@ -1247,6 +1366,58 @@ function search_form_to_search_query($fields,$fromsearchbar=false)
 		if ($search!="") {$search.=", ";}
 		$search.="day:" . getval("day","");	
 		}
+	if (getval("startdate","")!="")
+		{
+		if ($search!="") {$search.=", ";}
+		$search.="startdate:" . getval("startdate","");			
+		}
+	if (getval("enddate","")!="")
+		{
+		if ($search!="") {$search.=", ";}
+		$search.="enddate:" . getval("enddate","");	
+		}
+	if (getval("startyear","")!="")
+		{		
+		if ($search!="") {$search.=", ";}
+		$search.="startdate:" . getval("startyear","");
+		if (getval("startmonth","")!="")
+			{
+			$search.="-" . getval("startmonth","");
+			if (getval("startday","")!="")
+				{
+				$search.="-" . getval("startday","");
+				}
+			else
+				{
+				$search.="-01";
+				}
+			}
+		else
+			{
+			$search.="-01-01";
+			}
+		}	
+	if (getval("endyear","")!="")
+		{
+		if ($search!="") {$search.=", ";}
+		$search.="enddate:" . getval("endyear","");
+		if (getval("endmonth","")!="")
+			{
+			$search.="-" . getval("endmonth","");
+			if (getval("endday","")!="")
+				{
+				$search.="-" . getval("endday","");
+				}
+			else
+				{
+				$search.="-31";
+				}
+			}
+		else
+			{
+			$search.="-12-31";
+			}
+		}
 	if (getval("allfields","")!="")
 		{
 		if ($search!="") {$search.=", ";}
@@ -1330,8 +1501,9 @@ function search_form_to_search_query($fields,$fromsearchbar=false)
 				}
 			break;
 
-			case 4:
-			case 6:
+			case 4: # --------  Date and optional time
+			case 6: # --------  Expiry Date
+			case 10: #--------  Date
 			$name="field_" . $fields[$n]["ref"];
 			$datepart="";
 			if (getval($name . "_year","")!="")
@@ -1345,12 +1517,58 @@ function search_form_to_search_query($fields,$fromsearchbar=false)
 						$datepart.="-" . getval($name . "_day","");
 						}
 					}
-				}
-			if ($datepart!="")
+				}			
+				
+			#Date range search -  start date
+			if (getval($name . "_startyear","")!="")
 				{
+				$datepart.= "start" . getval($name . "_startyear","");
+				if (getval($name . "_startmonth","")!="")
+					{
+					$datepart.="-" . getval($name . "_startmonth","");
+					if (getval($name . "_startday","")!="")
+						{
+						$datepart.="-" . getval($name . "_startday","");
+						}
+					else
+						{
+						$datepart.="-01";
+						}
+					}
+				else
+					{
+					$datepart.="-01-01";
+					}
+				}			
+				
+			#Date range search -  end date	
+			if (getval($name . "_endyear","")!="")
+				{
+				$datepart.= "end" . getval($name . "_endyear","");
+				if (getval($name . "_endmonth","")!="")
+					{
+					$datepart.="-" . getval($name . "_endmonth","");
+					if (getval($name . "_endday","")!="")
+						{
+						$datepart.="-" . getval($name . "_endday","");
+						}
+					else
+						{
+						$datepart.="-31";
+						}
+					}
+				else
+					{
+					$datepart.="-12-31";
+					}
+				}	
+				
+			if ($datepart!="")
+				{				
 				if ($search!="") {$search.=", ";}
-				$search.=$fields[$n]["name"] . ":" . $datepart;
+				$search.="range_" . $fields[$n]["ref"] . ":" . $datepart;
 				}
+				
 
 			break;
 
@@ -1411,6 +1629,8 @@ function refine_searchstring($search){
 	
 	$fixedkeywords=array();
 	foreach ($keywords as $keyword){
+		if (strpos($keyword,"startdate")==false || strpos($keyword,"enddate")==false || strpos($keyword,"range")==false)
+			{$keyword=str_replace($keyword," ","-");}
 		if (strpos($keyword,":")>0){
 			$keywordar=explode(":",$keyword,2);
 			$keyname=$keywordar[0];

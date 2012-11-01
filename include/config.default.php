@@ -1981,3 +1981,5 @@ $ajax_collections=true; // this automatically turns on $frameless_collections (t
 
 # Allow users to create new collections. Set to false to prevent creation of new collections.
 $collection_allow_creation=true;
+
+$daterange_search=false;

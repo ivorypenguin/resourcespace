@@ -308,7 +308,7 @@ function split_keywords($search,$index=false,$partial_index=false,$is_date=false
 	{
 	# Takes $search and returns an array of individual keywords.
 	
-	global $config_trimchars;
+	global $config_trimchars, $daterange_search;
 
 	if ($index && $is_date)
 		{
@@ -336,7 +336,8 @@ function split_keywords($search,$index=false,$partial_index=false,$is_date=false
 	if ((substr($ns,0,1)==",") ||  ($index==false && strpos($ns,":")!==false)) # special 'constructed' query type, split using comma so
 	# we support keywords with spaces.
 		{
-		$ns=cleanse_string($ns,true,!$index);
+		if ((strpos($ns,"startdate")==false && strpos($ns,"enddate")==false && strpos($ns,"range")==false) || (!$daterange_search))
+			{$ns=cleanse_string($ns,true,!$index);}
 		$return=explode(",",$ns);
 		# If we are indexing, append any values that contain spaces.
 					
@@ -370,7 +371,14 @@ function split_keywords($search,$index=false,$partial_index=false,$is_date=false
 	else
 		{
 		# split using spaces and similar chars (according to configured whitespace characters)
-		$ns=explode(" ",cleanse_string($ns,false,!$index));
+		if (strpos($ns,"range")===false)
+			{
+			$ns=explode(" ",cleanse_string($ns,false,!$index));
+			}
+		else
+			{
+			$ns=explode(" ",cleanse_string($ns,true,true));
+			}
 		$ns=trim_array($ns,$config_trimchars);
 		if ($index && $partial_index) {
 			return add_partial_index($ns);
@@ -2889,7 +2897,10 @@ function payment_set_complete($collection)
 		resource_log($resource["resource"],"p",0,"","","",0,$resource["purchase_size"],$resource["purchase_price"]);
 		}
 	
+	# Rename so that can be viewed on my purchases page
+	sql_query("update collection set name= '" . date("Y-m-d") . "' where ref='$collection'");
 	return true;
+
 	}
 
 

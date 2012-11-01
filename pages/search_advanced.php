@@ -11,7 +11,7 @@ setcookie("starsearch",$starsearch);
 # Disable auto-save function, only applicable to edit form. Some fields pick up on this value when rendering then fail to work.
 $edit_autosave=false;
 
-if (getval("submitted","")=="yes")
+if (getval("submitted","")=="yes" && getval("resetform","")=="")
 	{
 	$restypes="";
 	reset($_POST);foreach ($_POST as $key=>$value)
@@ -25,7 +25,7 @@ if (getval("submitted","")=="yes")
 
 	# Build a search query from the search form
 	$search=search_form_to_search_query($fields);
-			$search=refine_searchstring($search);
+	$search=refine_searchstring($search);
 
 	hook("moresearchcriteria");
 
@@ -77,7 +77,7 @@ if (getval("submitted","")=="yes")
 # Reconstruct a values array based on the search keyword, so we can pre-populate the form from the current search
 $search=@$_COOKIE["search"];
 $keywords=explode(",",$search);
-$allwords="";$found_year="";$found_month="";$found_day="";
+$allwords="";$found_year="";$found_month="";$found_day="";$found_start_date="";$found_end_date="";
 $values=array();
 for ($n=0;$n<count($keywords);$n++)
 	{
@@ -90,6 +90,8 @@ for ($n=0;$n<count($keywords);$n++)
 		if ($name=="day") {$found_day=$keyword;}
 		if ($name=="month") {$found_month=$keyword;}
 		if ($name=="year") {$found_year=$keyword;}
+		if ($name=="startdate") {$found_start_date=$keyword;}
+		if ($name=="enddate") {$found_end_date=$keyword;}
 		if (isset($values[$name])){$values[$name].=" ".$keyword;}
 		else {
 			$values[$name]=$keyword;
@@ -102,14 +104,14 @@ for ($n=0;$n<count($keywords);$n++)
 	}
 $allwords=str_replace(", ","",$allwords);
 
-if (getval("resetform","")!="") {$found_year="";$found_month="";$found_day="";$allwords="";$starsearch="";}
+if (getval("resetform","")!="") {$found_year="";$found_month="";$found_day="";$found_start_date="";$found_end_date="";$allwords="";$starsearch="";}
 include "../include/header.php";
 ?>
 
 <div class="BasicsBox">
 <h1><?php echo ($archive==0)?$lang["advancedsearch"]:$lang["archiveonlysearch"]?> </h1>
 <p class="tight"><?php echo text("introtext")?></p>
-<form method="post" id="advancedform" action="<?php echo $baseurl ?>/pages/search_advanced.php" onSubmit="return CentralSpacePost(this,true);">
+<form method="post" id="advancedform" action="<?php echo $baseurl ?>/pages/search_advanced.php" >
 <input type="hidden" name="submitted" id="submitted" value="yes">
 <input type="hidden" name="countonly" id="countonly" value="">
 <input type="hidden" name="archive" value="<?php echo $archive?>">
@@ -170,38 +172,119 @@ for ($n=0;$n<count($types);$n++)
 <div class="clearerleft"> </div>
 </div>
 
-
 <div class="Question"><label><?php echo $lang["bydate"]?></label>
-<select name="year" class="SearchWidth" style="width:100px;" onChange="UpdateResultCount();">
-  <option value=""><?php echo $lang["anyyear"]?></option>
-  <?php
-  $y=date("Y");
-  for ($n=$minyear;$n<=$y;$n++)
-	{
-	?><option <?php if ($n==$found_year) { ?>selected<?php } ?>><?php echo $n?></option><?php
+<?php 
+if ($daterange_search)
+	{ ?>
+	<!--  date range search -->
+	<div class="Question">
+	<div><label><?php echo $lang["fromdate"]?></label>
+	<select name="startyear" class="SearchWidth" style="width:100px;" onChange="UpdateResultCount();">
+	  <option value=""><?php echo $lang["anyyear"]?></option>
+	  <?php
+	  $y=date("Y");
+	  for ($n=$minyear;$n<=$y;$n++)
+		{
+		?><option <?php if ($n==substr($found_start_date,0,4)) { ?>selected<?php } ?>><?php echo $n?></option><?php
+		}
+	  ?>
+	</select>
+	<select name="startmonth" class="SearchWidth" style="width:100px;" onChange="UpdateResultCount();">
+	  <option value=""><?php echo $lang["anymonth"]?></option>
+	  <?php
+	  for ($n=1;$n<=12;$n++)
+		{
+		$m=str_pad($n,2,"0",STR_PAD_LEFT);
+		?><option <?php if ($n==substr($found_start_date,5,2)) { ?>selected<?php } ?> value="<?php echo $m?>"><?php echo $lang["months"][$n-1]?></option><?php
+		}
+	  ?>
+	</select>
+	<select name="startday" class="SearchWidth" style="width:100px;" onChange="UpdateResultCount();">
+	  <option value=""><?php echo $lang["anyday"]?></option>
+	  <?php
+	  for ($n=1;$n<=31;$n++)
+		{
+		$m=str_pad($n,2,"0",STR_PAD_LEFT);
+		?><option <?php if ($n==substr($found_start_date,8,2)) { ?>selected<?php } ?> value="<?php echo $m?>"><?php echo $m?></option><?php
+		}
+	  ?>
+	</select>
+	<!-- end date -->	
+	</div><div><label></label><label><?php echo $lang["todate"]?></label>
+	<select name="endyear" class="SearchWidth" style="width:100px;" onChange="UpdateResultCount();">
+	  <option value=""><?php echo $lang["anyyear"]?></option>
+	  <?php
+	  $y=date("Y");
+	  for ($n=$minyear;$n<=$y;$n++)
+		{
+		?><option <?php if ($n==substr($found_end_date,0,4)) { ?>selected<?php } ?>><?php echo $n?></option><?php
+		}
+	  ?>
+	</select>
+	<select name="endmonth" class="SearchWidth" style="width:100px;" onChange="UpdateResultCount();">
+	  <option value=""><?php echo $lang["anymonth"]?></option>
+	  <?php
+	  for ($n=1;$n<=12;$n++)
+		{
+		$m=str_pad($n,2,"0",STR_PAD_LEFT);
+		?><option <?php if ($n==substr($found_end_date,5,2)) { ?>selected<?php } ?> value="<?php echo $m?>"><?php echo $lang["months"][$n-1]?></option><?php
+		}
+	  ?>
+	</select>
+	<select name="endday" class="SearchWidth" style="width:100px;" onChange="UpdateResultCount();">
+	  <option value=""><?php echo $lang["anyday"]?></option>
+	  <?php
+	  for ($n=1;$n<=31;$n++)
+		{
+		$m=str_pad($n,2,"0",STR_PAD_LEFT);
+		?><option <?php if ($n==substr($found_end_date,8,2)) { ?>selected<?php } ?> value="<?php echo $m?>"><?php echo $m?></option><?php
+		}
+	  ?>
+	</select>
+	</div>
+
+	<!--  end of date range search -->
+
+	<?php
 	}
-  ?>
-</select>
-<select name="month" class="SearchWidth" style="width:100px;" onChange="UpdateResultCount();">
-  <option value=""><?php echo $lang["anymonth"]?></option>
-  <?php
-  for ($n=1;$n<=12;$n++)
+else
 	{
-	$m=str_pad($n,2,"0",STR_PAD_LEFT);
-	?><option <?php if ($n==$found_month) { ?>selected<?php } ?> value="<?php echo $m?>"><?php echo $lang["months"][$n-1]?></option><?php
-	}
-  ?>
-</select>
-<select name="day" class="SearchWidth" style="width:100px;" onChange="UpdateResultCount();">
-  <option value=""><?php echo $lang["anyday"]?></option>
-  <?php
-  for ($n=1;$n<=31;$n++)
-	{
-	$m=str_pad($n,2,"0",STR_PAD_LEFT);
-	?><option <?php if ($n==$found_day) { ?>selected<?php } ?> value="<?php echo $m?>"><?php echo $m?></option><?php
-	}
-  ?>
-</select>
+	?>
+	
+	<select name="year" class="SearchWidth" style="width:100px;" onChange="UpdateResultCount();">
+	  <option value=""><?php echo $lang["anyyear"]?></option>
+	  <?php
+	  $y=date("Y");
+	  for ($n=$minyear;$n<=$y;$n++)
+		{
+		?><option <?php if ($n==$found_year) { ?>selected<?php } ?>><?php echo $n?></option><?php
+		}
+	  ?>
+	</select>
+	<select name="month" class="SearchWidth" style="width:100px;" onChange="UpdateResultCount();">
+	  <option value=""><?php echo $lang["anymonth"]?></option>
+	  <?php
+	  for ($n=1;$n<=12;$n++)
+		{
+		$m=str_pad($n,2,"0",STR_PAD_LEFT);
+		?><option <?php if ($n==$found_month) { ?>selected<?php } ?> value="<?php echo $m?>"><?php echo $lang["months"][$n-1]?></option><?php
+		}
+	  ?>
+	</select>
+	<select name="day" class="SearchWidth" style="width:100px;" onChange="UpdateResultCount();">
+	  <option value=""><?php echo $lang["anyday"]?></option>
+	  <?php
+	  for ($n=1;$n<=31;$n++)
+		{
+		$m=str_pad($n,2,"0",STR_PAD_LEFT);
+		?><option <?php if ($n==$found_day) { ?>selected<?php } ?> value="<?php echo $m?>"><?php echo $m?></option><?php
+		}
+	  ?>
+	</select>
+
+	<?php } ?>
+
+
 <div class="clearerleft"> </div>
 </div>
 <?php if ($star_search && $display_user_rating_stars){?>
