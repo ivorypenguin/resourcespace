@@ -1494,15 +1494,15 @@ function send_mail_phpmailer($email,$subject,$message="",$from="",$reply_to="",$
 	global $email_footer,$storagedir;
 	$phpversion=phpversion();
 	if ($phpversion>='5.3') {
-	if (file_exists($storagedir."/../lib/phpmailer_v5_1/class.phpmailer.php")){
-		include_once($storagedir."/../lib/phpmailer_v5_1/class.phpmailer.php");
-		include_once($storagedir."/../lib/phpmailer/class.html2text.php");
+	if (file_exists(dirname(__FILE__)."/../lib/phpmailer_v5_1/class.phpmailer.php")){
+		include_once(dirname(__FILE__)."/../lib/phpmailer_v5_1/class.phpmailer.php");
+		include_once(dirname(__FILE__)."/../lib/phpmailer/class.html2text.php");
 		}
 	} else {
 	// less than 5.3
-	if (file_exists($storagedir."/../lib/phpmailer/class.phpmailer.php")){
-		include_once($storagedir."/../lib/phpmailer/class.phpmailer.php");
-		include_once($storagedir."/../lib/phpmailer/class.html2text.php");
+	if (file_exists(dirname(__FILE__)."/../lib/phpmailer/class.phpmailer.php")){
+		include_once(dirname(__FILE__)."/../lib/phpmailer/class.phpmailer.php");
+		include_once(dirname(__FILE__)."/../lib/phpmailer/class.html2text.php");
 		}
 	}
 		
@@ -1596,7 +1596,7 @@ function send_mail_phpmailer($email,$subject,$message="",$from="",$reply_to="",$
 				# embed images (find them in relation to storagedir so that templates are portable)...  (ex [img_storagedir_/../gfx/whitegry/titles/title.gif])
 				else if (substr($variable,0,15)=="img_storagedir_"){
 					$$variable="<img src='cid:".basename(substr($variable,15))."'/>";
-					$images[]=$storagedir.substr($variable,15);
+					$images[]=dirname(__FILE__).substr($variable,15);
 				}
 				
 				# embed images (ex [img_/var/www/resourcespace/gfx/whitegry/titles/title.gif])
