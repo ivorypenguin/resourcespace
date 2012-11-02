@@ -179,7 +179,7 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 				global $date_field;
 				$field=0;#echo "<li>$keyword<br/>";
 				if (strpos($keyword,":")!==false && !$ignore_filters)
-					{	
+					{
 					$kw=explode(":",$keyword,2);
 					if ($kw[0]=="day")
 						{
@@ -195,7 +195,7 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 						{
 						if ($sql_filter!="") {$sql_filter.=" and ";}
 						$sql_filter.="r.field$date_field like '" . $kw[1] . "%' ";
-						}												
+						}
 					elseif ($kw[0]=="startdate")
 						{
 						if ($sql_filter!="") {$sql_filter.=" and ";}
@@ -205,25 +205,26 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 						{
 						if ($sql_filter!="") {$sql_filter.=" and ";}
 						$sql_filter.="r.field$date_field <= '" . $kw[1] . " 23:59:59' ";
-						}	
+						}
 					# Additional date range filtering
 					elseif (substr($kw[0],0,5)=="range")
 						{
+						$c++;
 						$rangefield=substr($kw[0],6);
 						$daterange=false;
 						if (strpos($kw[1],"start")!==FALSE )
 							{
 							$rangestart=str_replace(" ","-",$kw[1]);
 							if ($sql_filter!="") {$sql_filter.=" and ";}
-							$sql_filter.="rd.value >= '" . substr($rangestart,strpos($rangestart,"start")+5,10) . "'";
+							$sql_filter.="rd" . $c . ".value >= '" . substr($rangestart,strpos($rangestart,"start")+5,10) . "'";
 							}
 						if (strpos($kw[1],"end")!==FALSE )
 							{
 							$rangeend=str_replace(" ","-",$kw[1]);
 							if ($sql_filter!="") {$sql_filter.=" and ";}
-							$sql_filter.="rd.value <= '" . substr($rangeend,strpos($rangeend,"end")+3,10) . " 23:59:59'";
+							$sql_filter.="rd" . $c . ".value <= '" . substr($rangeend,strpos($rangeend,"end")+3,10) . " 23:59:59'";
 							}
-						$sql_join.=" join resource_data rd on rd.resource=r.ref and rd.resource_type_field='" . $rangefield . "'";
+						$sql_join.=" join resource_data rd" . $c . " on rd" . $c . ".resource=r.ref and rd" . $c . ".resource_type_field='" . $rangefield . "'";
 						}
 					else
 						{
@@ -1629,7 +1630,7 @@ function refine_searchstring($search){
 	
 	$fixedkeywords=array();
 	foreach ($keywords as $keyword){
-		if (strpos($keyword,"startdate")==false || strpos($keyword,"enddate")==false || strpos($keyword,"range")==false)
+		if (strpos($keyword,"startdate")!==false || strpos($keyword,"enddate")!==false || strpos($keyword,"range")!==false)
 			{$keyword=str_replace($keyword," ","-");}
 		if (strpos($keyword,":")>0){
 			$keywordar=explode(":",$keyword,2);
