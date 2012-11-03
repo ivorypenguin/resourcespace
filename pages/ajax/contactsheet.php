@@ -193,8 +193,11 @@ for ($n=0;$n<count($result);$n++){
 					$bottomx=$pdf->GetX();
 				}
 				else if ($sheetstyle=="list"){
-					$pdf->SetXY($currentx,$currenty);
-					$pdf->Text($pdf->GetX()+$imagesize+0.1,$pdf->GetY()+0.2,$ref);
+					
+					if ($config_sheetlist_include_ref){
+					    $pdf->SetXY($currentx,$currenty);
+					    $pdf->Text($pdf->GetX()+$imagesize+0.1,$pdf->GetY(),$ref);
+					}
 					$pdf->SetXY($currentx,$currenty);	
 					for($ff=0; $ff<count($config_sheetlist_fields); $ff++){
 						$value="";
@@ -206,7 +209,9 @@ for ($n=0;$n<count($result);$n++){
 						}
 						else if (file_exists($plugin)) {include $plugin;}
 						$value=TidyList($value);
-						$pdf->Text($pdf->GetX()+$imagesize+0.1,$pdf->GetY()+(0.2*($ff+2)),$value);					
+						if ($config_sheetlist_include_ref) $deltay=1;
+						else $deltay=0;
+						$pdf->Text($pdf->GetX()+$imagesize+0.1,$pdf->GetY()+(0.2*($ff+$deltay)),$value);					
 						
 						$pdf->SetXY($currentx,$currenty);
 					}		
@@ -245,8 +250,11 @@ for ($n=0;$n<count($result);$n++){
 					$bottomx=$pdf->GetX();
 				}
 				else if ($sheetstyle=="list"){
-					$pdf->SetXY($currentx,$currenty);
-					$pdf->Text($pdf->GetX()+$imagesize+0.1,$pdf->GetY()+0.2,$ref);
+					
+					if ($config_sheetlist_include_ref){
+					    $pdf->SetXY($currentx,$currenty);
+					    $pdf->Text($pdf->GetX()+$imagesize+0.1,$pdf->GetY()+0.2,$ref);
+					}
 					$pdf->SetXY($currentx,$currenty);		
 					for($ff=0; $ff<count($config_sheetlist_fields); $ff++){
 						$value="";

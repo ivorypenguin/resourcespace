@@ -619,6 +619,7 @@ $titlefontsize=10; // Contact Sheet Title
 $refnumberfontsize=8; // This includes field text, not just ref number
 # If making a contact sheet with list sheet style, use these fields in contact sheet:
 $config_sheetlist_fields = array(8);
+$config_sheetlist_include_ref=true;
 # If making a contact sheet with thumbnail sheet style, use these fields in contact sheet:
 $config_sheetthumb_fields = array();
 $config_sheetthumb_include_ref=true;
