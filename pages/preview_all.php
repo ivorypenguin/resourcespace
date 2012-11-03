@@ -120,7 +120,7 @@ function ReorderResources(id1,id2)
 </script>
 <br/>
 <table id="preview_all_table" style="width:100%;">
-<tr><p style="margin:7px 0 7px 0;padding:0;"><a href="<?php if ($backto!=''){echo $backto;} else { echo $baseurl_short.'pages/search';}?>.php?search=!collection<?php echo $colref?>&order_by=<?php echo $order_by?>&col_order_by=<?php echo $col_order_by?>&sort=<?php echo $sort?>&k=<?php echo $k?>">&lt; <?php echo $lang["backtoresults"]?></a>
+<tr><p style="margin:7px 0 7px 0;padding:0;"><a href="<?php if ($backto!=''){echo $backto;} else { echo $baseurl_short.'pages/search';}?>.php?search=%21collection<?php echo $colref?>&order_by=<?php echo $order_by?>&col_order_by=<?php echo $col_order_by?>&sort=<?php echo $sort?>&k=<?php echo $k?>">&lt; <?php echo $lang["backtoresults"]?></a>
 &nbsp;&nbsp;<a href="<?php echo $baseurl_short?>pages/preview_all.php?backto=<?php echo $backto?>&ref=<?php echo $colref?>&vertical=h&offset=<?php echo $offset?>&search=<?php echo urlencode($search)?>&order_by=<?php echo $order_by?>&col_order_by=<?php echo $col_order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&k=<?php echo $k?>">&gt; <?php echo $lang["horizontal"]; ?> </a>
 &nbsp;&nbsp;<a href="<?php echo $baseurl_short?>pages/preview_all.php?backto=<?php echo $backto?>&ref=<?php echo $colref?>&vertical=v&offset=<?php echo $offset?>&search=<?php echo urlencode($search)?>&order_by=<?php echo $order_by?>&col_order_by=<?php echo $col_order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&k=<?php echo $k?>">&gt; <?php echo $lang["vertical"]; ?> </a>
 </tr>

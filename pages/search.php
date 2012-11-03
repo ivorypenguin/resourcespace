@@ -353,7 +353,7 @@ if ($display_user_rating_stars && $k=="")
 		  success: function(){
 		  <?php if (isset($usercollection) && ($usercollection==$collection)) { ?>
 			<?php if ($ajax_collections) { ?>
-				UpdateCollectionDisplay('<?php echo isset($k)?$k:"" ?>');
+			 UpdateCollectionDisplay('<?php echo isset($k)?$k:"" ?>');
 			<?php } else { ?>
 			 parent.collections.location.reload();
 			<?php } ?>

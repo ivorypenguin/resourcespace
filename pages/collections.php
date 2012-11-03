@@ -187,7 +187,8 @@ if ($allow_reorder)
 		  url: '<?php echo $baseurl_short?>pages/collections.php?collection=<?php echo $usercollection ?>&reorder=true',
 		  data: {order:JSON.stringify(newOrder)},
 		  success: function() {
-		    if (location.href=='<?php echo $baseurl; ?>/pages/search.php?search=<?php echo urlencode("!collection" . $usercollection); ?>') CentralSpaceLoad('<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $usercollection); ?>',true);
+		    var results = new RegExp('[\\?&amp;]' + 'search' + '=([^&amp;#]*)').exec(window.location.href);
+		    if (results[1]=='<?php echo urlencode("!collection" . $usercollection); ?>') CentralSpaceLoad('<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $usercollection); ?>',true);
 		  }
 		});		
 		}
