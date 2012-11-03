@@ -250,8 +250,14 @@ if (getval("ajax","")=="") {
 	// don't show closing tags if we're in ajax mode
 	?>
 	
-<?php if ($pagename!="login" && $pagename!="user_request" && $pagename!="user_password" &&  $pagename!="done" && $ajax_collections){?>
-<div id="CollectionDiv" class="CollectBack AjaxCollect" <?php if ($pagename!="preview_all"){?>onload="UpdateCollectionDisplay('<?php echo isset($k)?$k:"" ?>');" style="height:<?php echo $collection_frame_height ?>px;"<?php } else { ?>style="display:none;"<?php } ?>><?php echo $lang["loading"]?></div>
+<?php 
+if ($ajax_collections){
+	$omit_collectiondiv_load_pages=array("login","user_request","user_password","done","index","preview_all");
+	
+	?>
+<div id="CollectionDiv" class="CollectBack AjaxCollect" <?php if (!in_array($pagename,$omit_collectiondiv_load_pages)){?>onload="UpdateCollectionDisplay('<?php echo isset($k)?$k:"" ?>');" style="height:<?php echo $collection_frame_height ?>px;"<?php } else { ?>style="display:none;"<?php } ?>><?php echo $lang["loading"]?></div>
+
+<?php if (!in_array($pagename,$omit_collectiondiv_load_pages)){?>
 <script type="text/javascript">
 	collection_frame_height=<?php echo $collection_frame_height?>;
 function getWindowHeight() {
@@ -311,6 +317,7 @@ window.onresize = function() {
 	setContent();
 }
 </script>
+<?php } // end omit_collectiondiv_load_pages ?>	
 <?php } // end ajax_collections ?>	
 	
 	

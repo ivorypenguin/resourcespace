@@ -126,7 +126,7 @@ function ReorderResources(id1,id2)
 </tr>
 
 <?php if (!$collections_compact_style){
-        echo $search_title.$search_title_links;
+        echo $search_title;
         }
     else {
     echo $search_title;
