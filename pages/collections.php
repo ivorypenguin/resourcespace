@@ -197,6 +197,7 @@ if ($allow_reorder)
 		
 		jQuery(document).ready(function() {
 			jQuery('#CollectionSpace').sortable({
+				helper:"clone",
 				items: ".CollectionPanelShell",
 
 				start: function (event, ui)

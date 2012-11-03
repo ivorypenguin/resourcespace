@@ -363,6 +363,7 @@ if ($display_user_rating_stars && $k=="")
 		}		
 		jQuery(document).ready(function() {
 			jQuery('#CentralSpace').sortable({
+				helper:"clone",
 				items: ".ResourcePanelShell, .ResourcePanelShellLarge, .ResourcePanelShellSmall",
 
 				start: function (event, ui)
