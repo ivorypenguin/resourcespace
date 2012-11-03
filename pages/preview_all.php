@@ -42,7 +42,7 @@ $sort=getval("sort",$default_sort);setcookie("saved_sort",$sort);
 $revsort = ($sort=="ASC") ? "DESC" : "ASC";
 
 
-if (($k=="") && (($userref==$cinfo["user"]) || ($cinfo["allow_changes"]==1) || (checkperm("h"))))
+if ($order_by=="relevance" && $k=="" && (($userref==$cinfo["user"]) || ($cinfo["allow_changes"]==1) || (checkperm("h"))))
 	{
 	$allow_reorder=true;
 	}
@@ -76,7 +76,7 @@ $headerinsert="
 	 <!--[if lt IE 7]><link rel='stylesheet' type='text/css' href='../css/ie.css'><![endif]-->
 ";
 
-if ($collection_reorder_caption){
+if ($allow_reorder){
 $result=do_search("!collection".$colref);
 }
 else{
@@ -94,7 +94,7 @@ if (substr($search,0,11)=="!collection")
 	if (!$collectiondata){?>
 		<script>alert('<?php echo $lang["error-collectionnotfound"];?>');document.location='<?php echo $baseurl_short?>pages/home.php'</script>
 	<?php } 
-	if ($collection_reorder_caption)
+	if ($allow_reorder)
 		{
 	# Check to see if this user can edit (and therefore reorder) this resource
 		if (($userref==$collectiondata["user"]) || ($collectiondata["allow_changes"]==1) || (checkperm("h")))
@@ -218,7 +218,7 @@ if (!(isset($resource['is_transcoding']) && $resource['is_transcoding']==1) && f
 		// leave preview to the custom mp3 player
 		}	
     else{?>
-<?php if (!$collection_reorder_caption){?><a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $result[$x]['ref']?>&search=<?php echo $search?>&order_by=<?php echo $order_by?>&archive=<?php echo $archive?>&k=<?php echo $k?>&sort=<?php echo $sort?>"><?php } //end if !reorder?><img class="image" id="image<?php echo $ref?>" imageheight="<?php echo $imageheight?>" src="<?php echo $url?>" alt="" style="height:<?php echo $height?>px;border:1px solid white;" /><?php if (!$collection_reorder_caption){?></a><?php } //end if !reorder?><br/><br/>
+<?php if (!$allow_reorder){?><a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $result[$x]['ref']?>&search=<?php echo $search?>&order_by=<?php echo $order_by?>&archive=<?php echo $archive?>&k=<?php echo $k?>&sort=<?php echo $sort?>"><?php } //end if !reorder?><img class="image" id="image<?php echo $ref?>" imageheight="<?php echo $imageheight?>" src="<?php echo $url?>" alt="" style="height:<?php echo $height?>px;border:1px solid white;" /><?php if (!$allow_reorder){?></a><?php } //end if !reorder?><br/><br/>
 <?php } ?>
 <?php if ($search_titles){$heightmod=150;} else {$heightmod=120;}
 if ($collections_compact_style){$heightmod=$heightmod+20;}?>
@@ -230,7 +230,7 @@ if (maxheight><?php echo $imageheight?>){
 	document.getElementById('image<?php echo $ref?>').style.height='<?php echo $imageheight?>px';}
 	else { document.getElementById('image<?php echo $ref?>').style.height=maxheight+'px';} </script>
 </div></div>
-<?php if ($collection_reorder_caption && $allow_reorder) { 
+<?php if ($allow_reorder) { 
 		# Javascript drag/drop enabling.
 		?>
 		<script type="text/javascript">
