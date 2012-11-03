@@ -181,11 +181,14 @@ if ($allow_reorder)
 		jQuery.each(idsInOrder, function() {
 			newOrder.push(this.substring(13));
 			}); 
+		
 		jQuery.ajax({
 		  type: 'GET',
 		  url: '<?php echo $baseurl_short?>pages/collections.php?collection=<?php echo $usercollection ?>&reorder=true',
 		  data: {order:JSON.stringify(newOrder)},
-		  dataType: 'json'
+		  success: function() {
+		    if (location.href=='<?php echo $baseurl; ?>/pages/search.php?search=<?php echo urlencode("!collection" . $usercollection); ?>') CentralSpaceLoad('<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $usercollection); ?>',true);
+		  }
 		});		
 		}
 		
