@@ -188,7 +188,9 @@ if ($allow_reorder)
 		  data: {order:JSON.stringify(newOrder)},
 		  success: function() {
 		    var results = new RegExp('[\\?&amp;]' + 'search' + '=([^&amp;#]*)').exec(window.location.href);
-		    if (results[1]=='<?php echo urlencode("!collection" . $usercollection); ?>') CentralSpaceLoad('<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $usercollection); ?>',true);
+		    var ref = new RegExp('[\\?&amp;]' + 'ref' + '=([^&amp;#]*)').exec(window.location.href);
+		    
+		    if ((results[1]=='<?php echo urlencode("!collection" . $usercollection); ?>')&&(ref==null)) CentralSpaceLoad('<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $usercollection); ?>',true);
 		  }
 		});		
 		}
