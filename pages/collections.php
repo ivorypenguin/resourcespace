@@ -175,7 +175,7 @@ if ($allow_reorder)
 	{
 	?>
 	<script type="text/javascript">
-	function ReorderResources(idsInOrder)
+	function ReorderResourcesInCollection(idsInOrder)
 		{
 		var newOrder = [];
 		jQuery.each(idsInOrder, function() {
@@ -203,7 +203,7 @@ if ($allow_reorder)
 					{
 					InfoBoxEnabled=true;
 					var idsInOrder = jQuery('#CollectionSpace').sortable("toArray");
-					ReorderResources(idsInOrder);
+					ReorderResourcesInCollection(idsInOrder);
 					}
 			});
 			jQuery('.CollectionPanelShell').disableSelection();

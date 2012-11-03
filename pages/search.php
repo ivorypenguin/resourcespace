@@ -352,7 +352,11 @@ if ($display_user_rating_stars && $k=="")
 		  data: {order:JSON.stringify(newOrder)},
 		  success: function(){
 		  <?php if (isset($usercollection) && ($usercollection==$collection)) { ?>
-			parent.collections.location.reload();
+			<?php if ($ajax_collections) { ?>
+				UpdateCollectionDisplay('<?php echo isset($k)?$k:"" ?>');
+			<?php } else { ?>
+			 parent.collections.location.reload();
+			<?php } ?>
 		  <?php } ?>
 			} 
 		});
@@ -692,7 +696,7 @@ if (true) # Always show search header now.
 		$GLOBALS['get_resource_data_cache'][$ref] = $result[$n];
 		$url=$baseurl_short."pages/view.php?ref=" . $ref . "&search=" . urlencode($search) . "&order_by=" . urlencode($order_by) . "&sort=".$sort."&offset=" . urlencode($offset) . "&archive=" . $archive . "&k=" . $k;
 		
-		if (isset($result[$n]["url"])) {$url=$result[$n]["url"];} # Option to override URL in results, e.g. by plugin using process_Search_results hook above
+		if (isset($result[$n]["url"])) {$url=$result[$n]["url"];} # Option to override URL in results, e.g. by plugin using process_Search_results hook above
 		?>
 		<?php 
 		$rating="";
