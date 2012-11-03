@@ -411,6 +411,8 @@ $lang["stat-resourceupload"]="загрузить матерал";
 $lang["stat-resourceview"]="объектный мнение";
 $lang["stat-search"]="Поиск";
 $lang["stat-usersession"]="Пользователь сессии";
+
+$lang["smartcollection"]="Умная коллекция";
 $lang["access0"]="Открытый";
 $lang["access1"]="Ограниченный";
 $lang["access2"]="Конфиденциальный";
@@ -780,4 +782,9 @@ $lang["action-log"]="История изменений";
 $lang["associatedcollections"]="Используется в моих коллекциях";
 $lang["back"]="Назад";
 $lang["collections"]="Коллекции";
+$lang["previewpage"]="Просмотр страницы";
+$lang["ascending"] = "По возрастанию";
+$lang["descending"] = "По убыванию";
+$lang["sort-type"] = "Тип сортировки";
+$lang["collection-order"] = "Порядок коллекции";
 ?>
