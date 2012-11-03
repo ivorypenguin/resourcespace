@@ -10,11 +10,6 @@ include "../include/collections_functions.php";
 include "../include/resource_functions.php";
 
 $ref=getval("ref","");
-$ext=getval("ext","");
-
-$resource=get_resource_data($ref);
-
-if ($ext!="" && $ext!="gif" && $ext!="jpg" && $ext!="png") {$ext="jpg";$border=false;} # Supports types that have been created using ImageMagick
 
 $search=getvalescaped("search","");
 $offset=getvalescaped("offset","",true);
@@ -29,18 +24,6 @@ if (strpos($search,"!")!==false) {$restypes="";}
 $default_sort="DESC";
 if (substr($order_by,0,5)=="field"){$default_sort="ASC";}
 $sort=getval("sort",$default_sort);
-
-# Load access level
-$access=get_resource_access($ref);
-$use_watermark=check_use_watermark($ref);
-
-# check permissions (error message is not pretty but they shouldn't ever arrive at this page unless entering a URL manually)
-if ($access==2) 
-		{
-		exit("This is a confidential resource.");
-		}
-
-hook('replacepreview');
 
 # next / previous resource browsing
 $go=getval("go","");
@@ -67,6 +50,24 @@ if ($go!="")
 	$newkey=hook("nextpreviewregeneratekey");
 	if (is_string($newkey)) {$k=$newkey;}
 	}
+
+
+$resource=get_resource_data($ref);
+$ext=$resource['file_extension'];
+
+if ($ext!="" && $ext!="gif" && $ext!="jpg" && $ext!="png") {$ext="jpg";$border=false;} # Supports types that have been created using ImageMagick
+
+# Load access level
+$access=get_resource_access($ref);
+$use_watermark=check_use_watermark($ref);
+
+# check permissions (error message is not pretty but they shouldn't ever arrive at this page unless entering a URL manually)
+if ($access==2) 
+		{
+		exit("This is a confidential resource.");
+		}
+
+hook('replacepreview');
 
 # Next / previous page browsing (e.g. pdfs)
 $previouspage=$page-1;
