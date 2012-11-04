@@ -620,7 +620,7 @@ elseif ($k!="")
     <?php 
     # If this collection is (fully) editable, then display an extra edit all link
     if ((count($result)>0) && checkperm("e" . $result[0]["archive"]) && allow_multi_edit($result)) { ?>
-    <li class="clearerleft"><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $usercollection)?>" target="main">&gt; <?php echo $lang["viewall"]?></a></li>
+    <li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $usercollection)?>" target="main">&gt; <?php echo $lang["viewall"]?></a></li>
     <li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/edit.php?collection=<?php echo $usercollection?>" target="main">&gt; <?php echo $lang["action-editall"]?></a></li>
 
     <?php } else { ?>
@@ -857,7 +857,7 @@ elseif ($k!="")
     <ul>
     <?php if ((!collection_is_research_request($usercollection)) || (!checkperm("r"))) { ?>
     <?php if (checkperm("s")) { ?><?php if (!$collections_compact_style){?><li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_manage.php" target="main"><?php echo $lang["managemycollections"]?></a></li><?php } ?>
-    <?php if ($contact_sheet==true && $collections_compact_style) { ?>
+    <?php if ($contact_sheet==true) { ?>
     <li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/contactsheet_settings.php?ref=<?php echo $usercollection?>" target="main">&nbsp;<?php echo $lang["contactsheet"]?></a></li>
 	<?php } ?>
 	<?php if ($allow_share) { ?><li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_share.php?ref=<?php echo $usercollection?>" target="main"><?php echo $lang["share"]?></a></li><?php } ?>
