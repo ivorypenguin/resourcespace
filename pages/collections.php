@@ -912,7 +912,7 @@ elseif ($k!="")
 <div id="CollectionMinDrop">
  <form method="get" id="colselect" onsubmit="CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=<?php echo $thumbs?>&collection=-1&k=<?php echo $k?>&entername='+jQuery('#entername').val());return false;">
 		<div class="MinSearchItem">
-		<select name="collection" id="collection" <?php if ($collection_dropdown_user_access_mode){?>class="SearchWidthExp"<?php } else { ?> class="SearchWidth"<?php } ?> onchange="if(document.getElementById('collection').value==-1){document.getElementById('entername').style.display='inline';document.getElementById('entername').focus();return false;} <?php if ($ajax_collections && !checkperm("b")){ ?>ChangeCollection(jQuery(this).val());<?php } else { ?>document.getElementById('colselect').submit();<?php } ?>">
+		<select name="collection" id="collection" <?php if ($collection_dropdown_user_access_mode){?>class="SearchWidthExp"<?php } else { ?> class="SearchWidth"<?php } ?> onchange="if(document.getElementById('collection').value==-1){document.getElementById('entername').style.display='inline';document.getElementById('entername').focus();return false;} <?php if ($ajax_collections && !checkperm("b")){ ?>ChangeCollection(jQuery(this).val(),'<?php echo $k?>');<?php } else { ?>document.getElementById('colselect').submit();<?php } ?>">
 		<?php
 		$found=false;
 		$list=get_user_collections($userref);
