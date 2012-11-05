@@ -500,5 +500,5 @@ div.autocomplete ul li {
 
 .AjaxCollect 
 	{
-	position:fixed;bottom:0;width:100%;border-top:5px solid black;overflow:auto;overflow-x: hidden;z-index:99999;
+	position:fixed;bottom:0;width:100%;border-top:5px solid #d0d0d0;overflow:auto;overflow-x: hidden;z-index:99999;
 	}
