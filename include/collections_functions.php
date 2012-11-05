@@ -1248,11 +1248,11 @@ function add_to_collection_link($resource,$search="",$extracode="",$size="")
 	global $frameless_collections,$lang;
 	if ($frameless_collections)
 		{
-		return "<a href=\"#\" title=\"" . $lang["addtocurrentcollection"] . "\" onClick=\"AddResourceToCollection('" . $resource . "');" . $extracode . "return false;\">";
+		return "<a class=\"addToCollection\" href=\"#\" title=\"" . $lang["addtocurrentcollection"] . "\" onClick=\"AddResourceToCollection('" . $resource . "');" . $extracode . "return false;\">";
 		}
 	else
 		{
-		return "<a href=\"collections.php?add=" . $resource . "&nc=" . time() . "&search=" . urlencode($search) . "&size=" . urlencode($size) . "\" target=\"collections\" onClick=\"" . $extracode . "\" title=\"" . $lang["addtocurrentcollection"] . "\">";
+		return "<a class=\"addToCollection\" href=\"collections.php?add=" . $resource . "&nc=" . time() . "&search=" . urlencode($search) . "&size=" . urlencode($size) . "\" target=\"collections\" onClick=\"" . $extracode . "\" title=\"" . $lang["addtocurrentcollection"] . "\">";
 		}
 	}
 }	
@@ -1264,11 +1264,11 @@ function remove_from_collection_link($resource,$search="")
 	global $frameless_collections,$lang,$pagename;
 	if ($frameless_collections)
 		{
-		return "<a href=\"#\" title=\"" . $lang["removefromcurrentcollection"] . "\" onClick=\"RemoveResourceFromCollection('" . $resource . "','" . $pagename . "');return false;\">";
+		return "<a class=\"removeFromCollection\" href=\"#\" title=\"" . $lang["removefromcurrentcollection"] . "\" onClick=\"RemoveResourceFromCollection('" . $resource . "','" . $pagename . "');return false;\">";
 		}
 	else
 		{
-		return "<a href=\"collections.php?remove=" . $resource . "&nc=" . time() . "&search=" . urlencode($search) . "\" target=\"collections\" title=\"" . $lang["removefromcurrentcollection"] . "\">";
+		return "<a class=\"removeFromCollection\" href=\"collections.php?remove=" . $resource . "&nc=" . time() . "&search=" . urlencode($search) . "\" target=\"collections\" title=\"" . $lang["removefromcurrentcollection"] . "\">";
 		}
 	}
 }

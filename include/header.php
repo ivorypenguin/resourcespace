@@ -98,22 +98,31 @@ var baseurl="<?php echo $baseurl?>";
 <script type="text/javascript">
 
 jQuery(document).ready(function() {
-
-jQuery(document).keyup(function (e){ 
-    if(jQuery("input,textarea").is(":focus")){
+ jQuery(document).keyup(function (e)
+  { 
+    if(jQuery("input,textarea").is(":focus"))
+    {
        // don't listen to keyboard arrows when focused on form elements
     }
-    else{
-        if(e.which == 37) // left arrow
-        {
-            if (jQuery('.prevLink').length > 0) jQuery('.prevLink').click();
-        }
-        else if(e.which == 39)    // right arrow
-        { 
-            if (jQuery('.nextLink').length > 0) jQuery('.nextLink').click();
-        }
-   }
-});
+    else
+    {
+         switch (e.which) 
+         {
+            // left arrow
+            case 37: if (jQuery('.prevLink').length > 0) jQuery('.prevLink').click();
+                     break;
+            // right arrow
+            case 39: if (jQuery('.nextLink').length > 0) jQuery('.nextLink').click();
+                     break;
+            // a - add resource to collection    
+            case 65: if (jQuery('.addToCollection').length > 0) jQuery('.addToCollection').click();
+                     break;
+            // r - remove resource from collection
+            case 82: if (jQuery('.removeFromCollection').length > 0) jQuery('.removeFromCollection').click();
+                     break;
+         }
+     }
+ });
 });
 </script>
 <?php } ?>
