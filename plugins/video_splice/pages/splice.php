@@ -56,9 +56,9 @@ if (getval("splice","")!="" && count($videos)>1)
 		{
 		# Work out source/destination
 		global $ffmpeg_preview_extension;
-		if (file_exists(get_resource_path($videos[$n]["ref"],true,"",false,$ffmpeg_preview_extension)))
+		if (file_exists(get_resource_path($videos[$n]["ref"],true,"pre",false,$ffmpeg_preview_extension)))
 			{
-			$source=get_resource_path($videos[$n]["ref"],true,"",false,$ffmpeg_preview_extension,-1,1,false,"",-1,false);
+			$source=get_resource_path($videos[$n]["ref"],true,"pre",false,$ffmpeg_preview_extension,-1,1,false,"",-1,false);
 			}
 		else 
 			{
