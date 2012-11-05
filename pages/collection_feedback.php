@@ -41,13 +41,7 @@ $headerinsert.="<link type=\"text/css\" href=\"../lib/lightbox/css/jquery.lightb
 
 include "../include/header.php";
 ?>
-<script type="text/javascript">
-	jQuery(document).ready(function(){
-		jQuery('.lightbox').lightBox(); 
-	
-	});
 
-</script>
 <div class="BasicsBox">
 <h1><?php echo $lang["sendfeedback"]?></h1>
 <?php if ($done) { ?><p><?php echo $lang["feedbacksent"]?></p><?php } else { ?>
@@ -142,7 +136,11 @@ include "../include/header.php";
 </form>
 <?php } ?>
 </div>
-
+<?php if ($feedback_resource_select){?>
+<script type="text/javascript">
+		jQuery('.lightbox').lightBox(); 
+</script>
+<?php } ?>
 
 <?php		
 include "../include/footer.php";

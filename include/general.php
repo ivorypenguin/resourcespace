@@ -2198,6 +2198,7 @@ function check_access_key($resource,$key)
 	if (hook("check_access_key","",array($resource,$key))===true) {return true;}
 	
 	$keys=sql_query("select user,expires from external_access_keys where resource='$resource' and access_key='$key' and (expires is null or expires>now())");
+
 	if (count($keys)==0)
 		{
 		return false;
@@ -2254,6 +2255,9 @@ function check_access_key_collection($collection,$key)
 	{
 	if ($collection=="" || !is_numeric($collection)) {return false;}
 	$r=get_collection_resources($collection);
+	
+	if (count($r)==0){return false;}
+	
 	for ($n=0;$n<count($r);$n++)
 		{
 		# Verify a supplied external access key for all resources in a collection

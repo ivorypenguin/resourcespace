@@ -8,7 +8,7 @@ include "../include/search_functions.php";
 include "../include/resource_functions.php";
 
 $uniqid="";$id="";
-$collection=getvalescaped("collection","",true);
+$collection=getvalescaped("collection","",true);  if ($k!=""){$usercollection=$collection;}
 $size=getvalescaped("size","");
 $submitted=getvalescaped("submitted","");
 $includetext=getvalescaped("text","false");
