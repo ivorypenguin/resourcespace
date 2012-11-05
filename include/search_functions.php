@@ -1021,6 +1021,8 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
 		<?php
 		}
 
+	hook("rendersearchhtml", "", array($field, $class, $value, $autoupdate));
+
 	switch ($field["type"]) {
 		case 0: # -------- Text boxes
 		case 1:
@@ -1429,7 +1431,9 @@ function search_form_to_search_query($fields,$fromsearchbar=false)
 		$listsql="!list" . join(":",trim_array(split_keywords(getvalescaped("resourceids",""))));
 		$search=$listsql . " " . $search;
 		}
-		
+
+	$tmp = hook("richeditsearchquery", "", array($search, $fields, $n)); if($tmp) $search .= $tmp;
+	
 	for ($n=0;$n<count($fields);$n++)
 		{
 		switch ($fields[$n]["type"])

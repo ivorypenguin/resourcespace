@@ -139,7 +139,8 @@ foreach($collection as $key=>$value){
 	}
 }		
 //echo "<br/>Theme levels available:".$themecolumns;	
-	
+
+if(!hook("overridethemesel")):	
 if (checkperm("h") && $enable_themes) { # Only users with the 'h' permission can publish public collections as themes.
 
 
@@ -202,7 +203,8 @@ if ($theme_category_levels>=$i)
 			<?php
 		}
 	}	
-} 
+}
+endif; // hook: overridethemesel 
 }
 
 

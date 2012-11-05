@@ -43,6 +43,8 @@ function DisplayTheme($themes=array())
 		}
 
 	$getthemes=get_themes($themes);
+
+	$tmp = hook("getthemesdisp", "", array($themes)); if($tmp!==false) $getthemes = $tmp;
 	
 	if (count($getthemes)>0)
 		{
@@ -483,6 +485,7 @@ elseif (($theme_category_levels==1 && $smart_theme=="") || $theme_direct_jump)
 	{
 	# Display all themes
 	$headers=get_theme_headers($themes);
+	$tmp = hook("themeheadersdisp", "", array($themes)); if($tmp!==false) $headers = $tmp;
 	for ($n=0;$n<count($headers);$n++)
 		{
 			DisplayTheme(array_merge($themes,array($headers[$n])));

@@ -38,6 +38,10 @@ if ($collection!="")
 
 if(hook("modifyusercollection")){$usercollection=hook("modifyusercollection");} 
 
+hook("addmultirestocol");
+
+hook("removemultiresfrcol");
+
 # Process adding of items
 $add=getvalescaped("add","");
 if ($add!="")
