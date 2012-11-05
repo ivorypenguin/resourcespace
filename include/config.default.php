@@ -1984,3 +1984,6 @@ $ajax_collections=true; // this automatically turns on $frameless_collections (t
 $collection_allow_creation=true;
 
 $daterange_search=false;
+
+# Keyboard navigation allows using left and right arrows to browse through resources in view/search/preview modes
+$keyboard_navigation=false;

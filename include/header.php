@@ -94,7 +94,29 @@ var baseurl="<?php echo $baseurl?>";
 
 
 <script src="<?php echo $baseurl_short?>lib/js/global.js?css_reload_key=<?php echo $css_reload_key?>" type="text/javascript"></script>
+<?php if ($keyboard_navigation) { ?>
+<script type="text/javascript">
 
+jQuery(document).ready(function() {
+
+jQuery(document).keyup(function (e){ 
+    if(jQuery("input,textarea").is(":focus")){
+       // don't listen to keyboard arrows when focused on form elements
+    }
+    else{
+        if(e.which == 37) // left arrow
+        {
+            if (jQuery('.prevLink').length > 0) jQuery('.prevLink').click();
+        }
+        else if(e.which == 39)    // right arrow
+        { 
+            if (jQuery('.nextLink').length > 0) jQuery('.nextLink').click();
+        }
+   }
+});
+});
+</script>
+<?php } ?>
 <?php hook("additionalheaderjs");?>
 
 <?php
