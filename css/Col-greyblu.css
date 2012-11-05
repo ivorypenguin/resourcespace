@@ -2,7 +2,7 @@ body,html {color:#B5C3D4;background: #4C6C96 url(../gfx/greyblu/interface/back.g
 h2 {color: #FFFFFF;}
 h1 {color: #FFFFFF;}
 .CollectDivide {color:#B5C3D4;background: #000000 url(../gfx/greyblu/interface/CollectDivide.gif) repeat-x;}
-.CollectBack {color:#B6BBC1;background: #293340 url(../gfx/greyblu/interface/CollectBack.gif) repeat-x fixed;}
+.CollectBack {color:#B6BBC1;background: #293340 url(../gfx/greyblu/interface/CollectBack.gif) repeat-x;}
 
 a:link {color:#B5C3D4;}
 a:visited {color:#B5C3D4;}

@@ -2,7 +2,7 @@ body,html {color:#CCC;background: #000 url(../gfx/black/interface/back.gif) repe
 h2 {color: #FFFFFF;}
 h1 {color: #FFFFFF;}
 .CollectDivide {color:#CCC;background: #000000 url(../gfx/black/interface/CollectDivide.gif) repeat-x;}
-.CollectBack {color:#BBB;background: #333 url(../gfx/black/interface/CollectBack.gif) repeat-x fixed;}
+.CollectBack {color:#BBB;background: #2a2a2a url(../gfx/black/interface/CollectBack.gif) repeat-x;}
 
 a:link {color:#CCC;}
 a:visited {color:#CCC;}
