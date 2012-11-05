@@ -1432,7 +1432,8 @@ function search_form_to_search_query($fields,$fromsearchbar=false)
 		$search=$listsql . " " . $search;
 		}
 
-	$tmp = hook("richeditsearchquery", "", array($search, $fields, $n)); if($tmp) $search .= $tmp;
+	// Disabled as was killing search
+	//$tmp = hook("richeditsearchquery", "", array($search, $fields, $n)); if($tmp) $search .= $tmp;
 	
 	for ($n=0;$n<count($fields);$n++)
 		{
