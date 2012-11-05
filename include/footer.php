@@ -290,12 +290,8 @@ function setContent() {
 				height = (windowHeight - collection_frame_height )+ 'px';
 				contentElement.style.top = height;
 				jQuery('body').css("padding-bottom",collection_frame_height +"px");
-				jQuery('#CollectionDiv').animate({
-					top: height
-				}, 700, function() {
-					// Animation complete.
-					});
-			
+				jQuery('#CollectionDiv').css('top',height);
+		
 			}
 			else {
 				contentElement.style.position = 'static';
