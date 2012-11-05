@@ -639,7 +639,7 @@ if ($use_mp3_player && file_exists($mp3realpath) && $access==0){
 <?php 
 
 
-
+$collectionresources=get_collection_resources($usercollection);
 # ----------------------------- Resource Actions -------------------------------------
 hook ("resourceactions") ?>
 <?php if ($k=="") { ?>
@@ -653,8 +653,8 @@ hook ("resourceactions") ?>
 	
 	) { ?>
 	<li><?php echo add_to_collection_link($ref,$search)?>&gt; <?php echo $lang["action-addtocollection"]?></a></li>
-	<?php if ($search=="!collection" . $usercollection) { ?><li><?php echo remove_from_collection_link($ref,$search)?>&gt; <?php echo $lang["action-removefromcollection"]?></a></li><?php } ?>
-	<?php } ?>
+	<li><?php echo remove_from_collection_link($ref,$search)?>&gt; <?php echo $lang["action-removefromcollection"]?></a></li><?php } ?>
+	
 	
 	
 	<?php if ($allow_share && ($access==0 || ($access==1 && $restricted_share))) { ?>

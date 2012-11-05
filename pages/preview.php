@@ -119,7 +119,7 @@ if ($use_mp3_player){
 		$mp3path=get_resource_path($ref,false,"",false,"mp3");
 	}
 }
-
+$collectionresources=get_collection_resources($usercollection);
 include "../include/header.php";
 ?>
 
@@ -132,8 +132,8 @@ include "../include/header.php";
 <?php if (!checkperm("b")) { ?>
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <?php echo add_to_collection_link($ref,$search)?>+&nbsp;<?php echo $lang["action-addtocollection"]?></a><?php } ?>
-<?php if ($search=="!collection" . $usercollection) { ?>&nbsp;&nbsp;<?php echo remove_from_collection_link($ref,$search)?>- <?php echo $lang["action-removefromcollection"]?></a><?php } ?>
-<?php } ?>
+&nbsp;&nbsp;<?php echo remove_from_collection_link($ref,$search)?>- <?php echo $lang["action-removefromcollection"]?></a><?php } ?>
+
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 <a class="prevLink" onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/preview.php?from=<?php echo getval("from","")?>&ref=<?php echo $ref?>&k=<?php echo $k?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&go=previous&<?php echo hook("nextpreviousextraurl") ?>">&lt;&nbsp;<?php echo $lang["previousresult"]?></a>
