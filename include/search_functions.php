@@ -1021,7 +1021,7 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
 		<?php
 		}
 
-	hook("rendersearchhtml", "", array($field, $class, $value, $autoupdate));
+	//hook("rendersearchhtml", "", array($field, $class, $value, $autoupdate));
 
 	switch ($field["type"]) {
 		case 0: # -------- Text boxes
