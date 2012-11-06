@@ -1248,12 +1248,10 @@ if (!function_exists("add_to_collection_link")){
 function add_to_collection_link($resource,$search="",$extracode="",$size="")
 	{
 	# Generates a HTML link for adding a resource to a collection
-	global $frameless_collections,$lang,$collectionresources;
+	global $frameless_collections,$lang;
 	if ($frameless_collections)
 		{
-		if (in_array($resource,$collectionresources)) $style=" style=\"display:none\" ";
-		else $style="";
-		return "<a " . $style . " class=\"addToCollection\" href=\"#\" title=\"" . $lang["addtocurrentcollection"] . "\" onClick=\"AddResourceToCollection('" . $resource . "');" . $extracode . "return false;\">";
+		return "<a class=\"addToCollection\" href=\"#\" title=\"" . $lang["addtocurrentcollection"] . "\" onClick=\"AddResourceToCollection('" . $resource . "');" . $extracode . "return false;\">";
 		}
 	else
 		{
@@ -1266,12 +1264,10 @@ if (!function_exists("remove_from_collection_link")){
 function remove_from_collection_link($resource,$search="")
 	{
 	# Generates a HTML link for removing a resource to a collection
-	global $frameless_collections,$lang,$pagename,$collectionresources;
+	global $frameless_collections,$lang,$pagename;
 	if ($frameless_collections)
 		{
-		if (!in_array($resource,$collectionresources)) $style=" style=\"display:none\" ";
-		else $style="";
-		return "<a " . $style . " class=\"removeFromCollection\" href=\"#\" title=\"" . $lang["removefromcurrentcollection"] . "\" onClick=\"RemoveResourceFromCollection('" . $resource . "','" . $pagename . "');return false;\">";
+		return "<a class=\"removeFromCollection\" href=\"#\" title=\"" . $lang["removefromcurrentcollection"] . "\" onClick=\"RemoveResourceFromCollection('" . $resource . "','" . $pagename . "');return false;\">";
 		}
 	else
 		{

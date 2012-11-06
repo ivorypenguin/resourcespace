@@ -239,9 +239,7 @@ option {font-size:11px;}
 .RecordPanel .RecordDownload .DownloadDBlend td {margin: 0;vertical-align: middle;}
 .RecordPanel .RecordDownloadSpace {padding: 6px;}
 .RecordPanel .RecordDownloadSpace ul {padding:0.2em 0;margin:0;list-style:none;}
-.RecordPanel .RecordDownloadSpace li {padding:0;margin:0 0 1px 0;float:left;}
-.RecordPanel .RecordDownloadSpace li a {margin-right: 8px;
-}
+.RecordPanel .RecordDownloadSpace li {padding:0;margin:0 8px 1px 0;float:left;}
 .RecordPanel .RecordDownloadSpace .DownloadDBlend .DownloadButton {text-align: center;font-weight: bold;}
 .RecordPanel .RecordDownloadSpace .DownloadDBlend h2 {margin:0;padding:0;font-size: 1em;	text-align: left;}
 .RecordPanel .RecordDownloadSpace .DownloadDBlend p {margin:0;padding:0;	text-align: left;}
