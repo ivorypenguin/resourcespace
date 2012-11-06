@@ -1015,6 +1015,9 @@ function get_theme_image($themes=array())
 	} 
 	$sql.=" and r.has_image=1 order by r.hit_count desc limit " . $theme_images_number;
 	$images=sql_array($sql,0);
+
+	$tmp = hook("getthemeimage", "", array($themes)); if($tmp!==false and is_array($tmp) and count($tmp)>0) $images = $tmp;
+
 	if (count($images)>0) {return $images;}
 	return false;
 	}
