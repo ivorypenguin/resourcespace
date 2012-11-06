@@ -1033,6 +1033,7 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
 	
 		case 2: 
 		case 3:
+		if(!hook("customchkboxes", "", array($field, $value, $autoupdate, $class, $forsearchbar, $limit_keywords))):
 		# -------- Show a check list or dropdown for dropdowns and check lists?
 		# By default show a checkbox list for both (for multiple selections this enabled OR functionality)
 		
@@ -1151,6 +1152,7 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
 				}
 				
 			}
+		endif;
 		break;
 		
 		case 4:

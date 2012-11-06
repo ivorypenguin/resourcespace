@@ -1,5 +1,7 @@
 <?php /* -------- Check box list ---------------- */ 
 
+if(!hook("customchkboxes")):
+
 # Translate all options
 $options=trim_array(explode(",",$fields[$n]["options"]));
 $option_trans=array();
@@ -78,3 +80,4 @@ else
 	?></tr></table><?php
 	}
 	
+endif;
