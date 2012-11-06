@@ -1987,3 +1987,6 @@ $daterange_search=false;
 
 # Keyboard navigation allows using left and right arrows to browse through resources in view/search/preview modes
 $keyboard_navigation=false;
+
+# How long until the Loading popup appears during an ajax request (milliseconds)
+$ajax_loading_timer=1500;

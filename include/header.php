@@ -70,6 +70,7 @@ jQuery.noConflict();
 <?php if ($ajax_collections){?>
 	ajaxCollections=true;
 <?php } else { ?> ajaxCollections=false;<?php } ?>
+	ajaxLoadingTimer=<?php echo $ajax_loading_timer;?>;
 </script>
 
 <script src="<?php echo $baseurl?>/lib/js/category_tree.js?css_reload_key=<?php echo $css_reload_key?>" type="text/javascript"></script>
