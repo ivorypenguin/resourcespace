@@ -1988,5 +1988,8 @@ $daterange_search=false;
 # Keyboard navigation allows using left and right arrows to browse through resources in view/search/preview modes
 $keyboard_navigation=false;
 
+# with $keyboard_scroll_jump on arrow keys jump from picture to picture in preview_all mode (horizontal only)
+$keyboard_scroll_jump=false;
+
 # How long until the Loading popup appears during an ajax request (milliseconds)
 $ajax_loading_timer=1500;

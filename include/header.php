@@ -99,6 +99,7 @@ var baseurl="<?php echo $baseurl?>";
 <script type="text/javascript">
 
 jQuery(document).ready(function() {
+ jQuery.fn.reverse = [].reverse;
  jQuery(document).keyup(function (e)
   { 
     if(jQuery("input,textarea").is(":focus"))
@@ -111,9 +112,31 @@ jQuery(document).ready(function() {
          {
             // left arrow
             case 37: if (jQuery('.prevLink').length > 0) jQuery('.prevLink').click();
+                     <?php 
+                     if (($pagename=="preview_all") && $keyboard_scroll_jump) { ?>
+                     currentX=jQuery(window).scrollLeft();
+                     jQuery('.ResourceShel_').reverse().each(function(index) {
+                         offset = jQuery(this).offset();
+                         if (offset.left-20<currentX) {
+                            jQuery(window).scrollLeft(offset.left-20)
+                            return false;
+                         }
+                     });                     
+                     <?php } ?>
                      break;
             // right arrow
             case 39: if (jQuery('.nextLink').length > 0) jQuery('.nextLink').click();
+                     <?php 
+                     if (($pagename=="preview_all") && $keyboard_scroll_jump) { ?>
+                     currentX=jQuery(window).scrollLeft();
+                     jQuery('.ResourceShel_').each(function(index) {
+                         offset = jQuery(this).offset();
+                         if (offset.left-40>currentX) {
+                            jQuery(window).scrollLeft(offset.left-20)
+                            return false;
+                         }
+                     });                     
+                     <?php } ?>
                      break;
             // a - add resource to collection    
             case 65: if (jQuery('.addToCollection').length > 0) jQuery('.addToCollection').click();
