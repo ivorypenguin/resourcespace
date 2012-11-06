@@ -80,14 +80,10 @@ jQuery.noConflict();
 <script src="https://maps.google.com/maps/api/js?v=3.2&sensor=false"></script>
 <?php } ?>
 
-<?php if ($frameless_collections) { ?><link rel="stylesheet" type="text/css" 
-href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.7.1/themes/base/jquery-ui.css"/>
-	<?php if ($ajax_collections){?>
-		<script src="<?php echo $baseurl?>/lib/js/ajax_collections.js?css_reload_key=<?php echo $css_reload_key?>" type="text/javascript"></script>
-	<?php } else { ?>
-		<script src="<?php echo $baseurl?>/lib/js/frameless_collections.js?css_reload_key=<?php echo $css_reload_key?>" type="text/javascript"></script>
-	<?php } ?>
+<?php if ($ajax_collections){?>
+<script src="<?php echo $baseurl?>/lib/js/ajax_collections.js?css_reload_key=<?php echo $css_reload_key?>" type="text/javascript"></script>
 <?php } ?>
+
 <script type="text/javascript">
 var baseurl_short="<?php echo $baseurl_short?>";
 var baseurl="<?php echo $baseurl?>";
