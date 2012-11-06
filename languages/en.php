@@ -1617,3 +1617,6 @@ $lang["theme_home_promote"]="Promote on the home page?";
 $lang["theme_home_page_text"]="Home page text";
 $lang["theme_home_page_image"]="Home page image";
 $lang["ref-title"] = "%ref - %title"; # %ref and %title will be replaced, e.g. 3 - Sunset
+
+$lang["error-pageload"] = "Sorry, there has been an error loading this page. If you are performing a search please try refining your search query. If the problem persists please contact your system administrator";
+
