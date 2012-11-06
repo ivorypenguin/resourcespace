@@ -107,7 +107,7 @@ jQuery(document).ready(function() {
        // don't listen to keyboard arrows when focused on form elements
     }
     else
-    {
+    { 
          switch (e.which) 
          {
             // left arrow
@@ -143,6 +143,8 @@ jQuery(document).ready(function() {
                      break;
             // r - remove resource from collection
             case 82: if (jQuery('.removeFromCollection').length > 0) jQuery('.removeFromCollection').click();
+                     break;
+            case 13: if (jQuery('.enterLink').length > 0) window.location=jQuery('.enterLink').attr("href");
                      break;
          }
      }
