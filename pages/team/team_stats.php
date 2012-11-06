@@ -56,7 +56,9 @@ if (getval("print","")!="") { # Launch printable page in an iframe
 <label for="activity_type"><?php echo $lang["activity"]?></label><select id="activity_type" name="activity_type" class="shrtwidth">
 <?php $types=get_stats_activity_types(); 
 for ($n=0;$n<count($types);$n++)
-	{
+	{ 
+	if (!isset($lang["stat-" . strtolower(str_replace(" ","",$types[$n]))])){$lang["stat-" . strtolower(str_replace(" ","",$types[$n]))]=str_replace("[type]",$types[$n],$lang["log-missinglang"]);}	
+		
 	?><option <?php if ($activity_type==$types[$n]) { ?>selected<?php } ?> value="<?php echo $types[$n]?>"><?php echo $lang["stat-" . strtolower(str_replace(" ","",$types[$n]))]?></option><?php
 	}
 ?>
