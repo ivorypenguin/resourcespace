@@ -252,7 +252,7 @@ if (getval("ajax","")=="") {
 	
 <?php 
 if ($ajax_collections){
-	$omit_collectiondiv_load_pages=array("login","user_request","user_password","done","index","preview_all");
+	$omit_collectiondiv_load_pages=array("login","user_request","user_password","done","index","preview_all","preview");
 	
 	?>
 <div id="CollectionDiv" class="CollectBack AjaxCollect" <?php if (!in_array($pagename,$omit_collectiondiv_load_pages)){?>onload="UpdateCollectionDisplay('<?php echo isset($k)?$k:"" ?>');" style="height:<?php echo $collection_frame_height ?>px;"<?php } else { ?>style="display:none;"<?php } ?>><?php echo $lang["loading"]?></div>
@@ -299,7 +299,15 @@ function setContent() {
 		}
 	}
 }
-<?php if (isset($k) && $k!="" && isset($usercollection)) { ?>
+<?php
+# Work out the current collection from the search string if external access
+if (isset($k) && $k!="" && isset($search) && !isset($usercollection))
+	{
+	$usercollection=str_replace("!collection","",$search);
+	}
+
+
+if (isset($k) && $k!="" && isset($usercollection)) { ?>
 window.onload = function() {
 	setContent();ChangeCollection(<?php echo $usercollection; ?>,'<?php echo $k ?>');
 }
