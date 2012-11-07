@@ -1443,6 +1443,7 @@ $payment_address="payment.address@goes.here"; // you must enable Instant Payment
 $payment_currency="GBP";
 # Should the "Add to basket" function appear on the download sizes, so the size of the file required is selected earlier and stored in the basket? This means the total price can appear in the basket.
 $basket_stores_size=true; 
+$paypal_url="https://www.paypal.com/cgi-bin/webscr";
 
 # Ability to set a field which will store 'Portrait' or 'Landscape' depending on image dimensions
 # $portrait_landscape_field=1;
