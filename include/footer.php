@@ -319,6 +319,7 @@ window.onload = function() {
 
 window.onresize = function() {
 	setContent();
+	<?php hook("onwindowresize");?>
 }
 </script>
 <?php } // end omit_collectiondiv_load_pages ?>	
