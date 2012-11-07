@@ -145,6 +145,12 @@ if (array_key_exists("user",$_COOKIE) || array_key_exists("user",$_GET) || isset
 			$lang["addtocurrentcollection"]=$lang["addtobasket"];
 			$lang["requestaddedtocollection"]=$lang["buyitemaddedtocollection"];
 			$lang["action-request"]=$lang["addtobasket"];
+			$lang["managemycollections"]=$lang["viewpurchases"];
+			$lang["mycollection"]=$lang["yourbasket"];
+			$lang["action-removefromcollection"]=$lang["removefrombasket"];
+			$lang["total-collections-0"] = $lang["total-orders-0"];
+			$lang["total-collections-1"] = $lang["total-orders-1"];
+			$lang["total-collections-2"] = $lang["total-orders-2"];
 			
 			# The request button (renamed "Buy" by the line above) should always add the item to the current collection.
 			$request_adds_to_collection=true;

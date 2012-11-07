@@ -2891,15 +2891,31 @@ function purchase_set_size($collection,$resource,$size,$price)
 
 function payment_set_complete($collection)
 	{
+	global $applicationname,$baseurl,$userref,$username,$useremail,$userfullname,$email_notify,$lang,$currency_symbol;
 	# Mark items in the collection as paid so they can be downloaded.
 	sql_query("update collection_resource set purchase_complete=1 where collection='$collection'");
 	
 	# For each resource, add an entry to the log to show it has been purchased.
 	$resources=sql_query("select * from collection_resource where collection='$collection'");
+	$summary="<style>.InfoTable td {padding:5px;}</style><table border=\"1\" class=\"InfoTable\"><tr><td><strong>" . $lang["property-reference"] . "</strong></td><td><strong>" . $lang["size"] . "</strong></td><td><strong>" . $lang["price"] . "</strong></td></tr>";
 	foreach ($resources as $resource)
 		{
+		$purchasesize=$resource["purchase_size"];
+		if ($purchasesize==""){$purchasesize=$lang["original"];}
 		resource_log($resource["resource"],"p",0,"","","",0,$resource["purchase_size"],$resource["purchase_price"]);
+		$summary.="<tr><td>" . $resource["resource"] . "</td><td>" . $purchasesize . "</td><td>" . $currency_symbol . $resource["purchase_price"] . "</td></tr>";
 		}
+	$summary.="</table>";
+	# Send email to admin
+	$message=$lang["purchase_complete_email_admin_body"] . "<br>" . $lang["username"] . ": " . $username . "(" . $userfullname . ")<br>" . $summary . "<br><br>$baseurl/?c=" . $collection . "<br>";
+	send_mail($email_notify,$applicationname . ": " . $lang["purchase_complete_email_admin"],$message,"","","",null,"","",true);
+	
+	#Send email to user
+	$userconfirmmessage= $lang["purchase_complete_email_user_body"] . $summary . "<br><br>$baseurl/?c=" . $collection . "<br>";
+	send_mail($useremail,$applicationname . ": " . $lang["purchase_complete_email_user"] ,$userconfirmmessage,"","","",null,"","",true);
+	
+	# Rename so that can be viewed on my purchases page
+	sql_query("update collection set name= '" . date("Y-m-d H:i") . "' where ref='$collection'");
 	
 	return true;
 

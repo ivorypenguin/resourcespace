@@ -198,7 +198,7 @@ jQuery(document).ready( function ()
 	</div>
 <?php } ?>
 	
-<?php if ($home_mycollections && !checkperm("b")) { ?>
+<?php if ($home_mycollections && !checkperm("b") && $userrequestmode!=2 && $userrequestmode!=3) { ?>
 	<div class="HomePanel"><div class="HomePanelIN">
 	<h2><a href="<?php echo $baseurl_short?>pages/collection_manage.php"><?php echo $lang["mycollections"]?></a></h2>
 	<?php echo text("mycollections")?>

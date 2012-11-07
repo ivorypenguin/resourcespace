@@ -3,7 +3,7 @@ include_once dirname(__FILE__)."/../include/db.php";
 include_once dirname(__FILE__)."/../include/general.php";
 include_once dirname(__FILE__)."/../include/collections_functions.php";
 # External access support (authenticate only if no key provided, or if invalid access key provided)
-$userrequestmode=0;$k=getvalescaped("k","");if (($k=="") || (!check_access_key_collection(getvalescaped("collection","",true),$k))) {include_once dirname(__FILE__)."/../include/authenticate.php";}
+$k=getvalescaped("k","");if (($k=="") || (!check_access_key_collection(getvalescaped("collection","",true),$k))) {include_once dirname(__FILE__)."/../include/authenticate.php";}
 if (checkperm("b")){exit("Permission denied");}
 include_once dirname(__FILE__)."/../include/research_functions.php";
 include_once dirname(__FILE__)."/../include/resource_functions.php";
@@ -139,12 +139,7 @@ var baseurl="<?php echo $baseurl?>";
 jQuery.noConflict();
 </script>
 
-<?php if ($infobox)
-	{
-	?>		
-	<script src="../lib/js/infobox_collection.js" type="text/javascript"></script>
-	<?php
-	}
+<?php 
 }
 
 
@@ -171,6 +166,13 @@ for ($n=0;$n<count($plugins);$n++)
 }
 
 # Include function for reordering / infobox
+if ($infobox)
+	{
+	?>		
+	<script src="../lib/js/infobox_collection.js" type="text/javascript"></script>
+	<?php
+	}
+	
 if ($allow_reorder)
 	{
 	?>
@@ -488,6 +490,7 @@ if ($basket)
 	<?php if (!$disable_collection_toggle) { ?>
     <a href="<?php echo $baseurl_short?>pages/collections.php?thumbs=hide&collection=<?php echo $usercollection ?>&k=<?php echo $k?>" onClick="ToggleThumbs();return CollectionDivLoad(this);">&gt; <?php echo $lang["hidethumbnails"]?></a>
   <?php } ?>
+	<a href="<?php echo $baseurl_short?>pages/purchases.php" target="main" onclick="return CentralSpaceLoad(this,true);">&gt; <?php echo $lang["viewpurchases"]?></a>
 
 
 	</form>
@@ -809,6 +812,7 @@ if ($basket)
   <?php if (!$disable_collection_toggle) { ?>
     <?php if ($count_result<=$max_collection_thumbs) { ?><li><a href="<?php echo $baseurl_short?>pages/collections.php?thumbs=show&collection=<?php echo $usercollection ?>&k=<?php echo $k?>" onClick="ToggleThumbs();return CollectionDivLoad(this);"><?php echo $lang["showthumbnails"]?></a></li><?php } ?>
   <?php } ?>
+	<li><a href="<?php echo $baseurl_short?>pages/purchases.php" target="main" onclick="return CentralSpaceLoad(this,true);"><?php echo $lang["viewpurchases"]?></a></li>
     </ul>
 	</form>
 
@@ -955,7 +959,10 @@ elseif ($k!="")
 				}
 			}
 		?>
-		<option value="-1">(<?php echo $lang["createnewcollection"]?>)</option>
+		<?php if ($collection_allow_creation) { ?>	
+			<option value="-1">(<?php echo $lang["createnewcollection"]?>)</option>
+		<?php } ?>
+		
 		</select>
 		<input type=text id="entername" name="entername" style="display:inline;display:none;" class="SearchWidth">
 		</div>				

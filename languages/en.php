@@ -1270,6 +1270,17 @@ $lang["reload"]="Reload";
 $lang["downloadpurchaseitems"]="Download Purchased Items";
 $lang["downloadpurchaseitemsnow"]="Please use the links below to download your purchased items immediately.<br><br>Do not navigate away from this page until you have downloaded all the items.";
 $lang["alternatetype"]="Alternative type";
+$lang["viewpurchases"]="My Purchases";
+$lang["viewpurchasesintro"]="To access previously purchased resources please use the links below.";
+$lang["orderdate"]="Order Date";
+$lang["removefrombasket"]="Remove from basket";
+$lang["total-orders-0"] = "<strong>Total: 0</strong> Orders";
+$lang["total-orders-1"] = "<strong>Total: 1</strong> Order";
+$lang["total-orders-2"] = "<strong>Total: %number</strong> Orders"; # %number will be replaced, e.g. Total: 5 Orders
+$lang["purchase_complete_email_admin"] = "Notification of purchase";
+$lang["purchase_complete_email_admin_body"] = "The following purchase has been completed.";
+$lang["purchase_complete_email_user"] = "Confirmation of purchase";
+$lang["purchase_complete_email_user_body"] = "Thanks for your purchase. Please use the link below to access your purchased items.";
 
 
 $lang["subcategories"]="Subcategories";

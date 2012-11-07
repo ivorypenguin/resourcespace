@@ -182,7 +182,7 @@ else
 		if (!hook("paymentgateway")) # Allow other payment gateways to be hooked in, instead of PayPal.
 			{
 			?>
-			<form name="_xclick" class="form" action="https://www.paypal.com/cgi-bin/webscr" method="post">
+			<form name="_xclick" class="form" action="<?php echo $paypal_url; ?>" method="post">
 			<input type="hidden" name="cmd" value="_cart">
 			<input type="hidden" name="upload" value="1">
 			<input type="hidden" name="business" value="<?php echo $payment_address ?>">
@@ -204,7 +204,8 @@ else
 		# Invoice payment.
 		?>
 		<form method="post" action="<?php echo $baseurl_short?>pages/purchase.php" onsubmit="return confirm('<?php echo $lang["areyousurepayaccount"] ?>');">
-		<p><input type="submit" name="purchaseonaccount"  value="&nbsp;&nbsp;&nbsp;<?php echo $lang["purchaseonaccount"]?>&nbsp;&nbsp;&nbsp;"></p>		
+		<p><input type="submit" name="purchaseonaccount"  value="&nbsp;&nbsp;&nbsp;<?php echo $lang["purchaseonaccount"]?>&nbsp;&nbsp;&nbsp;"></p>
+	
 		</form>
 		<?php
 		}
