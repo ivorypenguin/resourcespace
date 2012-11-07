@@ -154,8 +154,13 @@ function save_resource_data($ref,$multi)
 				if(preg_match("#^" . $fields[$n]["regexp_filter"] . "$#",$val,$matches)<=0)
 					{
 					global $lang;
+					debug($lang["information-regexp_fail"] . ": -" . "reg exp: " . $fields[$n]["regexp_filter"] . ". Value passed: " . $val);
+					if (getval("autosave","")!="")
+						{
+						exit();
+						}
 					$errors[$fields[$n]["ref"]]=$lang["information-regexp_fail"] . " : " . $val;
-#					exit($lang["information-regexp_fail"] . ": -<br>" . "reg exp: " . $escapedregexp . "<br>Escaped value passed: " . $val);
+					continue;
 					}
 				}
 			
