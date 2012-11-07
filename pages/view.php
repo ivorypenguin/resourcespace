@@ -165,7 +165,7 @@ include "../include/header.php";
 if ($metadata_report && isset($exiftool_path))
 	{
 	?>
-	<script src="../lib/js/metadata_report.js" type="text/javascript"></script>
+	<script src="<?php echo $baseurl_short?>lib/js/metadata_report.js" type="text/javascript"></script>
 	<?php
 	}
 
