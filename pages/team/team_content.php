@@ -39,7 +39,7 @@ $per_page=15;
 $results=count($text);
 $totalpages=ceil($results/$per_page);
 $curpage=floor($offset/$per_page)+1;
-$url="team_content.php?findpage=" . urlencode($findpage)."&findname=".urlencode($findname)."&findtext=".urlencode($findtext);
+$url=$baseurl_short."pages/team/team_content.php?findpage=" . urlencode($findpage)."&findname=".urlencode($findname)."&findtext=".urlencode($findtext);
 $jumpcount=1;
 
 ?><div class="TopInpageNav"><?php pager();	?></div>

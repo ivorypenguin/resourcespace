@@ -14,7 +14,7 @@ if ($refinements[0]!=""){
 	for ($n=$startsearchcrumbs;$n<count($refinements);$n++){
 		$search_title_element=str_replace(";"," OR ",$refinements[$n]);
 		if ($n!=0 || $archive!=0){$searchcrumbs.=" > </count> </count> </count> ";}
-		$searchcrumbs.="<a href=search.php?search=";
+		$searchcrumbs.="<a href=".$baseurl_short."pages/search.php?search=";
 		for ($x=0;$x<=$n;$x++){
 			$searchcrumbs.=urlencode($refinements[$x]);
 			if ($x!=$n && substr($refinements[$x+1],0)!="-"){$searchcrumbs.=",";}		
@@ -71,7 +71,7 @@ if ($search_titles)
 			}
 		} 
 		hook("collectionsearchtitlemod");
-        $search_title.= '<div align="left"><h1><div class="searchcrumbs"><span id="coltitle'.$collection.'"><a '.$alt_text.' href=search.php?search=!collection'.$collection.$parameters_string.'>'.i18n_get_translated($collection_tag.$collectiondata["name"]).'</a></span>'.$searchcrumbs.'</div></h1> ';
+        $search_title.= '<div align="left"><h1><div class="searchcrumbs"><span id="coltitle'.$collection.'"><a '.$alt_text.' href='.$baseurl_short.'pages/search.php?search=!collection'.$collection.$parameters_string.'>'.i18n_get_translated($collection_tag.$collectiondata["name"]).'</a></span>'.$searchcrumbs.'</div></h1> ';
 		}	
     if (substr($search,0,5)=="!last")
         {

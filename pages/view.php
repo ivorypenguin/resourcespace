@@ -1134,7 +1134,7 @@ function UpdateFSResultCount()
 	}
 </script>
 
-<form method="post" action="find_similar.php" id="findsimilar">
+<form method="post" action="<?php echo $baseurl_short?>pages/find_similar.php" id="findsimilar">
 <input type="hidden" name="resource_type" value="<?php echo $resource["resource_type"]?>">
 <input type="hidden" name="countonly" id="countonly" value="">
 <?php
@@ -1151,7 +1151,7 @@ for ($n=0;$n<count($keywords);$n++)
 <div class="clearerleft"> </div>
 <br />
 <input name="search" type="submit" value="&nbsp;&nbsp;<?php echo $lang["searchbutton"]?>&nbsp;&nbsp;" id="dosearch"/>
-<iframe src="blank.html" frameborder=0 scrolling=no width=1 height=1 style="visibility:hidden;" name="resultcount" id="resultcount"></iframe>
+<iframe src="<?php echo $baseurl_short?>pages/blank.html" frameborder=0 scrolling=no width=1 height=1 style="visibility:hidden;" name="resultcount" id="resultcount"></iframe>
 </form>
 <div class="clearerleft"> </div>
 </div>

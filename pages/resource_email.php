@@ -56,12 +56,12 @@ if (getval("save","")!="")
 include "../include/header.php";
 ?>
 <div class="BasicsBox">
-<p><a href="view.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>">&lt; <?php echo $lang["backtoresourceview"]?></a></p>
+<p><a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>">&lt; <?php echo $lang["backtoresourceview"]?></a></p>
 <h1><?php echo $lang["emailresource"]?></h1>
 
 <p><?php echo text("introtext")?></p>
 
-<form method=post id="resourceform" action="resource_email.php">
+<form method=post id="resourceform" action="<?php echo $baseurl_short?>pages/resource_email.php">
 <input type=hidden name=ref value="<?php echo $ref?>">
 
 <div class="Question">

@@ -287,7 +287,7 @@ include "../include/header.php";
 if ($themes_category_split_pages && isset($themes[0]) && !$theme_direct_jump)
 	{
 	# Display back link
-	$link="themes.php?";
+	$link=$baseurl_short."pages/themes.php?";
 	for ($x=0;$x<count($themes);$x++){
 		if ($x!=0){ $link.="&"; }
 		$link.="theme";

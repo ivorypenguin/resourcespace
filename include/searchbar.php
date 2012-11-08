@@ -533,12 +533,12 @@ if (!$basic_simple_search)
   </form>
   <br />
   <?php hook("searchbarbeforebottomlinks"); ?>
-  <?php if (! $disable_geocoding) { ?><p><a href="<?php echo $baseurl?>/pages/geo_search.php" onClick="return CentralSpaceLoad(this,true);">&gt; <?php echo $lang["geographicsearch"]?></a></p><?php } ?>
-  <?php if (! $advancedsearch_disabled && !hook("advancedsearchlink")) { ?><p><a href="<?php echo $baseurl?>/pages/search_advanced.php" onClick="return CentralSpaceLoad(this,true);">&gt; <?php echo $lang["gotoadvancedsearch"]?></a></p><?php } ?>
+  <?php if (! $disable_geocoding) { ?><p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl?>/pages/geo_search.php" onClick="return CentralSpaceLoad(this,true);">&gt; <?php echo $lang["geographicsearch"]?></a></p><?php } ?>
+  <?php if (! $advancedsearch_disabled && !hook("advancedsearchlink")) { ?><p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl?>/pages/search_advanced.php" onClick="return CentralSpaceLoad(this,true);">&gt; <?php echo $lang["gotoadvancedsearch"]?></a></p><?php } ?>
 
   <?php hook("searchbarafterbuttons"); ?>
 
-  <?php if ($view_new_material) { ?><p><a href="<?php echo $baseurl?>/pages/search.php?search=<?php echo urlencode("!last".$recent_search_quantity)?>">&gt; <?php echo $lang["viewnewmaterial"]?></a></p><?php } ?>
+  <?php if ($view_new_material) { ?><p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl?>/pages/search.php?search=<?php echo urlencode("!last".$recent_search_quantity)?>">&gt; <?php echo $lang["viewnewmaterial"]?></a></p><?php } ?>
 	
 	<?php } ?> <!-- END of Searchbarreplace hook -->
 	</div>
@@ -580,7 +580,7 @@ if (!$basic_simple_search)
   	<?php if (!hook("replaceresearchrequestboxcontent"))  { ?>
 	<h2><?php echo $lang["researchrequest"]?></h2>
 	<p><?php echo text("researchrequest")?></p>
-	<div class="HorizontalWhiteNav"><a href="<?php echo $baseurl?>/pages/research_request.php">&gt; <?php echo $lang["researchrequestservice"]?></a></div>
+	<div class="HorizontalWhiteNav"><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl?>/pages/research_request.php">&gt; <?php echo $lang["researchrequestservice"]?></a></div>
 	</div><br />
 	<?php } /* end replaceresearchrequestboxcontent */ ?>
 	</div>

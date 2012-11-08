@@ -6,6 +6,7 @@ function HookTransformViewAfterresourceactions (){
 	global $lang;
 	global $resource;
 	global $cropper_allowed_extensions;
+	global $baseurl_short;
 
 	// fixme - for some reason this isn't pulling from config default for plugin even when set as global
 	// hack below makes it work, but need to figure this out at some point
@@ -21,7 +22,7 @@ function HookTransformViewAfterresourceactions (){
 	}
 
 	if ($access==0 && $resource['has_image']==1 && in_array(strtoupper($resource['file_extension']),$cropper_allowed_extensions)){
-		echo "<li><a href='../plugins/transform/pages/crop.php?ref=$ref'>&gt; ";
+		echo "<li><a href='".$baseurl_short."plugins/transform/pages/crop.php?ref=$ref'>&gt; ";
 		echo $lang['transform'];
 		echo "</a></li>";
 		return true;

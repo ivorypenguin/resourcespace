@@ -83,7 +83,7 @@ function UserRatingSet(userref,ref,rating)
 	}
 ?>
 
-<div class="RatingCount" id="RatingCount"><?php if ($user_rating_stats && $user_rating_only_once){?><a href="<?php echo $baseurl?>/pages/user_ratings.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>"><?php } ?><?php echo $rating_count?> <?php echo ($rating_count==1?$lang["rating_lowercase"]:$lang["ratings"])?><?php if ($user_rating_stats && $user_rating_only_once){?></a><?php }?></div>
+<div class="RatingCount" id="RatingCount"><?php if ($user_rating_stats && $user_rating_only_once){?><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl?>/pages/user_ratings.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>"><?php } ?><?php echo $rating_count?> <?php echo ($rating_count==1?$lang["rating_lowercase"]:$lang["ratings"])?><?php if ($user_rating_stats && $user_rating_only_once){?></a><?php }?></div>
 </td>
 </tr>
 </table>
