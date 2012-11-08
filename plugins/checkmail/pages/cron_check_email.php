@@ -69,7 +69,8 @@ $collection="";
 // get the first unseen message, one email is processed in this script
 $imap=imap_open("{".$checkmail_imap_server. "}INBOX", $checkmail_email, $checkmail_password ) or die("can't connect: " . imap_last_error() );
 
-sql_query("replace into sysvars set value=now(),name='last_checkmail'");
+sql_query("delete from sysvars where name='last_checkmail'");
+sql_query("insert into sysvars (value,name) values (now(),'last_checkmail')");
 
 $msgnos=imap_search($imap, 'UNSEEN');
 if ($msgnos==null){
