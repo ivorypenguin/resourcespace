@@ -66,7 +66,7 @@
 		?> width="<?php echo $xlwidth?>" height="<?php echo $xlheight?>" <?php 
 	} ?>src="<?php echo $pre_url ?>" class="ImageBorder"
 	<?php if ($infobox) { ?>onmouseover="InfoBoxSetResource(<?php echo $ref?>);" onmouseout="InfoBoxSetResource(0);"<?php } ?>
-	 /><?php } else { ?><img border=0 src="../gfx/<?php echo get_nopreview_icon($result[$n]["resource_type"],$result[$n]["file_extension"],false) ?>" 
+	 /><?php } else { ?><img border=0 src="<?php echo $baseurl_short?>gfx/<?php echo get_nopreview_icon($result[$n]["resource_type"],$result[$n]["file_extension"],false) ?>" 
 	<?php if ($infobox) { ?>onmouseover="InfoBoxSetResource(<?php echo $ref?>);" onmouseout="InfoBoxSetResource(0);"<?php } ?>
 	/><?php } ?></a>
 
@@ -140,24 +140,24 @@
 		<div class="ResourcePanelIcons"><?php if ($display_resource_id_in_thumbnail && $ref>0) { echo $ref; } else { ?>&nbsp;<?php } ?></div>	
 	    <?php if (!hook("replaceresourcetoolsxl")){?>
 		<?php if (!hook("replacefullscreenpreviewicon")){?>
-		<span class="IconPreview"><a href="preview.php?from=search&ref=<?php echo $ref?>&ext=<?php echo $result[$n]["preview_extension"]?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&k=<?php echo $k?>" title="<?php echo $lang["fullscreenpreview"]?>"><img src="../gfx/interface/sp.gif" alt="<?php echo $lang["fullscreenpreview"]?>" width="22" height="12" /></a></span>
+		<span class="IconPreview"><a href="preview.php?from=search&ref=<?php echo $ref?>&ext=<?php echo $result[$n]["preview_extension"]?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&k=<?php echo $k?>" title="<?php echo $lang["fullscreenpreview"]?>"><img src="<?php echo $baseurl_short?>gfx/interface/sp.gif" alt="<?php echo $lang["fullscreenpreview"]?>" width="22" height="12" /></a></span>
 		<?php } /* end hook replacefullscreenpreviewicon */?>
 		
 		<?php if(!hook("iconcollect")){?>
 		<?php if (!checkperm("b") && $k=="" && !$use_checkboxes_for_selection) { ?>
-		<span class="IconCollect"><?php echo add_to_collection_link($ref,$search)?><img src="../gfx/interface/sp.gif" alt="" width="22" height="12"/></a></span>
+		<span class="IconCollect"><?php echo add_to_collection_link($ref,$search)?><img src="<?php echo $baseurl_short?>gfx/interface/sp.gif" alt="" width="22" height="12"/></a></span>
 		<?php } ?>
 		<?php } # end hook iconcollect ?>
 
 		<?php if (!checkperm("b") && substr($search,0,11)=="!collection" && $k=="" && !$use_checkboxes_for_selection) { ?>
-		<?php if ($search=="!collection".$usercollection){?><span class="IconCollectOut"><?php echo remove_from_collection_link($ref,$search)?><img src="../gfx/interface/sp.gif" alt="" width="22" height="12" /></a></span>
+		<?php if ($search=="!collection".$usercollection){?><span class="IconCollectOut"><?php echo remove_from_collection_link($ref,$search)?><img src="<?php echo $baseurl_short?>gfx/interface/sp.gif" alt="" width="22" height="12" /></a></span>
 		<?php } ?>
 		<?php } ?>
 		
-		<?php if ($allow_share && $k=="") { ?><span class="IconEmail"><a href="resource_email.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&k=<?php echo $k?>"   onClick="return CentralSpaceLoad(this,true);" title="<?php echo $lang["emailresource"]?>"><img src="../gfx/interface/sp.gif" alt="" width="16" height="12" /></a></span><?php } ?>
+		<?php if ($allow_share && $k=="") { ?><span class="IconEmail"><a href="resource_email.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&k=<?php echo $k?>"   onClick="return CentralSpaceLoad(this,true);" title="<?php echo $lang["emailresource"]?>"><img src="<?php echo $baseurl_short?>gfx/interface/sp.gif" alt="" width="16" height="12" /></a></span><?php } ?>
 		<?php if (isset($result[$n][$rating]) && $result[$n][$rating]>0) { ?><div class="IconStar"></div><?php } ?>
 		<?php if ($k==""){?><?php if ($collection_reorder_caption || $collection_commenting) { ?>
-		<span class="IconComment"><a href="collection_comment.php?ref=<?php echo $ref?>&collection=<?php echo substr($search,11)?>"  onClick="return CentralSpaceLoad(this,true);" title="<?php echo $lang["addorviewcomments"]?>"><img src="../gfx/interface/sp.gif" alt="" width="14" height="12" /></a></span>		
+		<span class="IconComment"><a href="collection_comment.php?ref=<?php echo $ref?>&collection=<?php echo substr($search,11)?>"  onClick="return CentralSpaceLoad(this,true);" title="<?php echo $lang["addorviewcomments"]?>"><img src="<?php echo $baseurl_short?>gfx/interface/sp.gif" alt="" width="14" height="12" /></a></span>		
 		<?php } ?>	
 		<?php } hook("xlargesearchicon");?>
 		<div class="clearer"></div>
