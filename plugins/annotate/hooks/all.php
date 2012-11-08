@@ -54,11 +54,11 @@ function HookAnnotateAllCollectiontoolcompact1($collection, $count_result,$cinfo
 }
 
 function HookAnnotateAllAdditionalheaderjs(){
-	global $baseurl,$css_reload_key;
+	global $baseurl,$baseurl_short,$css_reload_key;
 ?>
-<link rel="stylesheet" type="text/css" media="screen,projection,print" href="<?php echo $baseurl?>/plugins/annotate/lib/jquery/css/annotation.css?css_reload_key=<?php echo $css_reload_key?>"/>
+<link rel="stylesheet" type="text/css" media="screen,projection,print" href="<?php echo $baseurl_short?>plugins/annotate/lib/jquery/css/annotation.css?css_reload_key=<?php echo $css_reload_key?>"/>
 
-<script type="text/javascript" src="<?php echo $baseurl?>/plugins/annotate/lib/jquery/js/jquery.annotate.js?css_reload_key=<?php echo $css_reload_key?>"></script>
+<script type="text/javascript" src="<?php echo $baseurl_short?>plugins/annotate/lib/jquery/js/jquery.annotate.js?css_reload_key=<?php echo $css_reload_key?>"></script>
 <?php }
 
 ?>
