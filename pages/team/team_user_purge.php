@@ -45,7 +45,7 @@ include "../../include/header.php";
 <p><?php echo str_replace("%",$count,$lang["purgeusersconfirm"]) ?>
 <br /><br />
 <input type="hidden" name="months" value="<?php echo $months ?>">
-<input name="purge2" type="submit" value="&nbsp;&nbsp;<?php echo $lang["purge"]?>&nbsp;&nbsp;" />
+<input name="purge2" type="submit" value="&nbsp;&nbsp;<?php echo $lang["purgeusers"]?>&nbsp;&nbsp;" />
 </p>
 <?php $users=sql_query("select * from user where $condition"); ?>
 <table class="InfoTable">
@@ -74,7 +74,7 @@ include "../../include/header.php";
 
 <p><?php echo str_replace("%","<input type=text name=months value=12>",$lang["purgeuserscommand"]) ?>
 <br /><br />
-<input name="purge1" type="submit" value="&nbsp;&nbsp;<?php echo $lang["purge"]?>&nbsp;&nbsp;" />
+<input name="purge1" type="submit" value="&nbsp;&nbsp;<?php echo $lang["purgeusers"]?>&nbsp;&nbsp;" />
 </p>
 <?php } ?>
 
