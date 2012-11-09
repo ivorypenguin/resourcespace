@@ -114,10 +114,10 @@ include "../../include/header.php";
 	
 	<?php if (checkperm("a")) { ?>
 	<?php if ($use_plugins_manager == true){ ?>
-	<li><a href="<?php echo $baseurl?>/pages/team/team_plugins.php"><?php echo $lang["pluginssetup"]?></a></li>
+	<li><a href="<?php echo $baseurl?>/pages/team/team_plugins.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["pluginssetup"]?></a></li>
 	<?php } ?>
 	<li><a href="<?php echo $baseurl?>/pages/admin/index.php"><?php echo $lang["systemsetup"]?></a></li>
-    <li><a href="<?php echo $baseurl?>/pages/team/team_reportbug.php"><?php echo $lang["reportbug"]?></a></li>
+    <li><a href="<?php echo $baseurl?>/pages/team/team_reportbug.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["reportbug"]?></a></li>
 	<?php hook("customteamfunctionadmin")?>
 	<?php } ?>
 	
