@@ -252,7 +252,7 @@ if (getval("ajax","")=="") {
 	
 <?php 
 if ($ajax_collections){
-	$omit_collectiondiv_load_pages=array("login","user_request","user_password","done","index","preview_all","preview");
+	$omit_collectiondiv_load_pages=array("login","user_request","user_password","done","index","preview_all");
 	
 	?>
 <div id="CollectionDiv" class="CollectBack AjaxCollect" <?php if (!in_array($pagename,$omit_collectiondiv_load_pages)){?>onload="UpdateCollectionDisplay('<?php echo isset($k)?$k:"" ?>');" style="height:<?php echo $collection_frame_height ?>px;"<?php } else { ?>style="display:none;"<?php } ?>><?php echo $lang["loading"]?></div>
