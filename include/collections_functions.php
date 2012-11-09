@@ -851,7 +851,7 @@ function add_smart_collection()
 	$search=getvalescaped("addsmartcollection","");
 	$restypes=getvalescaped("restypes","");
 	$archive=getvalescaped("archive","",true);
-	$starsearch=getvalescaped("starsearch","");
+	$starsearch=getvalescaped("starsearch",0);
 	
 	// more compact search strings should work with get_search_title
 	$searchstring=array();
