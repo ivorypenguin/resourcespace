@@ -12,10 +12,10 @@ Red, bright:	#E00000 (archived resource)
 Red, bright:	#FF0000 (red warning text)
 
 Black:			#000000 (black texts - e.g. pull down selections, links: hover/active on light background)
-Grey, Dark:		#252525 (dark edges, horizontal dark lines, regular text/icons on light background, links: link/visited on light background)
+Grey, Dark:		#252525 (dark edges, horizontal dark lines, regular text/icons on light background, links: link/visited on light background, text on enabled buttons)
 				#303030 (page background)
 Grey, Medium-:	#505050 (panel background)
-Grey, Medium+:	#808080 (link dividers)
+Grey, Medium+:	#808080 (link dividers, text on disabled buttons)
 Grey, Bright:	#A0A0A0 (disabled links, field titles, link labels)
 				#C0C0C0 (resource panel backgrounds, medium bright edges, horizontal bright lines)
 White, dark		#E0E0E0 (bright edges, regular text/icons, field values)
@@ -286,8 +286,8 @@ input[readonly] {color: #E0E0E0;} /* Read-only form fields */
 	border-right: 3px solid #C0C0C0;
 	}
 
-.CollectDivide {background: #252525 url(../gfx/interface/CollectDivide.gif) repeat-x;} /* Horizontal divider */
-.CollectBack {color: #252525; background: #E0E0E0 url(../gfx/interface/CollectBack.gif) repeat-x fixed;} /* Background */
+.AjaxCollect {border-top: 3px ridge #808080;} /* Horizontal divider */
+.CollectBack {color: #252525; background: #E0E0E0 url(../gfx/interface/CollectBack.gif) repeat-x;} /* Background */
 .CollectBack h2 {color: #252525; background: none;} /* Title, e.g. "My Collections" */
 .CollectBack h2 a:link {color: #252525; background: none; font-weight: bold;} /* Compact style: Title link, e.g. "My Collections" */
 .CollectBack h2 a:visited {color: #252525; background: none; font-weight: bold;}
@@ -705,7 +705,7 @@ a.plupload_button.plupload_add:hover, a.plupload_button.plupload_add:active, a.p
 
 a.plupload_button.plupload_start.plupload_disabled:link, a.plupload_button.plupload_start.plupload_disabled:visited, a.plupload_button.plupload_start.plupload_disabled:hover, a.plupload_button.plupload_start.plupload_disabled:active /* Buttons with start button disabled */
 	{
-	color: #252525;
+	color: #808080;
 	background-color: #C0C0C0;
 	background-image: url('../gfx/interface/buttons-disabled.png');
 	}
