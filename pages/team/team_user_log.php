@@ -29,18 +29,17 @@ $jumpcount=1;
 
 ?>
 <div class="BasicsBox">
-<p><a href="<?php echo $backurl?>">&lt;&nbsp;<?php echo $lang["manageusers"]?></a></p>
+<p><a href="<?php echo $backurl?>" onClick="return CentralSpaceLoad(this,true);">&lt;&nbsp;<?php echo $lang["manageusers"]?></a></p>
 <h1><?php echo $lang["userlog"] . ": " . $userdata["fullname"]?></h1>
-</div>
-
-<div class="TopInpageNav"><div class="InpageNavLeftBlock"><?php echo $lang["resultsdisplay"]?>:
+<div class="TopInpageNav">
+<div class="InpageNavLeftBlock"><?php echo $lang["resultsdisplay"]?>:
 	<?php 
 	for($n=0;$n<count($list_display_array);$n++){?>
 	<?php if ($per_page==$list_display_array[$n]){?><span class="Selected"><?php echo $list_display_array[$n]?></span><?php } else { ?><a href="<?php echo $url; ?>&per_page_list_log=<?php echo $list_display_array[$n]?>"><?php echo $list_display_array[$n]?></a><?php } ?>&nbsp;|
 	<?php } ?>
 	<?php if ($per_page==99999){?><span class="Selected"><?php echo $lang["all"]?></span><?php } else { ?><a href="<?php echo $url; ?>&per_page_list_log=99999"><?php echo $lang["all"]?></a><?php } ?>
 	</div> <?php pager(false); ?></div>
-	</div>
+
 
 <div class="Listview">
 <table border="0" cellspacing="0" cellpadding="0" class="ListviewStyle">
@@ -79,11 +78,12 @@ for ($n=$offset;(($n<count($log))&& ($n<($offset+$per_page)));$n++)
 	}
 ?>
 </table>
+</div> <!-- End of Listview -->
 
-</div>
-<div class="BottomInpageNav"><?php pager(false); ?></div>
-</div>
-</div>
+<div class="BottomInpageNav">
+<?php pager(false); ?></div>
+
+</div> <!-- End of BasicsBox -->
 
 <?php
 include "../../include/footer.php";
