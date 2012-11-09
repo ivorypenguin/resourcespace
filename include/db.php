@@ -103,6 +103,13 @@ if ($mysql_force_strict_mode)
 
 #if (function_exists("set_magic_quotes_runtime")) {@set_magic_quotes_runtime(0);}
 
+# Set a base URL part consisting of the part after the server name, i.e. for absolute URLs and cookie paths.
+$baseurl=str_replace(" ","%20",$baseurl);
+$bs=explode("/",$baseurl);
+$bs=array_slice($bs,3);
+$baseurl_short="/" . join("/",$bs) . (count($bs)>0?"/":"");
+
+
 # statistics
 $querycount=0;
 $querytime=0;
@@ -196,14 +203,6 @@ for ($n=0;$n<count($plugins);$n++)
 # Set character set.
 if (($pagename!="download") && ($pagename!="graph")) {header("Content-Type: text/html; charset=UTF-8");} // Make sure we're using UTF-8.
 #------------------------------------------------------
-
-
-# Set a base URL part consisting of the part after the server name, i.e. for absolute URLs and cookie paths.
-$baseurl=str_replace(" ","%20",$baseurl);
-$bs=explode("/",$baseurl);
-$bs=array_slice($bs,3);
-$baseurl_short="/" . join("/",$bs) . (count($bs)>0?"/":"");
-
 
 
 # Pre-load all text for this page.
