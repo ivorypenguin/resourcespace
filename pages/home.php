@@ -170,7 +170,7 @@ jQuery(document).ready( function ()
 	<h2><a href="<?php echo $baseurl_short?>pages/themes.php"><?php echo $lang["themes"]?></a></h2>
 	<?php echo text("themes")?>
 	<br />	<br />
-	<select style="width:140px;" onChange="window.location=this.value;">
+	<select style="width:140px;" onChange="CentralSpaceLoad(this.value,true);">
 	<option value=""><?php echo $lang["select"] ?></option>
 	<?php
 	$headers=get_theme_headers();
@@ -182,7 +182,7 @@ jQuery(document).ready( function ()
 		}
 	?>
 	</select>
-	<br />&gt;&nbsp;<a href="<?php echo $baseurl_short?>pages/themes.php"><?php echo $lang["viewall"] ?></a>
+	<br />&gt;&nbsp;<a href="<?php echo $baseurl_short?>pages/themes.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["viewall"] ?></a>
 	</div>
 	<div class="PanelShadow"></div>
 	</div>
@@ -191,7 +191,7 @@ jQuery(document).ready( function ()
 
 <?php if ($home_themes && $enable_themes) { ?>
 	<div class="HomePanel"><div class="HomePanelIN">
-	<h2><a href="<?php echo $baseurl_short?>pages/themes.php"><?php echo $lang["themes"]?></a></h2>
+	<h2><a href="<?php echo $baseurl_short?>pages/themes.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["themes"]?></a></h2>
 	<?php echo text("themes")?>
 	</div>
 	<div class="PanelShadow"></div>
@@ -200,7 +200,7 @@ jQuery(document).ready( function ()
 	
 <?php if ($home_mycollections && !checkperm("b") && $userrequestmode!=2 && $userrequestmode!=3) { ?>
 	<div class="HomePanel"><div class="HomePanelIN">
-	<h2><a href="<?php echo $baseurl_short?>pages/collection_manage.php"><?php echo $lang["mycollections"]?></a></h2>
+	<h2><a href="<?php echo $baseurl_short?>pages/collection_manage.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["mycollections"]?></a></h2>
 	<?php echo text("mycollections")?>
 	</div>
 	<div class="PanelShadow">
@@ -210,7 +210,7 @@ jQuery(document).ready( function ()
 
 <?php if ($home_advancedsearch) { ?>
 	<div class="HomePanel"><div class="HomePanelIN">
-	<h2><a href="<?php echo $baseurl_short?>pages/search_advanced.php"><?php echo $lang["advancedsearch"]?></a></h2>
+	<h2><a href="<?php echo $baseurl_short?>pages/search_advanced.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["advancedsearch"]?></a></h2>
 	<?php echo text("advancedsearch")?>
 	</div>
 	<div class="PanelShadow"></div>
@@ -219,7 +219,7 @@ jQuery(document).ready( function ()
 
 <?php if ($home_mycontributions && (checkperm("d") || (checkperm("c") && checkperm("e0")))) { ?>
 	<div class="HomePanel"><div class="HomePanelIN">
-	<h2><a href="<?php echo $baseurl_short?>pages/contribute.php"><?php echo $lang["mycontributions"]?></a></h2>
+	<h2><a href="<?php echo $baseurl_short?>pages/contribute.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["mycontributions"]?></a></h2>
 	<?php echo text("mycontributions")?>
 	</div>
 	<div class="PanelShadow"></div>
@@ -228,7 +228,7 @@ jQuery(document).ready( function ()
 
 <?php if ($home_helpadvice) { ?>
 	<div class="HomePanel"><div class="HomePanelIN">
-	<h2><a href="<?php echo $baseurl_short?>pages/help.php"><?php echo $lang["helpandadvice"]?></a></h2>
+	<h2><a href="<?php echo $baseurl_short?>pages/help.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["helpandadvice"]?></a></h2>
 	<?php echo text("help")?>
 	</div>
 	<div class="PanelShadow"></div>
