@@ -4,7 +4,7 @@ include_once dirname(__FILE__)."/../include/general.php";
 include_once dirname(__FILE__)."/../include/collections_functions.php";
 # External access support (authenticate only if no key provided, or if invalid access key provided)
 $k=getvalescaped("k","");if (($k=="") || (!check_access_key_collection(getvalescaped("collection","",true),$k))) {include_once dirname(__FILE__)."/../include/authenticate.php";}
-if (checkperm("b")){exit("Permission denied");}
+if (checkperm("b")){exit($lang["error-permissiondenied"]);}
 include_once dirname(__FILE__)."/../include/research_functions.php";
 include_once dirname(__FILE__)."/../include/resource_functions.php";
 include_once dirname(__FILE__)."/../include/search_functions.php";
