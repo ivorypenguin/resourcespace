@@ -26,7 +26,7 @@
 # En första version av översättningen skapades av Henrik Frizén (förnamn.efternamn utan accenttecken i e-postboxen.Sveriges landskod) 20110124 för version 2295
 #
 # Senast uppdaterad av [Namn] [Datum] för version [svn-version], [kommentar]
-# Senast uppdaterad av Henrik Frizén 20121029 för version 3876
+# Senast uppdaterad av Henrik Frizén 20121112 för version 3996
 #
 #
 # User group names (for the default user groups)
@@ -1295,6 +1295,17 @@ $lang["reload"]="Läs om";
 $lang["downloadpurchaseitems"]="Hämta köpta artiklar";
 $lang["downloadpurchaseitemsnow"]="Använd länkarna nedan för att hämta dina köpta artiklar direkt.<br><br>Lämna inte den här sidan innan du har hämtat alla artiklar.";
 $lang["alternatetype"]="Alternativ typ";
+$lang["viewpurchases"]="Mina köp";
+$lang["viewpurchasesintro"]="Använd länkarna nedan för att nå tidigare köpta material.";
+$lang["orderdate"]="Beställningsdatum";
+$lang["removefrombasket"]="Avlägsna från varukorg";
+$lang["total-orders-0"] = "<strong>Totalt: 0</strong> beställningar";
+$lang["total-orders-1"] = "<strong>Totalt: 1</strong> beställning";
+$lang["total-orders-2"] = "<strong>Totalt: %number</strong> beställningar"; # %number will be replaced, e.g. Total: 5 Orders
+$lang["purchase_complete_email_admin"] = "Meddelande om köp";
+$lang["purchase_complete_email_admin_body"] = "Följande köp har genomförts.";
+$lang["purchase_complete_email_user"] = "Bekräftelse av köp";
+$lang["purchase_complete_email_user_body"] = "Tack för ditt köp! Använd länkarna nedan för att nå dina köpta artiklar.";
 
 
 $lang["subcategories"]="Underkategorier";
@@ -1642,3 +1653,5 @@ $lang["theme_home_promote"]="Puffa för på startsidan?";
 $lang["theme_home_page_text"]="Pufftext";
 $lang["theme_home_page_image"]="Puffbild";
 $lang["ref-title"] = "%ref &ndash; %title"; # %ref and %title will be replaced, e.g. 3 - Sunset
+
+$lang["error-pageload"] = "Sidan kunde inte läsas in. Om du utförde en sökning kan du prova att förfina sökfrågan. Kontakta systemadministratören om problemet är bestående.";
