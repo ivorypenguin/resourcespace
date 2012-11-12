@@ -1924,7 +1924,7 @@ function pager($break=true)
             <?php } ?>
             </select>
         <?php } else { ?>
-            <a href="#" title="Jump to page" onClick="p=document.getElementById('jumppanel<?php echo $jumpcount?>');if (p.style.display!='block') {p.style.display='block';document.getElementById('jumpto<?php echo $jumpcount?>').focus();} else {p.style.display='none';}; return false;"><?php echo $lang["page"]?>&nbsp;<?php echo $curpage?>&nbsp;<?php echo $lang["of"]?>&nbsp;<?php echo $totalpages?></a>
+            <a href="#" title="<?php echo $lang["jumptopage"]?>" onClick="p=document.getElementById('jumppanel<?php echo $jumpcount?>');if (p.style.display!='block') {p.style.display='block';document.getElementById('jumpto<?php echo $jumpcount?>').focus();} else {p.style.display='none';}; return false;"><?php echo $lang["page"]?>&nbsp;<?php echo $curpage?>&nbsp;<?php echo $lang["of"]?>&nbsp;<?php echo $totalpages?></a>
         <?php } ?>
 
         |&nbsp;<?php if ($curpage<$totalpages) { ?><a class="nextLink" href="<?php echo $url?>&offset=<?php echo $offset+$per_page?>" onClick="return CentralSpaceLoad(this);"><?php } ?><?php echo $lang["next"]?>&nbsp;&gt;<?php if ($curpage<$totalpages) { ?></a><?php } ?>
