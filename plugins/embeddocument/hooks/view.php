@@ -40,7 +40,7 @@ if ($thumbwidth==0)	{return false;} # The resource has no preview.
 	document.getElementById('embeddocument_minimise_" . $ref . "').style.display='none';
 	document.getElementById('embeddocument_maximise_" . $ref . "').style.display='block';	
 	document.getElementById('embeddocument_back_" . $ref . "').style.display='none';
-	\">" . $lang["minimise"] . "</a></div>
+	\">" . $lang["embeddocument_minimise"] . "</a></div>
 	<div id=\"embeddocument_maximise_" . $ref . "\" class=\"embeddocument_maximise\"><a href=\"#\" onClick=\"
 	var ed=document.getElementById('embeddocument_" . $ref . "');
 	ed.width='" . $width*2 . "';
@@ -53,7 +53,7 @@ if ($thumbwidth==0)	{return false;} # The resource has no preview.
 	document.getElementById('embeddocument_minimise_" . $ref . "').style.display='block';
 	document.getElementById('embeddocument_maximise_" . $ref . "').style.display='none';	
 	document.getElementById('embeddocument_back_" . $ref . "').style.display='block';	
-	\">" . $lang["maximise"] . "</a></div><iframe id=\"embeddocument_" . $ref . "\" Style=\"background-color:#fff;cursor: pointer;\" width=\"$width_w_border\" height=\"$height\" src=\"" . $baseurl . "/plugins/embeddocument/pages/viewer.php?ref=$ref&key=$key&width=$width\" frameborder=0 scrolling=no>Your browser does not support frames.</iframe>";
+	\">" . $lang["embeddocument_maximise"] . "</a></div><iframe id=\"embeddocument_" . $ref . "\" Style=\"background-color:#fff;cursor: pointer;\" width=\"$width_w_border\" height=\"$height\" src=\"" . $baseurl . "/plugins/embeddocument/pages/viewer.php?ref=$ref&key=$key&width=$width\" frameborder=0 scrolling=no>Your browser does not support frames.</iframe>";
 
 	# Compress embed HTML.
 	$embed=str_replace("\n"," ",$embed);
@@ -69,7 +69,7 @@ if ($thumbwidth==0)	{return false;} # The resource has no preview.
 <a href="#" onClick="
 if (document.getElementById('embeddocument').style.display=='block') {document.getElementById('embeddocument').style.display='none';} else {document.getElementById('embeddocument').style.display='block';}
 if (document.getElementById('embeddocument2').style.display=='block') {document.getElementById('embeddocument2').style.display='none';} else {document.getElementById('embeddocument2').style.display='block';}
- return false;">&gt;&nbsp;<?php echo $lang["embed"]?></a>
+ return false;">&gt;&nbsp;<?php echo $lang["embeddocument_embed"]?></a>
 <p id="embeddocument2" style="display:none;padding:10px 0 3px 0;"><?php echo $lang["embeddocument_help"] ?><br/>
 	<br/>
 	

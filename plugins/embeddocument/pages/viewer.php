@@ -35,7 +35,7 @@ if ($downloadkey==md5($scramble_key . $ref . "download")) {$download=true;}
 <li class="embeddocument_auto" Style="cursor: pointer;" onClick="embeddocument_auto=!embeddocument_auto;if (embeddocument_auto) {embeddocument_ShowPage(embeddocument_page,false,false_<?php echo $ref ?>);} else {clearTimeout(timer);}"<span>||</span></li>
 <li class="embeddocument_next" Style="cursor: pointer;" onClick="embeddocument_auto=false;embeddocument_ShowPage(embeddocument_page+1,false,false);"<span>></span></li>
 <li class="embeddocument_end" Style="cursor: pointer;" onClick="embeddocument_auto=false;embeddocument_ShowPage(embeddocument_pages.length-1,false,false);"><span>>|</span></li>
-<li class="embeddocument_jump" Style="cursor: pointer;" onClick="embeddocument_auto=false;embeddocument_ShowPage(document.getElementById('embeddocument_page_box').value,false,true);"><span>jump</span></li>
+<li class="embeddocument_jump" Style="cursor: pointer;" onClick="embeddocument_auto=false;embeddocument_ShowPage(document.getElementById('embeddocument_page_box').value,false,true);"><span><?php echo $lang["jump"]?></span></li>
 <li class="embeddocument_jump-box" <input type="text" id="embeddocument_page_box" size="1" /> / <span id="page-count">#</span> </li>
 
 <?php if ($download)
@@ -45,7 +45,7 @@ if ($downloadkey==md5($scramble_key . $ref . "download")) {$download=true;}
 		{
 		$pdf_url_path=get_resource_path($ref,false,"",false,"pdf");
 		?>
-		<li class="embeddocument_download" Style="cursor: pointer;" onClick="top.location.href='<?php echo $pdf_url_path ?>';">download PDF</li>
+		<li class="embeddocument_download" Style="cursor: pointer;" onClick="top.location.href='<?php echo $pdf_url_path ?>';"><?php echo $lang["embeddocument_download_pdf"]?></li>
 		<?php
 		}
 	}
