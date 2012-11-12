@@ -53,9 +53,10 @@ if ($go!="")
 
 
 $resource=get_resource_data($ref);
-$ext=$resource['file_extension'];
+$ext="jpg";
 
 if ($ext!="" && $ext!="gif" && $ext!="jpg" && $ext!="png") {$ext="jpg";$border=false;} # Supports types that have been created using ImageMagick
+
 
 # Load access level
 $access=get_resource_access($ref);
@@ -85,10 +86,10 @@ if (file_exists($path) && resource_download_allowed($ref,"scr",$resource["resour
 	{
 	$url=get_resource_path($ref,false,"scr",false,$ext,-1,$page,$use_watermark,"",$alternative);
 	}
-elseif (file_exists($path_orig) && resource_download_allowed($ref,"",$resource["resource_type"]))
+/*elseif (file_exists($path_orig) && resource_download_allowed($ref,"",$resource["resource_type"]))
 	{
 	$url=get_resource_path($ref,false,"",false,$ext,-1,$page,$use_watermark,"",$alternative);
-	}
+	}*/
 else
 	{
 	$path=get_resource_path($ref,true,"pre",false,$ext,-1,$page,$use_watermark,"",$alternative);
