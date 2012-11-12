@@ -125,6 +125,7 @@ if ($noattach=="")
 	# Remove critical characters from filename
 	$filename = preg_replace('/:/', '_', $filename);
 
+	if ($download_filename_id_only){$filename=$ref . "." . $ext;}
         hook("downloadfilename");
 	
 	if (!$direct){		

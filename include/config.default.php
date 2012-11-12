@@ -1994,3 +1994,6 @@ $keyboard_scroll_jump=false;
 
 # How long until the Loading popup appears during an ajax request (milliseconds)
 $ajax_loading_timer=1500;
+
+#Option for downloaded filename to be just <resource id>.extension, without indicating size or whether an alternative file. Will override $original_filenames_when_downloading which is set as default
+$download_filename_id_only = false;
