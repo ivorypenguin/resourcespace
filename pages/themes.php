@@ -194,7 +194,7 @@ function DisplayTheme($themes=array())
 
                 ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $getthemes[$m]["ref"])?>" title="<?php echo $lang["collectionviewhover"]?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["viewall"]?></a>
 
-                <?php if (!checkperm("b")) { ?>&nbsp;<?php echo change_collection_link($getthemes[$m]["ref"])?>&gt;&nbsp;<?php echo $lang["action-select"]?></a><?php } ?>
+                <?php if (!checkperm("b")) { ?>&nbsp;<?php echo change_collection_link($getthemes[$m]["ref"]); } ?>
 
                 <?php if (isset($zipcommand) || $collection_download) { ?>
                 &nbsp;<a href="<?php echo $baseurl_short?>pages/collection_download.php?collection=<?php echo $getthemes[$m]["ref"]?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["action-download"]?></a>

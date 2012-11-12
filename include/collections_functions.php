@@ -1282,7 +1282,7 @@ function change_collection_link($collection)
 	global $frameless_collections,$lang;
 	if ($frameless_collections)
 		{
-		return '<a onClick="return CollectionDivLoad(this);" href="collections.php?collection='.$collection.'" target="collections">&gt;&nbsp;'.$lang["selectcollection"].'</a>&nbsp;&nbsp;';
+		return '<a onClick="return CollectionDivLoad(this);" href="collections.php?collection='.$collection.'" target="collections">&gt;&nbsp;'.$lang["selectcollection"].'</a>';
 		}
 	else
 		{
