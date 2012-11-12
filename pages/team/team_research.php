@@ -70,7 +70,7 @@ for ($n=$offset;(($n<count($requests)) && ($n<($offset+$per_page)));$n++)
 	<td><?php echo $statusname[$requests[$n]["status"]]?></td>
 	<td><?php echo (strlen($requests[$n]["assigned_username"])==0)?"-":$requests[$n]["assigned_username"]?></td>
 	<td><?php echo (strlen($requests[$n]["collection"])==0)?"-":$collection_prefix . $requests[$n]["collection"]?></td>
-	<td><div class="ListTools"><a href="<?php echo $baseurl_short?>pages/team/team_research_edit.php?ref=<?php echo $requests[$n]["ref"]?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["editresearch"]?></a>&nbsp;&nbsp;<a href="#" onclick="ChangeCollection(<?php echo $requests[$n]["collection"]?>);" target="collections">&gt;&nbsp;<?php echo $lang["editcollection"]?></a></div></td>
+	<td><div class="ListTools"><a href="<?php echo $baseurl_short?>pages/team/team_research_edit.php?ref=<?php echo $requests[$n]["ref"]?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["editresearch"]?></a>&nbsp;&nbsp;<a onClick="return CollectionDivLoad(this);" href="<?php echo $baseurl_short?>pages/collections.php?collection=<?php echo $requests[$n]["collection"]?>" target="collections">&gt;&nbsp;<?php echo $lang["selectcollection"]?></a></div></td>
 	</tr>
 	<?php
 	}
