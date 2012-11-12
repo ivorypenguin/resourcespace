@@ -136,6 +136,11 @@ input[readonly] {color: #E0E0E0;} /* Read-only form fields */
 .BottomInpageNav a:hover {color: #FFFFFF; background: none;}
 .BottomInpageNav a:active {color: #FFFFFF; background: none;}
 
+#jumppanel3 /* Label: Jump to page*/
+	{
+	color: #E0E0E0;
+	}
+
 .TopInpageNav .HorizontalWhiteNav {color: #A0A0A0;} /* Non existing page link and link dividers in top pager */
 .BottomInpageNav .HorizontalWhiteNav {color: #A0A0A0;}/* Non existing page link and link dividers in bottom pager */
 
@@ -369,15 +374,22 @@ input[readonly] {color: #E0E0E0;} /* Read-only form fields */
 .HomePanelIN /* Home panels */
 	{
 	padding-top: 8px;
-	padding-right: 10px;
+	padding-right: 12px;
 	padding-bottom: 15px;
-	padding-left: 15px;
+	padding-left: 12px;
 	border-radius: 5px;	-moz-border-radius: 5px; -webkit-border-radius: 5px;
 	border-top: 1px solid #E0E0E0;
 	border-right: 1px solid #252525;
 	border-bottom: 1px solid #252525;
 	border-left: 1px solid #E0E0E0;
 	background: #505050 url(../gfx/interface/shadeback.png) repeat-x 0px 0px;
+	}
+.HomePanelIN.HomePanelPromoted /* Home panel with promoted material */
+	{
+	padding-top: 8px;
+	padding-right: 6px;
+	padding-bottom: 15px;
+	padding-left: 6px;
 	}
 
 .HomePanel h2 {background: url(../gfx/interface/HomeArrow.png) no-repeat 0px 6px;}
