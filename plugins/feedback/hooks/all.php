@@ -2,9 +2,9 @@
 
 function HookFeedbackAllToptoolbaradder()
 	{
-	global $target,$baseurl,$feedback_questions,$feedback_prompt_text,$pagename;
+	global $target,$baseurl,$feedback_questions,$feedback_prompt_text,$pagename,$lang;
 	
-	?><li><a target="<?php echo $target?>" href="<?php echo $baseurl?>/plugins/feedback/pages/feedback.php">User Survey</a></li>
+	?><li><a target="<?php echo $target?>" href="<?php echo $baseurl?>/plugins/feedback/pages/feedback.php"><?php echo $lang["feedback_user_survey"]?></a></li>
 	
 	<?php
 	if ($pagename=="setup" || $pagename=="feedback") {return true;} # Do not appear on the setup page or during giving feedback.
@@ -19,9 +19,9 @@ function HookFeedbackAllToptoolbaradder()
 		<?php echo $feedback_prompt_text; ?>
 		
 		<div style="text-align:right;">
-		<input type="button" value="Yes" onClick="SetCookie('feedback_completed','yes',30);document.location.href='<?php echo $baseurl?>/plugins/feedback/pages/feedback.php';">
-		<input type="button" value="No" onClick="SetCookie('feedback_completed','yes',30);document.getElementById('feedback_prompt').style.display='none';">
-		<input type="button" value="Remind me later" onClick="SetCookie('feedback_completed','yes',0.5);document.getElementById('feedback_prompt').style.display='none';">
+		<input type="button" value="<?php echo $lang["yes"]?>" onClick="SetCookie('feedback_completed','yes',30);document.location.href='<?php echo $baseurl?>/plugins/feedback/pages/feedback.php';">
+		<input type="button" value="<?php echo $lang["no"]?>" onClick="SetCookie('feedback_completed','yes',30);document.getElementById('feedback_prompt').style.display='none';">
+		<input type="button" value="<?php echo $lang["feedback_remind_me_later"]?>" onClick="SetCookie('feedback_completed','yes',0.5);document.getElementById('feedback_prompt').style.display='none';">
 		</div>
 		</div>
 		<?php

@@ -63,39 +63,39 @@ include "../../../include/header.php";
 ?>
 <div class="BasicsBox"> 
   <h2>&nbsp;</h2>
-  <h1>User Feedback Configuration</h1>
+  <h1><?php echo $lang["feedback_user feedback_configuration"]?></h1>
 
   <div class="VerticalNav">
  <form id="form1" name="form1" method="post" action="">
 
-<p>Pop-up prompt box text:<br />
+<p><?php echo $lang["feedback_pop-up_prompt_box_text"]?><br />
 <textarea rows=6 cols=50 style="width:600px;" name="feedback_prompt_text"><?php echo $feedback_prompt_text ?></textarea>
 </p>
-<h2>Questions</h2>
+<h2><?php echo $lang["feedback_questions"]?></h2>
 <hr />
 
 <?php for ($n=1;$n<=count($feedback_questions);$n++)
 	{
 	?>
-   <p>Type:
-   <select name="type_<?php echo $n?>">
-   <option value="1" <?php if ($feedback_questions[$n]["type"]==1) { ?>selected<?php } ?>>Small Text Field</option>
-   <option value="2" <?php if ($feedback_questions[$n]["type"]==2) { ?>selected<?php } ?>>Large Text Field</option>
-   <option value="3" <?php if ($feedback_questions[$n]["type"]==3) { ?>selected<?php } ?>>List: Single Selection</option>
-   <option value="5" <?php if ($feedback_questions[$n]["type"]==5) { ?>selected<?php } ?>>List: Multiple Selection</option>
-   <option value="4" <?php if ($feedback_questions[$n]["type"]==4) { ?>selected<?php } ?>>Label</option>
+   <p><?php echo $lang["feedback_type"]?>
+   <select name="type_<?php echo $n?>" style="width:150px;">
+   <option value="1" <?php if ($feedback_questions[$n]["type"]==1) { ?>selected<?php } ?>><?php echo $lang["feedback_small_text_field"]?></option>
+   <option value="2" <?php if ($feedback_questions[$n]["type"]==2) { ?>selected<?php } ?>><?php echo $lang["feedback_large_text_field"]?></option>
+   <option value="3" <?php if ($feedback_questions[$n]["type"]==3) { ?>selected<?php } ?>><?php echo $lang["feedback_list-single_selection"]?></option>
+   <option value="5" <?php if ($feedback_questions[$n]["type"]==5) { ?>selected<?php } ?>><?php echo $lang["feedback_list-multiple_selection"]?></option>
+   <option value="4" <?php if ($feedback_questions[$n]["type"]==4) { ?>selected<?php } ?>><?php echo $lang["feedback_label"]?></option>
    </select>
    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-   <input type="checkbox" name="delete_<?php echo $n?>" value="yes"> Delete this question?
-   <input type="checkbox" name="add_<?php echo $n?>" value="yes"> Add new question after this one?
+   <input type="checkbox" name="delete_<?php echo $n?>" value="yes"><?php echo $lang["feedback_delete_this_question"]?>
+   <input type="checkbox" name="add_<?php echo $n?>" value="yes"><?php echo $lang["feedback_add_new_question_after"]?>
 	</p>
 
 	<p>
-Text / HTML:<br/>
+<?php echo $lang["feedback_text-html"]?><br/>
    <textarea rows=3 cols=50 style="width:600px;" name="text_<?php echo $n?>"><?php echo $feedback_questions[$n]["text"] ?></textarea>
    </p>
 	
-	<p>Options: (comma separated) <br />
+	<p><?php echo $lang["feedback_options-comma_separated"]?> <br />
    	<textarea rows=2 cols=50 style="width:600px;" name="options_<?php echo $n?>"><?php echo $feedback_questions[$n]["options"] ?></textarea>
    	</p>
    
@@ -104,12 +104,12 @@ Text / HTML:<br/>
 	}
 ?>
 <br /><br /><a name="add"></a>
-<input type="submit" name="add" value="Add New Field">   
+<input type="submit" name="add" value="<?php echo $lang["feedback_add_new_field"]?>">   
 
 <input type="submit" name="submit" value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $lang["save"]?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">   
 
 <br/><br/>
-<p>&lt; <a href="../../../pages/team/team_plugins.php">Back to Plugin Manager</a></p>
+<p>&lt; <a href="../../../pages/team/team_plugins.php"><?php echo $lang["feedback_back_to_plugin_manager"]?></a></p>
 
 </form>
 </div>
