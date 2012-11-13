@@ -530,7 +530,7 @@ if (($ffmpeg_fullpath!=false) && !isset($newfile) && in_array($extension, $ffmpe
 
             if ($ffmpeg_preview && ($extension!=$ffmpeg_preview_extension || $ffmpeg_preview_force) )
                 {
-                	if ($ffmpeg_preview_async && $php_path && file_exists($php_path . "/php"))
+                	if ($ffmpeg_preview_async && isset($php_path) && file_exists($php_path . "/php"))
 	                	{
 	                	global $scramble_key;
 	                	exec($php_path . "/php " . dirname(__FILE__)."/ffmpeg_processing.php " . 
@@ -539,6 +539,7 @@ if (($ffmpeg_fullpath!=false) && !isset($newfile) && in_array($extension, $ffmpe
 	                		escapeshellarg($file) . " " . 
 	                		escapeshellarg($target) . " " . 
 	                		escapeshellarg($previewonly) . " " . 
+							escapeshellarg($snapshottime) . " " . 
 	                		"&> /dev/null &");
 	                	}
                 	else 

@@ -2,8 +2,6 @@
 
 if (!defined("RUNNING_ASYNC")) {define("RUNNING_ASYNC", !isset($ffmpeg_preview));}
 
-$ffmpeg_fullpath = get_utility_path("ffmpeg");
-
 if (!RUNNING_ASYNC)
 	{
 	global $qtfaststart_path, $qtfaststart_extensions;
@@ -12,7 +10,7 @@ else
 	{
 	require dirname(__FILE__)."/db.php";
 	require dirname(__FILE__)."/general.php";
-	
+	require dirname(__FILE__)."/resource_functions.php";
 	
 	if (empty($_SERVER['argv'][1]) || $scramble_key!==$_SERVER['argv'][1]) {exit("Incorrect scramble_key");}
 	
@@ -28,11 +26,18 @@ else
 	if (!isset($_SERVER['argv'][5])) {exit("Previewonly param missing");}
 	$previewonly=$_SERVER['argv'][5];
 	
+	if (!isset($_SERVER['argv'][6])) {exit("Snapshottime param missing");}
+	$snapshottime=$_SERVER['argv'][6];
+
+	debug ("Starting ffmpeg_processing.php async with parameters: ref=$ref, file=$file, target=$target, previewonly=$previewonly, snapshottime=$snapshottime");
+
 	sql_query("UPDATE resource SET is_transcoding = 1 WHERE ref = '".escape_check($ref)."'");
 	}
 
 # Increase timelimit
 set_time_limit(0);
+
+$ffmpeg_fullpath = get_utility_path("ffmpeg");
 
 # Create a preview video (FLV)
 $targetfile=get_resource_path($ref,true,"pre",false,$ffmpeg_preview_extension); 
@@ -110,7 +115,6 @@ if ($tmp) {$shell_exec_cmd = $tmp;}
 if ($config_windows)
 	{
 	# Windows systems have a hard time with the long paths used for video generation. This work-around creates a batch file containing the command, then executes that.
-	//FIXME: Why is there a hardcoded path to e: here?
 	file_put_contents(get_temp_dir() . "/ffmpeg.bat",$shell_exec_cmd);
 	$shell_exec_cmd=get_temp_dir() . "/ffmpeg.bat";
 	}
@@ -141,7 +145,7 @@ if (!file_exists($targetfile))
     error_log("FFmpeg failed: ".$shell_exec_cmd);
     }
 
-if($qtfaststart_path && file_exists($qtfaststart_path . "/qt-faststart") && in_array($ffmpeg_preview_extension, $qtfaststart_extensions) )
+if (isset($qtfaststart_path) && file_exists($qtfaststart_path . "/qt-faststart") && in_array($ffmpeg_preview_extension, $qtfaststart_extensions))
     {
 	$targetfiletmp=$targetfile.".tmp";
 	rename($targetfile, $targetfiletmp);
