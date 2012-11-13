@@ -851,9 +851,6 @@ for ($n=0;$n<count($fields);$n++)
 						$value=NiceDate($value,false,true);
 					}
 				
-				# Extra word wrapping to break really large words (e.g. URLs)
-				$value=wordwrap($value,20,"<br />",true);
-				
 				# Highlight keywords
 				$value=highlightkeywords($value,$search,$fields[$n]["partial_index"],$fields[$n]["name"],$fields[$n]["keywords_index"]);
 				?><div class="itemNarrow"><h3><?php echo $title?></h3><p><?php echo $value?></p></div><?php
