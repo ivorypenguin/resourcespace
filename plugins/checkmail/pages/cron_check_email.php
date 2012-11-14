@@ -229,7 +229,7 @@ foreach ($parts as $key=>$part){
 
 	if ($part->ifdisposition){
 		// save inline image data
-		if ($part->disposition=="INLINE" && $part->type==5){
+		if (strtoupper($part->disposition)=="INLINE" && $part->type==5){
 			// store inline attachments info
 			$file['key']=$key;
 			if (isset($part->id)){$file['id']=str_replace(">","",str_replace("<","",$part->id));}
