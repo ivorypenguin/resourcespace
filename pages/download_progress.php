@@ -9,7 +9,7 @@ $ref=getval("ref","");
 $size=getval("size","");
 $ext=getval("ext","");
 $alternative=getval("alternative",-1);
-
+$search=getvalescaped("search","");
 $usage=getval("usage","-1");
 $usagecomment=getval("usagecomment","");
 
