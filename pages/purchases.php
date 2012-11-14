@@ -157,9 +157,7 @@ for ($n=$offset;(($n<count($collections)) && ($n<($offset+$per_page)));$n++)
 <?php hook("beforecollectiontoolscolumn");?>
 	<td>	
         <div class="ListTools">
-        <?php if ($collections_compact_style){
-        include("collections_compact_style.php"); } else {
-?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $collections[$n]["ref"])?>">&gt;&nbsp;<?php echo $lang["viewall"]?></a>
+		<a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $collections[$n]["ref"])?>">&gt;&nbsp;<?php echo $lang["viewall"]?></a>
 	
 	<?php if ($contact_sheet==true && $manage_collections_contact_sheet_link) { ?>
     &nbsp;<a href="<?php echo $baseurl_short?>pages/contactsheet_settings.php?ref=<?php echo $collections[$n]["ref"]?>" onClick="return CentralSpaceLoad(this);">&gt;&nbsp;<?php echo $lang["contactsheet"]?></a>
@@ -169,7 +167,6 @@ for ($n=$offset;(($n<count($collections)) && ($n<($offset+$per_page)));$n++)
 	
 	</td>
 	</tr><?php
-	}
 }
 
 	?>
