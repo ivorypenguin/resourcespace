@@ -2338,6 +2338,8 @@ function auto_create_user_account()
 		# Check e-mail domain.
 		foreach ($auto_approve_domains as $domain=>$set_usergroup)
 			{
+			// If a group is not specified the variables don't get set correctly so we need to correct this
+			if (is_numeric($domain)){$domain=$set_usergroup;$set_usergroup="";} 
 			if (substr(strtolower($email),strlen($email)-strlen($domain)-1)==("@" . strtolower($domain)))
 				{
 				# E-mail domain match.
