@@ -313,6 +313,10 @@ $ffmpeg_preview_min_height=18;
 $ffmpeg_preview_max_width=480;
 $ffmpeg_preview_max_height=270;
 $ffmpeg_preview_options="-f flv -ar 22050 -b 650k -ab 32k -ac 1";
+# ffmpeg_global_options: options to be applied to every ffmpeg command. 
+#$ffmpeg_global_options = "-loglevel panic"; # can be used for recent versions of ffmpeg when verbose output prevents run_command completing
+#$ffmpeg_global_options = "-v panic"; # use for older versions of ffmpeg  as above
+$ffmpeg_global_options = "";
 
 # If uploaded file is FLV, should we transcode it anyway?
 $ffmpeg_preview_force=false;

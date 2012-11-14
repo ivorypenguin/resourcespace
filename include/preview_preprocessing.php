@@ -5,7 +5,7 @@
 # for example types that use GhostScript or FFmpeg.
 #
 
-global $imagemagick_path, $imagemagick_preserve_profiles, $imagemagick_quality, $imagemagick_colorspace, $ghostscript_path, $pdf_pages, $antiword_path, $unoconv_path, $pdf_dynamic_rip, $ffmpeg_audio_extensions, $ffmpeg_audio_params, $qlpreview_path,$ffmpeg_supported_extensions, $qlpreview_exclude_extensions;
+global $imagemagick_path, $imagemagick_preserve_profiles, $imagemagick_quality, $imagemagick_colorspace, $ghostscript_path, $pdf_pages, $antiword_path, $unoconv_path, $pdf_dynamic_rip, $ffmpeg_audio_extensions, $ffmpeg_audio_params, $qlpreview_path,$ffmpeg_supported_extensions, $qlpreview_exclude_extensions, $ffmpeg_global_options;
 global $dUseCIEColor;
 
 # Locate utilities
@@ -518,7 +518,7 @@ if (($ffmpeg_fullpath!=false) && !isset($newfile) && in_array($extension, $ffmpe
 			{ $snapshottime = 0; }
 
         if(!hook("previewpskipthumb")): 
-        $output = run_command($ffmpeg_fullpath . " -loglevel panic -i " . escapeshellarg($file) . " -f image2 -vframes 1 -ss ".$snapshottime." " . escapeshellarg($target));
+        $output = run_command($ffmpeg_fullpath . " $ffmpeg_global_options -i " . escapeshellarg($file) . " -f image2 -vframes 1 -ss ".$snapshottime." " . escapeshellarg($target));
         endif;
 
         if (file_exists($target)) 

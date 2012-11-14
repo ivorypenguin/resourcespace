@@ -107,7 +107,7 @@ if ($height % 2) {$height++;}
 $tmp = hook("ffmpegbeforeexec", "", array($ffmpeg_fullpath, $file));
 if (is_array($tmp) and $tmp) {list($width, $height) = $tmp;}
 
-$shell_exec_cmd = $ffmpeg_fullpath . " -loglevel panic -y -t $ffmpeg_preview_seconds -i " . escapeshellarg($file) . " $ffmpeg_preview_options -s {$width}x{$height} " . escapeshellarg($targetfile);
+$shell_exec_cmd = $ffmpeg_fullpath . " $ffmpeg_global_options -y -t $ffmpeg_preview_seconds -i " . escapeshellarg($file) . " $ffmpeg_preview_options -s {$width}x{$height} " . escapeshellarg($targetfile);
 
 $tmp = hook("ffmpegmodpreparams", "", array($shell_exec_cmd, $ffmpeg_fullpath, $file));
 if ($tmp) {$shell_exec_cmd = $tmp;}
@@ -135,7 +135,7 @@ if ($ffmpeg_get_par) {
     # Frame size must be a multiple of two
     if ($width % 2){$width++;}
     if ($height % 2) {$height++;}
-    $shell_exec_cmd = $ffmpeg_fullpath . " -loglevel panic -y -i " . escapeshellarg($file) . " -s {$width}x{$height} -f image2 -vframes 1 -ss ".$snapshottime." " . escapeshellarg($target);
+    $shell_exec_cmd = $ffmpeg_fullpath . "  $ffmpeg_global_options -y -i " . escapeshellarg($file) . " -s {$width}x{$height} -f image2 -vframes 1 -ss ".$snapshottime." " . escapeshellarg($target);
     $output = run_command($shell_exec_cmd);
   }
 }
@@ -193,7 +193,7 @@ if (isset($ffmpeg_alternatives))
 			$apath=get_resource_path($ref,true,"",true,$ffmpeg_alternatives[$n]["extension"],-1,1,false,"",$aref);
 			
 			# Process the video 
-            $shell_exec_cmd = $ffmpeg_fullpath . " -loglevel panic -y -i " . escapeshellarg($file) . " " . $ffmpeg_alternatives[$n]["params"] . " " . escapeshellarg($apath);
+            $shell_exec_cmd = $ffmpeg_fullpath . "  $ffmpeg_global_options -y -i " . escapeshellarg($file) . " " . $ffmpeg_alternatives[$n]["params"] . " " . escapeshellarg($apath);
 
             $tmp = hook("ffmpegmodaltparams", "", array($shell_exec_cmd, $ffmpeg_fullpath, $file, $n, $aref));
             if($tmp) {$shell_exec_cmd = $tmp;}
