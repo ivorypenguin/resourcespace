@@ -160,7 +160,7 @@ if ($search_titles)
 	
 	// extra collection title links
 	if (substr($search,0,11)=="!collection"){
-		if ($k=="" && !checkperm("b") && (!$userrequestmode==2 && !$userrequestmode==3)){$search_title_links='<a href="'.$baseurl_short.'pages/collections.php?collection='.$collectiondata["ref"].'" target="collections">&gt;&nbsp;'.$lang["selectcollection"].'</a>&nbsp;&nbsp;';}
+		if ($k=="" && !checkperm("b") && (!$userrequestmode==2 && !$userrequestmode==3)){$search_title_links='<a href="#" onclick="ChangeCollection(' . $collectiondata["ref"] . ', \'\');">&gt;&nbsp;'.$lang["selectcollection"].'</a>&nbsp;&nbsp;';}
 		if (count($result)!=0 && $k==""&&$preview_all){$search_title_links.='<a href="'.$baseurl_short.'pages/preview_all.php?ref='.$collectiondata["ref"].'&order_by='.$order_by.'&sort='.$sort.'&archive='.$archive.'&k='.$k.'">&gt;&nbsp;'.$lang['preview_all'].'</a>';}
 		$search_title.='</div>';
 		if ($display!="list"){$search_title_links.= '<br /><br />';}
