@@ -9,6 +9,10 @@ include "../include/search_functions.php";
 include "../include/collections_functions.php";
 include "../include/resource_functions.php";
 
+$saved_thumbs_state=getvalescaped("thumbs",$thumbs_default);
+setcookie("thumbs","hide"); // always hide thumbs on this page loading
+$headerinsert.="<script type='text/javascript'>jQuery(window).unload(function(){SetCookie('thumbs','".$saved_thumbs_state."');});</script>";
+
 $ref=getval("ref","");
 
 $search=getvalescaped("search","");
