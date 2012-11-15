@@ -24,7 +24,6 @@ if (!isset($userref))
 	$usergroupname="(Not logged in)";
 	$userfullname="";
 	$anonymous_login=$username;
-	$frameless_collections=true;
 	$pagename="terms";
 	$plugins=array();
 	}

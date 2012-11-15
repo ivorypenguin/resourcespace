@@ -218,23 +218,16 @@ function delete_collection($ref)
 	}
 	
 function refresh_collection_frame($collection="")
-	{
-	# Refresh the collections frame
-	# Only works when we are using a frameset.
-	global $frameless_collections,$ajax_collections,$baseurl,$headerinsert,$baseurl;
-	if (!$frameless_collections && !$ajax_collections)
-		{
-		$headerinsert.="<script  type=\"text/javascript\">
-		parent.collections.location.replace(\"" . $baseurl . "/pages/collections.php" . ((getval("k","")!="")?"?collection=" . getval("collection",$collection) . "&k=" . getval("k","") . "&":"?") . "nc=" . time() . "\");
-		</script>";
-		}
-	if ($ajax_collections){
-		$headerinsert.="<script  type=\"text/javascript\">
-		CollectionDivLoad(\"" . $baseurl . "/pages/collections.php" . ((getval("k","")!="")?"?collection=" . getval("collection",$collection) . "&k=" . getval("k","") . "&":"?") . "nc=" . time() . "\");
-		</script>";
-		}	
-	}
-	
+    {
+    # Refresh the CollectionDiv
+    global $baseurl, $headerinsert;
+
+    $headerinsert.="<script  type=\"text/javascript\">
+    CollectionDivLoad(\"" . $baseurl . "/pages/collections.php" . ((getval("k","")!="")?"?collection=" . getval("collection",$collection) . "&k=" . getval("k","") . "&":"?") . "nc=" . time() . "\");
+    </script>";
+
+    }
+
 if (!function_exists("search_public_collections")){	
 function search_public_collections($search="", $order_by="name", $sort="ASC", $exclude_themes=true, $exclude_public=false, $include_resources=false, $override_group_restrict=false)
 	{
@@ -1246,50 +1239,34 @@ function collection_is_research_request($collection)
 
 if (!function_exists("add_to_collection_link")){
 function add_to_collection_link($resource,$search="",$extracode="",$size="")
-	{
-	# Generates a HTML link for adding a resource to a collection
-	global $frameless_collections,$lang;
-	if ($frameless_collections)
-		{
-		return "<a class=\"addToCollection\" href=\"#\" title=\"" . $lang["addtocurrentcollection"] . "\" onClick=\"AddResourceToCollection('" . $resource . "');" . $extracode . "return false;\">";
-		}
-	else
-		{
-		return "<a class=\"addToCollection\" href=\"collections.php?add=" . $resource . "&nc=" . time() . "&search=" . urlencode($search) . "&size=" . urlencode($size) . "\" target=\"collections\" onClick=\"" . $extracode . "\" title=\"" . $lang["addtocurrentcollection"] . "\">";
-		}
-	}
-}	
-	
+    {
+    # Generates a HTML link for adding a resource to a collection
+    global $lang;
+
+    return "<a class=\"addToCollection\" href=\"#\" title=\"" . $lang["addtocurrentcollection"] . "\" onClick=\"AddResourceToCollection('" . $resource . "');" . $extracode . "return false;\">";
+
+    }
+}
+
 if (!function_exists("remove_from_collection_link")){		
 function remove_from_collection_link($resource,$search="")
-	{
-	# Generates a HTML link for removing a resource to a collection
-	global $frameless_collections,$lang,$pagename;
-	if ($frameless_collections)
-		{
-		return "<a class=\"removeFromCollection\" href=\"#\" title=\"" . $lang["removefromcurrentcollection"] . "\" onClick=\"RemoveResourceFromCollection('" . $resource . "','" . $pagename . "');return false;\">";
-		}
-	else
-		{
-		return "<a class=\"removeFromCollection\" href=\"collections.php?remove=" . $resource . "&nc=" . time() . "&search=" . urlencode($search) . "\" target=\"collections\" title=\"" . $lang["removefromcurrentcollection"] . "\">";
-		}
-	}
+    {
+    # Generates a HTML link for removing a resource to a collection
+    global $lang, $pagename;
+
+    return "<a class=\"removeFromCollection\" href=\"#\" title=\"" . $lang["removefromcurrentcollection"] . "\" onClick=\"RemoveResourceFromCollection('" . $resource . "','" . $pagename . "');return false;\">";
+
+    }
 }
 
 function change_collection_link($collection)
-	{
-	# Generates a HTML link for adding a changing the current collection
-	global $frameless_collections,$lang;
-	if ($frameless_collections)
-		{
-		return '<a onClick="return CollectionDivLoad(this);" href="collections.php?collection='.$collection.'" target="collections">&gt;&nbsp;'.$lang["selectcollection"].'</a>';
-		}
-	else
-		{
-		return "<a href=\"collections.php?collection=" . $collection. "\" target=\"collections\">";
-		}
-	}
-	
+    {
+    # Generates a HTML link for adding a changing the current collection
+    global $lang;
+    return '<a onClick="return CollectionDivLoad(this);" href="collections.php?collection='.$collection.'">&gt;&nbsp;'.$lang["selectcollection"].'</a>';
+
+    }
+
 function get_collection_external_access($collection)
 	{
 	# Return all external access given to a collection.

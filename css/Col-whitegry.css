@@ -1,7 +1,7 @@
 body,html {color:#737373;background: #FFF;}
 h2 {color: #000000;}
 h1 {color: #000000;}
-.CollectDivide {color:#FFFFFF;background: #000000 url(../gfx/whitegry/interface/CollectDivide.gif) repeat-x;}
+.AjaxCollect {border-top: 3px ridge #737373;}
 .CollectBack {color:#FFFFFF;background: #293340 url(../gfx/whitegry/interface/CollectBack.gif) repeat-x;}
 
 a:link {color:#737373;}

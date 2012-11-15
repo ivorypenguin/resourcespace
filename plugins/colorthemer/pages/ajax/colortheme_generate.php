@@ -114,7 +114,7 @@ switch($style){
 	$data="body,html {color:".convert_html_color('B5C3D4').";background: ".$bgcolor." url(back.gif) repeat-x fixed;}
 h2 {color: #FFFFFF;}
 h1 {color: #FFFFFF;}
-.CollectDivide {color:".convert_html_color('B5C3D4').";background: #000000 url(CollectDivide.gif) repeat-x;}
+.AjaxCollect {border-top: 3px ridge #a0afc3;}
 .CollectBack {color:".convert_html_color('B6BBC1').";background: ".$colbg." url(CollectBack.gif) repeat-x fixed;}
 
 a:link {color:".convert_html_color('B5C3D4').";}
@@ -239,7 +239,7 @@ break;
  body,html {color:#737373;background: #F3F3F3 url(back.gif) repeat-x fixed;}
 h2 {color: #000000;}
 h1 {color: #000000;}
-.CollectDivide {color:#FFFFFF;background: #000000 url(CollectDivide.gif) repeat-x;}
+.AjaxCollect {border-top: 3px ridge #737373;}
 .CollectBack {color:#FFFFFF;background: ".$colbg." url(CollectBack.gif) repeat-x fixed;}
 
 a:link {color:#737373;}

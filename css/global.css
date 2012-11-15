@@ -323,12 +323,6 @@ behavior: url('../css/iepngfix.htc');
 
 .URLDisplay {width: 500px;font: 11px Tahoma, Arial, Helvetica, sans-serif;}
 
-#CollectionFramelessNav ul {padding:0.4em 0;margin:0;list-style:none;}
-#CollectionFramelessNav li {padding:0;margin:0px 8px 1px 0px;float:left;white-space:nowrap;}
-
-#CollectionFramelessDropTitle {padding-top:5px;}
-#CollectionFramelessDrop {padding:0;}
-
 
 /* Autocomplete dropdown CSS - colours can be overridden in the colour CSS files */
 div.autocomplete {

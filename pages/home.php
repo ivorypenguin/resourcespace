@@ -119,7 +119,7 @@ jQuery(document).ready( function ()
 	}
 	?>>
 	
-	<a id="slideshowlink" target="main"
+	<a id="slideshowlink"
 	<?php
 	 
 	$linkurl="#";

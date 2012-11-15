@@ -323,7 +323,6 @@ default_module_config_key('general', 'staticsync_title_includes_path', isset($st
 default_module_config_key('general', 'staticsync_ingest', isset($staticsync_ingest)?$staticsync_ingest:''); 
 default_module_config_key('general', 'staticsync_alternatives_suffix', isset($staticsync_alternatives_suffix)?$staticsync_alternatives_suffix:'_alternatives'); 
 default_module_config_key('general', 'data_joins', isset($data_joins)?$data_joins:'Array'); 
-default_module_config_key('general', 'frameless_collections', isset($frameless_collections)?$frameless_collections:''); 
 default_module_config_key('general', 'debug_log', isset($debug_log)?$debug_log:''); 
 default_module_config_key('general', 'imagemagick_path', isset($imagemagick_path)?$imagemagick_path:'');
 default_module_config_key('general', 'ghostscript_path', isset($ghostscript_path)?$ghostscript_path:'');

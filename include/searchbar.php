@@ -588,42 +588,6 @@ if (!$basic_simple_search)
 	<?php } /* end replaceresearchrequestbox */ ?>
 	<?php } ?>
 
-	<?php if ($pagename!="login" && $pagename!="user_password" && $pagename!="user_request" && $frameless_collections && !checkperm("b"))
-		{ 
-		# Support for frameless collections.
-		if (!$ajax_collections){
-			
-		# Ensure collections functions loaded.
-		include_once dirname(__FILE__)."/collections_functions.php";
-
-		# Load collection info.
-		# If $usercollection is not set then this is an external user. Extract the collection ID from the URL.
-		if (!isset($usercollection)) {$usercollection=getval("collection",str_replace("!collection","",getval("search","")));}
-		$cinfo=get_collection($usercollection);
-		
-		# Requires feedback?
-		$feedback=$cinfo["request_feedback"];
-		?>
-		
-		<div id="ResearchBoxPanel">
-		<div class="SearchSpace">
-        <h2><?php echo $lang["mycollections"]?></h2>
-		
-		<div id="CollectionFrameless"></div>
-			<div class="clearer"> </div>
-		<div class="PanelShadow"></div>
-
-		
-		</div>
-		</div>
-		
-		<script type="text/javascript">
-		UpdateCollectionDisplay('<?php echo $k ?>');
-		</script>
-		<?php } // end if not ajax_collections
-		}
-	?>
-
 <?php hook("searchbarbottomtoolbar"); ?>
 	
 </div>

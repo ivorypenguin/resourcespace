@@ -128,7 +128,7 @@ function do_report($ref,$from_y,$from_m,$from_d,$to_y,$to_m,$to_d,$download=true
 						{
 						$thm_url=get_resource_path($value,false,"col",false,"",-1,1,false);
 						}
-					$output.="<td><a href=\"" . $baseurl . "/?r=" . $value .  "\" target=\"_new\"><img src=\"" . $thm_url . "\"></a></td>";
+					$output.="<td><a href=\"" . $baseurl . "/?r=" . $value .  "\" target=\"_blank\"><img src=\"" . $thm_url . "\"></a></td>";
 					}
 				else
 					{

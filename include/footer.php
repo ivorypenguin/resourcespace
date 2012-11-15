@@ -29,8 +29,7 @@ if ($use_theme_bar && !in_array($pagename,array("search_advanced","login","previ
 <script type="text/javascript">
 function SwapCSS(css){
 	document.getElementById('colourcss').href='<?php echo $baseurl?>/css/Col-' + css + '.css?css_reload_key=<?php echo $css_reload_key?>';
-	<?php if (!checkperm("b") && !$frameless_collections) { ?>parent.collections.document.getElementById('colourcss').href='<?php echo $baseurl?>/css/Col-' + css + '.css';<?php } ?>
-	
+
 	<?php 
 	if ($global_cookies){?>
 	document.cookie ='colourcss='+css+'; path=/';<?php } 
@@ -42,11 +41,9 @@ function SwapCSS(css){
 	{
 	$csspath=dirname(__FILE__)."/../plugins/" . $plugins[$n] . "/css/Col-".$theme.".css";	
 	if (file_exists($csspath))
-		{
-		?>
-	document.getElementById('<?php echo $plugins[$n]?>css').href='<?php echo $baseurl?>/plugins/<?php echo $plugins[$n]?>/css/Col-' + css + '.css';
-	<?php if (!checkperm("b") && !$frameless_collections) { ?>parent.collections.document.getElementById('<?php echo $plugins[$n]?>css').href='<?php echo $baseurl?>/plugins/<?php echo $plugins[$n]?>/css/Col-' + css + '.css';<?php } ?>
-	<?php }
+		{?>
+		document.getElementById('<?php echo $plugins[$n]?>css').href='<?php echo $baseurl?>/plugins/<?php echo $plugins[$n]?>/css/Col-' + css + '.css';<?php
+		}
 	}?>
 }
 </script>
@@ -118,12 +115,10 @@ $general_title_pages=array("team_content","team_archive","team_resource","resear
 $search_title_pages=array("contactsheet_settings","search","preview_all","collection_edit","edit","collection_download","collection_share","collection_request");
 $resource_title_pages=array("view","delete","log","alternative_file","alternative_files","resource_email","edit","preview");
 
-    if (!$frameless_collections){$parentword = 'parent.';} else { $parentword = ''; }
-    
     // clear resource or search title for pages that don't apply:
     if (!in_array($pagename,array_merge($general_title_pages,$search_title_pages,$resource_title_pages))){
 		echo "<script language='javascript'>\n";
-		echo $parentword . "document.title = \"$applicationname\";\n";
+		echo "document.title = \"$applicationname\";\n";
 		echo "</script>";
     }
     // place resource titles
@@ -131,7 +126,7 @@ $resource_title_pages=array("view","delete","log","alternative_file","alternativ
         $title =  htmlspecialchars(i18n_get_translated(get_data_by_field($ref,$view_title_field)));
         echo "<script language='javascript'>\n";
         if ($pagename=="edit"){$title=$lang['action-edit']." - ".$title;}
-        echo $parentword . "document.title = \"$applicationname - $title\";\n";
+        echo "document.title = \"$applicationname - $title\";\n";
         echo "</script>";
     }
 
@@ -159,7 +154,7 @@ $resource_title_pages=array("view","delete","log","alternative_file","alternativ
         if ($pagename=="preview_all"){$title=" - ".$lang['preview_all']." ".$title;}
         if ($pagename=="collection_download"){$title=" - ".$lang['download']." ".$title;}
         echo "<script language='javascript'>\n";
-        echo $parentword . "document.title = \"$applicationname $title\";\n";
+        echo "document.title = \"$applicationname $title\";\n";
         echo "</script>";
     }
     
@@ -238,7 +233,7 @@ $resource_title_pages=array("view","delete","log","alternative_file","alternativ
 		}
 		if (strlen($pagetitle)!=0){$pagetitle="- $pagetitle";} 
         echo "<script language='javascript'>\n";
-        echo $parentword . "document.title = \"$applicationname $pagetitle\";\n";
+        echo "document.title = \"$applicationname $pagetitle\";\n";
         echo "</script>";
     }  
 }
@@ -249,12 +244,10 @@ $resource_title_pages=array("view","delete","log","alternative_file","alternativ
 if (getval("ajax","")=="") { 
 	// don't show closing tags if we're in ajax mode
 	?>
-	
+
 <?php 
-if ($ajax_collections){
-	$omit_collectiondiv_load_pages=array("login","user_request","user_password","done","index","preview_all");
-	
-	?>
+$omit_collectiondiv_load_pages=array("login","user_request","user_password","done","index","preview_all");
+?>
 <div id="CollectionDiv" class="CollectBack AjaxCollect" <?php if (!in_array($pagename,$omit_collectiondiv_load_pages)){?>onload="UpdateCollectionDisplay('<?php echo isset($k)?$k:"" ?>');" style="height:<?php echo $collection_frame_height ?>px;"<?php } else { ?>style="display:none;"<?php } ?>><?php echo $lang["loading"]?></div>
 
 <?php if (!in_array($pagename,$omit_collectiondiv_load_pages)){?>
@@ -323,9 +316,8 @@ window.onresize = function() {
 }
 </script>
 <?php } // end omit_collectiondiv_load_pages ?>	
-<?php } // end ajax_collections ?>	
-	
-	
+
+
 </body>
 </html>
 <?php } // end if !ajax ?>

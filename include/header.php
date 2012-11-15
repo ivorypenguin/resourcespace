@@ -2,9 +2,6 @@
 
 $theme=((isset($userfixedtheme) && $userfixedtheme!=""))?$userfixedtheme:getval("colourcss",$defaulttheme);
 
-// frameless collections is automatically true if ajax_collections is on
-if ($ajax_collections){$frameless_collections=true;}
-
 # Do not display header / footer when dynamically loading CentralSpace contents.
 if (getval("ajax","")=="") { 
 
@@ -24,7 +21,7 @@ if ($display_user_rating_stars && $star_search){
 		setcookie("starsearch",$starsearch);
 	    }
 	}
-?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
+?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>	<?php if ($include_rs_header_info){?>
 <!--<?php hook("copyrightinsert");?>
 ResourceSpace version <?php echo $productversion?>
@@ -67,9 +64,6 @@ jQuery.noConflict();
 <?php } else { ?>
 	rewriteUrls=false;rewriteUrlsDebug=false;
 <?php } ?>
-<?php if ($ajax_collections){?>
-	ajaxCollections=true;
-<?php } else { ?> ajaxCollections=false;<?php } ?>
 	ajaxLoadingTimer=<?php echo $ajax_loading_timer;?>;
 </script>
 
@@ -80,16 +74,12 @@ jQuery.noConflict();
 <script src="https://maps.google.com/maps/api/js?v=3.2&sensor=false"></script>
 <?php } ?>
 
-<?php if ($ajax_collections){?>
 <script src="<?php echo $baseurl;?>/lib/js/ajax_collections.js?css_reload_key=<?php echo $css_reload_key?>" type="text/javascript"></script>
 
 <link href="<?php echo $baseurl_short;?>lib/plupload/jquery.plupload.queue/css/jquery.plupload.queue.css?<?php echo $css_reload_key;?>" rel="stylesheet" type="text/css" media="screen,projection,print"  />
 <script type="text/javascript" src="http://bp.yahooapis.com/2.4.21/browserplus-min.js?<?php echo $css_reload_key;?>"></script>
 <script type="text/javascript" src="<?php echo $baseurl_short;?>lib/plupload/plupload.full.js?<?php echo $css_reload_key;?>"></script>
 <script type="text/javascript" src="<?php echo $baseurl_short;?>lib/plupload/jquery.plupload.queue/jquery.plupload.queue.js?<?php echo $css_reload_key;?>"></script>
-
-
-<?php } ?>
 
 <script type="text/javascript">
 var baseurl_short="<?php echo $baseurl_short?>";
@@ -192,14 +182,6 @@ for ($n=0;$n<count($plugins);$n++)
 	}
 ?>
 
-<?php
-# Check for the frameset, and if necessary, redirect to index.php so the frameset is drawn.
-if (($pagename!="terms") && ($pagename!="change_language") && ($pagename!="login") && ($pagename!="user_request") && ($pagename!="user_password") && ($pagename!="done") && (getval("k","")=="") && (!$frameless_collections) && (!checkperm("b"))) { ?>
-<script type="text/javascript">
-if (!top.collections) {document.location='<?php echo $baseurl?>/index.php?url=' + escape(document.location);} // Missing frameset? redirect to frameset.
-</script>
-<?php } ?>
-
 <?php hook("headblock"); ?>
 
 <?php if ($collections_compact_style && $pagename!="login"){ include dirname(__FILE__)."/../lib/js/colactions.js";}?>
@@ -273,12 +255,6 @@ else
 ?>
 </div>
 
-<?php 
-# Work out target to use for links
-if (!$frameless_collections && !checkperm("b")) {$target="main";} else {$target="_top";}
-
-?>
-
 <div id="HeaderNav2" class="HorizontalNav HorizontalWhiteNav">
 
 <?php if ($breadcrumbs) { ?>
@@ -286,10 +262,10 @@ if (!$frameless_collections && !checkperm("b")) {$target="main";} else {$target=
 <?php } ?>
 		<?php if (!hook("replaceheadernav2")) { ?>
 		<ul>
-		<?php if (!$use_theme_as_home && !$use_recent_as_home) { ?><li><a href="<?php echo $baseurl?>/pages/<?php echo $default_home_page?>" onClick="return CentralSpaceLoad(this,true);" target="<?php echo $target?>"><?php echo $lang["home"]?></a></li><?php }  
+		<?php if (!$use_theme_as_home && !$use_recent_as_home) { ?><li><a href="<?php echo $baseurl?>/pages/<?php echo $default_home_page?>" onClick="return CentralSpaceLoad(this,true);" target="_top"><?php echo $lang["home"]?></a></li><?php }  
 		hook("topnavlinksafterhome");
 		?>
-		<?php if ($advanced_search_nav) { ?><li><a href="<?php echo $baseurl?>/pages/search_advanced.php"  onClick="return CentralSpaceLoad(this,true);" target="<?php echo $target?>"><?php echo $lang["advancedsearch"]?></a></li><?php }  ?>
+		<?php if ($advanced_search_nav) { ?><li><a href="<?php echo $baseurl?>/pages/search_advanced.php"  onClick="return CentralSpaceLoad(this,true);" target="_top"><?php echo $lang["advancedsearch"]?></a></li><?php }  ?>
 		<?php if 	(
 			(checkperm("s"))  && (! $disable_searchresults )
 		&&
@@ -300,21 +276,21 @@ if (!$frameless_collections && !checkperm("b")) {$target="main";} else {$target=
 			)
 		)
 		{?>
-		<?php if ($search_results_link){?><li><a target="<?php echo $target?>" href="<?php echo $baseurl?>/pages/search.php"  onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["searchresults"]?></a></li><?php } ?><?php } ?>
-		<?php if (checkperm("s") && $enable_themes && !$theme_direct_jump) { ?><li><a target="<?php echo $target?>" href="<?php echo $baseurl?>/pages/themes.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["themes"]?></a></li><?php } ?>
-		<?php if (checkperm("s") && ($public_collections_top_nav || $public_collections_header_only)) { ?><li><a target="<?php echo $target?>" href="<?php echo $baseurl?>/pages/collection_public.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["publiccollections"]?></a></li><?php } ?>
-		<?php if (checkperm("s") && $mycollections_link && !checkperm("b")) { ?><li><a target="<?php echo $target?>" href="<?php echo $baseurl?>/pages/collection_manage.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["mycollections"]?></a></li><?php } ?>
+		<?php if ($search_results_link){?><li><a target="_top" href="<?php echo $baseurl?>/pages/search.php"  onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["searchresults"]?></a></li><?php } ?><?php } ?>
+		<?php if (checkperm("s") && $enable_themes && !$theme_direct_jump) { ?><li><a target="_top" href="<?php echo $baseurl?>/pages/themes.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["themes"]?></a></li><?php } ?>
+		<?php if (checkperm("s") && ($public_collections_top_nav || $public_collections_header_only)) { ?><li><a target="_top" href="<?php echo $baseurl?>/pages/collection_public.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["publiccollections"]?></a></li><?php } ?>
+		<?php if (checkperm("s") && $mycollections_link && !checkperm("b")) { ?><li><a target="_top" href="<?php echo $baseurl?>/pages/collection_manage.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["mycollections"]?></a></li><?php } ?>
 		<?php if (!hook("replacerecentlink")) { ?>
-		<?php if (checkperm("s") && $recent_link) { ?><li><a target="<?php echo $target?>" href="<?php echo $baseurl?>/pages/search.php?search=<?php echo urlencode("!last".$recent_search_quantity)?>" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["recent"]?></a></li><?php } ?>
+		<?php if (checkperm("s") && $recent_link) { ?><li><a target="_top" href="<?php echo $baseurl?>/pages/search.php?search=<?php echo urlencode("!last".$recent_search_quantity)?>" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["recent"]?></a></li><?php } ?>
 		<?php } /* end hook replacerecentlink */?>
-		<?php if (checkperm("s") && $myrequests_link && checkperm("q")) { ?><li><a target="<?php echo $target?>" href="<?php echo $baseurl?>/pages/requests.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["myrequests"]?></a></li><?php } ?>
+		<?php if (checkperm("s") && $myrequests_link && checkperm("q")) { ?><li><a target="_top" href="<?php echo $baseurl?>/pages/requests.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["myrequests"]?></a></li><?php } ?>
 		<?php if (!hook("replacemycontributionslink")) { ?>
-		<?php if (checkperm("d")||(isset($mycontributions_link) && $mycontributions_link && checkperm("c"))) { ?><li><a target="<?php echo $target?>" href="<?php echo $baseurl?>/pages/contribute.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["mycontributions"]?></a></li><?php } ?>
+		<?php if (checkperm("d")||(isset($mycontributions_link) && $mycontributions_link && checkperm("c"))) { ?><li><a target="_top" href="<?php echo $baseurl?>/pages/contribute.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["mycontributions"]?></a></li><?php } ?>
 		<?php } /* end hook replacemycontributionslink */?>
 		<?php if (!hook("replaceresearchrequestlink")) { ?>
-		<?php if (($research_request) && (checkperm("s")) && (checkperm("q"))) { ?><li><a target="<?php echo $target?>" href="<?php echo $baseurl?>/pages/research_request.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["researchrequest"]?></a></li><?php } ?>
+		<?php if (($research_request) && (checkperm("s")) && (checkperm("q"))) { ?><li><a target="_top" href="<?php echo $baseurl?>/pages/research_request.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["researchrequest"]?></a></li><?php } ?>
 		<?php } ?>
-		<?php if ($speedtagging && checkperm("s") && checkperm("n")) { ?><li><a target="<?php echo $target?>" href="<?php echo $baseurl?>/pages/tag.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["tagging"]?></a></li><?php } ?>
+		<?php if ($speedtagging && checkperm("s") && checkperm("n")) { ?><li><a target="_top" href="<?php echo $baseurl?>/pages/tag.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["tagging"]?></a></li><?php } ?>
 		
 		<?php 
 		/* ------------ Customisable top navigation ------------------- */
@@ -333,16 +309,16 @@ if (!$frameless_collections && !checkperm("b")) {$target="main";} else {$target=
 					$custom_top_nav[$n]["title"]=$lang[$custom_top_nav_title];
 				}
 				?>
-				<li><a target="<?php if ($isextlink){echo "_top"; } else {  echo $target; } ?>" href="<?php echo $custom_top_nav[$n]["link"] ?>" onClick="return CentralSpaceLoad(this,true);"><?php echo i18n_get_translated($custom_top_nav[$n]["title"]) ?></a></li>
+				<li><a target="_top" href="<?php echo $custom_top_nav[$n]["link"] ?>" onClick="return CentralSpaceLoad(this,true);"><?php echo i18n_get_translated($custom_top_nav[$n]["title"]) ?></a></li>
 				<?php
 				}
 			}
 		?>
 		
 		
-		<?php if ($help_link){?><li><a target="<?php echo $target?>" href="<?php echo $baseurl?>/pages/help.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["helpandadvice"]?></a></li><?php } ?>
-		<?php if ($top_nav_upload && checkperm("c")) { ?><li><a target="<?php echo $target?>" href="<?php echo $baseurl?>/pages/edit.php?ref=-<?php echo @$userref?>&amp;uploader=<?php echo $top_nav_upload_type ?>" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["upload"]?></a></li><?php } ?>
-		<?php if (checkperm("t")) { ?><li><a target="<?php echo $target?>" href="<?php echo $baseurl?>/pages/team/team_home.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["teamcentre"]?></a>
+		<?php if ($help_link){?><li><a target="_top" href="<?php echo $baseurl?>/pages/help.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["helpandadvice"]?></a></li><?php } ?>
+		<?php if ($top_nav_upload && checkperm("c")) { ?><li><a target="_top" href="<?php echo $baseurl?>/pages/edit.php?ref=-<?php echo @$userref?>&amp;uploader=<?php echo $top_nav_upload_type ?>" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["upload"]?></a></li><?php } ?>
+		<?php if (checkperm("t")) { ?><li><a target="_top" href="<?php echo $baseurl?>/pages/team/team_home.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["teamcentre"]?></a>
 		<?php if ($team_centre_alert_icon && (checkperm("R")||checkperm("r")) &&  (sql_value("select sum(thecount) value from (select count(*) thecount from request where status = 0 union select count(*) thecount from research_request where status = 0) as theunion",0) > 0)){
 			echo "<img src='$baseurl/gfx/images/attention_16.png' width='16' height='16' style='position:relative;top:3px;' />";	
 		} ?>

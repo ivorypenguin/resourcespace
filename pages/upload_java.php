@@ -325,12 +325,9 @@ else
 	    <param name="lookAndFeel" value="<?php echo $jupload_look_and_feel ?>">
 	<?php } ?>
             
-            <?php if (!$frameless_collections) { 
-            # If not using frameless collections, refresh the bottom frame after upload.
+            <?php
+            # FIXME! Refresh the collection bar after upload.
             ?>
-            <param name="afterUploadTarget" value="collections">
-            <param name="afterUploadURL" value="<?php echo $baseurl_short?>pages/collections.php">
-            <?php } ?>
 
             <?php hook("addjuploadparams"); ?>
 

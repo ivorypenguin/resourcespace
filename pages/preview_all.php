@@ -250,7 +250,6 @@ if (maxheight><?php echo $imageheight?>){
 <?php } ?>
 <?php $n++;
 ?>
-<div id="CollectionFramelessCount" style="display:none;"> </div>
 
 
 </tr>
@@ -259,7 +258,6 @@ if (maxheight><?php echo $imageheight?>){
 <script type="text/javascript">
 <?php if ($preview_all_hide_collections){ ?>
 	CollectionDivLoad("<?php echo $baseurl ?>/pages/collections.php?ref=<?php echo $ref ?>&search=<?php echo $search?>&order_by=<?php echo $order_by?>&archive=<?php echo $archive?>&k=<?php echo $k?>&sort=<?php echo $sort?>&thumbs=hide");
-	<?php if (!$ajax_collections){?>top.document.getElementById("topframe").rows="*<?php if ($collection_resize!=true) {?>,3<?php } ?>,33";<?php } ?>
 <?php } ?>
 
 	window.onresize=function(event){

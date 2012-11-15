@@ -97,73 +97,6 @@ if ($allow_reorder)
 		}
 	}
 
-	
-if (!$ajax_collections){?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Frameset//EN" "http://www.w3.org/TR/html4/frameset.dtd">
-<html class="CollectBack">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title><?php echo $applicationname?></title>
-<link href="../css/global.css" rel="stylesheet" type="text/css" media="screen,projection,print" />
-<?php if (!hook("adjustcolortheme")){?>
-<link href="../css/Col-<?php echo (isset($userfixedtheme) && $userfixedtheme!="")?$userfixedtheme:getval("colourcss",$defaulttheme)?>.css" rel="stylesheet" type="text/css" media="screen,projection,print" id="colourcss"/>
-<?php } ?>
-<!--[if lte IE 6]> <link href="../css/globalIE.css" rel="stylesheet" type="text/css"  media="screen,projection,print" /> <![endif]-->
-<!--[if lte IE 5.6]> <link href="../css/globalIE5.css" rel="stylesheet" type="text/css"  media="screen,projection,print" /> <![endif]-->
-
-
-
-<script src="<?php echo $baseurl?>/lib/js/jquery-1.7.2.min.js?css_reload_key=<?php echo $css_reload_key?>" type="text/javascript"></script>
-<script src="<?php echo $baseurl?>/lib/js/jquery-ui-1.8.20.custom.min.js?css_reload_key=<?php echo $css_reload_key?>" type="text/javascript"></script>
-<!--[if lte IE 7]><script src="<?php echo $baseurl?>/lib/js/json2.js?css_reload_key=<?php echo $css_reload_key?>" type="text/javascript"></script><![endif]-->
-
-
-<script type="text/javascript">
-var baseurl_short="<?php echo $baseurl_short?>";
-var baseurl="<?php echo $baseurl?>";
-</script>
-<script type="text/javascript">
-<?php if ($ajax_url_rewrites){ ?>
-	rewriteUrls=true;<?php if ($ajax_url_rewrite_debug){?>rewriteUrlsDebug=true;<?php } ?>
-<?php } else { ?>
-	rewriteUrls=false;rewriteUrlsDebug=false;
-<?php } ?>
-<?php if ($ajax_collections){?>
-	ajaxCollections=true;
-<?php } else { ?> ajaxCollections=false;<?php } ?>
-</script>
-<script src="<?php echo $baseurl_short?>lib/js/global.js?css_reload_key=<?php echo $css_reload_key?>" type="text/javascript"></script>
-
-
-<script type="text/javascript">
-jQuery.noConflict();
-</script>
-
-<?php 
-}
-
-
-# Include CSS files for for each of the plugins too (if provided)
-if (!$ajax_collections){
-for ($n=0;$n<count($plugins);$n++)
-	{
-	$csspath=dirname(__FILE__)."/../plugins/" . $plugins[$n] . "/css/style.css";
-	if (file_exists($csspath))
-		{
-		?>
-		<link href="<?php echo $baseurl?>/plugins/<?php echo $plugins[$n]?>/css/style.css?css_reload_key=<?php echo $css_reload_key?>" rel="stylesheet" type="text/css" media="screen,projection,print"  />
-		<?php
-		}
-	$theme=((isset($userfixedtheme) && $userfixedtheme!=""))?$userfixedtheme:getval("colourcss",$defaulttheme);
-	$csspath=dirname(__FILE__)."/../plugins/" . $plugins[$n] . "/css/Col-".$theme.".css";	
-	if (file_exists($csspath))
-		{
-		?>
-		<link href="<?php echo $baseurl?>/plugins/<?php echo $plugins[$n]?>/css/Col-<?php echo $theme?>.css?css_reload_key=<?php echo $css_reload_key?>" rel="stylesheet" type="text/css" media="screen,projection,print" id="<?php echo $plugins[$n]?>css" />
-		<?php
-		}	
-	}
-}
 
 # Include function for reordering / infobox
 if ($infobox)
@@ -235,24 +168,15 @@ else { ?>
 <script type="text/javascript">
 function ToggleThumbs()
 	{
-	<?php if (!$ajax_collections){?>
-		<?php if ($thumbs=="show") { ?>
-			top.document.getElementById("topframe").rows="*<?php if ($collection_resize!=true) {?>,3<?php } ?>,33";
-		<?php } else { ?>
-			top.document.getElementById("topframe").rows="*<?php if ($collection_resize!=true) {?>,3<?php } ?>,<?php echo $collection_frame_height?>";
-		<?php } ?>
-	<?php } else { // support ajax collections ?>
 		<?php if ($thumbs=="show") { ?>
 			collection_frame_height=40;
 		<?php } else { ?>
 			collection_frame_height=<?php echo $collection_frame_height?>;
 		<?php } ?>
 		setContent();
-	<?php } ?>
 	}
 	
 // hack for collection load	// this needs fixing
-<?php if ($ajax_collections){?>
 	function ToggleThumbsInit(){
 		<?php if ($thumbs=="hide") { ?>
 			collection_frame_height=40;
@@ -262,15 +186,13 @@ function ToggleThumbs()
 		setContent();
 	}
 	ToggleThumbsInit();
-<?php } ?>
 </script>
 
 <?php if(!hook("clearmaincheckboxesfromcollectionframe")){ ?>
 <?php if ($use_checkboxes_for_selection){ ?>
 <!--clear checkboxes-->
 <script type="text/javascript">
-<?php if ($ajax_collections){$context="";} else {$context=",parent.main.document";}?>
-jQuery(".checkselect"<?php echo $context?>).each(function(index, Element)
+jQuery(".checkselect").each(function(index, Element)
 {jQuery(Element).attr('checked',false);});
 </script>
 <?php } ?>
@@ -433,15 +355,14 @@ if (($userrequestmode==2 || $userrequestmode==3) && $basket_stores_size)
 
 if(!hook("updatemaincheckboxesfromcollectionframe")){
 	if ($use_checkboxes_for_selection){	
-		if ($ajax_collections){$context="";} else {$context=",parent.main.document";}
 		# update checkboxes in main window
 		for ($n=0;$n<count($result);$n++)			
 			{
 			$ref=$result[$n]["ref"];
 			?>
 			<script type="text/javascript">
-			if (jQuery('#check<?php echo $ref?>'<?php echo $context?>)){
-				jQuery('#check<?php echo $ref?>'<?php echo $context?>).attr('checked',true);}
+			if (jQuery('#check<?php echo $ref?>')){
+				jQuery('#check<?php echo $ref?>').attr('checked',true);}
 			</script>
 		<?php
 		}
@@ -472,7 +393,7 @@ if ($basket)
 	?>
 	<div id="CollectionMenu">
 	<h2><?php echo $lang["yourbasket"] ?></h2>
-	<form target="main" action="<?php echo $baseurl_short?>pages/purchase.php">
+	<form action="<?php echo $baseurl_short?>pages/purchase.php">
 
 	<?php if ($count_result==0) { ?>
 	<p><br /><?php echo $lang["yourbasketisempty"] ?></p><br /><br /><br />
@@ -490,7 +411,7 @@ if ($basket)
 	<?php if (!$disable_collection_toggle) { ?>
     <a href="<?php echo $baseurl_short?>pages/collections.php?thumbs=hide&collection=<?php echo $usercollection ?>&k=<?php echo $k?>" onClick="ToggleThumbs();return CollectionDivLoad(this);">&gt; <?php echo $lang["hidethumbnails"]?></a>
   <?php } ?>
-	<a href="<?php echo $baseurl_short?>pages/purchases.php" target="main" onclick="return CentralSpaceLoad(this,true);">&gt; <?php echo $lang["viewpurchases"]?></a>
+	<a href="<?php echo $baseurl_short?>pages/purchases.php" onclick="return CentralSpaceLoad(this,true);">&gt; <?php echo $lang["viewpurchases"]?></a>
 
 
 	</form>
@@ -508,9 +429,9 @@ elseif ($k!="")
 	<?php echo $lang["created"] . " " . nicedate($tempcol["created"])?><br />
   	<?php echo $count_result . " " . $lang["youfoundresources"]?><br />
     <?php if ((isset($zipcommand) || $collection_download) && $count_result>0) { ?>
-	<a href="<?php echo $baseurl_short?>pages/terms.php?k=<?php echo $k?>&url=<?php echo urlencode("pages/collection_download.php?collection=" .  $usercollection . "&k=" . $k)?>" target="main" onclick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["action-download"]?></a>
+	<a href="<?php echo $baseurl_short?>pages/terms.php?k=<?php echo $k?>&url=<?php echo urlencode("pages/collection_download.php?collection=" .  $usercollection . "&k=" . $k)?>" onclick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["action-download"]?></a>
 	<?php } ?>
-    <?php if ($feedback) {?><br /><br /><a target="main" onclick="return CentralSpaceLoad(this);" href="<?php echo $baseurl_short?>pages/collection_feedback.php?collection=<?php echo $usercollection?>&k=<?php echo $k?>">&gt;&nbsp;<?php echo $lang["sendfeedback"]?></a><?php } ?>
+    <?php if ($feedback) {?><br /><br /><a onclick="return CentralSpaceLoad(this);" href="<?php echo $baseurl_short?>pages/collection_feedback.php?collection=<?php echo $usercollection?>&k=<?php echo $k?>">&gt;&nbsp;<?php echo $lang["sendfeedback"]?></a><?php } ?>
     <?php if ($count_result>0 && checkperm("q"))
     	{ 
 		# Ability to request a whole collection (only if user has restricted access to any of these resources)
@@ -518,7 +439,7 @@ elseif ($k!="")
 		if ($min_access!=0)
 			{
 		    ?>
-		    <br/><a target="main" href="<?php echo $baseurl_short?>pages/collection_request.php?ref=<?php echo $usercollection?>&k=<?php echo $k?>">&gt; <?php echo 	$lang["requestall"]?></a>
+		    <br/><a _tophref="<?php echo $baseurl_short?>pages/collection_request.php?ref=<?php echo $usercollection?>&k=<?php echo $k?>">&gt; <?php echo 	$lang["requestall"]?></a>
 		    <?php
 		    }
 	    }
@@ -538,10 +459,10 @@ elseif ($k!="")
 <?php } ?>
 
 <?php if (!hook("thumbsmenu")) { ?>
-  <?php if (!hook("replacecollectiontitle")) { ?><h2 id="CollectionsPanelHeader"><?php if ($collections_compact_style){?><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_manage.php" target="main"><?php } ?><?php echo $lang["mycollections"]?><?php if ($collections_compact_style){?></a><?php } ?></h2><?php } ?>
+  <?php if (!hook("replacecollectiontitle")) { ?><h2 id="CollectionsPanelHeader"><?php if ($collections_compact_style){?><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_manage.php"><?php } ?><?php echo $lang["mycollections"]?><?php if ($collections_compact_style){?></a><?php } ?></h2><?php } ?>
   <form method="get" id="colselect" onsubmit="CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?collection=-1&k=<?php echo $k?>&entername='+jQuery('#entername').val());return false;">
 		<div class="SearchItem" style="padding:0;margin:0;"><?php echo $lang["currentcollection"]?>&nbsp;(<strong><?php echo $count_result?></strong>&nbsp;<?php if ($count_result==1){echo $lang["item"];} else {echo $lang["items"];}?>): 
-		<select name="collection" id="collection" onchange="if(document.getElementById('collection').value==-1){document.getElementById('entername').style.display='block';document.getElementById('entername').focus();return false;} <?php if (($frameless_collections || $ajax_collections) && !checkperm("b")){ ?>ChangeCollection(jQuery(this).val(),'<?php echo $k ?>');<?php } else { ?>document.getElementById('colselect').submit();<?php } ?>" <?php if ($collection_dropdown_user_access_mode){?>class="SearchWidthExp"<?php } else { ?> class="SearchWidth"<?php } ?>>
+		<select name="collection" id="collection" onchange="if(document.getElementById('collection').value==-1){document.getElementById('entername').style.display='block';document.getElementById('entername').focus();return false;} <?php if (!checkperm("b")){ ?>ChangeCollection(jQuery(this).val(),'<?php echo $k ?>');<?php } else { ?>document.getElementById('colselect').submit();<?php } ?>" <?php if ($collection_dropdown_user_access_mode){?>class="SearchWidthExp"<?php } else { ?> class="SearchWidth"<?php } ?>>
 		<?php
 		$list=get_user_collections($userref);
 		$found=false;
@@ -602,32 +523,32 @@ elseif ($k!="")
     }
     else { ?>
   	<?php if ((!collection_is_research_request($usercollection)) || (!checkperm("r"))) { ?>
-    <?php if (checkperm("s")) { ?><li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_manage.php" target="main">&gt; <?php echo $lang["managemycollections"];?></a></li>
-	<?php if ($contact_sheet==true) { ?><li><a href="<?php echo $baseurl_short?>pages/contactsheet_settings.php?ref=<?php echo $usercollection?>" target="main">&gt;&nbsp;<?php echo $lang["contactsheet"]?></a></li><?php } ?>
-    <?php if ($allow_share) { ?><li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_share.php?ref=<?php echo $usercollection?>" target="main">&gt; <?php echo $lang["share"]?></a></li><?php } ?>
-    <?php if (($userref==$cinfo["user"]) || (checkperm("h"))) {?><li><a target="main" onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_edit.php?ref=<?php echo $usercollection?>">&gt;&nbsp;<?php echo $allow_share?$lang["action-edit"]:$lang["editcollection"]?></a></li><?php } ?>
-	<?php if ($preview_all){?><li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/preview_all.php?ref=<?php echo $usercollection?>" target="main">&gt;&nbsp;<?php echo $lang["preview_all"]?></a></li><?php } ?>
+    <?php if (checkperm("s")) { ?><li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_manage.php">&gt; <?php echo $lang["managemycollections"];?></a></li>
+	<?php if ($contact_sheet==true) { ?><li><a href="<?php echo $baseurl_short?>pages/contactsheet_settings.php?ref=<?php echo $usercollection?>">&gt;&nbsp;<?php echo $lang["contactsheet"]?></a></li><?php } ?>
+    <?php if ($allow_share) { ?><li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_share.php?ref=<?php echo $usercollection?>">&gt; <?php echo $lang["share"]?></a></li><?php } ?>
+    <?php if (($userref==$cinfo["user"]) || (checkperm("h"))) {?><li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_edit.php?ref=<?php echo $usercollection?>">&gt;&nbsp;<?php echo $allow_share?$lang["action-edit"]:$lang["editcollection"]?></a></li><?php } ?>
+	<?php if ($preview_all){?><li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/preview_all.php?ref=<?php echo $usercollection?>">&gt;&nbsp;<?php echo $lang["preview_all"]?></a></li><?php } ?>
 	<?php hook("collectiontool2");?>
-    <?php if ($feedback) {?><li><a target="main" onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_feedback.php?collection=<?php echo $usercollection?>&k=<?php echo $k?>">&gt;&nbsp;<?php echo $lang["sendfeedback"]?></a></li><?php } ?>
+    <?php if ($feedback) {?><li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_feedback.php?collection=<?php echo $usercollection?>&k=<?php echo $k?>">&gt;&nbsp;<?php echo $lang["sendfeedback"]?></a></li><?php } ?>
     
     <?php } ?>
     <?php } else {
 	if (!hook("replacecollectionsresearchlinks")){	
     $research=sql_value("select ref value from research_request where collection='$usercollection'",0);	
 	?>
-    <li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/team/team_research.php" target="main">&gt; <?php echo $lang["manageresearchrequests"]?></a></li>    
-    <li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/team/team_research_edit.php?ref=<?php echo $research?>" target="main">&gt; <?php echo $lang["editresearchrequests"]?></a></li>    
+    <li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/team/team_research.php">&gt; <?php echo $lang["manageresearchrequests"]?></a></li>    
+    <li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/team/team_research_edit.php?ref=<?php echo $research?>">&gt; <?php echo $lang["editresearchrequests"]?></a></li>    
     <?php } /* end hook replacecollectionsresearchlinks */ ?>
 	<?php } ?>
     
     <?php 
     # If this collection is (fully) editable, then display an extra edit all link
     if ((count($result)>0) && checkperm("e" . $result[0]["archive"]) && allow_multi_edit($result)) { ?>
-    <li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $usercollection)?>" target="main">&gt; <?php echo $lang["viewall"]?></a></li>
-    <li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/edit.php?collection=<?php echo $usercollection?>" target="main">&gt; <?php echo $lang["action-editall"]?></a></li>
+    <li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $usercollection)?>">&gt; <?php echo $lang["viewall"]?></a></li>
+    <li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/edit.php?collection=<?php echo $usercollection?>">&gt; <?php echo $lang["action-editall"]?></a></li>
 
     <?php } else { ?>
-    <li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $usercollection)?>" target="main">&gt; <?php echo $lang["viewall"]?></a></li>
+    <li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $usercollection)?>">&gt; <?php echo $lang["viewall"]?></a></li>
     <?php } ?>
     
     <?php if ($count_result>0)
@@ -637,14 +558,14 @@ elseif ($k!="")
 		if ($min_access!=0)
 			{
 		    ?>
-		    <li><a onclick="return CentralSpaceLoad(this,true);" target="main" href="<?php echo $baseurl_short?>pages/collection_request.php?ref=<?php echo $usercollection?>&k=<?php echo $k?>">&gt; <?php echo 	$lang["requestall"]?></a></li>
+		    <li><a onclick="return CentralSpaceLoad(this,true);" _tophref="<?php echo $baseurl_short?>pages/collection_request.php?ref=<?php echo $usercollection?>&k=<?php echo $k?>">&gt; <?php echo 	$lang["requestall"]?></a></li>
 		    <?php
 		    }
 	    }
 	?>
     
     <?php if ((isset($zipcommand) || $collection_download) && $count_result>0) { ?>
-    <li><a target="main" onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/terms.php?k=<?php echo $k?>&url=<?php echo urlencode("pages/collection_download.php?collection=" .  $usercollection . "&k=" . $k)?>">&gt; <?php echo $lang["action-download"]?></a></li>
+    <li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/terms.php?k=<?php echo $k?>&url=<?php echo urlencode("pages/collection_download.php?collection=" .  $usercollection . "&k=" . $k)?>">&gt; <?php echo $lang["action-download"]?></a></li>
 	<?php } ?>
 	<?php hook("collectiontool");?>
 	<?php if (!$disable_collection_toggle) { ?>
@@ -686,9 +607,9 @@ if (isset($cinfo['savedsearch'])&&$cinfo['savedsearch']==null)
 		<!--Resource Panel-->
 		<div class="CollectionPanelShell">
 		<table border="0" class="CollectionResourceAlign"><tr><td>
-		<a target="main" onclick="return CentralSpaceLoad(this,true);" href="<?php echo $url?>"><img border=0 width=56 height=75 src="<?php echo $iconpath?>"/></a></td>
+		<a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $url?>"><img border=0 width=56 height=75 src="<?php echo $iconpath?>"/></a></td>
 		</tr></table>
-		<div class="CollectionPanelInfo"><a target="main" onclick="return CentralSpaceLoad(this,true);" href="<?php echo $url?>"><?php echo tidy_trim($lang["savedsearch"],(13-strlen($n+1)))?> <?php echo $n+1?></a>&nbsp;</div>
+		<div class="CollectionPanelInfo"><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $url?>"><?php echo tidy_trim($lang["savedsearch"],(13-strlen($n+1)))?> <?php echo $n+1?></a>&nbsp;</div>
 		<div class="CollectionPanelInfo"><a onclick="return CollectionDivLoad(this);" href="<?php echo $baseurl_short?>pages/collections.php?removesearch=<?php echo $ref?>&nc=<?php echo time()?>">x <?php echo $lang["action-remove"]?>
 		</a></div>				
 		</div>
@@ -711,7 +632,7 @@ if ($count_result>0)
 		<?php $access=get_resource_access($result[$n]);
 		$use_watermark=check_use_watermark();?>
 		<table border="0" class="CollectionResourceAlign"><tr><td>
-		<a target="main" onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $ref?>&search=<?php echo urlencode("!collection" . $usercollection)?>&k=<?php echo $k?>"><?php if ($result[$n]["has_image"]==1) { 
+		<a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $ref?>&search=<?php echo urlencode("!collection" . $usercollection)?>&k=<?php echo $k?>"><?php if ($result[$n]["has_image"]==1) { 
 		
 		$colimgpath=get_resource_path($ref,false,"col",false,$result[$n]["preview_extension"],-1,1,$use_watermark,$result[$n]["file_modified"])
 		?>
@@ -739,19 +660,19 @@ if ($count_result>0)
 			
 		?>	
 		<?php if (!hook("replacecolresourcetitle")){?>
-		<div class="CollectionPanelInfo"><a target="main" onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $ref?>&search=<?php echo urlencode("!collection" . $usercollection)?>&k=<?php echo $k?>" <?php if (!$infobox) { ?>title="<?php echo htmlspecialchars(i18n_get_translated($result[$n]["field".$view_title_field]))?>"<?php } ?> ><?php echo tidy_trim(i18n_get_translated($title),14);?></a>&nbsp;</div>
+		<div class="CollectionPanelInfo"><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $ref?>&search=<?php echo urlencode("!collection" . $usercollection)?>&k=<?php echo $k?>" <?php if (!$infobox) { ?>title="<?php echo htmlspecialchars(i18n_get_translated($result[$n]["field".$view_title_field]))?>"<?php } ?> ><?php echo tidy_trim(i18n_get_translated($title),14);?></a>&nbsp;</div>
 		<?php } ?>
 		
 		<?php if ($k!="" && $feedback) { # Allow feedback for external access key users
 		?>
 		<div class="CollectionPanelInfo">
-		<span class="IconComment <?php if ($result[$n]["commentset"]>0) { ?>IconCommentAnim<?php } ?>"><a target="main" onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_comment.php?ref=<?php echo $ref?>&collection=<?php echo $usercollection?>&k=<?php echo $k?>"><img src="../gfx/interface/sp.gif" alt="" width="14" height="12" /></a></span>		
+		<span class="IconComment <?php if ($result[$n]["commentset"]>0) { ?>IconCommentAnim<?php } ?>"><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_comment.php?ref=<?php echo $ref?>&collection=<?php echo $usercollection?>&k=<?php echo $k?>"><img src="../gfx/interface/sp.gif" alt="" width="14" height="12" /></a></span>		
 		</div>
 		<?php } ?>
 	
 		<?php if ($k=="") { ?><div class="CollectionPanelInfo">
 		<?php if (($feedback) || (($collection_reorder_caption || $collection_commenting))) { ?>
-		<span class="IconComment <?php if ($result[$n]["commentset"]>0) { ?>IconCommentAnim<?php } ?>"><a target="main" onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_comment.php?ref=<?php echo $ref?>&collection=<?php echo $usercollection?>"><img src="../gfx/interface/sp.gif" alt="" width="14" height="12" /></a></span>		
+		<span class="IconComment <?php if ($result[$n]["commentset"]>0) { ?>IconCommentAnim<?php } ?>"><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_comment.php?ref=<?php echo $ref?>&collection=<?php echo $usercollection?>"><img src="../gfx/interface/sp.gif" alt="" width="14" height="12" /></a></span>		
 		<?php } ?>
 
 		<?php if (!isset($cinfo['savedsearch'])||(isset($cinfo['savedsearch'])&&$cinfo['savedsearch']==null)){ // add 'remove' link only if this is not a smart collection 
@@ -796,7 +717,7 @@ if ($basket)
 	?>
 	<div id="CollectionMinTitle"><h2><?php echo $lang["yourbasket"] ?></h2></div>
 	<div id="CollectionMinRightNav">
-	<form target="main" action="<?php echo $baseurl_short?>pages/purchase.php">
+	<form _topaction="<?php echo $baseurl_short?>pages/purchase.php">
 	<ul>
 	
 	<?php if ($count_result==0) { ?>
@@ -806,13 +727,13 @@ if ($basket)
 	<?php if ($basket_stores_size) {
 	# If they have already selected the size, we can show a total price here.
 	?><li><?php echo $lang["totalprice"] ?>: <?php echo $currency_symbol . " " . number_format($totalprice,2) ?><?php } ?></li>
-    <li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $usercollection)?>" target="main"><?php echo $lang["viewall"]?></a></li>
+    <li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $usercollection)?>"><?php echo $lang["viewall"]?></a></li>
 	<li><input type="submit" name="buy" value="&nbsp;&nbsp;&nbsp;<?php echo $lang["buynow"] ?>&nbsp;&nbsp;&nbsp;" /></li>
 	<?php } ?>
   <?php if (!$disable_collection_toggle) { ?>
     <?php if ($count_result<=$max_collection_thumbs) { ?><li><a href="<?php echo $baseurl_short?>pages/collections.php?thumbs=show&collection=<?php echo $usercollection ?>&k=<?php echo $k?>" onClick="ToggleThumbs();return CollectionDivLoad(this);"><?php echo $lang["showthumbnails"]?></a></li><?php } ?>
   <?php } ?>
-	<li><a href="<?php echo $baseurl_short?>pages/purchases.php" target="main" onclick="return CentralSpaceLoad(this,true);"><?php echo $lang["viewpurchases"]?></a></li>
+	<li><a href="<?php echo $baseurl_short?>pages/purchases.php" onclick="return CentralSpaceLoad(this,true);"><?php echo $lang["viewpurchases"]?></a></li>
     </ul>
 	</form>
 
@@ -827,9 +748,9 @@ elseif ($k!="")
 <div id="CollectionMinTitle"><h2><?php echo $tempcol["name"]?></h2></div>
 <div id="CollectionMinRightNav">
     <?php if ((isset($zipcommand) || $collection_download) && $count_result>0) { ?>
-	<li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/terms.php?k=<?php echo $k?>&url=<?php echo urlencode("pages/collection_download.php?collection=" .  $usercollection . "&k=" . $k)?>" target="main"><?php echo $lang["action-download"]?></a></li>
+	<li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/terms.php?k=<?php echo $k?>&url=<?php echo urlencode("pages/collection_download.php?collection=" .  $usercollection . "&k=" . $k)?>"><?php echo $lang["action-download"]?></a></li>
 	<?php } ?>
-    <?php if ($feedback) {?><li><a target="main" onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_feedback.php?collection=<?php echo $usercollection?>&k=<?php echo $k?>"><?php echo $lang["sendfeedback"]?></a></li><?php } ?>
+    <?php if ($feedback) {?><li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_feedback.php?collection=<?php echo $usercollection?>&k=<?php echo $k?>"><?php echo $lang["sendfeedback"]?></a></li><?php } ?>
    	<?php if ($count_result>0)
     	{ 
 		# Ability to request a whole collection (only if user has restricted access to any of these resources)
@@ -837,7 +758,7 @@ elseif ($k!="")
 		if ($min_access!=0)
 			{
 		    ?>
-		    <li><a target="main" onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_request.php?ref=<?php echo $usercollection?>&k=<?php echo $k?>"><?php echo 	$lang["requestall"]?></a></li>
+		    <li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_request.php?ref=<?php echo $usercollection?>&k=<?php echo $k?>"><?php echo 	$lang["requestall"]?></a></li>
 		    <?php
 		    }
 	    }
@@ -850,7 +771,7 @@ elseif ($k!="")
 } else { 
 ?>
 
-<div id="CollectionMinTitle"><?php if (!hook("replacecollectiontitle")) { ?><h2><?php if ($collections_compact_style){?><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_manage.php" target="main"><?php } ?><?php echo $lang["mycollections"]?><?php if ($collections_compact_style){?></a><?php }?></h2><?php } ?></div>
+<div id="CollectionMinTitle"><?php if (!hook("replacecollectiontitle")) { ?><h2><?php if ($collections_compact_style){?><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_manage.php"><?php } ?><?php echo $lang["mycollections"]?><?php if ($collections_compact_style){?></a><?php }?></h2><?php } ?></div>
 
 <!--Menu-->	
 <div id="CollectionMinRightNav"><div id="MinSearchItem">
@@ -860,37 +781,37 @@ elseif ($k!="")
     else { ?>
     <ul>
     <?php if ((!collection_is_research_request($usercollection)) || (!checkperm("r"))) { ?>
-    <?php if (checkperm("s")) { ?><?php if (!$collections_compact_style){?><li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_manage.php" target="main"><?php echo $lang["managemycollections"]?></a></li><?php } ?>
+    <?php if (checkperm("s")) { ?><?php if (!$collections_compact_style){?><li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_manage.php"><?php echo $lang["managemycollections"]?></a></li><?php } ?>
     <?php if ($contact_sheet==true) { ?>
-    <li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/contactsheet_settings.php?ref=<?php echo $usercollection?>" target="main">&nbsp;<?php echo $lang["contactsheet"]?></a></li>
+    <li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/contactsheet_settings.php?ref=<?php echo $usercollection?>">&nbsp;<?php echo $lang["contactsheet"]?></a></li>
 	<?php } ?>
-	<?php if ($allow_share) { ?><li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_share.php?ref=<?php echo $usercollection?>" target="main"><?php echo $lang["share"]?></a></li><?php } ?>
+	<?php if ($allow_share) { ?><li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_share.php?ref=<?php echo $usercollection?>"><?php echo $lang["share"]?></a></li><?php } ?>
     
-    <?php if (($userref==$cinfo["user"]) || (checkperm("h"))) {?><li><a target="main" onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_edit.php?ref=<?php echo $usercollection?>">&nbsp;<?php echo $allow_share?$lang["action-edit"]:$lang["editcollection"]?></a></li><?php } ?>
+    <?php if (($userref==$cinfo["user"]) || (checkperm("h"))) {?><li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_edit.php?ref=<?php echo $usercollection?>">&nbsp;<?php echo $allow_share?$lang["action-edit"]:$lang["editcollection"]?></a></li><?php } ?>
 
-	<?php if ($preview_all){?><li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/preview_all.php?ref=<?php echo $usercollection?>" target="main"><?php echo $lang["preview_all"]?></a></li><?php } ?>
+	<?php if ($preview_all){?><li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/preview_all.php?ref=<?php echo $usercollection?>"><?php echo $lang["preview_all"]?></a></li><?php } ?>
     <?php hook('collectiontool2min');?>
-    <?php if ($feedback) {?><li><a target="main" onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_feedback.php?collection=<?php echo $usercollection?>&k=<?php echo $k?>">&nbsp;<?php echo $lang["sendfeedback"]?></a></li><?php } ?>
+    <?php if ($feedback) {?><li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_feedback.php?collection=<?php echo $usercollection?>&k=<?php echo $k?>">&nbsp;<?php echo $lang["sendfeedback"]?></a></li><?php } ?>
     
     <?php } ?>
     <?php } else {
 	if (!hook("replacecollectionsresearchlinks")){	
     $research=sql_value("select ref value from research_request where collection='$usercollection'",0);	
 	?>
-    <li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/team/team_research.php" target="main"><?php echo $lang["manageresearchrequests"]?></a></li>   
-    <li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/team/team_research_edit.php?ref=<?php echo $research?>" target="main"><?php echo $lang["editresearchrequests"]?></a></li>         
+    <li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/team/team_research.php"><?php echo $lang["manageresearchrequests"]?></a></li>   
+    <li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/team/team_research_edit.php?ref=<?php echo $research?>"><?php echo $lang["editresearchrequests"]?></a></li>         
     <?php } /* end hook replacecollectionsresearchlinks */ ?>	
 	<?php } ?>
     <?php 
     # If this collection is (fully) editable, then display an extra edit all link
     if ((count($result)>0) && checkperm("e" . $result[0]["archive"]) && allow_multi_edit($result)) { ?>
-    <li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $usercollection)?>" target="main"><?php echo $lang["viewall"]?></a></li>
-    <li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/edit.php?collection=<?php echo $usercollection?>" target="main"><?php echo $lang["action-editall"]?></a></li>    
+    <li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $usercollection)?>"><?php echo $lang["viewall"]?></a></li>
+    <li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/edit.php?collection=<?php echo $usercollection?>"><?php echo $lang["action-editall"]?></a></li>    
     <?php } else { ?>
-    <li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $usercollection)?>" target="main"><?php echo $lang["viewall"]?></a></li>
+    <li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $usercollection)?>"><?php echo $lang["viewall"]?></a></li>
     <?php } ?>
     <?php if ((isset($zipcommand) || $collection_download) && $count_result>0) { ?>
-    <li><a target="main" onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/terms.php?k=<?php echo $k?>&url=<?php echo urlencode("pages/collection_download.php?collection=" .  $usercollection . "&k=" . $k)?>"><?php echo $lang["action-download"]?></a></li>
+    <li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/terms.php?k=<?php echo $k?>&url=<?php echo urlencode("pages/collection_download.php?collection=" .  $usercollection . "&k=" . $k)?>"><?php echo $lang["action-download"]?></a></li>
 	<?php } ?>
     <?php if ($count_result>0 && $k=="" && checkperm("q"))
     	{ 
@@ -899,7 +820,7 @@ elseif ($k!="")
 		if ($min_access!=0)
 			{
 		    ?>
-		    <li><a target="main" onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_request.php?ref=<?php echo $usercollection?>"><?php echo 	$lang["action-request"]?></a></li>
+		    <li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_request.php?ref=<?php echo $usercollection?>"><?php echo $lang["action-request"]?></a></li>
 		    <?php
 		    }
 	    }
@@ -916,7 +837,7 @@ elseif ($k!="")
 <div id="CollectionMinDrop">
  <form method="get" id="colselect" onsubmit="CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=<?php echo $thumbs?>&collection=-1&k=<?php echo $k?>&entername='+jQuery('#entername').val());return false;">
 		<div class="MinSearchItem">
-		<select name="collection" id="collection" <?php if ($collection_dropdown_user_access_mode){?>class="SearchWidthExp"<?php } else { ?> class="SearchWidth"<?php } ?> onchange="if(document.getElementById('collection').value==-1){document.getElementById('entername').style.display='inline';document.getElementById('entername').focus();return false;} <?php if ($ajax_collections && !checkperm("b")){ ?>ChangeCollection(jQuery(this).val(),'<?php echo $k?>');<?php } else { ?>document.getElementById('colselect').submit();<?php } ?>">
+		<select name="collection" id="collection" <?php if ($collection_dropdown_user_access_mode){?>class="SearchWidthExp"<?php } else { ?> class="SearchWidth"<?php } ?> onchange="if(document.getElementById('collection').value==-1){document.getElementById('entername').style.display='inline';document.getElementById('entername').focus();return false;} <?php if (!checkperm("b")){ ?>ChangeCollection(jQuery(this).val(),'<?php echo $k?>');<?php } else { ?>document.getElementById('colselect').submit();<?php } ?>">
 		<?php
 		$found=false;
 		$list=get_user_collections($userref);

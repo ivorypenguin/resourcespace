@@ -204,7 +204,7 @@ function DisplayTheme($themes=array())
                 &nbsp;<a href="<?php echo $baseurl_short?>pages/contactsheet_settings.php?ref=<?php echo $getthemes[$m]["ref"]?>"  title="<?php echo $lang["collectioncontacthover"]?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["contactsheet"]?></a>
                 <?php } ?>
 
-                <?php if ($allow_share && (checkperm("v") || checkperm ("g"))) { ?> &nbsp;<a href="<?php echo $baseurl_short?>pages/collection_share.php?ref=<?php echo $getthemes[$m]["ref"]?>"  onClick="return CentralSpaceLoad(this,true);" target="main">&gt;&nbsp;<?php echo $lang["share"]?></a><?php } ?>
+                <?php if ($allow_share && (checkperm("v") || checkperm ("g"))) { ?> &nbsp;<a href="<?php echo $baseurl_short?>pages/collection_share.php?ref=<?php echo $getthemes[$m]["ref"]?>"  onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["share"]?></a><?php } ?>
 
                 <?php if (checkperm("h")) {?>&nbsp;<a href="<?php echo $baseurl_short?>pages/collection_edit.php?ref=<?php echo $getthemes[$m]["ref"]?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["action-edit"]?></a><?php } ?>
 

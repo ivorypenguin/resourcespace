@@ -5,7 +5,6 @@ include "../../../include/authenticate.php";
 include "../../../include/search_functions.php";
 include "../inc/flickr_functions.php";
 
-$frameless_collections=true;
 include "../../../include/header.php";
 
 $theme=getvalescaped("theme","");

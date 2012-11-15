@@ -162,7 +162,7 @@
 		<?php } hook("xlargesearchicon");?>
 		<div class="clearer"></div>
 		<?php if(!hook("thumbscheckboxes")){?>
-		<?php if ($use_checkboxes_for_selection){?><input type="checkbox" id="check<?php echo $ref?>" class="checkselect" <?php if (in_array($ref,$collectionresources)){ ?>checked<?php } ?> onclick="if (jQuery('#check<?php echo $ref?>').attr('checked')=='checked') { <?php if ($frameless_collections){?>AddResourceToCollection(<?php echo $ref?>);<?php }else {?>parent.collections.location.href='collections.php?add=<?php echo $ref?>';<?php }?> } else if (jQuery('#check<?php echo $ref?>').attr('checked')!='checked'){<?php if ($frameless_collections){?>RemoveResourceFromCollection(<?php echo $ref?>);<?php }else {?>parent.collections.location.href='collections.php?remove=<?php echo $ref?>';<?php }?> <?php if (!$ajax_collections & $frameless_collections && isset($collection)){?>document.location.href='?search=<?php echo urlencode($search)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo $revsort?>&archive=<?php echo $archive?>&offset=<?php echo $offset?>';<?php } ?> }"><?php } ?>
+		<?php if ($use_checkboxes_for_selection){?><input type="checkbox" id="check<?php echo $ref?>" class="checkselect" <?php if (in_array($ref,$collectionresources)){ ?>checked<?php } ?> onclick="if (jQuery('#check<?php echo $ref?>').attr('checked')=='checked') { AddResourceToCollection(<?php echo $ref?>); } else if (jQuery('#check<?php echo $ref?>').attr('checked')!='checked'){ RemoveResourceFromCollection(<?php echo $ref?>); }"><?php } ?>
 		<?php } # end hook thumbscheckboxes?>
 		<?php } // end hook replaceresourcetoolsxl ?>
 	</div>

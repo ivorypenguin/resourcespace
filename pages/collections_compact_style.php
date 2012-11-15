@@ -7,7 +7,7 @@
 // confirmation [0 or string] - accept or reject the action (should be a valid lang)
 // actionpage - [0 or string] - this page will be executed via ajax (optional, only if you need a background action)
 // redirect - [0 or string] - redirect to this page after completion of the action
-// frame [main or collections] - which frame to redirect to (main or collections)
+// div [main or collections] - which div to redirect to (main or collections)
 // refresh [collections, main, both, or false]
 
 include_once(dirname(__FILE__)."/../include/search_functions.php");

@@ -352,11 +352,7 @@ if ($display_user_rating_stars && $k=="")
 		  data: {order:JSON.stringify(newOrder)},
 		  success: function(){
 		  <?php if (isset($usercollection) && ($usercollection==$collection)) { ?>
-			<?php if ($ajax_collections) { ?>
 			 UpdateCollectionDisplay('<?php echo isset($k)?$k:"" ?>');
-			<?php } else { ?>
-			 parent.collections.location.reload();
-			<?php } ?>
 		  <?php } ?>
 			} 
 		});
@@ -773,10 +769,10 @@ if (true) # Always show search header now.
 <div class="BottomInpageNav">
 
 	<?php if (!checkperm("b") && $k=="") { ?>
-	<?php if($allow_save_search) { ?><div class="InpageNavLeftBlock"><a onClick="return CollectionDivLoad(this);" href="<?php echo $baseurl_short?>pages/collections.php?addsearch=<?php echo urlencode($search)?>&restypes=<?php echo urlencode($restypes)?>&archive=<?php echo $archive?>" target="collections">&gt;&nbsp;<?php echo $lang["savethissearchtocollection"]?></a></div><?php } ?>
-	<?php if($allow_smart_collections && substr($search,0,11)!="!collection") { ?><div class="InpageNavLeftBlock"><a onClick="return CollectionDivLoad(this);" href="<?php echo $baseurl_short?>pages/collections.php?addsmartcollection=<?php echo urlencode($search)?>&restypes=<?php echo urlencode($restypes)?>&archive=<?php echo $archive?>&starsearch=<?php echo $starsearch?>" target="collections">&gt;&nbsp;<?php echo $lang["savesearchassmartcollection"]?></a></div><?php } ?>
+	<?php if($allow_save_search) { ?><div class="InpageNavLeftBlock"><a onClick="return CollectionDivLoad(this);" href="<?php echo $baseurl_short?>pages/collections.php?addsearch=<?php echo urlencode($search)?>&restypes=<?php echo urlencode($restypes)?>&archive=<?php echo $archive?>">&gt;&nbsp;<?php echo $lang["savethissearchtocollection"]?></a></div><?php } ?>
+	<?php if($allow_smart_collections && substr($search,0,11)!="!collection") { ?><div class="InpageNavLeftBlock"><a onClick="return CollectionDivLoad(this);" href="<?php echo $baseurl_short?>pages/collections.php?addsmartcollection=<?php echo urlencode($search)?>&restypes=<?php echo urlencode($restypes)?>&archive=<?php echo $archive?>&starsearch=<?php echo $starsearch?>">&gt;&nbsp;<?php echo $lang["savesearchassmartcollection"]?></a></div><?php } ?>
 	<?php global $smartsearch; if($allow_smart_collections && substr($search,0,11)=="!collection" && (is_array($smartsearch[0]) && !empty($smartsearch[0]))) { $smartsearch=$smartsearch[0];?><div class="InpageNavLeftBlock"><a href="search.php?search=<?php echo urlencode($smartsearch['search'])?>&restypes=<?php echo urlencode($smartsearch['restypes'])?>&archive=<?php echo $smartsearch['archive']?>&starsearch=<?php echo $smartsearch['starsearch']?>">&gt;&nbsp;<?php echo $lang["dosavedsearch"]?></a></div><?php } ?>
-	<div class="InpageNavLeftBlock"><a onClick="return CollectionDivLoad(this);" href="<?php echo $baseurl_short?>pages/collections.php?addsearch=<?php echo urlencode($search)?>&restypes=<?php echo urlencode($restypes)?>&archive=<?php echo $archive?>&mode=resources" target="collections">&gt;&nbsp;<?php echo $lang["savesearchitemstocollection"]?></a></div>
+	<div class="InpageNavLeftBlock"><a onClick="return CollectionDivLoad(this);" href="<?php echo $baseurl_short?>pages/collections.php?addsearch=<?php echo urlencode($search)?>&restypes=<?php echo urlencode($restypes)?>&archive=<?php echo $archive?>&mode=resources">&gt;&nbsp;<?php echo $lang["savesearchitemstocollection"]?></a></div>
 	<?php if($show_searchitemsdiskusage) {?>
 	<div class="InpageNavLeftBlock"><a onClick="return CentralSpaceLoad(this);" href="<?php echo $baseurl_short?>pages/search_disk_usage.php?search=<?php echo urlencode($search)?>&restypes=<?php echo urlencode($restypes)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&k=<?php echo $k?>">&gt;&nbsp;<?php echo $lang["searchitemsdiskusage"]?></a></div>
   <?php } ?>

@@ -1674,10 +1674,6 @@ $geo_layers="osm, gmap, gsat, gphy";
 $view_mapheight=200;
 
 
-
-# Use the new 'frameless collections' mode that uses an AJAX driven 'collection summary' box on the right hand side instead of the collection frame. May be more suitable for intranets etc. that might work better without frames.
-$frameless_collections=false;
-
 # QuickLook previews (Mac Only)
 # If configured, attempt to produce a preview for files using Mac OS-X's built in QuickLook preview system which support multiple files.
 # This requires AT LEAST VERSION 0.2 of 'qlpreview', available from http://www.hamsoftengineering.com/codeSharing/qlpreview/qlpreview.html
@@ -1720,8 +1716,7 @@ $search_titles_searchcrumbs=false;
 $search_titles_shortnames=false;
 
 # $collections_compact_style switches on some experimental UI changes for collection-level tools.
-# making the in the collections panel into a link to the Collection Manage page, 
-# $frameless_collections is not supported here.
+# making the title in the collections panel into a link to the Collection Manage page
 $collections_compact_style=false;
 
 # if using $collections_compact_style, you may want to remove the contact sheet link from the Manage Collections page
@@ -1983,7 +1978,6 @@ $request_senduserupdates=true;
 # and perhaps other experiments within the ajax loaded context
 $ajax_url_rewrites=false;
 $ajax_url_rewrite_debug=false;
-$ajax_collections=true; // this automatically turns on $frameless_collections (though the original frameless collection behavior is mostly overridden)
 
 # Allow users to create new collections. Set to false to prevent creation of new collections.
 $collection_allow_creation=true;

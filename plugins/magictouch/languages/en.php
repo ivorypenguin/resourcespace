@@ -5,7 +5,7 @@
 #
 #
 $lang["magictouch_configuration"]="MagicTouch Configuration";
-$lang["get-magictouch"]="You have to make a few settings in order to use this plugin.<br /><br /><a target='_new' href='http://www.magictoolbox.com/magictouch/signup/'>&gt;&nbsp;Click here to apply for an account at Magic Touch</a>";
+$lang["get-magictouch"]="You have to make a few settings in order to use this plugin.<br /><br /><a target='_blank' href='http://www.magictoolbox.com/magictouch/signup/'>&gt;&nbsp;Click here to apply for an account at Magic Touch</a>";
 $lang["configure-account-id-and-register-domain"]="Then login to your new account and register the URL for this program. Finally, configure Magic Touch using the form below.";
 $lang["magic_touch_key"]="Magic Touch key<br />(shown in your account above):";
 $lang["https"]="HTTPS?";
