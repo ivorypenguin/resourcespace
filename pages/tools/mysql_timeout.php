@@ -7,7 +7,7 @@ include "../../include/general.php";
 
 # Config vars
 $query_timeout=10; # Timeout in seconds.
-$sleep_timeout=360;
+$sleep_timeout=3600;
 #$mysql_path="/usr/local/mysql-standard-5.0.15-osx10.4-powerpc/bin/";
 $mysql_path="/usr/bin/";
 $mysql_command=$mysql_path . "mysqladmin -h $mysql_server -u $mysql_username " . ($mysql_password==""?"":"-p" . $mysql_password);
