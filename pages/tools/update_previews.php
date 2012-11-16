@@ -45,7 +45,7 @@ $ref=getvalescaped("ref",false);
 $previewbased=getvalescaped("previewbased",false);
 
 if ($collectionid == false){
-    if ($ref===false) $ref = 1;
+    if (!(is_numeric($ref) && $ref > 0)) $ref = 1;
     if (update_preview($ref)){
     	?>
     	<img src="<?php echo get_resource_path($ref,false,"pre",false)?>">
@@ -74,7 +74,7 @@ else {
         echo "Collection id returned no resources.";
         die();
     }
-    if ($ref===false){
+    if (!(is_numeric($ref) && $ref > 0)){
         $ref = $collection[0];
         $key = 0;
     }
