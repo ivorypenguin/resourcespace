@@ -54,11 +54,25 @@ function HookAnnotateAllCollectiontoolcompact1($collection, $count_result,$cinfo
 }
 
 function HookAnnotateAllAdditionalheaderjs(){
-	global $baseurl,$baseurl_short,$css_reload_key;
+	global $baseurl,$k,$baseurl_short,$css_reload_key;
 ?>
 <link rel="stylesheet" type="text/css" media="screen,projection,print" href="<?php echo $baseurl_short?>plugins/annotate/lib/jquery/css/annotation.css?css_reload_key=<?php echo $css_reload_key?>"/>
 
 <script type="text/javascript" src="<?php echo $baseurl_short?>plugins/annotate/lib/jquery/js/jquery.annotate.js?css_reload_key=<?php echo $css_reload_key?>"></script>
+<script language="javascript">
+	function annotate(ref,k,w,h,annotate_toggle){
+	jQuery("#toAnnotate").annotateImage({
+		getUrl: "<?php echo $baseurl_short?>plugins/annotate/pages/get.php?ref="+ref+"&k="+k+"&pw="+w+"&ph="+h,
+		saveUrl: "<?php echo $baseurl_short?>plugins/annotate/pages/save.php?ref="+ref+"&k="+k+"&pw="+w+"&ph="+h,
+		deleteUrl: "<?php echo $baseurl_short?>plugins/annotate/pages/delete.php?ref="+ref+"&k="+k,
+		useAjax: true,
+		<?php  if ($k==""){?> editable: true, <?php }
+			else
+		{ ?> editable: false, <?php } ?>  
+		toggle: annotate_toggle
+	});
+	}
+</script>
 <?php }
 
 ?>

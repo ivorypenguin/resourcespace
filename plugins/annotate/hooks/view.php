@@ -54,7 +54,7 @@ if ($resource["has_image"]==1)
 
 <div id="wrapper" style="display:block;clear:none;float:left;margin: 0px 10px 10px 0px;">
 <div>
-<img id="toAnnotate" onload="annotate();" src="<?php echo $imageurl?>" id="previewimage" class="Picture" GALLERYIMG="no" style="display:block;"   />
+<img id="toAnnotate" onload="annotate(<?php echo $ref?>,'<?php echo $k?>','<?php echo $w?>','<?php echo $h?>',<?php echo getvalescaped("annotate_toggle",true)?>);" src="<?php echo $imageurl?>" id="previewimage" class="Picture" GALLERYIMG="no" style="display:block;"   />
 </div>
 	
 <div style="float:right;padding-top:5px;">
@@ -76,20 +76,6 @@ if ($resource["has_image"]==1)
 </div>
 </div>
 
-<script language="javascript">
-	function annotate(){
-	jQuery("#toAnnotate").annotateImage({
-		getUrl: "<?php echo $baseurl?>/plugins/annotate/pages/get.php?ref=<?php echo $ref?>&k=<?php echo $k ?>&pw=<?php echo $w?>&ph=<?php echo $h?>",
-		saveUrl: "<?php echo $baseurl?>/plugins/annotate/pages/save.php?ref=<?php echo $ref?>&k=<?php echo $k ?>&pw=<?php echo $w?>&ph=<?php echo $h?>",
-		deleteUrl: "<?php echo $baseurl?>/plugins/annotate/pages/delete.php?ref=<?php echo $ref?>&k=<?php echo $k ?>",
-		useAjax: true,
-		<?php  if ($k==""){?> editable: true, <?php }
-			else
-		{ ?> editable: false, <?php } ?>  
-		toggle: <?php echo getvalescaped("annotate_toggle",'true');?>
-	});
-	}
-</script>
 	
 <?php 
 		} 
