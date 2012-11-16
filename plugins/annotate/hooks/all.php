@@ -33,7 +33,7 @@ function HookAnnotateAllRemoveannotations(){
 
 function HookAnnotateAllCollectiontoolcompact1($collection, $count_result,$cinfo,$colresult){
 	# Link in collections bar (minimised)
-	global $lang,$pagename,$annotate_pdf_output,$annotate_pdf_output_only_annotated;
+	global $lang,$pagename,$annotate_pdf_output,$annotate_pdf_output_only_annotated,$baseurl_short;
 	if (!$annotate_pdf_output || $count_result==0){return false;}
 	
 	// check if this tool should be available based on annotation_counts. 
@@ -50,7 +50,7 @@ function HookAnnotateAllCollectiontoolcompact1($collection, $count_result,$cinfo
 	}
 	if (!$annotations){return false;}?>
     
-    <option value="<?php echo $collection?>|0|0|../plugins/annotate/pages/annotate_pdf_config.php?col=<?php echo $collection ?>|main|false">&gt;&nbsp;<?php echo $lang['pdfwithnotes']?>...</option><?php
+    <option value="<?php echo $collection?>|0|0|<?php echo $baseurl_short?>plugins/annotate/pages/annotate_pdf_config.php?col=<?php echo $collection ?>|main|false">&gt;&nbsp;<?php echo $lang['pdfwithnotes']?>...</option><?php
 }
 
 function HookAnnotateAllAdditionalheaderjs(){
