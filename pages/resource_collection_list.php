@@ -25,7 +25,7 @@ for ($n=0;$n<count($collections);$n++)
 	{	
 	?><tr <?php hook("collectionlistrowstyle");?>>
 	<td><div class="ListTitle">
-    <a onClick="return CentralSpaceLoad(this,true);" <?php if ($collections[$n]["public"]==1 && (strlen($collections[$n]["theme"])>0)) { ?>style="font-style:italic;"<?php } ?> href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $collections[$n]["ref"])?>"><?php echo $collections[$n]["name"]?></a></div></td>
+    <a onClick="return CentralSpaceLoad(this,true);" <?php if ($collections[$n]["public"]==1 && (strlen($collections[$n]["theme"])>0)) { ?>style="font-style:italic;"<?php } ?> href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $collections[$n]["ref"])?>"><?php echo i18n_get_collection_name($collections[$n])?></a></div></td>
 	<td><?php echo $collections[$n]["fullname"]?></td>
 	<td><?php echo $collection_prefix . $collections[$n]["ref"]?></td>
 	<td><?php echo nicedate($collections[$n]["created"],true)?></td>

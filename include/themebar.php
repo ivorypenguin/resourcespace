@@ -30,7 +30,7 @@ return false;">
                 <?php
                 for ($m=0;$m<count($themes);$m++)
                         { ?><br>
-                        &nbsp;&nbsp;&nbsp;<a href="<?php echo $baseurl?>/pages/search.php?search=!collection<?php echo $themes[$m]["ref"]?>&bc_from=themes"  title="<?php echo $lang["collectionviewhover"]?>"><?php echo htmlspecialchars(i18n_get_translated($themes[$m]["name"]))?></a>
+                        &nbsp;&nbsp;&nbsp;<a href="<?php echo $baseurl?>/pages/search.php?search=!collection<?php echo $themes[$m]["ref"]?>&bc_from=themes"  title="<?php echo $lang["collectionviewhover"]?>"><?php echo i18n_get_collection_name($themes[$m])?></a>
                         <?php
                         }
                 ?><br><br></div><?php
@@ -117,7 +117,7 @@ return false;">
                                 ?>
                                 <br>
 
-                                <?php echo $indent?><a href="<?php echo $baseurl?>/pages/search.php?search=<?php echo urlencode($s)?>"><?php echo i18n_get_translated($themes[$m]["name"])?></a>
+                                <?php echo $indent?><a href="<?php echo $baseurl?>/pages/search.php?search=<?php echo urlencode($s)?>"><?php echo i18n_get_collection_name($themes[$m])?></a>
                                 <?php
                                 }
                         ?><br><br>

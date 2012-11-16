@@ -175,8 +175,7 @@ function DisplayTheme($themes=array())
 			{
 			?>
 			<tr <?php hook("collectionlistrowstyle");?>>
-				<?php if (!isset($getthemes[$m]['savedsearch'])||(isset($getthemes[$m]['savedsearch'])&&$getthemes[$m]['savedsearch']==null)){$collection_tag="";} else {$collection_tag=$lang['smartcollection'].": ";}?>
-			<td width="50%"><div class="ListTitle"><a href="<?php echo $baseurl_short?>pages/search.php?search=!collection<?php echo $getthemes[$m]["ref"]?>&bc_from=themes"  title="<?php echo $lang["collectionviewhover"]?>" onClick="return CentralSpaceLoad(this,true);"><?php echo $collection_tag.htmlspecialchars(i18n_get_translated($getthemes[$m]["name"]))?></a>
+			<td width="50%"><div class="ListTitle"><a href="<?php echo $baseurl_short?>pages/search.php?search=!collection<?php echo $getthemes[$m]["ref"]?>&bc_from=themes"  title="<?php echo $lang["collectionviewhover"]?>" onClick="return CentralSpaceLoad(this,true);"><?php echo i18n_get_collection_name($getthemes[$m])?></a>
 			<?php if ($flag_new_themes && (time()-strtotime($getthemes[$m]["created"]))<(60*60*24*14)) { ?><div class="NewFlag"><?php echo $lang["newflag"]?></div><?php } ?>
 			</div></td>
 			<?php if ($themes_ref_column){?>
@@ -565,7 +564,7 @@ if ($header=="" && !isset($themes[0]))
 					}
 				?>
 
-				<?php echo i18n_get_translated($themes[$m]["name"])?></a>
+				<?php echo i18n_get_collection_name($themes[$m])?></a>
 				</div></td>
 				<?php hook("beforecollectiontoolscolumn");?>
 				<td><div class="ListTools">

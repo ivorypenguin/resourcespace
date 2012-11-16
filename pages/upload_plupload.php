@@ -30,7 +30,7 @@ $replace_resource=getvalescaped("replace_resource",""); # Option to replace exis
 if ($collection_add==-1)
 	{
 	# The user has chosen Create New Collection from the dropdown.
-	if ($collectionname==""){$collectionname=$lang["upload"] . " " . date("ymdHis");}
+	if ($collectionname==""){$collectionname = "Upload " . date("ymdHis");} # Do not translate this string, the collection name is translated when displayed!
 	$collection_add=create_collection($userref,$collectionname);
 	if (getval("public",'0') == 1)
 		{

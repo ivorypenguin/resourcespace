@@ -20,7 +20,7 @@ for ($n=0;$n<count($collections);$n++)
 		<table  border="0" class="ResourceAlign"><?php hook("publicresulttop")?><tr><td>
 		
 		<div style="position: relative;height:140px;">
-		<a href="<?php echo $pub_url?>" title="<?php echo str_replace(array("\"","'"),"",htmlspecialchars(i18n_get_translated($collections[$n]["name"])))?>">
+		<a href="<?php echo $pub_url?>" title="<?php echo str_replace(array("\"","'"),"",i18n_get_collection_name($collections[$n]))?>">
 		
 		<?php 
 		$images=0;
@@ -59,7 +59,7 @@ for ($n=0;$n<count($collections);$n++)
             <?php if (in_array($df[$x]['ref'],$thumbs_display_extended_fields)){
                 ?><div class="extended">
             <?php } ?>
-            <?php if ($x==count($df)-1){?><a href="<?php echo $pub_url?>" title="<?php echo str_replace(array("\"","'"),"",htmlspecialchars(i18n_get_translated($collections[$n]["name"])))?>"><?php echo highlightkeywords(htmlspecialchars(tidy_trim(i18n_get_translated($collections[$n]["name"]),32)),$search)?></a><?php } ?>&nbsp;<?php if (in_array($df[$x]['ref'],$thumbs_display_extended_fields)){ ?></div>
+            <?php if ($x==count($df)-1){?><a href="<?php echo $pub_url?>" title="<?php echo str_replace(array("\"","'"),"",i18n_get_collection_name($collections[$n]))?>"><?php echo highlightkeywords(tidy_trim(i18n_get_collection_name($collections[$n]),32),$search)?></a><?php } ?>&nbsp;<?php if (in_array($df[$x]['ref'],$thumbs_display_extended_fields)){ ?></div>
             <?php }
         ?></div><?php } ?>
         <?php } ?>
@@ -84,7 +84,7 @@ for ($n=0;$n<count($collections);$n++)
 		<table  border="0" class="ResourceAlignLarge"><?php hook("publicresulttop")?><tr><td>
 		
 		<div style="position: relative;height:330px;">
-		<a href="<?php echo $pub_url?>" title="<?php echo str_replace(array("\"","'"),"",htmlspecialchars(i18n_get_translated($collections[$n]["name"])))?>">
+		<a href="<?php echo $pub_url?>" title="<?php echo str_replace(array("\"","'"),"",i18n_get_collection_name($collections[$n]))?>">
 
 		<?php 
 		$images=0;
@@ -122,7 +122,7 @@ for ($n=0;$n<count($collections);$n++)
             <?php if (in_array($df[$x]['ref'],$xl_thumbs_display_extended_fields)){
                 ?><div class="extended">
             <?php } ?>
-            <?php if ($x==count($df)-1){?><a href="<?php echo $pub_url?>" title="<?php echo str_replace(array("\"","'"),"",htmlspecialchars(i18n_get_translated($collections[$n]["name"])))?>"><?php echo highlightkeywords(htmlspecialchars(tidy_trim(i18n_get_translated($collections[$n]["name"]),32)),$search)?></a><?php } ?>&nbsp;<?php if (in_array($df[$x]['ref'],$xl_thumbs_display_extended_fields)){ ?></div>
+            <?php if ($x==count($df)-1){?><a href="<?php echo $pub_url?>" title="<?php echo str_replace(array("\"","'"),"",i18n_get_collection_name($collections[$n]))?>"><?php echo highlightkeywords(tidy_trim(i18n_get_collection_name($collections[$n]),32),$search)?></a><?php } ?>&nbsp;<?php if (in_array($df[$x]['ref'],$xl_thumbs_display_extended_fields)){ ?></div>
             <?php }
         ?></div><?php } ?>
         <?php } ?>
@@ -150,7 +150,7 @@ for ($n=0;$n<count($collections);$n++)
 		<table  border="0" class="ResourceAlignSmall"><?php hook("publicresulttop")?><tr><td>
 		
 		<div style="position: relative;height:70px;">
-		<a href="<?php echo $pub_url?>" title="<?php echo str_replace(array("\"","'"),"",htmlspecialchars(i18n_get_translated($collections[$n]["name"])))?>">
+		<a href="<?php echo $pub_url?>" title="<?php echo str_replace(array("\"","'"),"",i18n_get_collection_name($collections[$n]))?>">
 
 
 
@@ -193,7 +193,7 @@ for ($n=0;$n<count($collections);$n++)
             <div class="ResourcePanelInfo">
             
             <?php if (in_array($df[$x]['ref'],$small_thumbs_display_extended_fields)){
-                ?><div class="extended"><?php } ?><?php if ($x==count($df)-1){?><a href="<?php echo $pub_url?>" title="<?php echo str_replace(array("\"","'"),"",htmlspecialchars(i18n_get_translated($collections[$n]["name"])))?>"><?php echo highlightkeywords(htmlspecialchars(tidy_trim(i18n_get_translated($collections[$n]["name"]),32)),$search)?></a><?php } ?>&nbsp;<?php if (in_array($df[$x]['ref'],$small_thumbs_display_extended_fields)){ ?></div>
+                ?><div class="extended"><?php } ?><?php if ($x==count($df)-1){?><a href="<?php echo $pub_url?>" title="<?php echo str_replace(array("\"","'"),"",i18n_get_collection_name($collections[$n]))?>"><?php echo highlightkeywords(tidy_trim(i18n_get_collection_name($collections[$n]),32),$search)?></a><?php } ?>&nbsp;<?php if (in_array($df[$x]['ref'],$small_thumbs_display_extended_fields)){ ?></div>
             <?php }
         ?></div><?php } ?>
         <?php } ?>
@@ -209,7 +209,19 @@ for ($n=0;$n<count($collections);$n++)
 		{
 		?>
 		<tr <?php hook("collectionlistrowstyle");?>>
-		<?php hook ("listsearchpubliccheckboxes")?><td nowrap><div class="ListTitle"><a href="<?php echo $pub_url?>"><?php echo $lang["collection"] . ": " . highlightkeywords(tidy_trim(i18n_get_translated($collections[$n]["name"]),45),$search)?></a></div></td>
+		<?php hook ("listsearchpubliccheckboxes")?>
+		<?php
+		if (!isset($collections[$n]['savedsearch'])||(isset($collections[$n]['savedsearch'])&&$collections[$n]['savedsearch']==null))
+			{
+			$collection_prefix = $lang["collection"] . ": ";
+			$collection_tag = $lang['collection'];
+			}
+		else
+			{
+			$collection_prefix = ""; # The prefix $lang['smartcollection'] . ": " is added in i18n_get_collection_name()
+			$collection_tag = $lang['smartcollection'];
+			}?>
+		<td nowrap><div class="ListTitle"><a href="<?php echo $pub_url?>" title="<?php echo str_replace(array("\"","'"),"", $collection_prefix . i18n_get_collection_name($collections[$n]))?>"><?php echo $collection_prefix . highlightkeywords(tidy_trim(i18n_get_collection_name($collections[$n]),45),$search)?></a></div></td>
 		<?php 
 		for ($x=0;$x<count($df)-1;$x++){
 			?><td>-</td><?php
@@ -219,7 +231,6 @@ for ($n=0;$n<count($collections);$n++)
 		<td>-</td>
 	    <?php if ($display_user_rating_stars && $k==""){ ?><td>&nbsp;&nbsp;</td><?php } ?>
 		<?php if ($id_column){?><td><?php echo $collections[$n]['ref']?></td><?php } ?>
-		<?php if (!isset($collections[$n]['savedsearch'])||(isset($collections[$n]['savedsearch'])&&$collections[$n]['savedsearch']==null)){ $collection_tag=$lang['collection'];} else {$collection_tag=$lang['smartcollection'];}?>
 		<?php if ($resource_type_column){?><td><?php echo $collection_tag?></td><?php } ?>
 		<?php if ($date_column){?><td><?php echo nicedate($collections[$n]["created"],false,true)?></td><?php } ?>
         <?php hook("addlistviewcolumnpublic");?>

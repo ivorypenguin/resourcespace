@@ -997,9 +997,9 @@ function new_user($newuser)
 	
 	$newref=sql_insert_id();
 	
-	# Create a collection for this user
+	# Create a collection for this user, the collection name is translated when displayed!
 	global $lang;
-	$new=create_collection($newref,$lang["mycollection"],0,1);
+	$new=create_collection($newref,"My Collection",0,1); # Do not translate this string!
 	# set this to be the user's current collection
 	sql_query("update user set current_collection='$new' where ref='$newref'");
 	

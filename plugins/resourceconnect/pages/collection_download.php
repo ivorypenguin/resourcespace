@@ -34,7 +34,7 @@ $archiver = $collection_download && ($archiver_fullpath!=false) && (isset($archi
 
 # initiate text file
 if (($zipped_collection_textfile==true)&&($includetext=="true")) { 
-    $text = i18n_get_translated($collectiondata['name']) . "\r\n" .
+    $text = i18n_get_collection_name($collectiondata) . "\r\n" .
     $lang["downloaded"] . " " . nicedate(date("Y-m-d H:i:s"), true, true) . "\r\n\r\n" .
     $lang["contents"] . ":\r\n\r\n";
 }
@@ -260,11 +260,11 @@ if ($submitted != "")
         # Use collection name (if configured)
         if ($archiver)
             {
-            $filename = $lang["collectionidprefix"] . $collection . "-" . safe_file_name(i18n_get_translated($collectiondata['name'])) . "-" . $size . "." . $collection_download_settings[$settings_id]["extension"];
+            $filename = $lang["collectionidprefix"] . $collection . "-" . safe_file_name(i18n_get_collection_name($collectiondata)) . "-" . $size . "." . $collection_download_settings[$settings_id]["extension"];
             }
         else
             {
-            $filename = $lang["collectionidprefix"] . $collection . "-" . safe_file_name(i18n_get_translated($collectiondata['name'])) . "-" . $size . ".zip";
+            $filename = $lang["collectionidprefix"] . $collection . "-" . safe_file_name(i18n_get_collection_name($collectiondata)) . "-" . $size . ".zip";
             }
         }
     else

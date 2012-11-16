@@ -27,7 +27,7 @@ include "../include/header.php";
 <div style="clear:left;"> </div>
 <div class="BasicsBox" style="width:450px;float:left;margin-top:0;" >
 <div class="Question">
-	<label><?php echo $lang["collectionname"]?></label><div class="Fixed"><?php echo i18n_get_translated($collectiondata['name'])?></div>
+	<label><?php echo $lang["collectionname"]?></label><div class="Fixed"><?php echo i18n_get_collection_name($collectiondata)?></div>
 <div class="clearerleft"> </div>
 </div>
 

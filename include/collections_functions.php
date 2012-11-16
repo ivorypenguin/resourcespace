@@ -516,17 +516,17 @@ function get_theme_headers($themes=array())
 
 function themes_comparator($a, $b)
 	{
-	return strnatcasecmp(i18n_get_translated($a), i18n_get_translated($b));
+	return strnatcasecmp(i18n_get_collection_name($a), i18n_get_collection_name($b));
 	}
 
 function collections_comparator($a, $b)
 	{
-	return strnatcasecmp(i18n_get_translated($a['name']), i18n_get_translated($b['name']));
+	return strnatcasecmp(i18n_get_collection_name($a), i18n_get_collection_name($b));
 	}
 
 function collections_comparator_desc($a, $b)
 	{
-	return strnatcasecmp(i18n_get_translated($b['name']), i18n_get_translated($a['name']));
+	return strnatcasecmp(i18n_get_collection_name($b), i18n_get_collection_name($a));
 	}		
 
 if (!function_exists("get_themes")){
@@ -613,13 +613,13 @@ function get_smart_themes($field,$node=0,$themebar=false)
 			{
 			# Prepare a 'tidied' local language version of the name to use for the comparison
 			# Only return items that are in use.
-			$tidy=escape_check(cleanse_string(trim(strtolower(str_replace("-"," ",i18n_get_translated($return[$n]["name"])))),false));
+			$tidy=escape_check(cleanse_string(trim(strtolower(str_replace("-"," ",i18n_get_collection_name($return[$n])))),false));
 			
 			if (in_array($tidy,$inuse))
 				{
 				$c=count($out);
 				$out[$c]["indent"]=$return[$n]["indent"];
-				$out[$c]["name"]=trim(i18n_get_translated($return[$n]["name"]));
+				$out[$c]["name"]=trim(i18n_get_collection_name($return[$n]));
 				$out[$c]["node"]=$return[$n]["node"];
 				$out[$c]["children"]=$return[$n]["children"];
 				}
@@ -1103,14 +1103,14 @@ function get_mycollection_name($userref)
 	global $lang;
 	for ($n=1;$n<500;$n++)
 		{
-		# Construct a name for this My Collection.
+		# Construct a name for this My Collection. The name is translated when displayed!
 		if ($n==1)
 			{
-			$name=$lang["mycollection"];
+			$name = "My Collection"; # Do not translate this string!
 			}
 		else
 			{
-			$name=$lang["mycollection"] . " " . $n;
+			$name = "My Collection " . $n; # Do not translate this string!
 			}
 		$ref=sql_value("select ref value from collection where user='$userref' and name='$name'",0);
 		if ($ref==0)
@@ -1120,7 +1120,7 @@ function get_mycollection_name($userref)
 			}
 		}
 	# Tried nearly 500 names(!) so just return a standard name 
-	return $lang["mycollection"];
+	return "My Collection";
 	}
 	
 function get_collection_comments($collection)

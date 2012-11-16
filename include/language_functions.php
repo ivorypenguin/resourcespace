@@ -70,6 +70,44 @@ function i18n_get_translated($text)
     }
 }
 
+function i18n_get_collection_name($mixedcollection, $index="name")
+    {
+    # Translates collection names
+
+    global $lang;
+
+    # The function handles both strings and arrays.
+    if (!is_array($mixedcollection))
+        {
+        $name_untranslated = $mixedcollection;
+        }
+    else
+        {
+        $name_untranslated = $mixedcollection[$index];
+
+        # Check if it is a Smart Collection
+        if (isset($mixedcollection['savedsearch']) && ($mixedcollection['savedsearch']!=null))
+            {
+            return htmlspecialchars($lang['smartcollection'] . ": " . $name_untranslated);
+            }
+        }
+
+    # Check if it is a My Collection (n)
+    $name_translated = preg_replace('/(^My Collection)(|(\s\d+))$/', $lang["mycollection"] . '$2', $name_untranslated, -1, $translated);
+    if ($translated==1) {return htmlspecialchars($name_translated);}
+
+    # Check if it is a Upload YYMMDDHHMMSS
+    $name_translated = preg_replace('/(^Upload)(\s\d{12})$/', $lang["upload"] . '$2', $name_untranslated, -1, $translated);
+    if ($translated==1) {return htmlspecialchars($name_translated);}
+
+    # Check if it is a Research: [..]
+    $name_translated = preg_replace('/(^Research:)(\s.*)/e', "i18n_get_translated('$2')", $name_untranslated, -1, $translated);
+    if ($translated==1) {return htmlspecialchars($lang["research"] . ": " . $name_translated);}
+
+    # Ordinary collection - translate with i18n_get_translated
+    return htmlspecialchars(i18n_get_translated($name_untranslated));
+    }
+
 if (!function_exists("i18n_get_indexable")) {
 function i18n_get_indexable($text)
     {

@@ -127,7 +127,8 @@ if (array_key_exists("user",$_COOKIE) || array_key_exists("user",$_GET) || isset
        		# Create a collection for this user
 			global $lang;
 			include_once "collections_functions.php"; # Make sure collections functions are included before create_collection
-			$usercollection=create_collection($userref,$lang["mycollection"],0,1);
+			# The collection name is translated when displayed!
+			$usercollection=create_collection($userref,"My Collection",0,1); # Do not translate this string!
 			# set this to be the user's current collection
 			sql_query("update user set current_collection='$usercollection' where ref='$userref'");
         	}

@@ -137,14 +137,12 @@ $resource_title_pages=array("view","delete","log","alternative_file","alternativ
         }
         else if (($pagename=="collection_download") || $pagename=="edit" && getval("collection","")!=""){
             $collectiondata=get_collection($collection);
-            if (!isset($collectiondata['savedsearch'])||(isset($collectiondata['savedsearch'])&&$collectiondata['savedsearch']==null)){ $collection_tag='';} else {$collection_tag=$lang['smartcollection'].": ";}
-            $title=$collection_tag.strip_tags(i18n_get_translated($collectiondata['name']));
+            $title = strip_tags(i18n_get_collection_name($collectiondata));
             }  
         else {
             $collection=getval("ref","");
             $collectiondata=get_collection($collection);
-            if (!isset($collectiondata['savedsearch'])||(isset($collectiondata['savedsearch'])&&$collectiondata['savedsearch']==null)){ $collection_tag='';} else {$collection_tag=$lang['smartcollection'].": ";}
-            $title=$collection_tag.strip_tags(i18n_get_translated($collectiondata['name']));
+            $title = strip_tags(i18n_get_collection_name($collectiondata));
             }
         // add a hyphen if title exists  
         if (strlen($title)!=0){$title="- $title";}    

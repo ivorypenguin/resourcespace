@@ -41,7 +41,7 @@ if ($search_titles)
 	$parameters_string='&order_by=' . $order_by . '&sort='.$sort.'&offset=' . $offset . '&archive=' . $archive.'&sort='.$sort . '&k=' . $k;
 	
 	 if (substr($search,0,11)=="!collection"){
-        if (!isset($collectiondata['savedsearch'])||(isset($collectiondata['savedsearch'])&&$collectiondata['savedsearch']==null)){ $collection_tag='';} else {$collection_tag=$lang['smartcollection'].": ";}
+
            if ($collection_dropdown_user_access_mode){    
                 $colusername=$collectiondata['fullname'];
                 
@@ -71,7 +71,7 @@ if ($search_titles)
 			}
 		} 
 		hook("collectionsearchtitlemod");
-        $search_title.= '<div align="left"><h1><div class="searchcrumbs"><span id="coltitle'.$collection.'"><a '.$alt_text.' href='.$baseurl_short.'pages/search.php?search=!collection'.$collection.$parameters_string.'>'.i18n_get_translated($collection_tag.$collectiondata["name"]).'</a></span>'.$searchcrumbs.'</div></h1> ';
+        $search_title.= '<div align="left"><h1><div class="searchcrumbs"><span id="coltitle'.$collection.'"><a '.$alt_text.' href='.$baseurl_short.'pages/search.php?search=!collection'.$collection.$parameters_string.'>'.i18n_get_collection_name($collectiondata).'</a></span>'.$searchcrumbs.'</div></h1> ';
 		}	
     if (substr($search,0,5)=="!last")
         {
