@@ -30,6 +30,7 @@ if ($k!="") {$use_checkboxes_for_selection=false;}
 
 # Hide/show thumbs - set cookie must be before header is sent
 $thumbs=getval("thumbs",$thumbs_default);
+if ($thumbs=="undefined"){$thumbs=$thumbs_default;}
 setcookie("thumbs",$thumbs,0);
 
 # Basket mode? - this is for the e-commerce user request modes.
