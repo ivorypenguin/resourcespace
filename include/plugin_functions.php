@@ -535,7 +535,7 @@ function config_gen_setup_post($page_def,$plugin_name)
  */
 function config_gen_setup_html($page_def,$plugin_name,$upload_status,$plugin_page_heading,$plugin_page_frontm='')
     {
-    global $lang;
+    global $lang,$baseurl_short;
 ?>
     <div class="BasicsBox">
       <h2>&nbsp;</h2>
@@ -546,7 +546,7 @@ function config_gen_setup_html($page_def,$plugin_name,$upload_status,$plugin_pag
         echo $plugin_page_frontm;
         }
 ?>
-      <form id="form1" name="form1" method="post" action="">
+      <form id="form1" name="form1" method="post" action="<?php echo $baseurl_short?>plugins/<?php echo $plugin_name?>/pages/setup.php">
 <?php
     foreach ($page_def as $def)
         {
