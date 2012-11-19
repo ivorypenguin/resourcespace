@@ -508,7 +508,7 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 										{
 									  	$exclude_sql="and k" . $c . ".resource_type_field not in (". $sql_exclude_fields .")";
 										}
-									$test=sql_query("create temporary table $jtemptable SELECT distinct k".$c.".resource,k".$c.".hit_count,k".$c.".position from 	resource_keyword k".$c." where (k".$c.".keyword='$keyref' $relatedsql)  $exclude_sql");
+									$test=sql_query("create temporary table $jtemptable SELECT distinct k".$c.".resource,k".$c.".hit_count" . (($quoted_string)?",k".$c.".position":"") . " from resource_keyword k".$c." where (k".$c.".keyword='$keyref' $relatedsql)  $exclude_sql");
 									
 									if (!$omit)
 										{
