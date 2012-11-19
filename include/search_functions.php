@@ -432,15 +432,19 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 								{
 								# Key match, add to query.
 								$c++;
-		
+
 								# Add related keywords
 								$related=get_related_keywords($keyref);$relatedsql="";
 								for ($m=0;$m<count($related);$m++)
 									{
-									$relatedsql.=" or k" . $c . ".keyword='" . $related[$m] . "'";
+									if ($m==0) {$relatedsql.=" or k" . $c . ".keyword IN (";}
+									$relatedsql.="'" . $related[$m] . "'";
+									if ($m==count($related)-1)
+										{$relatedsql.=")";}
+									else
+										{$relatedsql.=",";}
 									}
-								
-								
+
 								# Form join
 								global $use_temp_tables,$use_temp_tables_for_keyword_joins;
 								if (substr($search,0,8)=="!related") {$use_temp_tables_for_keyword_joins=false;} // temp tables can't be used twice (unions)
@@ -448,7 +452,7 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 								if (!$use_temp_tables_for_keyword_joins || !$use_temp_tables)
 									{
 									// Not using temporary tables
-									
+
 									# Quoted string support
 									$positionsql="";
 									if ($quoted_string)
