@@ -1642,7 +1642,7 @@ function refine_searchstring($search){
 	$fixedkeywords=array();
 	foreach ($keywords as $keyword){
 		if (strpos($keyword,"startdate")!==false || strpos($keyword,"enddate")!==false || strpos($keyword,"range")!==false)
-			{$keyword=str_replace($keyword," ","-");}
+			{$keyword=str_replace(" ","-",$keyword);}
 		if (strpos($keyword,":")>0){
 			$keywordar=explode(":",$keyword,2);
 			$keyname=$keywordar[0];
