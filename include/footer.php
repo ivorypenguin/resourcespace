@@ -248,7 +248,7 @@ $omit_collectiondiv_load_pages=array("login","user_request","user_password","don
 ?>
 <div id="CollectionDiv" class="CollectBack AjaxCollect" <?php if (!in_array($pagename,$omit_collectiondiv_load_pages) && !checkperm("b")){?>onload="UpdateCollectionDisplay('<?php echo isset($k)?$k:"" ?>');" style="height:<?php echo $collection_frame_height ?>px;"<?php } else { ?>style="display:none;"<?php } ?>><?php echo $lang["loading"]?></div>
 
-<?php if (!in_array($pagename,$omit_collectiondiv_load_pages)){?>
+<?php if (!in_array($pagename,$omit_collectiondiv_load_pages) && !checkperm("b")){?>
 <script type="text/javascript">
 	collection_frame_height=<?php echo $collection_frame_height?>;
 function getWindowHeight() {
