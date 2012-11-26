@@ -60,13 +60,14 @@ for ($n=$offset;(($n<count($requests)) && ($n<($offset+$per_page)));$n++)
 	<td><?php echo $lang["resourcerequeststatus" . $requests[$n]["status"]] ?></td>
 	<td>
 	<div class="ListTools">
-	<?php if ($requests[$n]["collection_id"] > 0){ // only show tools if the collection still exists ?>
-		<a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $requests[$n]["collection"])?>">&gt;&nbsp;<?php echo $lang["action-view"]?></a>
-        &nbsp;<a <?php if (!checkperm("b")){ ?>href onclick="ChangeCollection(<?php echo $requests[$n]["collection"]?>,'<?php echo $k ?>');"
-                <?php } elseif ($autoshow_thumbs) {?>onclick=" top.document.getElementById('topframe').rows='*<?php if ($collection_resize!=true) {?>,3<?php } ?>,138'; return true;"
-                href="<?php echo $baseurl_short?>pages/collections.php?collection=<?php echo $requests[$n]["collection"]?>&amp;thumbs=show" target="collections"
-                <?php } else {?>href="<?php echo $baseurl_short?>pages/collections.php?collection=<?php echo $requests[$n]["collection"]?>" target="collections"<?php }?>>&gt;&nbsp;<?php echo $lang["action-select"]?></a>
-	<?php } // end of if collection still exists ?>
+	<?php if ($requests[$n]["collection_id"] > 0) // only show tools if the collection still exists
+        {?>
+        <a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $requests[$n]["collection"])?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["action-view"]?></a>
+        <?php if (!checkperm("b"))
+            {?>
+            &nbsp;<a href="<?php echo $baseurl_short?>pages/collections.php?collection=<?php echo $requests[$n]["collection"]; if ($autoshow_thumbs) {echo "&amp;thumbs=show";}?>" onClick="return CollectionDivLoad(this);">&gt;&nbsp;<?php echo $lang["action-select"]?></a><?php
+            }
+        } // end of if collection still exists ?>
 	</div>
 	</td>
 	</tr>
