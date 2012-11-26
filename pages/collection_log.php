@@ -10,14 +10,19 @@ include "../include/header.php";
 ?>
 
 <?php
-# Fetch collection name
-$colinfo=get_collection($ref);
-$colname=$colinfo["name"];
+# Fetch and translate collection name
+$colinfo = get_collection($ref);
+$colname = i18n_get_collection_name($colinfo);
+if (!checkperm("b"))
+    {
+    # Add selection link to collection name.
+    $colname = "<a href=\"" . $baseurl_short . "pages/collections.php?collection=" . $ref . "\" onClick=\"return CollectionDivLoad(this);\">" . $colname . "</a>";
+    }
 ?>
 
 <div class="BasicsBox">
-<?php if ($back_to_collections_link != "") { ?><div style="float:right;"><a href="<?php echo $baseurl_short?>pages/collection_manage.php"><strong><?php echo $back_to_collections_link ?></strong> </a></div> <?php } ?>
-<h1><?php echo $lang["collectionlog"];?> - <a <?php if (!checkperm("b")){ ?>href onclick="ChangeCollection(<?php echo $ref;?>,'<?php echo $k ?>');"<?php } else {?>href="<?php echo $baseurl_short?>pages/collections.php?collection=<?php echo $ref;?>" target="collections"<?php }?>><?php echo @$colname;?></a></h1>
+<?php if ($back_to_collections_link != "") { ?><div style="float:right;"><a href="<?php echo $baseurl_short?>pages/collection_manage.php" onClick="return CentralSpaceLoad(this,true);"><strong><?php echo $back_to_collections_link ?></strong> </a></div> <?php } ?>
+<h1><?php echo str_replace("%collection", $colname, $lang["collectionlogheader"]);?></h1>
 
 </div>
 

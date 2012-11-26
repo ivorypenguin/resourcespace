@@ -1008,6 +1008,7 @@ $lang["setup-configuration_file_output"]="Configuration File Ouput";
 
 # Collection log - actions
 $lang["collectionlog"]="Collection Log";
+$lang["collectionlogheader"]="Collection Log - %collection"; # %collection will be replaced, e.g. Collection Log - My Collection
 $lang["collectionlog-r"]="Removed resource";
 $lang["collectionlog-R"]="Removed all resources";
 $lang["collectionlog-D"]="Deleted all resources";

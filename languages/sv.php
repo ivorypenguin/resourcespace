@@ -26,7 +26,7 @@
 # En första version av översättningen skapades av Henrik Frizén (förnamn.efternamn utan accenttecken i e-postboxen.Sveriges landskod) 20110124 för version 2295
 #
 # Senast uppdaterad av [Namn] [Datum] för version [svn-version], [kommentar]
-# Senast uppdaterad av Henrik Frizén 20121112 för version 3996
+# Senast uppdaterad av Henrik Frizén 20121126 för version 4034
 #
 #
 # User group names (for the default user groups)
@@ -1033,6 +1033,7 @@ $lang["setup-configuration_file_output"]="Utmatning till konfigurationsfilen";
 
 # Collection log - actions
 $lang["collectionlog"]="Samlingslogg";
+$lang["collectionlogheader"]="Samlingslogg &ndash; %collection"; # %collection will be replaced, e.g. Collection Log - My Collection
 $lang["collectionlog-r"]="Avlägsnade material";
 $lang["collectionlog-R"]="Avlägsnade alla material";
 $lang["collectionlog-D"]="Tog bort alla material";
