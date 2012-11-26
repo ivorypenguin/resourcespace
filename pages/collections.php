@@ -440,7 +440,7 @@ elseif ($k!="")
 		if ($min_access!=0)
 			{
 		    ?>
-		    <br/><a _tophref="<?php echo $baseurl_short?>pages/collection_request.php?ref=<?php echo $usercollection?>&k=<?php echo $k?>">&gt; <?php echo 	$lang["requestall"]?></a>
+		    <br/><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_request.php?ref=<?php echo $usercollection?>&k=<?php echo $k?>">&gt; <?php echo $lang["requestall"]?></a>
 		    <?php
 		    }
 	    }
@@ -524,7 +524,7 @@ elseif ($k!="")
     else { ?>
   	<?php if ((!collection_is_research_request($usercollection)) || (!checkperm("r"))) { ?>
     <?php if (checkperm("s")) { ?><li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_manage.php">&gt; <?php echo $lang["managemycollections"];?></a></li>
-	<?php if ($contact_sheet==true) { ?><li><a href="<?php echo $baseurl_short?>pages/contactsheet_settings.php?ref=<?php echo $usercollection?>">&gt;&nbsp;<?php echo $lang["contactsheet"]?></a></li><?php } ?>
+	<?php if ($contact_sheet==true) { ?><li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/contactsheet_settings.php?ref=<?php echo $usercollection?>">&gt;&nbsp;<?php echo $lang["contactsheet"]?></a></li><?php } ?>
     <?php if ($allow_share) { ?><li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_share.php?ref=<?php echo $usercollection?>">&gt; <?php echo $lang["share"]?></a></li><?php } ?>
     <?php if (($userref==$cinfo["user"]) || (checkperm("h"))) {?><li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_edit.php?ref=<?php echo $usercollection?>">&gt;&nbsp;<?php echo $allow_share?$lang["action-edit"]:$lang["editcollection"]?></a></li><?php } ?>
 	<?php if ($preview_all){?><li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/preview_all.php?ref=<?php echo $usercollection?>">&gt;&nbsp;<?php echo $lang["preview_all"]?></a></li><?php } ?>
@@ -558,7 +558,7 @@ elseif ($k!="")
 		if ($min_access!=0)
 			{
 		    ?>
-		    <li><a onclick="return CentralSpaceLoad(this,true);" _tophref="<?php echo $baseurl_short?>pages/collection_request.php?ref=<?php echo $usercollection?>&k=<?php echo $k?>">&gt; <?php echo 	$lang["requestall"]?></a></li>
+		    <li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_request.php?ref=<?php echo $usercollection?>&k=<?php echo $k?>">&gt; <?php echo $lang["requestall"]?></a></li>
 		    <?php
 		    }
 	    }
