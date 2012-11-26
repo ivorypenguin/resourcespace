@@ -424,10 +424,14 @@ input[readonly] {color: #E0E0E0;} /* Read-only form fields */
 	color: #252525;
 	background: #C0C0C0 url(../gfx/interface/resourcepanel.png) repeat-x 0px 0px;
 	}
-.ResourcePanel a:link {color: #252525; background: none;} /* Resource panel tools */
-.ResourcePanel a:visited {color: #252525; background: none;}
-.ResourcePanel a:hover {color: #000000; background: none;}
-.ResourcePanel a:active {color: #000000; background: none;}
+.ResourcePanel a:link, .ResourcePanelSmall a:link, .ResourcePanelLarge a:link /* Resource panel tools */
+	{color: #252525; background: none;}
+.ResourcePanel a:visited, .ResourcePanelSmall a:visited, .ResourcePanelLarge a:visited
+	{color: #252525; background: none;}
+.ResourcePanel a:hover, .ResourcePanelSmall a:hover, .ResourcePanelLarge a:hover
+	{color: #000000; background: none;}
+.ResourcePanel a:active, .ResourcePanelSmall a:active, .ResourcePanelLarge a:active
+	{color: #000000; background: none;}
 .ResourcePanel .ResourceAlign img, .ResourcePanelSmall .ResourceAlignSmall img, .ResourcePanelLarge .ResourceAlignLarge img /* Thumbnail picture borders */
 	{
 	border-top: 1px solid #252525;
