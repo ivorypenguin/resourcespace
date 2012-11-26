@@ -210,7 +210,6 @@ default_module_config_key('general', 'reset_date_upload_template', isset($reset_
 default_module_config_key('general', 'reset_date_field', isset($reset_date_field)?$reset_date_field:'12'); 
 default_module_config_key('general', 'blank_edit_template', isset($blank_edit_template)?$blank_edit_template:''); 
 default_module_config_key('general', 'show_expiry_warning', isset($show_expiry_warning)?$show_expiry_warning:'1'); 
-default_module_config_key('general', 'collection_resize', isset($collection_resize)?$collection_resize:''); 
 default_module_config_key('general', 'enable_collection_copy', isset($enable_collection_copy)?$enable_collection_copy:'1'); 
 default_module_config_key('general', 'default_res_types', isset($default_res_types)?$default_res_types:''); 
 default_module_config_key('general', 'show_resourceid', isset($show_resourceid)?$show_resourceid:'1'); 
