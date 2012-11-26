@@ -1368,7 +1368,7 @@ $lang["zipcommand_overridden"]="But please note that \$zipcommand is defined and
 $lang["lastscheduledtaskexection"]="Last scheduled task execution (days)";
 $lang["executecronphp"]="Relevance matching will not be effective and periodic e-mail reports will not be sent. Ensure <a href='../batch/cron.php'>batch/cron.php</a> is executed at least once daily via a cron job or similar.";
 $lang["shouldbeormore"]="should be ? or greater"; # E.g. should be 200M or greater
-$lang["config"]="config";
+$lang["config_file"]="(config: %file)"; # %file will be replaced, e.g. (config: /etc/php5/apache2/php.ini)
 
 $lang["starsminsearch"]="Stars (Minimum)";
 $lang["anynumberofstars"]="Any Number of Stars";

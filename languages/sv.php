@@ -1393,7 +1393,7 @@ $lang["zipcommand_overridden"]="Notera dock att \$zipcommand är definierat men 
 $lang["lastscheduledtaskexection"]="Senaste körning av schemalagda aktiviteter (dagar)";
 $lang["executecronphp"]="Sökningar efter liknande material kommer inte att fungera som de ska och schemalagda e-postrapporter kommer inte att skickas. Se till att <a href='../batch/cron.php'>’batch/cron.php’</a> körs åtminstone en gång per dag som ett cron-jobb eller liknande.";
 $lang["shouldbeormore"]="Bör vara ? eller mer."; # E.g. should be 200M or greater
-$lang["config"]="konfiguration";
+$lang["config_file"]="(konfiguration: %file)"; # %file will be replaced, e.g. config: /etc/php5/apache2/php.ini
 
 $lang["starsminsearch"]="Antal stjärnor (minimum)";
 $lang["anynumberofstars"]="Valfritt antal stjärnor";
