@@ -64,7 +64,7 @@ for ($n=0;$n<count($collections);$n++)
         ?></div><?php } ?>
         <?php } ?>
         <?php if (!hook("replacecollectiontools")){?>
-        <div class="ResourcePanelCountry" style="float:right;">&gt;&nbsp;<a target="collections" href="<?php echo $baseurl_short?>pages/collections.php?collection=<?php echo $collections[$n]["ref"]?>"><?php echo $lang["action-select"]?></a>&nbsp;&nbsp;&nbsp;&gt;&nbsp;<a href="<?php echo $pub_url?>"><?php echo $lang["viewall"]?></a></div>		
+        <div class="ResourcePanelCountry" style="float:right;">&gt;&nbsp;<a href="<?php echo $baseurl_short?>pages/collections.php?collection=<?php echo $collections[$n]["ref"]?>" onClick="return CollectionDivLoad(this);"><?php echo $lang["action-select"]?></a>&nbsp;&nbsp;&nbsp;&gt;&nbsp;<a href="<?php echo $pub_url?>"><?php echo $lang["viewall"]?></a></div>		
         <?php } ?>
 		
 		<div class="clearer"></div>
@@ -128,7 +128,7 @@ for ($n=0;$n<count($collections);$n++)
         <?php } ?>
         <div>
         <?php if (!hook("replacecollectiontools")){?>
-		<div class="ResourcePanelCountry" style="float:right;">&gt;&nbsp;<a target="collections" href="<?php echo $baseurl_short?>pages/collections.php?collection=<?php echo $collections[$n]["ref"]?>"><?php echo $lang["action-select"]?></a>&nbsp;&nbsp;&nbsp;&gt;&nbsp;<a href="<?php echo $pub_url?>"><?php echo $lang["viewall"]?></a>
+		<div class="ResourcePanelCountry" style="float:right;">&gt;&nbsp;<a href="<?php echo $baseurl_short?>pages/collections.php?collection=<?php echo $collections[$n]["ref"]?>"  onClick="return CollectionDivLoad(this);"><?php echo $lang["action-select"]?></a>&nbsp;&nbsp;&nbsp;&gt;&nbsp;<a href="<?php echo $pub_url?>"><?php echo $lang["viewall"]?></a>
 		<?php } ?>
 		</div>		
 		  <?php hook("xlargesearchiconpublic");?></div>
@@ -198,7 +198,7 @@ for ($n=0;$n<count($collections);$n++)
         ?></div><?php } ?>
         <?php } ?>
         <?php if (!hook("replacecollectiontools")){?>
-        <div class="ResourcePanelCountry" style="font-size:9px;">&gt;&nbsp;<a target="collections" href="<?php echo $baseurl_short?>pages/collections.php?collection=<?php echo $collections[$n]["ref"]?>"><?php echo $lang["action-select"]?></a>&nbsp;&nbsp;&gt;&nbsp;<a href="<?php echo $pub_url?>"><?php echo $lang["viewall"]?></a></div><div class="clearer"></div>
+        <div class="ResourcePanelCountry" style="font-size:9px;">&gt;&nbsp;<a href="<?php echo $baseurl_short?>pages/collections.php?collection=<?php echo $collections[$n]["ref"]?>"  onClick="return CollectionDivLoad(this);"><?php echo $lang["action-select"]?></a>&nbsp;&nbsp;&gt;&nbsp;<a href="<?php echo $pub_url?>"><?php echo $lang["viewall"]?></a></div><div class="clearer"></div>
         <?php } ?>
 		</div>
 		<div class="PanelShadow"></div>
@@ -209,8 +209,8 @@ for ($n=0;$n<count($collections);$n++)
 		{
 		?>
 		<tr <?php hook("collectionlistrowstyle");?>>
-		<?php hook ("listsearchpubliccheckboxes")?>
-		<?php
+		<?php hook ("listsearchpubliccheckboxes");
+		if ($use_checkboxes_for_selection){echo "<td></td>";}
 		if (!isset($collections[$n]['savedsearch'])||(isset($collections[$n]['savedsearch'])&&$collections[$n]['savedsearch']==null))
 			{
 			$collection_prefix = $lang["collection"] . ": ";
@@ -236,7 +236,7 @@ for ($n=0;$n<count($collections);$n++)
         <?php hook("addlistviewcolumnpublic");?>
 		<td><div class="ListTools">
 		<?php if (!hook("replacecollectiontools")){?>
-		<a target="collections" href="<?php echo $baseurl_short?>pages/collections.php?collection=<?php echo $collections[$n]["ref"]?>">&gt;&nbsp;<?php echo $lang["action-select"]?></a>&nbsp;&nbsp;<a href="<?php echo $pub_url?>">&gt;&nbsp;<?php echo $lang["viewall"]?></a>
+		<a href="<?php echo $baseurl_short?>pages/collections.php?collection=<?php echo $collections[$n]["ref"]?>"  onClick="return CollectionDivLoad(this);">&gt;&nbsp;<?php echo $lang["action-select"]?></a>&nbsp;&nbsp;<a href="<?php echo $pub_url?>">&gt;&nbsp;<?php echo $lang["viewall"]?></a>
 		<?php } ?>
 		</div></td>
 		</tr>
