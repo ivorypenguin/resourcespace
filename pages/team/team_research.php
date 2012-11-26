@@ -65,12 +65,12 @@ for ($n=$offset;(($n<count($requests)) && ($n<($offset+$per_page)));$n++)
 	?>
 	<tr>
 	<td><?php echo $requests[$n]["ref"]?></td>
-	<td><div class="ListTitle"><a href="<?php echo $baseurl_short?>pages/team/team_research_edit.php?ref=<?php echo $requests[$n]["ref"]?>" onClick="return CentralSpaceLoad(this,true);"><?php echo $requests[$n]["name"]?></a>&nbsp;</div></td>
+	<td><div class="ListTitle"><a href="<?php echo $baseurl_short?>pages/team/team_research_edit.php?ref=<?php echo $requests[$n]["ref"]?>" onClick="return CentralSpaceLoad(this,true);"><?php echo i18n_get_translated($requests[$n]["name"])?></a>&nbsp;</div></td>
 	<td><?php echo nicedate($requests[$n]["created"],false,true)?></td>
 	<td><?php echo $statusname[$requests[$n]["status"]]?></td>
 	<td><?php echo (strlen($requests[$n]["assigned_username"])==0)?"-":$requests[$n]["assigned_username"]?></td>
 	<td><?php echo (strlen($requests[$n]["collection"])==0)?"-":$collection_prefix . $requests[$n]["collection"]?></td>
-	<td><div class="ListTools"><a href="<?php echo $baseurl_short?>pages/team/team_research_edit.php?ref=<?php echo $requests[$n]["ref"]?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["editresearch"]?></a>&nbsp;&nbsp;<a onClick="return CollectionDivLoad(this);" href="<?php echo $baseurl_short?>pages/collections.php?collection=<?php echo $requests[$n]["collection"]?>">&gt;&nbsp;<?php echo $lang["selectcollection"]?></a></div></td>
+	<td><div class="ListTools"><a href="<?php echo $baseurl_short?>pages/team/team_research_edit.php?ref=<?php echo $requests[$n]["ref"]?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["editresearch"]?></a>&nbsp;&nbsp;<a href="<?php echo $baseurl_short?>pages/collections.php?research=<?php echo $requests[$n]["ref"]?>" onClick="return CollectionDivLoad(this);">&gt;&nbsp;<?php echo $lang["editcollection"]?></a></div></td>
 	</tr>
 	<?php
 	}
