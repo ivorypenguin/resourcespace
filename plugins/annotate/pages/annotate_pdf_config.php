@@ -173,13 +173,13 @@ function loadIt() {
 
 <?php if ($is_collection){?>
 <div class="Question">
-<label><?php echo $lang["collection"]?></label><div class="Fixed"><?php echo $collection['name']?></div>
+<label><?php echo $lang["collection"]?></label><div class="Fixed"><?php echo i18n_get_collection_name($collection)?></div>
 <div class="clearerleft"> </div>
 </div>
 
 <?php } else { ?>
 <div class="Question">
-<label><?php echo $lang["resourcetitle"]?></label><div class="Fixed"><?php echo $resources[0]['field'.$view_title_field]?></div>
+<label><?php echo $lang["resourcetitle"]?></label><div class="Fixed"><?php echo i18n_get_translated($resources[0]['field'.$view_title_field])?></div>
 <div class="clearerleft"> </div>
 </div>
 <?php } ?>

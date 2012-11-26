@@ -126,8 +126,8 @@ function create_annotated_pdf($ref,$is_collection=false,$size="letter",$cleanup=
 	// set document information
 	$pdf->SetCreator(PDF_CREATOR);
 	$pdf->SetAuthor($userfullname);
-	if ($is_collection){ $pdf->SetTitle($collectiondata['name'].' '.$date);}
-	else { $pdf->SetTitle($resourcedata['field'.$view_title_field].' '.$date);}
+	if ($is_collection){ $pdf->SetTitle(i18n_get_collection_name($collectiondata).' '.$date);}
+	else { $pdf->SetTitle(i18n_get_translated($resourcedata['field'.$view_title_field]).' '.$date);}
 	$pdf->SetSubject($lang['annotations']);
 	$pdf->setPrintHeader(false);
 	$pdf->setPrintFooter(false);
@@ -163,7 +163,7 @@ function create_annotated_pdf($ref,$is_collection=false,$size="letter",$cleanup=
 		$hwratio=$imagesize[1]/$imagesize[0];
 		$imageheight=$imagewidth*$hwratio;}
 	
-		$pdf->Text(.5,.5,$resourcedata['field'.$view_title_field].' '.$date);
+		$pdf->Text(.5,.5,i18n_get_translated($resourcedata['field'.$view_title_field]).' '.$date);
 		$pdf->Image($imgpath,((($width-1)/2)-($imagewidth-1)/2),1,$imagewidth,$imageheight,"jpg",$baseurl. '/?r=' . $ref);	
 
 		// set color for background
@@ -230,10 +230,10 @@ function create_annotated_pdf($ref,$is_collection=false,$size="letter",$cleanup=
 		}
 		
 	if (!$is_collection){
-		$filename=$lang['annotations']."-".$resourcedata["field".$view_title_field];
+		$filename=$lang['annotations']."-".i18n_get_translated($resourcedata["field".$view_title_field]);
 	}
 	else {
-		$filename=$lang['annotations']."-".$collectiondata['name'];
+		$filename=$lang['annotations']."-".i18n_get_collection_name($collectiondata);
 	}
 		
 	if ($cleanup){
