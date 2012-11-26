@@ -503,7 +503,7 @@ elseif ($k!="")
 			if ($notfound!==false)
 				{
 				?>
-				<option selected><?php echo $notfound["name"]?></option>
+				<option selected><?php echo i18n_get_collection_name($notfound)?></option>
 				<?php
 				}
 			}
