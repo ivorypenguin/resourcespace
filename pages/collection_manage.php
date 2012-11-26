@@ -338,10 +338,8 @@ if (!hook('collectionaccessmode')) {
         <?php if ($collections_compact_style){
         include("collections_compact_style.php"); } else {
 ?><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $collections[$n]["ref"])?>">&gt;&nbsp;<?php echo $lang["viewall"]?></a>
-	&nbsp;<a <?php if (!checkperm("b")){ ?>href="#" onclick="ChangeCollection(<?php echo $collections[$n]["ref"]?>, '');"
-		<?php } elseif ($autoshow_thumbs) {?>onclick=" top.document.getElementById('topframe').rows='*<?php if ($collection_resize!=true) {?>,3<?php } ?>,138'; return true;"
-		href="collections.php?collection=<?php echo $collections[$n]["ref"]?>&amp;thumbs=show" target="collections"
-		<?php } else {?>href="collections.php?collection=<?php echo $collections[$n]["ref"]?>" target="collections"<?php }?>>&gt;&nbsp;<?php echo $lang["action-select"]?></a>
+<!-- No need to check for permission 'b' - this check is done in the beginning of this file -->
+	&nbsp;<a href="<?php echo $baseurl_short?>pages/collections.php?collection=<?php echo $collections[$n]["ref"]; if ($autoshow_thumbs) {echo "&amp;thumbs=show";}?>" onClick="return CollectionDivLoad(this);">&gt;&nbsp;<?php echo $lang["action-select"]?></a>
 	<?php if (isset($zipcommand) || $collection_download) { ?>
 	&nbsp;<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_download.php?collection=<?php echo $collections[$n]["ref"]?>"
 	>&gt;&nbsp;<?php echo $lang["action-download"]?></a>
