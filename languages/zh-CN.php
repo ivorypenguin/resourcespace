@@ -521,7 +521,7 @@ $lang["warningexpired"]="资源已过期";
 $lang["warningexpiredtext"]="警告! 这个资源已过了有效期限. 请单击以下的链接以启动下载功能.";
 $lang["warningexpiredok"]="&gt; 容许资源下载";
 $lang["userrequestcomment"]="反馈";
-$lang["addresourcebatchbrowser"]="增加收藏夹批次 - 使用 Flash";
+$lang["addresourcebatchbrowser"]="增加收藏夹批次 - 使用";
 $lang["addresourcebatchbrowserjava"]="增加资源批次 - 使用 Java （建议）";
 
 $lang["addresourcebatchftp"]="增加资源批次 - 使用 FTP server";
@@ -917,10 +917,8 @@ $lang["savesearchassmartcollection"]="将搜索到的资源加入快速收藏夹
 $lang["smartcollection"]="快速收藏夹";
 
 
-$lang["uploadertryflash"]="如果这个浏览器有问题, 请使用 <strong>Flash</strong>.";
 $lang["uploadertryjava"]="如果这个浏览器有问题, 请使用 <strong>Java</strong>.";
 $lang["getjava"]="确定你有最新版本的Java, 请浏览 Java 网站.";
-$lang["getflash"]="确定你有最新版本的Flash, 请浏览Flash 网站.";
 
 $lang["all"]="全部";
 $lang["backtoresults"]="返回搜索结果";

@@ -621,7 +621,7 @@ $lang["warningexpired"]="Filen har gått ut på dato";
 $lang["warningexpiredtext"]="Advarsel! Denne filen har gått ut på dato. Du må klikke på lenken nedenfor for å slå på filnedlasting.";
 $lang["warningexpiredok"]="&gt; Slå på filnedlasting";
 $lang["userrequestcomment"]="Kommentar";
-$lang["addresourcebatchbrowser"]="Batch-opplasting - i nettleseren (Flash)";
+$lang["addresourcebatchbrowser"]="Batch-opplasting - i nettleseren";
 $lang["addresourcebatchbrowserjava"]="Batch-opplasting - i nettleseren (Java)";
 
 $lang["addresourcebatchftp"]="Batch-opplasting - hent filer fra FTP-tjener";
@@ -1025,10 +1025,8 @@ $lang["savesearchassmartcollection"]="Lagre søket som smart-mappe";
 $lang["smartcollection"]="Smart-mappe";
 
 
-$lang["uploadertryflash"]="Hvis du har problemer med opplastingen, prøv <strong>Flash-opplasteren</strong> istedet.";
 $lang["uploadertryjava"]="Hvis du har problemer med opplastingen, eller <strong>laster opp svært store filer</strong>, prøv <strong>Java opplasteren</strong>.";
 $lang["getjava"]="For å forsikre deg om at du har den siste Java-programvaren på ditt system, besøk Java-nettestedet.";
-$lang["getflash"]="For å forsikre deg om at du har den siste Flash-programvaren på ditt system, besøk Flash-nettestedet.";
 
 $lang["all"]="Alle";
 $lang["backtoresults"]="Tilbake til resultatvisning";

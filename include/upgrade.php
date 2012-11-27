@@ -172,8 +172,6 @@ default_module_config_key('general', 'print_contact_title', isset($print_contact
 default_module_config_key('general', 'titlefontsize', isset($titlefontsize)?$titlefontsize:'10'); 
 default_module_config_key('general', 'refnumberfontsize', isset($refnumberfontsize)?$refnumberfontsize:'8'); 
 default_module_config_key('general', 'config_sheetlist_fields', isset($config_sheetlist_fields)?$config_sheetlist_fields:array(8)); 
-default_module_config_key('general', 'usercontribute_swfupload', isset($usercontribute_swfupload)?$usercontribute_swfupload:'1'); 
-default_module_config_key('general', 'usercontribute_javaupload', isset($usercontribute_javaupload)?$usercontribute_javaupload:''); 
 default_module_config_key('general', 'show_related_themes', isset($show_related_themes)?$show_related_themes:'1'); 
 default_module_config_key('general', 'disable_quoted_printable_enc', isset($disable_quoted_printable_enc)?$disable_quoted_printable_enc:''); 
 default_module_config_key('general', 'basic_simple_search', isset($basic_simple_search)?$basic_simple_search:''); 

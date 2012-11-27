@@ -130,7 +130,7 @@ home,themes,"Aquí encontrarás los materiales recogidos recientemente.",88,es,,
 home,welcometext,,92,es,,,
 help,introtext,"Obtén el máximo rendimiento del Espacio de Material. Estas guías te ayudarán a usar el sistema con mayor efectividad.",93,es,,,
 home,welcometitle,"Bienvenida/o a Imágenes y Palabras, una herramienta que te permitirá buscar fotografías, vídeos y testimonios entre sus más de xxx materiales.",94,es,,,
-team_batch,introtext,"Puedes subir varios archivos al mismo tiempo colgándolos en un servidor FTP válido. Una vez hayas terminado, los archivos se pueden borrar de este servidor.",95,es,,,
+team_batch,introtext,"",95,es,,,
 team_home,introtext,"Bienvenido al Panel de Control. Utiliza los enlaces siguientes para gestionar materiales, responder a peticiones de materiales, gestionar temas o modificar configuraciones del sistema.",96,es,,,
 user_password,introtext,"Introduce tu dirección de e-mail y te enviaremos tu nombre de usuario y contraseña.",97,es,,,
 team_user,introtext,"Utiliza esta sección para añadir, eliminar o modificar usuarios.",98,es,,,
@@ -143,9 +143,7 @@ done,user_password,"Te hemos envíado un correo electrónico con tu ID de usuari
 done,user_request,"Tu solicitud para obtener una cuenta de usuario ha sido enviada. Muy pronto te enviaremos los detalles.",105,es,,,
 download_click,introtext,"Para bajar el archivo adjunto pincha en el enlace de abajo y elige ""Guardar como"". Te preguntarán dónde quieres guardar el archivo. Para abrir el archivo en tu navegador sólo tienes que pinchar el enlace.",106,es,,,
 download_progress,introtext,"La descarga comenzará en pocos segundos",107,es,,,
-edit,batch,"Por favor, especifica el datos comunes a todas las imágenes que vas a cargar en lote.<br><br>
-
-<b>Atención:</b> El proceso de carga de imágenes por lote requiere muchos recursos de CPU. Por este motivo es aconsejable no hacer cargas simultáneas.",108,es,,,
+edit,batch,"",108,es,,,
 edit,multiple,"Selecciona los campos que desees editar de la lista de abajo. Los que selecciones se sobreescribirán sobre el material que estés editando. Cualquier campo no selecciónado será ignorado.",109,es,,,
 home,help,,110,es,,,
 home,restrictedtext,"Por favor, pincha en el enlace que te envíamos a tu correo para acceder a los materiales seleccionados para ti",111,es,,,
@@ -162,15 +160,15 @@ team_archive,introtext,"Para editar materiales de archivo individualmente, simpl
 view,storyextract,"Estracto de historia:",118,es,,,
 user_request,introtext,"Por favor completa el formulario adjunto para solicitar una cuenta de usuario.",119,es,,,
 team_research,introtext,"Organiza y controla “Criterios de Búsqueda”. Elige “Editar búsqueda” para examinar los detalles de la búsqueda y asignarle la investigación a un miembro del equipo. Es posible basar una búsqueda en una colección previa introduciendo el nombre de la misma en “Edit”. Una vez sean asignados los criterios de búsqueda, selecciona “Editar Colección” para añadir los criterios al panel “Mi colección”. Usando las herramientas estándar es posible añadir material a la búsqueda. Una vez se ha completado, selecciona “Editar búsqueda” y cambia el estado para recibir automáticamente un correo electrónico con la información solicitada. El mail contendrá un enlace a la búsqueda y además se añadirá automáticamente al panel “Mi colección”.",120,es,,,
-team_batch_select,introtext,"Puedes subir varios archivos al mismo tiempo colgándolos en un servidor FTP válido. Una vez hayas terminado, los archivos se pueden borrar de este servidor.",121,es,,,
-team_batch_upload,introtext,"Puedes subir varios archivos al mismo tiempo colgándolos en un servidor FTP válido. Una vez hayas terminado, los archivos se pueden borrar de este servidor.",122,es,,,
+team_batch_select,introtext,"",121,es,,,
+team_batch_upload,introtext,"",122,es,,,
 team_resource,introtext,"Añade material individual o sube varios materiales simultáneamente. Para editar materiales individuales sólo tienes que buscar el material, y pinchar en editar en ""Herramienta de Material"" de la pantalla de material.",123,es,,,
 team_stats,introtext,"Los gráficos son generados a bajo demanda. Marca la casilla para imprimir todos los gráficos del años seleccionado.",124,es,,,
 terms,introtext,"Antes de iniciar el proceso de descarga debes aceptar los siguientes términos y condiciones de uso.
 
 ",125,es,,,
 themes,findpublic,"Encuentra una colección pública introduciendo un término de búsqueda",126,es,,,
-upload,introtext,"Sube un archivo empleando el formulario adjunto",127,es,,,
+upload,introtext,"",127,es,,,
 themes,manage,"Organiza y edita los temas disponibles en la red. Los temas aparecen organizados en colecciones. Para crear una nueva entrada e incluirla en un tema, debes pinchar en ""Construye una colección"" y elegir ""Mis Colecciones"" del menú principal. Recuerda incluir el nombre de un tema durante la configuración y crear una nueva colección. Puedes usar un nombre ya existente para agrupar la nueva colección en un apartado ya establecido (es importante asegurarse de que el nombre es exactamente el mismo) o elegir un nuevo título para crear una nueva categoría de temas. Nunca permitas a los usuarios que añadan o cambien materiales de las colecciones ya establecidas. Para editar el contenido de una entrada existente bajo un tema, elige “Editar una Colección”. Los iconos de esta colección aparecerán en el botón de la pantalla “Mis Colecciones”. Emplea las herramientas estándar para editar, mover o añadir material. Para cambiar el  nombre de un tema o mover una colección y que ésta aparezca ubicada en un tema diferente. Elige: “Editar Propiedades” y edita la categoría del tema o el nombre de la colección. Selecciona un nombre existente para el tema y así agruparlo en de las categorías existentes (asegúrate de que lo escribes exactamente igual), o elige un nuevo título para crear un nuevo tipo de tema. Para borrar una selección del tema. Elige: “Editar Propiedades” y borra las palabras de la caja de categorías del tema.",128,es,,,
 themes,introtext,"Los temas están formados por grupos con nuestros mejores materiales",129,es,,,
 team_copy,introtext,"Introduce el identificador del material que te gustaría copiar. Sólo se copiará el material señalado -no se copiará ningún archivo adjunto.",130,es,,,
@@ -215,7 +213,7 @@ done,resource_request,あなたの要求は受付しましたので、私たち�
 done,user_password,あなたのユーザ名とパスワードを含むメールを送りました。,170,jp,,,
 done,user_request,"ユーザアカウントを求めるあなたの要求を送りました。 まもなく、あなたのログイン詳細が送られるでしょう。",171,jp,,,
 download_progress,introtext,"あなたのダウンロードはまもなく、始まるでしょう。 ダウンロード完了後、継続するには以下のリンクを使用してください。",172,jp,,,
-edit,batch,あなたがアップロードしようとしているリソースのためのデフォルトの説明とキーワードを指定してください。,173,jp,,,
+edit,batch,"",173,jp,,,
 edit,multiple,"どのフィールドを上書きしたいかを選択してください。 あなたが選択しないフィールドはそのままの状態でおかれるでしょう。",174,jp,,,
 help,introtext,"本サイトを最大限に活用してください。 これらのガイドは、あなたが、より効果的にシステムとリソースを使用するのを助けるでしょう。 </p>    <p>テーマを使用して、テーマでリソースをブラウズするか、または単純検索を使用して、特定のリソースを検索してください。</p>   <p><a href=http://www.montala.net/downloads/ResourceSpace-GettingStarted.pdf>Download the user guide (PDF file)</a>   <p><a target=_blank href=http://wiki.resourcespace.org/index.php/Main_Page>Online Documentation (Wiki)</a>",175,jp,,,
 home,themes,精選され分類された最良のリソース,176,jp,,,
@@ -224,9 +222,9 @@ resource_email,introtext,"メールで素早く他のユーザとこのリソー
 resource_request,introtext,"ご要望のリソースはオンラインで利用可能ではありません。 リソース情報はメールに自動的に含まれていますが、望むなら、あなたは追加コメントを加えることができます。",179,jp,,,
 tag,introtext,"リソースにタグ付けをすることによって検索結果を改善できます。 例えば、空白かコンマによって分割された: 犬,家,ボール,バースデーケーキ。 写真に写っている人のフルネームや分かっている地名を入れてください。",180,jp,,,
 team_archive,introtext,"個々のアーカイブリソースを編集するために、リソースを単純検索してください、そして、リソーススクリーンの上のリソース・ツール パネルの編集をクリックしてください。 アーカイブされる準備ができているリソースが記載されたリソース・ペンディング リストです。 このリストから、アーカイブに詳細情報の追加と、リソース・レコードを移すのは可能です。",181,jp,,,
-team_batch,introtext,"あなたは、適切なFTPサーバにファイルを置くことによって、リソースファイルをバッチでアップロードできます。 終了後、FTPサーバからファイルを削除できます。",182,jp,,,
-team_batch_select,introtext,"あなたは、適切なFTPサーバにファイルを置くことによって、リソースファイルをバッチでアップロードできます。 終了後、FTPサーバからファイルを削除できます。",183,jp,,,
-team_batch_upload,introtext,"あなたは、適切なFTPサーバにファイルを置くことによって、リソースファイルをバッチでアップロードできます。 終了後、FTPサーバからファイルを削除できます。",184,jp,,,
+team_batch,introtext,"",182,jp,,,
+team_batch_select,introtext,"",183,jp,,,
+team_batch_upload,introtext,"",184,jp,,,
 team_copy,introtext,"あなたがコピーしたいリソースのIDを入力してください。 リソースデータだけがコピーされるでしょう--アップロードされたファイルはコピーされないでしょう。",185,jp,,,
 team_home,introtext,"チームセンターへようこそ。 以下のリンクを使用して、リソースの管理、リソースの要求へ対応、テーマの管理、システム設定の変更をしてください。",186,jp,,,
 team_report,introtext,"レポートと日付の範囲を選んでください。 Microsoft Excelか同様のスプレッドシートアプリケーションでレポートを開くことができます。",187,jp,,,
@@ -239,8 +237,8 @@ terms,terms,★使用条件を記入してください★,193,jp,,,
 "terms and conditions","terms and conditions",★使用条件を記入してください★,194,jp,,,
 themes,introtext,テーマはリソースのグループです。,195,jp,,,
 themes,manage,"オンラインで利用可能なテーマを組織化し、編集してください。 テーマは特に、推薦されたコレクションです。 <br><br> <strong>1 テーマの下に新規エントリー作成 -  コレクション構築</strong><br> メインのトップメニューから<strong>マイコレクション</strong>を選択し、 新規の<strong>公開</strong> コレクションを設定。 セットアップの間、忘れずにテーマ名を含んでください。 現在のテーマの下でコレクションを分類するのに既存のテーマ名を使用するか(全く同一)、または新しいタイトルを選んで、真新しいテーマを作成してください。 ユーザにテーマ化されたコレクションからリソースを追加/削除させないようにしてください。<br> <br><strong>2 テーマの下の既存のエントリーの内容を編集</strong><br><strong>コレクション編集</strong>を選択。 コレクションのアイテムは画面下部の<strong>マイコレクション</strong> パネルに表示されます。リソースの編集、削除、追加のために標準ツールを使用。<br> <br><strong>3 テーマ名の変更や別のテーマの下に表示されるようコレクションを移動</strong><br><strong>プロパティ編集</strong>を選択しテーマカテゴリやコレクション名を編集。現在のテーマの下でコレクションを分類するのに既存のテーマ名を使用するか(全く同一)、または新しいタイトルを選んで、真新しいテーマを作成してください。 <br> <br><strong>4 テーマからコレクション削除</strong><br><strong>プロパティ編集</strong>を選択しテーマカテゴリ欄の文字を削除。",196,jp,,,
-upload,introtext,以下のフォームを使ってファイルをアップロード。,197,jp,,,
-upload_swf,introtext,以下のボタンをクリックして、ファイルをアップロードしてください。'shift'キーを押すことによってブラウズするとき、あなたは複数のファイルを選択できます。,198,jp,,,
+upload,introtext,"",197,jp,,,
+upload_swf,introtext,"",198,jp,,,
 collection_public,introtext,"Les collections publiques sont créées par d'autres utilisateurs",199,fr,,,
 all,searchpanel,"Recherchez en utilisant les descriptions, mots clés et numéros de documents",200,fr,,,
 home,themes,"Les meilleurs documents, sélectionnés et regroupés",201,fr,,,
@@ -270,7 +268,7 @@ help,introtext,"Obtenez le meilleur de ResourceSpace. Ces guides vous aideront �
 contribute,introtext,"Vous pouvez proposer vos propres documents. Quand vous créez un nouveau document, son statut est ""En attente de soumission"". Quand vous avez déposé votre fichier et modifié les champs, affectez la valeur ""En attente de validation"" au champ statut. Votre document sera alors vérifié par l'équipe ressources.",215,fr,,,
 done,user_password,"Un mél contenant vos identifiant et mot de passe a été envoyé.",216,fr,,,
 user_password,introtext,"Saisissez votre adresse électronique pour recevoir vos identifiant et mot de passe.",217,fr,,,
-edit,batch,"Veuillez préciser le contenu par défaut et les mots clés des documents que vous êtes sur le point de déposer.",218,fr,,,
+edit,batch,"",218,fr,,,
 team_copy,introtext,"Spécifiez le numéro du document que vous voulez copier. Seules les données du document seront copiées – aucun fichier ne sera copié.",219,fr,,,
 delete,introtext,"Veuillez saisir votre mot de passe afin de confirmer la suppression de ce document.",220,fr,,,
 team_report,introtext,"Veuillez choisir un type de rapport et une plage de dates. Le rapport peut être ouvert avec Microsoft Excel ou tout tableur similaire.",221,fr,,,
@@ -292,7 +290,7 @@ done,user_request,"Votre demande de compte utilisateur a été envoyée. Vos ide
 about,about,"Placez ici votre texte d'à propos.",237,fr,,,
 team_content,introtext,,238,fr,,,
 done,deleted,"Le document a été supprimé.",239,fr,,,
-upload,introtext,"Déposez un fichier en utilisant le formulaire ci-dessous.",240,fr,,,
+upload,introtext,"",240,fr,,,
 home,restrictedtitle,"<h1>Bienvenue dans ResourceSpace</h1>",241,fr,,,
 home,restrictedtext,"Veuillez cliquer sur le lien qui vous a été envoyé par mél pour accéder aux documents sélectionnés pour vous.",242,fr,,,
 resource_email,introtext,"Partagez rapidement par mél ce document avec d'autres utilisateurs. Un lien sera automatiquement envoyé. Vous pouvez aussi inclure un message dans le mél.",243,fr,,,
@@ -302,9 +300,9 @@ team_research,introtext,"Organisez et gérer les 'requêtes de recherche'. <br/>
 collection_edit,introtext,"Organisez et gérez votre travail en groupant les documents. Créez des 'Collections' pour correspondre à votre méthode de travail.<br/> Toutes vos collections apparaissent dans le panneau 'Mes Collections' en bas de l'écran <br/><br/> L'<strong>accès privé</strong> vous autorise, vous et les utilisateurs sélectionnés, à voir la collection. Idéal pour grouper les documents par projet sur lesquels vous travaillez et partager les documetns avec les membres de l'équipe. <br/><br/> L'<strong>accès public</strong> autorise tous les utilisateurs du système à voir et rechercher dans la collection. C'est utile si vous souhaitez partager des collections de documents que vous pensez bénéfiques pour d'autres utilisateurs. <br/><br/> Vous pouvez choisir si vous souhaitez ou non autoriser d'autres utilisateurs (tous, ou uniquement ceux que vous avez ajoutés à votre collection privée) à ajouter et retirer des documents ou simplement les visualiser pour référence.",247,fr,,,
 team_stats,introtext,"Les graphiques sont créés à la demande en fonction de données temps réel. Cochez la case pour imprimer tous les graphiques de l'année sélectionnée.",248,fr,,,
 resource_request,introtext,"La ressource que vous avez demandée n'est pas disponible en ligne. Les informations sur la ressource sont automatiquement insérées dans le mél, mais vous pouvez ajouter des commentaires additionnels si vous le souhaitez.",249,fr,,,
-team_batch,introtext,"Vous pouvez déposer un ensemble de fichiers ressources en placant les fichiers sur un serveur FTP adéquat. Une fois que vous avez terminé, les fichiers peuvent être supprimés du serveur FTP.",250,fr,,,
-team_batch_upload,introtext,"Vous pouvez déposer un ensemble de fichiers ressources en placant les fichiers sur un serveur FTP adéquat. Une fois que vous avez terminé, les fichiers peuvent être supprimés du serveur FTP.",251,fr,,,
-team_batch_select,introtext,"Vous pouvez déposer un ensemble de fichiers ressources en placant les fichiers sur un serveur FTP adéquat. Une fois que vous avez terminé, les fichiers peuvent être supprimés du serveur FTP.",252,fr,,,
+team_batch,introtext,"",250,fr,,,
+team_batch_upload,introtext,"",251,fr,,,
+team_batch_select,introtext,"",252,fr,,,
 download_click,introtext,"Pour télécharger le fichier ressource, cliquez droit sur le lien ci-dessous et choisissez ""Enregistrer sous..."". Il vous sera alors demandé l'emplacement où vous souhaitez sauvegarder le fichier. Pour ouvrir le fichier dans votre navigateur, cliquez simplement sur le lien.",253,fr,,,
 collection_manage,newcollection,"Pour créer une nouvelle collection, entrez un nom court.",254,fr,,,
 collection_email,introtext,"Remplissez le formulaire ci-dessous pour envoyer cette collection par mél. Les utilisateurs recevront un lien vers la ressource plutôt que des fichiers attachés pour qu'ils puissent choisir et télécharger les ressources appropriées.",255,fr,,,
@@ -432,7 +430,7 @@ done,user_password,"Eine E-Mail mit Ihrem Benutzernamen und Passwort wurde an Si
 done,user_request,"Ihre Anfrage nach einem Zugang wurde abgeschickt und wird in Kürze bearbeitet.",291,de,,,0
 download_click,introtext,"Um die Datei herunterzuladen, clicken Sie bitte mit der rechten Maustaste auf den untenstehenden Link und wählen Sie ""Speichern unter..."". Sie können dann auswählen an welchem Ort Sie die Datei abspeichern wollen. Um die Datei im Browser zu öffnen, clicken Sie den Link bitte mit der linken Maustaste.",292,de,,,0
 download_progress,introtext,"Ihr Download wird in Kürze starten. Nachdem der Download abgeschlossen ist, wählen Sie bitte einen der folgenden Links.",293,de,,,0
-edit,batch,"Bitte geben Sie die gemeinsamen Inhalte und Stichworte für die Dateien, die Sie hochladen.",294,de,,,0
+edit,batch,"",294,de,,,0
 edit,multiple,"Bitte wählen Sie die Felder aus, die Sie verändern wollen. Felder, die Sie nicht anwählen, werden nicht verändert.",295,de,,,0
 help,introtext,"Diese Anleitungen helfen Ihnen, ResourceSpace und Ihre Medien effektiv zu nutzen.</p>
 <p>Benutzen Sie ""Themen"", um Ressourcen nach Themen zu erkunden oder nutzen Sie die Suche um spezifische Ressourcen zu finden.</p>
@@ -463,9 +461,9 @@ themes,introtext,"Themen sind von unserem Team zusammengestellte Gruppen von Res
 user_password,introtext,"Bitte geben Sie Ihre E-Mail Adresse ein. Ihre Zugangsdaten werden dann an per E-Mail an Sie versendet.",315,de,,,0
 user_request,introtext,"Um einen Zugang anzufordern, füllen Sie bitte das untenstehende Formular aus.",316,de,,,0
 team_archive,introtext,"Um einzelne Ressourcen im Archiv zu bearbeiten, suchen Sie einfach nach den Ressourcen und klicken auf ""bearbeiten"" unter ""Ressourcen-Werkzeuge"". Alle Ressourcen, die archiviert werden sollen, werden in der Liste ""Archivierung noch nicht erledigt"" angezeigt. Von dieser Liste aus können Sie weitere Informationen ergänzen und die Ressource ins Archiv verschieben.",317,de,,,0
-team_batch,introtext,"Sie können einen Stapel Ressourcen hochladen, indem Sie sie auf einen FTP Server legen. Nachdem die Dateien importiert wurden, können sie vom FTP Server gelöscht werden.",318,de,,,0
-team_batch_select,introtext,"Sie können einen Stapel Ressourcen hochladen, indem Sie sie auf einen FTP Server legen. Nachdem die Dateien importiert wurden, können sie vom FTP Server gelöscht werden.",319,de,,,0
-team_batch_upload,introtext,"Sie können einen Stapel Ressourcen hochladen, indem Sie sie auf einen FTP Server legen. Nachdem die Dateien importiert wurden, können sie vom FTP Server gelöscht werden.",320,de,,,0
+team_batch,introtext,"",318,de,,,0
+team_batch_select,introtext,"",319,de,,,0
+team_batch_upload,introtext,"",320,de,,,0
 team_copy,introtext,"Geben Sie die ID der Ressource ein, die Sie kopieren möchten. Nur die Metadaten der Ressource werden kopiert – hochgeladene Dateien werden nicht kopiert.",321,de,,,0
 team_home,introtext,"Willkommen in der Administration. Bitte benutzen Sie die untenstehenden Links, um die Ressourcen zu verwalten, auf Ressourcenanfragen zu antworten, Themen zu verwalten und die Systemeinstellungen zu bearbeiten.",322,de,,,0
 team_report,introtext,"Bitte wählen Sie einen Bericht und einen Zeitraum. Der Bericht kann in Microsoft Excel oder einer anderen Tabellenkalkulation geöffnet werden.",323,de,,,0
@@ -475,8 +473,8 @@ team_resource,introtext,"Fügen Sie einzelne Ressourcen hinzu oder nutzen Sie de
 team_stats,introtext,"Statistiken werden auf Basis der aktuellsten Daten erstellt. Aktivieren Sie die Checkbox, um alle Statistiken für das gewählte Jahr auszugeben.",327,de,,,0
 team_user,introtext,"In diesem Bereich können Sie Benutzer hinzufügen, löschen und verändern.",328,de,,,0
 themes,manage,"Organisieren und bearbeiten Sie Ihre Themen. Themen sind besonders hervorgehobene Kollektionen. <br /><br /><strong>1 Um einen neuen Eintrag in einem Thema anzulegen, müssen Sie zuerst eine neue Kollektion anlegen</strong><br />Wählen Sie <strong>Meine Kollektionen</strong> aus der oberen Navigation und legen Sie eine neue <strong>öffentliche</strong> Kollektion an. Stellen Sie sicher, dass Sie einen Namen für Ihr Thema eingeben. Um die aktuelle Kollektion einem bestehenden Thema zuzuordnen, nutzen Sie einen bestehenden Themennamen. Wenn Sie einen noch nicht vergebenen Themennamen angeben, erstellen Sie ein neues Thema. <br /><br /><strong>2 Um den Inhalt eines bestehenden Themas zu ändern, </strong><br>wählen Sie <strong>'Kollektion bearbeiten'</strong>. Die Ressourcen in dieser Kollektion erscheinen unten im <strong>'Meine Kollektionen'</strong> Bereich. Nutzen Sie die Standardwerkzeuge um Resourcen zu bearbeiten, hizuzufügen oder zu löschen.<br /><br /><strong>3 Um eine Kollektion umzubenennen oder unter einem anderen Thema anzuzeigen,</strong><br />wählen Sie <strong>'bearbeiten'</strong> und bearbeiten Sie die Themenkategorie oder die Kollektionsnamen. <br /><br /><strong>4 Um eine Kollektion aus einem Thema zu entfernen,</strong><br>wählen Sie<strong> 'bearbeiten'</strong> und löschen Sie den Eintrag im Feld ""Themen-Kategorie"".",329,de,,,0
-upload,introtext,"Nutzen Sie das untenstehende Formular, um eine Datei hochzuladen.",330,de,,,0
-upload_swf,introtext,"Klicken Sie auf die Schaltfläche unten, um Dateien hochzuladen. Sie können mehrere Dateien hochladen, wenn Sie beim Markieren die 'Shift'-Taste gedrückt halten.",331,de,,,0
+upload,introtext,"",330,de,,,0
+upload_swf,introtext,"",331,de,,,0
 home,welcometitle,"Välkommen till ResourceSpace",332,sv,,,0
 home,welcometext,"Skriv en introduktion här …",333,sv,,,0
 all,footer,"<a target=""_top"" href=""http://www.resourcespace.org/"">ResourceSpace</a>: Digital materialförvaltning (dam) med öppen källkod",334,sv,,,0

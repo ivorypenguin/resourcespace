@@ -647,14 +647,6 @@ $columns_select = '
 <option value=6>6</option>
 <option value=7>7</option>';
 
-
-# Options below control the batch uploader used in user contributions. If both set to true,
-# the user will be given a choice. If both set to false, the standard single upload will be used.
-# Use SWFUpload (Flash) for user contributions
-$usercontribute_swfupload=true;
-# Use JUpload Java uploader for user contributions
-$usercontribute_javaupload=false;
-
 # Show related themes and public collections panel on Resource View page.
 $show_related_themes=true;
 
@@ -1560,11 +1552,11 @@ $multilingual_text_fields=false;
 
 # Allow to selectively disable upload methods.
 # Controls are :
-# - single_upload            : Enable / disable "Add Single Resource".
-# - in_browser_upload        : Enable / disable "Add Resource Batch - In Browser (Flash)".
-# - in_browser_upload_java   : Enable / disable "Add Resource Batch - In Browser (Java)".
-# - fetch_from_ftp           : Enable / disable "Add Resource Batch - Fetch from FTP server".
-# - fetch_from_local_folder  : Enable / disable "Add Resource Batch - Local upload".
+# - single_upload            : Enable / disable "Add Single Resource"
+# - in_browser_upload        : Enable / disable "Add Resource Batch - In Browser"
+# - in_browser_upload_java   : Enable / disable "Add Resource Batch - In Browser - Java (Legacy)"
+# - fetch_from_ftp           : Enable / disable "Add Resource Batch - Fetch from FTP server"
+# - fetch_from_local_folder  : Enable / disable "Add Resource Batch - Fetch from local upload folder"
 $upload_methods = array(
 		'single_upload' => true,
 		'in_browser_upload' => true,

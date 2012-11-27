@@ -511,7 +511,7 @@ $lang["warningexpired"]="Resource Expired";
 $lang["warningexpiredtext"]="Warning! This resource has exceeded the expiry date. You must click the link below to enable the download functionality.";
 $lang["warningexpiredok"]="&gt; Enable resource download";
 $lang["userrequestcomment"]="Comment";
-$lang["addresourcebatchbrowser"]="Add Resource Batch - In Browser (Flash)";
+$lang["addresourcebatchbrowser"]="Add Resource Batch - In Browser";
 $lang["addresourcebatchbrowserjava"]="Add Resource Batch - In Browser (Java - recommended)";
 
 $lang["addresourcebatchftp"]="Add Resource Batch - Fetch from FTP server";

@@ -23,34 +23,29 @@ include "../../include/header.php";
 	
 	<?php if (checkperm("c")): // Check if user can create resources ?>
 
-        <?php if($upload_methods['single_upload']): // Test if in browser is allowed. ?>
+        <?php if($upload_methods['single_upload']):// Test if Add Single Resource is allowed. ?>
 			<li><a href="<?php echo $baseurl_short?>pages/edit.php?ref=-<?php echo $userref?>&amp;single=true" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["addresource"]?></a></li>
-		<?php endif // Test if in browser upload is allowed. ?>
+		<?php endif // Test if Add Single Resource is allowed. ?>
 
-
-		<?php if($upload_methods['in_browser_upload']): // Test if in browser is allowed. ?>
+		<?php if($upload_methods['in_browser_upload']): // Test if Add Resource Batch - In Browser is allowed. ?>
                         <li><a href="<?php echo $baseurl_short?>pages/edit.php?ref=-<?php echo $userref?>&amp;uploader=plupload" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["addresourcebatchbrowser"]?></a></li>
-                <?php endif // Test if in browser upload is allowed. ?>
+                <?php endif // Test if Add Resource Batch - In Browser is allowed. ?>
 
-		<?php if($upload_methods['in_browser_upload']): // Test if in browser is allowed. ?>
-			<li><a href="<?php echo $baseurl_short?>pages/edit.php?ref=-<?php echo $userref?>&amp;uploader=swf" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["addresourcebatchbrowserflash"]?></a></li>
-		<?php endif // Test if in browser upload is allowed. ?>
-
-		<?php if($upload_methods['in_browser_upload_java']): // Test if in browser is allowed. ?>
+		<?php if($upload_methods['in_browser_upload_java']): // Test if Add Resource Batch - In Browser - Java (Legacy) is allowed. ?>
 			<li><a href="<?php echo $baseurl_short?>pages/edit.php?ref=-<?php echo $userref?>&amp;uploader=java" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["addresourcebatchbrowserjava"]?></a></li>
-		<?php endif // Test if in browser upload is allowed. ?>
+		<?php endif // Test if Add Resource Batch - In Browser - Java (Legacy) is allowed. ?>
 
-		<?php if($upload_methods['fetch_from_ftp']): // Test if fetching resources from FTP is allowed. ?>
+		<?php if($upload_methods['fetch_from_ftp']): // Test if Add Resource Batch - Fetch from FTP server is allowed. ?>
 			<li><a href="<?php echo $baseurl_short?>pages/edit.php?ref=-<?php echo $userref?>" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["addresourcebatchftp"]?></a></li>
-		<?php endif // Test if fetching resources from FTP is allowed. ?>
+		<?php endif // Test if Add Resource Batch - Fetch from FTP server is allowed. ?>
 
-		<?php if($upload_methods['fetch_from_local_folder']): // Test if fetching resources from local upload folder is allowed. ?>
+		<?php if($upload_methods['fetch_from_local_folder']): // Test if Add Resource Batch - Fetch from local upload folder is allowed. ?>
 			<li><a href="<?php echo $baseurl_short?>pages/edit.php?ref=-<?php echo $userref?>&amp;local=true" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["addresourcebatchlocalfolder"]?></a></li>
-		<?php endif // Test if fetching resources from local upload folder is allowed. ?>
+		<?php endif // Test if Add Resource Batch - Fetch from local upload folder is allowed. ?>
 
 		<?php hook("addteamresourcetool");?>
 
-		<li><a href="<?php echo $baseurl_short?>pages/upload_swf.php?replace=true" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["replaceresourcebatch"]?></a></li>    
+		<li><a href="<?php echo $baseurl_short?>pages/upload_plupload.php?replace=true" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["replaceresourcebatch"]?></a></li>    
 
 		<li><a href="<?php echo $baseurl_short?>pages/team/team_copy.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["copyresource"]?></a></li>
 		

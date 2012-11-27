@@ -111,7 +111,7 @@ function SwapCSS(css){
 //titlebar modifications
 
 if ($show_resource_title_in_titlebar){
-$general_title_pages=array("team_content","team_archive","team_resource","research_request","requests","edit","themes","collection_public","collection_manage","team_home","help","home","tag","upload_java_popup","upload_java","upload_swf","contact","geo_search","search_advanced","about","contribute","change_password");
+$general_title_pages=array("team_content","team_archive","team_resource","research_request","requests","edit","themes","collection_public","collection_manage","team_home","help","home","tag","upload_java_popup","upload_java","contact","geo_search","search_advanced","about","contribute","change_password");
 $search_title_pages=array("contactsheet_settings","search","preview_all","collection_edit","edit","collection_download","collection_share","collection_request");
 $resource_title_pages=array("view","delete","log","alternative_file","alternative_files","resource_email","edit","preview");
 

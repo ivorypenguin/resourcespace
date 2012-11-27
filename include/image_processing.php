@@ -52,14 +52,14 @@ function upload_file($ref,$no_exif=false,$revert=false,$autorotate=false)
 		$filename=get_resource_path($ref,true,"",false,$extension);
 		$processfile['tmp_name']=$filename; }
 	else{
-		# Work out which file has been posted (switch is necessary for SWFUpload)
-		if (isset($_FILES['userfile'])) {$processfile=$_FILES['userfile'];}
-        else if (isset($_FILES['file'])) {$processfile=$_FILES['file'];} else {$processfile=$_FILES['Filedata'];}
-				
+		# Work out which file has been posted
+		if (isset($_FILES['userfile'])) {$processfile=$_FILES['userfile'];} # Single upload (at least) needs this
+		elseif (isset($_FILES['Filedata'])) {$processfile=$_FILES['Filedata'];} # Java upload (at least) needs this
+
 		# Plupload needs this
-		 if (isset($_REQUEST['name'])) {
-			 $filename=$_REQUEST['name'];
-			 }
+		if (isset($_REQUEST['name'])) {
+			$filename=$_REQUEST['name'];
+			}
 		else {$filename=$processfile['name'];}
 
 	}

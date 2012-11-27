@@ -422,12 +422,8 @@ else
 <?php } else { # Add new material(s), specify default content (writes to resource with ID [negative user ref])
 
 # Define the title h1:
-
 if (getval("uploader","")=="plupload") {$titleh1 = $lang["addresourcebatchbrowser"];}
 elseif (getval("uploader","")=="java") {$titleh1 = $lang["addresourcebatchbrowserjava"];}
-elseif (getval("uploader","")=="swf") {$titleh1 = $lang["addresourcebatchbrowserflash"];}
-
-
 elseif (getval("single","")!="")
 	{
 	if (getval("archive","")=="2")
@@ -519,7 +515,7 @@ for ($n=0;$n<count($types);$n++)
 <?php
 if ($ref<=0 && getval("single","")=="") { 
 
-# Batch uploads (plupload/ftp/local) - also ask which collection to add the resource to.
+# Batch uploads (plupload/java/ftp/local) - also ask which collection to add the resource to.
 if ($enable_add_collection_on_upload) 
 	{
 	?>

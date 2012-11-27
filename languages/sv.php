@@ -26,7 +26,7 @@
 # En första version av översättningen skapades av Henrik Frizén (förnamn.efternamn utan accenttecken i e-postboxen.Sveriges landskod) 20110124 för version 2295
 #
 # Senast uppdaterad av [Namn] [Datum] för version [svn-version], [kommentar]
-# Senast uppdaterad av Henrik Frizén 20121126 för version 4034
+# Senast uppdaterad av Henrik Frizén 20121127 för version 4044
 #
 #
 # User group names (for the default user groups)
@@ -812,7 +812,6 @@ $lang["warningexpiredok"]="&gt; Aktivera hämtning av material";
 $lang["userrequestcomment"]="Meddelande";
 $lang["addresourcebatchbrowser"]="Lägg till material i grupp &ndash; i webbläsare";
 $lang["addresourcebatchbrowserjava"]="Lägg till material i grupp &ndash; i webbläsare (Java &ndash; äldre)";
-$lang["addresourcebatchbrowserflash"]="Lägg till material i grupp &ndash; i webbläsare (Flash &ndash; äldre)";
 
 $lang["addresourcebatchftp"]="Lägg till material i grupp &ndash; överför från ftp-server";
 $lang["replaceresourcebatch"]="Ersätt material i grupp";
@@ -1252,11 +1251,9 @@ $lang["smartcollection"]="Smart samling";
 $lang["dosavedsearch"]="Utför sparad sökning";
 
 
-$lang["uploadertryflash"]="Använd den äldre Flash-överföraren";
 $lang["uploadertryjava"]="Använd den äldre Java-överföraren";
 $lang["uploadertryplupload"]="<strong>NY!</strong> &ndash; Prova nya överföraren.";
 $lang["getjava"]="Besök Javas webbplats om du vill säkerställa att du har den senaste Java-versionen installerad";
-$lang["getflash"]="Besök Flash-spelarens webbplats om du vill säkerställa att du har den senaste Flash-spelaren installerad";
 
 $lang["all"]="Alla";
 $lang["backtoresults"]="Tillbaka: Sökresultat";
@@ -1488,13 +1485,7 @@ $lang["nodownloadcollection"]="Du har inte behörighet att hämta material från
 $lang["progress"]="Förlopp";
 $lang["ticktodeletethisresearchrequest"]="Om du vill ta bort denna förfrågan markerar du kryssrutan och klickar på <b>Spara</b>";
 
-# SWFUpload
-$lang["queued_too_many_files"]="Du har försökt att köa för många filer.";
-$lang["creatingthumbnail"]="Skapar miniatyrbild …";
-$lang["uploading"]="Överför …";
-$lang["thumbnailcreated"]="En miniatyrbild är skapad.";
 $lang["done"]="Klar.";
-$lang["stopped"]="Stoppad."; 
 
 $lang["latlong"]="Latitud, longitud";
 $lang["geographicsearch"]="Geografisk sökning";
@@ -1556,7 +1547,6 @@ $lang["intro-local_upload"] = "Välj en eller flera filer från den lokala över
 $lang["intro-ftp_upload"] = "Välj en eller flera filer från ftp-mappen och klicka sedan på <b>Överför</b>.";
 $lang["intro-java_upload"] = "Klicka på <b>Bläddra</b> för att välja en eller flera filer och klicka sedan på <b>Överför</b>.";
 $lang["intro-java_upload-replace_resource"] = "Klicka på <b>Bläddra</b> för att välja en fil och klicka sedan på <b>Överför</b>.";
-$lang["intro-swf_upload"] = "Klicka på <b>Överför</b> för att välja en eller flera filer som sedan direkt överförs. Håll ner en skift-tangent för att välja flera filer samtidigt.";
 $lang["intro-single_upload"] = "Klicka på <b>Bläddra</b> för att välja en fil och klicka sedan på <b>Överför</b>.";
 $lang["intro-plupload"] = "Klicka på <b>Lägg till filer</b> för att välja en eller flera filer och klicka sedan på <b>Starta överföring</b>.";
 $lang["intro-plupload_dragdrop"] = "Dra och släpp eller klicka på <b>Lägg till filer</b> för att välja en eller flera filer och klicka sedan på <b>Starta överföring</b>.";

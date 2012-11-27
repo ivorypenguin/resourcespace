@@ -787,7 +787,6 @@ $lang["warningexpiredok"]="&gt; Enable resource download";
 $lang["userrequestcomment"]="Comment";
 $lang["addresourcebatchbrowser"]="Add Resource Batch - In Browser";
 $lang["addresourcebatchbrowserjava"]="Add Resource Batch - In Browser  - Java (Legacy) ";
-$lang["addresourcebatchbrowserflash"]="Add Resource Batch - In Browser - Flash (Legacy) ";
 
 $lang["addresourcebatchftp"]="Add Resource Batch - Fetch from FTP server";
 $lang["replaceresourcebatch"]="Replace Resource Batch";
@@ -1227,11 +1226,9 @@ $lang["smartcollection"]="Smart Collection";
 $lang["dosavedsearch"]="Do Saved Search";
 
 
-$lang["uploadertryflash"]="Use the legacy Flash uploader.";
 $lang["uploadertryjava"]="Use the legacy Java uploader.";
 $lang["uploadertryplupload"]="<strong>NEW</strong> - Try out the new style uploader.";
 $lang["getjava"]="To ensure that you have the latest Java software on your system, visit the Java website.";
-$lang["getflash"]="To ensure that you have the latest Flash player on your system, visit the Flash website.";
 
 $lang["all"]="All";
 $lang["backtoresults"]="Back to results";
@@ -1463,13 +1460,7 @@ $lang["nodownloadcollection"]="You do not have access to download any of the res
 $lang["progress"]="Progress";
 $lang["ticktodeletethisresearchrequest"]="Tick to delete this request";
 
-# SWFUpload
-$lang["queued_too_many_files"]="You have attempted to queue too many files.";
-$lang["creatingthumbnail"]="Creating thumbnail...";
-$lang["uploading"]="Uploading...";
-$lang["thumbnailcreated"]="Thumbnail Created.";
 $lang["done"]="Done.";
-$lang["stopped"]="Stopped."; 
 
 $lang["latlong"]="Lat / Long";
 $lang["geographicsearch"]="Geographic Search";
@@ -1531,7 +1522,6 @@ $lang["intro-local_upload"] = "Select one or more files from the local upload fo
 $lang["intro-ftp_upload"] = "Select one or more files from the FTP folder and click <b>Upload</b>.";
 $lang["intro-java_upload"] = "Click <b>Browse</b> to locate one or more files and then click <b>Upload</b>.";
 $lang["intro-java_upload-replace_resource"] = "Click <b>Browse</b> to locate a file and then click <b>Upload</b>.";
-$lang["intro-swf_upload"] = "Click <b>Upload</b> to locate and upload one or more files. Hold down the Shift key to select multiple files.";
 $lang["intro-single_upload"] = "Click <b>Browse</b> to locate a file and then click <b>Upload</b>.";
 $lang["intro-plupload"] = "Click <b>Add Files</b> to locate one or more files and then click <b>Start upload</b>.";
 $lang["intro-plupload_dragdrop"] = "Drag and drop or click <b>Add Files</b> to locate one or more files and then click <b>Start upload</b>.";

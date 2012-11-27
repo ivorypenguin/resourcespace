@@ -255,7 +255,6 @@ $lang["savethissearchtocollection"]="Salvar os critérios da pesquisa na coleç�
 $lang["mustspecifyonekeyword"]="Você deve especificar ao menos uma palavra-chave.";
 $lang["hasemailedyouaresource"]="enviou um email com conteúdo para você."; # Suffixed to user name, e.g. Fred has e-mailed you a content
 $lang["clicktoviewresource"]="Clique no link abaixo para ver o conteúdo.";
-$lang["flashversion"]="\"A versão do Flash é muito antiga para reproduzir vídeos em alta qualidade. Atualize o Flash <a href=\\\"http://get.adobe.com/br/flashplayer/\\\" target=\\\"_blank\\\">aqui</a>.\"";
 
 # Content log - actions
 $lang["resourcelog"]="Registro do Conteúdo";
@@ -491,7 +490,7 @@ $lang["warningexpired"]="Conteúdo Vencido";
 $lang["warningexpiredtext"]="Aviso! Este conteúdo excedeu o prazo de validade. Você deve clicar no link abaixo para habilitar a função de download.";
 $lang["warningexpiredok"]="&gt; Habilitar download do conteúdo";
 $lang["userrequestcomment"]="Comentário";
-$lang["addresourcebatchbrowser"]="Adicionar Conteúdo em Lote - No Navegador (Flash)";
+$lang["addresourcebatchbrowser"]="Adicionar Conteúdo em Lote - No Navegador";
 $lang["addresourcebatchbrowserjava"]="Adicionar Conteúdo em Lote - No Navegador (Java)";
 
 $lang["addresourcebatchftp"]="Adicionar Conteúdo em Lote - Servidor FTP remoto";

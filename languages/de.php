@@ -730,7 +730,7 @@ $lang["warningexpired"]="Ressource abgelaufen";
 $lang["warningexpiredtext"]="Warnung! Diese Ressource hat das Ablaufdatum überschritten. Klicken Sie den untenstehenden Link um die Download-Funktion wieder zu aktivieren..";
 $lang["warningexpiredok"]="&gt; Ressourcen-Download aktivieren";
 $lang["userrequestcomment"]="Kommentar";
-$lang["addresourcebatchbrowser"]="Ressourcen-Stapelverarbeitung: hinzufügen - Im Browser (Flash)";
+$lang["addresourcebatchbrowser"]="Ressourcen-Stapelverarbeitung: hinzufügen - Im Browser";
 $lang["addresourcebatchbrowserjava"]="Ressourcen-Stapelverarbeitung: hinzufügen - Im Browser (Java, empfohlen)";
 
 $lang["addresourcebatchftp"]="Ressourcen-Stapelverarbeitung: hinzufügen - FTP";
@@ -1166,12 +1166,10 @@ $lang["externalselectresourceexpires"]="Wenn Sie die Ressourcen per E-Mail an Nu
  $lang["savesearchassmartcollection"]="Als Smarte Kollektion speichern";
  $lang["smartcollection"]="Smarte Kollektion";
 
-
- $lang["uploadertryflash"]="Wenn Sie Probleme mit dem Upload haben, versuchen Sie bitte den <strong>Flash uploader</strong>.";
+ 
  $lang["uploadertryjava"]="Wenn Sie Probleme mit dem Upload haben, versuchen Sie bitte den <strong>Java uploader</strong>.";
  $lang["getjava"]="Um sicherzustellen, dass Sie die neueste Java Version installiert haben, besuchen Sie bitte die Java Website.";
- $lang["getflash"]="Um sicherzustellen, dass Sie die neueste Version des Flash Players installiert haben, besuchen Sie bitte die Flash Website.";
-
+ 
  $lang["all"]="Alle";
  $lang["backtoresults"]="Zurück zu den Suchergebnissen";
 
@@ -1384,13 +1382,7 @@ $lang["nodownloadcollection"]="Sie haben keinen Zugriff, um Ressourcen aus diese
 $lang["progress"]="Fortschritt";
 $lang["ticktodeletethisresearchrequest"]="Auswählen, um diese Anfrage zu löschen";
 
-# SWFUpload
-$lang["queued_too_many_files"]="Sie haben versucht, zu viele Dateien hochzuladen.";
-$lang["creatingthumbnail"]="Erstelle Thumbnail...";
-$lang["uploading"]="Hochladen...";
-$lang["thumbnailcreated"]="Thumbnail erstellt.";
 $lang["done"]="Fertig.";
-$lang["stopped"]="Abgebrochen."; 
 
 $lang["latlong"]="Breite / Länge";
 $lang["geographicsearch"]="Geographische Suche";
@@ -1448,7 +1440,6 @@ $lang["foldercontent"] = "Ordnerinhalt";
 $lang["intro-local_upload"] = "Wählen Sie eine oder mehrere Dateien vom lokalen Upload Ordner aus und klicken Sie auf <b>Upload</b>. Nachdem die Dateien hochgeladen sind, können Sie aus dem Upload Ordner gelöscht werden.";
 $lang["intro-ftp_upload"] = "Wählen Sie eine oder mehrere Dateien vom FTP Ordner aus und klicken Sie <b>Upload</b> an.";
 $lang["intro-java_upload"] = "Klicken Sie auf <b>Durchsuchen</b>, um eine oder mehrere Dateien auszuwählen, und klicken Sie dann <b>Upload</b> an.";
-$lang["intro-swf_upload"] = "Klicken Sie auf <b>Upload</b>, um eine oder mehrere Dateien auszuwählen. Halten Sie die Shift-Taste gedrückt, um mehrere Dateien auszuwählen.";
 $lang["intro-single_upload"] = "Klicken Sie auf <b>Durchsuchen</b>, um eine Datei auszuwählen, und klicken Sie dann <b>Upload</b> an.";
 $lang["intro-batch_edit"] = "Bitte wählen Sie die Standard-Uploadeinstellungen und die Standardwerte für die Metadaten der Ressourcen, die Sie hochladen wollen.";
 

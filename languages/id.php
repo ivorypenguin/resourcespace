@@ -486,7 +486,7 @@ $lang["warningexpired"]="Aset telah Kadaluwarsa";
 $lang["warningexpiredtext"]="Perhatian! Aset ini telah melewati tanggal kadaluwarsa. Anda harus menuju ke link dibawah ini untuk mengembalikan kemampuan download.";
 $lang["warningexpiredok"]="&gt; Mengembalikan kemampuan download aset";
 $lang["userrequestcomment"]="Komentar";
-$lang["addresourcebatchbrowser"]="Tambahkan Kumpulan Aset - Pada Browser (Flash)";
+$lang["addresourcebatchbrowser"]="Tambahkan Kumpulan Aset - Pada Browser";
 $lang["addresourcebatchbrowserjava"]="Tambahkan Kumpulan Aset - Pada Browser (Java)";
 
 $lang["addresourcebatchftp"]="Tambahkan Kumpulan Aset - Fetch dari FTP server";
