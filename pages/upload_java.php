@@ -302,13 +302,12 @@ else
 -------------------     A SIMPLE AND STANDARD APPLET TAG, to call the JUpload applet  --------------------- 
 ----------------------------------------------------------------------------------------------------------->
         <applet
-	            code="wjhk.jupload2.JUploadApplet"
-	            name="JUpload"
-	            archive="../lib/jupload/wjhk.jupload.jar?1"
-	            width="640"
-	            height="300"
-	            mayscript
-	            alt="The java pugin must be installed.">
+            code="wjhk.jupload2.JUploadApplet"
+            name="JUpload"
+            archive="../lib/jupload/wjhk.jupload.jar?1"
+            width="640"
+            height="300"
+            alt="The java plugin must be installed.">
             <!-- param name="CODE"    value="wjhk.jupload2.JUploadApplet" / -->
             <!-- param name="ARCHIVE" value="wjhk.jupload.jar" / -->
             <!-- param name="type"    value="application/x-java-applet;version=1.5" /  -->
@@ -318,16 +317,16 @@ else
             <param name="allowHttpPersistent" value="false">
             <param name="debugLevel" value="0">
             <param name="showLogWindow" value="false">
-			<param name="readCookieFromNavigator" value="false">
+            <param name="readCookieFromNavigator" value="false">
             <param name="lang" value="<?php echo $language?>">
-            <param name="maxChunkSize" value="<?php echo $jupload_chunk_size ?>">
-         <?php if (isset($jupload_look_and_feel)){ ?>
-	    <param name="lookAndFeel" value="<?php echo $jupload_look_and_feel ?>">
-	<?php } ?>
+            <param name="maxChunkSize" value="<?php echo $jupload_chunk_size ?>"><?php
+            if (isset($jupload_look_and_feel))
+                { ?>
+                <param name="lookAndFeel" value="<?php echo $jupload_look_and_feel ?>"><?php
+                } ?>
             
-            <?php
-            # FIXME! Refresh the collection bar after upload.
-            ?>
+            <!-- # Refresh the collection bar after upload. -->
+            <param name="afterUploadURL" value="javascript:CollectionDivLoad('<?php echo $baseurl . '/pages/collections.php?nc=' . time() ?>');">
 
             <?php hook("addjuploadparams"); ?>
 
