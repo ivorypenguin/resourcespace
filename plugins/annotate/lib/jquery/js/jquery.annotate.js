@@ -388,7 +388,7 @@ function isInt(value) {
         this.editable = (note.editable && image.editable);
 
         // Add the area
-        this.area = $('<div class="image-annotate-area' + (this.editable ? ' image-annotate-area-editable' : '') + '"><div></div></div>');
+        this.area = $('<div class="image-annotate-area' + (this.editable ? ' image-annotate-area-editable' : '') + '"><div>');
         image.canvas.children('.image-annotate-view').prepend(this.area);
 		
         image.canvas.children('.image-annotate-view').prepend(this.area);
