@@ -1169,6 +1169,7 @@ function write_metadata($path,$ref,$uniqid="")
 			
 			foreach ($field as $field)
 				{
+				$writevalue = mb_convert_encoding($writevalue, 'UTF-8');
 				$command.= escapeshellarg("-" . $field . "=" . htmlentities($writevalue, ENT_QUOTES, "UTF-8")) . " ";
 				}
 			}
