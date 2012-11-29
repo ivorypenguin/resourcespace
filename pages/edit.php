@@ -16,12 +16,13 @@ $order_by=getvalescaped("order_by","relevance");
 $offset=getvalescaped("offset",0,true);
 $restypes=getvalescaped("restypes","");
 if (strpos($search,"!")!==false) {$restypes="";}
-$archive=getvalescaped("archive",0,true);
-$errors=array(); # The results of the save operation (e.g. required field messages)
-
 $default_sort="DESC";
 if (substr($order_by,0,5)=="field"){$default_sort="ASC";}
 $sort=getval("sort",$default_sort);
+
+$archive=getvalescaped("archive",0,true);
+
+$errors=array(); # The results of the save operation (e.g. required field messages)
 
 # Disable auto save for upload forms - it's not appropriate.
 if ($ref<0) { $edit_autosave=false; }
@@ -82,33 +83,41 @@ else
 	$multiple=false;
 	}
 
-if (getval("regenexif","")!="")
-	{
-	extract_exif_comment($ref);
-	}
-
-$collection_add=getvalescaped("collection_add","");
- 	
 # Fetch resource data.
 $resource=get_resource_data($ref);
 
-# Not allowed to edit this resource?
-if (!get_edit_access($ref,$resource["archive"])) {
-		$error=$lang['error-permissiondenied'];
-		error_alert($error);
-		exit();
-		}
+# If upload template, check if the user has upload permission.
+if ($ref<0 && !(checkperm("c") || checkperm("d")))
+    {
+    $error=$lang['error-permissiondenied'];
+    error_alert($error);
+    exit();
+    }
+
+# Check edit permission.
+if (!get_edit_access($ref,$resource["archive"]))
+    {
+    # The user is not allowed to edit this resource or the resource doesn't exist.
+    $error=$lang['error-permissiondenied'];
+    error_alert($error);
+    exit();
+    }
 
 if (getval("regen","")!="")
 	{
 	create_previews($ref,false,$resource["file_extension"]);
 	}
-	
+
+if (getval("regenexif","")!="")
+	{
+	extract_exif_comment($ref);
+	}
+
 # Establish if this is a metadata template resource, so we can switch off certain unnecessary features
 $is_template=(isset($metadata_template_resource_type) && $resource["resource_type"]==$metadata_template_resource_type);
 
 
-	
+
 # -----------------------------------
 # 			PERFORM SAVE
 # -----------------------------------
@@ -269,10 +278,10 @@ function HideHelp(field)
 		});
 		jQuery('#collection_add').change();
 	}); 
-		
+
 <?php
 # Function to automatically save the form on field changes, if configured.
- if ($edit_autosave) { ?>
+if ($edit_autosave) { ?>
 function AutoSave(field)
 	{
 	jQuery('#AutoSaveStatus' + field).html('<?php echo $lang["saving"] ?>');
@@ -518,6 +527,7 @@ if ($ref<=0 && getval("single","")=="") {
 # Batch uploads (plupload/java/ftp/local) - also ask which collection to add the resource to.
 if ($enable_add_collection_on_upload) 
 	{
+    $collection_add=getvalescaped("collection_add","");
 	?>
 	<div class="Question" id="question_collectionadd">
 	<label for="collection_add"><?php echo $lang["addtocollection"]?></label>

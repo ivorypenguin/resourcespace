@@ -144,21 +144,25 @@ function get_resource_data($ref,$cache=true)
 			}
 		else
 			{
-			# For batch upload templates (negative reference numbers), generate a new resource.
-			if (isset($always_record_resource_creator) && $always_record_resource_creator)
-				{
-					global $userref;
-                			$user=$userref;
-                		} else {$user=-1;}
-			$wait=sql_query("insert into resource (ref,resource_type,created_by) values ('$ref','$default_resource_type','$user')");
-			$resource=sql_query("select *,mapzoom from resource where ref='$ref'");
-			}
-		}
-	
+            # For upload templates (negative reference numbers), generate a new resource if upload permission.
+            if (!(checkperm("c") || checkperm("d"))) {return false;}
+            else
+                {
+                if (isset($always_record_resource_creator) && $always_record_resource_creator)
+                    {
+                    global $userref;
+                    $user = $userref;
+                    }
+                else {$user = -1;}
+                $wait = sql_query("insert into resource (ref,resource_type,created_by) values ('$ref','$default_resource_type','$user')");
+                $resource = sql_query("select *,mapzoom from resource where ref='$ref'");
+                }
+            }
+        }
 	$get_resource_data_cache[$ref]=$resource[0];
 	return $resource[0];
 	}
-	
+
 function update_hitcount($ref)
 	{
 	global $resource_hit_count_on_downloads;
