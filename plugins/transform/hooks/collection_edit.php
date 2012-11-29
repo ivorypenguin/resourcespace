@@ -10,7 +10,7 @@ function HookTransformCollection_editColleditformbottom (){
 <div class="Question">
 <label><?php echo $lang['batchtransform']; ?></label>
 <div class="Fixed">
-<a href="<?php echo $baseurl_short?>plugins/transform/pages/collection_transform.php?collection=<?php echo $ref?>"><?php echo $lang["transform"]?> &gt;</a>
+<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>plugins/transform/pages/collection_transform.php?collection=<?php echo $ref?>"><?php echo $lang["transform"]?> &gt;</a>
 </div>
 <div class="clearerleft"> </div>
 </div>

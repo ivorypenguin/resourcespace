@@ -747,7 +747,7 @@ if ($cropper_debug){
 }
 ?>
     <p style='text-align:right;margin-top:15px;' id='transform_actions'>
-      <input type='button' value="<?php echo $lang['cancel']; ?>" onclick="javascript:window.location='../../../pages/view.php?ref=<?php echo $ref ?>';" />
+      <input type='button' value="<?php echo $lang['cancel']; ?>" onclick="javascript:return CentralSpaceLoad('<?php echo $baseurl_short . "pages/view.php?ref=" . $ref ?>',true);" />
       <?php if ($original){ ?>
              <input type='submit' name='replace' value="<?php echo $lang['transform_original']; ?>" />
       <?php } else { ?>

@@ -20,7 +20,7 @@ function HookTransformEditAfterreplacefile (){
 	}
 
 	if ($cropper_transform_original && $access==0 && $resource['has_image']==1 && in_array(strtoupper($resource['file_extension']),$cropper_allowed_extensions)){
-		echo "<br /><a href='<?php echo $baseurl_short?>plugins/transform/pages/crop.php?ref=$ref&mode=original'>&gt; ";
+		echo "<br /><a onClick='return CentralSpaceLoad(this,true);' href='${baseurl_short}plugins/transform/pages/crop.php?ref=$ref&mode=original'>&gt; ";
 		echo $lang['transform_original'];
 		echo "</a>";
 		return true;

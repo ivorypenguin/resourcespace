@@ -22,7 +22,7 @@ function HookTransformViewAfterresourceactions (){
 	}
 
 	if ($access==0 && $resource['has_image']==1 && in_array(strtoupper($resource['file_extension']),$cropper_allowed_extensions)){
-		echo "<li><a href='".$baseurl_short."plugins/transform/pages/crop.php?ref=$ref'>&gt; ";
+		echo "<li><a onClick='return CentralSpaceLoad(this,true);' href='".$baseurl_short."plugins/transform/pages/crop.php?ref=$ref'>&gt; ";
 		echo $lang['transform'];
 		echo "</a></li>";
 		return true;
