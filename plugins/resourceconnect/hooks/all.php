@@ -36,7 +36,7 @@ function HookResourceConnectAllInitialise()
 		{
 		if ($resourceconnect_affiliates[$n]["baseurl"]==$baseurl) {$resourceconnect_this=$n;break;}
 		}
-	if ($resourceconnect_this==="") {exit("ResourceConnect error: current affiliate not found in configured affiliate list - ensure baseurls match");}
+	if ($resourceconnect_this==="") {exit($lang["resourceconnect_error-affiliate_not_found"]);}
 	
 	$resourceconnect_selected=getval("resourceconnect_selected","");
 	if ($resourceconnect_selected=="" || !isset($resourceconnect_affiliates[$resourceconnect_selected]))
@@ -55,13 +55,13 @@ function HookResourceConnectAllSearchfiltertop()
 	if (!checkperm("resourceconnect")) {return false;}
 	?>
 
-	<div class="SearchItem"><?php echo $lang["resourceconnect-affiliate"];?><br />
+	<div class="SearchItem"><?php echo $lang["resourceconnect_affiliate"];?><br />
 	<select class="SearchWidth" name="resourceconnect_selected">
 	
 	<?php for ($n=0;$n<count($resourceconnect_affiliates);$n++)
 		{
 		?>
-		<option value="<?php echo $n ?>" <?php if ($resourceconnect_selected==$n) { ?>selected<?php } ?>><?php echo $resourceconnect_affiliates[$n]["name"] ?></option>
+		<option value="<?php echo $n ?>" <?php if ($resourceconnect_selected==$n) { ?>selected<?php } ?>><?php echo i18n_get_translated($resourceconnect_affiliates[$n]["name"]) ?></option>
 		<?php		
 		}
 	?>

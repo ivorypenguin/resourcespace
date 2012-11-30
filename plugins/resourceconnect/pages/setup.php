@@ -10,11 +10,11 @@ include "../../../include/header.php";
 $access_key=md5("resourceconnect" . $scramble_key);
 
 ?>
-<h1 style="padding-bottom:10px;">ResourceConnect Configuration</h1>
+<h1 style="padding-bottom:10px;"><?php echo $lang["resourceconnect_plugin_heading"] ?></h1>
 
-<p>You must give user groups the 'resourceconnect' permission to enable network searching.</p>
+<p><?php echo $lang["resourceconnect_you_must_give_permission"] ?></p>
 
-<p>The access key for this installation is: <strong><?php echo $access_key ?></strong>. This must be entered into the configuration file for systems that are connecting to this system.</p>
+<p><?php echo str_replace("%key", $access_key, $lang["resourceconnect_access_key_for_installation"]) ?></p>
 
 
 <?php

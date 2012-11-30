@@ -10,7 +10,7 @@ function HookResourceConnectSearchBeforesearchresults2()
 	
 	if (!checkperm("resourceconnect")) {return false;}
 	?>
-	<div class="SearchOptionNav"><a href="../plugins/resourceconnect/pages/search.php?search=<?php echo urlencode($search) ?>&language_set=<?php echo $language ?>">&gt;&nbsp;<?php echo $resourceconnect_link_name ?></a></div>
+	<div class="SearchOptionNav"><a href="../plugins/resourceconnect/pages/search.php?search=<?php echo urlencode($search) ?>&language_set=<?php echo $language ?>">&gt;&nbsp;<?php echo i18n_get_translated($resourceconnect_link_name) ?></a></div>
 	<?php
 	}
 */
@@ -49,7 +49,7 @@ function HookResourceConnectSearchReplacesearchresults()
 		}
 	?>	
 		
-	<div id="resourceconnect_container_<?php echo $counter ?>"><p><?php echo $lang["resourceconnect-pleasewait"] ?></p></div>
+	<div id="resourceconnect_container_<?php echo $counter ?>"><p><?php echo $lang["resourceconnect_pleasewait"] ?></p></div>
 	<div class="clearerleft"></div>
 
 	<script>
@@ -60,7 +60,7 @@ function HookResourceConnectSearchReplacesearchresults()
 		offset_<?php echo $counter ?>+=distance;
 		if (offset_<?php echo $counter ?><0) {offset_<?php echo $counter ?>=0;}
 	
-		jQuery('#resourceconnect_container_<?php echo $counter ?>').load('<?php echo $baseurl ?>/plugins/resourceconnect/pages/ajax_request.php?search=<?php echo urlencode($search) ?>&pagesize=<?php echo $page_size ?>&affiliate=<?php echo $resourceconnect_selected ?>&affiliatename=<?php echo urlencode($affiliate["name"]) ?>&restypes=<?php echo urlencode($restypes) ?>&offset=' + offset_<?php echo $counter ?>);
+		jQuery('#resourceconnect_container_<?php echo $counter ?>').load('<?php echo $baseurl ?>/plugins/resourceconnect/pages/ajax_request.php?search=<?php echo urlencode($search) ?>&pagesize=<?php echo $page_size ?>&affiliate=<?php echo $resourceconnect_selected ?>&affiliatename=<?php echo urlencode(i18n_get_translated($affiliate["name"])) ?>&restypes=<?php echo urlencode($restypes) ?>&offset=' + offset_<?php echo $counter ?>);
 
 		
 		}

@@ -32,7 +32,7 @@ $bodyattribs="onload=\"window.setTimeout('history.go(-1);',1000);";
 include "../../../include/header.php";
 ?>
 <h1><?php echo $lang["addtocollection"] ?></h1>
-<p><?php echo $lang["resourceconnect-addedcollection"] ?></p>
+<p><?php echo $lang["resourceconnect_addedcollection"] ?></p>
 <p>&lt;&nbsp;<a href="<?php echo $back ?>"><?php echo $lang["backtoresourceview"] ?></a></p>
 <?php
 include "../../../include/footer.php";

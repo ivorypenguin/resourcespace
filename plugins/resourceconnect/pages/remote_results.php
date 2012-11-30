@@ -49,7 +49,7 @@ $access_key=md5("resourceconnect" . $scramble_key);
 
 # Check the search query against the signature.
 $expected_sign=md5($access_key . $search);
-if ($sign!=$expected_sign) {exit("<p>Sorry, the request was not signed with the correct access key for this installation.</p>");}
+if ($sign!=$expected_sign) {exit("<p>" . $lang["resourceconnect_error-not_signed_with_correct_key"] . "</p>");}
 
 if ($offset>count($results)) {while ($offset>count($results)) {$offset-=$pagesize;}}
 if ($offset<0) {$offset=0;}
@@ -65,9 +65,9 @@ else
 	{
 	?>
 	<div class="TopInpageNav">
-	<div class="InpageNavLeftBlock"><?php echo $lang["youfound"] ?>:<br><span class="Selected"><?php echo count($results) ?></span> resources</div>
+	<div class="InpageNavLeftBlock"><?php echo $lang["youfound"] ?>:<br><span class="Selected"><?php echo count($results) . " " ?></span><?php if (count($results)==1){echo $lang["youfoundresource"];} else {echo $lang["youfoundresources"];}?></div>
 
-	<div class="InpageNavLeftBlock"><?php echo $lang["resourceconnect-affiliate"] ?>:<br><span class="Selected"><?php echo $affiliatename ?></span></div>	
+	<div class="InpageNavLeftBlock"><?php echo $lang["resourceconnect_affiliate"] ?>:<br><span class="Selected"><?php echo $affiliatename ?></span></div>	
 
 	
 	<span class="HorizontalWhiteNav">

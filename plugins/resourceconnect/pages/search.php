@@ -33,7 +33,7 @@ if ($affiliate_selected!="")
 
 ?>
 <p><a href="../../../pages/search.php?search=<?php echo urlencode($search) ?>">&lt;&nbsp;<?php echo $lang["backtosearch"] ?></a></p>
-<h1 style="padding-bottom:10px;"><?php echo $resourceconnect_title ?></h1>
+<h1 style="padding-bottom:10px;"><?php echo i18n_get_translated($resourceconnect_title) ?></h1>
 <?php
 
 $counter=0;
@@ -56,7 +56,7 @@ foreach ($resourceconnect_affiliates as $affiliate)
 		<a href="#" onClick="Repage_<?php echo $counter ?>(<?php echo $page_size ?>);return false;"><?php echo $lang["next"]?>&nbsp;&gt;</a>
 		</div>
 		
-		<h1><?php echo $affiliate["name"] ?></h1>
+		<h1><?php echo i18n_get_translated($affiliate["name"]) ?></h1>
 		<div id="resourceconnect_container_<?php echo $counter ?>"><p><?php echo $lang["pleasewait"] ?></p></div>
 		<div class="clearerleft"></div>
 
