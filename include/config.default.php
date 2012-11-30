@@ -1001,7 +1001,8 @@ $log_resource_views=false;
 # For example; uploading a PHP file may allow arbirtary execution of code, depending on server security settings.
 $banned_extensions=array("php","cgi","pl","exe","asp","jsp");
 
-# When uploading batch resources, on the edit 'template' by default the status and access fields are hidden. Set the below option to 'true' to enable these options during this process.
+# When adding resource(s), in the upload template by default the status and access fields are shown.
+# Set the below option to 'false' to disable these options during this process.
 $show_status_and_access_on_upload=true;
 
 # Mime types by extensions.

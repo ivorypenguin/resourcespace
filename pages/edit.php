@@ -129,7 +129,7 @@ if ((getval("autosave","")!="") || (getval("tweak","")=="" && getval("submitted"
 	if (!$multiple)
 		{
 
-		# Batch upload - change resource type
+		# Upload template: Change resource type
 		$resource_type=getvalescaped("resource_type","");
 		if ($resource_type!="")
 			{
@@ -428,11 +428,11 @@ else
 <?php } ?>
 
 
-<?php } else { # Add new material(s), specify default content (writes to resource with ID [negative user ref])
+<?php } else { # Upload template: (writes to resource with ID [negative user ref])
 
 # Define the title h1:
-if (getval("uploader","")=="plupload") {$titleh1 = $lang["addresourcebatchbrowser"];}
-elseif (getval("uploader","")=="java") {$titleh1 = $lang["addresourcebatchbrowserjava"];}
+if (getval("uploader","")=="plupload") {$titleh1 = $lang["addresourcebatchbrowser"];} # Add Resource Batch - In Browser
+elseif (getval("uploader","")=="java") {$titleh1 = $lang["addresourcebatchbrowserjava"];} # Add Resource Batch - In Browser - Java (Legacy)
 elseif (getval("single","")!="")
 	{
 	if (getval("archive","")=="2")
@@ -456,7 +456,7 @@ $titleh2 = str_replace(array("%number","%subtitle"), array("1", $lang["specifyde
 <p><?php echo $lang["intro-batch_edit"] ?></p>
 
 <?php if ($ref<0) { 
-	# User edit template. Show the save / clear buttons at the top too, to avoid unnecessary scrolling.
+	# Upload template: Show the save / clear buttons at the top too, to avoid unnecessary scrolling.
 	?>
 	<div class="QuestionSubmit">
 	<input name="resetform" type="submit" value="<?php echo $lang["clearbutton"]?>" />&nbsp;
@@ -524,7 +524,7 @@ for ($n=0;$n<count($types);$n++)
 <?php
 if ($ref<=0 && getval("single","")=="") { 
 
-# Batch uploads (plupload/java/ftp/local) - also ask which collection to add the resource to.
+# Add Resource Batch: specify default content - also ask which collection to add the resource to.
 if ($enable_add_collection_on_upload) 
 	{
     $collection_add=getvalescaped("collection_add","");
@@ -828,7 +828,7 @@ for ($n=0;$n<count($fields);$n++)
 		<option value="AP"><?php echo $lang["appendtext"]?></option>
 		<?php } 
 		if ($fields[$n]["type"]==0 || $fields[$n]["type"]==1 || $fields[$n]["type"]==5 || $fields[$n]["type"]==2 || $fields[$n]["type"]==3) { ?>
-		# Remove applies to text boxes, checkboxes and dropdowns only.
+		<!--- Remove applies to text boxes, checkboxes and dropdowns only. -->
 		<option value="RM"><?php echo $lang["removetext"]?></option>
 		<?php } ?>
 		</select>
@@ -900,132 +900,170 @@ for ($n=0;$n<count($fields);$n++)
 }
 
 
-# User upload forms. Work out the correct archive status.
-if ($ref<0 && $show_status_and_access_on_upload==false) { 
-		# Hide the dropdown, and set the default status depending on user permissions.
-		$mode=0;
-		if (checkperm("e-1")) {$mode=-1;}
-		if (checkperm("e-2")) {$mode=-2;}
-		if (checkperm("e2")) {$mode=2;}
-		if (checkperm("e0")) {$mode=0;}
-		
-		$modified_defaultstatus=(hook("modifydefaultstatusmode"));
-		if ($modified_defaultstatus){$mode=$modified_defaultstatus;}
-		
-		#if (checkperm("e0") && checkperm("e-2")) {$mode=-2;}
-		?>
-		<input type=hidden name="archive" value="<?php echo $mode?>">
-		<?php
-		}
+# Work out the correct archive status.
+if ($ref<0) # Upload template.
+    {
+    $modified_defaultstatus = hook("modifydefaultstatusmode");
+    if ($archive==2)
+        {
+        if (checkperm("e2")) {$status = 2;} # Set status to Archived - if the user has the required permission.
+        elseif ($modified_defaultstatus) {$status = $modified_defaultstatus;}  # Set the modified default status - if set.
+        elseif (checkperm("e" . $resource["archive"])) {$status = $resource["archive"];} # Else, set status to the status stored in the user template - if the user has the required permission.
+        elseif (checkperm("c")) {$status = 0;} # Else, set status to Active - if the user has the required permission.
+        elseif (checkperm("d")) {$status = -2;} # Else, set status to Pending Submission.
+        }
+    else
+        {
+        if ($modified_defaultstatus) {$status = $modified_defaultstatus;}  # Set the modified default status - if set.
+        elseif ($resource["archive"]!=2 && checkperm("e" . $resource["archive"])) {$status = $resource["archive"];} # Set status to the status stored in the user template - if the status is not Archived and if the user has the required permission.
+        elseif (checkperm("c")) {$status = 0;} # Else, set status to Active - if the user has the required permission.
+        elseif (checkperm("d")) {$status = -2;} # Else, set status to Pending Submission.   
+        }
 
-if (!checkperm("F*")) # Only display status/relationships if full write access field access has been granted.
-{
-?>
-<?php if(!hook("replacestatusandrelationshipsheader")){?>
-<?php if ($ref>=0) { ?><br><h1><?php echo $lang["statusandrelationships"]?></h1><?php } ?>
-<?php } /* end hook replacestatusandrelationshipsheader */ ?>
+    if ($show_status_and_access_on_upload==false)
+        {
+        # Hide the dropdown, and set the default status.
+        ?>
+        <input type=hidden name="archive" id="archive" value="<?php echo $status?>"><?php
+        }
+    }
+else # Edit Resource(s).
+    {
+    $status = $resource["archive"];
+    }
 
-	<!-- Archive Status -->
-	<?php if ($ref<0 && $show_status_and_access_on_upload==false)
-		{
-        // for Team Center uploads directly to archive status:
-		if ($archive==2){ ?><input type=hidden name="archive" id="archive" value="2"><?php }
-		}
-	else { ?>
-	<?php if(!hook("replacestatusselector")){?>
-	<?php if ($multiple) { ?><div id="editmultiple_status"><input name="editthis_status" id="editthis_status" value="yes" type="checkbox" onClick="var q=document.getElementById('question_status');if (q.style.display!='block') {q.style.display='block';} else {q.style.display='none';}">&nbsp;<label id="editthis_status_label" for="editthis<?php echo $n?>"><?php echo $lang["status"]?></label></div><?php } ?>
-	<div class="Question" id="question_status" <?php if ($multiple) {?>style="display:none;"<?php } ?>>
-	<label for="archive"><?php echo $lang["status"]?></label>
-	<?php
-	# Autosave display
-	if ($edit_autosave) { ?>
-	<div class="AutoSaveStatus" id="AutoSaveStatusStatus" style="display:none;"></div>
-	<?php } ?>
-	
-	<select class="stdwidth" name="archive" id="archive" <?php if ($edit_autosave) {?>onChange="AutoSave('Status');"<?php } ?>>
-	<?php for ($n=-2;$n<=3;$n++) { ?>
-	<?php if (checkperm("e" . $n)) { ?><option value="<?php echo $n?>" <?php if ($resource["archive"]==$n  || $archive==$n) { ?>selected<?php } ?>><?php echo $lang["status" . $n]?></option><?php } ?>
-	<?php } ?>
-	</select>
-	<div class="clearerleft"> </div>
-	</div>
-	<?php } ?>
-	<?php } /* end hook replacestatusselector */?>
+# Status / Access / Related Resources
+if (!checkperm("F*")) # Only display Status / Access / Related Resources if full write access field access has been granted.
+    {
+    if(!hook("replacestatusandrelationshipsheader"))
+        {
+        ?><br><h1><?php echo $lang["statusandrelationships"]?></h1><?php
+        } /* end hook replacestatusandrelationshipsheader */
 
-<?php hook("beforeaccessselector"); ?>
-<?php if (!hook("replaceaccessselector")){ ?>	
-	<!-- Access -->
-	<?php if ($ref<0 && $show_status_and_access_on_upload==false) { 
-		# Do not show for user editable templates.
-		?>
-		<input type=hidden name="access" value="<?php echo $resource["access"]?>">
-		<?php
-		}
-	else { ?>
-	<?php if ($multiple) { ?><div><input name="editthis_access" id="editthis_access" value="yes" type="checkbox" onClick="var q=document.getElementById('question_access');if (q.style.display!='block') {q.style.display='block';} else {q.style.display='none';}">&nbsp;<label for="editthis<?php echo $n?>"><?php echo $lang["access"]?></label></div><?php } ?>
-	<div class="Question" id="question_access" <?php if ($multiple) {?>style="display:none;"<?php } ?>>
-	<label for="archive"><?php echo $lang["access"]?></label>
-	<?php
-	# Autosave display
-	if ($edit_autosave) { ?>
-	<div class="AutoSaveStatus" id="AutoSaveStatusAccess" style="display:none;"></div>
-	<?php } ?>
+    # Status
+    if ($ref>0 || $show_status_and_access_on_upload==true)
+        {
+        if(!hook("replacestatusselector"))
+            {
+            if ($multiple)
+                { ?>
+                <div id="editmultiple_status"><input name="editthis_status" id="editthis_status" value="yes" type="checkbox" onClick="var q=document.getElementById('question_status');if (q.style.display!='block') {q.style.display='block';} else {q.style.display='none';}">&nbsp;<label id="editthis_status_label" for="editthis<?php echo $n?>"><?php echo $lang["status"]?></label></div><?php
+                } ?>
+            <div class="Question" id="question_status" <?php if ($multiple) {?>style="display:none;"<?php } ?>>
+            <label for="archive"><?php echo $lang["status"]?></label><?php
+            
+            # Autosave display
+            if ($edit_autosave)
+                { ?>
+                <div class="AutoSaveStatus" id="AutoSaveStatusStatus" style="display:none;"></div><?php
+                } ?>
 
-	<select class="stdwidth" name="access" id="access" onChange="var c=document.getElementById('custom_access');if (this.value==3) {c.style.display='block';} else {c.style.display='none';}<?php if ($edit_autosave) {?>AutoSave('Access');<?php } ?>">
-	
-	<?php for ($n=0;$n<=($custom_access?3:2);$n++) { ?>
-	<?php if ($n==2 && checkperm("v")){?><option value="<?php echo $n?>" <?php if ($resource["access"]==$n) { ?>selected<?php } ?>><?php echo $lang["access" . $n]?></option><?php } 
-	else if ($n!=2){ ?><option value="<?php echo $n?>" <?php if ($resource["access"]==$n) { ?>selected<?php } ?>><?php echo $lang["access" . $n]?></option><?php } ?>
-	<?php } ?>
-	</select>
-	<div class="clearerleft"> </div>
-	<table id="custom_access" cellpadding=3 cellspacing=3 style="padding-left:150px;<?php if (!$custom_access || $resource["access"]!=3) { ?>display:none;<?php } ?>">
-	<?php
-	$groups=get_resource_custom_access($ref);
-	for ($n=0;$n<count($groups);$n++)
-		{
-		$access=2;$editable=true;
-		if ($groups[$n]["access"]!="") {$access=$groups[$n]["access"];}
-		$perms=explode(",",$groups[$n]["permissions"]);
-		if (in_array("v",$perms)) {$access=0;$editable=false;}
-		?>
-		<tr>
-		<td valign=middle nowrap><?php echo htmlspecialchars($groups[$n]["name"])?>&nbsp;&nbsp;</td>
-		<td width=10 valign=middle><input type=radio name="custom_<?php echo $groups[$n]["ref"]?>" value="0" <?php if (!$editable) { ?>disabled<?php } ?> <?php if ($access==0) { ?>checked<?php } ?>
-		<?php if ($edit_autosave) {?>onChange="AutoSave('Access');"<?php } ?>></td>
-		<td align=left valign=middle><?php echo $lang["access0"]?></td>
-		<td width=10 valign=middle><input type=radio name="custom_<?php echo $groups[$n]["ref"]?>" value="1" <?php if (!$editable) { ?>disabled<?php } ?> <?php if ($access==1) { ?>checked<?php } ?>
-		<?php if ($edit_autosave) {?>onChange="AutoSave('Access');"<?php } ?>></td>
-		<td align=left valign=middle><?php echo $lang["access1"]?></td>
-		<?php if (checkperm("v")){?><td width=10 valign=middle><input type=radio name="custom_<?php echo $groups[$n]["ref"]?>" value="2" <?php if (!$editable) { ?>disabled<?php } ?> <?php if ($access==2) { ?>checked<?php } ?>
-		<?php if ($edit_autosave) {?>onChange="AutoSave('Access');"<?php } ?>></td>
-		<td align=left valign=middle><?php echo $lang["access2"]?></td><?php } ?>
-		</tr>
-		<?php
-		}
-	?></table>
-	<div class="clearerleft"> </div>
-	</div>
-	<?php } ?>
-	<?php } /* end Hook replaceaccessselector */ ?>
+            <select class="stdwidth" name="archive" id="archive" <?php if ($edit_autosave) {?>onChange="AutoSave('Status');"<?php } ?>><?php
+            for ($n=-2;$n<=3;$n++)
+                {
+                if (checkperm("e" . $n)) { ?><option value="<?php echo $n?>" <?php if ($status==$n) { ?>selected<?php } ?>><?php echo $lang["status" . $n]?></option><?php }
+                } ?>
+            </select>
+            <div class="clearerleft"> </div>
+            </div><?php
+            } /* end hook replacestatusselector */
+        }
 
-	<!-- Related Resources -->
-	<?php if ($enable_related_resources) { ?>
-	<?php if ($multiple) { ?><div><input name="editthis_related" id="editthis_related" value="yes" type="checkbox" onClick="var q=document.getElementById('question_related');if (q.style.display!='block') {q.style.display='block';} else {q.style.display='none';}">&nbsp;<label for="editthis<?php echo $n?>"><?php echo $lang["relatedresources"]?></label></div><?php } ?>
-	<div class="Question" id="question_related" <?php if ($multiple) {?>style="display:none;"<?php } ?>>
-	<label for="related"><?php echo $lang["relatedresources"]?></label>
-	<?php
-	# Autosave display
-	if ($edit_autosave) { ?>
-	<div class="AutoSaveStatus" id="AutoSaveStatusRelated" style="display:none;"></div>
-	<?php } ?>
-	<textarea class="stdwidth" rows=3 cols=50 name="related" id="related"
-	<?php if ($edit_autosave) {?>onChange="AutoSave('Related');"<?php } ?>
-	><?php echo ((getval("resetform","")!="")?"":join(", ",get_related_resources($ref)))?></textarea>
-	<div class="clearerleft"> </div>
-	</div>
-	<?php } 
-}
+    # Access
+    hook("beforeaccessselector");
+    if (!hook("replaceaccessselector"))
+        {
+        if ($ref<0 && $show_status_and_access_on_upload==false)
+            { 
+            # Upload template and the status and access fields are configured to be hidden on uploads.
+            ?>
+            <input type=hidden name="access" value="<?php echo $resource["access"]?>"><?php
+            }
+        else
+            {
+            if ($multiple) { ?><div><input name="editthis_access" id="editthis_access" value="yes" type="checkbox" onClick="var q=document.getElementById('question_access');if (q.style.display!='block') {q.style.display='block';} else {q.style.display='none';}">&nbsp;<label for="editthis<?php echo $n?>"><?php echo $lang["access"]?></label></div><?php } ?>
+
+            <div class="Question" id="question_access" <?php if ($multiple) {?>style="display:none;"<?php } ?>>
+            <label for="archive"><?php echo $lang["access"]?></label><?php
+
+            # Autosave display
+            if ($edit_autosave) { ?><div class="AutoSaveStatus" id="AutoSaveStatusAccess" style="display:none;"></div><?php } ?>
+
+            <select class="stdwidth" name="access" id="access" onChange="var c=document.getElementById('custom_access');if (this.value==3) {c.style.display='block';} else {c.style.display='none';}<?php if ($edit_autosave) {?>AutoSave('Access');<?php } ?>"><?php
+
+            for ($n=0;$n<=($custom_access?3:2);$n++)
+                {
+                if ($n==2 && checkperm("v"))
+                    { ?>
+                    <option value="<?php echo $n?>" <?php if ($resource["access"]==$n) { ?>selected<?php } ?>><?php echo $lang["access" . $n]?></option><?php
+                    } 
+                else if ($n!=2)
+                    { ?>
+                    <option value="<?php echo $n?>" <?php if ($resource["access"]==$n) { ?>selected<?php } ?>><?php echo $lang["access" . $n]?></option><?php
+                    }
+                } ?>
+            </select>
+
+            <div class="clearerleft"> </div>
+            <table id="custom_access" cellpadding=3 cellspacing=3 style="padding-left:150px;<?php if (!$custom_access || $resource["access"]!=3) { ?>display:none;<?php } ?>"><?php
+
+            $groups=get_resource_custom_access($ref);
+            for ($n=0;$n<count($groups);$n++)
+                {
+                $access=2;$editable=true;
+                if ($groups[$n]["access"]!="") {$access=$groups[$n]["access"];}
+                $perms=explode(",",$groups[$n]["permissions"]);
+
+                if (in_array("v",$perms)) {$access=0;$editable=false;} ?>
+                    
+                <tr>
+                <td valign=middle nowrap><?php echo htmlspecialchars($groups[$n]["name"])?>&nbsp;&nbsp;</td>
+
+                <td width=10 valign=middle><input type=radio name="custom_<?php echo $groups[$n]["ref"]?>" value="0" <?php if (!$editable) { ?>disabled<?php } ?> <?php if ($access==0) { ?>checked<?php }
+                if ($edit_autosave) {?>onChange="AutoSave('Access');"<?php } ?>></td>
+
+                <td align=left valign=middle><?php echo $lang["access0"]?></td>
+
+                <td width=10 valign=middle><input type=radio name="custom_<?php echo $groups[$n]["ref"]?>" value="1" <?php if (!$editable) { ?>disabled<?php } ?> <?php if ($access==1) { ?>checked<?php }
+                if ($edit_autosave) {?>onChange="AutoSave('Access');"<?php } ?>></td>
+
+                <td align=left valign=middle><?php echo $lang["access1"]?></td><?php
+
+                if (checkperm("v"))
+                    { ?>
+                    <td width=10 valign=middle><input type=radio name="custom_<?php echo $groups[$n]["ref"]?>" value="2" <?php if (!$editable) { ?>disabled<?php } ?> <?php if ($access==2) { ?>checked<?php }
+                    if ($edit_autosave) {?>onChange="AutoSave('Access');"<?php } ?>></td>
+
+                    <td align=left valign=middle><?php echo $lang["access2"]?></td><?php
+                    } ?>
+                </tr><?php
+                } ?>
+            </table>
+            <div class="clearerleft"> </div>
+            </div><?php
+            }
+        } /* end hook replaceaccessselector */
+
+    # Related Resources
+    if ($enable_related_resources)
+        {
+        if ($multiple) { ?><div><input name="editthis_related" id="editthis_related" value="yes" type="checkbox" onClick="var q=document.getElementById('question_related');if (q.style.display!='block') {q.style.display='block';} else {q.style.display='none';}">&nbsp;<label for="editthis<?php echo $n?>"><?php echo $lang["relatedresources"]?></label></div><?php } ?>
+
+        <div class="Question" id="question_related" <?php if ($multiple) {?>style="display:none;"<?php } ?>>
+        <label for="related"><?php echo $lang["relatedresources"]?></label><?php
+
+        # Autosave display
+        if ($edit_autosave) { ?><div class="AutoSaveStatus" id="AutoSaveStatusRelated" style="display:none;"></div><?php } ?>
+
+        <textarea class="stdwidth" rows=3 cols=50 name="related" id="related"<?php
+        if ($edit_autosave) {?>onChange="AutoSave('Related');"<?php } ?>><?php
+
+        echo ((getval("resetform","")!="")?"":join(", ",get_related_resources($ref)))?></textarea>
+
+        <div class="clearerleft"> </div>
+        </div><?php
+        } 
+    }
 
 if ($multiple && !$disable_geocoding)
 	{
@@ -1096,9 +1134,7 @@ if (!$multiple && $ref>0) {EditNav();}
 	    }
     }
 
-?>
-<!--<p><a href="view.php?ref=<?php echo $ref?>">Back to view</a></p>-->
-<?php hook("autolivejs"); ?>
-<?php
+hook("autolivejs");
+
 include "../include/footer.php";
 ?>
