@@ -2029,8 +2029,17 @@ function resolve_userlist_groups($userlist)
 		if (strpos($u,$lang["group"] . ": ")===0)
 			{
 			# Group entry, resolve
-			$u=trim(substr($u,strlen($lang["group"] . ": ")));
-			$users=sql_array("select u.username value from user u join usergroup g on u.usergroup=g.ref where g.name='$u'");
+
+			# Find the translated groupname.
+			$translated_groupname = trim(substr($u,strlen($lang["group"] . ": ")));
+			# Find the corresponding $lang index.
+			$langindex = array_search($translated_groupname, $lang);
+			# Decode the groupname by using the code from lang_or_i18n_get_translated the other way around (it could be possible that someone have renamed the English groupnames in the language file).
+			# Note that this function can't decode groupnames containing special characters.
+			$untranslated_groupname = trim(substr($langindex,strlen("usergroup-")));
+			$untranslated_groupname = str_replace(array("_", "and"), array(" "), $untranslated_groupname);
+			# Find and add the users.
+			$users=sql_array("select u.username value from user u join usergroup g on u.usergroup=g.ref where lower(g.name)='$untranslated_groupname'");
 			if ($newlist!="") {$newlist.=",";}
 			$newlist.=join(",",$users);
 			}
