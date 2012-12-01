@@ -83,7 +83,7 @@ team_batch_select,introtext,"",54,en,,,
 download_click,introtext,"To download the resource file, right click the link below and choose ""Save As..."". You will then be asked where you would like to save the file. To open the file in your browser simply click the link.",55,en,,,
 collection_manage,newcollection,"To create a new collection, enter a short name.",56,en,,,
 collection_email,introtext,"Complete the form below to e-mail this collection. The user(s) will receive a link to the resource rather than file attachments so they can choose and download the appropriate resources.",57,en,,,
-all,footer,"Powered by <a target=""_top"" href=""http://www.resourcespace.org/"">ResourceSpace</a>: Open Source Digital Asset Management",58,en,,,
+all,footer,"Powered by <a target=""_blank"" href=""http://www.resourcespace.org/"">ResourceSpace</a>: Open Source Digital Asset Management",58,en,,,
 change_language,introtext,"Please select your language below.",59,en,,,
 all,searchpanel,"Search using descriptions, keywords and resource numbers",60,es,,,
 all,footer,"Accionado por el <a href=""http://www.resourcespace.org/"">ResourceSpace</a>",61,es,,,
@@ -477,7 +477,7 @@ upload,introtext,"",330,de,,,0
 upload_swf,introtext,"",331,de,,,0
 home,welcometitle,"Välkommen till ResourceSpace",332,sv,,,0
 home,welcometext,"Skriv en introduktion här …",333,sv,,,0
-all,footer,"<a target=""_top"" href=""http://www.resourcespace.org/"">ResourceSpace</a>: Digital materialförvaltning (dam) med öppen källkod",334,sv,,,0
+all,footer,"<a target=""_blank"" href=""http://www.resourcespace.org/"">ResourceSpace</a>: Digital materialförvaltning (dam) med öppen källkod",334,sv,,,0
 all,searchpanel,"Sök efter material genom att ange beskrivning, nyckelord eller materialnr.",335,sv,,,0
 resource_email,introtext,"Dela snabbt och enkelt material med andra. Ett e-postmeddelande innehållande en webblänk till materialen skapas och skickas automatiskt. Du kan även lägga till ett eget meddelande.",336,sv,,,0
 home,themes,"De bästa materialen, speciellt utvalda och sorterade.",337,sv,,,0

@@ -556,7 +556,7 @@ if (!$basic_simple_search)
 	  <h2><?php echo $lang["login"]?></h2>
 
   
-  <form id="form1" method="post" action="<?php echo $baseurl?>/login.php" target="_top">
+  <form id="form1" method="post" action="<?php echo $baseurl?>/login.php">
   <div class="SearchItem"><?php echo $lang["username"]?><br/><input type="text" name="username" id="name" class="SearchWidth" /></div>
   
   <div class="SearchItem"><?php echo $lang["password"]?><br/><input type="password" name="password" id="name" class="SearchWidth" /></div>

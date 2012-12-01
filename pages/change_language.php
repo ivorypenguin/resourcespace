@@ -24,7 +24,7 @@ include "../include/header.php";
 <h1><?php echo $lang["languageselection"]?></h1>
 <p><?php echo text("introtext")?></p>
   
-<form method="post" target="_top" action="<?php echo $baseurl_short?>pages/change_language.php">  
+<form method="post" action="<?php echo $baseurl_short?>pages/change_language.php">  
 <div class="Question">
 <label for="password"><?php echo $lang["language"]?></label>
 <select class="stdwidth" name="language">

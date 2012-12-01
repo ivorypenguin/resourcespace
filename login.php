@@ -147,7 +147,7 @@ if (!hook("replaceloginform")) {
   
   
   <?php if ($error!="") { ?><div class="FormIncorrect"><?php echo $error?></div><?php } ?>
-  <form target="_top" id="loginform" method="post" <?php if (!$login_autocomplete) { ?>AUTOCOMPLETE="OFF"<?php } ?>>
+  <form id="loginform" method="post" <?php if (!$login_autocomplete) { ?>AUTOCOMPLETE="OFF"<?php } ?>>
   <input type="hidden" name="langupdate" id="langupdate" value="">  
   <input type="hidden" name="url" value="<?php echo htmlspecialchars($url)?>">
 		<div class="Question">

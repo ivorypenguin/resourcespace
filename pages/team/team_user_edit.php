@@ -44,7 +44,7 @@ if (getval("loginas","")!="")
 	# Log in as this user
 	# A user key must be generated to enable login using the MD5 hash as the password.
 	?>
-	<form method="post" action="<?php echo $baseurl_short?>login.php" id="autologin" target="_top">
+	<form method="post" action="<?php echo $baseurl_short?>login.php" id="autologin">
 	<input type="hidden" name="username" value="<?php echo $user["username"]?>">
 	<input type="hidden" name="password" value="<?php echo $user["password"]?>">
 	<input type="hidden" name="userkey" value="<?php echo md5($user["username"] . $scramble_key)?>">
