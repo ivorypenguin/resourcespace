@@ -52,8 +52,8 @@ for ($t=0;$t<count($class);$t++)
 		$nodefolder=1;
 		$nodechecked=0;if (in_array(trim(strtolower($s[2])),$checked)) {$nodechecked=1;}
 		$nodeexpand=0;if (($nodefolder==1) && ($nodechecked==1)) {$nodeexpand=1;}
-		# Add this node0
-		?>AddNode("<?php echo $name?>",<?php echo $s[1]-1?>,<?php echo $t?>,"<?php echo str_replace("\"","\\\"",trim($s[2]))?>",1,<?php echo $nodechecked?>,<?php echo $nodeexpand?>);<?php
+		# Add this node
+		?>AddNode("<?php echo $name?>",<?php echo $s[1]-1?>,<?php echo $s[0]-1?>,"<?php echo str_replace("\"","\\\"",trim($s[2]))?>",1,<?php echo $nodechecked?>,<?php echo $nodeexpand?>);<?php
 		}
 	}
 ?>
