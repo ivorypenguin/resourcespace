@@ -118,7 +118,7 @@ else
 		
 		//Display existing shares for collections in theme
 		if ($showexisting=="")
-			{ echo "<p><a href=\"".$baseurl_short."pages/theme_category_share.php" . $linksuffix . "&showexisting=true\">> " . $lang["showexistingthemeshares"] . "</a></p>";}
+			{ echo "<p><a onClick=\"return CentralSpaceLoad(this,true);\" href=\"".$baseurl_short."pages/theme_category_share.php" . $linksuffix . "&showexisting=true\">> " . $lang["showexistingthemeshares"] . "</a></p>";}
 		else 
 			{
 			foreach($collectionstoshare as $collection)

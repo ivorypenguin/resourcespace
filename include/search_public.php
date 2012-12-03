@@ -20,7 +20,7 @@ for ($n=0;$n<count($collections);$n++)
 		<table  border="0" class="ResourceAlign"><?php hook("publicresulttop")?><tr><td>
 		
 		<div style="position: relative;height:140px;">
-		<a href="<?php echo $pub_url?>" title="<?php echo str_replace(array("\"","'"),"",i18n_get_collection_name($collections[$n]))?>">
+		<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $pub_url?>" title="<?php echo str_replace(array("\"","'"),"",i18n_get_collection_name($collections[$n]))?>">
 		
 		<?php 
 		$images=0;
@@ -59,12 +59,12 @@ for ($n=0;$n<count($collections);$n++)
             <?php if (in_array($df[$x]['ref'],$thumbs_display_extended_fields)){
                 ?><div class="extended">
             <?php } ?>
-            <?php if ($x==count($df)-1){?><a href="<?php echo $pub_url?>" title="<?php echo str_replace(array("\"","'"),"",i18n_get_collection_name($collections[$n]))?>"><?php echo highlightkeywords(tidy_trim(i18n_get_collection_name($collections[$n]),32),$search)?></a><?php } ?>&nbsp;<?php if (in_array($df[$x]['ref'],$thumbs_display_extended_fields)){ ?></div>
+            <?php if ($x==count($df)-1){?><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $pub_url?>" title="<?php echo str_replace(array("\"","'"),"",i18n_get_collection_name($collections[$n]))?>"><?php echo highlightkeywords(tidy_trim(i18n_get_collection_name($collections[$n]),32),$search)?></a><?php } ?>&nbsp;<?php if (in_array($df[$x]['ref'],$thumbs_display_extended_fields)){ ?></div>
             <?php }
         ?></div><?php } ?>
         <?php } ?>
         <?php if (!hook("replacecollectiontools")){?>
-        <div class="ResourcePanelCountry" style="float:right;"><a href="<?php echo $baseurl_short?>pages/collections.php?collection=<?php echo $collections[$n]["ref"]?>" onClick="return CollectionDivLoad(this);">&gt;&nbsp;<?php echo $lang["action-select"]?></a>&nbsp;&nbsp;&nbsp;<a href="<?php echo $pub_url?>">&gt;&nbsp;<?php echo $lang["viewall"]?></a></div>		
+        <div class="ResourcePanelCountry" style="float:right;"><a href="<?php echo $baseurl_short?>pages/collections.php?collection=<?php echo $collections[$n]["ref"]?>" onClick="return CollectionDivLoad(this);">&gt;&nbsp;<?php echo $lang["action-select"]?></a>&nbsp;&nbsp;&nbsp;<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $pub_url?>">&gt;&nbsp;<?php echo $lang["viewall"]?></a></div>		
         <?php } ?>
 		
 		<div class="clearer"></div>
@@ -84,7 +84,7 @@ for ($n=0;$n<count($collections);$n++)
 		<table  border="0" class="ResourceAlignLarge"><?php hook("publicresulttop")?><tr><td>
 		
 		<div style="position: relative;height:330px;">
-		<a href="<?php echo $pub_url?>" title="<?php echo str_replace(array("\"","'"),"",i18n_get_collection_name($collections[$n]))?>">
+		<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $pub_url?>" title="<?php echo str_replace(array("\"","'"),"",i18n_get_collection_name($collections[$n]))?>">
 
 		<?php 
 		$images=0;
@@ -122,13 +122,13 @@ for ($n=0;$n<count($collections);$n++)
             <?php if (in_array($df[$x]['ref'],$xl_thumbs_display_extended_fields)){
                 ?><div class="extended">
             <?php } ?>
-            <?php if ($x==count($df)-1){?><a href="<?php echo $pub_url?>" title="<?php echo str_replace(array("\"","'"),"",i18n_get_collection_name($collections[$n]))?>"><?php echo highlightkeywords(tidy_trim(i18n_get_collection_name($collections[$n]),32),$search)?></a><?php } ?>&nbsp;<?php if (in_array($df[$x]['ref'],$xl_thumbs_display_extended_fields)){ ?></div>
+            <?php if ($x==count($df)-1){?><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $pub_url?>" title="<?php echo str_replace(array("\"","'"),"",i18n_get_collection_name($collections[$n]))?>"><?php echo highlightkeywords(tidy_trim(i18n_get_collection_name($collections[$n]),32),$search)?></a><?php } ?>&nbsp;<?php if (in_array($df[$x]['ref'],$xl_thumbs_display_extended_fields)){ ?></div>
             <?php }
         ?></div><?php } ?>
         <?php } ?>
         <div>
         <?php if (!hook("replacecollectiontools")){?>
-		<div class="ResourcePanelCountry" style="float:right;"><a href="<?php echo $baseurl_short?>pages/collections.php?collection=<?php echo $collections[$n]["ref"]?>"  onClick="return CollectionDivLoad(this);">&gt;&nbsp;<?php echo $lang["action-select"]?></a>&nbsp;&nbsp;&nbsp;<a href="<?php echo $pub_url?>">&gt;&nbsp;<?php echo $lang["viewall"]?></a>
+		<div class="ResourcePanelCountry" style="float:right;"><a href="<?php echo $baseurl_short?>pages/collections.php?collection=<?php echo $collections[$n]["ref"]?>"  onClick="return CollectionDivLoad(this);">&gt;&nbsp;<?php echo $lang["action-select"]?></a>&nbsp;&nbsp;&nbsp;<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $pub_url?>">&gt;&nbsp;<?php echo $lang["viewall"]?></a>
 		<?php } ?>
 		</div>		
 		  <?php hook("xlargesearchiconpublic");?></div>
@@ -150,7 +150,7 @@ for ($n=0;$n<count($collections);$n++)
 		<table  border="0" class="ResourceAlignSmall"><?php hook("publicresulttop")?><tr><td>
 		
 		<div style="position: relative;height:70px;">
-		<a href="<?php echo $pub_url?>" title="<?php echo str_replace(array("\"","'"),"",i18n_get_collection_name($collections[$n]))?>">
+		<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $pub_url?>" title="<?php echo str_replace(array("\"","'"),"",i18n_get_collection_name($collections[$n]))?>">
 
 
 
@@ -193,12 +193,12 @@ for ($n=0;$n<count($collections);$n++)
             <div class="ResourcePanelInfo">
             
             <?php if (in_array($df[$x]['ref'],$small_thumbs_display_extended_fields)){
-                ?><div class="extended"><?php } ?><?php if ($x==count($df)-1){?><a href="<?php echo $pub_url?>" title="<?php echo str_replace(array("\"","'"),"",i18n_get_collection_name($collections[$n]))?>"><?php echo highlightkeywords(tidy_trim(i18n_get_collection_name($collections[$n]),32),$search)?></a><?php } ?>&nbsp;<?php if (in_array($df[$x]['ref'],$small_thumbs_display_extended_fields)){ ?></div>
+                ?><div class="extended"><?php } ?><?php if ($x==count($df)-1){?><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $pub_url?>" title="<?php echo str_replace(array("\"","'"),"",i18n_get_collection_name($collections[$n]))?>"><?php echo highlightkeywords(tidy_trim(i18n_get_collection_name($collections[$n]),32),$search)?></a><?php } ?>&nbsp;<?php if (in_array($df[$x]['ref'],$small_thumbs_display_extended_fields)){ ?></div>
             <?php }
         ?></div><?php } ?>
         <?php } ?>
         <?php if (!hook("replacecollectiontools")){?>
-        <div class="ResourcePanelCountry" style="font-size:9px;"><a href="<?php echo $baseurl_short?>pages/collections.php?collection=<?php echo $collections[$n]["ref"]?>"  onClick="return CollectionDivLoad(this);">&gt;&nbsp;<?php echo $lang["action-select"]?></a>&nbsp;&nbsp;<a href="<?php echo $pub_url?>">&gt;&nbsp;<?php echo $lang["viewall"]?></a></div><div class="clearer"></div>
+        <div class="ResourcePanelCountry" style="font-size:9px;"><a href="<?php echo $baseurl_short?>pages/collections.php?collection=<?php echo $collections[$n]["ref"]?>"  onClick="return CollectionDivLoad(this);">&gt;&nbsp;<?php echo $lang["action-select"]?></a>&nbsp;&nbsp;<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $pub_url?>">&gt;&nbsp;<?php echo $lang["viewall"]?></a></div><div class="clearer"></div>
         <?php } ?>
 		</div>
 		<div class="PanelShadow"></div>
@@ -221,7 +221,7 @@ for ($n=0;$n<count($collections);$n++)
 			$collection_prefix = ""; # The prefix $lang['smartcollection'] . ": " is added in i18n_get_collection_name()
 			$collection_tag = $lang['smartcollection'];
 			}?>
-		<td nowrap><div class="ListTitle"><a href="<?php echo $pub_url?>" title="<?php echo str_replace(array("\"","'"),"", $collection_prefix . i18n_get_collection_name($collections[$n]))?>"><?php echo $collection_prefix . highlightkeywords(tidy_trim(i18n_get_collection_name($collections[$n]),45),$search)?></a></div></td>
+		<td nowrap><div class="ListTitle"><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $pub_url?>" title="<?php echo str_replace(array("\"","'"),"", $collection_prefix . i18n_get_collection_name($collections[$n]))?>"><?php echo $collection_prefix . highlightkeywords(tidy_trim(i18n_get_collection_name($collections[$n]),45),$search)?></a></div></td>
 		<?php 
 		for ($x=0;$x<count($df)-1;$x++){
 			?><td>-</td><?php
@@ -236,7 +236,7 @@ for ($n=0;$n<count($collections);$n++)
         <?php hook("addlistviewcolumnpublic");?>
 		<td><div class="ListTools">
 		<?php if (!hook("replacecollectiontools")){?>
-		<a href="<?php echo $baseurl_short?>pages/collections.php?collection=<?php echo $collections[$n]["ref"]?>"  onClick="return CollectionDivLoad(this);">&gt;&nbsp;<?php echo $lang["action-select"]?></a>&nbsp;&nbsp;<a href="<?php echo $pub_url?>">&gt;&nbsp;<?php echo $lang["viewall"]?></a>
+		<a href="<?php echo $baseurl_short?>pages/collections.php?collection=<?php echo $collections[$n]["ref"]?>"  onClick="return CollectionDivLoad(this);">&gt;&nbsp;<?php echo $lang["action-select"]?></a>&nbsp;&nbsp;<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $pub_url?>">&gt;&nbsp;<?php echo $lang["viewall"]?></a>
 		<?php } ?>
 		</div></td>
 		</tr>

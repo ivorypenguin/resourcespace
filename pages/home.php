@@ -167,7 +167,7 @@ jQuery(document).ready( function ()
 
 <?php if ($home_themeheaders && $enable_themes) { ?>
 	<div class="HomePanel"><div class="HomePanelIN">
-	<h2><a href="<?php echo $baseurl_short?>pages/themes.php"><?php echo $lang["themes"]?></a></h2>
+	<h2><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/themes.php"><?php echo $lang["themes"]?></a></h2>
 	<?php echo text("themes")?>
 	<br />	<br />
 	<select style="width:140px;" onChange="CentralSpaceLoad(this.value,true);">

@@ -659,7 +659,7 @@ hook ("resourceactions") ?>
 	
 	<?php if ($allow_share && ($access==0 || ($access==1 && $restricted_share))) { ?>
 		<li><a href="<?php echo $baseurl_short?>pages/resource_email.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>"  onClick="return CentralSpaceLoad(this,true);">&gt; <?php echo $lang["emailresource"]?></a></li>
-		<?php if (!$disable_link_in_view) { ?><li><a href="<?php echo $baseurl?>/?r=<?php echo $ref?>">&gt; <?php echo $lang["link"]?></a></li><?php }} ?>
+		<?php if (!$disable_link_in_view) { ?><li><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl?>/?r=<?php echo $ref?>">&gt; <?php echo $lang["link"]?></a></li><?php }} ?>
 	<?php if ($edit_access) { ?>
 		<li><a href="<?php echo $baseurl_short?>pages/edit.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>"    onClick="return CentralSpaceLoad(this,true);">&gt; 
 			<?php echo $lang["action-edit"]?></a></li>
@@ -764,7 +764,7 @@ $udata=get_user($resource["created_by"]);
 if ($udata!==false)
 	{
 	?>
-<?php if ($show_contributed_by){?>	<div class="itemNarrow"><h3><?php echo $lang["contributedby"]?></h3><p><?php if (checkperm("u")) { ?><a href="<?php echo $baseurl_short?>pages/team/team_user_edit.php?ref=<?php echo $udata["ref"]?>"><?php } ?><?php echo highlightkeywords($udata["fullname"],$search)?><?php if (checkperm("u")) { ?></a><?php } ?></p></div><?php } ?>
+<?php if ($show_contributed_by){?>	<div class="itemNarrow"><h3><?php echo $lang["contributedby"]?></h3><p><?php if (checkperm("u")) { ?><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/team/team_user_edit.php?ref=<?php echo $udata["ref"]?>"><?php } ?><?php echo highlightkeywords($udata["fullname"],$search)?><?php if (checkperm("u")) { ?></a><?php } ?></p></div><?php } ?>
 	<?php
 	}
 

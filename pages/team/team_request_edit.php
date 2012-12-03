@@ -67,7 +67,7 @@ if (isset($warn_field_request_approval))
 		{
 		?>
 		<div class="Question">
-		<div class="FormError"><?php echo str_replace("%","<a href=".$baseurl_short."pages/view.php?ref=" . $warning["resource"] . "'>" . $warning["resource"] . "</a>",$lang["warningrequestapprovalfield"]) ?><br/><?php echo $warning["value"] ?></div>
+		<div class="FormError"><?php echo str_replace("%","<a onClick='return CentralSpaceLoad(this,true);' href=".$baseurl_short."pages/view.php?ref=" . $warning["resource"] . ">" . $warning["resource"] . "</a>",$lang["warningrequestapprovalfield"]) ?><br/><?php echo $warning["value"] ?></div>
 		<div class="clearerleft"> </div></div>
 		<?php
 		}

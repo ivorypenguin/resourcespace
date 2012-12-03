@@ -35,9 +35,9 @@ for ($n=0;$n<count($fields);$n++)
 	{
 	?>
 	<tr>
-	<td><div class="ListTitle"><a href="<?php echo $baseurl_short?>pages/team/team_fields_edit.php?field=<?php echo $fields[$n]["ref"]?>"><?php echo $fields[$n]["title"] ?></a></div></td>
+	<td><div class="ListTitle"><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/team/team_fields_edit.php?field=<?php echo $fields[$n]["ref"]?>"><?php echo $fields[$n]["title"] ?></a></div></td>
 	<td><?php echo substr(tidylist(i18n_get_translated($fields[$n]["options"])),0,100) . "..." ?></td>
-	<td><div class="ListTools"><a href="<?php echo $baseurl_short?>pages/team/team_fields_edit.php?field=<?php echo $fields[$n]["ref"]?>">&gt;&nbsp;<?php echo $lang["action-edit"]?> </a></div></td>
+	<td><div class="ListTools"><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/team/team_fields_edit.php?field=<?php echo $fields[$n]["ref"]?>">&gt;&nbsp;<?php echo $lang["action-edit"]?> </a></div></td>
 	</tr>
 	<?php
 	}

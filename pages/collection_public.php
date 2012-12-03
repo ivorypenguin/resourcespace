@@ -66,12 +66,12 @@ if ($find=="") {$atoz.="<span class='Selected'>";}
 
 if ($public_collections_confine_group)
 	{
-	$atoz.="<a href=\"".$baseurl_short."pages/collection_public.php?col_order_by=name&override_group_restrict=false&find=\">" . $lang["viewmygroupsonly"] . "</a> &nbsp; | &nbsp;";	
-	$atoz.="<a href=\"".$baseurl_short."pages/collection_public.php?col_order_by=name&override_group_restrict=true&find=\">" . $lang["viewall"] . "</a> &nbsp;&nbsp;&nbsp;";	
+	$atoz.="<a onClick='return CentralSpaceLoad(this,true);' href=\"".$baseurl_short."pages/collection_public.php?col_order_by=name&override_group_restrict=false&find=\">" . $lang["viewmygroupsonly"] . "</a> &nbsp; | &nbsp;";	
+	$atoz.="<a onClick='return CentralSpaceLoad(this,true);' href=\"".$baseurl_short."pages/collection_public.php?col_order_by=name&override_group_restrict=true&find=\">" . $lang["viewall"] . "</a> &nbsp;&nbsp;&nbsp;";	
 	}
 else
 	{
-	$atoz.="<a href=\"".$baseurl_short."pages/collection_public.php?col_order_by=name&find=\">" . $lang["viewall"] . "</a>";
+	$atoz.="<a onClick='return CentralSpaceLoad(this,true);' href=\"".$baseurl_short."pages/collection_public.php?col_order_by=name&find=\">" . $lang["viewall"] . "</a>";
 	}
 
 

@@ -52,7 +52,7 @@ if (isset($_POST['submit']))
 <div class="RecordBox">
 <div class="RecordPanel">
 <div class="Title"><?php echo $lang['location-title']; ?></div>
-<p>&gt;&nbsp;<a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $ref?>"><?php echo $lang['backtoview']; ?></a></p>
+<p>&gt;&nbsp;<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $ref?>"><?php echo $lang['backtoview']; ?></a></p>
 
 <!-- Drag mode selector -->
 <div id="GeoDragMode">

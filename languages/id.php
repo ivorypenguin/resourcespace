@@ -630,7 +630,7 @@ $lang["setup-successheader"]="Selamat!";
 $lang["setup-successdetails"]="Setup awal ResourceSpace anda telah selesai.  Silahkan periksa  'include/default.config.php' untuk pilihan konfigurasi lain.";
 $lang["setup-successnextsteps"]="Langkah Berikutnya:";
 $lang["setup-successremovewrite"]="Sekarang anda bisa menyingkirkan akses pengisian untuk memasukkan  'include/'.";
-$lang["setup-visitwiki"]='Silahkan kunjungi <a href="http://rswiki.montala.net/index.php/Main_Page">ResourceSpace Documentation Wiki</a> untuk informasi lebih lanjut tentang setup instalasi anda';
+$lang["setup-visitwiki"]='Silahkan kunjungi <a target="_blank" href="http://wiki.resourcespace.org/index.php/Main_Page">ResourceSpace Documentation Wiki</a> untuk informasi lebih lanjut tentang setup instalasi anda';
 $lang["setup-checkconfigwrite"]="Akses isi untuk direktori config:";
 $lang["setup-checkstoragewrite"]="Akses isi untuk direktori storage:";
 $lang["setup-welcome"]="Selamat Datang di ResourceSpace";

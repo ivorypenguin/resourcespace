@@ -948,7 +948,7 @@ $lang["setup-successheader"]="Gratulerar!";
 $lang["setup-successdetails"]="Den grundläggande delen av installationen av ResourceSpace är nu slutförd. Gå igenom filen ’include/default.config.php’ om du vill se fler konfigurationsmöjligheter.";
 $lang["setup-successnextsteps"]="Nästa steg:";
 $lang["setup-successremovewrite"]="Du bör nu avlägsna skrivrättigheten till katalogen ’include/’.";
-$lang["setup-visitwiki"]='Besök <a href="http://wiki.resourcespace.org/index.php/Main_Page">ResourceSpace Documentation Wiki</a> (engelskspråkig wiki) om du vill hitta mer information om hur du anpassar din installation.';
+$lang["setup-visitwiki"]='Besök <a target="_blank" href="http://wiki.resourcespace.org/index.php/Main_Page">ResourceSpace Documentation Wiki</a> (engelskspråkig wiki) om du vill hitta mer information om hur du anpassar din installation.';
 $lang["php-config-file"]="Konfiguration för php: '%phpinifile'"; # %phpinifile will be replaced, e.g. PHP config: '/etc/php5/apache2/php.ini'
 $lang["setup-checkconfigwrite"]="Skrivrättighet till konfigurationskatalog:";
 $lang["setup-checkstoragewrite"]="Skrivrättighet till lagringskatalog:";

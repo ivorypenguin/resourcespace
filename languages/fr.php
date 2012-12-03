@@ -626,7 +626,7 @@ $lang["setup-successheader"]="Félicitations !";
 $lang["setup-successdetails"]="Votre configuration initiale de ResourceSpace est terminée. Pour disposer de plus d'options de configuration, lisez 'include/default.config.php'.";
 $lang["setup-successnextsteps"]="Étapes suivantes :";
 $lang["setup-successremovewrite"]="Vous pouvez maintenant retirer l'accès en écriture au dossier 'include/'.";
-$lang["setup-visitwiki"]='Visitez le <a href="http://rswiki.montala.net/index.php/Main_Page">Wiki de documentation de ResourceSpace</a> pour plus d\'informations sur la personnalisation de votre installation';
+$lang["setup-visitwiki"]='Visitez le <a target="_blank" href="http://wiki.resourcespace.org/index.php/Main_Page">Wiki de documentation de ResourceSpace</a> pour plus d\'informations sur la personnalisation de votre installation';
 $lang["setup-checkconfigwrite"]="Accès en écriture au dossier de configuration :";
 $lang["setup-checkstoragewrite"]="Accès en écriture au dossier de stockage :";
 $lang["setup-welcome"]="Bienvenu sur ResourceSpace";

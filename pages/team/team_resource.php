@@ -79,7 +79,7 @@ include "../../include/header.php";
 		<li><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!unused")?>" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["viewuncollectedresources"]?></a></li>
 		<?php if (checkperm("k")): // Check if user can manage keywords and fields ?>
 			<li><a href="<?php echo $baseurl_short?>pages/team/team_related_keywords.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["managerelatedkeywords"]?></a></li>
-			<!--<li><a href="team_fields.php"><?php echo $lang["managefieldoptions"]?></a></li>-->
+			<!--<li><a onClick="return CentralSpaceLoad(this,true);" href="team_fields.php"><?php echo $lang["managefieldoptions"]?></a></li>-->
 		<?php endif // Check if user can manage keywords and fields ?>
 
 	<?php endif // Check if user can create resources ?>

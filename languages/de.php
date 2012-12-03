@@ -880,7 +880,7 @@ $lang["setup-successheader"]="Glückwunsch!";
 $lang["setup-successdetails"]="Ihre ResourceSpace Installation ist abgeschlossen. Weitere Konfigurationsoptionen finden Sie in der Datei 'include/default.config.php'.";
 $lang["setup-successnextsteps"]="Nächste Schritte:";
 $lang["setup-successremovewrite"]="Sie können nun den Schreibzugriff auf den Ordner 'include/' entfernen.";
-$lang["setup-visitwiki"]='Visit the <a href="http://rswiki.montala.net/index.php/Main_Page">ResourceSpace Documentation Wiki</a> for more information about customizing your installation';
+#$lang["setup-visitwiki"]='Visit the <a target="_blank" href="http://wiki.resourcespace.org/index.php/Main_Page">ResourceSpace Documentation Wiki</a> for more information about customizing your installation';
 $lang["setup-checkconfigwrite"]="Schreibzugriff auf Konfigurationsverzeichnis:";
 $lang["setup-checkstoragewrite"]="Schreibzugriff auf Datenverzeichnis:";
 $lang["setup-welcome"]="Willkommen bei ResourceSpace";

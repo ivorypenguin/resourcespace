@@ -71,7 +71,7 @@ if (!checkperm("t")) {
 	} 
 
 ?>
-<p><a href="<?php echo $baseurl . "/pages/" . $link?>">&lt;&lt; <?php echo $lang["back"]?></a></p>
+<p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl . "/pages/" . $link?>">&lt;&nbsp; <?php echo $lang["back"]?></a></p>
 <?php
 
 ?>

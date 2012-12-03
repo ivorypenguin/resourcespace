@@ -32,20 +32,20 @@ $options=get_field_options_with_stats($field);
 
 <div class="BasicsBox"> 
 <p>
-<a href="<?php echo $baseurl_short?>pages/team/team_fields.php">&lt;&nbsp;<?php echo $lang["backtofieldlist"]?></a>
+<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/team/team_fields.php">&lt;&nbsp;<?php echo $lang["backtofieldlist"]?></a>
 </p>
 <h1><?php echo $lang["managefieldoptions"] . ": " . $fieldinfo["title"] ?></h1>
   
 <?php if ($show_all_languages)
 	{
   	?>
-  	<p>&gt;&nbsp;<a href="<?php echo $baseurl_short?>pages/team/team_fields_edit.php?field=<?php echo $field?>&show_all_languages="><?php echo $lang["hidealllanguages"]?></a></p>
+  	<p>&gt;&nbsp;<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/team/team_fields_edit.php?field=<?php echo $field?>&show_all_languages="><?php echo $lang["hidealllanguages"]?></a></p>
 	<?php
   	}
   else
   	{
 	?>
-  	<p>&gt;&nbsp;<a href="<?php echo $baseurl_short?>pages/team/team_fields_edit.php?field=<?php echo $field?>&show_all_languages=true"><?php echo $lang["showalllanguages"]?></a></p>
+  	<p>&gt;&nbsp;<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/team/team_fields_edit.php?field=<?php echo $field?>&show_all_languages=true"><?php echo $lang["showalllanguages"]?></a></p>
   	<?php
   	}
 ?>

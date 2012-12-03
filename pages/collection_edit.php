@@ -312,7 +312,7 @@ if ($enable_collection_copy)
 <div class="Question">
 <label><?php echo $lang["collectionlog"]?></label>
 <div class="Fixed">
-<a href="<?php echo $baseurl_short?>pages/collection_log.php?ref=<?php echo $ref?>"><?php echo $lang["log"]?> &gt;</a>
+<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_log.php?ref=<?php echo $ref?>"><?php echo $lang["log"]?> &gt;</a>
 </div>
 <div class="clearerleft"> </div>
 </div>
