@@ -138,10 +138,22 @@ include "../include/header.php";
 </div>
 <?php if ($feedback_resource_select){?>
 <script type="text/javascript">
-		jQuery('.lightbox').lightBox(); 
+    jQuery('.lightbox').lightBox(
+        {
+        imageLoading: '<?php echo $baseurl_short?>gfx/lightbox/loading.gif',
+        imageBtnClose: '<?php echo $baseurl_short?>gfx/lightbox/close.gif',
+        imageBtnPrev: '<?php echo $baseurl_short?>gfx/lightbox/previous.png',
+        imageBtnNext: '<?php echo $baseurl_short?>gfx/lightbox/next.png',
+        keyToClose: 'c', // The key to close the lightBox.
+        keyToPrev: 'p', // The key to show the previous image.
+        keyToNext: 'n', // The key to show the next image.
+        txtImage: '<?php echo $lang["lightbox-image"]?>',
+        txtOf: '<?php echo $lang["lightbox-of"]?>'
+        }
+        ); 
 </script>
 <?php } ?>
 
-<?php		
+<?php
 include "../include/footer.php";
 ?>

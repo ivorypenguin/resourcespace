@@ -26,7 +26,7 @@
 # En första version av översättningen skapades av Henrik Frizén (förnamn.efternamn utan accenttecken i e-postboxen.Sveriges landskod) 20110124 för version 2295
 #
 # Senast uppdaterad av [Namn] [Datum] för version [svn-version], [kommentar]
-# Senast uppdaterad av Henrik Frizén 20121127 för version 4044
+# Senast uppdaterad av Henrik Frizén 20121204 för version 4063
 #
 #
 # User group names (for the default user groups)
@@ -381,6 +381,10 @@ $lang["didnotinclude"]="Utelämnades";
 $lang["selectcollection"]="Välj samling";
 $lang["total"]="Totalt";
 $lang["ownedbyyou"]="ägda av dig";
+
+# Lightbox
+$lang["lightbox-image"] = "Bild";
+$lang["lightbox-of"] = "av";
 
 # Resource create / edit / view
 $lang["createnewresource"]="Skapa nytt material";

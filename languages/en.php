@@ -357,6 +357,10 @@ $lang["selectcollection"]="Select Collection";
 $lang["total"]="Total";
 $lang["ownedbyyou"]="owned by you";
 
+# Lightbox
+$lang["lightbox-image"] = "Image";
+$lang["lightbox-of"] = "of";
+
 # Resource create / edit / view
 $lang["createnewresource"]="Create New Resource";
 $lang["treeobjecttype-resource_type"]=$lang["resourcetype"]="Resource Type";
