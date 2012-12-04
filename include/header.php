@@ -2,6 +2,7 @@
 
 $theme=((isset($userfixedtheme) && $userfixedtheme!=""))?$userfixedtheme:getval("colourcss",$defaulttheme);
 
+hook ("preheaderoutput");
 # Do not display header / footer when dynamically loading CentralSpace contents.
 if (getval("ajax","")=="") { 
 
