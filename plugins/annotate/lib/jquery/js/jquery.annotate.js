@@ -343,21 +343,24 @@ function isInt(value) {
         // Would be better to use the containment option for resizable but buggy
         area.resizable({
             handles: 'all',
-
+            resize: function(e, ui) {
+                form.css('left', area.offset().left + 'px');
+                form.css('top', (parseInt(area.offset().top) + parseInt(area.height()) + 7) + 'px');
+            },
             stop: function(e, ui) {
                 form.css('left', area.offset().left + 'px');
-                form.css('top', (parseInt(area.offset().top) + parseInt(area.height()) + 2) + 'px');
+                form.css('top', (parseInt(area.offset().top) + parseInt(area.height()) + 7) + 'px');
             }
         })
         .draggable({
             containment: image.canvas,
             drag: function(e, ui) {
                 form.css('left', area.offset().left + 'px');
-                form.css('top', (parseInt(area.offset().top) + parseInt(area.height()) + 2) + 'px');
+                form.css('top', (parseInt(area.offset().top) + parseInt(area.height()) + 7) + 'px');
             },
             stop: function(e, ui) {
                 form.css('left', area.offset().left + 'px');
-                form.css('top', (parseInt(area.offset().top) + parseInt(area.height()) + 2) + 'px');
+                form.css('top', (parseInt(area.offset().top) + parseInt(area.height()) + 7) + 'px');
             }
         });
         return this;
