@@ -476,9 +476,6 @@ include "../../../include/header.php";
 
 # slider, sound, controls
 ?>
-<script type="text/javascript" src="../lib/prototype.js" language="javascript"></script>
-<script type="text/javascript" src="../lib/scriptaculous.js?load=effects,builder,dragdrop" language="javascript"></script>
-<script type="text/javascript" src="../lib/jsCropperUI/cropper.js" language="javascript"></script>
 
 <h1><?php echo $lang['transformimage'] ?></h1>
 <p><?php echo $lang['transformblurb']; ?></p>
@@ -489,22 +486,18 @@ include "../../../include/header.php";
 	if (file_exists($imagepath))
                 {
                 ?>
-<div id='cropimgdiv' style='float:left' onmouseover='unfocus_widths();' ><img src="<?php echo $imageurl?>" id='cropimage' /></div>
+<div id='cropimgdiv' style='float:left;padding:0;margin:0;' onmouseover='unfocus_widths();' ><img src="<?php echo $imageurl?>" id='cropimage' /></div>
 <?php
                 }
         ?>
 <script type="text/javascript" language="javascript">
-	Event.observe( window, 'load', function() {
-		CropManager.attachCropper()
-		
-		
-	} );
 
-	function onEndCrop( coords, dimensions ) {
-	document.dimensionsform.xcoord.value=coords.x1;
-	document.dimensionsform.ycoord.value=coords.y1;
-	document.dimensionsform.width.value=dimensions.width;
-	document.dimensionsform.height.value=dimensions.height;
+
+	function onEndCrop( coords ) {
+	document.dimensionsform.xcoord.value=coords.x;
+	document.dimensionsform.ycoord.value=coords.y;
+	document.dimensionsform.width.value=coords.w;
+	document.dimensionsform.height.value=coords.h;
 	}
 	
 
@@ -517,18 +510,6 @@ include "../../../include/header.php";
 			 * @var obj
 			 */
 			curCrop: null,
-			
-			/**
-			 * Gets a min/max parameter from the form 
-			 * 
-			 * @access private
-			 * @param string Form element ID
-			 * @return int
-			 */
-			getParam: function( name ) {
-				var val = $F( name );
-				return parseInt( val );
-			},
 									
 			/** 
 			 * Attaches/resets the image cropper
@@ -540,25 +521,17 @@ include "../../../include/header.php";
 			attachCropper: function( e ) {
 				document.dimensionsform.lastWidthSetting.value = document.getElementById('new_width').value;
 				document.dimensionsform.lastHeightSetting.value = document.getElementById('new_height').value;
-		
-				if( this.curCrop == null ) {
-					this.curCrop = new Cropper.Img( 
-						'cropimage', 
-						{ 
-							ratioDim: {x: this.getParam( 'new_width'), y: this.getParam( 'new_height') },
-							onEndCrop: onEndCrop 
-						} 
-					);
-				} else {
-					this.removeCropper();
-					this.curCrop = new Cropper.Img( 
-						'cropimage', 
-						{ 
-							ratioDim: {x: this.getParam( 'new_width'), y: this.getParam( 'new_height') },
-							onEndCrop: onEndCrop 
-						} 
-					);
-				}
+
+
+				this.removeCropper();
+				this.curCrop = jQuery('#cropimage').Jcrop({
+						onRelease: onEndCrop ,
+						onChange: onEndCrop ,
+						onSelect: onEndCrop ,
+						aspectRatio: jQuery('#new_width').val()/jQuery('#new_height').val()	
+				});
+							
+
 				if( e != null ) Event.stop( e );
 			},
 			
@@ -570,7 +543,6 @@ include "../../../include/header.php";
 			 */
 			removeCropper: function() {
 				if( this.curCrop != null ) {
-					this.curCrop.remove();
 					this.curCrop = null;
 				}
 			},
@@ -604,7 +576,6 @@ include "../../../include/header.php";
 			{
 				return true;
 			} else {
-			
 				CropManager.attachCropper();
 				return true;
 			}
@@ -636,7 +607,7 @@ include "../../../include/header.php";
 	
 </script>
 <div id="cropbox"  style='float:left; margin-left:20px'>
-  <form name='dimensionsform' id="dimensionsForm" onsubmit='return validate_transform(this);'>
+  <form name='dimensionsform' id="dimensionsForm" action="<?php echo $baseurl_short?>plugins/transform/pages/crop.php" onsubmit='return validate_transform(this);'>
     <input type='hidden' name='action' value='docrop' />
     <input type='hidden' name='xcoord' id='xcoord' value='0' />
     <input type='hidden' name='ycoord' id='ycoord' value='0' />
@@ -776,7 +747,7 @@ if ($cropper_debug){
   </p>
 </div>
 
-
+<script>CropManager.attachCropper();</script>
 <?php
 
 
