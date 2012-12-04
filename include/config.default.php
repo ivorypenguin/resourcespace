@@ -1211,6 +1211,8 @@ $themes_in_my_collections=false;
 
 # Show an upload link in the top navigation? (if 't' and 'c' permissions for the current user)
 $top_nav_upload=true;
+# Show an upload link in the top navigation in addition to 'my contributions' for standard user? (if 'd' permission for the current user)
+$top_nav_upload_user=false;
 $top_nav_upload_type="plupload"; # The upload type. Options are plupload, ftp, local or java (deprecated)
 
 # Allow users to delete resources?
