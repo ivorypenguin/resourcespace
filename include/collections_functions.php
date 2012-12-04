@@ -715,7 +715,7 @@ function email_collection($colrefs,$collectionname,$fromusername,$userlist,$mess
 	$urefs=sql_array("select ref value from user where username in ('" . join("','",$ulist) . "')");
 	if (count($urefs)>0)
 		{
-		#�Delete any existing collection entries
+		# Delete any existing collection entries
 		sql_query("delete from user_collection where collection in ('" .join("','", $reflist) . "') and user in ('" . join("','",$urefs) . "')");
 		
 		# Insert new user_collection row(s)
@@ -772,8 +772,10 @@ function email_collection($colrefs,$collectionname,$fromusername,$userlist,$mess
 				$emailcollectionmessageexternal=true;
 				}
 			$url=$baseurl . 	"/?c=" . $reflist[$nx2] . $key;		
-			$collection_name="";	
-			$collection_name=sql_value("select name value from collection where ref='$reflist[$nx2]'","$reflist[$nx2]");
+			$collection = array();
+			$collection = sql_query("select name,savedsearch from collection where ref='$reflist[$nx2]'");
+			if ($collection[0]["name"]!="") {$collection_name = i18n_get_collection_name($collection[0]);}
+			else {$collection_name = $reflist[$nx2];}
 			if ($use_phpmailer){
 				$link="<a href=\"$url\">$collection_name</a>";	
 				$list.= $htmlbreak.$link;	
