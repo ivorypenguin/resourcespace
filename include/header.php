@@ -44,7 +44,7 @@ http://www.resourcespace.org/
 <script src="<?php echo $baseurl?>/lib/js/jquery-ui-1.8.20.custom.min.js?css_reload_key=<?php echo $css_reload_key?>" type="text/javascript"></script>
 <script src="<?php echo $baseurl?>/lib/js/easyTooltip.js?css_reload_key=<?php echo $css_reload_key?>" type="text/javascript"></script>
 <link type="text/css" href="<?php echo $baseurl?>/css/ui-lightness/jquery-ui-1.8.20.custom.css?css_reload_key=<?php echo $css_reload_key?>" rel="stylesheet" />
-
+<script src="<?php echo $baseurl?>/lib/js/jquery.ui.touch-punch.min.js"></script>
 <?php if ($use_zip_extension){?><script type="text/javascript" src="<?php echo $baseurl?>/lib/js/jquery-periodical-updater.js"></script><?php } ?>
 <?php if ($contact_sheet){?>
 <script type="text/javascript" src="<?php echo $baseurl?>/lib/js/contactsheet.js"></script>
