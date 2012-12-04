@@ -37,21 +37,21 @@ include "../include/header.php";
 	if ($resource!="")
 		{
 		?>
-	    <p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $resource?>&k=<?php echo getval("k","") ?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>">&gt;&nbsp;<?php echo $lang["backtoresourceview"]?></a></p>
+	    <p><a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $resource?>&k=<?php echo getval("k","") ?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>">&gt;&nbsp;<?php echo $lang["backtoresourceview"]?></a></p>
 		<?php
 		}
 	?>
  
 	<?php if (getval("k","")=="") { ?>
-    <p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>">&gt;&nbsp;<?php echo $lang["backtoresults"]?></a></p>
+    <p><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>">&gt;&nbsp;<?php echo $lang["backtoresults"]?></a></p>
 
-    <p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo ($use_theme_as_home?$baseurl_short.'pages/themes.php':$default_home_page)?>">&gt;&nbsp;<?php echo $lang["backtohome"]?></a></p>
+    <p><a href="<?php echo ($use_theme_as_home?$baseurl_short.'pages/themes.php':$default_home_page)?>">&gt;&nbsp;<?php echo $lang["backtohome"]?></a></p>
 
     <?php } ?>
     
     <?php hook("extra");?>
     <?php } else {?>
-    <p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>login.php">&gt;&nbsp;<?php echo $lang["backtouser"]?></a></p>
+    <p><a href="<?php echo $baseurl_short?>login.php">&gt;&nbsp;<?php echo $lang["backtouser"]?></a></p>
     <?php } ?>
 </div>
 
