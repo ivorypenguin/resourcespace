@@ -1970,7 +1970,7 @@ function get_user_log($user, $fetchrows=-1)
     # Standard field titles are translated using $lang.  Custom field titles are i18n translated.
 	global $view_title_field;
     # Executes query.
-    $r = sql_query("select r.ref resourceid,r.field".$view_title_field." title,l.date,l.type,l.purchase_size,l.purchase_price, l.notes from resource_log l left outer join resource r on l.resource=r.ref left outer join resource_type_field f on f.ref=l.resource_type_field where l.user='$user' order by l.date",false,$fetchrows);
+    $r = sql_query("select r.ref resourceid,r.field".$view_title_field." resourcetitle,l.date,l.type,f.title,l.purchase_size,l.purchase_price, l.notes from resource_log l left outer join resource r on l.resource=r.ref left outer join resource_type_field f on f.ref=l.resource_type_field where l.user='$user' order by l.date",false,$fetchrows);
 
     # Translates field titles in the newly created array.
     $return = array();

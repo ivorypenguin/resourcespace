@@ -62,7 +62,7 @@ for ($n=$offset;(($n<count($log))&& ($n<($offset+$per_page)));$n++)
 	<tr>
 	<td><?php echo $log[$n]["date"]?></td>
 	<td><a onClick="return CentralSpaceLoad(this,true);" href='<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $log[$n]["resourceid"]?>'><?php echo $log[$n]["resourceid"]?></a></td>
-	<td><a onClick="return CentralSpaceLoad(this,true);" href='<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $log[$n]["resourceid"]?>'><?php echo i18n_get_translated($log[$n]["title"])?></a></td>
+	<td><a onClick="return CentralSpaceLoad(this,true);" href='<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $log[$n]["resourceid"]?>'><?php echo i18n_get_translated($log[$n]["resourcetitle"])?></a></td>
 	<td><?php echo $lang["log-" . $log[$n]["type"]];
 
 	# For emailed items, append email address from the 'notes' column
