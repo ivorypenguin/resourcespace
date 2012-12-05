@@ -1,7 +1,7 @@
 <?php
 # Swedish
 # Language File for the Transform Plugin
-# Updated by Henrik Frizén 20121027 for svn r3869
+# Updated by Henrik Frizén 20121205 for svn r4074
 # -------
 #
 #
@@ -12,6 +12,7 @@ $lang['transform']="Transformera";
 $lang['transformimage']="Transformera bild";
 $lang['transformed']="Transformerad";
 $lang['transformblurb']="Ange eventuell beskärning genom att rita en rektangulär markering direkt på bilden. Du kan sedan flytta och ändra storlek på markeringen. När du är klar anger du ett filnamn för den nya beskurna bilden och klickar på <b>Spara&nbsp;som&nbsp;alternativ&nbsp;fil</b> eller <b>Hämta</b>. Du kan även ange en bredd och/eller höjd för att skala om den beskurna bilden.<br/><br/><strong>Formuläret nedan kan lämnas tomt.</strong> Om du inte anger en bredd och höjd kommer markeringens bredd och höjd att användas.";
+$lang['transformblurb-original']="Ange eventuell beskärning genom att rita en rektangulär markering direkt på bilden. Du kan sedan flytta och ändra storlek på markeringen. När du är klar klickar du på <b>Transformera&nbsp;original</b>. Du kan även ange en bredd och/eller höjd för att skala om den beskurna bilden.<br/><br/><strong>Formuläret nedan kan lämnas tomt.</strong> Om du inte anger en bredd och höjd kommer markeringens bredd och höjd att användas.";
 $lang['width']="Bredd";
 $lang['height']="Höjd";
 $lang['px']="px";
@@ -19,7 +20,7 @@ $lang['noimagefound'] = "Fel: Ingen bild hittades.";
 $lang['scaled'] = "Skalad";
 $lang['cropped'] = "Beskuren";
 $lang['nonnumericcrop'] = "Fel: En icke-numerisk beskärning begärdes.";
-$lang['newfilename'] = "Filnamn";
+$lang['description_for_alternative_file'] = "Beskrivning (för alternativ fil)";
 $lang['errorspecifiedbiggerthanoriginal'] = "Fel: Den angivna bredden eller höjden är större än i originalbilden.";
 $lang['errormustchoosecropscale'] = "Fel: Du måste ange en beskärning och/eller ange en ny bredd eller höjd.";
 $lang['savealternative']="Spara som alternativ fil";

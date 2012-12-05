@@ -477,8 +477,8 @@ include "../../../include/header.php";
 # slider, sound, controls
 ?>
 
-<h1><?php echo $lang['transformimage'] ?></h1>
-<p><?php echo $lang['transformblurb']; ?></p>
+<h1><?php echo ($original ? $lang['transform_original'] : $lang['transformimage']); ?></h1>
+<p><?php echo ($original ? $lang['transformblurb-original'] : $lang['transformblurb']); ?></p>
 <?php
 
 
@@ -656,27 +656,34 @@ include "../../../include/header.php";
         <td style='text-align:right'><?php echo $lang['rotation']; ?>: </td>
         <td colspan='3'>
           <select name='rotation'>
-              <option value="0"><?php echo $lang['rotation0']; ?></option>
-              <option value="90"><?php echo $lang['rotation90']; ?></option>
-              <option value="180"><?php echo $lang['rotation180']; ?></option>
-              <option value="270"><?php echo $lang['rotation270']; ?></option>
+              <option value="0"><?php echo $lang['rotation0']; ?>&nbsp;</option>
+              <option value="90"><?php echo $lang['rotation90']; ?>&nbsp;</option>
+              <option value="180"><?php echo $lang['rotation180']; ?>&nbsp;</option>
+              <option value="270"><?php echo $lang['rotation270']; ?>&nbsp;</option>
           </select>
 
           &nbsp;&nbsp;&nbsp; <?php echo $lang['fliphorizontal']; ?> <input type="checkbox" name='flip' value="1" />
         </td>
       </tr>
-      <?php } ?>
+      <?php }
+      if (!$original) { ?>
       <?php if ($cropper_custom_filename){ ?>
       <tr>
-        <td style='text-align:right'><?php echo $lang["newfilename"]; ?>: </td>
+        <td style='text-align:right'><?php echo $lang["name"]; ?>: </td>
         <td colspan='3'><input type='text' name='filename' value='' size='30'/></td>
       </tr>
       <?php } ?>
       <tr>
-        <td style='text-align:right'><?php echo $lang["description"]; ?>: </td>
+        <td style='text-align:right'><?php echo $lang["description_for_alternative_file"]; ?>: </td>
         <td colspan='3'><input type='text' name='description' value='' size='30'/></td>
       </tr>
-<?php
+      <?php }
+      else { ?>
+      <input type='hidden' name='filename' value=''/>
+      <input type='hidden' name='description' value=''/>
+      <?php }
+      
+
         // if the system is configured to support a type selector for alt files, show it
         if (isset($alt_types) && count($alt_types) > 1){
                 echo "<tr><td style='text-align:right'>\n<label for='alt_type'>".$lang["alternatetype"].":</label></td><td colspan='3'><select name='alt_type' id='alt_type'>";
@@ -705,7 +712,7 @@ include "../../../include/header.php";
 					if (strtolower($theformat) == strtolower($orig_ext)) {
 						echo " selected";
 					}
-					echo ">$theformat</option>\n";
+					echo ">" . str_replace_formatted_placeholder("%extension", $theformat, $lang["fileextension"]) . "&nbsp;</option>\n";
 				}
 				?>
           </select>

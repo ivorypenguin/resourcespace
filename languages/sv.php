@@ -26,7 +26,7 @@
 # En första version av översättningen skapades av Henrik Frizén (förnamn.efternamn utan accenttecken i e-postboxen.Sveriges landskod) 20110124 för version 2295
 #
 # Senast uppdaterad av [Namn] [Datum] för version [svn-version], [kommentar]
-# Senast uppdaterad av Henrik Frizén 20121205 för version 4071
+# Senast uppdaterad av Henrik Frizén 20121205 för version 4074
 #
 #
 # User group names (for the default user groups)
@@ -467,7 +467,8 @@ $lang["fullscreenpreview"]="Förhandsgranska på bildskärm";
 $lang["originalfileoftype"]="Originalfil (%extension)"; # Use %EXTENSION, %extension or %Extension as a placeholder. The placeholder will be replaced with the filename extension, using the same case. E.g. "Original %EXTENSION File" -> "Original PDF File"
 $lang["fileoftype"]="?-fil"; # ? will be replaced, e.g. "MP4 File"
 $lang["cell-fileoftype"]="%Extension-fil"; # Use %EXTENSION, %extension or %Extension as a placeholder. The placeholder will be replaced with the filename extension, using the same case. E.g. "%EXTENSION File" -> "JPG File"
-$lang["fileextension"]="[%extension]"; # Use %EXTENSION, %extension or %Extension as a placeholder. The placeholder will be replaced with the filename extension, using the same case. E.g. "[%EXTENSION]" -> "[JPG]"
+$lang["fileextension-inside-brackets"]="[%extension]"; # Use %EXTENSION, %extension or %Extension as a placeholder. The placeholder will be replaced with the filename extension, using the same case. E.g. "[%EXTENSION]" -> "[JPG]"
+$lang["fileextension"]="%extension"; # Use %EXTENSION, %extension or %Extension as a placeholder. The placeholder will be replaced with the filename extension, using the same case. E.g. "%EXTENSION" -> "JPG"
 $lang["log"]="Logg";
 $lang["resourcedetails"]="Egenskaper för material";
 $lang["offlineresource"]="Frånkopplat material";
