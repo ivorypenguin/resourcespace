@@ -34,7 +34,7 @@ if (!checkperm("b"))
 <td><?php echo $lang["user"]?></td>
 <td><?php echo $lang["action"]?></td>
 <td><?php echo $lang["resourceid"]?></td>
-<td><?php echo $lang["resourcetitle"]?></td>
+<td><?php $field=get_fields(array($view_title_field)); echo lang_or_i18n_get_translated($field[0]["title"], "fieldtitle-");?></td>
 </tr>
 
 <?php
@@ -58,7 +58,7 @@ for ($n=0;$n<count($log);$n++)
 		}
 		?></td>
 	<td><?php if ($log[$n]['resource']!=0){?><a onClick="return CentralSpaceLoad(this,true);" href='<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $log[$n]["resource"]?>'><?php echo $log[$n]["resource"]?></a><?php } ?></td>
-	<td><?php echo i18n_get_translated($log[$n]["title"])?></td>
+	<td><?php if ($log[$n]['resource']!=0){?><a onClick="return CentralSpaceLoad(this,true);" href='<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $log[$n]["resource"]?>'><?php echo i18n_get_translated($log[$n]["title"])?></a><?php } ?></td>
 	</tr> 
 <?php } ?>
 </table>
