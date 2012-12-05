@@ -4,6 +4,8 @@ function HookResourceofthedayHomeReplaceslideshow ()
 	{
 	include_once dirname(__FILE__)."/../inc/rotd_functions.php";
 
+	global $baseurl;
+
 	$rotd=get_resource_of_the_day();
 	if ($rotd===false) {return false;} # No ROTD, return false to disable hook and display standard slide show.
 	
@@ -20,7 +22,7 @@ function HookResourceofthedayHomeReplaceslideshow ()
 	$pre=get_resource_path($rotd,false,"pre",false,"jpg");
 	?>
 	<div class="HomePicturePanel RecordPanel" style="width:350px;padding-left:4px;">
-	<a href="view.php?ref=<?php echo $rotd ?>"><img class="ImageBorder" style="margin-bottom: 10px;" src="<?php echo $pre ?>" /></a>
+	<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl?>/pages/view.php?ref=<?php echo $rotd ?>"><img class="ImageBorder" style="margin-bottom: 10px;" src="<?php echo $pre ?>" /></a>
 	<br />
 	<h2 ><?php echo i18n_get_translated(htmlspecialchars($title)) ?></h2>
 	<?php echo $caption ?>

@@ -41,7 +41,7 @@ if ($flickr_token!="")
 		$end=strpos($last_xml,"\"",$start+10);
 		$fullname=substr($last_xml,$start+10,$end-$start-10);
 		?>
-		<p><?php echo $lang["flickrloggedinas"] . " <strong>" . htmlspecialchars($fullname) . "</strong>" ?> (<a href="sync.php?theme=<?php echo $theme ?>&logout=true"><?php echo $lang["logout"] ?></a>)</p>
+		<p><?php echo $lang["flickrloggedinas"] . " <strong>" . htmlspecialchars($fullname) . "</strong>" ?> (<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl?>/plugins/flickr_theme_publish/pages/sync.php?theme=<?php echo $theme ?>&logout=true"><?php echo $lang["logout"] ?></a>)</p>
 		<?php
 		}
 	}

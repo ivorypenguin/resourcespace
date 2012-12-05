@@ -109,7 +109,7 @@ include "../../../include/header.php";
 <input type="submit" name="submit" value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $lang["save"]?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">   
 
 <br/><br/>
-<p>&lt; <a href="../../../pages/team/team_plugins.php"><?php echo $lang["feedback_back_to_plugin_manager"]?></a></p>
+<p>&lt;&nbsp;<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/team/team_plugins.php"><?php echo $lang["feedback_back_to_plugin_manager"]?></a></p>
 
 </form>
 </div>
