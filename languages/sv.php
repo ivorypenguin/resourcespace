@@ -26,7 +26,7 @@
 # En första version av översättningen skapades av Henrik Frizén (förnamn.efternamn utan accenttecken i e-postboxen.Sveriges landskod) 20110124 för version 2295
 #
 # Senast uppdaterad av [Namn] [Datum] för version [svn-version], [kommentar]
-# Senast uppdaterad av Henrik Frizén 20121204 för version 4063
+# Senast uppdaterad av Henrik Frizén 20121205 för version 4071
 #
 #
 # User group names (for the default user groups)
@@ -34,10 +34,10 @@ $lang["usergroup-administrators"]="Administratörer";
 $lang["usergroup-general_users"]="Vanliga användare";
 $lang["usergroup-super_admin"]="Systemadministratör";
 $lang["usergroup-archivists"]="Arkivarier";
-$lang["usergroup-restricted_user_-_requests_emailed"]="Begränsade &ndash; begäranden: e-post";
-$lang["usergroup-restricted_user_-_requests_managed"]="Begränsade &ndash; begäranden: hanterade";
-$lang["usergroup-restricted_user_-_payment_immediate"]="Begränsade &ndash; direktbetalning";
-$lang["usergroup-restricted_user_-_payment_invoice"]="Begränsade &ndash; fakturabetalning";
+$lang["usergroup-restricted_user_-_requests_emailed"]="Begränsade - begäranden: e-post"; # &ndash; kan inte användas
+$lang["usergroup-restricted_user_-_requests_managed"]="Begränsade - begäranden: hanterade";
+$lang["usergroup-restricted_user_-_payment_immediate"]="Begränsade - direktbetalning";
+$lang["usergroup-restricted_user_-_payment_invoice"]="Begränsade - fakturabetalning";
 
 # Resource type names (for the default resource types)
 $lang["resourcetype-photo"]="Fotografi";
