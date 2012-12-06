@@ -291,7 +291,10 @@ input[readonly] {color: #E0E0E0;} /* Read-only form fields */
 	border-right: 3px solid #C0C0C0;
 	}
 
-.AjaxCollect {border-top: 3px ridge #808080;} /* Horizontal divider */
+.ui-layout-resizer {background: #C0C0C0 url(../gfx/interface/CollectDivide.png) repeat-x;} /* Horizontal divider */
+.ui-layout-resizer:hover {background: #C0C0C0 url(../gfx/interface/CollectDivide-hover.png) repeat-x;} /* Horizontal divider: hover */
+.ui-layout-toggler {background: url(../gfx/interface/ToggleSouth.png) no-repeat 80px;} /* Horizontal divider, toggle button */
+.ui-layout-toggler:hover {background-color: #E0E0E0;} /* Horizontal divider, toggle button: hover */
 .CollectBack {color: #252525; background: #E0E0E0 url(../gfx/interface/CollectBack.gif) repeat-x;} /* Background */
 .CollectBack h2 {color: #252525; background: none;} /* Title, e.g. "My Collections" */
 .CollectBack h2 a:link {color: #252525; background: none; font-weight: bold;} /* Compact style: Title link, e.g. "My Collections" */
