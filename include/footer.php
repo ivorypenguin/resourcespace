@@ -245,7 +245,7 @@ if (getval("ajax","")=="") {
 $omit_collectiondiv_load_pages=array("login","user_request","user_password","done","index","preview_all");
 ?></div></div>
 
-<?php if (!in_array($pagename,$omit_collectiondiv_load_pages) && !checkperm("b")){?><div id="CollectionDiv" class="CollectBack AjaxCollect ui-layout-south"><?php echo $lang["loading"]?></div>
+<?php if (!in_array($pagename,$omit_collectiondiv_load_pages) && !checkperm("b")){?><div id="CollectionDiv" class="CollectBack AjaxCollect ui-layout-south"></div>
 <script type="text/javascript">
 	collection_frame_height=<?php echo $collection_frame_height?>;
 	//CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=<?php echo getval("thumbs","hide");?>');
