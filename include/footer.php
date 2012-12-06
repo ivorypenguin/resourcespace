@@ -255,11 +255,11 @@ function setContent() {
 	thumbs="<?php echo $thumbs?>";	
 	myLayout=jQuery('body').layout({
 		//closable:false,
-		resizable:true,
+		resizable:true,livePaneResizing:true,triggerEventsDuringLiveResize: false,
 		minSize:40,
 		spacing_open:6,
 		spacing_closed:6,togglerLength_open:"200",
-		onclose_start: function(pane){
+		south__onclose_start: function(pane){
 			if (pane=="south"){console.log(jQuery('.ui-layout-south').height());
 			if(jQuery('.ui-layout-south').height()>=<?php echo $collection_frame_height?> && thumbs!="hide"){
 				CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=hide');
@@ -271,7 +271,7 @@ function setContent() {
 			return false;
 			}
 		},
-		onresize: function(pane){
+		south__onresize: function(pane){
 			if (pane=="south"){console.log(jQuery('.ui-layout-south').height());
 			if(jQuery('.ui-layout-south').height()<<?php echo $collection_frame_height?> && thumbs!="hide"){
 				document.cookie = "thumbs=hide";
