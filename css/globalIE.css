@@ -9,4 +9,5 @@ body {width:97.5%;font-size: 70%;}
 .RecordHeader h1 {height:35px;}
 .StyledTabbedPanel div { position: relative; display: inline-block; }
 #RecordDownload { margin-right: 10px; }
+.CollectBack  {right: 0px !ie7;}
 
