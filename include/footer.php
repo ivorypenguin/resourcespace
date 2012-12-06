@@ -243,50 +243,49 @@ if (getval("ajax","")=="") {
 
 <?php 
 $omit_collectiondiv_load_pages=array("login","user_request","user_password","done","index","preview_all");
-?>
-<div id="CollectionDiv" class="CollectBack AjaxCollect" <?php if (!in_array($pagename,$omit_collectiondiv_load_pages) && !checkperm("b")){?>onload="UpdateCollectionDisplay('<?php echo isset($k)?$k:"" ?>');" style="height:<?php echo $collection_frame_height ?>px;"<?php } else { ?>style="display:none;"<?php } ?>><?php echo $lang["loading"]?></div>
+?></div></div>
 
-<?php if (!in_array($pagename,$omit_collectiondiv_load_pages) && !checkperm("b")){?>
+<?php if (!in_array($pagename,$omit_collectiondiv_load_pages) && !checkperm("b")){?><div id="CollectionDiv" class="CollectBack AjaxCollect ui-layout-south"><?php echo $lang["loading"]?></div>
 <script type="text/javascript">
 	collection_frame_height=<?php echo $collection_frame_height?>;
-function getWindowHeight() {
-	var windowHeight = 0;
-	if (typeof(window.innerHeight) == 'number') {
-		windowHeight = window.innerHeight;
-	}
-	else {
-		if (document.documentElement && document.documentElement.clientHeight) {
-			windowHeight = document.documentElement.clientHeight;
-		}
-		else {
-			if (document.body && document.body.clientHeight) {
-				windowHeight = document.body.clientHeight;
-			}
-		}
-	}
-	return windowHeight;
-}
-		
+	//CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=<?php echo getval("thumbs","hide");?>');
+	<?php if (!isset($thumbs)){$thumbs=getval("thumbs",$thumbs_default);}?>
+
 function setContent() {
-	if (document.getElementById) {
-		var windowHeight = getWindowHeight();
-		if (windowHeight > 0) {
-			var contentElement = document.getElementById('CollectionDiv');
-			var contentHeight = contentElement.offsetHeight;
-			if (windowHeight - contentHeight > 0) {
-				contentElement.style.position = 'fixed';
-				
-				height = (windowHeight - collection_frame_height )+ 'px';
-				contentElement.style.top = height;
-				jQuery('body').css("padding-bottom",collection_frame_height +"px");
-				jQuery('#CollectionDiv').css('top',height);
-		
+	thumbs="<?php echo $thumbs?>";	
+	myLayout=jQuery('body').layout({
+		//closable:false,
+		resizable:true,
+		minSize:40,
+		spacing_open:6,
+		spacing_closed:6,togglerLength_open:"200",
+		onclose_start: function(pane){
+			if (pane=="south"){console.log(jQuery('.ui-layout-south').height());
+			if(jQuery('.ui-layout-south').height()>=<?php echo $collection_frame_height?> && thumbs!="hide"){
+				CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=hide');
+				document.cookie = "thumbs=hide";
+			} else if(jQuery('.ui-layout-south').height()==40 && thumbs=="hide"){
+				CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=show');
+				document.cookie = "thumbs=show";
 			}
-			else {
-				contentElement.style.position = 'static';
+			return false;
+			}
+		},
+		onresize: function(pane){
+			if (pane=="south"){console.log(jQuery('.ui-layout-south').height());
+			if(jQuery('.ui-layout-south').height()<<?php echo $collection_frame_height?> && thumbs!="hide"){
+				document.cookie = "thumbs=hide";
+				CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=hide');
+			} else if(jQuery('.ui-layout-south').height()>40 && thumbs=="hide"){
+				document.cookie = "thumbs=show";
+				CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=show');
+			}return false;
 			}
 		}
-	}
+		
+	});
+	return;
+	
 }
 <?php
 # Work out the current collection from the search string if external access
@@ -298,20 +297,20 @@ if (isset($k) && $k!="" && isset($search) && !isset($usercollection))
 
 if (isset($k) && $k!="" && isset($usercollection)) { ?>
 window.onload = function() {
-	setContent();ChangeCollection(<?php echo $usercollection; ?>,'<?php echo $k ?>');
-}
+	setContent();//ChangeCollection(<?php echo $usercollection; ?>,'<?php echo $k ?>');
+CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=<?php echo $thumbs;?>');}
 <?php } else { ?>
 window.onload = function() {
-	setContent();UpdateCollectionDisplay('<?php echo isset($k)?$k:"" ?>');
+	setContent();CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=<?php echo $thumbs;?>');
 }
 <?php } ?>
 
-window.onresize = function() {
-	setContent();
-	<?php hook("onwindowresize");?>
-}
+
 </script>
 <?php } // end omit_collectiondiv_load_pages ?>	
+
+
+
 
 
 </body>

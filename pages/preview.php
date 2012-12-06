@@ -10,7 +10,8 @@ include "../include/collections_functions.php";
 include "../include/resource_functions.php";
 
 $saved_thumbs_state=getvalescaped("thumbs",$thumbs_default);
-setcookie("thumbs","hide"); // always hide thumbs on this page loading
+setcookie("thumbs",$saved_thumbs_state); // always hide thumbs on this page loading
+$thumbs="hide";
 $headerinsert.="<script type='text/javascript'>jQuery(window).unload(function(){SetCookie('thumbs','".$saved_thumbs_state."');});</script>";
 
 $ref=getval("ref","");

@@ -42,9 +42,11 @@ http://www.resourcespace.org/
 <script src="<?php echo $baseurl?>/lib/js/jquery-1.7.2.min.js?css_reload_key=<?php echo $css_reload_key?>" type="text/javascript"></script>
 
 <script src="<?php echo $baseurl?>/lib/js/jquery-ui-1.8.20.custom.min.js?css_reload_key=<?php echo $css_reload_key?>" type="text/javascript"></script>
+<script src="<?php echo $baseurl?>/lib/js/jquery.layout.min.js"></script>
 <script src="<?php echo $baseurl?>/lib/js/easyTooltip.js?css_reload_key=<?php echo $css_reload_key?>" type="text/javascript"></script>
 <link type="text/css" href="<?php echo $baseurl?>/css/ui-lightness/jquery-ui-1.8.20.custom.css?css_reload_key=<?php echo $css_reload_key?>" rel="stylesheet" />
 <script src="<?php echo $baseurl?>/lib/js/jquery.ui.touch-punch.min.js"></script>
+
 <?php if ($use_zip_extension){?><script type="text/javascript" src="<?php echo $baseurl?>/lib/js/jquery-periodical-updater.js"></script><?php } ?>
 <?php if ($contact_sheet){?>
 <script type="text/javascript" src="<?php echo $baseurl?>/lib/js/contactsheet.js"></script>
@@ -53,6 +55,10 @@ contactsheet_previewimage_prefix = '<?php echo addslashes($storageurl)?>';
 </script>
 <script type="text/javascript">
 jQuery.noConflict();
+
+	
+
+
 </script>
 <?php } ?>
 
@@ -191,6 +197,8 @@ for ($n=0;$n<count($plugins);$n++)
 
 <body <?php if (isset($bodyattribs)) { ?><?php echo $bodyattribs?><?php } ?>>
 
+
+
 <?php hook("bodystart"); ?>
 
 <?php
@@ -199,6 +207,7 @@ for ($n=0;$n<count($plugins);$n++)
 ?>
 
 <!--Global Header-->
+<div  class="ui-layout-center" style="height:100%">
 <?php
 if (($pagename=="terms") && (getval("url","")=="index.php")) {$loginterms=true;} else {$loginterms=false;}
 if ($pagename!="preview" && $pagename!="preview_all") { ?>
@@ -335,12 +344,12 @@ else
 <div id="HeaderNav1" class="HorizontalNav ">&nbsp;</div>
 <div id="HeaderNav2" class="HorizontalNav HorizontalWhiteNav">&nbsp;</div>
 <?php } ?>
-</div>
+
 <?php } ?>
 
 <?php hook("headerbottom"); ?>
 
-<div class="clearer"></div>
+<div class="clearer"></div><?php if ($pagename!="preview" && $pagename!="preview_all") { ?></div><?php } ?>
 <?php
 # Include simple search sidebar?
 $omit_searchbar_pages=array("index","preview_all","search_advanced","preview","admin_header");

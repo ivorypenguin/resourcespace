@@ -492,12 +492,15 @@ div.autocomplete ul li {
 	vertical-align: middle;
 	}
 
-.AjaxCollect 
-	{
-	position:fixed;bottom:0;width:100%;border-top:5px solid #d0d0d0;overflow:auto;overflow-x: hidden;z-index:99999;
-	}
+
 	
 li.plupload_droptext 
 	{
 	color:#999;
 	}
+	
+
+.ui-layout-toggler-open-hover{background-color:yellow;}
+.ui-layout-pane {
+    overflow: auto;
+}

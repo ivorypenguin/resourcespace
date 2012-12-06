@@ -1119,7 +1119,6 @@ if ($multiple && !$disable_geocoding)
 if (!$multiple && $ref>0) {EditNav();}
 ?>
 
-</div>
 
 </form>
 <?php if (!$is_template) { ?><p><sup>*</sup> <?php echo $lang["requiredfield"]?></p><?php } ?>

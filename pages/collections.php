@@ -31,7 +31,6 @@ if ($k!="") {$use_checkboxes_for_selection=false;}
 # Hide/show thumbs - set cookie must be before header is sent
 $thumbs=getval("thumbs",$thumbs_default);
 if ($thumbs=="undefined"){$thumbs=$thumbs_default;}
-setcookie("thumbs",$thumbs,0);
 
 # Basket mode? - this is for the e-commerce user request modes.
 if ($userrequestmode==2 || $userrequestmode==3)
@@ -105,7 +104,7 @@ if ($infobox)
 	?>		
 	<script src="../lib/js/infobox_collection.js" type="text/javascript"></script>
 	<?php
-	}
+	}?><script src="../lib/js/global.js" type="text/javascript"></script><?php
 	
 if ($allow_reorder)
 	{
@@ -167,26 +166,34 @@ else { ?>
 	<?php } ?>
 
 <script type="text/javascript">
+
 function ToggleThumbs()
 	{
 		<?php if ($thumbs=="show") { ?>
-			collection_frame_height=40;
+			thumbs="hide";
+			myLayout.sizePane("south", 40);
+			document.cookie = "thumbs=hide";
 		<?php } else { ?>
-			collection_frame_height=<?php echo $collection_frame_height?>;
+			thumbs="show";
+			document.cookie = "thumbs=show";
 		<?php } ?>
-		setContent();
+		//setContent();
 	}
 	
 // hack for collection load	// this needs fixing
-	function ToggleThumbsInit(){
-		<?php if ($thumbs=="hide") { ?>
-			collection_frame_height=40;
-		<?php } else { ?>
-			collection_frame_height=<?php echo $collection_frame_height?>;
-		<?php } ?>
-		setContent();
+
+<?php if ($thumbs=="hide") { ?>
+	thumbs="hide";
+	myLayout.sizePane("south", 40);
+			
+<?php } else { ?>
+	thumbs="show";
+	if (jQuery('.ui-layout-south').height()<=<?php echo $collection_frame_height?>){
+	myLayout.sizePane("south", <?php echo $collection_frame_height?>);
 	}
-	ToggleThumbsInit();
+	
+<?php } ?>
+	
 </script>
 
 <?php if(!hook("clearmaincheckboxesfromcollectionframe")){ ?>
@@ -381,7 +388,7 @@ if ($count_result>$max_collection_thumbs && $k=="")
 	<?php if (getval("nowarn","")=="") { ?>
 	alert("<?php echo $lang["maxcollectionthumbsreached"]?>");
 	<?php } ?>
-	window.setTimeout("ToggleThumbs();CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=hide')");
+	window.setTimeout("ToggleThumbs();setCookie('thumbs','hide');CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=hide')");
 	</script>
 	<?php
 	$result=array(); # Empty the result set so nothing is drawn; the window will be resized shortly anyway.
@@ -410,7 +417,7 @@ if ($basket)
 	<p style="padding-bottom:10px;"><input type="submit" name="buy" value="&nbsp;&nbsp;&nbsp;<?php echo $lang["buynow"] ?>&nbsp;&nbsp;&nbsp;" /></p>
 	<?php } ?>
 	<?php if (!$disable_collection_toggle) { ?>
-    <a href="<?php echo $baseurl_short?>pages/collections.php?thumbs=hide&collection=<?php echo $usercollection ?>&k=<?php echo $k?>" onClick="ToggleThumbs();return CollectionDivLoad(this);">&gt; <?php echo $lang["hidethumbnails"]?></a>
+    <a href="<?php echo $baseurl_short?>pages/collections.php?thumbs=hide&collection=<?php echo $usercollection ?>&k=<?php echo $k?>" onClick="document.cookie = 'thumbs=hide';return CollectionDivLoad(this);">&gt; <?php echo $lang["hidethumbnails"]?></a>
   <?php } ?>
 	<a href="<?php echo $baseurl_short?>pages/purchases.php" onclick="return CentralSpaceLoad(this,true);">&gt; <?php echo $lang["viewpurchases"]?></a>
 
@@ -446,7 +453,7 @@ elseif ($k!="")
 	    }
 	?>
 	<?php if (!$disable_collection_toggle) { ?>
-    <br/><a href="<?php echo $baseurl_short?>pages/collections.php?thumbs=hide&collection=<?php echo $usercollection ?>&k=<?php echo $k?>" onClick="ToggleThumbs();return CollectionDivLoad(this);">&gt; <?php echo $lang["hidethumbnails"]?></a>
+    <br/><a href="<?php echo $baseurl_short?>pages/collections.php?thumbs=hide&collection=<?php echo $usercollection ?>&k=<?php echo $k?>" onClick="document.cookie = 'thumbs=hide';return CollectionDivLoad(this);">&gt; <?php echo $lang["hidethumbnails"]?></a>
   <?php } ?>
 </div>
 <?php 
@@ -569,7 +576,7 @@ elseif ($k!="")
 	<?php } ?>
 	<?php hook("collectiontool");?>
 	<?php if (!$disable_collection_toggle) { ?>
-    <li><a href="<?php echo $baseurl_short?>pages/collections.php?thumbs=hide" onClick="ToggleThumbs();return CollectionDivLoad(this);">&gt; <?php echo $lang["hidethumbnails"]?></a></li>
+    <li><a href="<?php echo $baseurl_short?>pages/collections.php?thumbs=hide" onClick="document.cookie = 'thumbs=hide';return CollectionDivLoad(this);">&gt; <?php echo $lang["hidethumbnails"]?></a></li>
   <?php } ?>
 <?php } /* end compact collections */?>
 </ul>
@@ -731,7 +738,7 @@ if ($basket)
 	<li><input type="submit" name="buy" value="&nbsp;&nbsp;&nbsp;<?php echo $lang["buynow"] ?>&nbsp;&nbsp;&nbsp;" /></li>
 	<?php } ?>
   <?php if (!$disable_collection_toggle) { ?>
-    <?php if ($count_result<=$max_collection_thumbs) { ?><li><a href="<?php echo $baseurl_short?>pages/collections.php?thumbs=show&collection=<?php echo $usercollection ?>&k=<?php echo $k?>" onClick="ToggleThumbs();return CollectionDivLoad(this);"><?php echo $lang["showthumbnails"]?></a></li><?php } ?>
+    <?php if ($count_result<=$max_collection_thumbs) { ?><li><a href="<?php echo $baseurl_short?>pages/collections.php?thumbs=show&collection=<?php echo $usercollection ?>&k=<?php echo $k?>" onClick="document.cookie = 'thumbs=show';return CollectionDivLoad(this);"><?php echo $lang["showthumbnails"]?></a></li><?php } ?>
   <?php } ?>
 	<li><a href="<?php echo $baseurl_short?>pages/purchases.php" onclick="return CentralSpaceLoad(this,true);"><?php echo $lang["viewpurchases"]?></a></li>
     </ul>
@@ -764,7 +771,7 @@ elseif ($k!="")
 	    }
 	?>
   <?php if (!$disable_collection_toggle) { ?>
-   	<li><a href="<?php echo $baseurl_short?>pages/collections.php?thumbs=show&collection=<?php echo $usercollection?>&k=<?php echo $k?>" onClick="ToggleThumbs();return CollectionDivLoad(this);"><?php echo $lang["showthumbnails"]?></li>
+   	<li><a href="<?php echo $baseurl_short?>pages/collections.php?thumbs=show&collection=<?php echo $usercollection?>&k=<?php echo $k?>" onClick="document.cookie = 'thumbs=show';return CollectionDivLoad(this);"><?php echo $lang["showthumbnails"]?></li>
   <?php } ?>
 </div>
 <?php 
@@ -826,7 +833,7 @@ elseif ($k!="")
 	    }
 	?>
 	<?php hook("collectiontoolmin");?>
-    <?php if (($count_result<=$max_collection_thumbs) && !$disable_collection_toggle) { ?><li><a href="<?php echo $baseurl_short?>pages/collections.php?thumbs=show" onClick="ToggleThumbs();return CollectionDivLoad(this);"><?php echo $lang["showthumbnails"]?></a></li><?php } ?>
+    <?php if (($count_result<=$max_collection_thumbs) && !$disable_collection_toggle) { ?><li><a href="<?php echo $baseurl_short?>pages/collections.php?thumbs=show" onClick="document.cookie = 'thumbs=show';return CollectionDivLoad(this);"><?php echo $lang["showthumbnails"]?></a></li><?php } ?>
     
   </ul>
   <?php } ?>

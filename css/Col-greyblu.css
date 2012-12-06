@@ -1,7 +1,7 @@
 body,html {color:#B5C3D4;background: #4C6C96 url(../gfx/greyblu/interface/back.gif) repeat-x fixed;}
 h2 {color: #FFFFFF;}
 h1 {color: #FFFFFF;}
-.AjaxCollect {border-top: 3px ridge #a0afc3;}
+.ui-layout-resizer {background:#999 url(../gfx/greyblu/interface/CollectDivide.gif) repeat-x;}
 .CollectBack {color:#B6BBC1;background: #293340 url(../gfx/greyblu/interface/CollectBack.gif) repeat-x;}
 
 a:link {color:#B5C3D4;}
