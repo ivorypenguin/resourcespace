@@ -26,7 +26,7 @@
 # En första version av översättningen skapades av Henrik Frizén (förnamn.efternamn utan accenttecken i e-postboxen.Sveriges landskod) 20110124 för version 2295
 #
 # Senast uppdaterad av [Namn] [Datum] för version [svn-version], [kommentar]
-# Senast uppdaterad av Henrik Frizén 20121205 för version 4074
+# Senast uppdaterad av Henrik Frizén 20121206 för version 4081
 #
 #
 # User group names (for the default user groups)
@@ -563,6 +563,8 @@ $lang["youremailaddress"]="Din e-postadress";
 $lang["sendreminder"]="Skicka påminnelse";
 $lang["sendnewpassword"]="Skicka nytt lösenord";
 $lang["requestuserlogin"]="Ansök om ett användarkonto";
+$lang["accountlockedstatus"]="Användarkontot är låst";
+$lang["accountunlock"]="Lås upp";
 
 # Research request
 $lang["nameofproject"]="Projektets namn";
