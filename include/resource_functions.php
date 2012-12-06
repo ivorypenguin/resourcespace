@@ -1135,7 +1135,7 @@ function write_metadata($path,$ref,$uniqid="")
 	// copys the file to tmp and runs exiftool on it	
 	// uniqid tells the tmp file to be placed in an isolated folder within tmp
 	
-	global $exiftool_remove_existing,$storagedir,$exiftool_write,$exiftool_no_process;
+	global $exiftool_remove_existing,$storagedir,$exiftool_write,$exiftool_no_process,$mysql_charset;
 	
 	# Fetch file extension
 	$resource_data=get_resource_data($ref);
@@ -1169,7 +1169,7 @@ function write_metadata($path,$ref,$uniqid="")
 			
 			foreach ($field as $field)
 				{
-				$writevalue = mb_convert_encoding($writevalue, 'UTF-8');
+				if (!isset($mysql_charset) || (isset($mysql_charset) && strtolower($mysql_charset)!="utf8")){$writevalue = mb_convert_encoding($writevalue, 'UTF-8');}
 				$command.= escapeshellarg("-" . $field . "=" . htmlentities($writevalue, ENT_QUOTES, "UTF-8")) . " ";
 				}
 			}
