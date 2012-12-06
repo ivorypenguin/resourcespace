@@ -432,7 +432,7 @@ elseif ($k!="")
 	$tempcol=$cinfo;
 	?>
 <div id="CollectionMenu">
-  <h2><?php echo $tempcol["name"]?></h2>
+  <h2><?php echo i18n_get_collection_name($tempcol)?></h2>
 	<br />
 	<?php echo $lang["created"] . " " . nicedate($tempcol["created"])?><br />
   	<?php echo $count_result . " " . $lang["youfoundresources"]?><br />
@@ -752,7 +752,7 @@ elseif ($k!="")
 	# Anonymous access, slightly different display
 	$tempcol=$cinfo;
 	?>
-<div id="CollectionMinTitle"><h2><?php echo $tempcol["name"]?></h2></div>
+<div id="CollectionMinTitle"><h2><?php echo i18n_get_collection_name($tempcol)?></h2></div>
 <div id="CollectionMinRightNav">
     <?php if ((isset($zipcommand) || $collection_download) && $count_result>0) { ?>
 	<li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/terms.php?k=<?php echo $k?>&url=<?php echo urlencode("pages/collection_download.php?collection=" .  $usercollection . "&k=" . $k)?>"><?php echo $lang["action-download"]?></a></li>
