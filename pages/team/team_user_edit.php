@@ -12,7 +12,12 @@ include "../../include/general.php";
 $ref=getvalescaped("ref","",true);
 $backurl=getval("backurl","");
 
-if ((getval("save","")!="") || (getval("suggest","")!=""))
+if (getval("unlock","")!="")
+	{
+	# reset user lock
+	sql_query("update user set login_tries='0' where ref='$ref'");
+	}
+elseif ((getval("save","")!="") || (getval("suggest","")!=""))
 	{
 	# Save user data
 	$result=save_user($ref);
@@ -66,6 +71,16 @@ if (getval("loginas","")!="")
 <form method=post action="<?php echo $baseurl_short?>pages/team/team_user_edit.php">
 <input type=hidden name=ref value="<?php echo $ref?>">
 <input type=hidden name=backurl value="<?php echo getval("backurl", $baseurl_short . "pages/team/team_user.php?nc=" . time())?>">
+
+<?php
+if (($user["login_tries"]>=$max_login_attempts_per_username) && (strtotime($user["login_last_try"]) > (time() - ($max_login_attempts_wait_minutes * 60))))
+ {?>
+	<div class="Question"><label><strong><?php echo $lang["accountlockedstatus"]?></strong></label>
+		<input class="medcomplementwidth" type=submit name="unlock" value="<?php echo $lang["accountunlock"]?>" />
+	</div>
+
+	<div class="clearerleft"> </div>
+<?php } ?>
 
 <div class="Question"><label><?php echo $lang["username"]?></label><input name="username" type="text" class="stdwidth" value="<?php echo $user["username"]?>"><div class="clearerleft"> </div></div>
 
@@ -135,15 +150,12 @@ if (!hook("ticktoemailpassword")) {
 <div class="Fixed"><?php echo $lang["cannotemailpassword"]?></div>
 <?php } ?><?php hook('emailpassword'); ?>
 <div class="clearerleft"> </div></div>
-<?php } ?>
-
-
+<?php } ?> 
+	
 <div class="Question"><label><?php echo $lang["approved"]?></label><input name="approved" type="checkbox"  value="yes" <?php if ($user["approved"]==1) { ?>checked<?php } ?>>
 <?php if ($user["approved"]==0) { ?><div class="FormError">!! <?php echo $lang["ticktoapproveuser"]?> !!</div><?php } ?>
 
 <div class="clearerleft"> </div></div>
-
-
 
 <div class="Question"><label><?php echo $lang["ticktodelete"]?></label><input name="deleteme" type="checkbox"  value="yes"><div class="clearerleft"> </div></div>
 

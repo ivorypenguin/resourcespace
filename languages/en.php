@@ -538,6 +538,8 @@ $lang["youremailaddress"]="Your E-mail Address";
 $lang["sendreminder"]="Send Reminder";
 $lang["sendnewpassword"]="Send New Password";
 $lang["requestuserlogin"]="Request User Login";
+$lang["accountlockedstatus"]="Account is locked";
+$lang["accountunlock"]="Unlock";
 
 # Research request
 $lang["nameofproject"]="Name of Project";
