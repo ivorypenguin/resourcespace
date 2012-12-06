@@ -104,7 +104,7 @@ if ($infobox)
 	?>		
 	<script src="../lib/js/infobox_collection.js" type="text/javascript"></script>
 	<?php
-	}?><script src="../lib/js/global.js" type="text/javascript"></script><?php
+	}
 	
 if ($allow_reorder)
 	{
