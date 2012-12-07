@@ -343,7 +343,7 @@ function isInt(value) {
         //this.form.css('top', (parseInt(this.area.offset().top) + parseInt(this.area.height()) + 7) + 'px');
 
 		// modified for RS
-		$('.ui-layout-center').append(this.form);	
+		image.canvas.after(this.form);	
 		this.form.css('left', this.area.offset().left + $('.ui-layout-center').scrollLeft()+ 'px');
         this.form.css('top', (parseInt(this.area.offset().top)+ $('.ui-layout-center').scrollTop() + parseInt(this.area.height()) + 7) + 'px');
 		this.form.css('z-index',3);
