@@ -259,6 +259,8 @@ function setContent() {
 		minSize:40,
 		spacing_open:6,
 		spacing_closed:6,togglerLength_open:"200",
+		togglerTip_open: '<?php echo $lang["toggle"]?>',
+		resizerTip: '<?php echo $lang["resize"]?>',
 		south__onclose_start: function(pane){
 			if (pane=="south"){console.log(jQuery('.ui-layout-south').height());
 			if(jQuery('.ui-layout-south').height()>=<?php echo $collection_frame_height?> && thumbs!="hide"){

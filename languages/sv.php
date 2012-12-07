@@ -26,7 +26,7 @@
 # En första version av översättningen skapades av Henrik Frizén (förnamn.efternamn utan accenttecken i e-postboxen.Sveriges landskod) 20110124 för version 2295
 #
 # Senast uppdaterad av [Namn] [Datum] för version [svn-version], [kommentar]
-# Senast uppdaterad av Henrik Frizén 20121206 för version 4081
+# Senast uppdaterad av Henrik Frizén 20121207 för version 4089
 #
 #
 # User group names (for the default user groups)
@@ -347,6 +347,8 @@ $lang["viewall"]="Visa alla";
 $lang["action-editall"]="Redigera alla";
 $lang["hidethumbnails"]="Dölj miniatyrbilder";
 $lang["showthumbnails"]="Visa miniatyrbilder";
+$lang["toggle"]="Växla";
+$lang["resize"]="Ändra storlek";
 $lang["contactsheet"]="Kontaktkopia";
 $lang["mycollection"]="Min samling";
 $lang["editresearchrequests"]="Redigera researchförfrågningar";
