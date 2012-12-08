@@ -362,16 +362,13 @@ input[readonly] {color: #E0E0E0;} /* Read-only form fields */
 /* Home styling ************************************************************ */
 .HomePicturePanel /* Home Page picture slideshow */
 	{
+	}
+.HomePicturePanelIN
+	{
 	border-top: 1px solid #E0E0E0;
 	border-right: 1px solid #252525;
 	border-bottom: 1px solid #252525;
 	border-left: 1px solid #E0E0E0;
-	height: 350px;
-	width: 517px;
-	}
-.HomePicturePanelIN, #image1
-	{
-	border: none;
 	}
 
 .HomePanelIN /* Home panels */
