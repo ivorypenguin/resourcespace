@@ -26,7 +26,8 @@
 # En första version av översättningen skapades av Henrik Frizén (förnamn.efternamn utan accenttecken i e-postboxen.Sveriges landskod) 20110124 för version 2295
 #
 # Senast uppdaterad av [Namn] [Datum] för version [svn-version], [kommentar]
-# Senast uppdaterad av Henrik Frizén 20121207 för version 4089
+# Senast uppdaterad av Henrik Frizén 20121210 för version 4095
+
 #
 #
 # User group names (for the default user groups)
@@ -281,18 +282,20 @@ $lang["searcharchivedresources"]="Sök i arkiverat material";
 $lang["viewresourcespendingarchive"]="Visa material som väntar på arkivering";
 $lang["resourcespendingarchive"]="Material som väntar på arkivering";
 $lang["uploadresourcebatch"]="Överför material";
-$lang["uploadinprogress"]="Överföring och skalning pågår";
-$lang["transferringfiles"]="Överför filer, vänta …";
+$lang["uploadinprogress"]="Överföring och skapande av förhandsgranskningar pågår";
 $lang["donotmoveaway"]="OBS! Lämna inte den här sidan innan överföringen har slutförts.";
 $lang["pleaseselectfiles"]="Välj en eller flera filer att överföra.";
-$lang["resizingimage"]="Skalar bilden";
-$lang["uploaded"]="Överförda";
-$lang["andresized"]="och skalade";
-$lang["uploadfailedfor"]="Överföringen misslyckades för"; # E.g. upload failed for abc123.jpg
-$lang["uploadcomplete"]="Överföringen slutförd.";
-$lang["resourcesuploadedok"]="filer korrekt överförda"; # E.g. 17 resources uploaded OK
-$lang["failed"]="misslyckades";
-$lang["clickviewnewmaterial"]="Klicka på <b>Visa nyaste materialet</b> för att se överfört material.";
+$lang["previewstatus"]="Skapat förhandsgranskningar för material %file% av %filestotal%."; # %file%, %filestotal% will be replaced, e.g. Created previews for resource 2 of 2.
+$lang["uploadedstatus"]="Överfört material %file% av %filestotal% &ndash; %path%"; # %file%, %filestotal% and %path% will be replaced, e.g. Resource 2 of 2 uploaded - pub/pictures/astro-images/JUPITER9.JPG
+$lang["upload_failed_for_path"]="Överföringen misslyckades för %path%"; # %path% will be replaced, e.g. Upload failed for abc123.jpg
+$lang["uploadcomplete"]="Överföringen är slutförd";
+$lang["upload_summary"]="Sammanfattning av överföringen";
+$lang["resources_uploaded-0"]="0 material överfördes korrekt.";
+$lang["resources_uploaded-1"]="1 material överfördes korrekt.";
+$lang["resources_uploaded-n"]="%done% material överfördes korrekt."; # %done% will be replaced, e.g. 17 resources uploaded OK.
+$lang["resources_failed-0"]="0 överföringar misslyckades.";
+$lang["resources_failed-1"]="1 överföring misslyckades.";
+$lang["resources_failed-n"]="%failed% överföringar misslyckades."; # %failed% will be replaced, e.g. 2 resources failed.
 $lang["specifyftpserver"]="Ange ftp-server";
 $lang["ftpserver"]="Ftp-server";
 $lang["ftpusername"]="Användarnamn (ftp)";

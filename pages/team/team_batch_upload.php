@@ -18,26 +18,26 @@ if ($use_local)
 	{
 	# Fetch from local upload folder.
 	$titleh1 = $lang["addresourcebatchlocalfolder"];
-	$titleh2 = "";
+	$titleh2 = $lang["uploadinprogress"];
 	}
 else
 	{
 	# Fetch from FTP server.
 	$titleh1 = $lang["addresourcebatchftp"];
-	$titleh2 = "";
+	$titleh2 = $lang["uploadinprogress"];
 	}
 ?>
 
 <div class="BasicsBox">
 <h1><?php echo $titleh1 ?></h1>
-<h2><?php echo $titleh2 ?></h2>
 </div>
 
 <div class="RecordBox">
 <div class="RecordPanel"> 
 <div class="RecordResouce">
-<div class="Title"><?php echo $lang["uploadinprogress"]?></div>
-<p id="uploadstatus"><?php echo $lang["transferringfiles"]?><br/><b><?php echo $lang["donotmoveaway"]?></b><br/><br/></p>
+<h2 id="heading2"><?php echo $titleh2 ?></h2>
+<p id="uploadstatus"><b><?php echo $lang["donotmoveaway"]?></b><br/><br/></p>
+<p id="uploadlog"></p>
 <div class="clearerleft"> </div>
 </div>
 </div>
@@ -68,6 +68,7 @@ if ($use_local) // Test if we fetch files from local upload folder.
 
 $uploadfiles=$_POST["uploadfiles"];
 $done=0;$failed=0;
+$refs=array();
 for ($n=0;$n<count($uploadfiles);$n++)
 	{
 	if (!$use_local)
@@ -77,9 +78,12 @@ for ($n=0;$n<count($uploadfiles);$n++)
 		ftp_login($ftp,getval("ftp_username",""),getval("ftp_password",""));
 		ftp_pasv($ftp,true);
 		}
-		
-	$path=getval("ftp_folder","") . "/"	. $uploadfiles[$n];
-	
+
+    $ftp_folder = getval("ftp_folder","");
+    $ftp_folder_stripped = rtrim($ftp_folder);
+    $ftp_folder_stripped = rtrim($ftp_folder_stripped, '/');
+    $path = $ftp_folder_stripped . DIRECTORY_SEPARATOR . $uploadfiles[$n];
+
 	# Copy the resource
 	$ref=copy_resource(0-$userref);
 	
@@ -90,7 +94,7 @@ for ($n=0;$n<count($uploadfiles);$n++)
 
 
 	$localpath=get_resource_path($ref,true,"",true,$extension);
-	
+
 	$result=false;
 	error_reporting(0);
 
@@ -103,17 +107,37 @@ for ($n=0;$n<count($uploadfiles);$n++)
 		$result=ftp_get($ftp,$localpath,$path,FTP_BINARY);
 		}
 
-	if ($result) 
+	if (!$result) 
 		{
+		$status = str_replace("%path%", $path, $lang["upload_failed_for_path"]);
+		sleep(2);
+		$failed++;
+		?><script type="text/javascript">document.getElementById('uploadlog').innerHTML+="<?php echo $status?></br>";</script><?php
+		flush();
+		}
+	else
+		{
+        $status = str_replace(array("%file%", "%filestotal%", "%path%"), array($n+1, count($uploadfiles), $path), $lang["uploadedstatus"]);
+		?><script type="text/javascript">document.getElementById('uploadlog').innerHTML+="<?php echo $status?></br>";</script><?php
+		flush();
 
 		if($enable_thumbnail_creation_on_upload) // Test if thumbnail creation is allowed during upload
 			{
-			# Create image previews for supported image files only.
-			?><script type="text/javascript">document.getElementById('uploadstatus').innerHTML+="<?php echo $lang["resizingimage"]?> <?php echo $n+1?> <?php echo $lang["of"]?> <?php echo count($uploadfiles)?><br/>";</script>
-			<?php
+			# Create previews
+			create_previews($ref, false, $extension);
+            $previewstatus = str_replace(array("%file%", "%filestotal%"), array(($n+1), count($uploadfiles)), $lang["previewstatus"]);
+
+			# Show thumb?
+			$rd = get_resource_data($ref);
+			$thumb = get_resource_path($ref, true, "thm", false, $rd["preview_extension"]);
+			if (file_exists($thumb))
+				{
+				$previewstatus.= "<br/><img src='" . get_resource_path($ref, false, "thm", false, $rd["preview_extension"]) . "'><br/><br/>";
+				}
+			else {$previewstatus.= "<br/><br/>";}
+			?><script type="text/javascript">document.getElementById('uploadlog').innerHTML+="<?php echo $previewstatus ?>";</script><?php
 			flush();
-			create_previews($ref,false,$extension);
-			
+
 			} // Test if thumbnail creation is allowed during upload
 
 		# Store original filename in field, if set
@@ -133,42 +157,64 @@ for ($n=0;$n<count($uploadfiles);$n++)
 		# extract text from documents (e.g. PDF, DOC).
 		global $extracted_text_field;
 		if (isset($extracted_text_field) && !$no_exif) {extract_text($ref,$extension);}
-		
 
-		$status=$lang["uploaded"] . " " . ($n+1) . " " . $lang["of"] . " " . count($uploadfiles);
-		$status.= " - ".$path;
-		# Show thumb?
-		$rd=get_resource_data($ref);$thumb=get_resource_path($ref,true,"thm",false,$rd["preview_extension"]);
-		if (file_exists($thumb))
-			{
-			$status.="<br/><img src='" . get_resource_path($ref,false,"thm",false,$rd["preview_extension"]) . "'>";
-			}
 		$done++;
-		
+
 		# Add to collection?
 		if ($collection!="")
 			{
-			?><script type="text/javascript">parent.collections.location.href="../collections.php?add=<?php echo $ref?>&nc=<?php echo time()?>&search=<?php echo urlencode($search)?>";</script>
-	<?php
+			$refs[] = $ref;
 			}
 
 		# Log this
 		daily_stat("Resource upload",$ref);
 		resource_log($ref,'u',0);
+
 		}
-	else
-		{
-		$status=$lang["uploadfailedfor"] . $path;
-		sleep(2);$failed++;
-		}
-	?><script type="text/javascript">document.getElementById('uploadstatus').innerHTML+="<?php echo $status?><br/><br/>";</script>
-	<?php
-	flush();
+
 	}
 
 if (!$use_local)
 	{
 	ftp_close($ftp);
 	}
+
+switch ($done)
+    {
+    case 0:
+        $summary_ok = $lang["resources_uploaded-0"];
+        break;
+    case 1:
+        $summary_ok = $lang["resources_uploaded-1"];
+        break;
+    default:
+        $summary_ok = str_replace("%done%", $done, $lang["resources_uploaded-n"]);
+        break;
+    }
+switch ($failed)
+    {
+    case 0:
+        $summary_failed = $lang["resources_failed-0"];
+        break;
+    case 1:
+        $summary_failed = $lang["resources_failed-1"];
+        break;
+    default:
+        $summary_failed = str_replace("%failed%", $failed, $lang["resources_failed-n"]);
+        break;
+    }
+
 ?>
-<script type="text/javascript">document.getElementById('uploadstatus').innerHTML+="<?php echo $lang["uploadcomplete"]?> <?php echo $done?> <?php echo $lang["resourcesuploadedok"]?>, <?php echo $failed?> <?php echo $lang["failed"]?>. <?php echo $lang["clickviewnewmaterial"]?>";</script>
+
+<script type="text/javascript">document.getElementById('heading2').innerHTML="<?php echo $lang['uploadcomplete']; ?>";</script>
+<script type="text/javascript">document.getElementById('uploadstatus').innerHTML="";</script>
+<script type="text/javascript">document.getElementById('uploadlog').innerHTML+="<?php echo '<h3>' . $lang['upload_summary'] . '</h3><p>' . $summary_ok . '</br>' . $summary_failed; ?></p>";</script><?php
+
+# Add to collection?
+if ($collection!="")
+	{
+	foreach($refs as $ref)
+		{
+		?><script type="text/javascript">CollectionDivLoad('<?php echo $baseurl . "/pages/collections.php?add=" . $ref . "&nc=" . time() . "&search=" . urlencode($search)?>');</script><?php
+		}
+	}

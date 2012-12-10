@@ -6,6 +6,7 @@ include "../../include/general.php";
 include "../../include/header.php";
 $resource_type = getvalescaped('resource_type','');
 $collection_add = getvalescaped("collection_add","");
+$entercolname = getvalescaped("entercolname","");
 ?>
 <div class="BasicsBox">
 
@@ -22,6 +23,7 @@ $collection_add = getvalescaped("collection_add","");
 	<input type="hidden" name="no_exif" value="<?php echo getval("no_exif","")?>">
 	<input type="hidden" name="autorotate" value="<?php echo getval("autorotate","")?>">
 	<input type="hidden" name="collection_add" value="<?php echo $collection_add?>">
+	<input type="hidden" name="entercolname" value="<?php echo $entercolname?>">
 
 		<div class="Question"><label><?php echo $lang["ftpserver"]?></label><input name="ftp_server" type="text" class="stdwidth" value="<?php echo $ftp_server?>"><div class="clearerleft"> </div></div>
 
