@@ -5,7 +5,11 @@ ob_start(); // we will use output buffering to prevent any included files
 include "../include/db.php";
 include "../include/general.php";
 include "../include/resource_functions.php";
-ob_end_clean();
+
+while (ob_get_level()) { 
+	ob_end_clean(); 
+} 
+
 
 if(strlen(getval('direct',''))>0){$direct = true;} else { $direct = false;}
 
