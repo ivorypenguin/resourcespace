@@ -56,6 +56,8 @@ if ($go!="")
 	if (is_string($newkey)) {$k=$newkey;}
 	}
 
+# Check if the user has access to the new (previous/next) resource.
+if (($k=="") || (!check_access_key($ref, $k))) {include "../include/authenticate.php";}
 
 $resource=get_resource_data($ref);
 $ext="jpg";
