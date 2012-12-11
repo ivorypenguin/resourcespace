@@ -1222,10 +1222,15 @@ $lang["filetypenotsupported"]="%EXTENSION filetype not supported"; # Use %EXTENS
 $lang["exiftoolprocessingdisabledforfiletype"]="Exiftool processing disabled for file type %EXTENSION"; # Use %EXTENSION, %extension or %Extension as a placeholder. The placeholder will be replaced with the filename extension, using the same case. E.g. "Exiftool processing disabled for file type %EXTENSION" -> "Exiftool processing disabled for file type JPG"
 $lang["nometadatareport"]="No Metadata Report";
 $lang["metadatawritewillbeattempted"]="Metadata write will be attempted.";
+$lang["metadatatobewritten"]="Metadata Which Will Be Written";
 $lang["embeddedvalue"]="Embedded Value";
 $lang["exiftooltag"]="Exiftool Tag";
 $lang["error"]="Error";
 $lang["exiftoolnotfound"]="Could not find Exiftool";
+$lang["existing_tags"]="Existing Exiftool Tags";
+$lang["new_tags"]="New Exiftool Tags (which will be added upon download)";
+$lang["date_of_download"]="[Date of download]";
+$lang["field_ref_and_name"]="%ref% - %name%"; # %ref% and %name% will be replaced, e.g. 3 – Country
 
 $lang["indicateusage"]="Please describe your planned use for this resource.";
 $lang["usage"]="Usage";

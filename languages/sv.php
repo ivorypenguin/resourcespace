@@ -26,7 +26,7 @@
 # En första version av översättningen skapades av Henrik Frizén (förnamn.efternamn utan accenttecken i e-postboxen.Sveriges landskod) 20110124 för version 2295
 #
 # Senast uppdaterad av [Namn] [Datum] för version [svn-version], [kommentar]
-# Senast uppdaterad av Henrik Frizén 20121210 för version 4095
+# Senast uppdaterad av Henrik Frizén 20121211 för version 4096
 
 #
 #
@@ -1248,10 +1248,15 @@ $lang["filetypenotsupported"]="Filtypen %extension stöds inte."; # Use %EXTENSI
 $lang["exiftoolprocessingdisabledforfiletype"]="Exiftool är inaktiverat för filtypen %extension."; # Use %EXTENSION, %extension or %Extension as a placeholder. The placeholder will be replaced with the filename extension, using the same case. E.g. "Exiftool processing disabled for file type %EXTENSION" -> "Exiftool processing disabled for file type JPG"
 $lang["nometadatareport"]="Ingen metadatarapport";
 $lang["metadatawritewillbeattempted"]="Exiftool kommer att försöka skriva nedanstående metadata.";
+$lang["metadatatobewritten"]="Exiftool kommer att skriva nedanstående metadata";
 $lang["embeddedvalue"]="Inbäddat värde";
 $lang["exiftooltag"]="Exiftool-fält";
 $lang["error"]="Fel";
 $lang["exiftoolnotfound"]="Exiftool kunde inte hittas";
+$lang["existing_tags"]="Existerande Exiftool-fält";
+$lang["new_tags"]="Nya Exiftool-fält (vilka kommer att läggas till vid hämtning)";
+$lang["date_of_download"]="[Datum vid nedladdning]";
+$lang["field_ref_and_name"]="%ref% &ndash; %name%"; # %ref% and %name% will be replaced, e.g. 3 – Country
 
 $lang["indicateusage"]="Beskriv hur du planerar att använda detta material.";
 $lang["usage"]="Användning";

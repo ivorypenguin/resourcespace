@@ -1,4 +1,4 @@
-<?php /* -------- Category tree ---------------- */ 
+<?php /* -------- Category Tree ------------------- */ 
 
 if (isset($n) && isset($fields)){
 	$options=$fields[$n]["options"];

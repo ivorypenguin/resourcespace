@@ -1,4 +1,4 @@
-<?php /* -------- Date select ---------------- */ 
+<?php /* -------- Date ---------------------------- */ 
 
 # Start with a null date
 $dy="";

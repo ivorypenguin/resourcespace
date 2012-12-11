@@ -1,4 +1,4 @@
-<?php /* -------- Check box list ---------------- */ 
+<?php /* -------- Check box list ------------------ */ 
 
 if(!hook("customchkboxes")):
 

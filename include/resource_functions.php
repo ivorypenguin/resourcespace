@@ -1130,58 +1130,118 @@ function get_exiftool_fields($resource_type)
 	return sql_query("select ref,type,exiftool_field,exiftool_filter,options,name from resource_type_field where length(exiftool_field)>0 and (resource_type='$resource_type' or resource_type='0')  order by exiftool_field");
 	}
 
-function write_metadata($path,$ref,$uniqid="")
+function write_metadata($path, $ref, $uniqid="")
 	{
 	// copys the file to tmp and runs exiftool on it	
 	// uniqid tells the tmp file to be placed in an isolated folder within tmp
-	
+
 	global $exiftool_remove_existing,$storagedir,$exiftool_write,$exiftool_no_process,$mysql_charset;
-	
-	# Fetch file extension
+
+    # Fetch file extension and resource type.
 	$resource_data=get_resource_data($ref);
 	$extension=$resource_data["file_extension"];
 	$resource_type=$resource_data["resource_type"];
 
 	$exiftool_fullpath = get_utility_path("exiftool");
-	
+
+    # Check if an attempt to write the metadata shall be performed.
 	if (($exiftool_fullpath!=false) && ($exiftool_write) && !in_array($extension,$exiftool_no_process))
 		{
 		$filename = pathinfo($path);
 		$filename = $filename['basename'];	
 		$tmpfile=get_temp_dir(false,$uniqid) . "/" . $filename;
 		copy($path,$tmpfile);
-	
-		#Now that we have already copied the original file, we can use exiftool's overwrite_original on the tmpfile.
-		# Argument -E: escape values for HTML. Used for handling foreign characters in shells not using UTF-8.
+
+        # Add the call to exiftool and some generic arguments to the command string.
+        # Argument -overwrite_original: Now that we have already copied the original file, we can use exiftool's overwrite_original on the tmpfile.
+        # Argument -E: Escape values for HTML. Used for handling foreign characters in shells not using UTF-8.
+        # Arguments -EXIF:all= -XMP:all= -IPTC:all=: Remove the metadata in the tag groups EXIF, XMP and IPTC.
 		$command = $exiftool_fullpath . " -overwrite_original -E ";
-		if ($exiftool_remove_existing) {$command.= "-EXIF:all -XMP:all= -IPTC:all= ";}
-		$write_to=get_exiftool_fields($resource_type);
-		for($i=0;$i< count($write_to);$i++)
+        if ($exiftool_remove_existing) {$command.= "-EXIF:all= -XMP:all= -IPTC:all= ";}
+
+        $write_to = get_exiftool_fields($resource_type); # Returns an array of exiftool fields for the particular resource type, which are basically fields with an 'exiftool field' set.
+
+        for($i = 0; $i<count($write_to); $i++) # Loop through all the found fields.
 			{
-			$fieldtype=$write_to[$i]['type'];
-			$field=explode(",",$write_to[$i]['exiftool_field']);
-			# write datetype fields as ISO 8601 date ("c") 
-			if ($fieldtype=="4"){$writevalue=date("c",strtotime(get_data_by_field($ref,$write_to[$i]['ref'])));}
-			else {$writevalue=get_data_by_field($ref,$write_to[$i]['ref']);}
-			
-			# Remove initial comma (for checkbox lists)
-			if (substr($writevalue,0,1)==",") {$writevalue=substr($writevalue,1);}
-			
-			foreach ($field as $field)
-				{
-				if (!isset($mysql_charset) || (isset($mysql_charset) && strtolower($mysql_charset)!="utf8")){$writevalue = mb_convert_encoding($writevalue, 'UTF-8');}
-				$command.= escapeshellarg("-" . $field . "=" . htmlentities($writevalue, ENT_QUOTES, "UTF-8")) . " ";
-				}
-			}
-			$command.= " " . escapeshellarg($tmpfile);
-			$output=run_command($command);
-		return $tmpfile;
-		}
-	else
-		{
-		return false;
-		}
-	}
+            $fieldtype = $write_to[$i]['type'];
+
+            # Formatting and cleaning of the value to be written - depending on the RS field type.
+            switch ($fieldtype)
+                {
+                case 2:
+                    # Check box list: remove initial comma if present
+                    if (substr(get_data_by_field($ref, $write_to[$i]['ref']), 0, 1)==",") {$writevalue = substr(get_data_by_field($ref, $write_to[$i]['ref']), 1);}
+                    else {$writevalue = get_data_by_field($ref, $write_to[$i]['ref']);}
+                    break;
+                case 3:
+                    # Drop down list: remove initial comma if present
+                    if (substr(get_data_by_field($ref, $write_to[$i]['ref']), 0, 1)==",") {$writevalue = substr(get_data_by_field($ref, $write_to[$i]['ref']), 1);}
+                    else {$writevalue = get_data_by_field($ref, $write_to[$i]['ref']);}
+                    break;
+                case 4:
+                    # Date: write datetype fields as ISO 8601 date ("c")
+                    $writevalue = date("c", strtotime(get_data_by_field($ref, $write_to[$i]['ref'])));
+                    break;
+                case 6:
+                    # Expiry Date: write datetype fields as ISO 8601 date ("c")
+                    $writevalue = date("c", strtotime(get_data_by_field($ref, $write_to[$i]['ref'])));
+                    break;
+                case 9:
+                    # Dynamic Keywords List: remove initial comma if present
+                    if (substr(get_data_by_field($ref, $write_to[$i]['ref']), 0, 1)==",") {$writevalue = substr(get_data_by_field($ref, $write_to[$i]['ref']), 1);}
+                    else {$writevalue = get_data_by_field($ref, $write_to[$i]['ref']);}
+                    break;
+                default:
+                    # Other types
+                    $writevalue = get_data_by_field($ref, $write_to[$i]['ref']);
+                }
+
+            # Add the tag name(s) and the value to the command string.
+            $group_tags = explode(",", $write_to[$i]['exiftool_field']); # Each 'exiftool field' may contain more than one tag.
+            foreach ($group_tags as $group_tag)
+                {
+                $group_tag = strtolower($group_tag); # E.g. IPTC:Keywords -> iptc:keywords
+                if (strpos($group_tag,":")===false) {$tag = $group_tag;} # E.g. subject -> subject
+                else {$tag = substr($group_tag, strpos($group_tag,":")+1);} # E.g. iptc:keywords -> keywords
+
+                switch ($tag)
+                    {
+                    case "filesize":
+                        # Do nothing, no point to try to write the filesize.
+                        break;
+                    case "keywords":
+                        # Keywords shall be written one at a time and not all together.
+                        $keywords = explode(",", $writevalue); # "keyword1,keyword2, keyword3" (with or with spaces)
+                        foreach ($keywords as $keyword)
+                            {
+                            # Trim leading space if any.
+                            if (substr($keyword, 0, 1)==" ") {$keyword = substr($keyword, 1);}
+                            # Convert the data to UTF-8 if not already.
+                            if (!isset($mysql_charset) || (isset($mysql_charset) && strtolower($mysql_charset)!="utf8")){$keyword = mb_convert_encoding($keyword, 'UTF-8');}
+                            $command.= escapeshellarg("-" . $group_tag . "=" . htmlentities($keyword, ENT_QUOTES, "UTF-8")) . " ";
+                            }
+                        break;
+                    default:
+                        # Convert the data to UTF-8 if not already.
+                        if (!isset($mysql_charset) || (isset($mysql_charset) && strtolower($mysql_charset)!="utf8")){$writevalue = mb_convert_encoding($writevalue, 'UTF-8');}
+                        $command.= escapeshellarg("-" . $group_tag . "=" . htmlentities($writevalue, ENT_QUOTES, "UTF-8")) . " ";
+                    }
+                }
+            }
+
+            # Add the filename to the command string.
+            $command.= " " . escapeshellarg($tmpfile);
+
+            # Perform the actual writing - execute the command string.
+            $output = run_command($command);
+
+        return $tmpfile;
+        }
+    else
+        {
+        return false;
+        }
+    }
 
 function delete_exif_tmpfile($tmpfile)
 {

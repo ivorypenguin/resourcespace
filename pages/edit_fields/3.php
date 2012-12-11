@@ -1,4 +1,4 @@
-<?php /* --------Drop down list ---------------- */ 
+<?php /* -------- Drop down list ------------------ */ 
 
 # Translate all options
 $options=trim_array(explode(",",$fields[$n]["options"]));

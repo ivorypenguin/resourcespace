@@ -1,4 +1,5 @@
-<?php
+<?php /* -------- Dynamic Keywords List ----------- */ 
+
 global $baseurl,$pagename,$edit_autosave,$n,$fields;
 $readonly=($pagename=="search_advanced");
 ?>

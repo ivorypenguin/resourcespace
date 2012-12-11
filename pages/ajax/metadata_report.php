@@ -47,102 +47,187 @@ else
 	$writable_formats_array=explode(" ",$writable_formats);
 	$file_writability=in_array($ext,$writable_formats_array); 
 	}
-	
-	$command=$exiftool_fullpath . " -s -t -G --filename --exiftoolversion --filepermissions --NativeDigest --History --Directory " . escapeshellarg($image)." 2>&1";
-	$report= run_command($command);
-		          
-	# get commands that would be run on download:      
 
-	# I'm commenting out the following line because I'm not sure why it would be used or how to handle it   
-	# if ($exiftool_remove_existing) {$command="-EXIF:all -XMP:all= -IPTC:all= ";}
-				
-	$write_to=get_exiftool_fields($resource_type);
-	for($i=0;$i< count($write_to);$i++)
-		{
-		$fieldtype=$write_to[$i]['type'];	
-		$fields=explode(",",$write_to[$i]['exiftool_field']);
-		 # write datetype fields as ISO 8601 date ("c") 
-		 if ($fieldtype=="4"){$writevalue=date("c",strtotime(get_data_by_field($ref,$write_to[$i]['ref'])));}
-		 else {$writevalue=get_data_by_field($ref,$write_to[$i]['ref']);}
-		foreach ($fields as $field)
-			{
-			$field=strtolower($field);
-			$simcommands[$field]['value']=str_replace("\"","\\\"",$writevalue);
-			$simcommands[$field]['ref']=$write_to[$i]['ref'];
-			}
-		} 
+    # Create a report for the original file.
+    $command = $exiftool_fullpath . " -s -t -G --filename --exiftoolversion --filepermissions --NativeDigest --History --Directory " . escapeshellarg($image)." 2>&1";
+    $report_original = run_command($command);
 
-	# build report:		
+    # Create a temporary file (simulate download) and create a report for it.
+    $tmpfile = write_metadata($image, $ref);
+    $command = $exiftool_fullpath . " -s -t -G --filename --exiftoolversion --filepermissions --NativeDigest --History --Directory " . escapeshellarg($tmpfile)." 2>&1";
+    $report_simulated = run_command($command);
+
+    # Remove the temporary file.
+    unlink($tmpfile);
+
+    # Process the report of the simulated download.
+    $results_simulated = array();
+    $i = 0;
+    $fields_simulated = explode("\n", $report_simulated);
+    foreach ($fields_simulated as $field_simulated)
+        {
+        $tag_value = explode("\t", $field_simulated); 
+        if (count($tag_value)==3)
+            {
+            $results_simulated[$i]["group"] = trim(strtolower($tag_value[0]));
+            $results_simulated[$i]["tag"] = trim(strtolower($tag_value[1]));
+            $results_simulated[$i]["value"] = trim($tag_value[2]);
+            $tagprops = "";
+            if((in_array($results_simulated[$i]["tag"], $writable_tags_array) && $file_writability)) {$tagprops.= "w";}
+            if ($tagprops!="") {$results_simulated[$i]["tagprops"] = "($tagprops)";} else {$results_simulated[$i]["tagprops"] = "";}
+            $i++;
+            }
+        }
+
+    # Create a list of resource fields which are mapped to exiftool tags.
+    $write_to = get_exiftool_fields($resource_type); # Returns an array of exiftool tags for the particular resource type, which are basically RS resource fields with an 'exiftool field' set.
+
+    for($i = 0; $i<count($write_to); $i++) # Loop through all the found fields.
+        {
+        # Populate the resourcefields array.
+        $tags = explode(",", $write_to[$i]['exiftool_field']); # Each 'exiftool field' may contain more than one tag.
+        foreach ($tags as $tag)
+            {
+            $tag = strtolower($tag);
+            $resourcefields[$tag]['ref'] = $write_to[$i]['ref'];
+            $resourcefields[$tag]['listed'] = false;
+            }
+        }
+
+    # Build report:
+
+    # Work out the write status.
 	if(!isset($file_writability)){$file_writability=true;$writability_comment=$lang['notallfileformatsarewritable'];}else{$writability_comment="";}
-	($exiftool_write&&$file_writability)?$write_status=$lang['metadatawritewillbeattempted']." ".$writability_comment:$write_status=$lang['nowritewillbeattempted'];?>
-	
-	<?php
+	($exiftool_write&&$file_writability)?$write_status=$lang['metadatatobewritten']." ".$writability_comment:$write_status=$lang['nowritewillbeattempted'];
+
 	echo "<table class=\"InfoTable\">";
 	echo "<tr><td colspan=\"5\">".$lang['resourcetype'].": ".$type_name."</td></tr>";
+	echo "<tr><td colspan=\"5\">".$lang['existing_tags']."</td></tr>";
 	echo "<tr><td width=\"150\">".$applicationname."</td><td width=\"50\">".$lang['group']."</td><td width=\"150\">".$lang['exiftooltag']."</td><td>".$lang['embeddedvalue']."</td><td>$write_status</td></tr>";
-	$fields=explode("\n",$report);
+
+    # Process the report of the original file.
+    $fields = explode("\n", $report_original);
 	foreach ($fields as $field)
 		{
 		echo "<tr>";
 		$tag_value=explode("\t",$field); 
 		if (count($tag_value)==3)
 			{
-			$group=$tag_value[0];
-			$tag=$tag_value[1];
-			$value=trim($tag_value[2]);
-			$tag=trim(strtolower($tag));
-			$group=trim(strtolower($group));
-			$tagprops="";
-			if((in_array($tag,$writable_tags_array)&&$file_writability)){$tagprops.="w";}
-			if ($tagprops!="")$tagprops="($tagprops)";
-			
-			if(isset($simcommands[$tag]['value'])||isset($simcommands[$group.":".$tag]))
+            $group = trim(strtolower($tag_value[0]));
+            $tag = trim(strtolower($tag_value[1]));
+            $value = trim($tag_value[2]);
+            $tagprops = "";
+            if((in_array($tag, $writable_tags_array) && $file_writability)) {$tagprops.= "w";}
+            if ($tagprops!="") {$tagprops = "($tagprops)";}
+
+            # Check if the tag is mapped to an RS resource field.
+			if(isset($resourcefields[$tag]['ref']) || isset($resourcefields[$group.":".$tag]['ref']))
 				{
-				#add notes to mapped fields	
-				if (isset($simcommands[$tag]['ref'])){
-					$RS_field_ref=$simcommands[$tag]['ref'];
-				}
-				elseif (isset($simcommands[$group.":".$tag])){
-					$RS_field_ref=$simcommands[$group.":".$tag]['ref'];
-				}
+                # Work out the RS resource field ref and title for the tag, set the listed status of the tag.
+				if (isset($resourcefields[$tag]['ref']))
+                    {
+					$RS_field_ref=$resourcefields[$tag]['ref'];
+                    $resourcefields[$tag]['listed'] = true;
+                    }
+				elseif (isset($resourcefields[$group.":".$tag]['ref']))
+                    {
+					$RS_field_ref=$resourcefields[$group.":".$tag]['ref'];
+                    $resourcefields[$group.":".$tag]['listed'] = true;
+                    }
 				$RS_field_name=sql_query("select title from resource_type_field where ref = $RS_field_ref");
-				$RS_field_name=$RS_field_name[0]['title'];
-				echo "<td>". $RS_field_ref . " - " . lang_or_i18n_get_translated($RS_field_name, "fieldtitle-") . "</td><td>$group</td><td>$tag $tagprops</td>";
+                $RS_field_name = lang_or_i18n_get_translated($RS_field_name[0]['title'], "fieldtitle-");
+                # Display the RS resource field ref, title, exiftool group, tag and properties.
+				echo "<td>". str_replace(array('%ref%', '%name%'), array($RS_field_ref, $RS_field_name), $lang['field_ref_and_name']) . "</td><td>$group</td><td>$tag $tagprops</td>";
 				} 
 			else 
 				{
+                # Not an RS resource field; display exiftool group, tag and properties.
 				echo "<td></td><td>$group</td><td>$tag $tagprops</td>";
 				}
-				
-					
-			#add diff arrow to fields that will likely change
-			if(isset($simcommands[$tag]['value'])||isset($simcommands[$group.":".$tag]['value']))
-				{
-				if (isset($simcommands[$tag]['value'])){ $newvalue=	$simcommands[$tag]['value'];}
-				else if (isset($simcommands[$group.":".$tag]['value'])){ $newvalue=	$simcommands[$group.":".$tag]['value'];}	
 
-                // remove a leading comma from value in database when comparing.
-                if (substr($newvalue,0,1) == ',')
-					{
-					$newvalue = substr($newvalue,1);
-					}
-                	
-				if ($value!=$newvalue)
-					{
-					echo "<td>- ".$value."</td><td>+ ".$newvalue."</td>";
-					}
-				else
-					{
-					echo "<td>".$value."</td><td></td>";
-					}	
-				}	
-				else 
-					{
-					echo "<td>".$value."</td><td></td>";
-					}	
+            # Look for the tag in the simulated download.
+            $exists_in_simulated = false;
+            foreach ($results_simulated as $simulated_result)
+                {
+                if ($simulated_result["group"]==$group && $simulated_result["tag"]==$tag)
+                    {
+                    $exists_in_simulated = true;
+                    break;
+                    }
+                }
+            if ($exists_in_simulated)
+				{
+                # The tag exists also in the simulated download.
+                $newvalue = $simulated_result['value'];
+
+                # Compare the values from the original file and the simulated download.
+                if ($value!=$newvalue && $tag!="filesize" && $tag!="filemodifydate")
+                    {
+                    echo "<td>- " . $value . "</td><td>+ " . $newvalue . "</td>";
+                    }
+                else
+                    {
+                    if ($tag=="filemodifydate")
+                        {
+                        echo "<td>" . $value . "</td><td>+ " . $lang["date_of_download"] . "</td>";
+                        }
+                    else
+                        {
+                        echo "<td>" . $value . "</td><td></td>";
+                        }
+                    }
+                }
+			else 
+				{
+                # The tag is removed in the simulated download.
+                echo "<td>- " . $value . "</td><td>+</td>";
+				}
 				
 			echo "</tr>";
 			}
-		}	
-	echo "</tr></table>";
-	}
+		}
+
+    # Add tags which don't exist in the original file?
+    if ($exiftool_write&&$file_writability)
+        {
+        echo "<tr><td colspan=\"5\">" . $lang['new_tags'] . "</td></tr>";
+        echo "<tr><td width=\"150\">".$applicationname."</td><td width=\"50\">".$lang['group']."</td><td width=\"150\">".$lang['exiftooltag']."</td><td>".$lang['embeddedvalue']."</td><td>$write_status</td></tr>";
+
+        # Process the report of the original file.
+        foreach ($results_simulated as $result_simulated)
+            {
+            $group = $result_simulated["group"];
+            $tag = $result_simulated["tag"];
+            $value = $result_simulated["value"];
+            $tagprops = $result_simulated["tagprops"];
+
+            # Check if the tag hasn't been displayed already.
+            if((isset($resourcefields[$tag]['listed']) && !($resourcefields[$tag]['listed'])) || (isset($resourcefields[$group.":".$tag]['listed']) && !($resourcefields[$group.":".$tag]['listed'])))
+                {
+                # Work out the RS resource field ref and title for the tag.
+                echo "<tr>";
+                if (isset($resourcefields[$tag]['ref']))
+                    {
+                    $RS_field_ref=$resourcefields[$tag]['ref'];
+                    }
+                elseif (isset($resourcefields[$group.":".$tag]['ref']))
+                    {
+                    $RS_field_ref=$resourcefields[$group.":".$tag]['ref'];
+                    }
+                $RS_field_name = sql_query("select title from resource_type_field where ref = $RS_field_ref");
+                $RS_field_name = lang_or_i18n_get_translated($RS_field_name[0]['title'], "fieldtitle-");
+                # Display the RS resource field ref, title, exiftool group, tag and properties.
+                echo "<td>". str_replace(array('%ref%', '%name%'), array($RS_field_ref, $RS_field_name), $lang['field_ref_and_name']) . "</td><td>$group</td><td>$tag $tagprops</td>"; 
+
+                # Display the value.
+                if ($tag!="filesize" && $tag!="filemodifydate")
+                    {
+                    echo "<td></td><td>+ " . $value . "</td>";
+                    }
+
+                echo "</tr>";
+                }
+            }
+        }
+    echo "</table>";
+    }

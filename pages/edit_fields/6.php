@@ -1,3 +1,4 @@
-<?php
-# Expiry date uses same code as date
+<?php /* -------- Expiry date --------------------- */ 
+
+# Uses same code as date.
 include "4.php";
