@@ -55,7 +55,7 @@ class ldapAuth
 	function connect()
 	{
 		$this->ldapconn = ldap_connect($this->ldapconfig['host'])
-	    	or die("Could not connect to LDAP server.");
+	    	or die($lang['posixldapauth_could_not_connect_to_ldap_server']);
 		ldap_set_option($this->ldapconn, LDAP_OPT_PROTOCOL_VERSION, 3);
 		return 1;
 	}
@@ -105,7 +105,7 @@ class ldapAuth
 				
 				// search
 				if (!($search = ldap_search($this->ldapconn, $this->ldapconfig['basedn'], $filter,$attributes))) {
-				     die("Unable to search ldap server");
+				     die($lang['posixldapauth_unable_to_search_ldap_server']);
 				}	
 				// get the info
 				$number_returned = ldap_count_entries($this->ldapconn, $search);
@@ -264,7 +264,7 @@ class ldapAuth
 		
 		// search for the group
 		if (!($search = ldap_search($this->ldapconn, $this->ldapconfig['basedn'], $gid ,$attributes))) {
-		     die("Unable to search ldap server");
+			die($lang['posixldapauth_unable_to_search_ldap_server']);
 		}
 		$info = ldap_get_entries($this->ldapconn, $search);
 		
@@ -334,18 +334,18 @@ class ldapAuth
 		
 		if (!($sr = ldap_search($this->ldapconn, $dn, $filter,$attributes)))
 		{
-				return ("ldap_search($this->ldapconn, $dn, $filter,$attributes)) failed, please check settings");
+				return str_replace("%call%", "ldap_search($this->ldapconn, $dn, $filter,$attributes)", $lang['posixldapauth_ldap_call_failed_please_check_settings']);
 		}
 		
 		error_log( __FILE__ . " " .__METHOD__ . " " .__LINE__." - attempting to get entries");
 		if (!$info = ldap_get_entries($this->ldapconn, $sr))
 		{
-			return ("ldap_get_entries($this->ldapconn, $sr)) failed");	
+			return str_replace("%call%", "ldap_get_entries($this->ldapconn, $sr)", $lang['posixldapauth_ldap_call_failed_please_check_settings']);
 		}
 		
 		if (!$info["count"])
 		{
-			return ("ldap search successfuil, but 0 groups found");	
+			return $lang['posixldapauth_ldap_search_successfull_but_no_groups_found'];
 		}
 		
 		error_log(  __FILE__ . " " . __METHOD__ . " " . __LINE__ ." - ".$info["count"]." entries returned");

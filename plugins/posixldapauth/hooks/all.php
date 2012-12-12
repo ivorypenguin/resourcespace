@@ -52,7 +52,7 @@ function HookPosixldapauthAllExternalauth($uname, $pword)
 			{
 				if ($debugMode)
 				{
-					echo "all.php: line 43 : auth to ldap server is successful \r\n";
+					echo "all.php: line 55 : auth to ldap server is successful \r\n";
 				}
 				$auth = true;
 				// get the user info etc	
@@ -60,8 +60,8 @@ function HookPosixldapauthAllExternalauth($uname, $pword)
 				//print_r($userDetails);
 				if ($debugMode)
 				{
-					echo "all.php: line 50 : cn=" . $userDetails["cn"] . "\r\n";
-					echo "all.php: line 50 : dn=" . $userDetails["dn"] . "\r\n"; 	
+					echo "all.php: line 63 : cn=" . $userDetails["cn"] . "\r\n";
+					echo "all.php: line 64 : dn=" . $userDetails["dn"] . "\r\n"; 	
 				}
 				
 				$user_cn = $userDetails["cn"];

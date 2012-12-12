@@ -13,18 +13,18 @@ $status = true;
 
 if ($objLDAP->connect())
 {
-	$returnMessage['Connection Test'] = "Passed";
+	$returnMessage['Connection Test'] = $lang['posixldapauth_passed'];
 	// we need to check for the kind of LDAP we are talking to here!
 	if ($ldapauth['ldaptype'] == 1 )
 	{
 		// we need to bind!
 		if (!$objLDAP->auth($ldapauth['rootdn'],$ldapauth['rootpass'],1,$ldapauth['addomain']))
 		{
-			$returnMessage["auth"] = "Could not bind to AD, please check credentials";
+			$returnMessage["auth"] = $lang['posixldapauth_could_not_bind_to_ad_check_credentials'];
 			$errmsg = true;
 			$status = false;
 		} else {
-			$returnMessage["AD Bind"] = "Passed";
+			$returnMessage["AD Bind"] = $lang['posixldapauth_passed'];
 		}
 	}
 	
@@ -35,7 +35,7 @@ if ($objLDAP->connect())
 		$ldapGroupList = $objLDAP->listGroups($_GET['type'],$_GET['groupcont']);
 		if (is_array($ldapGroupList)) 
 		{
-			$returnMessage["Group check"] = "Passed";
+			$returnMessage["Group check"] = $lang['posixldapauth_passed'];
 			
 		} else {
 			$returnMessage["Group check"] = $ldapGroupList;
@@ -45,14 +45,14 @@ if ($objLDAP->connect())
 	
 			
 } else {
-	$returnMessage['Connection Test'] =  "Connection to LDAP Server failed";	
+	$returnMessage['Connection Test'] = $lang['posixldapauth_connection_to_ldap_server_failed'];
 	$status = false;
 }
 if ($status)
 {
-	$returnMessage['Status'] = "Tests passed, please save your settings and then return to set group mapping.";	
+	$returnMessage['Status'] = $lang['posixldapauth_tests_passed_save_settings_and_set_group_mapping'];
 } else {
-	$returnMessage['Status'] = "Tests failed, please check your settings and test again.";
+	$returnMessage['Status'] = $lang['posixldapauth_tests_failed_check_settings_and_test_again'];
 }
 
 print_r($returnMessage);

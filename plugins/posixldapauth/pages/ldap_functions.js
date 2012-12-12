@@ -6,6 +6,9 @@
 	* @copyright 2012 D.J.White / Resourcespace
 */
 
+var status_error_in = "";
+var server_error = "";
+
 // Basic xhtml handler for the clear directory routine
 function getHTTPObject() {
   var xmlhttp;
@@ -125,10 +128,10 @@ function testLdapResponse ()
 					alert(response);
 					
 			} else {
-				alert("Status error in " + response);
+				alert(status_error_in + " " + response);
 			} // end status check
 		}catch (e) {
-            alert("Server Error" + e);
+            alert(server_error + " " + e);
 		} // end try
 		
 	}	
