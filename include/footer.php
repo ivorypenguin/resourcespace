@@ -300,7 +300,7 @@ if (isset($k) && $k!="" && isset($search) && !isset($usercollection))
 if (isset($k) && $k!="" && isset($usercollection)) { ?>
 window.onload = function() {
 	setContent();//ChangeCollection(<?php echo $usercollection; ?>,'<?php echo $k ?>');
-CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=<?php echo $thumbs;?>');}
+CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=<?php echo $thumbs;?>&collection=<?php echo $usercollection; ?>&k=<?php echo $k ?>');}
 <?php } else { ?>
 window.onload = function() {
 	setContent();CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=<?php echo $thumbs;?>');
