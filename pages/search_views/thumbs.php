@@ -1,20 +1,18 @@
-<?php
-
-			# Work out image to use.
-			$access=get_resource_access($result[$n]);
-			$use_watermark=check_use_watermark();
-			$thm_url=get_resource_path($ref,false,"thm",false,$result[$n]["preview_extension"],-1,1,$use_watermark,$result[$n]["file_modified"]);
-			
-			if (isset($result[$n]["thm_url"])) {$thm_url=$result[$n]["thm_url"];} # Option to override thumbnail image in results, e.g. by plugin using process_Search_results hook above
-			?>
-		 
 <?php if (!hook("renderresultthumb")) { ?>
 
 <!--Resource Panel-->
-	<div class="ResourcePanelShell" id="ResourceShell<?php echo $ref?>">
+<div class="ResourcePanelShell" id="ResourceShell<?php echo $ref?>">
 	<div class="ResourcePanel">
 	<?php hook ("resourcethumbtop");?>
-<?php if (!hook("renderimagethumb")) { ?>			
+	<?php if (!hook("renderimagethumb")) {
+	# Work out image to use.
+	$access=get_resource_access($result[$n]);
+	$use_watermark=check_use_watermark();
+	$thm_url=get_resource_path($ref,false,"thm",false,$result[$n]["preview_extension"],-1,1,$use_watermark,$result[$n]["file_modified"]);
+
+	if (isset($result[$n]["thm_url"])) {$thm_url=$result[$n]["thm_url"];} # Option to override thumbnail image in results, e.g. by plugin using process_Search_results hook above
+	?>
+
 	<table border="0" class="ResourceAlign<?php if(!hook("replaceresourcetypeicon")){?><?php if (in_array($result[$n]["resource_type"],$videotypes)) { ?> IconVideoLarge<?php } ?><?php } //end hook replaceresoucetypeicon?>">
 	<?php hook("resourcetop")?>
 	<tr><td>
@@ -25,7 +23,9 @@
 	/><?php } ?></a>
 		</td>
 		</tr></table>
-<?php } ?> <!-- END HOOK Renderimagethumb-->	
+<?php } ?> <!-- END HOOK Renderimagethumb-->
+
+
 <?php if ($display_user_rating_stars && $k==""){ ?>
 		<?php if ($result[$n]['user_rating']=="") {$result[$n]['user_rating']=0;}?>
 		
@@ -81,7 +81,8 @@
 			<?php
 			}
 		?>
-		
+
+		<!-- Checkboxes -->
 		<div class="ResourcePanelIcons">
 		<?php if(!hook("thumbscheckboxes")){?>
 		<?php if ($use_checkboxes_for_selection){?><input type="checkbox" id="check<?php echo $ref?>" class="checkselect" <?php if (in_array($ref,$collectionresources)){ ?>checked<?php } ?> onclick="if (jQuery('#check<?php echo $ref?>').attr('checked')=='checked'){ AddResourceToCollection(<?php echo $ref?>); } else if (jQuery('#check<?php echo $ref?>').attr('checked')!='checked'){ RemoveResourceFromCollection(<?php echo $ref?>); }">&nbsp;<?php } ?>
@@ -90,26 +91,43 @@
 		</div>	
 
 		<?php if (!hook("replaceresourcetools")){?>
+
+		<!-- Preview icon -->
 		<?php if (!hook("replacefullscreenpreviewicon")){?>
 		<span class="IconPreview"><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/preview.php?from=search&ref=<?php echo $ref?>&ext=<?php echo $result[$n]["preview_extension"]?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&k=<?php echo $k?>" title="<?php echo $lang["fullscreenpreview"]?>"><img src="<?php echo $baseurl_short?>gfx/interface/sp.gif" alt="<?php echo $lang["fullscreenpreview"]?>" width="22" height="12" /></a></span>
+		<?php $showkeypreview = true; ?>
 		<?php } /* end hook replacefullscreenpreviewicon */?>
-		
+
+		<!-- Add to collection icon -->
 		<?php if(!hook("iconcollect")){?>
 		<?php if (!checkperm("b") && $k=="" && !$use_checkboxes_for_selection) { ?>
 		<span class="IconCollect"><?php echo add_to_collection_link($ref,$search)?><img src="<?php echo $baseurl_short?>gfx/interface/sp.gif" alt="" width="22" height="12"/></a></span>
+		<?php $showkeycollect = true; ?>
 		<?php } ?>
 		<?php } # end hook iconcollect ?>
 
+		<!-- Remove from collection icon -->
 		<?php if (!checkperm("b") && substr($search,0,11)=="!collection" && $k=="" && !$use_checkboxes_for_selection) { ?>
 		<?php if ($search=="!collection".$usercollection){?><span class="IconCollectOut"><?php echo remove_from_collection_link($ref,$search)?><img src="<?php echo $baseurl_short?>gfx/interface/sp.gif" alt="" width="22" height="12" /></a></span>
+		<?php $showkeycollectout = true; ?>
 		<?php } ?>
 		<?php } ?>
-		
-		<?php if ($allow_share && $k=="") { ?><span class="IconEmail"><a href="<?php echo $baseurl_short?>pages/resource_email.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&k=<?php echo $k?>"  onClick="return CentralSpaceLoad(this,true);" title="<?php echo $lang["emailresource"]?>"><img src="<?php echo $baseurl_short?>gfx/interface/sp.gif" alt="" width="16" height="12" /></a></span><?php } ?>
+
+		<!-- Email icon -->
+		<?php if ($allow_share && $k=="") { ?><span class="IconEmail"><a href="<?php echo $baseurl_short?>pages/resource_email.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&k=<?php echo $k?>"  onClick="return CentralSpaceLoad(this,true);" title="<?php echo $lang["emailresource"]?>"><img src="<?php echo $baseurl_short?>gfx/interface/sp.gif" alt="" width="16" height="12" /></a></span>
+		<?php $showkeyemail = true; ?>
+		<?php } ?>
+
+		<!-- Star icon -->
 		<?php if (isset($result[$n][$rating]) && 
-		$result[$n][$rating]>0) { ?><div class="IconStar"></div><?php } ?>
-		<?php if ($k==""){?><?php if ($collection_reorder_caption || $collection_commenting) { ?>
-		<span class="IconComment"><a href="<?php echo $baseurl_short?>pages/collection_comment.php?ref=<?php echo $ref?>&collection=<?php echo substr($search,11)?>"  onClick="return CentralSpaceLoad(this,true);" title="<?php echo $lang["addorviewcomments"]?>"><img src="<?php echo $baseurl_short?>gfx/interface/sp.gif" alt="" width="14" height="12" /></a></span>			
+		$result[$n][$rating]>0) { ?><div class="IconStar"></div>
+		<?php $showkeystar = true; ?>
+		<?php } ?>
+
+		<!-- Collection comment icon -->
+		<?php if ($k==""){?><?php if (($collection_reorder_caption || $collection_commenting) && (substr($search,0,11)=="!collection")) { ?>
+		<span class="IconComment"><a href="<?php echo $baseurl_short?>pages/collection_comment.php?ref=<?php echo $ref?>&collection=<?php echo substr($search,11)?>"  onClick="return CentralSpaceLoad(this,true);" title="<?php echo $lang["addorviewcomments"]?>"><img src="<?php echo $baseurl_short?>gfx/interface/sp.gif" alt="" width="14" height="12" /></a></span>
+		<?php $showkeycomment = true; ?>
 		<?php } ?>
 		<?php } 
 		hook("largesearchicon");?><div class="clearer"></div>
@@ -121,7 +139,6 @@
 <div class="PanelShadow"></div>
 </div>
 
-<?php } ?>
+<?php } # end hook renderresultthumb
 
-		<?php 
-		
+

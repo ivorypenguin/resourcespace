@@ -26,7 +26,7 @@
 # En första version av översättningen skapades av Henrik Frizén (förnamn.efternamn utan accenttecken i e-postboxen.Sveriges landskod) 20110124 för version 2295
 #
 # Senast uppdaterad av [Namn] [Datum] för version [svn-version], [kommentar]
-# Senast uppdaterad av Henrik Frizén 20121211 för version 4096
+# Senast uppdaterad av Henrik Frizén 20121213 för version 4102
 
 #
 #
@@ -453,7 +453,7 @@ $lang["jumptopage"]="Gå till sida";
 $lang["jump"]="Gå";
 $lang["titleandcountry"]="Titel/land";
 $lang["torefineyourresults"]="För att förfina resultatet, prova";
-$lang["verybestresources"]="Våra bästa material";
+$lang["verybestresources"]="De bästa materialen";
 $lang["addtocurrentcollection"]="Lägg till i aktuell samling";
 $lang["addresource"]="Lägg till ett material";
 $lang["addresourcebatch"]="Lägg till material i grupp";
@@ -646,7 +646,7 @@ $lang["type"]="Typ";
 $lang["text"]="Text";
 $lang["yes"]="Ja";
 $lang["no"]="Nej";
-$lang["key"]="Symbolförklaring"; # e.g. explanation of icons on search page
+$lang["key"]="Symbolförklaring:"; # e.g. explanation of icons on search page
 $lang["languageselection"]="Språkval";
 $lang["language"]="Språk";
 $lang["changeyourpassword"]="Byt lösenord";

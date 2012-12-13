@@ -1,14 +1,16 @@
+<?php if (!hook("renderresultsmallthumb")) { ?>
 
+<!--Resource Panel-->
 <div class="ResourcePanelShellSmall" <?php if ($display_user_rating_stars && $k==""){?> <?php } ?>id="ResourceShell<?php echo $ref?>">
-	<div class="ResourcePanelSmall">	
-		<?php if (!hook("renderimagesmallthumb")){;?>
-		<?php $access=get_resource_access($result[$n]);
+	<div class="ResourcePanelSmall">
+		<?php if (!hook("renderimagesmallthumb")) {
+		$access=get_resource_access($result[$n]);
 		$use_watermark=check_use_watermark();
-		
+
 		# Work out the preview image path
 		$col_url=get_resource_path($ref,false,"col",false,$result[$n]["preview_extension"],-1,1,$use_watermark,$result[$n]["file_modified"]);
 		if (isset($result[$n]["col_url"])) {$col_url=$result[$n]["col_url"];} # If col_url set in data, use instead, e.g. by manipulation of data via process_search_results hook
-		
+
 		?>
 		<table border="0" class="ResourceAlignSmall">
 		<?php hook("resourcetop")?>
@@ -20,7 +22,9 @@
 		/><?php } ?></a>
 		</td>
 		</tr></table>				
-		<?php } /* end Renderimagesmallthumb */?>
+		<?php } /* end hook renderimagesmallthumb */?>
+
+
         <?php if ($display_user_rating_stars && $k==""){ ?>
 		<?php if ($result[$n]['user_rating']=="") {$result[$n]['user_rating']=0;}?>
 		
@@ -79,27 +83,29 @@
 		<div class="ResourcePanelIcons"><?php if ($display_resource_id_in_thumbnail && $ref>0) { echo $ref; } else { ?>&nbsp;<?php } ?></div>	
 		<?php hook("smallsearchicon");?>
 		<?php if (!hook("replaceresourcetoolssmall")){?>
+
+		<!-- Preview icon -->
 		<span class="IconPreview">
 		<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/preview.php?from=search&ref=<?php echo $ref?>&ext=<?php echo $result[$n]["preview_extension"]?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&k=<?php echo $k?>"  title="<?php echo $lang["fullscreenpreview"]?>"><img src="<?php echo $baseurl_short?>gfx/interface/sp.gif" alt="<?php echo $lang["fullscreenpreview"]?>" width="22" height="12" /></a></span>
-		
+		<?php $showkeypreview = true; ?>
+
+		<!-- Add to collection icon -->
 		<?php if (!checkperm("b") && $k=="") { ?>
 		<span class="IconCollect"><?php echo add_to_collection_link($ref,$search)?><img src="<?php echo $baseurl_short?>gfx/interface/sp.gif" alt="" width="22" height="12" /></a></span>
+		<?php $showkeycollect = true; ?>
 		<?php } ?>
 
+		<!-- Remove from collection icon -->
 		<?php if (!checkperm("b") && substr($search,0,11)=="!collection" && $k=="") { ?>
-		
 		<?php if ($search=="!collection".$usercollection){?>
 		<span class="IconCollectOut"><?php echo remove_from_collection_link($ref,$search)?><img src="<?php echo $baseurl_short?>gfx/interface/sp.gif" alt="" width="22" height="12" /></a></span>
+		<?php $showkeycollectout = true; ?>
 		<?php } ?>
 		<?php } ?>
+
 		<?php } // end hook replaceresourcetoolssmall ?>
 <?php hook("smallthumbicon"); ?>
 <div class="clearer"></div></div>	
 <div class="PanelShadow"></div></div>
-		 
-		<?php
-		
-		
-		
-		
-		
+
+<?php } # end hook renderresultsmallthumb

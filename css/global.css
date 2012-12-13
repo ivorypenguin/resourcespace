@@ -143,21 +143,18 @@ option {font-size:11px;}
 .IconCollectOut	{width: 22px;height:12px;padding: 0;display: block;float: right;margin-right: 5px;}
 .IconEmail	{width:16px;height:12px;padding: 0;display: block;float: right;margin-right: 5px;}
 .IconPreview	{width:16px;height:12px;padding: 0;display: block;float: right;margin-right: 5px;}
-
 .IconStar	{width:11px;height:12px;padding: 0;display: block;float: right;}
 .IconRemove		{width:14px;height:12px;padding: 0;display: block;float: right;}
-.IconReorder	{width:16px;height:12px;padding: 0;display: block;float: right;}
 .IconComment	{width:16px;height:12px;padding: 0;display: block;float: right;}
 .ResourceSelect {display:block;float:right;}
 .IconUserRatingStar	{width:13px;height:15px;padding: 0;margin-bottom:6px;display: block;}
 .IconUserRatingSpace	{width:7px;height:10px;padding: 0;margin-bottom:6px;display: block;float: left;}
-.KeyReorder {margin: 0px 5px 10px;display: inline;padding-left: 18px;}
 .KeyComment {margin: 0px 5px 10px;display: inline;padding-left: 19px;}
-
 .KeyStar {margin: 0px 5px 10px;display: inline;padding-left: 14px;}
 .KeyEmail {margin: 0px 5px 10px;display: inline;padding-left: 19px;}
 .KeyPreview {margin: 0px 5px 10px;display: inline;padding-left: 19px;}
 .KeyCollect {margin: 0px 5px 10px;display: inline;padding-left: 25px;}
+.KeyCollectOut {margin: 0px 5px 10px;display: inline;padding-left: 25px;}
 .ASC {display: inline;padding-right: 10px;}
 .DESC {display: inline;padding-right: 10px;}
 
@@ -304,7 +301,6 @@ behavior: url('../css/iepngfix.htc');
 
 
 /* Use different icons for the collections bar */
-.CollectionPanelInfo .IconReorder	{	background: url(../gfx/interface/IcReorder.gif) no-repeat;}
 .CollectionPanelInfo .IconComment	{	background: url(../gfx/interface/IcComment.gif) no-repeat;}
 .CollectionPanelInfo .IconCommentAnim	{	background: url(../gfx/interface/IcComment_anim.gif) no-repeat;}
 .CollectionPanelInfo .IconRemove	{	background: url(../gfx/interface/IcRemove.gif) no-repeat;}

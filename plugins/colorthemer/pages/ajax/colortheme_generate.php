@@ -40,9 +40,6 @@ closedir($dir_handle);
 
 // a few special cases:
 
-$command = $convert_fullpath . " -modulate 100,$sat,$hue ../../../../gfx/interface/IcReorder.gif ".$storagedir."/colorthemes/$ref/ColIcReorder.gif";
-run_command($command);
-
 $command = $convert_fullpath . " -modulate 100,$sat,$hue ../../../../gfx/interface/IcRemove.gif ".$storagedir."/colorthemes/$ref/ColIcRemove.gif";
 run_command($command);
 
@@ -169,7 +166,6 @@ a:active {color:".convert_html_color('B5C3D4').";}
 .IconEmail, .KeyEmail	{background: url(IcEml.gif) no-repeat;}
 .IconPreview, .KeyPreview	{background: url(IcPre.gif) no-repeat;}
 .IconStar, .KeyStar	{	background: url(IcStar.gif) no-repeat;}
-.IconReorder, .KeyReorder	{	background: url(IcReorder.gif) no-repeat;}
 .IconComment, .KeyComment	{	background: url(IcComment.gif) no-repeat;}
 .ASC	{background: url(ASC.gif) no-repeat;background-position:center;}
 .DESC	{background: url(DESC.gif) no-repeat; background-position:center;}
@@ -219,7 +215,6 @@ a:active {color:".convert_html_color('B5C3D4').";}
 .ListviewStyle tr.ListviewTitleStyle:hover td, .ListviewStyle tr.ListviewBoxedTitleStyle:hover td {background:none;} 
 
 
-.CollectionPanelInfo .IconReorder	{	background: url(ColIcReorder.gif) no-repeat;}
 .CollectionPanelInfo .IconComment	{	background: url(ColIcComment.gif) no-repeat;}
 .CollectionPanelInfo .IconCommentAnim	{	background: url(ColIcComment_anim.gif) no-repeat;}
 .CollectionPanelInfo .IconRemove	{	background: url(ColIcRemove.gif) no-repeat;}
@@ -295,7 +290,6 @@ a:active {color:#737373;}
 .IconEmail, .KeyEmail	{background: url(IcEml.gif) no-repeat;}
 .IconPreview, .KeyPreview	{background: url(IcPre.gif) no-repeat;}
 .IconStar, .KeyStar	{	background: url(IcStar.gif) no-repeat;}
-.IconReorder, .KeyReorder	{	background: url(IcReorder.gif) no-repeat;}
 .IconComment, .KeyComment	{	background: url(IcComment.gif) no-repeat;}
 .ASC	{background: url(ASC.gif) no-repeat;background-position:center;}
 .DESC	{background: url(DESC.gif) no-repeat; background-position:center;}
@@ -346,7 +340,6 @@ a:active {color:#737373;}
 .ListviewStyle tr.ListviewTitleStyle:hover td, .ListviewStyle tr.ListviewBoxedTitleStyle:hover td {background:none;} 
 
 
-.CollectionPanelInfo .IconReorder	{	background: url(ColIcReorder.gif) no-repeat;}
 .CollectionPanelInfo .IconComment	{	background: url(ColIcComment.gif) no-repeat;}
 .CollectionPanelInfo .IconCommentAnim	{	background: url(ColIcComment_anim.gif) no-repeat;}
 .CollectionPanelInfo .IconRemove	{	background: url(ColIcRemove.gif) no-repeat;}

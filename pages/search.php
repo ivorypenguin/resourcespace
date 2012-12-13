@@ -698,9 +698,14 @@ if (true) # Always show search header now.
 		<?php 
 		$rating="";
 		if (isset($rating_field)){$rating="field".$rating_field;}
-		
-			
-				
+
+		$showkeypreview = false;
+		$showkeycollect = false;
+		$showkeycollectout = false;
+		$showkeyemail = false;
+		$showkeystar = false;
+		$showkeycomment = false;
+
 		if ($display=="thumbs" && is_array($result))
 			{
 			#  ---------------------------- Thumbnails view ----------------------------
@@ -739,31 +744,28 @@ if (true) # Always show search header now.
 		</div>
 		<?php
 		}
-	
-	
-	
+
 	if ($display!="list")
 		{
-		?>
-		<!--Key to Panel-->
-		<?php if (!hook("replacesearchkey")){?>
-		<div class="BottomInpageKey"> 
-			<?php echo $lang["key"]?>:
-			<?php if ($display=="thumbs" && is_array($result)) { ?>
-				
-				<?php if ($orderbyrating) { ?><div class="KeyStar"><?php echo $lang["verybestresources"]?></div><?php } ?>
-				<?php if ($allow_reorder || (substr($search,0,11)=="!collection")) { ?><div class="KeyComment"><?php echo $lang["addorviewcomments"]?></div><?php } ?>
-				<?php if ($allow_share) { ?><div class="KeyEmail"><?php echo $lang["emailresource"]?></div><?php } ?>
-			<?php } ?>
-			
-			<?php if (!checkperm("b")) { ?><div class="KeyCollect"><?php echo $lang["addtocurrentcollection"]?></div><?php } ?>
-			<div class="KeyPreview"><?php echo $lang["fullscreenpreview"]?></div>
-			<?php hook("searchkey");?>
-		</div>
-		<?php }/*end replacesearchkey */?>
-		<?php
-		}
-	}
+        # Display keys (only keys used in the current search view).
+        if (!hook("replacesearchkey"))
+            {
+            if (is_array($result))
+                { ?>
+                <div class="BottomInpageKey"><?php
+                    echo $lang["key"] . " ";
+                    if ($showkeystar) { ?><div class="KeyStar"><?php echo $lang["verybestresources"]?></div><?php }
+                    if ($showkeycomment) { ?><div class="KeyComment"><?php echo $lang["addorviewcomments"]?></div><?php }
+                    if ($showkeyemail) { ?><div class="KeyEmail"><?php echo $lang["emailresource"]?></div><?php }
+                    if ($showkeycollectout) { ?><div class="KeyCollectOut"><?php echo $lang["removefromcurrentcollection"]?></div><?php }
+                    if ($showkeycollect) { ?><div class="KeyCollect"><?php echo $lang["addtocurrentcollection"]?></div><?php }
+                    if ($showkeypreview) { ?><div class="KeyPreview"><?php echo $lang["fullscreenpreview"]?></div><?php }
+					hook("searchkey"); ?>
+                </div><?php
+                }
+            } /* end hook replacesearchkey */
+        }
+    }
 ?>
 <!--Bottom Navigation - Archive, Saved Search plus Collection-->
 <div class="BottomInpageNav">

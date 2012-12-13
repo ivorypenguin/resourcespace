@@ -1,11 +1,11 @@
 <?php if (!hook("renderresultlargethumb")) { ?>
 
 <!--Resource Panel-->
-	<div class="ResourcePanelShellLarge" id="ResourceShell<?php echo $ref?>">
+<div class="ResourcePanelShellLarge" id="ResourceShell<?php echo $ref?>">
 	<div class="ResourcePanelLarge">
-	
-<?php if (!hook("renderimagelargethumb")) { ?>			
-	<?php $access=get_resource_access($result[$n]);
+
+<?php if (!hook("renderimagelargethumb")) {
+	$access=get_resource_access($result[$n]);
 	$use_watermark=check_use_watermark();?>
 	<table border="0" class="ResourceAlignLarge<?php if(!hook("replaceresourcetypeicon")){?><?php if (in_array($result[$n]["resource_type"],$videotypes)) { ?> IconVideoLarge<?php } ?><?php } //end hook replaceresoucetypeicon?>">
 	<?php hook("resourcetop")?>
@@ -80,7 +80,9 @@
 }?>
 
         
-<?php } ?> <!-- END HOOK Renderimagelargethumb-->	
+<?php } ?> <!-- END HOOK Renderimagelargethumb-->
+
+
 <?php if ($display_user_rating_stars && $k==""){ ?>
 		<?php if ($result[$n]['user_rating']=="") {$result[$n]['user_rating']=0;}?>
 		
@@ -100,7 +102,7 @@
 <?php } ?> <!-- END HOOK Rendertitlelargethumb -->			
 		
 		<?php
-		# thumbs_display_fields
+		# xlthumbs_display_fields
 		for ($x=0;$x<count($df);$x++)
 			{
 			#value filter plugin -tbd	
@@ -139,28 +141,47 @@
 		
 		<div class="ResourcePanelIcons"><?php if ($display_resource_id_in_thumbnail && $ref>0) { echo $ref; } else { ?>&nbsp;<?php } ?></div>	
 	    <?php if (!hook("replaceresourcetoolsxl")){?>
+
+		<!-- Preview icon -->
 		<?php if (!hook("replacefullscreenpreviewicon")){?>
 		<span class="IconPreview"><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/preview.php?from=search&ref=<?php echo $ref?>&ext=<?php echo $result[$n]["preview_extension"]?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&k=<?php echo $k?>" title="<?php echo $lang["fullscreenpreview"]?>"><img src="<?php echo $baseurl_short?>gfx/interface/sp.gif" alt="<?php echo $lang["fullscreenpreview"]?>" width="22" height="12" /></a></span>
+		<?php $showkeypreview = true; ?>
 		<?php } /* end hook replacefullscreenpreviewicon */?>
-		
+
+		<!-- Add to collection icon -->
 		<?php if(!hook("iconcollect")){?>
 		<?php if (!checkperm("b") && $k=="" && !$use_checkboxes_for_selection) { ?>
 		<span class="IconCollect"><?php echo add_to_collection_link($ref,$search)?><img src="<?php echo $baseurl_short?>gfx/interface/sp.gif" alt="" width="22" height="12"/></a></span>
+		<?php $showkeycollect = true; ?>
 		<?php } ?>
 		<?php } # end hook iconcollect ?>
 
+		<!-- Remove from collection icon -->
 		<?php if (!checkperm("b") && substr($search,0,11)=="!collection" && $k=="" && !$use_checkboxes_for_selection) { ?>
 		<?php if ($search=="!collection".$usercollection){?><span class="IconCollectOut"><?php echo remove_from_collection_link($ref,$search)?><img src="<?php echo $baseurl_short?>gfx/interface/sp.gif" alt="" width="22" height="12" /></a></span>
+		<?php $showkeycollectout = true; ?>
 		<?php } ?>
 		<?php } ?>
-		
-		<?php if ($allow_share && $k=="") { ?><span class="IconEmail"><a href="<?php echo $baseurl_short?>pages/resource_email.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&k=<?php echo $k?>"   onClick="return CentralSpaceLoad(this,true);" title="<?php echo $lang["emailresource"]?>"><img src="<?php echo $baseurl_short?>gfx/interface/sp.gif" alt="" width="16" height="12" /></a></span><?php } ?>
-		<?php if (isset($result[$n][$rating]) && $result[$n][$rating]>0) { ?><div class="IconStar"></div><?php } ?>
-		<?php if ($k==""){?><?php if ($collection_reorder_caption || $collection_commenting) { ?>
-		<span class="IconComment"><a href="<?php echo $baseurl_short?>pages/collection_comment.php?ref=<?php echo $ref?>&collection=<?php echo substr($search,11)?>"  onClick="return CentralSpaceLoad(this,true);" title="<?php echo $lang["addorviewcomments"]?>"><img src="<?php echo $baseurl_short?>gfx/interface/sp.gif" alt="" width="14" height="12" /></a></span>		
+
+		<!-- Email icon -->
+		<?php if ($allow_share && $k=="") { ?><span class="IconEmail"><a href="<?php echo $baseurl_short?>pages/resource_email.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&k=<?php echo $k?>"   onClick="return CentralSpaceLoad(this,true);" title="<?php echo $lang["emailresource"]?>"><img src="<?php echo $baseurl_short?>gfx/interface/sp.gif" alt="" width="16" height="12" /></a></span>
+		<?php $showkeyemail = true; ?>
+		<?php } ?>
+
+		<!-- Star icon -->
+		<?php if (isset($result[$n][$rating]) && $result[$n][$rating]>0) { ?><div class="IconStar"></div>
+		<?php $showkeystar = true; ?>
+		<?php } ?>
+
+		<!-- Collection comment icon -->
+		<?php if ($k==""){?><?php if (($collection_reorder_caption || $collection_commenting) && (substr($search,0,11)=="!collection")) { ?>
+		<span class="IconComment"><a href="<?php echo $baseurl_short?>pages/collection_comment.php?ref=<?php echo $ref?>&collection=<?php echo substr($search,11)?>"  onClick="return CentralSpaceLoad(this,true);" title="<?php echo $lang["addorviewcomments"]?>"><img src="<?php echo $baseurl_short?>gfx/interface/sp.gif" alt="" width="14" height="12" /></a></span>
+		<?php $showkeycomment = true; ?>
 		<?php } ?>	
 		<?php } hook("xlargesearchicon");?>
 		<div class="clearer"></div>
+
+		<!-- Checkboxes -->
 		<?php if(!hook("thumbscheckboxes")){?>
 		<?php if ($use_checkboxes_for_selection){?><input type="checkbox" id="check<?php echo $ref?>" class="checkselect" <?php if (in_array($ref,$collectionresources)){ ?>checked<?php } ?> onclick="if (jQuery('#check<?php echo $ref?>').attr('checked')=='checked') { AddResourceToCollection(<?php echo $ref?>); } else if (jQuery('#check<?php echo $ref?>').attr('checked')!='checked'){ RemoveResourceFromCollection(<?php echo $ref?>); }"><?php } ?>
 		<?php } # end hook thumbscheckboxes?>
@@ -169,6 +190,4 @@
 <div class="PanelShadow"></div>
 </div>
  
-<?php } ?>
-
-		<?php 
+<?php } # end hook renderresultlargethumb

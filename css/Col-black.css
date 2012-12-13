@@ -63,7 +63,6 @@ input[readonly] {color: #FFFFFF;}
 .IconEmail, .KeyEmail	{background: url(../gfx/black/interface/IcEml.gif) no-repeat;}
 .IconPreview, .KeyPreview	{background: url(../gfx/black/interface/IcPre.gif) no-repeat;}
 .IconStar, .KeyStar	{	background: url(../gfx/black/interface/IcStar.gif) no-repeat;}
-.IconReorder, .KeyReorder	{	background: url(../gfx/black/interface/IcReorder.gif) no-repeat;}
 .IconComment, .KeyComment	{	background: url(../gfx/black/interface/IcComment.gif) no-repeat;}
 .ASC	{	background: url(../gfx/black/interface/ASC.gif) no-repeat;background-position:center;}
 .DESC	{	background: url(../gfx/black/interface/DESC.gif) no-repeat;background-position:center;}

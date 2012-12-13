@@ -675,15 +675,12 @@ input[readonly] {color: #E0E0E0;} /* Read-only form fields */
 .KeyEmail {background: url(../gfx/interface/KeyEml.png) no-repeat;}
 .IconPreview {background: url(../gfx/interface/IcPre.png) no-repeat;}
 .KeyPreview {background: url(../gfx/interface/KeyPre.png) no-repeat;}
-.IconReorder {background: url(../gfx/interface/IcReorder.png) no-repeat;}
-.KeyReorder {background: url(../gfx/interface/KeyReorder.png) no-repeat;}
 .IconStar {background: url(../gfx/interface/IcStar.png) no-repeat;}
 .KeyStar {background: url(../gfx/interface/KeyStar.png) no-repeat;}
 .IconUserRatingStar {background: url(../gfx/interface/RatingStarYellow.gif) no-repeat;}
 .IconUserRatingSpace {background: url(../gfx/interface/RatingStarBlank.gif) no-repeat;}
 .IconVideo {background: url(../gfx/interface/IcVideo.png) no-repeat 140px 5px;}
 .IconVideoLarge {background: url(../gfx/interface/IcVideo.png) no-repeat 340px 5px;}
-.CollectionPanelInfo .IconReorder {background: url(../gfx/interface/IcReorder.png) no-repeat;}
 .CollectionPanelInfo .IconComment {background: url(../gfx/interface/IcComment.png) no-repeat;}
 .CollectionPanelInfo .IconCommentAnim {background: url(../gfx/interface/IcComment_anim.gif) no-repeat;}
 .CollectionPanelInfo .IconRemove {background: url(../gfx/interface/IcColOut.png) no-repeat;}
