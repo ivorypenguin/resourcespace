@@ -6,9 +6,7 @@ include "../include/db.php";
 include "../include/general.php";
 include "../include/resource_functions.php";
 
-while (ob_get_level()) { 
-	ob_end_clean(); 
-} 
+ob_end_clean(); 
 
 
 if(strlen(getval('direct',''))>0){$direct = true;} else { $direct = false;}
