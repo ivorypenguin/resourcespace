@@ -512,9 +512,28 @@ h2#dbaseconfig{  min-height: 32px;}
 				$errors['mysqlbinpath'] = true;
 			else $config_output .="\$mysql_bin_path = '$mysql_bin_path';\r\n\r\n";
 		}
+
 		//Check baseurl (required)
 		$baseurl = sslash(get_post('baseurl'));
-		if ((isset($baseurl)) && ($baseurl!='') && ($baseurl!='http://my.site/resourcespace') && (filter_var($baseurl, FILTER_VALIDATE_URL))){
+		# In certain PHP versions there is a bug in filter_var using FILTER_VALIDATE_URL causing correct URLs containing a hyphen to fail.
+		if (filter_var("http://www.filter-test.com", FILTER_VALIDATE_URL))
+			{
+			# The filter is working.
+			$filterresult = filter_var($baseurl, FILTER_VALIDATE_URL);
+			}
+		else
+			{
+			# The filter is not working, use the hostname of the $baseurl and replace the problematic characters.
+			$testbaseurl = str_replace(
+				parse_url($baseurl,PHP_URL_HOST),
+				str_replace(
+					array("_", "-"),
+					array("^", "x"), # _ is not allowed for hostname, - is allowed
+					parse_url($baseurl,PHP_URL_HOST)),
+				$baseurl);
+			$filterresult = filter_var($testbaseurl, FILTER_VALIDATE_URL);
+			}
+		if ((isset($baseurl)) && ($baseurl!='') && ($baseurl!='http://my.site/resourcespace') && ($filterresult)){
 			//Check that the base url seems correct by attempting to fetch the license file
 			if (url_exists($baseurl.'/license.txt')){
 				$config_output .= "# Base URL of the installation\r\n";
