@@ -1382,6 +1382,8 @@ $lang["lastscheduledtaskexection"]="Last scheduled task execution (days)";
 $lang["executecronphp"]="Relevance matching will not be effective and periodic e-mail reports will not be sent. Ensure <a href='../batch/cron.php'>batch/cron.php</a> is executed at least once daily via a cron job or similar.";
 $lang["shouldbeormore"]="should be ? or greater"; # E.g. should be 200M or greater
 $lang["config_file"]="(config: %file)"; # %file will be replaced, e.g. (config: /etc/php5/apache2/php.ini)
+$lang['large_file_support_64_bit'] = 'Large file support (64 bit platform)';
+$lang['large_file_warning_32_bit'] = 'WARNING: Running 32 bit PHP. Files larger than 2GB will not be supported.';
 
 $lang["starsminsearch"]="Stars (Minimum)";
 $lang["anynumberofstars"]="Any Number of Stars";

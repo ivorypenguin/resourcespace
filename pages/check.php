@@ -109,6 +109,15 @@ else
 	}
 ?><tr><td colspan="2"><?php echo $lang["blockedbrowsingoffilestore"] ?></td><td><b><?php echo $result?></b></td></tr><?php
 
+
+# Check if we are running 32 bit PHP. If so, no large file support.
+if (!php_is_64bit()){
+	$result = $lang['large_file_warning_32_bit'];
+} else {
+	$result=$lang["status-ok"];
+}
+?><tr><td colspan='2'><?php echo $lang['large_file_support_64_bit']; ?></td><td><b><?php echo $result?></b></td></tr><?php
+
 # Check ImageMagick/GraphicsMagick
 display_utility_status("im-convert");
 
@@ -330,4 +339,23 @@ function get_utility_version($utilityname)
         return array("name" => $name, "version" => $s[0], "success" => true, "error" => "");
         }
     }
+
+function php_is_64bit() {
+	$int = "9223372036854775807";
+	$int = intval($int);
+	if ($int == 9223372036854775807) {
+  	/* 64bit */
+  	return true;
+	}
+	elseif ($int == 2147483647) {
+	  /* 32bit */
+	  return false;
+	}
+	else {
+	  /* error */
+	  return "error";
+	} 
+
+}
+
 ?>
