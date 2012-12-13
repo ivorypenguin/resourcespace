@@ -148,17 +148,6 @@ if (!$direct_download_allow_ie7 && strpos(strtolower($_SERVER["HTTP_USER_AGENT"]
 if (!$direct_download_allow_ie8 && strpos(strtolower($_SERVER["HTTP_USER_AGENT"]),"msie 8.")!==false) {$save_as=true;}	
 }
 	
-if ($direct_download && !$save_as){
-	$headerinsert.="
-	<script type=\"text/javascript\">
-	function directDownload(url)
-		{
-		dlIFrma = document.getElementById('dlIFrm');
-		dlIFrma.src = url;  
-		}
-	</script>";
-	}
-	
 # Show the header/sidebar
 include "../include/header.php";
 
@@ -173,6 +162,13 @@ if ($metadata_report && isset($exiftool_path))
 if ($direct_download && !$save_as){
 ?>
 <iframe id="dlIFrm" frameborder=0 scrolling="auto" <?php if ($debug_direct_download){?>width="600" height="200"<?php } else { ?>width="0" height="0"<?php } ?>> This browser can not use IFRAME. </iframe>
+<script type=\"text/javascript\">
+	function directDownload(url)
+		{
+		dlIFrma = document.getElementById('dlIFrm');
+		dlIFrma.src = url;  
+		}
+</script>
 
 <?php }
 # Load resource field data
