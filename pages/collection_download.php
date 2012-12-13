@@ -422,8 +422,20 @@ if ($submitted != "")
 
 	ignore_user_abort(true); // collection download has a problem with leaving junk files when this script is aborted client side. This seems to fix that by letting the process run its course.
 	set_time_limit(0);
-	readfile($zipfile);
 
+	#readfile($zipfile);
+
+	# New method
+	$blocksize = (2 << 20); //2M chunks
+	$sent = 0;
+	$handle = fopen($zipfile, "r");
+
+	// Now we need to loop through the file and echo out chunks of file data
+	while($sent < $filesize)
+        {
+	        echo fread($handle, $blocksize);
+       		$sent += $blocksize;
+        }
 	
 
     # Remove archive.
