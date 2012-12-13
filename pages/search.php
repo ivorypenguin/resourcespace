@@ -624,15 +624,15 @@ if (true) # Always show search header now.
 		<?php
 		}
 
-	
-	if ($display=="list" && is_array($result))
-		{
+    $list_displayed = false;
+    # Listview - Display title row if listview and if any result.
+    if ($display=="list" && ((is_array($result) && count($result)>0) || (is_array($collections) && count($collections)>0)))
+        {
+        $list_displayed = true;
 		?>
-		<!--list-->
 		<div class="Listview">
 		<table border="0" cellspacing="0" cellpadding="0" class="ListviewStyle">
 
-		<!--Title row-->
 		<?php if(!hook("replacelistviewtitlerow")){?>	
 		<tr class="ListviewTitleStyle">
 		<?php if (!hook("listcheckboxesheader")){?>
@@ -685,72 +685,69 @@ if (true) # Always show search header now.
 	$rtypes=array();
 	if (!isset($types)){$types=get_resource_types();}
 	for ($n=0;$n<count($types);$n++) {$rtypes[$types[$n]["ref"]]=$types[$n]["name"];}
-	if (is_array($result)){
-	# loop and display the results
-	for ($n=$offset;(($n<count($result)) && ($n<($offset+$per_page)));$n++)			
-		{
-		$ref=$result[$n]["ref"];
-		$GLOBALS['get_resource_data_cache'][$ref] = $result[$n];
-		$url=$baseurl_short."pages/view.php?ref=" . $ref . "&search=" . urlencode($search) . "&order_by=" . urlencode($order_by) . "&sort=".$sort."&offset=" . urlencode($offset) . "&archive=" . $archive . "&k=" . $k;
-		
-		if (isset($result[$n]["url"])) {$url=$result[$n]["url"];} # Option to override URL in results, e.g. by plugin using process_Search_results hook above
-		?>
-		<?php 
-		$rating="";
-		if (isset($rating_field)){$rating="field".$rating_field;}
+    if (is_array($result) && count($result)>0)
+        {
+        $showkeypreview = false;
+        $showkeycollect = false;
+        $showkeycollectout = false;
+        $showkeyemail = false;
+        $showkeystar = false;
+        $showkeycomment = false;
 
-		$showkeypreview = false;
-		$showkeycollect = false;
-		$showkeycollectout = false;
-		$showkeyemail = false;
-		$showkeystar = false;
-		$showkeycomment = false;
+        # loop and display the results
+        for ($n=$offset;(($n<count($result)) && ($n<($offset+$per_page)));$n++)
+            {
+            $ref = $result[$n]["ref"];
+            $GLOBALS['get_resource_data_cache'][$ref] = $result[$n];
+            $url = $baseurl_short."pages/view.php?ref=" . $ref . "&search=" . urlencode($search) . "&order_by=" . urlencode($order_by) . "&sort=".$sort."&offset=" . urlencode($offset) . "&archive=" . $archive . "&k=" . $k;
 
-		if ($display=="thumbs" && is_array($result))
-			{
-			#  ---------------------------- Thumbnails view ----------------------------
-			include "search_views/thumbs.php";
-			} 
-		
-		if ($display=="xlthumbs" && is_array($result))
-			{
-			#  ---------------------------- X-Large Thumbnails view ----------------------------
-			include "search_views/xlthumbs.php";
-			}
-			
-		if ($display == "smallthumbs" && is_array($result))
-			{
-			# ---------------- Small Thumbs view ---------------------
-			include "search_views/smallthumbs.php";
-			}
-			
-		if ($display=="list" && is_array($result))
-			{
-			# ----------------  List view -------------------
-			include "search_views/list.php";
-			}
-		
-		
+            if (isset($result[$n]["url"])) {$url = $result[$n]["url"];} # Option to override URL in results, e.g. by plugin using process_Search_results hook above
+ 
+            $rating = "";
+            if (isset($rating_field)){$rating = "field".$rating_field;}
 
-	
-	hook("customdisplaymode");
-	
-		}
-    }
-	if ($display=="list" && is_array($result))
-		{
-		?>
-		</table>
-		</div>
-		<?php
-		}
+            if ($display=="thumbs")
+                {
+                #  ---------------------------- Thumbnails view ----------------------------
+                include "search_views/thumbs.php";
+                } 
 
-	if ($display!="list")
-		{
+            if ($display=="xlthumbs")
+                {
+                #  ---------------------------- X-Large Thumbnails view ----------------------------
+                include "search_views/xlthumbs.php";
+                }
+
+            if ($display=="smallthumbs")
+                {
+                # ---------------- Small Thumbs view ---------------------
+                include "search_views/smallthumbs.php";
+                }
+
+            if ($display=="list")
+                {
+                # ----------------  List view -------------------
+                include "search_views/list.php";
+                }
+
+            hook("customdisplaymode");
+
+            }
+        }
+    # Listview - Add closing tag if a list is displayed.
+    if ($list_displayed==true)
+        {
+        ?>
+        </table>
+        </div>
+        <?php
+        }
+    else
+        {
         # Display keys (only keys used in the current search view).
         if (!hook("replacesearchkey"))
             {
-            if (is_array($result))
+            if (is_array($result) && count($result)>0)
                 { ?>
                 <div class="BottomInpageKey"><?php
                     echo $lang["key"] . " ";
@@ -760,11 +757,11 @@ if (true) # Always show search header now.
                     if ($showkeycollectout) { ?><div class="KeyCollectOut"><?php echo $lang["removefromcurrentcollection"]?></div><?php }
                     if ($showkeycollect) { ?><div class="KeyCollect"><?php echo $lang["addtocurrentcollection"]?></div><?php }
                     if ($showkeypreview) { ?><div class="KeyPreview"><?php echo $lang["fullscreenpreview"]?></div><?php }
-					hook("searchkey"); ?>
+                    hook("searchkey"); ?>
                 </div><?php
                 }
             } /* end hook replacesearchkey */
-        }
+        }        
     }
 ?>
 <!--Bottom Navigation - Archive, Saved Search plus Collection-->
