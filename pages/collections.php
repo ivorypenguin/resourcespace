@@ -724,7 +724,7 @@ if ($basket)
 	?>
 	<div id="CollectionMinTitle"><h2><?php echo $lang["yourbasket"] ?></h2></div>
 	<div id="CollectionMinRightNav">
-	<form _topaction="<?php echo $baseurl_short?>pages/purchase.php">
+	<form action="<?php echo $baseurl_short?>pages/purchase.php">
 	<ul>
 	
 	<?php if ($count_result==0) { ?>
