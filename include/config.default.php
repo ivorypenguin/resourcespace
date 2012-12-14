@@ -735,11 +735,11 @@ $prefix_filename_string="RS";
 # Display a 'new' flag next to new themes (added < 1 month ago)
 $flag_new_themes=true;
 
-# Create file checksums? (experimental)
+# Create file checksums?
 $file_checksums=false;
 
-# Calculate checksums on full file, rather than just first 5 k and size
-$file_checksums_fullfile = true;
+# Calculate checksums on first 50k and size if true or on the full file if false
+$file_checksums_50k = true;
 
 # checksums will not be generated in realtime; a background cron job must be used
 # recommended if files are large, since the checksums can take time

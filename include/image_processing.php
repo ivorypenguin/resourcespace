@@ -564,7 +564,6 @@ function create_previews($ref,$thumbonly=false,$extension="jpg",$previewonly=fal
 	# Debug
 	debug("create_previews(ref=$ref,thumbonly=$thumbonly,extension=$extension,previewonly=$previewonly,previewbased=$previewbased,alternative=$alternative)");
 
-	# File checksum (experimental) - disabled for now
 	if (!$previewonly) {generate_file_checksum($ref,$extension);}
 	# first reset preview tweaks to 0
 	sql_query("update resource set preview_tweaks = '0|1' where ref = '$ref'");
@@ -1349,20 +1348,20 @@ function extract_indd_pages ($filename)
 function generate_file_checksum($resource,$extension,$anyway=false)
 	{
 	global $file_checksums;
-        global $file_checksums_fullfile;
+    global $file_checksums_50k;
 	global $file_checksums_offline;
 	$generated = false;
 
 	if (($file_checksums && !$file_checksums_offline)||$anyway) // do it if file checksums are turned on, or if requestor said do it anyway
 		{
-		# Generates a unique checksum for the given file, based on the first 50K and the file size.
+		# Generates a unique checksum for the given file, based either on the first 50K and the file size or the full file.
 
 		$path=get_resource_path($resource,true,"",false,$extension);
 		if (file_exists($path))
 			{
 
                         # Generate the ID
-                        if ($file_checksums_fullfile){
+                        if ($file_checksums_50k){
                             # Fetch the string used to generate the unique ID
                             $use=filesize_unlimited($path) . "_" . file_get_contents($path,null,null,0,50000);
                             $checksum=md5($use);
