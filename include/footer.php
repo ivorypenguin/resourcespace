@@ -241,11 +241,20 @@ if (getval("ajax","")=="") {
 	// don't show closing tags if we're in ajax mode
 	?>
 
+
+<!--CollectionDiv-->
 <?php 
 $omit_collectiondiv_load_pages=array("login","user_request","user_password","done","index","preview_all");
 ?></div></div>
 
-<?php if (!in_array($pagename,$omit_collectiondiv_load_pages) && !checkperm("b")){?><div id="CollectionDiv" class="CollectBack AjaxCollect ui-layout-south"></div>
+<?php # Work out the current collection (if any) from the search string if external access
+if (isset($k) && $k!="" && isset($search) && !isset($usercollection))
+    {
+    if (substr($search,0,11)=="!collection") {$usercollection = substr($search,11);}
+    }
+?>
+
+<?php if (!in_array($pagename,$omit_collectiondiv_load_pages) && !checkperm("b") && isset($usercollection)) {?><div id="CollectionDiv" class="CollectBack AjaxCollect ui-layout-south"></div>
 <script type="text/javascript">
 	collection_frame_height=<?php echo $collection_frame_height?>;
 	//CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=<?php echo getval("thumbs","hide");?>');
@@ -289,25 +298,9 @@ function setContent() {
 	return;
 	
 }
-<?php
-# Work out the current collection from the search string if external access
-if (isset($k) && $k!="" && isset($search) && !isset($usercollection))
-	{
-	$usercollection=str_replace("!collection","",$search);
-	}
 
-
-if (isset($k) && $k!="" && isset($usercollection)) { ?>
 window.onload = function() {
-	setContent();//ChangeCollection(<?php echo $usercollection; ?>,'<?php echo $k ?>');
-CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=<?php echo $thumbs;?>&collection=<?php echo $usercollection; ?>&k=<?php echo $k ?>');}
-<?php } else { ?>
-window.onload = function() {
-	setContent();CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=<?php echo $thumbs;?>');
-}
-<?php } ?>
-
-
+    setContent(); CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=<?php echo $thumbs; ?><?php echo "&collection=$usercollection"; ?><?php echo (isset($k)) ? "&k=$k" : ""; ?>');}
 </script>
 <?php } // end omit_collectiondiv_load_pages ?>	
 
