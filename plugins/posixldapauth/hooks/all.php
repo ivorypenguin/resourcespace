@@ -194,3 +194,13 @@ function HookPosixldapauthAllExternalauth($uname, $pword)
 		return false;		
 	}
 }
+
+function HookPosixldapauthAllAdditionalheaderjs(){
+    global $baseurl,$baseurl_short;?>
+    <script type="text/javascript" src="<?php echo $baseurl?>/plugins/posixldapauth/pages/ldap_functions.js" language="javascript"></script>
+    <script type=\"text/javascript\">
+        status_error_in = '" . preg_replace("/\r?\n/", "\\n", addslashes($lang['posixldapauth_status_error_in'])) . "';
+        server_error = '" . preg_replace("/\r?\n/", "\\n", addslashes($lang['posixldapauth_server_error'])) . "';
+    </script>
+<?php
+}
