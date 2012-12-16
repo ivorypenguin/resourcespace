@@ -34,6 +34,8 @@ $sort=getval("sort",$default_sort);
 $go=getval("go","");
 if ($go!="")
 	{
+    $origref = $ref; # Store the reference of the resource before we move, in case we need to revert this.
+
 	# Re-run the search and locate the next and previous records.
 	$result=do_search($search,$restypes,$order_by,$archive,-1,$sort,false,$starsearch);
 	if (is_array($result))
@@ -51,13 +53,14 @@ if ($go!="")
 			}
 		}
 
-	# Option to replace the key via a plugin (used by resourceconnect plugin)	
-	$newkey=hook("nextpreviewregeneratekey");
-	if (is_string($newkey)) {$k=$newkey;}
+    # Option to replace the key via a plugin (used by resourceconnect plugin).
+    $newkey = hook("nextpreviewregeneratekey");
+    if (is_string($newkey)) {$k = $newkey;}
+
+    # Check access permissions for this new resource, if an external user.
+    if ($k!="" && !check_access_key($ref, $k)) {$ref = $origref;} # Cancel the move.
 	}
 
-# Check if the user has access to the new (previous/next) resource.
-if (($k=="") || (!check_access_key($ref, $k))) {include "../include/authenticate.php";}
 
 $resource=get_resource_data($ref);
 $ext="jpg";
