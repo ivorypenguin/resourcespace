@@ -42,7 +42,7 @@ if (getval("save","")!="")
 	
 	if (getval("ccme",false)){ $cc=$useremail;} else {$cc="";}
 	
-	$errors=email_resource($ref,$resource["field".$view_title_field],$userfullname,$users,$message,$access,$expires,$user_email,$from_name,$cc);
+	$errors=email_resource($ref,i18n_get_translated($resource["field".$view_title_field]),$userfullname,$users,$message,$access,$expires,$user_email,$from_name,$cc);
 	if ($errors=="")
 		{
 		# Log this			
