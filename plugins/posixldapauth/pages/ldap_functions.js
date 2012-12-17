@@ -74,8 +74,7 @@ function ldapsetDisplayFields()
 		hideObject('tloginfield');
 		
 	}
-	var tab=document.getElementById('tableldaptype');
-	tab.refresh();
+	return;
 }
 
 function testLdapConn()

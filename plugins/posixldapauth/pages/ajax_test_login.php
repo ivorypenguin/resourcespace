@@ -4,7 +4,9 @@
   
 $ldapConf['host'] = $_GET['server'];
 $ldapConf['basedn'] = $_GET['basedn'];
-	
+
+global $lang;
+
 $objLDAP = new ldapAuth($ldapConf);
 
 $returnMessage = array();

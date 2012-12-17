@@ -54,6 +54,7 @@ class ldapAuth
 	*/
 	function connect()
 	{
+		global $lang;
 		$this->ldapconn = ldap_connect($this->ldapconfig['host'])
 	    	or die($lang['posixldapauth_could_not_connect_to_ldap_server']);
 		ldap_set_option($this->ldapconn, LDAP_OPT_PROTOCOL_VERSION, 3);
@@ -80,6 +81,8 @@ class ldapAuth
 	*/
 	function auth($username,$pass,$ldapType,$userContainer)
 	{
+		global $lang;
+
 		$this->userName = $username;
 		$this->ldappass = $pass;
 		
@@ -202,6 +205,8 @@ class ldapAuth
 	
 	function checkGroupByName($groupName, $ldapType=0,$groupContainer="",$memField="",$memFieldType=0)
 	{
+		global $lang;
+
 		$found = false;
 		
 		$gid = "(cn=" . $groupName . ")";
@@ -309,6 +314,7 @@ class ldapAuth
 			As the AD requires authenticated binding, we expect the bind to allready have happened!
 		*/
 		
+		global $lang;
 		
 		// set the required parameters for each directory type:
 		if ($ldapType == 1)
