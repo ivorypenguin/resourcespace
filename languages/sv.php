@@ -26,7 +26,7 @@
 # En första version av översättningen skapades av Henrik Frizén (förnamn.efternamn utan accenttecken i e-postboxen.Sveriges landskod) 20110124 för version 2295
 #
 # Senast uppdaterad av [Namn] [Datum] för version [svn-version], [kommentar]
-# Senast uppdaterad av Henrik Frizén 20121213 för version 4102
+# Senast uppdaterad av Henrik Frizén 20121217 för version 4119
 
 #
 #
@@ -481,7 +481,7 @@ $lang["action-request"]="Begär";
 $lang["request"]="Begäran";
 $lang["requestlog"]="Begäranslogg";
 $lang["searchforsimilarresources"]="Sök efter liknande material";
-$lang["clicktoviewasresultset"]="Klicka här om du vill visa dessa material som ett resultatsätt";
+$lang["clicktoviewasresultset"]="Visa dessa material som ett resultatsätt";
 $lang["searchnomatches"]="Sökningen matchade inga material.";
 $lang["try"]="Prova";
 $lang["tryselectingallcountries"]="Prova att välja <i>Alla länder</i> i landsfältet eller";
