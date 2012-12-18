@@ -53,7 +53,7 @@ else
 <?php hook("beforecollectiontoolscolumn");?>
 	<td><div class="ListTools">
     <?php if ($collections_compact_style){
-    include("collections_compact_style.php"); } else { ?>
+    draw_compact_style_selector($collections[$n]["ref"]); } else { ?>
     <a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $collections[$n]["ref"])?>">&gt;&nbsp;<?php echo $lang["viewall"]?></a>
         <?php if (!checkperm("b")) { ?>
             &nbsp;<a href="<?php echo $baseurl_short?>pages/collections.php?collection=<?php echo $collections[$n]["ref"]; if ($autoshow_thumbs) {echo "&amp;thumbs=show";}?>" onClick="return CollectionDivLoad(this);">&gt;&nbsp;<?php echo $lang["action-select"]?></a>

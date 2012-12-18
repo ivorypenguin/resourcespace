@@ -173,7 +173,7 @@ for ($n=$offset;(($n<count($collections)) && ($n<($offset+$per_page)));$n++)
 	<?php hook("beforecollectiontoolscolumn");?>
 	<td><div class="ListTools">
     <?php if ($collections_compact_style){
-        include("collections_compact_style.php");
+         draw_compact_style_selector($collections[$n]["ref"]);
     } else {
     ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $collections[$n]["ref"])?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["viewall"]?></a>
 	<?php if ($contact_sheet==true) { ?>

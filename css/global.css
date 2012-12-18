@@ -94,6 +94,9 @@ option {font-size:11px;}
 .CollectBack .SearchItem {margin: 0 0 10px;padding: 0;}
 .CollectBack .MinSearchItem {margin: 0;padding: 0;}
 
+#CentralSpace .SearchWidth {width: 550px;font: 10px Tahoma, Arial, Helvetica, sans-serif;margin: 0px 0px;padding: 0px;}
+#CentraSpace .SearchWidthExp {width:200px;font: 10px Tahoma, Arial, Helvetica, sans-serif;margin: 0px 0px;padding: 0px;}
+
 .CollectionPanelShell{padding:0;float: left;margin: 0px 15px 5px 0px;width: 77px;height: 110px;}
 .CollectionPanelInfo{}
 .CollectionResourceAlign {width:77px;height:85px;text-align: center;vertical-align: middle;}
@@ -177,7 +180,6 @@ option {font-size:11px;}
 .SearchSpace .SearchItem {margin: 10px 0 0;padding: 0;font-weight: bold;}
 .SearchSpace a:link, .SearchSpace a:visited {text-decoration:none;}
 .SearchSpace a:hover, .SearchSpace a:active {text-decoration:underline;}
-
 
 .ListDropdown {width: 115px;font: 10px Tahoma, Arial, Helvetica, sans-serif;margin:0px;padding: 0px;height:18px;}
 

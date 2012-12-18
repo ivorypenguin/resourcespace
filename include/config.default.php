@@ -1710,6 +1710,9 @@ $search_titles_shortnames=false;
 # $collections_compact_style switches on some experimental UI changes for collection-level tools.
 # making the title in the collections panel into a link to the Collection Manage page
 $collections_compact_style=false;
+# Load selectors via ajax onhover to improve performance.
+$collections_compact_style_ajax=true;
+
 
 # if using $collections_compact_style, you may want to remove the contact sheet link from the Manage Collections page
 $manage_collections_contact_sheet_link=true;

@@ -188,7 +188,7 @@ function DisplayTheme($themes=array())
 			<?php hook("beforecollectiontoolscolumn");?>
 			<td nowrap><div class="ListTools">
             <?php if ($collections_compact_style){
-            include("collections_compact_style.php");
+            draw_compact_style_selector($getthemes[$m]["ref"]);
             } else {
 
                 ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $getthemes[$m]["ref"])?>" title="<?php echo $lang["collectionviewhover"]?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["viewall"]?></a>

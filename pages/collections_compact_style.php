@@ -9,45 +9,61 @@
 // redirect - [0 or string] - redirect to this page after completion of the action
 // div [main or collections] - which div to redirect to (main or collections)
 // refresh [collections, main, both, or false]
-
+include_once(dirname(__FILE__)."/../include/db.php");
+include_once(dirname(__FILE__)."/../include/general.php");
+include_once(dirname(__FILE__)."/../include/authenticate.php");
 include_once(dirname(__FILE__)."/../include/search_functions.php");
 include_once(dirname(__FILE__)."/../include/resource_functions.php");
 include_once(dirname(__FILE__)."/../include/collections_functions.php");
-global $baseurl,$baseurl_short;
 
+
+$search=getvalescaped("search","");
+$thumbs=getvalescaped('thumbs',"");
 $offset=getvalescaped("offset",0);
 $find=getvalescaped("find","");
 $col_order_by=getvalescaped("col_order_by","name");
 $order_by=getvalescaped("order_by","relevance");
-$sort=getval("sort","ASC");
+$sort=getvalescaped("sort","ASC");
 $main_pages=array("search","collection_manage","collection_public","themes");
 $uniqid=uniqid();
+$load=getvalescaped("colselectload","");
+$display=getvalescaped("display",$default_display);
 
-// get collection information (different pages need different treatment) 
-if (($pagename=="search" || $pagename=="preview_all") && isset($search) && substr($search,0,11)=="!collection"){
-    $collection=explode(",",substr($search,11));
-    $collection=$collection[0]; 
-    $colresult=do_search("!collection" . $collection);
+if($load!=""){
+	$collection=getvalescaped("collection","");
+	$pagename=getvalescaped("pagename","collections_compact_style");
+	$colresult=do_search("!collection" . $collection); 
+	$cinfo=get_collection($collection);
+	$feedback=$cinfo["request_feedback"];    
 	}
-else if ($pagename=="collection_manage" || $pagename=="collection_public" || $pagename=="view"){
-    $collection=$collections[$n]['ref'];
-    $colresult=do_search("!collection" . $collection);
-    $cinfo=get_collection($collection);
-    $feedback=$cinfo["request_feedback"];    
-    }
-elseif ($pagename=="themes"){
-    $n=$m;
-    $collections=$getthemes;
-    $collection=$getthemes[$m]["ref"];
-    $colresult=do_search("!collection" . $collection);
-    $cinfo=get_collection($collection);
-    $feedback=$cinfo["request_feedback"];
-    $k="";
-    }    
-else if ($pagename=="collections"||$pagename=="collections_frameless_loader"){
-    $collection=$usercollection;$colresult=$result;
+
+else {
+	// get collection information (different pages need different treatment) 
+	if (($pagename=="search" || $pagename=="preview_all") && isset($search) && substr($search,0,11)=="!collection"){
+		$collection=explode(",",substr($search,11));
+		$collection=$collection[0]; 
+		$colresult=do_search("!collection" . $collection);
+		}
+	else if ($pagename=="collection_manage" || $pagename=="collection_public" || $pagename=="view"){
+		$collection=$collections[$n]['ref'];
+		$colresult=do_search("!collection" . $collection);
+		$cinfo=get_collection($collection);
+		$feedback=$cinfo["request_feedback"];    
+		}
+	elseif ($pagename=="themes"){
+		$n=$m;
+		$collections=$getthemes;
+		$collection=$getthemes[$m]["ref"];
+		$colresult=do_search("!collection" . $collection);
+		$cinfo=get_collection($collection);
+		$feedback=$cinfo["request_feedback"];
+		$k="";
+		}    
+	else if ($pagename=="collections"||$pagename=="collections_frameless_loader"){
+		$collection=$usercollection;$colresult=$result;
+	}
+	if ($pagename=="search" && isset($resources) && is_array($resources)){$colresult=$resources;$cinfo=get_collection($collections[$n]['ref']);$feedback=$cinfo["request_feedback"];$collection_results=true;$collection=$collections[$n]['ref'];} 
 }
-if ($pagename=="search" && isset($resources) && is_array($resources)){$colresult=$resources;$cinfo=get_collection($collections[$n]['ref']);$feedback=$cinfo["request_feedback"];$collection_results=true;$collection=$collections[$n]['ref'];}
 
 $count_result=count($colresult);
 // check editability
@@ -58,28 +74,11 @@ if (count($colresult)>0 && checkperm("e" . $colresult[0]["archive"]) && allow_mu
 }
 
 
-if ($pagename!="collection_manage" && $pagename!="collection_public" && $pagename!="themes"){?>
-<form method="get" name="colactions" id="colactions" action="<?php echo $baseurl_short?>pages/collections_compact_style.php">
-<?php } 
+?>
 
 
-if ($pagename=="search" || $pagename=="collections"){?>
-
-<?php hook("beforecollectiontoolscolumn");?>
-<?php if (!hook("modifycompacttoolslabel")){ echo $lang['tools'].":";} ?> <?php if (getval("thumbs","")=="show" && $pagename=="collections"){?><br><?php } ?>
-<?php } ?>
-
-
-<select <?php if ($pagename=="collections"){
-	if ($thumbs=="show"){
-		?>style="padding:0;margin:0px;"<?php 
-	} if ($collection_dropdown_user_access_mode){
-		?>class="SearchWidthExp" style="margin:0;"<?php 
-		} else { 
-			?> class="SearchWidth" style="margin:0;"<?php 
-		} 
-	}
-$colvalue="document.getElementById('".$uniqid."colactionselect').value";?> class="ListDropdown" name="<?php echo $uniqid?>colactionselect" id="<?php echo $uniqid?>colactionselect" <?php if ($pagename=="search" && $display=="xlthumbs"){?>style="margin:-5px 0px 0px 5px"<?php } ?> <?php if ($pagename=="search" && ( $display=="thumbs" || $display=="smallthumbs")){?>style="margin:-5px 0px 0px 4px "<?php } ?> onchange="colAction(<?php echo $colvalue?>);<?php echo $colvalue?>='';">
+	<select <?php if ($pagename=="collections"){if ($collection_dropdown_user_access_mode){?>class="SearchWidthExp" style="margin:0;"<?php } else { ?> class="SearchWidth" style="margin:0;"<?php } } $tag=$pagename."-coltools-".$collection;if ($pagename=="collections"){$tag.="_usercol";}
+	$colvalue="document.getElementById('".$tag."').value";	?> class="ListDropdown" <?php if ($pagename=="search" && $display=="xlthumbs"){?>style="margin:-5px 0px 0px 5px"<?php } ?> <?php if ($pagename=="search" && ( $display=="thumbs" || $display=="smallthumbs")){?>style="margin:-5px 0px 0px 4px "<?php } ?> id="<?php echo $tag?>" onchange="colAction(<?php echo $colvalue?>);<?php echo $colvalue?>='';">
 
  
 <option id="resetcolaction" value=""><?php echo $lang['select'];?></option>
@@ -240,9 +239,10 @@ if ($show_edit_all_link && $count_result>0 && $col_editable) { ?>
 
 
     </select>
-    <?php if ($pagename=="collections"){?><?php if ($thumbs=="show") { ?><br /><br /><a onClick="ToggleThumbs();return CollectionDivLoad(this);" href="<?php echo $baseurl_short?>pages/collections.php?thumbs=hide">&gt;&nbsp;<?php echo $lang["hidethumbnails"]?></a><?php } ?><?php if ($thumbs=="hide") { ?>&nbsp;&nbsp;&nbsp;<a href="<?php echo $baseurl_short?>pages/collections.php?thumbs=show" onClick="ToggleThumbs();return CollectionDivLoad(this);">&gt;&nbsp;<?php echo $lang["showthumbnails"]?></a><?php } ?></div><?php } ?>
-<?php if ($pagename!="collection_manage" && $pagename!="collection_public" && $pagename!="themes"){?>
 
-</form>
 
-<?php } ?>
+
+
+
+
+

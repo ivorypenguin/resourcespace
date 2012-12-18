@@ -1439,6 +1439,78 @@ function get_home_page_promoted_collections()
 	return sql_query("select collection.ref,collection.home_page_publish,collection.home_page_text,collection.home_page_image,resource.thumb_height,resource.thumb_width from collection left outer join resource on collection.home_page_image=resource.ref where collection.public=1 and collection.home_page_publish=1 order by collection.ref desc");
 	}
 
+function draw_compact_style_selector($collection,$onhover=true){
+	
+	global $baseurl,
+	$baseurl_short,
+	$lang,
+	$pagename,
+	$collections,
+	$collections_compact_style,
+	$collections_compact_style_ajax,
+	$display,
+	$thumbs,
+	$collection_dropdown_user_access_mode,
+	$default_display,
+	$resources,
+	$n,
+	$userref,
+	$preview_all,
+	$show_edit_all_link,
+	$contact_sheet,
+	$allow_share,
+	$collection_purge,
+	$collection_download,
+	$usercollection,$result,
+	$collection_dropdown_user_access_mode,
+	$cinfo,
+	$feedback,
+	$colresult;	
+
+	if (!$collections_compact_style_ajax){
+		include(dirname(__FILE__)."/../pages/collections_compact_style.php");
+		return;
+	}
+	
+	//draw a dummy selector and then ajax load options on hover
+	
+	$tag=$pagename."-coltools-".$collection;if ($pagename=="collections"){$tag.="_usercol";}
+	$onhover=true;
+	
+	?>	<select <?php if ($pagename=="collections"){if ($collection_dropdown_user_access_mode){?>class="SearchWidthExp" style="margin:0;"<?php } else { ?> class="SearchWidth" style="margin:0;"<?php } } ?> class="ListDropdown" <?php if ($pagename=="search" && $display=="xlthumbs"){?>style="margin:-5px 0px 0px 5px"<?php } ?> <?php if ($pagename=="search" && ( $display=="thumbs" || $display=="smallthumbs")){?>style="margin:-5px 0px 0px 4px "<?php } ?> id="<?php echo $tag?>"><option><?php echo $lang['select'];?></option></select><?php
+	
+	// onhover indicates whether this should be immediately loaded or not
+	if ($onhover){?>
+        <script type="text/javascript">
+			jQuery('#<?php echo $tag?>').hover(function(){jQuery.ajax({
+				type: 'GET',
+				url:  '<?php echo $baseurl_short?>pages/collections_compact_style.php?collection=<?php echo $collection?>&pagename=<?php echo $pagename?>&colselectload=true',
+				success: function(msg){
+					if(msg == 0) {
+				} else {
+					jQuery('#<?php echo $tag?>').replaceWith(msg);
+				}
+			}
+			});});
+	</script>
+	<?php 
+	} else {?>
+        <script type="text/javascript">
+			jQuery.ajax({
+				type: 'GET',
+				url:  '<?php echo $baseurl_short?>pages/collections_compact_style.php?collection=<?php echo $collection?>&pagename=<?php echo $pagename?>&colselectload=true',
+				success: function(msg){
+					if(msg == 0) {
+				} else {
+					jQuery('#<?php echo $tag?>').replaceWith(msg);
+				}
+			}
+			});
+	</script>
+		<?php
+	} 
+}
+
 function is_collection_approved($collection)
 		{
 		if (is_array($collection)){$result=$collection;}

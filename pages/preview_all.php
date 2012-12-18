@@ -135,7 +135,7 @@ function ReorderResources(id1,id2)
         $feedback=$cinfo["request_feedback"];
         $count_result=count($result);
         if (!$search_titles){?><br/><?php }
-        include("collections_compact_style.php");
+        draw_compact_style_selector($cinfo['ref']);
         ?><?php if ($vertical=="v"){?><br/><br/><?php } ?>
     <?php } /*end if a collection search and compact_style - action selector*/ ?>    
     <?php } ?>
