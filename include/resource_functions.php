@@ -2430,6 +2430,7 @@ function get_resource_files($ref,$includeorphan=false){
 if (!function_exists("reindex_resource")){
 function reindex_resource($ref)
 	{
+	global $index_contributed_by;
 	# Reindex a resource. Delete all resource_keyword rows and create new ones.
 	
 	# Delete existing keywords
@@ -2456,11 +2457,14 @@ function reindex_resource($ref)
 			}
 		}
 	
-	# Also index contributed by field.
-	$resource=get_resource_data($ref);
-	$userinfo=get_user($resource["created_by"]);
-	add_keyword_mappings($ref,$userinfo["username"] . " " . $userinfo["fullname"],-1);		
-	
+	# Also index contributed by field, unless disabled
+	if ($index_contributed_by)
+		{
+		$resource=get_resource_data($ref);
+		$userinfo=get_user($resource["created_by"]);
+		add_keyword_mappings($ref,$userinfo["username"] . " " . $userinfo["fullname"],-1);
+		}
+
 	# Always index the resource ID as a keyword
 	remove_keyword_mappings($ref, $ref, -1);
 	add_keyword_mappings($ref, $ref, -1);

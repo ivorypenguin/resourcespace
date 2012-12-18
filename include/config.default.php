@@ -1987,3 +1987,6 @@ $ajax_loading_timer=1500;
 
 #Option for downloaded filename to be just <resource id>.extension, without indicating size or whether an alternative file. Will override $original_filenames_when_downloading which is set as default
 $download_filename_id_only = false;
+
+# Index the 'contributed by' field?
+$index_contributed_by=true;
