@@ -589,6 +589,7 @@ $lang["researchrequestcomplete"]="Research Request Completed";
 # Misc / global
 $lang["selectgroupuser"]="Select group/user...";
 $lang["select"]="Select...";
+$lang["selectloading"]="Select....";
 $lang["add"]="Add";
 $lang["create"]="Create";
 $lang["treeobjecttype-group"]=$lang["group"]="Group";

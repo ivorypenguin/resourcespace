@@ -1475,23 +1475,30 @@ function draw_compact_style_selector($collection,$onhover=true){
 	//draw a dummy selector and then ajax load options on hover
 	
 	$tag=$pagename."-coltools-".$collection;if ($pagename=="collections"){$tag.="_usercol";}
+	if ($pagename!="collections"){$hovertag="#CentralSpace";} 
+	if ($pagename=="collections"){$hovertag=".CollectBack";} 
+	
+	
+
 	$onhover=true;
 	
-	?>	<select <?php if ($pagename=="collections"){if ($collection_dropdown_user_access_mode){?>class="SearchWidthExp" style="margin:0;"<?php } else { ?> class="SearchWidth" style="margin:0;"<?php } } ?> class="ListDropdown" <?php if ($pagename=="search" && $display=="xlthumbs"){?>style="margin:-5px 0px 0px 5px"<?php } ?> <?php if ($pagename=="search" && ( $display=="thumbs" || $display=="smallthumbs")){?>style="margin:-5px 0px 0px 4px "<?php } ?> id="<?php echo $tag?>"><option><?php echo $lang['select'];?></option></select><?php
+	?>	<select readonly="readonly" <?php if ($pagename=="collections"){if ($collection_dropdown_user_access_mode){?>class="SearchWidthExp" style="margin:0;"<?php } else { ?> class="SearchWidth" style="margin:0;"<?php } } ?> class="ListDropdown" <?php if ($pagename=="search" && $display=="xlthumbs"){?>style="margin:-5px 0px 0px 5px"<?php } ?> <?php if ($pagename=="search" && ( $display=="thumbs" || $display=="smallthumbs")){?>style="margin:-5px 0px 0px 4px "<?php } ?> id="temp<?php echo $tag?>"><option><?php echo $lang['selectloading'];?></option></select><?php
 	
-	// onhover indicates whether this should be immediately loaded or not
+	// onhover indicates whether this should be immediately loaded or loaded on page hover (to preload these after page load)
 	if ($onhover){?>
         <script type="text/javascript">
-			jQuery('#<?php echo $tag?>').hover(function(){jQuery.ajax({
+			jQuery('<?php echo $hovertag?>').hover(function(e){e.preventDefault();
+				jQuery.ajax({
 				type: 'GET',
 				url:  '<?php echo $baseurl_short?>pages/collections_compact_style.php?collection=<?php echo $collection?>&pagename=<?php echo $pagename?>&colselectload=true',
 				success: function(msg){
 					if(msg == 0) {
 				} else {
-					jQuery('#<?php echo $tag?>').replaceWith(msg);
-				}
+					jQuery('#temp<?php echo $tag?>').replaceWith(msg);
+				}   jQuery('<?php echo $hovertag?>').unbind('mouseenter mouseleave');
 			}
 			});});
+			
 	</script>
 	<?php 
 	} else {?>
@@ -1502,7 +1509,7 @@ function draw_compact_style_selector($collection,$onhover=true){
 				success: function(msg){
 					if(msg == 0) {
 				} else {
-					jQuery('#<?php echo $tag?>').replaceWith(msg);
+					jQuery('#temp<?php echo $tag?>').replaceWith(msg);
 				}
 			}
 			});
