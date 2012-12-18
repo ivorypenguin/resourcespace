@@ -21,7 +21,13 @@ if (getval("deleteaccess","")!="")
 	{
 	delete_collection_access_key($ref,getvalescaped("deleteaccess",""));
 	}
-	
+
+#Check if any resources are not approved
+if (!is_collection_approved($ref)) {
+	$show_error=true;
+	$error=$lang["notapprovedsharecollection"];
+	}
+
 # Get min access to this collection
 $minaccess=collection_min_access($ref);
 

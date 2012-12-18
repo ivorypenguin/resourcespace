@@ -128,6 +128,9 @@ function add_resource_to_collection($resource,$collection,$smartadd=false,$size=
 		$keys=get_collection_external_access($collection);
 		if (count($keys)>0)
 			{
+			$archivestatus=sql_value("select archive as value from resource where ref='$resource'","");
+			if ($archivestatus<0) {global $lang; $lang["cantmodifycollection"]=$lang["notapprovedresources"] . $resource;return false;}
+
 			# Set the flag so a warning appears.
 			global $collection_share_warning;
 			$collection_share_warning=true;
@@ -905,19 +908,11 @@ function add_saved_search_items($collection)
 	{
 	# Adds resources from a search to the collection.
 	$results=do_search(getvalescaped("addsearch",""), getvalescaped("restypes",""), "relevance", getvalescaped("archive","",true));
-	if (is_array($results))
-		{
-		for ($n=0;$n<count($results);$n++)
-			{
-			$resource=$results[$n]["ref"];
-			sql_query("delete from collection_resource where resource='$resource' and collection='$collection'");
-			sql_query("insert into collection_resource(resource,collection) values ('$resource','$collection')");
-			}
-		}
 
 	# Check if this collection has already been shared externally. If it has, we must add a further entry
 	# for this specific resource, and warn the user that this has happened.
 	$keys=get_collection_external_access($collection);
+	$resourcesnotadded=array(); # record the resources that are not added so we can display to the user
 	if (count($keys)>0)
 		{
 		# Set the flag so a warning appears.
@@ -932,6 +927,8 @@ function add_saved_search_items($collection)
 			for ($r=0;$r<count($results);$r++)
 				{
 				$resource=$results[$r]["ref"];
+				$archivestatus=$results[$r]["archive"];
+				if ($archivestatus<0) {array_push($resourcesnotadded,$resource);continue;}
 				sql_query("insert into external_access_keys(resource,access_key,user,collection,date) values ('$resource','" . escape_check($keys[$n]["access_key"]) . "','$userref','$collection',now())");
 				#log this
 				collection_log($collection,"s",$resource, $keys[$n]["access_key"]);
@@ -939,6 +936,19 @@ function add_saved_search_items($collection)
 			}
 		}
 
+	if (is_array($results))
+                {
+                for ($n=0;$n<count($results);$n++)
+                        {
+                        $resource=$results[$n]["ref"];
+       			if (!in_array($resource,$resourcesnotadded))
+				{
+				sql_query("delete from collection_resource where resource='$resource' and collection='$collection'");
+				sql_query("insert into collection_resource(resource,collection) values ('$resource','$collection')");
+				}
+                        }
+                }
+	return $resourcesnotadded;
 	}
 
 if (!function_exists("allow_multi_edit")){
@@ -1428,3 +1438,18 @@ function get_home_page_promoted_collections()
 	{
 	return sql_query("select collection.ref,collection.home_page_publish,collection.home_page_text,collection.home_page_image,resource.thumb_height,resource.thumb_width from collection left outer join resource on collection.home_page_image=resource.ref where collection.public=1 and collection.home_page_publish=1 order by collection.ref desc");
 	}
+
+function is_collection_approved($collection)
+		{
+		if (is_array($collection)){$result=$collection;}
+		else {
+			$result=do_search("!collection" . $collection,"","relevance",0,-1,"desc",false,"",false,"");
+			}
+		for ($n=0;$n<count($result);$n++)
+			{
+			$archivestatus=$result[$n]["archive"];
+			if ($archivestatus<0) {return false;}
+			}
+		return true;
+		}
+

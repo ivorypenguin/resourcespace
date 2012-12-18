@@ -270,8 +270,11 @@ if ($addsearch!=-1)
 	else
 		{
 		#add saved search (the items themselves rather than just the query)
-		add_saved_search_items($usercollection);
-		
+		$resourcesnotadded=add_saved_search_items($usercollection);
+		if (!empty($resourcesnotadded))
+			{
+			?><script language="Javascript">alert("<?php echo $lang["notapprovedresources"] . implode(", ",$resourcesnotadded);?>");</script><?php
+			}
 		# Log this
 		daily_stat("Add saved search items to collection",0);
 		}

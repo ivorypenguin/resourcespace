@@ -51,6 +51,19 @@ if (getval("save","")!="")
 		}
 	}
 
+
+#Check if any resources are not approved
+if (!is_collection_approved($ref))
+	{
+	?>
+	<script type="text/javascript">
+	alert("<?php echo $lang["notapprovedsharecollection"]?>");
+	history.go(-1);
+	</script>
+	<?php
+	exit();
+	}
+
 # Get min access to this collection
 $minaccess=collection_min_access($ref);
 
