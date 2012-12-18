@@ -755,8 +755,8 @@ $lang["selectgenerateurlexternal"]="To create a URL that will work for external 
 $lang["externalselectresourceaccess"]="If you are e-mailing external users, please select the level of access you would like to grant to this resource.";
 $lang["externalselectresourceexpires"]="If you are e-mailing external users, please select an expiry date for the generated URL.";
 $lang["externalshareexpired"]="Sorry, this share has expired and is no longer available.";
-$lang["notapprovedsharecollection"]="One or more resources in this collection is not approved and therefore sharing is prohibited.";
-$lang["notapprovedresources"]="The following resource(s) are not approved and cannot be added to a shared collection: ";
+$lang["notapprovedsharecollection"]="One or more resources in this collection are not active and therefore sharing is prohibited.";
+$lang["notapprovedresources"]="The following resources are not active and cannot be added to a shared collection: ";
 
 
 # New for 1.3
