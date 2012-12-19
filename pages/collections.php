@@ -789,7 +789,7 @@ elseif ($k!="")
 <div id="CollectionMinRightNav"><div id="MinSearchItem">
   <?php if ($collections_compact_style){
 	 
-    draw_compact_style_selector($usercollection,false);
+    draw_compact_style_selector($usercollection);
      if ($thumbs=="show") { ?><a style="display:inline;" onClick="ToggleThumbs();return CollectionDivLoad(this,true);" href="<?php echo $baseurl_short?>pages/collections.php?thumbs=hide">&gt;&nbsp;<?php echo $lang["hidethumbnails"]?></a><?php } ?><?php if ($thumbs=="hide") { ?>&nbsp;&nbsp;&nbsp;<a href="<?php echo $baseurl_short?>pages/collections.php?thumbs=show" onClick="ToggleThumbs();return CollectionDivLoad(this,true);">&gt;&nbsp;<?php echo $lang["showthumbnails"]?></a></div><?php } ?><?php
     
     }

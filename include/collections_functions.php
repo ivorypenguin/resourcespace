@@ -1467,7 +1467,7 @@ function draw_compact_style_selector($collection,$onhover=true){
 	$feedback,
 	$colresult;	
 
-	if (!$collections_compact_style_ajax){
+	if (!$onhover || !$collections_compact_style_ajax){
 		include(dirname(__FILE__)."/../pages/collections_compact_style.php");
 		return;
 	}
@@ -1478,16 +1478,12 @@ function draw_compact_style_selector($collection,$onhover=true){
 	if ($pagename!="collections"){$hovertag="#CentralSpace";} 
 	if ($pagename=="collections"){$hovertag=".CollectBack";} 
 	
-	
-
-	$onhover=true;
-	
 	?>	<select readonly="readonly" <?php if ($pagename=="collections"){if ($collection_dropdown_user_access_mode){?>class="SearchWidthExp" style="margin:0;"<?php } else { ?> class="SearchWidth" style="margin:0;"<?php } } ?> class="ListDropdown" <?php if ($pagename=="search" && $display=="xlthumbs"){?>style="margin:-5px 0px 0px 5px"<?php } ?> <?php if ($pagename=="search" && ( $display=="thumbs" || $display=="smallthumbs")){?>style="margin:-5px 0px 0px 4px "<?php } ?> id="temp<?php echo $tag?>"><option><?php echo $lang['selectloading'];?></option></select><?php
 	
 	// onhover indicates whether this should be immediately loaded or loaded on page hover (to preload these after page load)
-	if ($onhover){?>
+?>	
         <script type="text/javascript">
-			jQuery('<?php echo $hovertag?>').hover(function(e){e.preventDefault();
+			jQuery('<?php echo $hovertag?>').hover(function(e){
 				jQuery.ajax({
 				type: 'GET',
 				url:  '<?php echo $baseurl_short?>pages/collections_compact_style.php?collection=<?php echo $collection?>&pagename=<?php echo $pagename?>&colselectload=true',
@@ -1501,21 +1497,6 @@ function draw_compact_style_selector($collection,$onhover=true){
 			
 	</script>
 	<?php 
-	} else {?>
-        <script type="text/javascript">
-			jQuery.ajax({
-				type: 'GET',
-				url:  '<?php echo $baseurl_short?>pages/collections_compact_style.php?collection=<?php echo $collection?>&pagename=<?php echo $pagename?>&colselectload=true',
-				success: function(msg){
-					if(msg == 0) {
-				} else {
-					jQuery('#temp<?php echo $tag?>').replaceWith(msg);
-				}
-			}
-			});
-	</script>
-		<?php
-	} 
 }
 
 function is_collection_approved($collection)
