@@ -26,7 +26,7 @@
 # En första version av översättningen skapades av Henrik Frizén (förnamn.efternamn utan accenttecken i e-postboxen.Sveriges landskod) 20110124 för version 2295
 #
 # Senast uppdaterad av [Namn] [Datum] för version [svn-version], [kommentar]
-# Senast uppdaterad av Henrik Frizén 20121217 för version 4119
+# Senast uppdaterad av Henrik Frizén 20121219 för version 4139
 
 #
 #
@@ -615,6 +615,7 @@ $lang["researchrequestcomplete"]="Besvarad researchförfrågan";
 # Misc / global
 $lang["selectgroupuser"]="Välj grupp/användare…";
 $lang["select"]="Välj…";
+$lang["selectloading"]="Välj...";
 $lang["add"]="Lägg till";
 $lang["create"]="Skapa";
 $lang["treeobjecttype-group"]=$lang["group"]="Grupp";
@@ -781,7 +782,8 @@ $lang["selectgenerateurlexternal"]="Om du vill skapa en extern webbadress som fu
 $lang["externalselectresourceaccess"]="Om du delar material med en användare utan användarkonto väljer du en åtkomstnivå som du finner lämplig";
 $lang["externalselectresourceexpires"]="Om du delar material med en användare utan användarkonto väljer du ett utgångsdatum för den genererade webbadressen";
 $lang["externalshareexpired"]="Delningens utgångsdatum har passerats och därför är delningen inte längre tillgänglig.";
-
+$lang["notapprovedsharecollection"]="Ett eller flera material i denna samling är inte aktiva och därför är delning inte möjlig.";
+$lang["notapprovedresources"]="Följande material är inte aktiva och kan därför inte läggas till i en delad samling: ";
 
 
 # New for 1.3
