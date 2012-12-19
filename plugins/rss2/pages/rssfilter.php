@@ -76,25 +76,25 @@ if (!array_key_exists("search",$_GET))
 	$archive=getvalescaped("saved_archive",0);setcookie("saved_archive",$archive);
 	}
 
-	$refs=array();
-	#echo "search=$search";
-	
-	# Special query? Ignore restypes
-	if (strpos($search,"!")!==false) {$restypes="";}
-	
-	# Story only? Display as list
-	#if ($restypes=="2") {$display="list";}
-	
-	$result=do_search($search,$restypes,"relevance",$archive,100,"desc",false,$starsearch);
-	
-	//echo $result[0];
+$refs = array();
+#echo "search=$search";
 
-	# Create a title for the feed
-	$searchstring="search=$search&restypes=$restypes&archive=$archive&starsearch=$starsearch";
-	$feed_title=$applicationname ." - ".xml_entities(get_search_title($searchstring));
+# Special query? Ignore restypes
+if (strpos($search,"!")!==false) {$restypes = "";}
 
-	
-$r = new RSSFeed($feed_title, $baseurl, str_replace("%search%", xml_entities($searchstring), $lang["filtered_resource_update_for"]));
+# Story only? Display as list
+#if ($restypes=="2") {$display = "list";}
+
+$result = do_search($search, $restypes, "relevance", $archive, 100, "desc", false, $starsearch);
+
+//echo $result[0];
+
+# Create a title for the feed
+$searchstring = "search=$search&restypes=$restypes&archive=$archive&starsearch=$starsearch";
+$feed_title = xml_entities($applicationname ." - " .get_search_title($searchstring));
+
+
+$r = new RSSFeed($feed_title, $baseurl, xml_entities(str_replace("%search%", $searchstring, $lang["filtered_resource_update_for"])));
 
 // rss fields can include any of thumbs, smallthumbs, list, xlthumbs display fields, or data_joins.
 $all_field_info=get_fields_for_search_display($rss_fields);

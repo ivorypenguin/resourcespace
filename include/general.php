@@ -3150,32 +3150,71 @@ function error_alert($error,$back=true){
 	if ($back){echo "history.go(-1);";}
 	echo "</script>";
 }
+/**
+ * Returns an xml compliant string in UTF-8
+ *
+ * Built upon a code snippet from steve at mcdragonsoftware dot com
+ * @link http://php.net/manual/en/function.htmlentities.php#106535
+ * 
+ * @param string $string A string to be made xml compliant.
+ * @param string $fromcharset The charset of $string.
+ * @access public
+ * @return string Returns the xml compliant UTF-8 encoded string.
+ */
+function xml_entities($string, $fromcharset="")
+    {
+    # Convert the data to UTF-8 if not already.
+    if ($fromcharset=="")
+        {
+        global $mysql_charset;
+        if (isset($mysql_charset)) {$fromcharset = $mysql_charset;}
+        else {$fromcharset = "UTF-8";} # Default to UTF-8.
+        }
+    if (strtolower($fromcharset)!="utf-8") {$string = mb_convert_encoding($string, 'UTF-8', $fromcharset);}
 
-function xml_entities($text, $charset = 'Windows-1252'){
-     // Debug and Test
-    // $text = "test &amp; &trade; &amp;trade; abc &reg; &amp;reg; &#45;";
-   
-    // First we encode html characters that are also invalid in xml
-    $text = htmlentities($text, ENT_COMPAT, $charset);
-   
-    // XML character entity array from Wiki
-    // Note: &apos; is useless in UTF-8 or in UTF-16
-    $arr_xml_special_char = array("&quot;","&amp;","&apos;","&lt;","&gt;");
-   
-    // Building the regex string to exclude all strings with xml special char
-    $arr_xml_special_char_regex = "(?";
-    foreach($arr_xml_special_char as $key => $value){
-        $arr_xml_special_char_regex .= "(?!$value)";
+    # Sanitize the string to comply with xml:
+    # http://en.wikipedia.org/wiki/Valid_characters_in_XML?section=1#XML_1.0
+    $not_in_list = "A-Z0-9a-z\s_-";
+    return preg_replace_callback("/[^{$not_in_list}]/u", 'get_xml_entity_at_index_0', $string);
     }
-    $arr_xml_special_char_regex .= ")";
-   
-    // Scan the array for &something_not_xml; syntax
-    $pattern = "/$arr_xml_special_char_regex&([a-zA-Z0-9]+;)/";
-   
-    // Replace the &something_not_xml; with &amp;something_not_xml;
-    $replacement = '&amp;${1}';
-    return preg_replace($pattern, $replacement, $text);
-}
+function get_xml_entity_at_index_0($char)
+    {
+    if (!is_string($char[0]) || (mb_strlen($char[0], "UTF-8") > 1))
+        {
+        die("function: 'get_xml_entity_at_index_0' requires data type: 'char' (single character). '{$char[0]}' does not match this type.");
+        }
+    switch ($char[0])
+        {
+        # http://en.wikipedia.org/wiki/List_of_XML_and_HTML_character_entity_references#Predefined_entities_in_XML
+        case '"':
+            return "&quot;";
+            break;
+        case '&':
+            return "&amp;";
+            break;
+        case "'":
+            return "&apos;";
+            break;
+        case '<':
+            return "&lt;";
+            break;
+        case '>':
+            return "&gt;";
+            break;
+        default:
+            return sanitize_char($char[0]);
+            break;
+        }
+    }
+function sanitize_char($char)
+    {
+    # http://en.wikipedia.org/wiki/Valid_characters_in_XML?section=1#XML_1.0
+    $mb_ord = trim(mb_encode_numericentity($char, array(0x0, 0x10FFFF, 0, 0x10FFFF), "UTF-8"), "&#;");
+    if ($mb_ord==0x0009 || $mb_ord==0x000A || $mb_ord==0x000D) {return $char;}
+    if (($mb_ord>=0x0020 && $mb_ord<=0xD7FF) || ($mb_ord>=0xE000 && $mb_ord<=0xFFFD)) {return $char;}
+    if ($mb_ord>=0x10000 && $mb_ord<=0x10FFFF) {return $char;}
+    return ""; # Not a valid char, return an empty string.
+    }
 
 function format_display_field($value){
 	
