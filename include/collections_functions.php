@@ -1484,7 +1484,7 @@ function draw_compact_style_selector($collection,$onhover=true){
 ?>	
         <script type="text/javascript">
 			jQuery('<?php echo $hovertag?>').hover(function(e){
-				jQuery.ajax({
+				ajaxCancelable.push(jQuery.ajax({
 				type: 'GET',
 				url:  '<?php echo $baseurl_short?>pages/collections_compact_style.php?collection=<?php echo $collection?>&pagename=<?php echo $pagename?>&colselectload=true',
 				success: function(msg){
@@ -1493,7 +1493,7 @@ function draw_compact_style_selector($collection,$onhover=true){
 					jQuery('#temp<?php echo $tag?>').replaceWith(msg);
 				}   jQuery('<?php echo $hovertag?>').unbind('mouseenter mouseleave');
 			}
-			});});
+			}));});
 			
 	</script>
 	<?php 
