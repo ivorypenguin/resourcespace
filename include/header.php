@@ -191,13 +191,23 @@ for ($n=0;$n<count($plugins);$n++)
 
 <?php hook("headblock"); ?>
 
-<?php if ($collections_compact_style && $pagename!="login"){ include dirname(__FILE__)."/../lib/js/colactions.js";}?>
+<?php 
+if ($collections_compact_style && $pagename!="login"){ include dirname(__FILE__)."/../lib/js/colactions.js";}
 
+# Infobox JS include
+if ($infobox)
+	{
+?>
+	<script type="text/javascript">
+	var InfoBoxImageMode=<?php echo ($infobox_image_mode?"true":"false")?>;
+	</script>
+	<script src="<?php echo $baseurl_short;?>lib/js/infobox.js?css_reload_key=<?php echo $css_reload_key ?>" type="text/javascript"></script>
+<?php
+	}
+?>
 </head>
 
-<body <?php if (isset($bodyattribs)) { ?><?php echo $bodyattribs?><?php } ?>>
-
-
+<body <?php if (isset($bodyattribs)) { ?><?php echo $bodyattribs?><?php } if($infobox) {?> onmousemove="InfoBoxMM(event);"<?php } ?>>
 
 <?php hook("bodystart"); ?>
 
@@ -207,7 +217,7 @@ for ($n=0;$n<count($plugins);$n++)
 ?>
 
 <!--Global Header-->
-<div  class="ui-layout-center" style="height:100%">
+<div id="UICenter" class="ui-layout-center" style="height:100%">
 <?php
 if (($pagename=="terms") && (getval("url","")=="index.php")) {$loginterms=true;} else {$loginterms=false;}
 if ($pagename!="preview" && $pagename!="preview_all") { ?>

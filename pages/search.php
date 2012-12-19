@@ -319,17 +319,6 @@ if ((($config_search_for_number && is_numeric($search)) || $searchresourceid > 0
 # Include the page header to and render the search results
 include "../include/header.php";
 
-# Infobox JS include
-if ($infobox)
-	{
-	?>
-	<script src="../lib/js/infobox<?php echo ($infobox_image_mode?"_image":"") ?>.js?css_reload_key=<?php echo $css_reload_key ?>" type="text/javascript"></script>
-	<script type="text/javascript">
-	jQuery('body').attr('OnMouseMove','InfoBoxMM(event);');
-	</script>
-	<?php
-	}
-	
 if ($display_user_rating_stars && $k=="")
 	{
 	?>

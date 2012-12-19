@@ -98,14 +98,7 @@ if ($allow_reorder)
 	}
 
 
-# Include function for reordering / infobox
-if ($infobox)
-	{
-	?>		
-	<script src="../lib/js/infobox_collection.js" type="text/javascript"></script>
-	<?php
-	}
-	
+# Include function for reordering
 if ($allow_reorder)
 	{
 	?>
