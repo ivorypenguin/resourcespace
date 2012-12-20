@@ -6,8 +6,8 @@ if (array_key_exists("user",$_COOKIE))
    	{
 	# Check to see if this user is logged in.
     $s=explode("|",$_COOKIE["user"]);
-    $username=mysql_escape_string($s[0]);
-    $session_hash=mysql_escape_string($s[1]);
+    $username=escape_check($s[0]);
+    $session_hash=escape_check($s[1]);
 
     $loggedin=sql_value("select count(*) value from user where session='$session_hash' and approved=1 and timestampdiff(second,last_active,now())<(30*60)",0);
     if ($loggedin>0)
@@ -36,7 +36,9 @@ $sent=false;
 
 if (getval("send","")!="")
 	{
+	$csvheaders="\"date\"";
 	$csvline="\"" . date("Y-m-d") . "\"";
+	$message="Date: ". date("Y-m-d")."\n";
 	for ($n=1;$n<=count($feedback_questions);$n++)
 		{
 		$type=$feedback_questions[$n]["type"];	
@@ -65,19 +67,41 @@ if (getval("send","")!="")
 	
 			# Append to CSV line
 			if ($csvline!="") {$csvline.=",";}
+			if ($csvheaders!="") {$csvheaders.=",";}
 			$csvline.="\"" . str_replace("\"","'",$value) . "\"";
+			$csvheaders.="\"".str_replace("\"","'",str_replace("\n","",$feedback_questions[$n]['text']))."\"";
+			if ($value!=""){$message.=$feedback_questions[$n]['text'].": \n". $value."\n\n";}
 			}
 		}
 	
 	# Append user name and group to CSV file
+	$message="\n\nUser: " .$username."\nUsergroup: ".$usergroupname."\n".$message;
 	$csvline="\"$username\",\"$usergroupname\"," . $csvline;
+	$csvheaders="\"username\",\"usergroupname\"," . $csvheaders;
 	if ($error=="")
 		{
 		# Write results.
 		$sent=true;
-		$f=fopen("../data/results.csv","a");
-		fwrite($f,$csvline . "\n");
+		$f=fopen("../data/results.csv","r+b");
+		
+		# avoid writing headers again
+		$line = file('../data/results.csv');
+		if (isset($line[0])){$line=$line[0];} 
+		if ($line==$csvheaders."\n"){$csvheaders="";} else {$csvheaders=$csvheaders."\n";}
+		
+		fwrite($f, $csvheaders .file_get_contents('../data/results.csv').$csvline."\n" );
 		fclose($f);
+		
+		# install email template
+		//sql_query("delete from site_text where name='emailfeedback'");
+		$result=sql_query("select * from site_text where page='all' and name='emailfeedback'");
+		if (count($result)==0){$wait=sql_query('insert into site_text (page,name,text,language) values ("all","emailfeedback","[img_storagedir_/../gfx/whitegry/titles/title.gif] [message] [text_footer][attach_../data/results.csv]","en-US")');}
+		
+		# send form results and results.csv to email_notify
+		if ($use_phpmailer){
+			$templatevars['message']=$message . "Survey results attached\n\n";
+			send_mail($email_notify,$username." has submitted feedback for ".$applicationname,$message,"","","emailfeedback",$templatevars);
+			} 
 		}
 
 	}
@@ -98,7 +122,7 @@ h2 {font-size:18px;}
 <?php if ($sent) { ?><p><?php echo $lang["feedback_thank_you"]?></p><?php 
 } else { ?>
 
-<form method=post>
+<form method=post action="<?php echo $baseurl_short?>plugins/feedback/pages/feedback.php">
 <?php if ($error) { ?><div class="FormError">!! <?php echo $error ?> !!</div><br /><?php } ?>
 <?php 
 	
@@ -181,7 +205,7 @@ if (!isset($userref))
 <div class="QuestionSubmit">
 <?php if ($error) { ?><div class="FormError">!! <?php echo $error ?> !!</div><br /><?php } ?>
 <label style="width:250px;" for="buttons"> </label>			
-<input name="send" type="submit" value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $lang["send"]?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" />
+<input name="send" type="submit" onclick="return CentralSpacePost(this,true);" value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $lang["send"]?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;" />
 </div>
 </form>
 <?php } ?>

@@ -3,10 +3,34 @@ include "../../../include/db.php";
 include "../../../include/authenticate.php"; if (!checkperm("a")) {exit ("Permission denied.");}
 include "../../../include/general.php";
 
+function file_newname($path, $filename){
+    if ($pos = strrpos($filename, '.')) {
+           $name = substr($filename, 0, $pos);
+           $ext = substr($filename, $pos);
+    } else {
+           $name = $filename;
+    }
+
+    $newpath = $path.'/'.$filename;
+    $newname = $filename;
+    $counter = 0;
+    while (file_exists($newpath) && file_get_contents($newpath)!="") {
+           $newname = $name .'_'. $counter . $ext;
+           $newpath = $path.'/'.$newname;
+           $counter++;
+     }
+
+    return $newname;
+}
+
+
 if (!isset($feedback_prompt_text)) {$feedback_prompt_text="";}
 
 if (getval("submit","")!="" || getval("add","")!="")
 	{
+	rename('../data/results.csv','../data/'.file_newname('../data/','results.csv'));
+	touch('../data/results.csv');
+	chmod('../data/results.csv',0777);
 	
 	$f=fopen("../config/config.php","w");
 	fwrite($f,"<?php\n\n\$feedback_questions=array();");
