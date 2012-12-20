@@ -23,8 +23,7 @@ $feedback_questions[5]['options']="Yes,No";
 $feedback_questions[6]['text']="If no, could you please suggest how you would like to see improvements?";
 $feedback_questions[6]['type']=2;
 $feedback_questions[6]['options']="";
-$feedback_questions[7]['text']="Have you ever experienced problems with the site? Please select from the list.
-";
+$feedback_questions[7]['text']="Have you ever experienced problems with the site? Please select from the list.";
 $feedback_questions[7]['type']=5;
 $feedback_questions[7]['options']="Logging on,Navigation of site,Locating resources,Viewing resources,Downloading resources,Other";
 $feedback_questions[8]['text']="If other, please specify:";
