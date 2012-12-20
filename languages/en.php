@@ -1642,3 +1642,9 @@ $lang["ref-title"] = "%ref - %title"; # %ref and %title will be replaced, e.g. 3
 
 $lang["error-pageload"] = "Sorry, there has been an error loading this page. If you are performing a search please try refining your search query. If the problem persists please contact your system administrator";
 
+$lang["copy-field"]="Copy field";
+$lang["copy-to-resource-type"]="Copy to resource type";
+$lang["synchronise-changes-with-this-field"]="Synchronise changes with this field";
+$lang["copy-completed"]="Copy completed. New field has ID ?.";
+
+$lang["nothing-to-display"]="Nothing to display";

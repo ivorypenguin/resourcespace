@@ -165,7 +165,11 @@ elseif (array_key_exists("submit",$_POST))
 	# Handle null values.
 	$query=str_replace("''","null",$query);
 	
-    sql_query($query);
+	$queries=explode("__then__",$query); # Support multiple queries
+	foreach ($queries as $query)
+		{
+		sql_query($query);
+		}
     
     if (array_key_exists("newredirect",$_POST))
         {
@@ -294,7 +298,7 @@ else
     <?php
     #echo $t[7];
     $result=sql_query(str_replace($transfrom,$transto,$t[7]));
-    if (count($result)==0) {exit($lang["item_deleted"] . ".</div></body></html>");}
+    if (count($result)==0) {exit($lang["nothing-to-display"] . ".</div></body></html>");}
     $result=$result[0];
     
     #if viewing history, load history data

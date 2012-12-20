@@ -72,7 +72,7 @@ function DrawFromNode(node,inner)
 				result+=TreeNames[i];
 				if (TreeClickable[i]) {result+="</a>";}
 				result+="</font></td>";
-				if ((TreeReorder[i]==1) && (TreeParents[i]!=0)) {result+="<td valign=middle nowrap>&nbsp;<img src='gfx/1downarrow.gif' width=9 height=9 vspace=3 onClick='SwapNodes(" + i + "," + NextInFolder(i) + ");'><img src='gfx/1uparrow.gif' width=9 hspace=1 vspace=3 height=9 onClick='SwapNodes(" + i + "," + PreviousInFolder(i) + ");'>";}
+				if ((TreeReorder[i]==1) && (TreeParents[i]!=0)) {result+="<td valign=middle nowrap>&nbsp;<img src='gfx/1downarrow.png?nc=1' width=12 height=12 vspace=3 onClick='SwapNodes(" + i + "," + NextInFolder(i) + ");'><img src='gfx/1uparrow.png?nc=1' width=12 hspace=1 vspace=3 height=12 onClick='SwapNodes(" + i + "," + PreviousInFolder(i) + ");'>";}
 				result+="</td></tr></table>";
 				if (TreeExpand[i]) {result+=DrawFromNode(i);}
 				}
