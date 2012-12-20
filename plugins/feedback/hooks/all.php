@@ -9,7 +9,7 @@ function HookFeedbackAllToptoolbaradder()
 	
 function HookFeedbackAllHeadertop(){	
 	global $target,$baseurl,$feedback_questions,$feedback_prompt_text,$pagename,$lang;
-	if ($pagename=="setup" || $pagename=="feedback") {return true;} # Do not appear on the setup page or during giving feedback.
+	if ($pagename=="setup" || $pagename=="feedback" || $pagename=="login" || $pagename=="user_request" || $pagename=="user_password") {return true;} # Do not appear on the setup page or during giving feedback, or on non-logged in pages
 	
 	# Form a check key based on the feedback form, so that form changes prompt a new message.
 	# $check=md5(serialize($feedback_questions));
