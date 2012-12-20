@@ -10,7 +10,7 @@ if ($magictouch_account_id==""){return false;}
 // and if MTFAIL is defined, annotate will know not to include a Zoom link.
 // annotate plugin compatibility
 global $plugins;
-if (in_array("annotate",$plugins)){
+if (in_array("annotatecr",$plugins)|| in_array("annotate",$plugins)){
     global $annotate_ext_exclude;
     global $annotate_rt_exclude;
     if (in_array($resource['file_extension'],$annotate_ext_exclude)){return false;}
@@ -65,7 +65,7 @@ if (!file_exists($largeurl_path)) {
 <div style="clear:left;float:right;margin-right:10px;margin-top:-5px;"> 
 <?php
 // annotate plugin compatibility
-if (in_array("annotate",$plugins)&&$k==""){?><a href="<?php echo $baseurl?>/pages/view.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&k=<?php echo $k?>" onClick="document.cookie='annotate=on;';return CentralSpaceLoad(this);">&gt;&nbsp;<?php echo $lang['annotations']?></a><br /><br /><?php }
+if ((in_array("annotatecr",$plugins)|| in_array("annotate",$plugins))&&$k==""){?><a href="<?php echo $baseurl?>/pages/view.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&k=<?php echo $k?>" onClick="setCookie('annotate','on');return CentralSpaceLoad(this);">&gt;&nbsp;<?php echo $lang['annotations']?></a><br /><br /><?php }
 ?>
 </div>
 </div>

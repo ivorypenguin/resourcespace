@@ -8,4 +8,5 @@ if ($magictouch_account_id!=""){
     <?php
     }
 }
-
+function HookMagictouchAllHeadertop(){?>
+<div style="display:none;" class="MagicTouch"></div><?php } 
