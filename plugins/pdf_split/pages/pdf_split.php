@@ -97,7 +97,7 @@ function DrawRanges()
 	var ranges_html="";
 	var ranges = document.getElementById("ranges").value;
 	var rs=ranges.split(",");
-	for (var n=0;n<rs.size();n++)
+	for (var n=0;n<rs.length;n++)
 		{
 		// for each range
 		var range=rs[n].split(":");
@@ -123,7 +123,7 @@ function RemoveRange(r)
 	var ranges = document.getElementById("ranges").value;
 	var rs=ranges.split(",");
 	var new_ranges="";
-	for (var n=0;n<rs.size();n++)
+	for (var n=0;n<rs.length;n++)
 		{
 		if (n!=r)
 			{
@@ -140,7 +140,7 @@ function UpdateRanges()
 	var ranges = document.getElementById("ranges").value;
 	var rs=ranges.split(",");
 	var new_ranges="";
-	for (var n=0;n<rs.size();n++)
+	for (var n=0;n<rs.length;n++)
 		{
 		if (new_ranges!="") {new_ranges+=",";}
 		
