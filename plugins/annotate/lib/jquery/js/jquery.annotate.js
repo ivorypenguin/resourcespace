@@ -5,8 +5,10 @@ var button_cancel = "";
 var button_delete = "";
 var button_add = "";
 var button_toggle="";
+var button_toggle_off="";
 var error_saving = "";
 var error_deleting = "";
+
 function isInt(value) { 
     return !isNaN(parseInt(value)) && (parseFloat(value) == parseInt(value)); 
 }
