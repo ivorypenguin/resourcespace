@@ -65,7 +65,7 @@ if (!file_exists($largeurl_path)) {
 <div style="padding-top:5px;"> 
 <?php
 // annotate plugin compatibility
-if (in_array("annotatecr",$plugins)|| in_array("annotate",$plugins)){?><a style="display:inline;float:right;" href="preview.php?ref=<?php echo $ref;?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&k=<?php echo $k?>"  onClick="document.cookie='annotate=on;';return CentralSpaceLoad(this);">&gt;&nbsp;<?php echo $lang['annotations']?></a><br /><br /><?php }
+if (in_array("annotatecr",$plugins)|| in_array("annotate",$plugins)){?><a style="display:inline;float:right;" href="preview.php?annotate=true&ref=<?php echo $ref;?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&k=<?php echo $k?>"  onClick="document.cookie='annotate=on;';return CentralSpaceLoad(this);">&gt;&nbsp;<?php echo $lang['annotations']?></a><br /><br /><?php }
 ?>
 
 </div>
