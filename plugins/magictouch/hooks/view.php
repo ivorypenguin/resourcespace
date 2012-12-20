@@ -34,7 +34,6 @@ if (in_array($resource['file_extension'],$magictouch_ext_exclude)){define("MTFAI
                 return false;
                 }
 
-if (isset($_COOKIE['annotate']) && $_COOKIE['annotate']=="nomt"){define("MTFAIL",true);return false;}
 
 // watermark check
 $access=get_resource_access($ref);
@@ -66,15 +65,11 @@ if (!file_exists($largeurl_path)) {
 <div style="clear:left;float:right;margin-right:10px;margin-top:-5px;"> 
 <?php
 // annotate plugin compatibility
-if (in_array("annotate",$plugins)&&$k==""){?><a href="<?php echo $baseurl?>/pages/view.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&k=<?php echo $k?>" onClick="setCookie('annotate','on');return CentralSpaceLoad(this);">&gt;&nbsp;<?php echo $lang['annotations']?></a><br /><br /><?php }
+if (in_array("annotate",$plugins)&&$k==""){?><a href="<?php echo $baseurl?>/pages/view.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&k=<?php echo $k?>" onClick="document.cookie='annotate=on;';return CentralSpaceLoad(this);">&gt;&nbsp;<?php echo $lang['annotations']?></a><br /><br /><?php }
 ?>
 </div>
 </div>
-<script type="text/javascript">if(typeof MagicTouch=="object") {document.cookie='annotate=on;';MagicTouch.refresh();} else {
-	console.log("MagicTouch not loaded. Redirecting");
-	document.cookie='annotate=nomt;';
-	CentralSpaceLoad("<?php echo $baseurl?>/pages/view.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&k=<?php echo $k?>&annotate=on");
-	}</script>
+<script type="text/javascript">if(typeof MagicTouch=="object") {document.cookie='annotate=on;';MagicTouch.refresh();} else {console.log("MagicTouch not loaded.");}</script>
 
 <?php
     return true;
