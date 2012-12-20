@@ -271,7 +271,7 @@ function setContent() {
 		togglerTip_open: '<?php echo $lang["toggle"]?>',
 		resizerTip: '<?php echo $lang["resize"]?>',
 		south__onclose_start: function(pane){
-			if (pane=="south"){console.log(jQuery('.ui-layout-south').height());
+			if (pane=="south"){
 			if(jQuery('.ui-layout-south').height()>=<?php echo $collection_frame_height?> && thumbs!="hide"){
 				CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=hide<?php echo "&collection=$usercollection"; ?><?php echo (isset($k)) ? "&k=$k" : ""; ?>');
 				document.cookie = "thumbs=hide";
@@ -283,7 +283,7 @@ function setContent() {
 			}
 		},
 		south__onresize: function(pane){
-			if (pane=="south"){console.log(jQuery('.ui-layout-south').height());
+			if (pane=="south"){
 			if(jQuery('.ui-layout-south').height()<<?php echo $collection_frame_height?> && thumbs!="hide"){
 				document.cookie = "thumbs=hide";
 				CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=hide<?php echo "&collection=$usercollection"; ?><?php echo (isset($k)) ? "&k=$k" : ""; ?>');
