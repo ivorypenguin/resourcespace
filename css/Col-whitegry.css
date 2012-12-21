@@ -69,7 +69,7 @@ input[readonly] {color: #000000;}
 .IconUserRatingStar	{	background: url(../gfx/interface/RatingStarRed.gif) no-repeat;}
 .IconUserRatingSpace	{	background: url(../gfx/interface/RatingStarBlank.gif) no-repeat;}
 .StarSelect {background: transparent url(../gfx/interface/RatingStarRed.gif) no-repeat;}
-.StarEmpty {background: transparent url('../gfx/interface/RatingStarLightGrey.gif') no-repeat;}
+.StarEmpty {background: transparent url('../gfx/interface/RatingStarMedGrey.gif') no-repeat;}
 .StarCurrent {background: transparent url('../gfx/interface/RatingStarGrey.gif') no-repeat;}
 
 .NavUnderline {border-bottom: 1px solid #5A7599;}
