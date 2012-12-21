@@ -1,6 +1,6 @@
 <?php
 
-function HookEmbeddocumentViewAfterresourceactions()
+function HookEmbeddocumentViewAfterresourceactions2()
 	{
 	global $embeddocument_resourcetype,$resource,$resource_data,$ref,$baseurl,$lang,$scramble_key,$access;
 	
@@ -66,13 +66,14 @@ if ($thumbwidth==0)	{return false;} # The resource has no preview.
 	?>
 
 
-<a href="#" onClick="
+<li><a href="#" onClick="
 if (document.getElementById('embeddocument').style.display=='block') {document.getElementById('embeddocument').style.display='none';} else {document.getElementById('embeddocument').style.display='block';}
 if (document.getElementById('embeddocument2').style.display=='block') {document.getElementById('embeddocument2').style.display='none';} else {document.getElementById('embeddocument2').style.display='block';}
- return false;">&gt;&nbsp;<?php echo $lang["embeddocument_embed"]?></a>
+ return false;">&gt;&nbsp;<?php echo $lang["embeddocument_embed"]?></a></li>
 <p id="embeddocument2" style="display:none;padding:10px 0 3px 0;"><?php echo $lang["embeddocument_help"] ?><br/>
 	<br/>
-	
+
+<?php if ($access==0){?>
 <input type="checkbox" onClick="
 if (this.checked)
 	{
@@ -85,13 +86,13 @@ else
 	document.getElementById('embeddocument_download').style.display='none';
 	}
 "><?php echo $lang["embeddocument_allow_original_download"] ?></p>
+<?php } ?>
+
 
 <textarea id="embeddocument" style="width:335px;height:120px;display:none;"><?php echo htmlspecialchars($embed); ?></textarea>
 <textarea id="embeddocument_download" style="width:335px;height:120px;display:none;"><?php echo htmlspecialchars($embed_download); ?></textarea>
 
-</div>
 
-<div>
 
 
 	<?php
