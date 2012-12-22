@@ -859,8 +859,9 @@ function add_smart_collection()
 	if ($archive!=0){$searchstring[]="archive=$archive";}
 	$searchstring=implode("&",$searchstring);
 	
+	if ($starsearch==""){$starsearch=0;}
 	$newcollection=create_collection($userref,get_search_title($searchstring),1);	
-	
+
 	sql_query("insert into collection_savedsearch(collection,search,restypes,archive,starsearch) values ('$newcollection','" . $search . "','" . $restypes . "','" . $archive . "','".$starsearch."')");
 	$savedsearch=sql_insert_id();
 	sql_query("update collection set savedsearch=$savedsearch where ref=$newcollection"); 
