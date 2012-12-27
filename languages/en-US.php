@@ -11,5 +11,5 @@
 $lang["teamcentre"]="Team Center";
 $lang["colour"]="Color";
 $lang["backtoteamhome"]="back to team center home";
-
+$lang["synchronise-changes-with-this-field"]="Synchronize changes with this field";
 ?>
