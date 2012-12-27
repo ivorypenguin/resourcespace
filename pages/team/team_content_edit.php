@@ -89,7 +89,34 @@ for ($n=0;$n<count($groups);$n++) { ?>
 </div>
 <?php } /* End managecontenteditgroupselector */?>
 
-<div class="Question"><label><?php echo $lang["text"]?></label><textarea name="text" class="stdwidth" rows=15 cols=50><?php echo htmlspecialchars($text)?></textarea><div class="clearerleft"> </div></div>
+<div class="Question">
+<?php
+if ($site_text_use_ckeditor)
+	{?>
+	<p><label><?php echo $lang["text"]?></label></p><br>
+	<textarea name="text" class="stdwidth" rows=15 cols=50 id="<?php echo $lang["text"]?>" ><?php echo htmlspecialchars($text)?></textarea>
+	<script type="text/javascript">
+	<?php if(!hook("ckeditorinit")){ ?>
+		var editor = CKEDITOR.instances['<?php echo $lang["text"]?>'];
+		if (editor) { editor.destroy(true); }
+		CKEDITOR.replace('<?php echo $lang["text"] ?>',
+			{
+			toolbar : [ <?php global $ckeditor_content_toolbars;echo $ckeditor_content_toolbars; ?> ],
+			height: "600"	
+			});
+		var editor = CKEDITOR.instances['<?php echo $lang["text"]?>'];
+		<?php } ?>
+	<?php hook("ckeditoroptions"); ?>
+	</script>
+	<?php }
+else
+	{?>
+		<label><?php echo $lang["text"]?></label><textarea name="text" class="stdwidth" rows=15 cols=50><?php echo htmlspecialchars($text)?></textarea>
+	<?php } ?>
+
+<div class="clearerleft"> </div>
+</div>
+
 
 <!-- disabled next two as they are in system setup, and making these available on the team centre could lead to accidental deletes and copies.
 <div class="Question"><label>Tick to delete this item</label><input name="deleteme" type="checkbox" value="yes"><div class="clearerleft"> </div></div>
