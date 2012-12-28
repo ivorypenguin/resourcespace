@@ -537,7 +537,6 @@ function get_themes($themes=array(""))
 	{	
 	$themes_order_by=getvalescaped("themes_order_by",getvalescaped("saved_themes_order_by","name"));
 	$sort=getvalescaped("sort",getvalescaped("saved_themes_sort","ASC"));	
-	
 	global $themes_column_sorting;
 	if (!$themes_column_sorting){$themes_order_by="name";$sort="ASC";} // necessary to avoid using a cookie that can't be changed if this is turned off.
 		
@@ -1466,8 +1465,11 @@ function draw_compact_style_selector($collection,$onhover=true){
 	$collection_dropdown_user_access_mode,
 	$cinfo,
 	$feedback,
-	$colresult;	
-
+	$colresult,
+	$m,$getthemes;	
+	if(preg_match('/(Android|iPhone|iPad)/', $_SERVER['HTTP_USER_AGENT'])) { 
+		$collections_compact_style_ajax=false; // omit this optimization for mobile as the hover events it relies on sometimes cause the selector to not be loaded prior to clicking.
+	}
 	if (!$onhover || !$collections_compact_style_ajax){
 		include(dirname(__FILE__)."/../pages/collections_compact_style.php");
 		return;
@@ -1479,11 +1481,12 @@ function draw_compact_style_selector($collection,$onhover=true){
 	if ($pagename!="collections"){$hovertag="#CentralSpace";} 
 	if ($pagename=="collections"){$hovertag=".CollectBack";} 
 	
-	?>	<select readonly="readonly" <?php if ($pagename=="collections"){if ($collection_dropdown_user_access_mode){?>class="SearchWidthExp" style="margin:0;"<?php } else { ?> class="SearchWidth" style="margin:0;"<?php } } ?> class="ListDropdown" <?php if ($pagename=="search" && $display=="xlthumbs"){?>style="margin:-5px 0px 0px 5px"<?php } ?> <?php if ($pagename=="search" && ( $display=="thumbs" || $display=="smallthumbs")){?>style="margin:-5px 0px 0px 4px "<?php } ?> id="temp<?php echo $tag?>"><option><?php echo $lang['selectloading'];?></option></select><?php
+	?>	<select readonly="readonly" onmouseover="if (this.id=='temp<?php echo $tag?>'){jQuery.ajax({type: 'GET',url:  '<?php echo $baseurl_short?>pages/collections_compact_style.php?collection=<?php echo $collection?>&pagename=<?php echo $pagename?>&colselectload=true',success: function(msg){if(msg != 0) {jQuery('#temp<?php echo $tag?>').replaceWith(msg);} }});}" <?php if ($pagename=="collections"){if ($collection_dropdown_user_access_mode){?>class="SearchWidthExp" style="margin:0;"<?php } else { ?> class="SearchWidth" style="margin:0;"<?php } } ?> class="ListDropdown" <?php if ($pagename=="search" && $display=="xlthumbs"){?>style="margin:-5px 0px 0px 5px"<?php } ?> <?php if ($pagename=="search" && ( $display=="thumbs" || $display=="smallthumbs")){?>style="margin:-5px 0px 0px 4px "<?php } ?> id="temp<?php echo $tag?>"><option><?php echo $lang['selectloading'];?></option></select><?php
 	
 	// onhover indicates whether this should be immediately loaded or loaded on page hover (to preload these after page load)
-?>	
-        <script type="text/javascript">
+	// NOTE: I've removed this in an attempt to load these only on mouseover select on Desktop in an attempt to eliminate unneeded ajax calls
+	/*?>
+      <script type="text/javascript">
 			jQuery('<?php echo $hovertag?>').hover(function(e){
 				jQuery.ajax({
 				type: 'GET',
@@ -1495,9 +1498,8 @@ function draw_compact_style_selector($collection,$onhover=true){
 				}   jQuery('<?php echo $hovertag?>').unbind('mouseenter mouseleave');
 			}
 			});});
-			
 	</script>
-	<?php 
+	<?php */
 }
 
 function is_collection_approved($collection)
