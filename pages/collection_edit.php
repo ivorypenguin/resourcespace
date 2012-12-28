@@ -53,7 +53,6 @@ if (getval("submitted","")!="")
 		# No redirect, we stay on this page. Reload the collection info.
 		$collection=get_collection($ref);
 		}
-	refresh_collection_frame();
 	}
 
 	
@@ -62,7 +61,7 @@ include "../include/header.php";
 <div class="BasicsBox">
 <h1><?php echo $lang["editcollection"]?></h1>
 <p><?php echo text("introtext")?></p>
-<form method=post id="collectionform" action="<?php echo $baseurl_short?>pages/collection_edit.php" onSubmit="return CentralSpacePost(this,true);">
+<form method=post id="collectionform" action="<?php echo $baseurl_short?>pages/collection_edit.php" onSubmit="if (jQuery('#usercollection').html()!='<?php echo $ref?>'){return CentralSpacePost(this,true);}">
 <input type=hidden name=redirect id=redirect value=yes>
 <input type=hidden name=ref value="<?php echo $ref?>">
 <input type=hidden name="submitted" value="true">
