@@ -137,7 +137,10 @@ else
 		</div>
 		
 		</div>
-
+		
+		<input type="hidden" id="deleteaccess" name="deleteaccess" value=""/>
+		<input type="hidden" id="ref" name="ref" value=""/>
+		
 		<?php
 		
 		//Display existing shares for collections in theme
@@ -163,7 +166,6 @@ else
 				<div class="Listview">
 				<table border="0" cellspacing="0" cellpadding="0" class="ListviewStyle">
 				<tr class="ListviewTitleStyle">
-				<td><?php echo $lang["collection"];?></td>
 				<td><?php echo $lang["accesskey"];?></td>
 				<td><?php echo $lang["sharedby"];?></td>
 				<!--<td><?php echo $lang["sharedwith"];?></td>-->
@@ -173,14 +175,11 @@ else
 				<td><?php echo $lang["access"];?></td>
 				<td><div class="ListTools"><?php echo $lang["tools"]?></div></td>
 				</tr>
-				<input type="hidden" id="deleteaccess" name="deleteaccess" value=""/>
-				<input type="hidden" id="ref" name="ref" value=""/>
 				<?php
 				for ($n=0;$n<count($keys);$n++)
 					{
 					?>
 					<tr>
-					<td><?php echo $collection['name']?></td>
 					<td><div class="ListTitle"><a target="_blank" href="<?php echo $baseurl . "?c=" . $ref . "&k=" . $keys[$n]["access_key"]?>"><?php echo $keys[$n]["access_key"]?></a></div></td>
 					<td><?php echo resolve_users($keys[$n]["users"])?></td>
 					<!--<td><?php echo $keys[$n]["emails"]?></td>-->
