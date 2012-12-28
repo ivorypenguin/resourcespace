@@ -16,7 +16,7 @@ include_once "../include/transform_functions.php";
 
 include "../../../include/header.php";
 
-
+?><div class="BasicsBox"><?php
 // verify that the requested CollectionID is numeric.
 $collection = getvalescaped('collection','');
 if (!is_numeric($collection)){ echo "Error: non numeric collection ID."; exit; }
@@ -31,7 +31,7 @@ if ($doit == 0){
 ?>
 
 
-	<form name='batchtransform' action='collection_transform.php'>
+	<form name='batchtransform' action='<?php echo $baseurl_short?>/plugins/transform/pages/collection_transform.php' onSubmit="return CentralSpacePost(this,true);">
 	<input type='hidden' name='doit' value='1' />
 	<input type='hidden' name='collection' value='<?php echo $collection ?>' />
 	
@@ -42,9 +42,10 @@ if ($doit == 0){
 		<option value='270'><?php echo $lang['rotation270']; ?></option>
 	</select>
 	<br /><br />
-	<input type="submit" value="<?php echo htmlspecialchars($lang['transform']) ?>" />
+	<input onclick="this.style.display='none';jQuery('#pleasewait').html('<?php echo $lang['pleasewait']?>');" type="submit" value="<?php echo htmlspecialchars($lang['transform']) ?>" />
+	<div id="pleasewait"></div>
 	</form>
-
+	</div>
 
 <?php	
 
@@ -84,7 +85,7 @@ if (count($resources) == 0){
 	echo "<h2>" . str_replace("%col", $collection, $lang['batch_transforming_collection']) . "</h2>\n";
 	flush();
 	foreach($resources as $resource){
-		echo "<hr /><h4>$resource</h4>";
+		echo "<div class='Question'><h4>$resource</h4>";
 		flush();
 		$edit_access=get_edit_access($resource);
 		if (!$edit_access){
@@ -138,10 +139,11 @@ if (count($resources) == 0){
 				echo " " . str_replace("%res", $resource, $lang['error-transform-failed']) . "<br />\n";
 				$failcount++;
 			}
-		}
-	flush();
+		}?></div><?php 
+	flush();ob_flush();
 
 	}
+	?><script>CollectionDivLoad("<?php echo $baseurl . '/pages/collections.php?nowarn=true&nc=' . time() ?>");</script><?php
 }
 
 
@@ -149,7 +151,7 @@ if ($successcount > 0){
 	collection_log($collection,'b',''," ($successcount)");
 }
 
-echo "<hr /><h3>" . $lang['summary'] . "</h3>\n";
+echo "<div class='Question'><h3>" . $lang['summary'] . "</h3>\n";
 $qty_total = count($resources);
 switch ($qty_total)
     {
@@ -185,7 +187,11 @@ switch ($failcount)
         echo str_replace("%qty", $failcount, $lang['errors-2']);
         break;
     }
+?></div></div>
 
+
+
+<?php
 include "../../../include/footer.php";
 
 ?>
