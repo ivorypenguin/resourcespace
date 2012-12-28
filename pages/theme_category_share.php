@@ -196,10 +196,9 @@ else
 				?>
 				</table>
 				</div>
-				</div>
 				<?php
 				}
-			}
+			?></div><?php }
 		}
 	else
 		{
