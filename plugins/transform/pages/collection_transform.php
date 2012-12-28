@@ -31,7 +31,7 @@ if ($doit == 0){
 ?>
 
 
-	<form name='batchtransform' action='<?php echo $baseurl_short?>/plugins/transform/pages/collection_transform.php' onSubmit="return CentralSpacePost(this,true);">
+	<form name='batchtransform' action='<?php echo $baseurl_short?>plugins/transform/pages/collection_transform.php' onSubmit="return CentralSpacePost(this,true);">
 	<input type='hidden' name='doit' value='1' />
 	<input type='hidden' name='collection' value='<?php echo $collection ?>' />
 	
