@@ -140,7 +140,7 @@ else
 		
 		<input type="hidden" id="deleteaccess" name="deleteaccess" value=""/>
 		<input type="hidden" id="ref" name="ref" value=""/>
-		
+		</form>	
 		<?php
 		
 		//Display existing shares for collections in theme
@@ -231,10 +231,8 @@ else
 	</div>
 	<?php
 	}
-?>
-</form>
 
-<?php
+
 if (isset($show_error)){?>
     <script type="text/javascript">
     alert('<?php echo $error;?>');
