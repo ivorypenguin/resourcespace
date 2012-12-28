@@ -540,10 +540,10 @@ if (true) # Always show search header now.
 	if ($display_search_titles)
 		{
 		if (!$collections_compact_style){
-	        echo $search_title;
+	        echo $search_title;hook("aftersearchtitle");
 	        }
 	    else {
-	    echo $search_title;
+	    echo $search_title;hook("aftersearchtitle");
 	    ?><?php if (substr($search,0,11)=="!collection" && $k==""){
 	        $cinfo=get_collection(substr($search,11));
 	        $feedback=$cinfo["request_feedback"];
