@@ -56,6 +56,16 @@ include "../include/header.php";
 
 <h1><?php echo str_replace("%collectionname", i18n_get_collection_name($collection), $lang["sharecollection-name"]);?></h1>
 
+<?php if (isset($show_error)){?>
+    <script type="text/javascript">
+    alert('<?php echo $error;?>');
+    	history.go(-1);
+    </script><?php
+    exit();}
+?>
+
+
+
 <div class="VerticalNav">
 <ul>
 
@@ -211,15 +221,6 @@ include "../include/header.php";
 
 </form>
 </div>
-
-
-<?php if (isset($show_error)){?>
-    <script type="text/javascript">
-    alert('<?php echo $error;?>');
-    	history.go(-1);
-    </script><?php
-    }
-?>
 
 <?php
 include "../include/footer.php";

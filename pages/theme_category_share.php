@@ -9,14 +9,14 @@ include "../include/collections_functions.php";
 	
 $themes=array();
 $themecount=0;
-foreach ($_GET as $key => $value) {
+reset($_POST);reset($_GET);foreach (array_merge($_GET, $_POST) as $key=>$value) {
 	// only set necessary vars
 	if (substr($key,0,5)=="theme" && $value!=""){
 		$themes[$themecount]=urldecode($value);
 		$themecount++;
 		}
 	}
-
+	
 $header=getvalescaped("header","");
 $smart_theme=getvalescaped("smart_theme","");
 $showexisting=getvalescaped("showexisting","");
@@ -29,12 +29,22 @@ for ($x=0;$x<count($themes);$x++){
 	$linksuffix.="=". urlencode($themes[$x]);
 }
 
+$linksuffixprev=explode("&",$linksuffix);
+array_pop($linksuffixprev); // remove last level
+$linksuffixprev=implode('&',$linksuffixprev);
+
+# Process deletion of access keys
+if (getval("deleteaccess","")!="")
+	{
+	$ref=getvalescaped("ref","");	
+	delete_collection_access_key($ref,getvalescaped("deleteaccess",""));
+	}
 
 include "../include/header.php";
 
 ?>
 <div class="BasicsBox"> 
-<form method=post id="themeform" action="<?php echo $baseurl_short?>pages/theme_category_share.php">
+<form method=post id="themeform" action="<?php echo $baseurl_short?>pages/theme_category_share.php" onsubmit="return CentralSpacePost(this,true)">
 <input type="hidden" name="generateurl" id="generateurl" value="">
 
 <div class="VerticalNav">
@@ -56,7 +66,6 @@ else
 	
 		# Get min access to this collection
 		$minaccess=collection_min_access($ref);
-
 		
 		if ($minaccess>=1 && !$restricted_share) # Minimum access is restricted or lower and sharing of restricted resources is not allowed. The user cannot share this collection.
 			{
@@ -74,9 +83,10 @@ else
 	
 	$access=getvalescaped("access","");
 	$expires=getvalescaped("expires","");
-	if ($access=="")
+	if (getvalescaped("generateurl","")=="")
 		{
 		?>
+		<p><a href='<?php echo $baseurl_short?>pages/themes.php<?php echo $linksuffixprev?>' onclick="return CentralSpaceLoad(this,true);"><?php echo "&lt;&nbsp;".$lang['back']?></a></p>
 		<p><?php echo $lang["selectgenerateurlexternal"] ?></p>
 		
 		<div class="Question" id="question_access">
@@ -90,6 +100,21 @@ else
 		</select>
 		<div class="clearerleft"> </div>
 		</div>
+		
+		<?php
+		for ($x=0;$x<$themecount;$x++)
+			{
+			if ($x==0)
+				{?>
+				<input type="hidden" name="theme" id="theme" value="<?php echo i18n_get_translated($themes[$x])?>">
+				<?php
+				}
+			else
+				{ ?>
+				<input type="hidden" name="theme<?php echo $x+1 ?>" id="theme<?php echo $x+1 ?>" value="<?php echo i18n_get_translated($themes[$x]) ?>">
+				<?php }
+			}
+		?>
 		
 		<div class="Question">
 		<label><?php echo $lang["expires"]?></label>
@@ -108,73 +133,72 @@ else
 		
 		<div class="QuestionSubmit" style="padding-top:0;margin-top:0;">
 		<label for="buttons"> </label>
-		<input name="generateurl" type="submit" value="&nbsp;&nbsp;<?php echo $lang["generateexternalurl"]?>&nbsp;&nbsp;" />
+		<input onclick="jQuery('#generateurl').val(true);" type="submit"  value="&nbsp;&nbsp;<?php echo $lang["generateexternalurl"]?>&nbsp;&nbsp;" />
 		</div>
 		
 		</div>
 
-		</form>
 		<?php
 		
 		//Display existing shares for collections in theme
-		if ($showexisting=="")
-			{ echo "<p><a onClick=\"return CentralSpaceLoad(this,true);\" href=\"".$baseurl_short."pages/theme_category_share.php" . $linksuffix . "&showexisting=true\">> " . $lang["showexistingthemeshares"] . "</a></p>";}
-		else 
-			{
-			foreach($collectionstoshare as $collection)
-				{			
-				$ref=$collection["ref"];
-				$keys=get_collection_external_access($ref);
+
+		foreach($collectionstoshare as $collection)
+			{			
+			$ref=$collection["ref"];
+			$keys=get_collection_external_access($ref);
+			?>
+			<p>&nbsp;</p>
+			<h2><?php echo $lang["externalusersharing"] . " - " . $collection["name"]?></h2>
+			<div class="Question">
+			<?php
+			if (count($keys)==0)
+				{
 				?>
-				<p>&nbsp;</p>
-				<h2><?php echo $lang["externalusersharing"] . " - " . $collection["name"]?></h2>
-				<div class="Question">
+				<p><?php echo $lang["noexternalsharing"] ?></p>
 				<?php
-				if (count($keys)==0)
+				}
+			else
+				{
+				?>
+				<div class="Listview">
+				<table border="0" cellspacing="0" cellpadding="0" class="ListviewStyle">
+				<tr class="ListviewTitleStyle">
+				<td><?php echo $lang["collection"];?></td>
+				<td><?php echo $lang["accesskey"];?></td>
+				<td><?php echo $lang["sharedby"];?></td>
+				<!--<td><?php echo $lang["sharedwith"];?></td>-->
+				<td><?php echo $lang["lastupdated"];?></td>
+				<td><?php echo $lang["lastused"];?></td>
+				<td><?php echo $lang["expires"];?></td>
+				<td><?php echo $lang["access"];?></td>
+				<td><div class="ListTools"><?php echo $lang["tools"]?></div></td>
+				</tr>
+				<input type="hidden" id="deleteaccess" name="deleteaccess" value=""/>
+				<input type="hidden" id="ref" name="ref" value=""/>
+				<?php
+				for ($n=0;$n<count($keys);$n++)
 					{
 					?>
-					<p><?php echo $lang["noexternalsharing"] ?></p>
-					<?php
-					}
-				else
-					{
-					?>
-					<div class="Listview">
-					<table border="0" cellspacing="0" cellpadding="0" class="ListviewStyle">
-					<tr class="ListviewTitleStyle">
-					<td><?php echo $lang["accesskey"];?></td>
-					<td><?php echo $lang["sharedby"];?></td>
-					<td><?php echo $lang["sharedwith"];?></td>
-					<td><?php echo $lang["lastupdated"];?></td>
-					<td><?php echo $lang["lastused"];?></td>
-					<td><?php echo $lang["expires"];?></td>
-					<td><?php echo $lang["access"];?></td>
-					<td><div class="ListTools"><?php echo $lang["tools"]?></div></td>
+					<tr>
+					<td><?php echo $collection['name']?></td>
+					<td><div class="ListTitle"><a target="_blank" href="<?php echo $baseurl . "?c=" . $ref . "&k=" . $keys[$n]["access_key"]?>"><?php echo $keys[$n]["access_key"]?></a></div></td>
+					<td><?php echo resolve_users($keys[$n]["users"])?></td>
+					<!--<td><?php echo $keys[$n]["emails"]?></td>-->
+					<td><?php echo nicedate($keys[$n]["maxdate"],true);	?></td>
+					<td><?php echo nicedate($keys[$n]["lastused"],true); ?></td>
+					<td><?php echo ($keys[$n]["expires"]=="")?$lang["never"]:nicedate($keys[$n]["expires"],false)?></td>
+					<td><?php echo ($keys[$n]["access"]==-1)?"":$lang["access" . $keys[$n]["access"]]; ?></td>
+					<td><div class="ListTools">
+					<a href="#" onClick="if (confirm('<?php echo $lang["confirmdeleteaccess"]?>')) {document.getElementById('deleteaccess').value='<?php echo $keys[$n]["access_key"] ?>';document.getElementById('ref').value='<?php echo $ref ?>';document.getElementById('themeform').submit(); }">&gt;&nbsp;<?php echo $lang["action-delete"]?></a>
+					</div></td>
 					</tr>
 					<?php
-					for ($n=0;$n<count($keys);$n++)
-						{
-						?>
-						<tr>
-						<td><div class="ListTitle"><a target="_blank" href="<?php echo $baseurl . "?c=" . $ref . "&k=" . $keys[$n]["access_key"]?>"><?php echo $keys[$n]["access_key"]?></a></div></td>
-						<td><?php echo resolve_users($keys[$n]["users"])?></td>
-						<td><?php echo $keys[$n]["emails"]?></td>
-						<td><?php echo nicedate($keys[$n]["maxdate"],true);	?></td>
-						<td><?php echo nicedate($keys[$n]["lastused"],true); ?></td>
-						<td><?php echo ($keys[$n]["expires"]=="")?$lang["never"]:nicedate($keys[$n]["expires"],false)?></td>
-						<td><?php echo ($keys[$n]["access"]==-1)?"":$lang["access" . $keys[$n]["access"]]; ?></td>
-						<td><div class="ListTools">
-						<a href="#" onClick="if (confirm('<?php echo $lang["confirmdeleteaccess"]?>')) {document.getElementById('deleteaccess').value='<?php echo $keys[$n]["access_key"] ?>';document.getElementById('collectionform').submit(); }">&gt;&nbsp;<?php echo $lang["action-delete"]?></a>
-						</div></td>
-						</tr>
-						<?php
-						}
-					?>
-					</table>
-					</div>
-					</div>
-					<?php
 					}
+				?>
+				</table>
+				</div>
+				</div>
+				<?php
 				}
 			}
 		}
@@ -182,16 +206,25 @@ else
 		{
 		# Access has been selected. Generate a URL.
 		?>
+		<p><a href='<?php echo $baseurl_short?>pages/theme_category_share.php<?php echo $linksuffix?>' onclick="return CentralSpaceLoad(this,true);"><?php echo "&lt;&nbsp;".$lang['back']?></a></p>
 		<p><?php echo $lang["generatethemeurlsexternal"]?></p>
 		<p>
-		<textarea cols="200" rows="100" ><?php 
-		foreach($collectionstoshare as $collection)
-			{	
+		<textarea cols="100" rows="50" ><?php
+		$unapproved_collection=false; 
+		foreach($collectionstoshare as $collection){	
 			$ref=$collection["ref"];
-			echo $lang["collectionname"] . ": " . $collection["name"] . "\r\n" . $baseurl?>/?c=<?php echo $ref?>&k=<?php echo generate_collection_access_key($ref,0,"URL",$access,$expires) . "\r\n" . $lang["expires"] . ": " . $expires. "\r\n\r\n";
+			
+			#Check if any resources are not approved
+			if (!is_collection_approved($ref)) {
+				echo $lang["collectionname"] . ": " . $collection["name"] . "\r\n".$lang["notapprovedsharecollection"]. "\r\n\r\n";
+				$unapproved_collection=true;
+			} else {
+				echo $lang["collectionname"] . ": " . $collection["name"] . "\r\n" . $baseurl?>/?c=<?php echo $ref?>&k=<?php echo generate_collection_access_key($ref,0,"URL",$access,$expires) . "\r\n" . $lang["expires"] . ": " . $expires. "\r\n\r\n";
 			}
-			?>
+		}
+		?>
 		</textarea>
+		<?php if ($unapproved_collection){?><script>alert('<?php echo $lang['notapprovedsharetheme']?>');</script><?php } ?>
 		</p>
 		<?php
 		}
@@ -199,11 +232,14 @@ else
 	</div>
 	<?php
 	}
+?>
+</form>
 
+<?php
 if (isset($show_error)){?>
     <script type="text/javascript">
     alert('<?php echo $error;?>');
-    	history.go(-1);
+    CentralSpaceLoad('<?php echo $baseurl_short?>pages/themes.php<?php echo $linksuffixprev?>'); 
     </script><?php
     }
 ?>

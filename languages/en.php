@@ -757,6 +757,7 @@ $lang["externalselectresourceaccess"]="If you are e-mailing external users, plea
 $lang["externalselectresourceexpires"]="If you are e-mailing external users, please select an expiry date for the generated URL.";
 $lang["externalshareexpired"]="Sorry, this share has expired and is no longer available.";
 $lang["notapprovedsharecollection"]="One or more resources in this collection are not active and therefore sharing is prohibited.";
+$lang["notapprovedsharetheme"]="Sharing is prohibited for at least one collection, because one or more resources is not active.";
 $lang["notapprovedresources"]="The following resources are not active and cannot be added to a shared collection: ";
 
 
