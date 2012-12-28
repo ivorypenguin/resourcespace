@@ -142,7 +142,7 @@ else
 								
 				$totalprice+=$price;
 				# Build up the paypal string...
-				$paypal.="<input type=\"hidden\" name=\"item_name_" . $n . "\" value=\"" . $title . " (" . $size["name"] . ")\">\n";
+				$paypal.="<input type=\"hidden\" name=\"item_name_" . $n . "\" value=\"" . $title . " (" . $lang["id"] . ":" . $resource["ref"] . ", " . $size["name"] . ")\">\n";
 				$paypal.="<input type=\"hidden\" name=\"amount_" . $n . "\" value=\"" . $price . "\">\n";
 				$paypal.="<input type=\"hidden\" name=\"quantity_" . $n . "\" value=\"1\">\n";
 				$n++;
