@@ -1497,7 +1497,7 @@ function search_form_to_search_query($fields,$fromsearchbar=false)
 						{
 						$c++;
 						if ($p!="") {$p.=";";}
-						$p.=strtolower(i18n_get_translated($options[$m]));
+						$p.=mb_strtolower(i18n_get_translated($options[$m]), 'UTF-8');
 						}
 					}
 				if ($c==count($options) && !$checkbox_and)
