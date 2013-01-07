@@ -225,9 +225,18 @@ function refresh_collection_frame($collection="")
     # Refresh the CollectionDiv
     global $baseurl, $headerinsert;
 
-    $headerinsert.="<script  type=\"text/javascript\">
-    CollectionDivLoad(\"" . $baseurl . "/pages/collections.php" . ((getval("k","")!="")?"?collection=" . getval("collection",$collection) . "&k=" . getval("k","") . "&":"?") . "nc=" . time() . "\");
-    </script>";
+    if (getvalescaped("ajax",false))
+	{
+	echo "<script  type=\"text/javascript\">
+	CollectionDivLoad(\"" . $baseurl . "/pages/collections.php" . ((getval("k","")!="")?"?collection=" . getval("collection",$collection) . "&k=" . getval("k","") . "&":"?") . "nc=" . time() . "\");	
+	</script>";
+	}
+    else
+	{
+	$headerinsert.="<script  type=\"text/javascript\">
+	CollectionDivLoad(\"" . $baseurl . "/pages/collections.php" . ((getval("k","")!="")?"?collection=" . getval("collection",$collection) . "&k=" . getval("k","") . "&":"?") . "nc=" . time() . "\");
+	</script>";
+	}
 
     }
 
