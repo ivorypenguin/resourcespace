@@ -375,7 +375,7 @@ $lang["statisticsfor"]="Statistikk for"; # e.g. Statistics for 2007
 $lang["printallforyear"]="Skriv ut all statistikk for året";
 
 # Log in / user account
-$lang["nopassword"]="Mangler du passord?";
+$lang["nopassword"]="Klikk her for å søke om brukerkonto";
 $lang["forgottenpassword"]="Har du glemt passordet?";
 $lang["keepmeloggedin"]="Hold meg pålogget på denne datamaskinen (må ikke brukes på offentlig tilgjengelige pc'er)";
 $lang["username"]="Brukernavn";
@@ -1059,6 +1059,7 @@ $lang["reload"]="Oppdater";
 $lang["downloadpurchaseitems"]="Last ned kjøpt materiale";
 $lang["downloadpurchaseitemsnow"]="Vennligst bruk lenkene nedenfor til å laste ned kjøpt materiale umiddelbart.<br><br>Ikke naviger vekk fra siden før du er ferdig med å laste ned materialet.";
 $lang["alternatetype"]="Alternativ type";
+$lang["viewpurchases"]="Tidligere kjøp";
 
 
 $lang["subcategories"]="Underkategorier";
