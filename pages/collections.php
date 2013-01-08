@@ -383,7 +383,7 @@ if ($count_result>$max_collection_thumbs && $k=="")
 	<?php if (getval("nowarn","")=="") { ?>
 	alert("<?php echo $lang["maxcollectionthumbsreached"]?>");
 	<?php } ?>
-	window.setTimeout("ToggleThumbs();setCookie('thumbs','hide');CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=hide',true)");
+	window.setTimeout("ToggleThumbs();SetCookie('thumbs','hide');CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=hide',true)");
 	</script>
 	<?php
 	$result=array(); # Empty the result set so nothing is drawn; the window will be resized shortly anyway.
