@@ -203,7 +203,7 @@ if ($_FILES)
 
 				if ($result===false)
 					{
-					exit("ERROR: File upload error. Please check the size of the file you are trying to upload.");
+					die('{"jsonrpc" : "2.0", "error" : {"code": 104, "message": "Failed to move uploaded file. Please check the size of the file you are trying to upload."}, "id" : "id"}');
 					}
 
 				chmod($path,0777);
@@ -217,7 +217,7 @@ if ($_FILES)
 					create_previews($alternative,false,$extension,false,false,$aref);
 					}
 				
-				echo "SUCCESS";
+				echo "SUCCESS " . $alternative . ", " . $aref;
 				exit();
 				}
 			if ($replace=="" && $replace_resource=="")
@@ -344,10 +344,22 @@ jQuery(document).ready(function () {
 	else { ?>
 	 	//Show diff instructions if supports drag and drop
 		if(!uploader.files.length && uploader.features.dragdrop && uploader.settings.dragdrop)	{jQuery('#plupload_instructions').html('<?php echo $lang["intro-plupload_dragdrop"] ?>');}
-	<?php }
+	<?php } ?>
 
-	if ($usercollection==$collection_add) { ?>uploader.bind('FileUploaded', function(up, file) {CollectionDivLoad("<?php echo $baseurl . '/pages/collections.php?nowarn=true&nc=' . time() ?>");});
-		<?php } ?>
+	uploader.bind('FileUploaded', function(up, file, info) {
+		// show any errors
+		if (info.response.indexOf("error") > 0)
+			{
+			uploadError = JSON.parse(info.response);
+			alert("<?php echo $lang["error"] ?> " + uploadError.error.code + " : " + uploadError.error.message);
+			file.status = plupload.FAILED;
+			}
+		//update collection div if uploading to active collection
+		<?php if ($usercollection==$collection_add) { ?>
+			CollectionDivLoad("<?php echo $baseurl . '/pages/collections.php?nowarn=true&nc=' . time() ?>");
+			<?php } ?>
+		});
+
 
 	//add flag so that upload_plupload.php can tell if this is the last file.
 	uploader.bind('BeforeUpload', function(up, files) {
