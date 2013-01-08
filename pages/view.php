@@ -930,7 +930,7 @@ if (!$disable_geocoding) {
 if ($view_resource_collections){ ?>
 	<div id="resourcecollections"></div>
 	<script type="text/javascript">
-	jQuery("#resourcecollections").load('<?php echo $baseurl_short?>pages/resource_collection_list.php?ref=<?php echo $ref?>'); 
+	jQuery("#resourcecollections").load('<?php echo $baseurl_short?>pages/resource_collection_list.php?ref=<?php echo $ref?>&k=<?php echo $k?>'); 
 	</script>
 	<?php }
 

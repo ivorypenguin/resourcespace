@@ -3,7 +3,8 @@
 include "../include/db.php";
 include "../include/general.php";
 # External access support (authenticate only if no key provided, or if invalid access key provided)
-$k=getvalescaped("k","");if ($k==""){include "../include/authenticate.php";} else {exit();} // authenticate if not external, else exit
+$k=getvalescaped("k","");if ($k!=""){die();} 
+include("../include/authenticate.php");
 include "../include/search_functions.php";
 include "../include/resource_functions.php";
 include "../include/collections_functions.php";
