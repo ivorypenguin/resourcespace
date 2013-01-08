@@ -927,9 +927,12 @@ if (!$disable_geocoding) {
 
 <?php 
 // include collections listing
-if ($view_resource_collections){ 
-	include("resource_collection_list.php"); 
-	}
+if ($view_resource_collections){ ?>
+	<div id="resourcecollections">test</div>
+	<script type="text/javascript">
+	jQuery("#resourcecollections").load('<?php echo $baseurl_short?>pages/resource_collection_list.php?ref=<?php echo $ref?>'); 
+	</script>
+	<?php }
 
 // include optional ajax metadata report
 if ($metadata_report && isset($exiftool_path) && $k==""){?>
