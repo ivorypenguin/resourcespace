@@ -402,6 +402,7 @@ $lang["specifydefaultcontent"]="Specify Default Content For New Resources";
 $lang["properties"]="Properties";
 $lang["relatedresources"]="Related Resources";
 $lang["relatedresources-filename_extension"]="Related Resources - %EXTENSION"; # Use %EXTENSION, %extension or %Extension as a placeholder. The placeholder will be replaced with the filename extension, using the same case. E.g. "Related Resources - %EXTENSION" -> "Related Resources - JPG"
+$lang["relatedresources-id"]="Related Resources - ID%id%"; # %id% will be replaced, e.g. Related Resources - ID57
 $lang["indexedsearchable"]="Indexed, searchable fields";
 $lang["clearform"]="Clear Form";
 $lang["similarresources"]="similar resources"; # e.g. 17 similar resources

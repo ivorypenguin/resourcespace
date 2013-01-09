@@ -37,43 +37,51 @@ if ($refinements[0]!=""){
 
 if ($search_titles)
     {
-		
-	$parameters_string='&order_by=' . $order_by . '&sort='.$sort.'&offset=' . $offset . '&archive=' . $archive.'&sort='.$sort . '&k=' . $k;
-	
-	 if (substr($search,0,11)=="!collection"){
 
-           if ($collection_dropdown_user_access_mode){    
-                $colusername=$collectiondata['fullname'];
+    $parameters_string = '&order_by=' . $order_by . '&sort='.$sort.'&offset=' . $offset . '&archive=' . $archive.'&sort='.$sort . '&k=' . $k;
+
+    if (substr($search,0,11)=="!collection")
+        {
+        if ($collection_dropdown_user_access_mode)
+            {    
+            $colusername = $collectiondata['fullname'];
                 
-                # Work out the correct access mode to display
-                if (!hook('collectionaccessmode')) {
-                    if ($collectiondata["public"]==0){
-                        $colaccessmode= $lang["private"];
+            # Work out the correct access mode to display
+            if (!hook('collectionaccessmode'))
+                {
+                if ($collectiondata["public"]==0)
+                    {
+                    $colaccessmode = $lang["private"];
                     }
-                    else{
-                        if (strlen($collectiondata["theme"])>0){
-                            $colaccessmode= $lang["theme"];
+                else
+                    {
+                    if (strlen($collectiondata["theme"])>0)
+                        {
+                        $colaccessmode = $lang["theme"];
                         }
-                    else{
-                            $colaccessmode= $lang["public"];
+                    else
+                        {
+                        $colaccessmode = $lang["public"];
                         }
                     }
-                $collectiondata['name']=$collectiondata['name']." (". $colusername."/".$colaccessmode.")";    
+                $display_user_and_access = true;
                 }
             }
-            
+
         // add a tooltip to Smart Collection titles (which provides a more detailed view of the searchstring.    
-        $alt_text='';
-        if ($pagename=="search" && isset($collectiondata['savedsearch']) && $collectiondata['savedsearch']!=''){
-			$smartsearch=sql_query("select * from collection_savedsearch where ref=".$collectiondata['savedsearch']);
-			if (isset($smartsearch[0])){
-				$alt_text="title='search=".$smartsearch[0]['search']."&restypes=".$smartsearch[0]['restypes']."&archive=".$smartsearch[0]['archive']."&starsearch=".$smartsearch[0]['starsearch']."'";
-			}
-		} 
-		hook("collectionsearchtitlemod");
-        $search_title.= '<div align="left"><h1><div class="searchcrumbs"><span id="coltitle'.$collection.'"><a '.$alt_text.' href='.$baseurl_short.'pages/search.php?search=!collection'.$collection.$parameters_string.'>'.i18n_get_collection_name($collectiondata).'</a></span>'.$searchcrumbs.'</div></h1> ';
-		}	
-    if (substr($search,0,5)=="!last")
+        $alt_text = '';
+        if ($pagename=="search" && isset($collectiondata['savedsearch']) && $collectiondata['savedsearch']!='')
+            {
+            $smartsearch = sql_query("select * from collection_savedsearch where ref=".$collectiondata['savedsearch']);
+            if (isset($smartsearch[0]))
+                {
+                $alt_text = "title='search=" . $smartsearch[0]['search'] . "&restypes=" . $smartsearch[0]['restypes'] . "&archive=" . $smartsearch[0]['archive'] . "&starsearch=" . $smartsearch[0]['starsearch'] . "'";
+                }
+            } 
+        hook("collectionsearchtitlemod");
+        $search_title.= '<div align="left"><h1><div class="searchcrumbs"><span id="coltitle'.$collection.'"><a '.$alt_text.' href='.$baseurl_short.'pages/search.php?search=!collection'.$collection.$parameters_string.'>'.i18n_get_collection_name($collectiondata).($display_user_and_access?" (".$colusername."/".$colaccessmode.")":"").'</a></span>'.$searchcrumbs.'</div></h1> ';
+        }
+    elseif (substr($search,0,5)=="!last")
         {
 		$searchq=substr($search,5);
 		$searchq=explode(",",$searchq);
@@ -85,7 +93,7 @@ if ($search_titles)
         $resource=substr($search,8);
 		$resource=explode(",",$resource);
 		$resource=$resource[0];
-        $search_title = '<h1 class="searchcrumbs"><a href='.$baseurl_short.'pages/search.php?search=!related'.$resource.$parameters_string.'>'.$lang["relatedresources"].' - '.$lang['id'].$resource.'</a>'.$searchcrumbs.'</h1> ';
+        $search_title = '<h1 class="searchcrumbs"><a href='.$baseurl_short.'pages/search.php?search=!related'.$resource.$parameters_string.'>'.str_replace('%id%', $resource, $lang["relatedresources-id"]).'</a>'.$searchcrumbs.'</h1> ';
         }
     elseif (substr($search,0,7)=="!unused")
         {
@@ -101,7 +109,7 @@ if ($search_titles)
 		$resources=substr($search,5);
 		$resources=explode(",",$resources);
 		$resources=$resources[0];	
-        $search_title = '<h1 class="searchcrumbs"><a href='.$baseurl_short.'pages/search.php?search=!list'.$resources.$parameters_string.'>'.$lang["listresources"].$resources.'</a>'.$searchcrumbs.'</h1> ';
+        $search_title = '<h1 class="searchcrumbs"><a href='.$baseurl_short.'pages/search.php?search=!list'.$resources.$parameters_string.'>'.$lang["listresources"]." ".$resources.'</a>'.$searchcrumbs.'</h1> ';
         }    
     elseif (substr($search,0,15)=="!archivepending")
         {
