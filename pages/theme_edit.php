@@ -76,7 +76,7 @@ if (!checkperm("t")) {
 
 ?>
 <div class="BasicsBox">
-<h1><?php echo $lang["action-edit"] . " " . $lang["themecategory"]?></h1>
+<h1><?php echo $lang["edit_theme_category"] ?></h1>
 <p><?php echo text("introtext")?></p>
 	<form method=post id="themeform" action="<?php echo $baseurl_short?>pages/theme_edit.php">
 		<input type="hidden" name="collection_column" id="collection_column" value="<?php echo $collection_column?>">

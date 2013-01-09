@@ -306,6 +306,7 @@ $lang["editresources"]="Edit Resources";
 $lang["multieditnotallowed"]="Mult-edit not allowed - all the resources are not in the same status or of the same type.";
 $lang["emailcollection"]="E-mail Collection";
 $lang["collectionname"]="Collection Name";
+$lang["collection-name"]="Collection: %collectionname%"; # %collectionname will be replaced, e.g. Collection: Cars
 $lang["collectionid"]="Collection ID";
 $lang["collectionidprefix"]="Col_ID";
 $lang["_dupe"]="_dupe";
@@ -362,6 +363,7 @@ $lang["didnotinclude"]="Did not include";
 $lang["selectcollection"]="Select Collection";
 $lang["total"]="Total";
 $lang["ownedbyyou"]="owned by you";
+$lang["edit_theme_category"]="Edit Theme Category";
 
 # Lightbox
 $lang["lightbox-image"] = "Image";
@@ -736,14 +738,16 @@ $lang["plugin_field_fmt"]="%A (%B)"; // %A and %B are replaced by content define
 $lang["share"]="Share";
 $lang["sharecollection"]="Share Collection";
 $lang["sharecollection-name"]="Share Collection - %collectionname"; # %collectionname will be replaced, e.g. Share Collection - Cars
+$lang["share_theme_category"]="Share Theme Category";
 $lang["generateurl"]="Generate URL";
 $lang["generateexternalurl"]="Generate External URL";
 $lang["generateurlinternal"]="The below URL will work for existing users only.";
 $lang["generateurlexternal"]="The below URL will work for everyone and does not require a login.";
 $lang["generatethemeurlsexternal"]="The below URLs will work for everyone and do not require a login.";
-$lang["showexistingthemeshares"]="Show existing shares for themes in this category.";
+$lang["showexistingthemeshares"]="Show existing shares for themes in this category";
 $lang["internalusersharing"]="Internal User Sharing";
 $lang["externalusersharing"]="External User Sharing";
+$lang["externalusersharing-name"]="External User Sharing - %collectionname%"; # %collectionname will be replaced, e.g. External User Sharing - Cars
 $lang["accesskey"]="Access Key";
 $lang["sharedby"]="Shared By";
 $lang["sharedwith"]="Shared With";
@@ -1061,6 +1065,7 @@ $lang["resourcemetadata"]="Resource Metadata";
 
 
 $lang["columnheader-expires"]=$lang["expires"]="Expires";
+$lang["expires-date"]="Expires: %date%"; # %date will be replaced, e.g. Expires: Never
 $lang["never"]="Never";
 
 $lang["approved"]="Approved";

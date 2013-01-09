@@ -26,7 +26,7 @@
 # En första version av översättningen skapades av Henrik Frizén (förnamn.efternamn utan accenttecken i e-postboxen.Sveriges landskod) 20110124 för version 2295
 #
 # Senast uppdaterad av [Namn] [Datum] för version [svn-version], [kommentar]
-# Senast uppdaterad av Henrik Frizén 20130109 för version 4199
+# Senast uppdaterad av Henrik Frizén 20130109 för version 4200
 
 #
 #
@@ -332,6 +332,7 @@ $lang["editresources"]="Redigera material";
 $lang["multieditnotallowed"]="Materialen är inte möjliga att redigera i grupp &ndash; alla material har inte samma status eller är inte av samma typ.";
 $lang["emailcollection"]="Dela samling via e-post";
 $lang["collectionname"]="Samlingsnamn";
+$lang["collection-name"]="Samling: %collectionname%"; # %collectionname will be replaced, e.g. Collection: Cars
 $lang["collectionid"]="Samlingsnr";
 $lang["collectionidprefix"]="Saml_nr";
 $lang["_dupe"]="_dubblett";
@@ -388,6 +389,7 @@ $lang["didnotinclude"]="Utelämnades";
 $lang["selectcollection"]="Välj samling";
 $lang["total"]="Totalt";
 $lang["ownedbyyou"]="ägda av dig";
+$lang["edit_theme_category"]="Redigera temakategori";
 
 # Lightbox
 $lang["lightbox-image"] = "Bild";
@@ -762,14 +764,16 @@ $lang["plugin_field_fmt"]="%A (%B)"; // %A and %B are replaced by content define
 $lang["share"]="Dela";
 $lang["sharecollection"]="Dela samling";
 $lang["sharecollection-name"]="Dela samling &ndash; %collectionname"; # %collectionname will be replaced, e.g. Share Collection - Cars
+$lang["share_theme_category"]="Dela temakategori";
 $lang["generateurl"]="Generera webbadress";
 $lang["generateexternalurl"]="Generera extern webbadress";
 $lang["generateurlinternal"]="Nedanstående webbadress fungerar bara för inloggade användare.";
 $lang["generateurlexternal"]="Nedanstående webbadress fungerar för alla och kräver inte inloggning.";
 $lang["generatethemeurlsexternal"]="Nedanstående webbadresser fungerar för alla och kräver inte inloggning.";
-$lang["showexistingthemeshares"]="Visa existerande delningar för teman i den här kategorin.";
-$lang["internalusersharing"]="Dela med en intern användare";
-$lang["externalusersharing"]="Dela med en extern användare";
+$lang["showexistingthemeshares"]="Visa existerande delningar för teman i den här kategorin";
+$lang["internalusersharing"]="Delning med interna användare";
+$lang["externalusersharing"]="Delning med externa användare";
+$lang["externalusersharing-name"]="Delning med externa användare &ndash; %collectionname%"; # %collectionname will be replaced, e.g. External User Sharing - Cars
 $lang["accesskey"]="Åtkomstnyckel";
 $lang["sharedby"]="Delad av";
 $lang["sharedwith"]="Delad med";
@@ -1087,6 +1091,7 @@ $lang["resourcemetadata"]="Metadata för material";
 
 
 $lang["columnheader-expires"]=$lang["expires"]="Utgår";
+$lang["expires-date"]="Utgår: %date%"; # %date will be replaced, e.g. Expires: Never
 $lang["never"]="Aldrig";
 
 $lang["approved"]="Godkänd";

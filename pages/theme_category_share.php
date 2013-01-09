@@ -70,13 +70,13 @@ else
 		if ($minaccess>=1 && !$restricted_share) # Minimum access is restricted or lower and sharing of restricted resources is not allowed. The user cannot share this collection.
 			{
 			$show_error=true;
-			$error="Collection: " . $collection["name"] . "<br>" . $lang["restrictedsharecollection"];
+			$error = str_replace("%collectionname%", i18n_get_collection_name($collection), $lang["collection-name"]) . "\n" . $lang["restrictedsharecollection"];
 			}
 			
 		if (count(get_collection_resources($ref))==0) # Sharing an empty collection?
 			{
 			$show_error=true;
-			$error="Collection: " . $collection["name"] . "<br>" . $lang["cannotshareemptycollection"];
+			$error = str_replace("%collectionname%", i18n_get_collection_name($collection), $lang["collection-name"]) . "\n" . $lang["cannotshareemptycollection"];
 			}
 		
 		}
@@ -87,6 +87,7 @@ else
 		{
 		?>
 		<p><a href='<?php echo $baseurl_short?>pages/themes.php<?php echo $linksuffixprev?>' onclick="return CentralSpaceLoad(this,true);"><?php echo "&lt;&nbsp;".$lang['back']?></a></p>
+		<h1><?php echo $lang["share_theme_category"] ?></h1>
 		<p><?php echo $lang["selectgenerateurlexternal"] ?></p>
 		
 		<div class="Question" id="question_access">
@@ -151,7 +152,7 @@ else
 			$keys=get_collection_external_access($ref);
 			?>
 			<p>&nbsp;</p>
-			<h2><?php echo $lang["externalusersharing"] . " - " . $collection["name"]?></h2>
+			<h2><?php echo str_replace("%collectionname%", i18n_get_collection_name($collection), $lang["externalusersharing-name"]);?></h2>
 			<div class="Question">
 			<?php
 			if (count($keys)==0)
@@ -214,10 +215,10 @@ else
 			
 			#Check if any resources are not approved
 			if (!is_collection_approved($ref)) {
-				echo $lang["collectionname"] . ": " . $collection["name"] . "\r\n".$lang["notapprovedsharecollection"]. "\r\n\r\n";
+				echo str_replace("%collectionname%", i18n_get_collection_name($collection), $lang["collection-name"]) . "\r\n" . $lang["notapprovedsharecollection"] . "\r\n\r\n";
 				$unapproved_collection=true;
 			} else {
-				echo $lang["collectionname"] . ": " . $collection["name"] . "\r\n" . $baseurl?>/?c=<?php echo $ref?>&k=<?php echo generate_collection_access_key($ref,0,"URL",$access,$expires) . "\r\n" . $lang["expires"] . ": " . $expires. "\r\n\r\n";
+				echo str_replace("%collectionname%", i18n_get_collection_name($collection), $lang["collection-name"]) . "\r\n" . $baseurl?>/?c=<?php echo $ref?>&k=<?php echo generate_collection_access_key($ref,0,"URL",$access,$expires) . "\r\n" . ($expires!="" ? str_replace("%date%", $expires, $lang["expires-date"]) : str_replace("%date%", $lang["never"], $lang["expires-date"])) . "\r\n\r\n";
 			}
 		}
 		?>
@@ -234,7 +235,7 @@ else
 
 if (isset($show_error)){?>
     <script type="text/javascript">
-    alert('<?php echo $error;?>');
+    alert(<?php echo json_encode($error);?>);
     CentralSpaceLoad('<?php echo $baseurl_short?>pages/themes.php<?php echo $linksuffixprev?>'); 
     </script><?php
     }
