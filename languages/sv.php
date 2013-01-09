@@ -26,7 +26,7 @@
 # En första version av översättningen skapades av Henrik Frizén (förnamn.efternamn utan accenttecken i e-postboxen.Sveriges landskod) 20110124 för version 2295
 #
 # Senast uppdaterad av [Namn] [Datum] för version [svn-version], [kommentar]
-# Senast uppdaterad av Henrik Frizén 20121219 för version 4139
+# Senast uppdaterad av Henrik Frizén 20130109 för version 4199
 
 #
 #
@@ -167,6 +167,8 @@ $lang["property-autocomplete_macro"]="Autoförslagsmakro";
 $lang["property-hide_when_uploading"]="Dölj vid överföring";
 $lang["property-hide_when_restricted"]="Dölj för användare med begränsad åtkomst";
 $lang["property-omit_when_copying"]="Utelämna vid kopiering";
+$lang["property-sync_with_field"]="Synkronisera med fält";
+$lang["information-copy_field"]="<a href=field_copy.php?ref=%ref>Kopiera fält</a>";
 
 $lang["property-query"]="Fråga";
 
@@ -783,6 +785,7 @@ $lang["externalselectresourceaccess"]="Om du delar material med en användare ut
 $lang["externalselectresourceexpires"]="Om du delar material med en användare utan användarkonto väljer du ett utgångsdatum för den genererade webbadressen";
 $lang["externalshareexpired"]="Delningens utgångsdatum har passerats och därför är delningen inte längre tillgänglig.";
 $lang["notapprovedsharecollection"]="Ett eller flera material i denna samling är inte aktiva och därför är delning inte möjlig.";
+$lang["notapprovedsharetheme"]="Delning är inte möjlig för åtminstone en av samlingarna eftersom ett eller flera material inte är aktiva.";
 $lang["notapprovedresources"]="Följande material är inte aktiva och kan därför inte läggas till i en delad samling: ";
 
 
@@ -1667,3 +1670,10 @@ $lang["theme_home_page_image"]="Puffbild";
 $lang["ref-title"] = "%ref &ndash; %title"; # %ref and %title will be replaced, e.g. 3 - Sunset
 
 $lang["error-pageload"] = "Sidan kunde inte läsas in. Om du utförde en sökning kan du prova att förfina sökfrågan. Kontakta systemadministratören om problemet är bestående.";
+
+$lang["copy-field"]="Kopiera fält";
+$lang["copy-to-resource-type"]="Kopiera till materialtyp";
+$lang["synchronise-changes-with-this-field"]="Synkronisera ändringar med detta fält";
+$lang["copy-completed"]="Kopieringen slutförd. Det nya fältet har nr ?.";
+
+$lang["nothing-to-display"]="Inget att visa.";

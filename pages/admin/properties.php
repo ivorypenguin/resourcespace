@@ -298,7 +298,7 @@ else
     <?php
     #echo $t[7];
     $result=sql_query(str_replace($transfrom,$transto,$t[7]));
-    if (count($result)==0) {exit($lang["nothing-to-display"] . ".</div></body></html>");}
+    if (count($result)==0) {exit($lang["nothing-to-display"] . "</div></body></html>");}
     $result=$result[0];
     
     #if viewing history, load history data

@@ -141,6 +141,8 @@ $lang["property-autocomplete_macro"]="Autocomplete macro";
 $lang["property-hide_when_uploading"]="Hide when uploading";
 $lang["property-hide_when_restricted"]="Hide when restricted";
 $lang["property-omit_when_copying"]="Omit when copying";
+$lang["property-sync_with_field"]="Sync with field";
+$lang["information-copy_field"]="<a href=field_copy.php?ref=%ref>Copy field</a>";
 
 $lang["property-query"]="Query";
 
@@ -1648,4 +1650,4 @@ $lang["copy-to-resource-type"]="Copy to resource type";
 $lang["synchronise-changes-with-this-field"]="Synchronise changes with this field";
 $lang["copy-completed"]="Copy completed. New field has ID ?.";
 
-$lang["nothing-to-display"]="Nothing to display";
+$lang["nothing-to-display"]="Nothing to display.";
