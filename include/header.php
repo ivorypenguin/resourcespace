@@ -109,6 +109,7 @@ jQuery(document).ready(function() {
     }
     else
     { 
+        
          switch (e.which) 
          {
             // left arrow
@@ -145,7 +146,23 @@ jQuery(document).ready(function() {
             // r - remove resource from collection
             case 82: if (jQuery('.removeFromCollection').length > 0) jQuery('.removeFromCollection').click();
                      break;
-            case 13: if (jQuery('.enterLink').length > 0) window.location=jQuery('.enterLink').attr("href");
+            // , - prev page    
+            case 188: if (jQuery('.pagePrev').length > 0) jQuery('.pagePrev').click();
+                     break;
+            // . - next page
+            case 190: if (jQuery('.pageNext').length > 0) jQuery('.pageNext').click();
+                     break;
+            // / - all results
+            case 191: if (jQuery('.upLink').length > 0) jQuery('.upLink').click();
+                     break;
+            // h - hide thumbs
+            case 72: if (jQuery('.hideLink').length > 0) jQuery('.hideLink').click();
+                     break;
+            // z - preview - view switch
+            case 90: if (jQuery('.enterLink').length > 0) window.location=jQuery('.enterLink').attr("href");
+                     break;
+            // enter - preview - view switch
+            // case 13: if (jQuery('.enterLink').length > 0) window.location=jQuery('.enterLink').attr("href");
                      break;
          }
      }
