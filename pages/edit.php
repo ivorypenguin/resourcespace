@@ -811,7 +811,7 @@ for ($n=0;$n<count($fields);$n++)
 		<label for="modeselectinput"><?php echo $lang["editmode"]?></label>
 		<select id="modeselectinput_<?php echo $n?>" name="modeselect_<?php echo $fields[$n]["ref"]?>" class="stdwidth" onChange="var fr=document.getElementById('findreplace_<?php echo $n?>');var q=document.getElementById('question_<?php echo $n?>');if (this.value=='FR') {fr.style.display='block';q.style.display='none';} else {fr.style.display='none';q.style.display='block';}">
 		<option value="RT"><?php echo $lang["replacealltext"]?></option>
-		<?php if ($fields[$n]["type"]==0 || $fields[$n]["type"]==1 || $fields[$n]["type"]==5) { 
+		<?php if (in_array($fields[$n]["type"], array("0","1","5","8"))) {
 		# Find and replace appies to text boxes only.
 		?>
 		<option value="FR"><?php echo $lang["findandreplace"]?></option>
@@ -822,7 +822,7 @@ for ($n=0;$n<count($fields);$n++)
 		?>
 		<option value="PP"><?php echo $lang["prependtext"]?></option>
 		<?php } 
-		if ($fields[$n]["type"]==0 || $fields[$n]["type"]==1 || $fields[$n]["type"]==5 || $fields[$n]["type"]==2 || $fields[$n]["type"]==7 || $fields[$n]["type"]==3 || $fields[$n]["type"]==9) { 
+		if (in_array($fields[$n]["type"], array("0","1","2","3","5","7","8","9"))) { 
 		# Append applies to text boxes, checkboxes ,category tree and dropdowns only.
 		?>
 		<option value="AP"><?php echo $lang["appendtext"]?></option>
