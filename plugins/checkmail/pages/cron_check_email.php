@@ -297,7 +297,14 @@ for ($n=0;$n<count($files);$n++){
 	$data=getdecodevalue($data,$file['encoding']);	
 	fputs($fp,$data); echo "Downloading to filestore/tmp/checkmail_in \r\n";
 	fclose($fp);
-	
+
+	// Get resource defaults for user's group
+	$userresourcedefaults=sql_query("select resource_defaults from usergroup where ref='" . $fromuser['groupref'] . "'");
+	if (isset($userresourcedefaults)){
+		$userresourcedefaults=$userresourcedefaults[0];
+		$userresourcedefaults=$userresourcedefaults["resource_defaults"];
+		}
+
 	// Create resource
 	$r=create_resource($resource_type,$checkmail_archive_state,$fromuser_ref);  echo "Creating Resource $r \r\n";
 	sql_query("update resource set access='".$access."',file_extension='".$file['extension']."',preview_extension='jpg',file_modified=now() where ref='$r'");
