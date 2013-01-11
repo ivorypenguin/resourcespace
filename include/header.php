@@ -260,7 +260,7 @@ hook("headertop");
 
 if (!isset($allow_password_change)) {$allow_password_change=true;}
 
-if (isset($username) && ($pagename!="login") && ($loginterms==false)) { ?>
+if (isset($username) && ($pagename!="login") && ($loginterms==false) && getval("k","")=="") { ?>
 <div id="HeaderNav1" class="HorizontalNav ">
 
 <?php

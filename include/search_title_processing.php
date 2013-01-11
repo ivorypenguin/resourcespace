@@ -3,6 +3,7 @@
 # display collection title if option set.
 $search_title = "";
 $search_title_links = "";
+$display_user_and_access=false;
 global $baseurl_short;
 # Display a title of the search (if there is a title)
 $searchcrumbs="";
