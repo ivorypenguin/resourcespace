@@ -2009,3 +2009,5 @@ $index_contributed_by=true;
 # Use CKEditor for site content?
 $site_text_use_ckeditor=false;
 
+# Preview All default orientation ("v" for vertical or "h" for horizontal)
+$preview_all_default_orientation="h";

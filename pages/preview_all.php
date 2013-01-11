@@ -16,7 +16,7 @@ $colref=getval("ref","");
 $collection=getval("ref","");
 $ext="jpg";
 $height=getval("height",600);
-$vertical=getval("vertical","h");
+$vertical=getval("vertical",$preview_all_default_orientation);
 # Load collection info.
 $cinfo=get_collection($usercollection);
 $skip=false;
