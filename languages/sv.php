@@ -26,7 +26,7 @@
 # En första version av översättningen skapades av Henrik Frizén (förnamn.efternamn utan accenttecken i e-postboxen.Sveriges landskod) 20110124 för version 2295
 #
 # Senast uppdaterad av [Namn] [Datum] för version [svn-version], [kommentar]
-# Senast uppdaterad av Henrik Frizén 20130109 för version 4201
+# Senast uppdaterad av Henrik Frizén 20130115 för version 4209
 
 #
 #
@@ -35,10 +35,10 @@ $lang["usergroup-administrators"]="Administratörer";
 $lang["usergroup-general_users"]="Vanliga användare";
 $lang["usergroup-super_admin"]="Systemadministratör";
 $lang["usergroup-archivists"]="Arkivarier";
-$lang["usergroup-restricted_user_-_requests_emailed"]="Begränsade - begäranden: e-post"; # &ndash; kan inte användas
-$lang["usergroup-restricted_user_-_requests_managed"]="Begränsade - begäranden: hanterade";
-$lang["usergroup-restricted_user_-_payment_immediate"]="Begränsade - direktbetalning";
-$lang["usergroup-restricted_user_-_payment_invoice"]="Begränsade - fakturabetalning";
+$lang["usergroup-restricted_user_-_requests_emailed"]="Begränsade – begäranden: e-post";
+$lang["usergroup-restricted_user_-_requests_managed"]="Begränsade – begäranden: hanterade";
+$lang["usergroup-restricted_user_-_payment_immediate"]="Begränsade – direktbetalning";
+$lang["usergroup-restricted_user_-_payment_invoice"]="Begränsade – fakturabetalning";
 
 # Resource type names (for the default resource types)
 $lang["resourcetype-photo"]="Fotografi";
@@ -428,7 +428,7 @@ $lang["specifydefaultcontent"]="Ange den metadata som ska vara förvald för nya
 $lang["properties"]="&ndash; typspecifika egenskaper";
 $lang["relatedresources"]="Relaterade material";
 $lang["relatedresources-filename_extension"]="Relaterade material &ndash; %extension"; # Use %EXTENSION, %extension or %Extension as a placeholder. The placeholder will be replaced with the filename extension, using the same case. E.g. "Related Resources - %EXTENSION" -> "Related Resources - JPG"
-$lang["relatedresources-id"]="Relaterade material &ndash; nr %id%"; # %id% will be replaced, e.g. Related Resources - ID57
+$lang["relatedresources-id"]="Relaterade material – nr %id%"; # %id% will be replaced, e.g. Related Resources - ID57
 $lang["indexedsearchable"]="Indexerade, sökbara fält";
 $lang["clearform"]="Rensa formulär";
 $lang["similarresources"]="liknande material"; # e.g. 17 similar resources

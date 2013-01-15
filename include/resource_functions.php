@@ -1040,7 +1040,8 @@ function get_resource_type_name($type)
 	
 function get_resource_custom_access($resource)
 	{
-	# Return a list of usergroups with the custom access level for resource $resource (if set)
+    # Return a list of usergroups with the custom access level for resource $resource (if set).
+    # The standard usergroup names are translated using $lang. Custom usergroup names are i18n translated.
 	$sql="";
 	if (checkperm("E"))
 		{
@@ -1048,9 +1049,14 @@ function get_resource_custom_access($resource)
 		global $usergroup,$usergroupparent;
 		$sql="where g.parent='$usergroup' or g.ref='$usergroup' or g.ref='$usergroupparent'";
 		}
-	return sql_query("select g.ref,g.name,g.permissions,c.access from usergroup g left outer join resource_custom_access c on g.ref=c.usergroup and c.resource='$resource' $sql order by (g.permissions like '%v%') desc,g.name");
+    $resource_custom_access = sql_query("select g.ref,g.name,g.permissions,c.access from usergroup g left outer join resource_custom_access c on g.ref=c.usergroup and c.resource='$resource' $sql order by (g.permissions like '%v%') desc,g.name");
+    for ($n = 0;$n<count($resource_custom_access);$n++)
+        {
+        $resource_custom_access[$n]["name"] = lang_or_i18n_get_translated($resource_custom_access[$n]["name"], "usergroup-");
+        }
+    return $resource_custom_access;
 	}
-	
+
 function save_resource_custom_access($resource)
 	{
 	$groups=get_resource_custom_access($resource);
