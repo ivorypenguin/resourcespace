@@ -7,7 +7,7 @@ include "../../../include/general.php";
 function displayAfpSinglePath() {
 		global $viewInFinder;
 		global $lang;
-		echo '<p><label for="afpServerPath">'.$lang['viewinfinder_afp_server_path'].' : </label><input name="afpServerPath" type="text" value="';
+		echo '<p><label for="afpServerPath">'.$lang['viewinfinder_afp_server_path'].' </label><input name="afpServerPath" type="text" value="';
     	echo $viewInFinder['afpServerPath']; 
     	echo '" size="60" /></p>';
 	
@@ -130,7 +130,7 @@ include "../../../include/header.php";
 
     </form>
 	</br>
-	<p>Enter the server path to the root of the static sync directory, either afp://example.com/sharename or smb://example.com/sharename. There is a problem with NFS shares.</P>
-	<p>If you want the plugin to respect restricted access to asset types such as photo etc, tick the Use Restrict Permissions checkbox</p>
+	<p><?php echo $lang['viewinfinder_info-afp_server_path']; ?></P>
+	<p><?php echo $lang['viewinfinder_info-use_perms']; ?></p>
   </div>	
 
