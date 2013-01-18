@@ -30,7 +30,7 @@ foreach ($extensions as $allowed_extension){
 <html>
 <!--
 ResourceSpace version <?php echo $productversion?>
-Copyright Oxfam GB, Montala, WWF International, Tom Gleason, David Dwiggins, Historic New England, Colorhythm LLC, Worldcolor 2006-2013
+Copyright Oxfam GB, Montala, WWF International, Tom Gleason, David Dwiggins, Historic New England, Colorhythm LLC, Worldcolor, Henrik Frizén 2006-2013
 http://www.resourcespace.org/
 -->
 <head>
