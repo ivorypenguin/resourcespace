@@ -7,6 +7,7 @@ function hookView_in_finderViewRenderinnerresourcedownloadspace()
 	global $afp_server_path;
 	global $access;
 	global $staticSyncSyncDirField, $staticSyncDirs, $staticSyncUseArray;
+	global $lang;
 	
 	$restrictedAccess = false;
 	
@@ -83,7 +84,7 @@ function hookView_in_finderViewRenderinnerresourcedownloadspace()
 				if ($found)
 				{
 					echo "<table>";					echo '<tr class="DownloadDBlend">'; 
-					echo '<td>Open Original File In Finder</td>'; 
+					echo '<td>'.$lang['viewinfinder_open_message'].'</td>'; 
 					$fName = explode ("/",$resource["file_path"]);
 					$fid = count($fName) - 1;
 					echo '<td class="DownloadButton"><a href="'.$afp_link. '">'.$fName[$fid].'</a></ td>'; 

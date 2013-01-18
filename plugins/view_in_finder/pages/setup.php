@@ -1,13 +1,13 @@
 <?php
 include "../../../include/db.php";
-include "../../../include/authenticate.php"; if (!checkperm("u")) {exit ("Permission denied.");}
+include "../../../include/authenticate.php"; if (!checkperm("u")) {exit ($lang['error-permissiondenied']);}
 include "../../../include/general.php";
 //include "../../../include/config.php";
 
 function displayAfpSinglePath() {
 		global $viewInFinder;
-		
-		echo '<p><label for="afpServerPath">AFP Server Path : </label><input name="afpServerPath" type="text" value="';
+		global $lang;
+		echo '<p><label for="afpServerPath">'.$lang['viewinfinder_afp_server_path'].' : </label><input name="afpServerPath" type="text" value="';
     	echo $viewInFinder['afpServerPath']; 
     	echo '" size="60" /></p>';
 	
@@ -77,15 +77,15 @@ if (getval("submit","")!="") {
 include "../../../include/header.php";
 
 
-echo "path count is" . $pathCount;
+#echo "path count is" . $pathCount;
 
 ?>
 <div class="BasicsBox"> 
 
   <h2>&nbsp;</h2>
-
-  <h1>View In Finder Configuration</h1>
-
+	<?php	
+  	echo "<h1>".$lang['viewinfinder_configuration']."</h1>";
+	?>
   <div class="VerticalNav">
 
     <form id="form1" name="form1" method="post" action="">
@@ -95,7 +95,7 @@ echo "path count is" . $pathCount;
     	*/
     	$arrRef = 0;
     	foreach ($staticSyncDirs as $tDir) {
-    		echo '<p><label for="afpServerPath' . $tDir['syncdir'].'">Map Sync Dir: ' . $tDir['syncdir'] . ' to : </label>';
+    		echo '<p><label for="afpServerPath' . $tDir['syncdir'].'">'.$lang['viewinfinder_map_sync_dir'] . $tDir['syncdir'] . $lang['viewinfinder_to'].' : </label>';
     		echo '<input name="afpServerPath'. $tDir['syncdir'] .'" type="text" value="';
     		// now test to see if this has alrady been mapped!
     		if (isset($viewInFinder['multiafpServerPath'][$tDir['syncdir']])) {
@@ -108,7 +108,7 @@ echo "path count is" . $pathCount;
     	}
     	
     	// display the default path;
-    	echo "<h2>Please enter a default path for any legacy static sync'd files</h2></br>";
+    	echo "<h2>".$lang['viewinfinder_default_path']."</h2></br>";
     	displayAfpSinglePath();
     	
     } else {
@@ -117,7 +117,7 @@ echo "path count is" . $pathCount;
     	displayAfpSinglePath();
     }    
     ?>
-    <p><label for="usePerms">Use Restrict Permissions:</label><input name="usePerms" type="checkbox" value="1" 
+    <p><label for="usePerms"><?php echo $lang['viewinfinder_use_perms'] ?></label><input name="usePerms" type="checkbox" value="1" 
       <?php 
       	if ($viewInFinder['usePerms'] == 1) {
       		echo " checked=checked ";
