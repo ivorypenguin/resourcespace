@@ -1,7 +1,7 @@
 <?php
 # Swedish
 # Language File for the Transform Plugin
-# Updated by Henrik Frizén 20121205 for svn r4074
+# Updated by Henrik Frizén 20130118 for svn r4212
 # -------
 #
 #
@@ -48,7 +48,7 @@ $lang['not-transformed']="transformerades inte: Åtkomst nekades.";
 $lang['error-unable-to-rename']="Fel: Kunde inte byta namn på den transformerade filen för material %res."; # %res will be replaced with the resource id
 $lang['success']="Klar!";
 $lang['error-transform-failed']="Fel: Transformering av material %res misslyckades."; # %res will be replaced with the resource id
-$lang['summary']="Sammanfattning";
+$lang['transform_summary']="Sammanfattning";
 $lang['resources_in_collection-1']="1 material i samlingen.";
 $lang['resources_in_collection-2']="%qty material i samlingen."; # %qty will be replaced with the quantity of resources in collection
 $lang['resources_transformed_successfully-0']="Inga material transformerade.";

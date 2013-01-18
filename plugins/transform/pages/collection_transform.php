@@ -151,7 +151,7 @@ if ($successcount > 0){
 	collection_log($collection,'b',''," ($successcount)");
 }
 
-echo "<div class='Question'><h3>" . $lang['summary'] . "</h3>\n";
+echo "<div class='Question'><h3>" . $lang['transform_summary'] . "</h3>\n";
 $qty_total = count($resources);
 switch ($qty_total)
     {

@@ -26,7 +26,7 @@
 # En första version av översättningen skapades av Henrik Frizén (förnamn.efternamn utan accenttecken i e-postboxen.Sveriges landskod) 20110124 för version 2295
 #
 # Senast uppdaterad av [Namn] [Datum] för version [svn-version], [kommentar]
-# Senast uppdaterad av Henrik Frizén 20130115 för version 4209
+# Senast uppdaterad av Henrik Frizén 20130118 för version 4212
 
 #
 #
@@ -141,7 +141,7 @@ $lang["information-if_you_enable_indexing_below_and_the_field_already_contains_d
 $lang["property-index_this_field"]="Indexera detta fält";
 $lang["information-enable_partial_indexing"]="Nyckelordsindexering av delar av ord (prefix + infix) bör användas sparsamt, då det ökar storleken på indexet betydligt. Du kan läsa mer om detta i wikin.";
 $lang["property-enable_partial_indexing"]="Aktivera indexering av delar av ord";
-$lang["information-shorthand_name"]="Obs! Fältet måste ha ett kortnamn för att det ska visas i Avancerad sökning. Kortnamnet får bara innehålla små bokstäver &ndash; inga mellanslag, siffror eller specialtecken.";
+$lang["information-shorthand_name"]="Obs! Fältet måste ha ett kortnamn för att det ska visas i Avancerad sökning. Kortnamnet får bara innehålla små bokstäver – inga mellanslag, siffror eller specialtecken.";
 $lang["property-shorthand_name"]="Kortnamn";
 $lang["property-display_field"]="Visa fält";
 $lang["property-enable_advanced_search"]="Aktivera i Avancerad sökning";
@@ -151,7 +151,7 @@ $lang["property-iptc_equiv"]="IPTC-motsv.";
 $lang["property-display_template"]="Visningsmall";
 $lang["property-value_filter"]="Värdefilter";
 $lang["property-regexp_filter"]="Reguljärt uttryck för indatakontroll";
-$lang["information-regexp_filter"]="Indatakontroll med hjälp av reguljärt uttryck &ndash; t.ex. medför uttrycket ”[A-Z]+” att endast stora bokstäver kan användas.";
+$lang["information-regexp_filter"]="Indatakontroll med hjälp av reguljärt uttryck – t.ex. medför uttrycket ”[A-Z]+” att endast stora bokstäver kan användas.";
 $lang["information-regexp_fail"]="Det inmatade värdet är inte i det format som krävs.";
 $lang["property-tab_name"]="Fliknamn";
 $lang["property-smart_theme_name"]="Namn på smart tema";
@@ -183,9 +183,9 @@ $lang["property-allow_restricted_download"]="Tillåt hämtning för användare m
 
 $lang["property-total_resources"]="Totalt antal material";
 $lang["property-total_keywords"]="Totalt antal nyckelord";
-$lang["property-resource_keyword_relationships"]="Antal relationer material &ndash; nyckelord";
+$lang["property-resource_keyword_relationships"]="Antal relationer material – nyckelord";
 $lang["property-total_collections"]="Totalt antal samlingar";
-$lang["property-collection_resource_relationships"]="Antal relationer samling &ndash; material";
+$lang["property-collection_resource_relationships"]="Antal relationer samling – material";
 $lang["property-total_users"]="Totalt antal användare";
 
 
@@ -230,7 +230,7 @@ $lang["researchrequestservice"]="Researchförfrågan";
 
 # Team Centre
 $lang["manageresources"]="Hantera material";
-$lang["overquota"]="Lagringskvoten är överskriden &ndash; du kan inte lägga till material";
+$lang["overquota"]="Lagringskvoten är överskriden – du kan inte lägga till material";
 $lang["managearchiveresources"]="Hantera arkivmaterial";
 $lang["managethemes"]="Hantera teman";
 $lang["manageresearchrequests"]="Hantera researchförfrågningar";
@@ -266,7 +266,7 @@ $lang["users"]="användare";
 $lang["emailrecipients"]="Mottagare";
 $lang["emailsubject"]="Ämne";
 $lang["emailtext"]="Meddelande";
-$lang["emailhtml"]="Aktivera stöd för html &ndash; meddelandet måste använda html-formatering";
+$lang["emailhtml"]="Aktivera stöd för html – meddelandet måste använda html-formatering";
 $lang["send"]="Skicka";
 $lang["emailsent"]="E-postmeddelandet har skickats.";
 $lang["mustspecifyoneuser"]="Du måste ange minst en användare";
@@ -288,7 +288,7 @@ $lang["uploadinprogress"]="Överföring och skapande av förhandsgranskningar p�
 $lang["donotmoveaway"]="OBS! Lämna inte den här sidan innan överföringen har slutförts.";
 $lang["pleaseselectfiles"]="Välj en eller flera filer att överföra.";
 $lang["previewstatus"]="Skapat förhandsgranskningar för material %file% av %filestotal%."; # %file%, %filestotal% will be replaced, e.g. Created previews for resource 2 of 2.
-$lang["uploadedstatus"]="Överfört material %file% av %filestotal% &ndash; %path%"; # %file%, %filestotal% and %path% will be replaced, e.g. Resource 2 of 2 uploaded - pub/pictures/astro-images/JUPITER9.JPG
+$lang["uploadedstatus"]="Överfört material %file% av %filestotal% – %path%"; # %file%, %filestotal% and %path% will be replaced, e.g. Resource 2 of 2 uploaded - pub/pictures/astro-images/JUPITER9.JPG
 $lang["upload_failed_for_path"]="Överföringen misslyckades för %path%"; # %path% will be replaced, e.g. Upload failed for abc123.jpg
 $lang["uploadcomplete"]="Överföringen är slutförd";
 $lang["upload_summary"]="Sammanfattning av överföringen";
@@ -308,12 +308,12 @@ $lang["uselocalupload"]="ELLER: Använd en lokal överföringsmapp i stället f�
 
 # User contributions
 $lang["contributenewresource"]="Bidra med nytt material";
-$lang["viewcontributedps"]="Visa mina bidrag &ndash; under registrering";
-$lang["viewcontributedpr"]="Visa mina bidrag &ndash; väntande på granskning";
-$lang["viewcontributedsubittedl"]="Visa mina bidrag &ndash; aktiva";
-$lang["contributedps"]="Mina bidrag &ndash; under registrering";
-$lang["contributedpr"]="Mina bidrag &ndash; väntande på granskning";
-$lang["contributedsubittedl"]="Mina bidrag &ndash; aktiva";
+$lang["viewcontributedps"]="Visa mina bidrag – under registrering";
+$lang["viewcontributedpr"]="Visa mina bidrag – väntande på granskning";
+$lang["viewcontributedsubittedl"]="Visa mina bidrag – aktiva";
+$lang["contributedps"]="Mina bidrag – under registrering";
+$lang["contributedpr"]="Mina bidrag – väntande på granskning";
+$lang["contributedsubittedl"]="Mina bidrag – aktiva";
 
 # Collections
 $lang["editcollection"]="Redigera samling";
@@ -329,7 +329,7 @@ $lang["allowothersaddremove"]="Tillåt andra användare att lägga till/avlägsn
 $lang["resetarchivestatus"]="Uppdatera status för alla material i samlingen";
 $lang["editallresources"]="Redigera alla material i samlingen";
 $lang["editresources"]="Redigera material";
-$lang["multieditnotallowed"]="Materialen är inte möjliga att redigera i grupp &ndash; alla material har inte samma status eller är inte av samma typ.";
+$lang["multieditnotallowed"]="Materialen är inte möjliga att redigera i grupp – alla material har inte samma status eller är inte av samma typ.";
 $lang["emailcollection"]="Dela samling via e-post";
 $lang["collectionname"]="Samlingsnamn";
 $lang["collection-name"]="Samling: %collectionname%"; # %collectionname will be replaced, e.g. Collection: Cars
@@ -425,9 +425,9 @@ $lang["restoreoriginal"]="Återställ original";
 $lang["recreatepreviews"]="Återskapa förhandsgranskningar";
 $lang["retrypreviews"]="Försök skapa förhandsgranskningar igen";
 $lang["specifydefaultcontent"]="Ange den metadata som ska vara förvald för nya material";
-$lang["properties"]="&ndash; typspecifika egenskaper";
+$lang["properties"]="– typspecifika egenskaper";
 $lang["relatedresources"]="Relaterade material";
-$lang["relatedresources-filename_extension"]="Relaterade material &ndash; %extension"; # Use %EXTENSION, %extension or %Extension as a placeholder. The placeholder will be replaced with the filename extension, using the same case. E.g. "Related Resources - %EXTENSION" -> "Related Resources - JPG"
+$lang["relatedresources-filename_extension"]="Relaterade material – %extension"; # Use %EXTENSION, %extension or %Extension as a placeholder. The placeholder will be replaced with the filename extension, using the same case. E.g. "Related Resources - %EXTENSION" -> "Related Resources - JPG"
 $lang["relatedresources-id"]="Relaterade material – nr %id%"; # %id% will be replaced, e.g. Related Resources - ID57
 $lang["indexedsearchable"]="Indexerade, sökbara fält";
 $lang["clearform"]="Rensa formulär";
@@ -534,7 +534,7 @@ $lang["status3"]="Borttaget";
 
 # Charts
 $lang["activity"]="Aktivitet";
-$lang["summary"]="&ndash; sammanfattning";
+$lang["summary"]="– sammanfattning";
 $lang["mostinaday"]="Störst antal på en dag";
 $lang["totalfortheyear"]="Totalt antal hittills i år";
 $lang["totalforthemonth"]="Totalt antal under innevarande månad";
@@ -686,7 +686,7 @@ $lang["termsandconditions"]="Användningsvillkor";
 $lang["iaccept"]="Jag accepterar";
 $lang["contributedby"]="Tillagt av";
 $lang["format"]="Format";
-$lang["notavailableshort"]="&ndash;";
+$lang["notavailableshort"]="–";
 $lang["allmonths"]="Alla månader";
 $lang["allgroups"]="Alla grupper";
 $lang["status-ok"]="Okej";
@@ -764,7 +764,7 @@ $lang["plugin_field_fmt"]="%A (%B)"; // %A and %B are replaced by content define
 #Sharing
 $lang["share"]="Dela";
 $lang["sharecollection"]="Dela samling";
-$lang["sharecollection-name"]="Dela samling &ndash; %collectionname"; # %collectionname will be replaced, e.g. Share Collection - Cars
+$lang["sharecollection-name"]="Dela samling – %collectionname"; # %collectionname will be replaced, e.g. Share Collection - Cars
 $lang["share_theme_category"]="Dela temakategori";
 $lang["generateurl"]="Generera webbadress";
 $lang["generateexternalurl"]="Generera extern webbadress";
@@ -774,7 +774,7 @@ $lang["generatethemeurlsexternal"]="Nedanstående webbadresser fungerar för all
 $lang["showexistingthemeshares"]="Visa existerande delningar för teman i den här kategorin";
 $lang["internalusersharing"]="Delning med interna användare";
 $lang["externalusersharing"]="Delning med externa användare";
-$lang["externalusersharing-name"]="Delning med externa användare &ndash; %collectionname%"; # %collectionname will be replaced, e.g. External User Sharing - Cars
+$lang["externalusersharing-name"]="Delning med externa användare – %collectionname%"; # %collectionname will be replaced, e.g. External User Sharing - Cars
 $lang["accesskey"]="Åtkomstnyckel";
 $lang["sharedby"]="Delad av";
 $lang["sharedwith"]="Delad med";
@@ -832,10 +832,10 @@ $lang["warningexpired"]="Materialets utgångsdatum har passerats";
 $lang["warningexpiredtext"]="Varning! Materialets utgångsdatum har passerats. Du måste klicka på länken nedan för att aktivera hämtning av material.";
 $lang["warningexpiredok"]="&gt; Aktivera hämtning av material";
 $lang["userrequestcomment"]="Meddelande";
-$lang["addresourcebatchbrowser"]="Lägg till material i grupp &ndash; i webbläsare";
-$lang["addresourcebatchbrowserjava"]="Lägg till material i grupp &ndash; i webbläsare (Java &ndash; äldre)";
+$lang["addresourcebatchbrowser"]="Lägg till material i grupp – i webbläsare";
+$lang["addresourcebatchbrowserjava"]="Lägg till material i grupp – i webbläsare (Java – äldre)";
 
-$lang["addresourcebatchftp"]="Lägg till material i grupp &ndash; överför från ftp-server";
+$lang["addresourcebatchftp"]="Lägg till material i grupp – överför från ftp-server";
 $lang["replaceresourcebatch"]="Ersätt material i grupp";
 $lang["editmode"]="Redigeringsläge";
 $lang["replacealltext"]="Ersätt befintlig text";
@@ -886,9 +886,9 @@ $lang["collectioncontacthover"]="Skapa en kontaktkopia med de material som ingå
 $lang["original"]="Original";
 
 $lang["password_not_min_length"]="Lösenordet måste innehålla minst ? tecken";
-$lang["password_not_min_alpha"]="Lösenordet måste innehålla minst ? bokstäver (a&ndash;z, A&ndash;Z)";
-$lang["password_not_min_uppercase"]="Lösenordet måste innehålla minst ? versaler (A&ndash;Z)";
-$lang["password_not_min_numeric"]="Lösenordet måste innehålla minst ? siffror (0&ndash;9)";
+$lang["password_not_min_alpha"]="Lösenordet måste innehålla minst ? bokstäver (a–z, A–Z)";
+$lang["password_not_min_uppercase"]="Lösenordet måste innehålla minst ? versaler (A–Z)";
+$lang["password_not_min_numeric"]="Lösenordet måste innehålla minst ? siffror (0–9)";
 $lang["password_not_min_special"]="Lösenordet måste innehålla minst ? icke alfanumeriska tecken (!@$%&amp;* etc.)";
 $lang["password_matches_existing"]="Det föreslagna lösenordet är samma som det befintliga lösenordet";
 $lang["password_expired"]="Ditt lösenords utgångsdatum har passerats och du måste nu ange ett nytt lösenord";
@@ -961,7 +961,7 @@ $lang["hidealllanguages"]="Dölj alla språk";
 $lang["clicktologinasthisuser"]="Klicka här om du vill logga in som denna användare";
 $lang["addkeyword"]="Lägg till nyckelord";
 $lang["selectedresources"]="Valda material";
-$lang["addresourcebatchlocalfolder"]="Lägg till material i grupp &ndash; överfrån från lokal mapp";
+$lang["addresourcebatchlocalfolder"]="Lägg till material i grupp – överfrån från lokal mapp";
 $lang["phpextensions"]="PHP-utökningar";
 
 # Setup Script
@@ -1009,12 +1009,12 @@ $lang["setup-if_mysqlserver"]="Ip-adressen eller <abbr title=\"Fullständigt kva
 $lang["setup-if_mysqlusername"]="Användarnamnet som ska användas för att ansluta till MySQL-servern. Användaren måste ha rättighet att skapa tabeller i databasen.";
 $lang["setup-if_mysqlpassword"]="Lösenordet för MySQL-användaren.";
 $lang["setup-if_mysqldb"]="Namnet på MySQL-databasen som ResourceSpace ska använda. Databasen måste redan existera.";
-$lang["setup-if_mysqlbinpath"]="Sökvägen till MySQL-klientens programfiler &ndash; t.ex. mysqldump. Obs! Denna uppgift behövs bara om du avser att använda exportverktyg.";
+$lang["setup-if_mysqlbinpath"]="Sökvägen till MySQL-klientens programfiler, t.ex. mysqldump. Obs! Denna uppgift behövs bara om du avser att använda exportverktyg.";
 $lang["setup-if_baseurl"]="Baswebbadressen för den här installationen. Obs! Utan efterföljande snedstreck.";
 $lang["setup-if_emailfrom"]="Adressen som e-post från ResourceSpace tycks komma ifrån.";
 $lang["setup-if_emailnotify"]="E-postadress som materialbegäranden, kontoansökningar och researchförfrågningar ska skickas till.";
 $lang["setup-if_spiderpassword"]="Spindellösenordet är en obligatorisk uppgift.";
-$lang["setup-if_scramblekey"]="Ange en sträng att använda som skramlingssnyckel, om du vill aktivera skramling av materialsökvägar. Om det här är en installation nåbar från Internet rekommenderas detta starkt. Om du lämnar fältet tomt inaktiverar du skramling. Innehållet i fältet har redan slumpats fram för dig, men du kan ändra det så att det matchar en befintlig installation. Strängen ska vara svår att gissa &ndash; som ett lösenord.";
+$lang["setup-if_scramblekey"]="Ange en sträng att använda som skramlingssnyckel, om du vill aktivera skramling av materialsökvägar. Om det här är en installation nåbar från Internet rekommenderas detta starkt. Om du lämnar fältet tomt inaktiverar du skramling. Innehållet i fältet har redan slumpats fram för dig, men du kan ändra det så att det matchar en befintlig installation. Strängen ska vara svår att gissa – som ett lösenord.";
 $lang["setup-if_apiscramblekey"]="Ange en sträng att använda som skramlingsnyckel för api:et. Om du planerar att använda api:er rekommenderas detta starkt.";
 $lang["setup-if_applicationname"]="Namnet på implementationen/installationen (ex. MittFöretags mediaarkiv).";
 $lang["setup-err_mysqlbinpath"]="Det går inte att verifiera sökvägen. Lämna tomt för att inaktivera.";
@@ -1054,7 +1054,7 @@ $lang["setup-configuration_file_output"]="Utmatning till konfigurationsfilen";
 
 # Collection log - actions
 $lang["collectionlog"]="Samlingslogg";
-$lang["collectionlogheader"]="Samlingslogg &ndash; %collection"; # %collection will be replaced, e.g. Collection Log - My Collection
+$lang["collectionlogheader"]="Samlingslogg – %collection"; # %collection will be replaced, e.g. Collection Log - My Collection
 $lang["collectionlog-r"]="Avlägsnade material";
 $lang["collectionlog-R"]="Avlägsnade alla material";
 $lang["collectionlog-D"]="Tog bort alla material";
@@ -1267,7 +1267,7 @@ $lang["exiftoolnotfound"]="Exiftool kunde inte hittas";
 $lang["existing_tags"]="Existerande Exiftool-fält";
 $lang["new_tags"]="Nya Exiftool-fält (vilka kommer att läggas till vid hämtning)";
 $lang["date_of_download"]="[Datum vid nedladdning]";
-$lang["field_ref_and_name"]="%ref% &ndash; %name%"; # %ref% and %name% will be replaced, e.g. 3 – Country
+$lang["field_ref_and_name"]="%ref% – %name%"; # %ref% and %name% will be replaced, e.g. 3 – Country
 
 $lang["indicateusage"]="Beskriv hur du planerar att använda detta material.";
 $lang["usage"]="Användning";
@@ -1280,7 +1280,7 @@ $lang["dosavedsearch"]="Utför sparad sökning";
 
 
 $lang["uploadertryjava"]="Använd den äldre Java-överföraren";
-$lang["uploadertryplupload"]="<strong>NY!</strong> &ndash; Prova nya överföraren.";
+$lang["uploadertryplupload"]="<strong>NY!</strong> – Prova nya överföraren.";
 $lang["getjava"]="Besök Javas webbplats om du vill säkerställa att du har den senaste Java-versionen installerad";
 
 $lang["all"]="Alla";
@@ -1346,7 +1346,7 @@ $lang["autorotate"]="Rotera bilder automatiskt";
 # Report names (for the default reports)
 $lang["report-keywords_used_in_resource_edits"]="Nyckelord använda i material";
 $lang["report-keywords_used_in_searches"]="Nyckelord använda i sökningar";
-$lang["report-resource_download_summary"]="Materialhämtningar &ndash; sammanställning";
+$lang["report-resource_download_summary"]="Materialhämtningar – sammanställning";
 $lang["report-resource_views"]="Materialvisningar";
 $lang["report-resources_sent_via_e-mail"]="Material skickade per e-post";
 $lang["report-resources_added_to_collection"]="Material tillagda i samling";
@@ -1354,7 +1354,7 @@ $lang["report-resources_created"]="Material skapade";
 $lang["report-resources_with_zero_downloads"]="Material utan hämtningar";
 $lang["report-resources_with_zero_views"]="Material utan visningar";
 $lang["report-resource_downloads_by_group"]="Materialhämtningar per grupp";
-$lang["report-resource_download_detail"]="Materialhämtningar &ndash; detaljerad lista";
+$lang["report-resource_download_detail"]="Materialhämtningar – detaljerad lista";
 $lang["report-user_details_including_group_allocation"]="Användaruppgifter inklusive grupptillhörighet";
 $lang["report-expired_resources"]="Utgångna material";
 
@@ -1635,7 +1635,7 @@ $lang["requestnotassignedtoyou"]="Denna begäran är inte längre tilldelad dig.
 $lang["requestassignedtoyou"]="Materialbegäran tilldelad dig";
 $lang["requestassignedtoyoumail"]="En materialbegäran har tilldelats dig. Klicka på länken nedan om du vill bifalla eller avslå den.";
  
-$lang["manageresources-overquota"]="Materialhantering inaktiverad &ndash; du har överskridit din diskutrymmestilldelning";
+$lang["manageresources-overquota"]="Materialhantering inaktiverad – du har överskridit din diskutrymmestilldelning";
 $lang["searchitemsdiskusage"]="Beräkna diskutrymmet som används av resultatet";
 $lang["matchingresourceslabel"]="Matchande material";
  
@@ -1644,7 +1644,7 @@ $lang["saved"]="Sparat";
  
 $lang["resourceids"]="Materialnr";
  
-$lang["warningrequestapprovalfield"]="Varning! Beträffande materialnr % &ndash; notera följande innan ett eventuellt bifallande!";
+$lang["warningrequestapprovalfield"]="Varning! Beträffande materialnr % – notera följande innan ett eventuellt bifallande!";
 
 $lang["yyyy-mm-dd"]="ÅÅÅÅ-MM-DD";
 
@@ -1668,12 +1668,12 @@ $lang["ascending"] = "Stigande";
 $lang["descending"] = "Fallande";
 $lang["sort-type"] = "Sorteringsriktning";
 $lang["collection-order"] = "Ordning i samling";
-$lang["save-error"]="Varning! Ändringarna kunde inte sparas automatiskt &ndash; spara ändringarna manuellt!";
+$lang["save-error"]="Varning! Ändringarna kunde inte sparas automatiskt – spara ändringarna manuellt!";
 
 $lang["theme_home_promote"]="Puffa för på startsidan?";
 $lang["theme_home_page_text"]="Pufftext";
 $lang["theme_home_page_image"]="Puffbild";
-$lang["ref-title"] = "%ref &ndash; %title"; # %ref and %title will be replaced, e.g. 3 - Sunset
+$lang["ref-title"] = "%ref – %title"; # %ref and %title will be replaced, e.g. 3 - Sunset
 
 $lang["error-pageload"] = "Sidan kunde inte läsas in. Om du utförde en sökning kan du prova att förfina sökfrågan. Kontakta systemadministratören om problemet är bestående.";
 
