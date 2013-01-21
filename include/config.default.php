@@ -1660,7 +1660,9 @@ $disable_geocoding = false;
 $geolocation_default_bounds="-3.058839178216e-9,2690583.3951564,2";
 
 # The layers to make available. The first is the default.
-$geo_layers="osm, gmap, gsat, gphy";
+$geo_layers="osm";
+# To enable Google layers, use:
+# $geo_layers="osm, gmap, gsat, gphy";
 
 # Height of map in pixels on resource view page
 $view_mapheight=200;
