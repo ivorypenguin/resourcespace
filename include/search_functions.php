@@ -688,7 +688,7 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 		$colcustperm=$sql_join;
 		$colcustfilter=$sql_filter; // to avoid allowing this sql_filter to be modified by the $access_override search in the smart collection update below!!!
 		
-		if (getval("k","")!="") {$sql_filter="ref>0";} # Special case if a key has been provided.
+		if (getval("k","")!="") {$sql_filter="r.ref>0";} # Special case if a key has been provided.
 		
 		# Extract the collection number
 		$collection=explode(" ",$search);$collection=str_replace("!collection","",$collection[0]);
