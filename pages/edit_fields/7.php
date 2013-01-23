@@ -4,7 +4,8 @@ if (isset($n) && isset($fields)){
 	$options=$fields[$n]["options"];
 }
 
-global $lang,$baseurl,$css_reload_key,$category_tree_show_status_window;
+global $lang,$baseurl,$css_reload_key,$category_tree_show_status_window,$is_search;
+if (!isset($is_search)) {$is_search = false;}
 
 ?><div class="Fixed">
 
@@ -15,7 +16,7 @@ global $lang,$baseurl,$css_reload_key,$category_tree_show_status_window;
 
 <div><a href="#" onclick="if (document.getElementById('<?php echo $name?>_tree').style.display!='block') {document.getElementById('<?php echo $name?>_tree').style.display='block';} else {document.getElementById('<?php echo $name?>_tree').style.display='none';} return false;">&gt; <?php echo $lang["showhidetree"]?></a>
 &nbsp;
-<a href="#" onclick="if (confirm('<?php echo $lang["clearcategoriesareyousure"]?>')) {DeselectAll('<?php echo $name?>');} return false;">&gt; <?php echo $lang["clearall"]?></a>
+<a href="#" onclick="if (confirm('<?php echo $lang["clearcategoriesareyousure"]?>')) {DeselectAll('<?php echo $name?>', <?php echo json_encode($is_search)?>);} return false;">&gt; <?php echo $lang["clearall"]?></a>
 </div>
 
 <input type="hidden" name="<?php echo $name?>" id="<?php echo $name?>_category" value="<?php echo $value?>">
@@ -58,8 +59,8 @@ for ($t=0;$t<count($class);$t++)
 	}
 ?>
 ResolveParents("<?php echo $name?>");
-DrawTree("<?php echo $name?>");
-UpdateStatusBox("<?php echo $name?>");
+DrawTree("<?php echo $name?>", <?php echo json_encode($is_search)?>);
+UpdateStatusBox("<?php echo $name?>", <?php echo json_encode($is_search)?>);
 UpdateHiddenField("<?php echo $name?>");
 
 </script>

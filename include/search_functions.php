@@ -1003,9 +1003,11 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
 	# $name		the input name to use in the form (post name)
 	# $value	the default value to set for this field, if any
 	
-	global $auto_order_checkbox,$lang,$category_tree_open,$minyear,$daterange_search;
+	global $auto_order_checkbox,$lang,$category_tree_open,$minyear,$daterange_search,$is_search;
 	$name="field_" . $field["ref"];
-	
+
+	$is_search = true;
+
 	if (!$forsearchbar)
 		{
 		?>
