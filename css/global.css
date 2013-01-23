@@ -214,7 +214,9 @@ option {font-size:11px;}
 .backtoresults {float: right;margin: 0.4em 0 0 0.25em;} 
 
 .RecordPanel .RecordResouce {position:relative;clear: left;} 
-.RecordPanel .Picture {float: left;margin: 0px 10px 10px 0px;}
+.RecordPanel .Picture {float: left;}
+#previewimagewrapper {float:left;margin: 0px 10px 10px 0px;}
+
 .RecordPanel .PictureDoc {float: left;margin: 50px 130px;}
 
 .RecordPanel .Detail {float: left;}
