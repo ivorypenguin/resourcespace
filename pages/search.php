@@ -619,7 +619,7 @@ if (true) # Always show search header now.
 
     $list_displayed = false;
     # Listview - Display title row if listview and if any result.
-    if ($display=="list" && ((is_array($result) && count($result)>0) || (is_array($collections) && count($collections)>0)))
+    if ($display=="list" && ((is_array($result) && count($result)>0) || (isset($collections) && is_array($collections) && count($collections)>0)))
         {
         $list_displayed = true;
 		?>
