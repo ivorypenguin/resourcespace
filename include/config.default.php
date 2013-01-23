@@ -1421,6 +1421,11 @@ $edit_show_save_clear_buttons_at_top=false;
 # Allow empty collections to be shared?
 $collection_allow_empty_share=false;
 
+# Image preview zoom
+$image_preview_zoom=true;
+
+
+
 
 
 
