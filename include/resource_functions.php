@@ -855,8 +855,7 @@ function delete_resource($ref)
 	$alternatives=get_alternative_files($ref);
 	for ($n=0;$n<count($alternatives);$n++)
 		{
-		$path=get_resource_path($ref, true, "", true, $alternatives[$n]["file_extension"], -1, 1, false, "", $alternatives[$n]["ref"]);
-		if (file_exists($path)) {unlink($path);}
+		delete_alternative_file($ref,$alternatives[$n]['ref']);
 		}
 
 	
