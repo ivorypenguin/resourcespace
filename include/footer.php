@@ -244,7 +244,7 @@ if (getval("ajax","")=="") {
 
 <!--CollectionDiv-->
 <?php 
-$omit_collectiondiv_load_pages=array("login","user_request","user_password","done","index","preview_all");
+$omit_collectiondiv_load_pages=array("login","user_request","user_password","index","preview_all");
 ?></div></div>
 
 <?php # Work out the current collection (if any) from the search string if external access
