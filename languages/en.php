@@ -198,7 +198,7 @@ $lang["smallthumbs"]="Small";
 $lang["list"]="List";
 $lang["perpage"]="per page";
 
-$lang["gotoadvancedsearch"]="Go to Advanced Search";
+$lang["gotoadvancedsearch"]="Advanced Search";
 $lang["viewnewmaterial"]="View New Material";
 $lang["researchrequestservice"]="Research Request Service";
 

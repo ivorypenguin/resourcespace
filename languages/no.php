@@ -100,7 +100,7 @@ $lang["smallthumbs"]="Små";
 $lang["list"]="Liste";
 $lang["perpage"]="pr. side";
 
-$lang["gotoadvancedsearch"]="Gå til avansert søk";
+$lang["gotoadvancedsearch"]="Avansert søk";
 $lang["viewnewmaterial"]="Vis nytt materiale";
 $lang["researchrequestservice"]="Materialforespørsel";
 
