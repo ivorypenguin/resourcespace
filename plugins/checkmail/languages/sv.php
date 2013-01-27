@@ -1,15 +1,15 @@
 <?php
 # Swedish
 # Language File for the Checkmail Plugin
-# Updated by Henrik Frizén 20121030 for svn r3887
+# Updated by Henrik Frizén 20130127 for svn r4224
 # -------
 #
 #
-$lang['checkmail_configuration']="Kolla e-post &ndash; inställningar";
-$lang['checkmail_install_php_imap_extension']="Steg 1: Installera php-utökningen för imap!";
-$lang['checkmail_cronhelp']="Innan du kan använda detta tillägg måste du göra ett par inställningar så att systemet kan logga in på det imap-aktiverade e-postkontot som är avsett för att ta emot filer som ska överföras.<br /><br />Ett Gmail-konto fungerar bra och detta är den enda testade konfigurationen.<br /><br />Om du använder en annan imap-server kanske du måste anpassa cron_check_email.php för att stöda den (kanske genom en enkel inställning). I Gmail aktiveras imap genom Gmail-inställningar>Vidarebefordran och POP/IMAP>Aktivera IMAP<br /><br />
+$lang['checkmail_configuration']="Kolla e-post – inställningar";
+$lang['checkmail_install_php_imap_extension']="Steg 1: Installera php-utökningen för imap.";
+$lang['checkmail_cronhelp']="Innan du kan använda detta tillägg måste du göra ett par inställningar så att systemet kan logga in på det e-postkonto som är avsett för att ta emot filer som ska överföras.<br /><br />Säkerställ att imap är aktiverat för kontot. I Gmail aktiveras imap genom Gmail-inställningar>Vidarebefordran och POP/IMAP>Aktivera IMAP<br /><br />
 När du installerar tillägget och konfigurerar det kan det vara lämpligt att köra plugins/checkmail/pages/cron_check_email.php manuellt från kommandoraden för att se hur det fungerar.
-När anslutningen väl är korrekt konfigurerad och du har förstått hur skriptet fungerar måste du ställa in ett cron-jobb till att köra skriptet varje eller varannan minut.<br />Det söker igenom brevlådan och läser ett oläst meddelande per körning.<br /><br />
+När anslutningen väl är korrekt konfigurerad och du har förstått hur skriptet fungerar måste du ställa in ett cron-jobb till att köra skriptet varje eller varannan minut. Det söker igenom brevlådan och läser ett oläst meddelande per körning.<br /><br />
 Ett exempel på cron-jobb som körs varannan minut:<br />
 */2 * * * * cd /var/www/resourcespace/plugins/checkmail/pages; php ./cron_check_email.php >> /var/log/cron.log 2>&1<br /><br />";
 $lang['checkmail_lastcheck']="Imap-kontot kollades senast [lastcheck].";
@@ -33,9 +33,9 @@ $lang['checkmail_default_archive']="Förvald status";
 $lang['checkmail_html']="Tillåt html-innehåll? (experimentell, ej rekommenderad)";
 $lang['checkmail_mail_skipped']="Överhoppat e-postmeddelande";
 
-$lang['addresourcesviaemail']="Lägg till material i grupp &ndash; per e-post";
+$lang['addresourcesviaemail']="Lägg till material i grupp – per e-post";
 $lang['uploadviaemail']="Överför per e-post";
-$lang['uploadviaemail-intro']="<br /><br />Om du vill överföra filer per e-post bifogar du dem i ett e-postmeddelande som du skickar till <b><a href='mailto:[toaddress]'>[toaddress]</a></b>.</p> <p>E-postmeddelandet måste skickas från <b>[fromaddress]</b>, i annat fall kommer det att ignoreras.</p><p>Observera att e-postmeddelandets ämnesrad kopieras till fältet [subjectfield] i $applicationname! </p><p> Observera även att meddelandetexten kopieras till fältet [bodyfield] i $applicationname! </p>  <p>Om flera filer bifogas i ett e-postmeddelande grupperas de i en samling. Materialen får den förvalda åtkomstnivån <b>’[access]’</b> och statusen <b>’[archive]’</b>.</p><p> [confirmation]";
+$lang['uploadviaemail-intro']="<br /><br />Om du vill överföra filer per e-post bifogar du dem i ett e-postmeddelande som du skickar till <b><a href='mailto:[toaddress]'>[toaddress]</a></b>.</p> <p>E-postmeddelandet måste skickas från <b>[fromaddress]</b>, i annat fall kommer det att ignoreras.</p><p>Observera att e-postmeddelandets ämnesrad kopieras till fältet [subjectfield] i $applicationname. </p><p> Observera även att meddelandetexten kopieras till fältet [bodyfield] i $applicationname. </p>  <p>Om flera filer bifogas i ett e-postmeddelande grupperas de i en samling. Materialen får den förvalda åtkomstnivån <b>’[access]’</b> och statusen <b>’[archive]’</b>.</p><p> [confirmation]";
 $lang['checkmail_confirmation_message']="När ditt e-postmeddelande är färdigbearbetat kommer du att få en bekräftelse per e-post. Om ditt e-postmeddelande har hoppats över av någon anledning (om det t.ex. har skickats från fel adress) kommer administratören att få besked om att det finns ett e-postmeddelande som kräver åtgärd.";
 $lang['yourresourcehasbeenuploaded']="Materialet har överförts";
 $lang['yourresourceshavebeenuploaded']="Materialen har överförts";

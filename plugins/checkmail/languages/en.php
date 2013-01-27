@@ -5,8 +5,8 @@
 #
 #
 $lang['checkmail_configuration']="Checkmail Configuration";
-$lang['checkmail_install_php_imap_extension']="Step One: Install php imap extension!";
-$lang['checkmail_cronhelp']="This plugin requires some special setup for the system to log in to an IMAP-enabled e-mail account dedicated to receiving files intended for upload.<br /><br />A Gmail account works well, and is the only tested setup.<br /><br />If you are using a different IMAP server, you may have to fix up cron_check_email.php to support it (perhaps configurably). In Gmail enabling IMAP is simply Settings->POP/IMAP->Enable IMAP<br /><br />
+$lang['checkmail_install_php_imap_extension']="Step One: Install php imap extension.";
+$lang['checkmail_cronhelp']="This plugin requires some special setup for the system to log in to an e-mail account dedicated to receiving files intended for upload.<br /><br />Make sure that IMAP is enabled on the account. If you are using a Gmail account you enable IMAP in Settings->POP/IMAP->Enable IMAP<br /><br />
 On initial setup, you may find it most helpful to run plugins/checkmail/pages/cron_check_email.php manually on the command line to understand how it works.
 Once you are connecting properly and understand how the script works, you must set up a cron job to run it every minute or two.<br />It will scan the mailbox and read one unread e-mail per run.<br /><br />
 An example cron job which runs every two minutes:<br />
@@ -34,7 +34,7 @@ $lang['checkmail_mail_skipped']="Skipped e-mail";
 
 $lang['addresourcesviaemail']="Add Resources via E-mail";
 $lang['uploadviaemail']="Uploading Via E-mail";
-$lang['uploadviaemail-intro']="<br /><br />To upload via e-mail, attach your file(s) and address the e-mail to <b><a href='mailto:[toaddress]'>[toaddress]</a></b>.</p> <p>Be sure to send it from <b>[fromaddress]</b>, or it will be ignored.</p><p>Note that anything in the SUBJECT of the e-mail will go into the [subjectfield] field in $applicationname! </p><p> Also note that anything in the BODY of the e-mail will go into the [bodyfield] field in $applicationname! </p>  <p>Multiple files will be grouped into a collection. Your resources will default to an Access level <b>'[access]'</b>, and Archive status <b>'[archive]'</b>.</p><p> [confirmation]";
+$lang['uploadviaemail-intro']="<br /><br />To upload via e-mail, attach your file(s) and address the e-mail to <b><a href='mailto:[toaddress]'>[toaddress]</a></b>.</p> <p>Be sure to send it from <b>[fromaddress]</b>, or it will be ignored.</p><p>Note that anything in the SUBJECT of the e-mail will go into the [subjectfield] field in $applicationname. </p><p> Also note that anything in the BODY of the e-mail will go into the [bodyfield] field in $applicationname. </p>  <p>Multiple files will be grouped into a collection. Your resources will default to an Access level <b>'[access]'</b>, and Archive status <b>'[archive]'</b>.</p><p> [confirmation]";
 $lang['checkmail_confirmation_message']="You will receive a confirmation e-mail when your e-mail is successfully processed. If your e-mail is programmatically skipped for any reason (such as if it is sent from the wrong address), the administrator will be notified that there is an e-mail requiring human attention.";
 $lang['yourresourcehasbeenuploaded']="Your resource has been uploaded";
 $lang['yourresourceshavebeenuploaded']="Your resources have been uploaded";

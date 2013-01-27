@@ -205,8 +205,8 @@ foreach ($parts as $key=>$part){
 
  	if ($part->ifdisposition){echo " ".$part->disposition;}
 
-	if ($part->subtype=="PLAIN"){echo " retrieving plain text body...";
-		$body_part=getdecodevalue(imap_fetchbody($imap,$current_message,$key),$part->encoding);;
+	if (strtoupper($part->subtype)=="PLAIN"){echo " retrieving plain text body...";
+		$body_part=getdecodevalue(imap_fetchbody($imap,$current_message,$key),$part->encoding);
 		if ($charset!="default"){
 			$body_part=iconv($charset,"UTF-8",$body_part);
 		}
@@ -215,7 +215,7 @@ foreach ($parts as $key=>$part){
 		// of different charsets
 		//echo $body;
 	}
-	if ($part->subtype=="HTML"){echo " retrieving HTML body...";
+	if (strtoupper($part->subtype)=="HTML"){echo " retrieving HTML body...";
 		$body_html=getdecodevalue(imap_fetchbody($imap,$current_message,$key),$part->encoding);
 		if ($charset!="default"){
 		$body_html=iconv($charset,"UTF-8",$body_html);
@@ -363,7 +363,7 @@ if ($delete && $checkmail_purge) {
 		imap_mail_move($imap,$current_message,'[Gmail]/Trash');
 	}
 	else {
-		// untested, for non-gmail
+		// for non-gmail
 		imap_delete($imap,$current_message);
 	}
 	echo "Deleting Email... \r\n";
