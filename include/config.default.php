@@ -1421,8 +1421,8 @@ $edit_show_save_clear_buttons_at_top=false;
 # Allow empty collections to be shared?
 $collection_allow_empty_share=false;
 
-# Image preview zoom
-$image_preview_zoom=true;
+# Image preview zoom using jQuery.zoom (hover over the preview image to zoom in on the resource view page)
+$image_preview_zoom=false;
 
 
 
