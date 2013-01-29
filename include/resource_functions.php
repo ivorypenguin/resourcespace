@@ -1189,15 +1189,14 @@ function write_metadata($path, $ref, $uniqid="")
                     $datecheck=get_data_by_field($ref, $write_to[$i]['ref']);
                     if ($datecheck!=""){
 						$writevalue = date("c", strtotime($datecheck));
-					} else { continue; }
+					} 
                     break;
                 case 6:
                     # Expiry Date: write datetype fields as ISO 8601 date ("c")
                                         $datecheck=get_data_by_field($ref, $write_to[$i]['ref']);
                     if ($datecheck!=""){
 						$writevalue = date("c", strtotime($datecheck));
-					} else { continue; }
-                    $writevalue = date("c", strtotime($datecheck));
+					} 
                     break;
                 case 9:
                     # Dynamic Keywords List: remove initial comma if present
