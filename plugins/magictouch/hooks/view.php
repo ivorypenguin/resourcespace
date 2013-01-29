@@ -62,7 +62,7 @@ if (!file_exists($largeurl_path)) {
 <a href="<?php echo $largeurl?>" class="MagicTouch"><img src="<?php echo $imageurl?>" GALLERYIMG="no" id="previewimage" /></a>
 </div>
 
-<div style="clear:left;float:right;margin-right:10px;margin-top:-5px;"> 
+<div style="clear:left;float:right;margin-right:10px;margin-top:5px;"> 
 <?php
 // annotate plugin compatibility
 if ((in_array("annotatecr",$plugins)|| in_array("annotate",$plugins))&&$k==""){?><a href="<?php echo $baseurl?>/pages/view.php?annotate=true&ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&k=<?php echo $k?>" onClick="document.cookie='annotate=on;';return CentralSpaceLoad(this);">&gt;&nbsp;<?php echo $lang['annotations']?></a><br /><br /><?php }
