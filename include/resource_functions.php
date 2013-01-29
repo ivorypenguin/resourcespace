@@ -254,7 +254,7 @@ function save_resource_data($ref,$multi)
 
 	# Also update archive status and access level
 	$oldaccess=sql_value("select access value from resource where ref='$ref'",0);
-	$access=getvalescaped("access",0,true);
+	$access=getvalescaped("access",$oldaccess,true);
 	if (getvalescaped("archive","")!="") # Only if archive has been sent
 		{
 		sql_query("update resource set archive='" . $archive . "',access='" . $access . "' $expirysql where ref='$ref'");
