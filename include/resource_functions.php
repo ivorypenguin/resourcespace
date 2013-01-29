@@ -1169,7 +1169,8 @@ function write_metadata($path, $ref, $uniqid="")
         for($i = 0; $i<count($write_to); $i++) # Loop through all the found fields.
 			{
             $fieldtype = $write_to[$i]['type'];
-
+            $writevalue = "";
+    
             # Formatting and cleaning of the value to be written - depending on the RS field type.
             switch ($fieldtype)
                 {
