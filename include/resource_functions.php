@@ -1260,17 +1260,14 @@ function delete_exif_tmpfile($tmpfile)
 	if(file_exists($tmpfile)){unlink ($tmpfile);}
 }
 
-function import_resource($path,$type,$title,$ingest=false)
+function update_resource($r,$path,$type,$title,$ingest=false)
 	{
-	# Import the resource at the given path
-	# This is used by staticsync.php and Camillo's SOAP API
+	# Update the resource with the file at the given path
 	# Note that the file will be used at it's present location and will not be copied.
-
 	global $syncdir,$staticsync_prefer_embedded_title;
 
-	# Create resource
-	$r=create_resource($type);
-			
+	update_resource_type($r, $type);
+
 	# Work out extension based on path
 	$extension=explode(".",$path);$extension=trim(strtolower(end($extension)));
 
@@ -1278,8 +1275,8 @@ function import_resource($path,$type,$title,$ingest=false)
 	if ($ingest){$file_path="";} else {$file_path=escape_check($path);}
 
 	# Store extension/data in the database
-	sql_query("update resource set archive=0,file_path='".$file_path."',file_extension='$extension',preview_extension='$extension',file_modified=now() where ref='$r'");		
-			
+	sql_query("update resource set archive=0,file_path='".$file_path."',file_extension='$extension',preview_extension='$extension',file_modified=now() where ref='$r'");
+
 	# Store original filename in field, if set
 	if (!$ingest)
 		{
@@ -1290,7 +1287,7 @@ function import_resource($path,$type,$title,$ingest=false)
 
 			$s=explode("/",$path);
 			$filename=end($s);
-				
+
 			update_field($r,$filename_field,$filename);
 			}
 		}
@@ -1299,16 +1296,16 @@ function import_resource($path,$type,$title,$ingest=false)
 		# This file is being ingested. Store only the filename.
 		$s=explode("/",$path);
 		$filename=end($s);
-		
+
 		global $filename_field;
 		if (isset($filename_field))
 			{
 			update_field($r,$filename_field,$filename);
 			}
-			
+
 		# Move the file
 		global $syncdir;
-		$destination=get_resource_path($r,true,"",true,$extension);	
+		$destination=get_resource_path($r,true,"",true,$extension);
 		$result=rename($syncdir . "/" . $path,$destination);
 		if ($result===false)
 			{
@@ -1317,7 +1314,7 @@ function import_resource($path,$type,$title,$ingest=false)
 			delete_resource($r);
 			return false;
 			}
-		chmod($destination,0777);	
+		chmod($destination,0777);
 		}
 
 	# generate title and extract embedded metadata
@@ -1327,20 +1324,31 @@ function import_resource($path,$type,$title,$ingest=false)
 		update_field($r,8,$title);
 		extract_exif_comment($r,$extension);
 	} else {
-		extract_exif_comment($r,$extension);	
+		extract_exif_comment($r,$extension);
 		update_field($r,8,$title);
 	}
 
-	
+
 	# Ensure folder is created, then create previews.
-	get_resource_path($r,false,"pre",true,$extension);	
-	
+	get_resource_path($r,false,"pre",true,$extension);
+
 	# Generate previews/thumbnails (if configured i.e if not completed by offline process 'create_previews.php')
 	global $enable_thumbnail_creation_on_upload;
 	if ($enable_thumbnail_creation_on_upload) {create_previews($r,false,$extension);}
 
 	# Pass back the newly created resource ID.
 	return $r;
+	}
+
+function import_resource($path,$type,$title,$ingest=false)
+	{
+	# Import the resource at the given path
+	# This is used by staticsync.php and Camillo's SOAP API
+	# Note that the file will be used at it's present location and will not be copied.
+
+	# Create resource
+	$r=create_resource($type);
+	return update_resource($r, $path, $type, $title, $ingest);
 	}
 
 function get_alternative_files($resource,$order_by="",$sort="")
