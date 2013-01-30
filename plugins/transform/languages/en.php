@@ -5,8 +5,6 @@
 #
 #
 # Resource log - actions
-$lang["log-a"]="Created alternate";
-
 $lang['transform']="Transform";
 $lang['transformimage']="Transform Image";
 $lang['transformed']="Transform";

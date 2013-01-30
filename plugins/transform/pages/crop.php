@@ -363,7 +363,7 @@ if (!$download && !$original && getval("slideshow","")==""){
     $sql .= " where ref='$newfile'";
 
 	$result = sql_query($sql);
-	resource_log($ref,'a','',"$new_ext " . strtolower($verb) . " to $newfilewidth x $newfileheight");
+	resource_log($ref,'b','',"$new_ext " . strtolower($verb) . " to $newfilewidth x $newfileheight");
 
 } elseif ($original && getval("slideshow","")=="") {
     // we are supposed to replace the original file

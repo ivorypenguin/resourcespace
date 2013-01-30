@@ -6,8 +6,6 @@
 #
 #
 # Resource log - actions
-$lang["log-a"]="Skapade alternativ fil";
-
 $lang['transform']="Transformera";
 $lang['transformimage']="Transformera bild";
 $lang['transformed']="Transformerad";

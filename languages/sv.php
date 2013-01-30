@@ -519,6 +519,7 @@ $lang["log-t"]="Transformerade fil";
 $lang["log-s"]="Ändrade status";
 $lang["log-a"]="Ändrade åtkomst";
 $lang["log-r"]="Återställde metadata";
+$lang["log-b"]="Skapade alternativ fil";
 $lang["log-missinglang"]="[type] (lang saknas)"; # [type] will be replaced.
 
 $lang["backtoresourceview"]="Tillbaka: Visa material";
