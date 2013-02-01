@@ -145,7 +145,7 @@ function do_report($ref,$from_y,$from_m,$from_d,$to_y,$to_m,$to_d,$download=true
 	exit();
 	}
 
-function create_periodic_email($user,$report,$period,$email_days)
+function create_periodic_email($user,$report,$period,$email_days,$send_all_users)
 	{
 	# Creates a new automatic periodic e-mail report.
 #	echo ("user=$user, report=$report, period=$period, email_days=$email_days");
@@ -155,6 +155,13 @@ function create_periodic_email($user,$report,$period,$email_days)
 
 	# Insert a new row.
 	sql_query("insert into report_periodic_emails(user,report,period,email_days) values ('$user','$report','$period','$email_days')");
+	$ref=sql_insert_id();
+	
+	# Send to all users?
+	if (checkperm('m') && $send_all_users)
+		{
+		sql_query("update report_periodic_emails set send_all_users=1 where ref='$ref'");
+		}
 
 	# Return
 	return true;
@@ -167,7 +174,7 @@ function send_periodic_report_emails()
 	global $lang,$baseurl;
 
 	# Query to return all 'pending' report e-mails, i.e. where we haven't sent one before OR one is now overdue.
-	$reports=sql_query("select pe.*,u.email,r.name from report_periodic_emails pe join user u on pe.user=u.ref join report r on pe.report=r.ref where pe.last_sent is null or date_add(pe.last_sent,interval pe.email_days day)<=now()");
+	$reports=sql_query("select pe.*,u.email,r.name,pe.send_all_users from report_periodic_emails pe join user u on pe.user=u.ref join report r on pe.report=r.ref where pe.last_sent is null or date_add(pe.last_sent,interval pe.email_days day)<=now()");
 	foreach ($reports as $report)
 		{
 		$start=time()-(60*60*24*$report["period"]);
@@ -186,15 +193,31 @@ function send_periodic_report_emails()
 		# Generate remote HTML table.
 		$output=do_report($report["report"], $from_y, $from_m, $from_d, $to_y, $to_m, $to_d,false,true);
 
-		# Append the unsubscribe link.
-		$output.="<br>" . $lang["unsubscribereport"] . "<br>" . $baseurl . "/?ur=" . $report["ref"];
 
 		# Formulate a title
 		$title = $report["name"] . ": " . str_replace("?",$report["period"],$lang["lastndays"]);
 
-		# Send mail.
-		echo $lang["sendingreportto"] . " " . $report["email"] . "<br>";
-		send_mail($report["email"],$title,$output,"","","",null,"","",true);
+		# Send mail to original user - this contains the unsubscribe link
+		$unsubscribe="<br>" . $lang["unsubscribereport"] . "<br>" . $baseurl . "/?ur=" . $report["ref"];
+		$email=$report["email"];
+		echo $lang["sendingreportto"] . " " . $email . "<br>" . $output . $unsubscribe . "<br>";
+		send_mail($email,$title,$output . $unsubscribe,"","","",null,"","",true);
+
+		# Send to all other active users, if configured.		
+		if ($report["send_all_users"])
+			{
+			# Send the report to all active users.
+			$users=get_users();
+			foreach ($users as $user)
+				{
+				$email=$user["email"];
+				if ($user["approved"] && $email!=$report["email"]) # Do not send to original report user, as they receive the mail with the unsubscribe link above.
+					{
+					echo $lang["sendingreportto"] . " " . $email . "<br>" . $output . "<br>";
+					send_mail($email,$title,$output,"","","",null,"","",true);
+					}
+				}
+			}
 
 		# Mark as done.
 		sql_query("update report_periodic_emails set last_sent=now() where ref='" . $report["ref"] . "'");

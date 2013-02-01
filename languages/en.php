@@ -1658,3 +1658,4 @@ $lang["synchronise-changes-with-this-field"]="Synchronise changes with this fiel
 $lang["copy-completed"]="Copy completed. New field has ID ?.";
 
 $lang["nothing-to-display"]="Nothing to display.";
+$lang["report-send-all-users"]="Send the report to all active users?";

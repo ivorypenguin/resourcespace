@@ -63,7 +63,7 @@ include "../../include/header.php";
 if (getval("createemail","")!="")
 	{
 	# Create a new periodic e-mail report
-	create_periodic_email($userref,$report,$period,getval("email_days",""));
+	create_periodic_email($userref,$report,$period,getval("email_days",""),getval("send_all_users","")=="yes");
 	?>
 	<script type="text/javascript">
 	alert("<?php echo $lang["newemailreportcreated"] ?>");
@@ -233,12 +233,21 @@ else
 <!-- E-mail Period select -->
 <div class="Question">
 <label for="email_days">&nbsp;</label>
+<div class="Fixed">
 <?php
 $textbox="<input type=\"text\" id=\"email_days\" name=\"email_days\" size=\"4\" value=\"7\">";
 echo str_replace("?",$textbox,$lang["emaileveryndays"]);
+
+if (checkperm("m"))
+	{
+	# Option to send to all active users
+	echo "<br/>" . $lang["report-send-all-users"];
+	?><input type="checkbox" name="send_all_users" value="yes" /><br /><br /><?php
+	}
+
 ?>
 &nbsp;&nbsp;<input name="createemail" type="submit" onClick="do_download=true;" value="&nbsp;&nbsp;<?php echo $lang["create"] ?>&nbsp;&nbsp;" />
-
+</div>
 <div class="clearerleft"> </div>
 </div>
 <!-- End of E-mail Period Select -->
