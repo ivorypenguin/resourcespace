@@ -2004,6 +2004,25 @@ $daterange_search=false;
 # Keyboard navigation allows using left and right arrows to browse through resources in view/search/preview modes
 $keyboard_navigation=false;
 
+# Keyboard control codes
+# Previous/next resource, default: left/right arrows
+$keyboard_navigation_prev=37;
+$keyboard_navigation_next=39;
+# add resource to collection, default 'a'
+$keyboard_navigation_add_resource=65;
+# remove resource from collection, default 'r'
+$keyboard_navigation_remove_resource=82;
+# previous page in document preview, default ','
+$keyboard_navigation_prev_page=188;
+# next page in document preview, default '.'
+$keyboard_navigation_next_page=190;
+# view all results, default '/'
+$keyboard_navigation_all_results=191;
+# toggle previews in collections frame, default 'h'
+$keyboard_navigation_toggle_previews=72;
+# zoom to/from preview, default 'z'
+$keyboard_navigation_zoom=90;
+
 # with $keyboard_scroll_jump on arrow keys jump from picture to picture in preview_all mode (horizontal only)
 $keyboard_scroll_jump=false;
 

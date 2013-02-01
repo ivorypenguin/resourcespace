@@ -114,7 +114,7 @@ jQuery(document).ready(function() {
          switch (e.which) 
          {
             // left arrow
-            case 37: if (jQuery('.prevLink').length > 0) jQuery('.prevLink').click();
+            case <?php echo $keyboard_navigation_prev; ?>: if (jQuery('.prevLink').length > 0) jQuery('.prevLink').click();
                      <?php 
                      if (($pagename=="preview_all") && $keyboard_scroll_jump) { ?>
                      currentX=jQuery(window).scrollLeft();
@@ -128,7 +128,7 @@ jQuery(document).ready(function() {
                      <?php } ?>
                      break;
             // right arrow
-            case 39: if (jQuery('.nextLink').length > 0) jQuery('.nextLink').click();
+            case <?php echo $keyboard_navigation_next; ?>: if (jQuery('.nextLink').length > 0) jQuery('.nextLink').click();
                      <?php 
                      if (($pagename=="preview_all") && $keyboard_scroll_jump) { ?>
                      currentX=jQuery(window).scrollLeft();
@@ -140,32 +140,23 @@ jQuery(document).ready(function() {
                          }
                      });                     
                      <?php } ?>
+                     break;   
+            case <?php echo $keyboard_navigation_add_resource; ?>: if (jQuery('.addToCollection').length > 0) jQuery('.addToCollection').click();
                      break;
-            // a - add resource to collection    
-            case 65: if (jQuery('.addToCollection').length > 0) jQuery('.addToCollection').click();
+            case <?php echo $keyboard_navigation_remove_resource; ?>: if (jQuery('.removeFromCollection').length > 0) jQuery('.removeFromCollection').click();
+                     break;  
+            case <?php echo $keyboard_navigation_prev_page; ?>: if (jQuery('.pagePrev').length > 0) jQuery('.pagePrev').click();
                      break;
-            // r - remove resource from collection
-            case 82: if (jQuery('.removeFromCollection').length > 0) jQuery('.removeFromCollection').click();
+            case <?php echo $keyboard_navigation_next_page; ?>: if (jQuery('.pageNext').length > 0) jQuery('.pageNext').click();
                      break;
-            // , - prev page    
-            case 188: if (jQuery('.pagePrev').length > 0) jQuery('.pagePrev').click();
+            case <?php echo $keyboard_navigation_all_results; ?>: if (jQuery('.upLink').length > 0) jQuery('.upLink').click();
                      break;
-            // . - next page
-            case 190: if (jQuery('.pageNext').length > 0) jQuery('.pageNext').click();
+            case <?php echo $keyboard_navigation_toggle_previews; ?>: if (jQuery('.hideLink').length > 0) jQuery('.hideLink').click();
                      break;
-            // / - all results
-            case 191: if (jQuery('.upLink').length > 0) jQuery('.upLink').click();
-                     break;
-            // h - hide thumbs
-            case 72: if (jQuery('.hideLink').length > 0) jQuery('.hideLink').click();
-                     break;
-            // z - preview - view switch
-            case 90: if (jQuery('.enterLink').length > 0) window.location=jQuery('.enterLink').attr("href");
-                     break;
-            // enter - preview - view switch
-            // case 13: if (jQuery('.enterLink').length > 0) window.location=jQuery('.enterLink').attr("href");
+            case <?php echo $keyboard_navigation_zoom; ?>: if (jQuery('.enterLink').length > 0) window.location=jQuery('.enterLink').attr("href");
                      break;
          }
+         
      }
  });
 });
