@@ -596,6 +596,9 @@ $collection_reorder_caption=false;
 # Enable collection commenting and ranking
 $collection_commenting = false;
 
+# Add the collections footer
+$collections_footer = true;
+
 # Footer text applied to all e-mails (blank by default)
 $email_footer="";
 

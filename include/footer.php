@@ -254,7 +254,7 @@ if (isset($k) && $k!="" && isset($search) && !isset($usercollection))
     }
 ?>
 
-<?php if (!in_array($pagename,$omit_collectiondiv_load_pages) && !checkperm("b") && isset($usercollection)) {?><div id="CollectionDiv" class="CollectBack AjaxCollect ui-layout-south"></div>
+<?php if ($collections_footer && !in_array($pagename,$omit_collectiondiv_load_pages) && !checkperm("b") && isset($usercollection)) {?><div id="CollectionDiv" class="CollectBack AjaxCollect ui-layout-south"></div>
 <script type="text/javascript">
 	collection_frame_height=<?php echo $collection_frame_height?>;
 	//CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=<?php echo getval("thumbs","hide");?>');
