@@ -23,7 +23,12 @@ include "../include/header.php";
 
 <div class="BasicsBox">
 
-<form method=post action="<?php echo $baseurl_short?>pages/download_usage.php" onSubmit="if ((jQuery('#usagecomment').val()=='') || (jQuery('#usage').val()=='')) {alert('<?php echo $lang["usageincorrect"] ?>');return false;}">
+<form method=post action="<?php echo $baseurl_short?>pages/download_usage.php" onSubmit="if ((jQuery('#usagecomment').val()=='') || (jQuery('#usage').val()=='')) {alert('<?php echo $lang["usageincorrect"] ?>');return false;} else {return CentralSpacePost(this,true);}">
+<input type="hidden" name="ref" value="<?php echo $ref ?>" />
+<input type="hidden" name="size" value="<?php echo $size ?>" />
+<input type="hidden" name="ext" value="<?php echo $ext ?>" />
+<input type="hidden" name="alternative" value="<?php echo $alternative ?>" />
+<input type="hidden" name="save" value="true" />
 
 <h1><?php echo $lang["usage"]?></h1>
 <p><?php echo $lang["indicateusage"]?></p>
@@ -47,13 +52,12 @@ for ($n=0;$n<count($download_usage_options);$n++)
 
 <div class="QuestionSubmit">
 <label for="buttons"> </label>			
-<input name="save" type="submit" value="&nbsp;&nbsp;<?php echo $lang["action-download"]?>&nbsp;&nbsp;" />
+<input name="submit" type="submit" value="&nbsp;&nbsp;<?php echo $lang["action-download"]?>&nbsp;&nbsp;" />
 </div>
+
 </form>
 </div>
 
-
-</div>
 
 <?php
 include "../include/footer.php";
