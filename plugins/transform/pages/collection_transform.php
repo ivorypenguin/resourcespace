@@ -140,7 +140,6 @@ if (count($resources) == 0){
 				$failcount++;
 			}
 		}?></div><?php 
-	flush();ob_flush();
 
 	}
 	?><script>CollectionDivLoad("<?php echo $baseurl . '/pages/collections.php?nowarn=true&nc=' . time() ?>");</script><?php
