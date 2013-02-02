@@ -31,7 +31,7 @@ if ($doit == 0){
 ?>
 
 
-	<form name='batchtransform' action='<?php echo $baseurl_short?>plugins/transform/pages/collection_transform.php' onSubmit="return CentralSpacePost(this,true);">
+	<form name='batchtransform' action='<?php echo $baseurl_short?>plugins/transform/pages/collection_transform.php' >
 	<input type='hidden' name='doit' value='1' />
 	<input type='hidden' name='collection' value='<?php echo $collection ?>' />
 	
@@ -140,7 +140,7 @@ if (count($resources) == 0){
 				$failcount++;
 			}
 		}?></div><?php 
-
+			flush();
 	}
 	?><script>CollectionDivLoad("<?php echo $baseurl . '/pages/collections.php?nowarn=true&nc=' . time() ?>");</script><?php
 }
