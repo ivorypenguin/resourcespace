@@ -1,0 +1,4 @@
+ref,int(11),NO,PRI,,auto_increment
+resource_type_field,int(11),NO,MUL,0,
+parent,int(11),NO,MUL,0,
+name,varchar(100),YES,,,

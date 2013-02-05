@@ -1,0 +1,3 @@
+dynamic_tree_node,0,PRIMARY,1,ref,A,239,,,,BTREE,
+dynamic_tree_node,1,parent,1,parent,A,29,,,YES,BTREE,
+dynamic_tree_node,1,resource_type_field,1,resource_type_field,A,1,,,,BTREE,

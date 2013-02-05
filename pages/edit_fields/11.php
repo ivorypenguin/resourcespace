@@ -1,11 +1,10 @@
-<?php /* -------- Category Tree ------------------- */ 
+<?php /* -------- Category tree ---------------- */ 
 
 if (isset($n) && isset($fields)){
 	$options=$fields[$n]["options"];
 }
 
-global $lang,$baseurl,$css_reload_key,$category_tree_show_status_window,$is_search;
-if (!isset($is_search)) {$is_search = false;}
+global $lang,$baseurl,$css_reload_key,$category_tree_show_status_window;
 
 ?><div class="Fixed">
 
@@ -16,7 +15,7 @@ if (!isset($is_search)) {$is_search = false;}
 
 <div><a href="#" onclick="if (document.getElementById('<?php echo $name?>_tree').style.display!='block') {document.getElementById('<?php echo $name?>_tree').style.display='block';} else {document.getElementById('<?php echo $name?>_tree').style.display='none';} return false;">&gt; <?php echo $lang["showhidetree"]?></a>
 &nbsp;
-<a href="#" onclick="if (confirm('<?php echo $lang["clearcategoriesareyousure"]?>')) {DeselectAll('<?php echo $name?>', <?php echo json_encode($is_search)?>);} return false;">&gt; <?php echo $lang["clearall"]?></a>
+<a href="#" onclick="if (confirm('<?php echo $lang["clearcategoriesareyousure"]?>')) {DeselectAll('<?php echo $name?>');} return false;">&gt; <?php echo $lang["clearall"]?></a>
 </div>
 
 <input type="hidden" name="<?php echo $name?>" id="<?php echo $name?>_category" value="<?php echo $value?>">
@@ -33,7 +32,7 @@ TreeExpand["<?php echo $name?>"]=new Array();
 TreeID["<?php echo $name?>"]=new Array();
 TreeClickable["<?php echo $name?>"]=new Array();
 TreeChecked["<?php echo $name?>"]=new Array();
-TreeDynamic["<?php echo $name?>"]=false;
+TreeDynamic["<?php echo $name?>"]=true;
 
 nocategoriesmessage="<?php echo $lang["nocategoriesselected"] ?>";
 
@@ -46,6 +45,7 @@ For($c=0;$c<count($checked);$c++)
 	} 
 $class=explode("\n",$options);
 
+/*
 for ($t=0;$t<count($class);$t++)
 	{
 	$s=explode(",",$class[$t]);
@@ -54,15 +54,29 @@ for ($t=0;$t<count($class);$t++)
 		$nodefolder=1;
 		$nodechecked=0;if (in_array(trim(strtolower($s[2])),$checked)) {$nodechecked=1;}
 		$nodeexpand=0;if (($nodefolder==1) && ($nodechecked==1)) {$nodeexpand=1;}
-		# Add this node
-		?>AddNode("<?php echo $name?>",<?php echo $s[1]-1?>,<?php echo $s[0]-1?>,"<?php echo str_replace("\"","\\\"",trim($s[2]))?>",1,<?php echo $nodechecked?>,<?php echo $nodeexpand?>);<?php
+		# Add this node0
+		?>AddNode("<?php echo $name?>",<?php echo $s[1]-1?>,<?php echo $t?>,"<?php echo str_replace("\"","\\\"",trim($s[2]))?>",1,<?php echo $nodechecked?>,<?php echo $nodeexpand?>);<?php
 		}
 	}
+*/
+$tree=sql_query("select * from dynamic_tree_node where resource_type_field='" . $fields[$n]["ref"] . "'");
+
+foreach ($tree as $node)
+	{
+	$nodechecked=0;$nodeexpand=0;
+	if (in_array(trim(strtolower($node["name"])),$checked)) {$nodechecked=1;$nodeexpand=1;}
+	?>
+	AddNode("<?php echo $name?>",<?php echo $node["parent"] ?>,<?php echo $node["ref"] ?>,"<?php echo i18n_get_translated($node["name"]) ?>",1,<?php echo $nodechecked?>,<?php echo $nodeexpand?>);
+	<?php
+	}
+
 ?>
 ResolveParents("<?php echo $name?>");
-DrawTree("<?php echo $name?>", <?php echo json_encode($is_search)?>);
-UpdateStatusBox("<?php echo $name?>", <?php echo json_encode($is_search)?>);
+DrawTree("<?php echo $name?>");
+UpdateStatusBox("<?php echo $name?>");
 UpdateHiddenField("<?php echo $name?>");
+
+
 
 </script>
 
