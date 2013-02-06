@@ -3459,7 +3459,7 @@ function resolve_user_emails($ulist){
 			{
 			# Not a recognised user, if @ sign present, assume e-mail address specified
 			if (strpos($uname,"@")===false) {
-				error_alert($lang["couldnotmatchallusernames"]);die();
+				error_alert($lang["couldnotmatchallusernames"] . ": " . escape_check($uname));die();
 			}
 			$emails_key_required['unames'][$n]=$uname;
 			$emails_key_required['emails'][$n]=$uname;
