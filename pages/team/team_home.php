@@ -78,7 +78,7 @@ include "../../include/header.php";
             } ?>
     </li><?php } ?>
 
-    <?php if (checkperm("r") && $research_request)) { ?><li><a href="<?php echo $baseurl?>/pages/team/team_research.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["manageresearchrequests"]?></a>
+    <?php if (checkperm("r") && $research_request) { ?><li><a href="<?php echo $baseurl?>/pages/team/team_research.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["manageresearchrequests"]?></a>
         &nbsp;&nbsp;<?php
         $unassigned = sql_value("select count(*) value from research_request where status = 0",0);
         switch ($unassigned)
