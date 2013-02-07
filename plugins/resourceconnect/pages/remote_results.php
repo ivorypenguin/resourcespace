@@ -125,7 +125,7 @@ else
 		
 		
 		<table border="0" class="ResourceAlign"><tr><td>
-		<a xtarget="_blank" href="<?php echo $link_url?>" title="<?php echo $title ?>" onClick="return CollectionDivLoad(this,true);"><?php if ($result["has_image"]==1) { ?><img  src="<?php echo get_resource_path($ref,false,"thm",false,$result["preview_extension"],-1,1,false,$result["file_modified"])?>" class="ImageBorder"
+		<a xtarget="_blank" href="<?php echo $link_url?>" title="<?php echo $title ?>" onClick="return CentralSpaceLoad(this,true);"><?php if ($result["has_image"]==1) { ?><img  src="<?php echo get_resource_path($ref,false,"thm",false,$result["preview_extension"],-1,1,false,$result["file_modified"])?>" class="ImageBorder"
 		/><?php } else { ?><img border=0 src="<?php echo $baseurl ?>/gfx/<?php echo get_nopreview_icon($result["resource_type"],$result["file_extension"],false,false,true) ?>" 
 		/><?php } ?></a>
 		</td>
