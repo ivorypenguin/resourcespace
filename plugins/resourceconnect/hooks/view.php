@@ -80,7 +80,7 @@ function HookResourceconnectViewResourceactions_anonymous()
 		}
 
 	?>	
-	<li><a target="collections" href="<?php echo $url ?>">&gt; <?php echo $lang["action-addtocollection"]?></a></li>
+	<li><a target="collections" href="<?php echo $url ?>" onClick="return CollectionDivLoad(this,true);">&gt; <?php echo $lang["action-addtocollection"]?></a></li>
 	<?php 
 	}
 	
