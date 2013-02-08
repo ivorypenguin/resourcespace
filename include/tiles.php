@@ -16,7 +16,6 @@ include "general.php";
     $r = strip_tags($_GET['r']);
 
     $file = $tilecache."/${z}_${x}_$y.png";
-    $fileurl=$tilecacheurl."/${z}_${x}_$y.png";
 
     if (!is_file($file) || filemtime($file)<time()-(86400*30))
     {
