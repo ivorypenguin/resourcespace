@@ -1675,6 +1675,8 @@ $geo_layers="osm";
 # Height of map in pixels on resource view page
 $view_mapheight=200;
 
+# Cache openstreetmap tiles on your server. This is slower when loading, but eliminates non-ssl content warnings if your site is SSL (requires curl)
+$geo_tile_caching=false;
 
 # QuickLook previews (Mac Only)
 # If configured, attempt to produce a preview for files using Mac OS-X's built in QuickLook preview system which support multiple files.

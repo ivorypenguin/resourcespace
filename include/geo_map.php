@@ -9,7 +9,16 @@ OpenLayers.ImgPath="<?php echo $baseurl ?>/lib/OpenLayers/img/";
 
 map = new OpenLayers.Map("map_canvas");
 
-var osm = new OpenLayers.Layer.OSM("<?php echo $lang["openstreetmap"]?>");
+var osm = new OpenLayers.Layer.OSM("<?php echo $lang["openstreetmap"]?>"
+<?php if ($geo_tile_caching && extension_loaded("curl")){
+	    $tilecache=get_temp_dir()."/tiles";
+        if (!file_exists($tilecache)){
+                mkdir($tilecache);
+                chmod($tilecache,0777);
+        }
+	?>,"<?php echo $baseurl?>/include/tiles.php?z=${z}&x=${x}&y=${y}&r=mapnik"<?php } ?>
+);
+
 var gphy = new OpenLayers.Layer.Google(
 "<?php echo $lang["google_terrain"]?>",
 {type: google.maps.MapTypeId.TERRAIN}
