@@ -1597,9 +1597,20 @@ function AutoRotateImage ($src_image){
 		return false;
 	}
 }
+
+function extract_icc_profile ($ref,$extension){
+	// this is provided for compatibility. However, we are now going to rely on the caller to tell us the
+	// path of the file. extract_icc() is where the real work will happen.
+	$infile=get_resource_path($ref,true,"",true,$extension);	
+	if (extract_icc($infile)){
+		return true;
+	} else {
+		return false;
+	}
+}
 	
 
-function extract_icc_profile($ref,$extension) {
+function extract_icc($infile) {
    global $config_windows;
 
    # Locate imagemagick, or fail this if it isn't installed
@@ -1608,8 +1619,11 @@ function extract_icc_profile($ref,$extension) {
 
    if ($config_windows){ $stderrclause = ''; } else { $stderrclause = '2>&1'; }
 
-   $infile=get_resource_path($ref,true,"",true,$extension);	
-   $outfile=get_resource_path($ref,true,"",false,$extension.".icc");
+   //$outfile=get_resource_path($ref,true,"",false,$extension.".icc");
+   //new, more flexible approach: we will just create a file for anything the caller hands to us.
+   //this makes things work with alternatives, the deepzoom plugin, etc.
+   $path_parts = pathinfo($infile);
+   $outfile = $path_parts['dirname'] . '/' . $path_parts['filename'] . '.icc';
    
    if (file_exists($outfile)){
       // extracted profile already existed. We'll remove it and start over
