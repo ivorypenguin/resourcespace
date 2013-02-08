@@ -39,7 +39,6 @@ foreach ($rtx as $rt)
 			}
 		}
 	}
-#print_r($restypes);
 
 
 $results=do_search($search,$restypes,"relevance",0,$pagesize+$offset,"desc",false,"",true); # Search, ignoring filters (as fields are unlikely to match).

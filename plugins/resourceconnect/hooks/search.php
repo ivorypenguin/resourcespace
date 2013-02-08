@@ -32,7 +32,7 @@ function HookResourceConnectSearchReplacesearchresults()
 	
 	$restypes="";
 	$resource_types=get_resource_types();
-	reset($_GET);foreach ($_GET as $key=>$value)
+	reset($_POST);foreach ($_POST as $key=>$value)
 		{
 		if (substr($key,0,8)=="resource")
 			{
