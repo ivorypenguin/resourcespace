@@ -1,5 +1,4 @@
 <?php
-include "config.php"; // we would normally call db.php, but we only need baseurl, and this cuts the script time (no sql)
 include "general.php";
 
 # from
@@ -8,7 +7,6 @@ include "general.php";
 
 
     $tilecache=get_temp_dir()."/tiles";
-	$tilecacheurl=get_temp_dir(true)."/tiles";
 
     $ttl = 86400; //cache timeout in seconds
 
