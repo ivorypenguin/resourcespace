@@ -10,13 +10,22 @@ OpenLayers.ImgPath="<?php echo $baseurl ?>/lib/OpenLayers/img/";
 map = new OpenLayers.Map("map_canvas");
 
 var osm = new OpenLayers.Layer.OSM("<?php echo $lang["openstreetmap"]?>"
-<?php if ($geo_tile_caching && extension_loaded("curl")){
+	
+	<?php if ($geo_tile_caching && extension_loaded("curl")){
 	    $tilecache=get_temp_dir()."/tiles";
         if (!file_exists($tilecache)){
                 mkdir($tilecache);
                 chmod($tilecache,0777);
         }
-	?>,"<?php echo $baseurl?>/include/tiles.php?z=${z}&x=${x}&y=${y}&r=mapnik"<?php } ?>
+	?>
+		,"<?php echo $baseurl?>/include/tiles.php?z=${z}&x=${x}&y=${y}&r=mapnik",{transitionEffect: 'resize'}
+	
+	<?php } else { ?>
+	
+		,"http://tile.openstreetmap.org/${z}/${x}/${y}.png",{transitionEffect: 'resize'}
+		
+	<?php } ?>
+	
 );
 
 var gphy = new OpenLayers.Layer.Google(
