@@ -1481,11 +1481,11 @@ function draw_compact_style_selector($collection,$onhover=true){
 	$cinfo,
 	$feedback,
 	$colresult,
-	$m,$getthemes;	
+	$m,$getthemes,$search;	
 	if(preg_match('/(Android|iPhone|iPad)/', $_SERVER['HTTP_USER_AGENT'])) { 
 		$collections_compact_style_ajax=false; // omit this optimization for mobile as the hover events it relies on sometimes cause the selector to not be loaded prior to clicking.
 	}
-	if (!$onhover || !$collections_compact_style_ajax|| $pagename=="collections"){
+	if (!$onhover || !$collections_compact_style_ajax|| $pagename=="collections" || (substr($search,0,11)=="!collection" && $pagename=="search")){
 		include(dirname(__FILE__)."/../pages/collections_compact_style.php");
 		return;
 	}
