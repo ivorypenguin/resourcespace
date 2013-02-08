@@ -500,7 +500,10 @@ li.plupload_droptext
 	}
 	
 
-.ui-layout-toggler-open-hover{background-color:yellow;}
+.ui-layout-toggler-open-hover
+	{
+	background-color:rgb(160,175,195);
+	}
 .ui-layout-pane {
     overflow: auto;
 }

@@ -104,7 +104,8 @@ function HookResourceConnectSearchProcess_search_results($result,$search)
 			"url"=>"../plugins/resourceconnect/pages/view.php?url=" . urlencode($resource["url"]),
 			"thm_url"=>$resource["large_thumb"],
 			"col_url"=>$resource["thumb"],
-			"pre_url"=>$resource["xl_thumb"]
+			"pre_url"=>$resource["xl_thumb"],
+			"user_rating"=>''
 			);
 		}
 

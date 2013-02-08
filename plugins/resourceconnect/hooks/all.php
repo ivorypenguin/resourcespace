@@ -81,6 +81,7 @@ function HookResourceConnectAllGenerate_collection_access_key($collection,$k,$us
 	
 	}
 
+/*
 function HookResourceConnectAllAdvancedsearchlink()
 	{
 	global $resourceconnect_selected,$resourceconnect_this;
@@ -90,3 +91,4 @@ function HookResourceConnectAllAdvancedsearchlink()
 	return ($resourceconnect_selected!=$resourceconnect_this);
 		
 	}
+*/
