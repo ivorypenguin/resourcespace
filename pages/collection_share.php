@@ -23,7 +23,7 @@ if (getval("deleteaccess","")!="")
 	}
 
 #Check if any resources are not approved
-if (!is_collection_approved($ref)) {
+if (!$collection_allow_not_approved_share && !is_collection_approved($ref)) {
 	$show_error=true;
 	$error=$lang["notapprovedsharecollection"];
 	}

@@ -736,7 +736,13 @@ function email_collection($colrefs,$collectionname,$fromusername,$userlist,$mess
 				for ($nx2=0;$nx2<count($urefs);$nx2++)
 				{
 		sql_query("insert into user_collection(collection,user,request_feedback) values ($reflist[$nx1], $urefs[$nx2], $feedback )");
-					#log this
+		if ($access == 0) {
+			foreach (get_collection_resources($reflist[$nx1]) as $resource)	{
+				open_access_to_user($urefs[$nx2],$resource,$expires);
+			}
+		}
+				
+			#log this
 		collection_log($reflist[$nx1],"S",0, sql_value ("select username as value from user where ref = $urefs[$nx2]",""));
 
 				}
