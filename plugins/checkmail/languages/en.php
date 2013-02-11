@@ -33,8 +33,8 @@ $lang['checkmail_html']="Allow HTML Content? (experimental, not recommended)";
 $lang['checkmail_mail_skipped']="Skipped e-mail";
 
 $lang['addresourcesviaemail']="Add Resources via E-mail";
-$lang['uploadviaemail']="Uploading Via E-mail";
+$lang['uploadviaemail']="Add Resources via E-mail";
 $lang['uploadviaemail-intro']="<br /><br />To upload via e-mail, attach your file(s) and address the e-mail to <b><a href='mailto:[toaddress]'>[toaddress]</a></b>.</p> <p>Be sure to send it from <b>[fromaddress]</b>, or it will be ignored.</p><p>Note that anything in the SUBJECT of the e-mail will go into the [subjectfield] field in $applicationname. </p><p> Also note that anything in the BODY of the e-mail will go into the [bodyfield] field in $applicationname. </p>  <p>Multiple files will be grouped into a collection. Your resources will default to an Access level <b>'[access]'</b>, and Archive status <b>'[archive]'</b>.</p><p> [confirmation]";
-$lang['checkmail_confirmation_message']="You will receive a confirmation e-mail when your e-mail is successfully processed. If your e-mail is programmatically skipped for any reason (such as if it is sent from the wrong address), the administrator will be notified that there is an e-mail requiring human attention.";
+$lang['checkmail_confirmation_message']="You will receive a confirmation e-mail when your e-mail is successfully processed. If your e-mail is programmatically skipped for any reason (such as if it is sent from the wrong address), the administrator will be notified that there is an e-mail requiring attention.";
 $lang['yourresourcehasbeenuploaded']="Your resource has been uploaded";
 $lang['yourresourceshavebeenuploaded']="Your resources have been uploaded";
