@@ -630,8 +630,32 @@ $config_sheetlist_include_ref=true;
 # If making a contact sheet with thumbnail sheet style, use these fields in contact sheet:
 $config_sheetthumb_fields = array();
 $config_sheetthumb_include_ref=true;
+# If making a contact sheet with one resource per page sheet style, use these fields in contact sheet:
+$config_sheetsingle_fields = array(8);
+$config_sheetsingle_include_ref=true;
 # experimental sorting (doesn't include ASC/DESC yet).
 $contactsheet_sorting=false;
+
+# Add header text to contact page?
+$contact_sheet_include_header=true;
+# Give user option to add header text to contact page?
+$contact_sheet_include_header_option=false;
+
+# Add logo image to contact page? set contact_sheet_logo if set to true
+$include_contactsheet_logo=false;
+#$contact_sheet_logo="gfx/contactsheetheader.png";
+# Give user option to add/remove logo?
+#$contact_sheet_logo_option=true;
+
+# Optional example footer html to include on contact sheet
+#$contact_sheet_custom_footerhtml='<div style="text-align: center" >XXX MAIN STREET, CITY, ABC 123 - TEL: (111) 000-8888 - FAX: (000) 111-9999</div><table style="width:100%;margin:auto;"><tr><td style="width:50%;text-align: center" >resourcespace.org</td><td style="width:50%;text-align: center" >&#0169; ReourceSpace. All Rights Reserved.</td></tr></table>';
+
+# Make images in contactsheet links to the resource view page?
+$contact_sheet_add_link=true;
+# Give user option to enable links?
+$contact_sheet_add_link_option=false;
+
+$contact_sheet_single_select_size=false;
 
 ##  Contact Print settings - paper size options
 $papersize_select = '

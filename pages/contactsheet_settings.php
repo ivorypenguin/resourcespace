@@ -37,18 +37,88 @@ include "../include/header.php";
 	if (jQuery('#sheetstyle').val()=='list')
 		{
 		document.getElementById('ThumbnailOptions').style.display='none';
+		document.getElementById('size_options').style.display='none';
 		}
-	else
+	else if (jQuery('#sheetstyle').val()=='single')
+		{
+		document.getElementById('ThumbnailOptions').style.display='none';
+		document.getElementById('size_options').style.display='block';
+		}
+	else if (jQuery('#sheetstyle').val()=='thumbnails')
 		{
 		document.getElementById('ThumbnailOptions').style.display='block';
+		document.getElementById('size_options').style.display='none';
 		}
 	jQuery().rsContactSheet('revert');	
 		">
-<option value="thumbnails"><?php echo $lang["thumbnails"]?></option>
+<option value="thumbnails" selected><?php echo $lang["thumbnails"]?></option>
 <option value="list"><?php echo $lang["list"]?></option>
+<option value="single" ><?php echo $lang["contactsheet-single"]?></option>
 </select>
 <div class="clearerleft"> </div>
 </div>
+<?php
+global $contact_sheet_include_header_option, $contact_sheet_add_link, $contact_sheet_logo_option;
+if ($contact_sheet_include_header_option)
+	{ ?>	
+	<div class="Question">
+	<label><?php echo $lang["contact_sheet-include_header_option"]?></label>
+	<select class="shrtwidth" name="includeheader" id="includeheader" onChange="jQuery().rsContactSheet('revert');">
+	<option value="true"><?php echo $lang["yes"]?></option>
+	<option value="false"><?php echo $lang["no"]?></option>
+	</select>
+	<div class="clearerleft"> </div>
+	</div>
+<?php } 
+
+if ($contact_sheet_single_select_size)
+	{
+	$sizes=get_all_image_sizes(false,false);
+	?>
+	<div id="size_options" class="Question" style="display:none">
+	<label><?php echo $lang["contact_sheet-single_select_size"]?></label>
+	<select class="shrtwidth" name="ressize" id="ressize" onChange="jQuery().rsContactSheet('revert');">
+	<?php
+	foreach($sizes as $size)
+        {
+        echo '    <option value="'. $size['id'] . '"' . ($size['id']=='lpr'?' selected':'') . '>' . $size['name'] . '</option>';
+        }
+		
+	?>	
+	
+	</select>
+	<div class="clearerleft"> </div>
+	</div>
+
+<?php }
+
+if ($contact_sheet_logo_option)
+	{ ?>	
+	<div class="Question">
+	<label><?php echo $lang["contact_sheet-add_logo_option"]?></label>
+	<select class="shrtwidth" name="addlogo" id="addlogo" onChange="jQuery().rsContactSheet('revert');">
+	<option value="true"><?php echo $lang["yes"]?></option>
+	<option value="false"><?php echo $lang["no"]?></option>
+	</select>
+	<div class="clearerleft"> </div>
+	</div>
+
+<?php }
+
+if ($contact_sheet_add_link_option)
+	{ ?>	
+	<div class="Question">
+	<label><?php echo $lang["contact_sheet-add_link_option"]?></label>
+	<select class="shrtwidth" name="addlink" id="addlink" onChange="jQuery().rsContactSheet('revert');">
+	<option value="true"><?php echo $lang["yes"]?></option>
+	<option value="false"><?php echo $lang["no"]?></option>
+	</select>
+	<div class="clearerleft"> </div>
+	</div>
+
+<?php } ?>
+
+
 
 <div class="Question">
 <label><?php echo $lang["size"]?></label>
