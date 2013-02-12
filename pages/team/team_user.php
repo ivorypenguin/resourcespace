@@ -90,19 +90,19 @@ $atoz.="</div>";
 <div class="Listview">
 <table border="0" cellspacing="0" cellpadding="0" class="ListviewStyle">
 <tr class="ListviewTitleStyle">
-<td><a href="<?php echo $baseurl ?>/pages/team/team_user.php?offset=0&order_by=<?php echo (($order_by=="u.username")?"u.username+desc":"u.username")?>&find=<?php echo urlencode($find)?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["username"]?></a></td>
+<td><a href="<?php echo $baseurl ?>/pages/team/team_user.php?offset=0&group=<?php echo $group; ?>&order_by=<?php echo (($order_by=="u.username")?"u.username+desc":"u.username")?>&find=<?php echo urlencode($find)?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["username"]?></a></td>
 <?php if (!hook("replacefullnameheader")){?>
-<td><a href="<?php echo $baseurl ?>/pages/team/team_user.php?offset=0&order_by=<?php echo (($order_by=="u.fullname")?"u.fullname+desc":"u.fullname")?>&find=<?php echo urlencode($find)?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["fullname"]?></a></td>
+<td><a href="<?php echo $baseurl ?>/pages/team/team_user.php?offset=0&group=<?php echo $group; ?>&order_by=<?php echo (($order_by=="u.fullname")?"u.fullname+desc":"u.fullname")?>&find=<?php echo urlencode($find)?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["fullname"]?></a></td>
 <?php } ?>
 <?php if (!hook("replacegroupnameheader")){?>
-<td><a href="<?php echo $baseurl ?>/pages/team/team_user.php?offset=0&order_by=<?php echo (($order_by=="g.name")?"g.name+desc":"g.name")?>&find=<?php echo urlencode($find)?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["group"]?></a></td>
+<td><a href="<?php echo $baseurl ?>/pages/team/team_user.php?offset=0&group=<?php echo $group; ?>&order_by=<?php echo (($order_by=="g.name")?"g.name+desc":"g.name")?>&find=<?php echo urlencode($find)?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["group"]?></a></td>
 <?php } ?>
 <?php if (!hook("replaceemailheader")){?>
-<td><a href="<?php echo $baseurl ?>/pages/team/team_user.php?offset=0&order_by=<?php echo (($order_by=="email")?"email+desc":"email")?>&find=<?php echo urlencode($find)?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["email"]?></a></td>
+<td><a href="<?php echo $baseurl ?>/pages/team/team_user.php?offset=0&group=<?php echo $group; ?>&order_by=<?php echo (($order_by=="email")?"email+desc":"email")?>&find=<?php echo urlencode($find)?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["email"]?></a></td>
 <?php } ?>
-<td><a href="<?php echo $baseurl ?>/pages/team/team_user.php?offset=0&order_by=<?php echo (($order_by=="created")?"created+desc,created+desc":"created")?>&find=<?php echo urlencode($find)?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["created"]?></a></td>
-<td><a href="<?php echo $baseurl ?>/pages/team/team_user.php?offset=0&order_by=<?php echo (($order_by=="approved")?"approved+desc":"approved")?>&find=<?php echo urlencode($find)?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["approved"] ?></a></td>
-<td><a href="<?php echo $baseurl ?>/pages/team/team_user.php?offset=0&order_by=<?php echo (($order_by=="last_active")?"last_active+desc":"last_active")?>&find=<?php echo urlencode($find)?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["lastactive"]?></a></td>
+<td><a href="<?php echo $baseurl ?>/pages/team/team_user.php?offset=0&group=<?php echo $group; ?>&order_by=<?php echo (($order_by=="created")?"created+desc,created+desc":"created")?>&find=<?php echo urlencode($find)?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["created"]?></a></td>
+<td><a href="<?php echo $baseurl ?>/pages/team/team_user.php?offset=0&group=<?php echo $group; ?>&order_by=<?php echo (($order_by=="approved")?"approved+desc":"approved")?>&find=<?php echo urlencode($find)?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["approved"] ?></a></td>
+<td><a href="<?php echo $baseurl ?>/pages/team/team_user.php?offset=0&group=<?php echo $group; ?>&order_by=<?php echo (($order_by=="last_active")?"last_active+desc":"last_active")?>&find=<?php echo urlencode($find)?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["lastactive"]?></a></td>
 
 <td><div class="ListTools"><?php echo $lang["tools"]?></div></td>
 </tr>
