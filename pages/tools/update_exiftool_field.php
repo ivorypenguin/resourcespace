@@ -21,6 +21,9 @@ if ($exiftool_fullpath==false) {die ("Could not find Exiftool.");}
 $blanks=getval("blanks","true"); // if new value is blank, it will replace the old value.
 $fieldrefs=explode(",",$fieldrefs);
 
+
+$collectionid=getvalescaped("col", false);
+
 foreach ($fieldrefs as $fieldref){
 	$fieldref_info= sql_query("select exiftool_field,exiftool_filter,title,resource_type,name from resource_type_field where ref='$fieldref'");
 
@@ -35,14 +38,24 @@ foreach ($fieldrefs as $fieldref){
 
 	echo "<b>Updating RS Field $fieldref - $title, with exiftool extraction of: $exiftool_tag</b><br><br>";
 
+	$join="";
+	$condition = "";
+	$conditionand = "";
+	if ($collectionid != false)
+			{
+			$join=" inner join collection_resource on collection_resource.resource=resource.ref "; 
+			$condition = "where collection_resource.collection = '$collectionid' ";
+			$conditionand = "and collection_resource.collection = '$collectionid' ";
+			}
+	
 	if($field_resource_type==0){
-		$rd=sql_query("select ref,file_extension from resource order by ref");
+		$rd=sql_query("select ref,file_extension from resource $join $condition order by ref");
 	} else {
-		$rd=sql_query("select ref,file_extension from resource where resource_type=$field_resource_type order by ref");
+		$rd=sql_query("select ref,file_extension from resource $join where resource_type=$field_resource_type $conditionand order by ref");
 	}	
 
 	for ($n=0;$n<count($rd);$n++)
-		{
+		{		
 		
 		$ref=$rd[$n]['ref'];
 		$extension=$rd[$n]['file_extension'];
