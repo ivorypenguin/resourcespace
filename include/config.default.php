@@ -2038,7 +2038,7 @@ $ajax_loading_timer=1500;
 $download_filename_id_only = false;
 
 # Index the 'contributed by' field?
-$index_contributed_by=true;
+$index_contributed_by=false;
 
 # Use CKEditor for site content?
 $site_text_use_ckeditor=false;

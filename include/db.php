@@ -554,10 +554,9 @@ function CheckDBStruct($path)
 				
 				##########				
 								
-				$file=$path . "/" . $file;
-				if (file_exists($file))
+				if (file_exists($path . "/" . $file))
 					{
-					$f=fopen($file,"r");
+					$f=fopen($path . "/" . $file,"r");
 					while (($col = fgetcsv($f,5000)) !== false)
 						{
 						if (count($col)> 1){
