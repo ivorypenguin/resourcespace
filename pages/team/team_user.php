@@ -13,7 +13,7 @@ include "../../include/collections_functions.php";
 $offset=getvalescaped("offset",0);
 $find=getvalescaped("find","");
 $order_by=getvalescaped("order_by","u.username");
-$group=getval("group",0,true);
+$group=getvalescaped("group",0);
 
 # pager
 $per_page=getvalescaped("per_page_list",$default_perpage_list);setcookie("per_page_list",$per_page);
