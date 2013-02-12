@@ -98,11 +98,11 @@ if (count($colresult)>0 && checkperm("e" . $colresult[0]["archive"]) && allow_mu
 <!-- end preview_all -->
 
 <?php 
-hook("collectiontoolcompact","",array("collection"=>$collection,"count_result"=>$count_result,"cinfo"=>$cinfo));
+hook("collectiontoolcompact","",array("collection"=>$collection,"count_result"=>$count_result,"cinfo"=>$cinfo,"colresult"=>$colresult,"col_editable"=>$col_editable));
 ?>
 
 <?php 
-hook("collectiontoolcompact2","",array("collection"=>$collection,"count_result"=>$count_result,"cinfo"=>$cinfo));
+hook("collectiontoolcompact2","",array("collection"=>$collection,"count_result"=>$count_result,"cinfo"=>$cinfo,"colresult"=>$colresult,"col_editable"=>$col_editable));
 ?>
 
 <?php if (strpos(ob_get_contents(),"option")!==false){?>
@@ -162,7 +162,7 @@ hook("collectiontoolcompact2","",array("collection"=>$collection,"count_result"=
 <!-- end upload-->
 
 <!-- edit collection -->
-<?php if (!hook("replacecompactstyleeditcollection","",array("collection"=>$collection,"count_result"=>$count_result,"cinfo"=>$cinfo))){?>
+<?php if (!hook("replacecompactstyleeditcollection","",array("collection"=>$collection,"count_result"=>$count_result,"cinfo"=>$cinfo,"colresult"=>$colresult,"col_editable"=>$col_editable))){?>
 <?php if (!checkperm("b") && (!collection_is_research_request($collection)) || (!checkperm("r"))) { ?>
     <?php if (($userref==$cinfo["user"]) || (checkperm("h"))) {?><option value="<?php echo $collection?>|0|0|<?php echo $baseurl_short?>pages/collection_edit.php?pagename=<?php echo $pagename?>&ref=<?php echo $collection?>&offset=<?php echo $offset?>&col_order_by=<?php echo $col_order_by?>&sort=<?php echo $sort?>&find=<?php echo urlencode($find)?>|main|false">&gt;&nbsp;<?php echo $lang["editcollection"]?>...</option><?php } ?>
     <?php } else {
@@ -224,7 +224,7 @@ if ($show_edit_all_link && $count_result>0 && $col_editable) { ?>
 <?php } ?>
 <!-- end contactsheet -->
 
-<?php hook("collectiontoolcompact1","",array("collection"=>$collection,"count_result"=>$count_result,"cinfo"=>$cinfo,"colresult"=>$colresult)); ?>
+<?php hook("collectiontoolcompact1","",array("collection"=>$collection,"count_result"=>$count_result,"cinfo"=>$cinfo,"colresult"=>$colresult,"col_editable"=>$col_editable)); ?>
 
 
 <?php if (strpos(ob_get_contents(),"option")!==false){?>
