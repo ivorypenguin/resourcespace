@@ -93,23 +93,26 @@ if (($user["login_tries"]>=$max_login_attempts_per_username) && (strtotime($user
 <?php } ?>
 
 <div class="Question"><label><?php echo $lang["group"]?></label>
+<?php if (!hook("replaceusergroups")) { ?>
 <select class="stdwidth" name="usergroup">
-<?php $groups=get_usergroups(true);
-for ($n=0;$n<count($groups);$n++)
-	{
-	if (($groups[$n]["ref"]==3) && ($usergroup!=3))
+<?php
+	$groups=get_usergroups(true);
+	for ($n=0;$n<count($groups);$n++)
 		{
-		#Do not show
+		if (($groups[$n]["ref"]==3) && ($usergroup!=3))
+			{
+			#Do not show
+			}
+		else
+			{
+			?>
+			<option value="<?php echo $groups[$n]["ref"]?>" <?php if ($user["usergroup"]==$groups[$n]["ref"]) {?>selected<?php } ?>><?php echo $groups[$n]["name"]?></option>	
+			<?php
+			}
 		}
-	else
-		{
-		?>
-		<option value="<?php echo $groups[$n]["ref"]?>" <?php if ($user["usergroup"]==$groups[$n]["ref"]) {?>selected<?php } ?>><?php echo $groups[$n]["name"]?></option>	
-		<?php
-		}
-	}
 ?>
 </select>
+<?php } ?>
 <div class="clearerleft"> </div></div>
 
 <div class="Question"><label><?php echo $lang["emailaddress"]?></label><input name="email" type="text" class="stdwidth" value="<?php echo $user["email"]?>"><div class="clearerleft"> </div></div>

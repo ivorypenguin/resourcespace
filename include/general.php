@@ -757,7 +757,7 @@ function get_users($group=0,$find="",$order_by="u.username",$usepermissions=fals
     # The standard user group names are translated using $lang. Custom user group names are i18n translated.
 
     $sql = "";
-    if ($group>0) {$sql = "where usergroup='$group'";}
+    if ($group != 0) {$sql = "where usergroup IN ($group)";}
     if (strlen($find)>1)
       {
       if ($sql=="") {$sql = "where ";} else {$sql.= " and ";}

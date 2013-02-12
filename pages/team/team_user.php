@@ -46,6 +46,7 @@ include "../../include/header.php";
 <?php if (isset($error)) { ?><div class="FormError">!! <?php echo $error?> !!</div><?php } ?>
 
 <?php 
+hook('modifyusersearch');
 
 # Fetch rows
 $users=get_users($group,$find,$order_by,true,$offset+$per_page);
@@ -142,10 +143,12 @@ for ($n=$offset;(($n<count($users)) && ($n<($offset+$per_page)));$n++)
 <div class="BottomInpageNav"><?php pager(false); ?></div>
 </div>
 
+
 <div class="BasicsBox">
   <form method="post" action="<?php echo $baseurl_short?>pages/team/team_user.php">
   <div class="Question">  
     <label for="group"><?php echo $lang["group"]; ?></label>
+    <?php if (!hook('replaceusergroups')) { ?>
     <div class="tickset">
       <div class="Inline"><select name="group" id="group" onChange="this.form.submit();">
         <option value="0"<?php if ($group == 0) { echo " selected"; } ?>><?php echo $lang["all"]; ?></option>
@@ -159,7 +162,8 @@ for ($n=$offset;(($n<count($users)) && ($n<($offset+$per_page)));$n++)
         </select>
       </div>
     </div>
-		<div class="clearerleft"> </div>
+    <?php } ?>
+	<div class="clearerleft"> </div>
   </div>
   </form>
 </div>
