@@ -498,6 +498,11 @@ if (true) # Always show search header now.
 		<?php if ($order_by=="resourceid") {?><span class="Selected"><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=resourceid&archive=<?php echo $archive?>&k=<?php echo $k?>&sort=<?php echo $revsort?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["resourceid"]?></a><div class="<?php echo $sort?>">&nbsp;</div></span><?php } else { ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=resourceid&archive=<?php echo $archive?>&k=<?php echo $k?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["resourceid"]?></a><?php } ?>
 		<?php } ?>
 		
+		<?php if ($order_by_resource_type){?>
+		&nbsp;|&nbsp;
+		<?php if ($order_by=="resourcetype") {?> <span class="Selected"><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=resourcetype&archive=<?php echo $archive?>&k=<?php echo $k?>&sort=<?php echo $revsort?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["type"]?></a><div class="<?php echo $sort?>">&nbsp;</div></span><?php } else { ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=resourcetype&archive=<?php echo $archive?>&k=<?php echo $k?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["type"]?></a><?php } ?>
+		<?php } ?>
+		
 		<?php # add thumbs_display_fields to sort order links for thumbs views
 		if (count($sf)>0){
 			for ($x=0;$x<count($sf);$x++)
@@ -690,6 +695,15 @@ if (true) # Always show search header now.
         # loop and display the results
         for ($n=$offset;(($n<count($result)) && ($n<($offset+$per_page)));$n++)
             {
+			
+			if ($order_by=="resourcetype" && $display!="list")
+				{
+				if ($n==0 || ((isset($result[$n-1])) && $result[$n]["resource_type"]!=$result[$n-1]["resource_type"]))
+					{
+					echo "<h1 class=\"SearchResultsDivider\" style=\"clear:left;\">" . $rtypes[$result[$n]["resource_type"]] .  "</h1>";
+					}
+				}
+			
             $ref = $result[$n]["ref"];
             $GLOBALS['get_resource_data_cache'][$ref] = $result[$n];
             $url = $baseurl_short."pages/view.php?ref=" . $ref . "&search=" . urlencode($search) . "&order_by=" . urlencode($order_by) . "&sort=".$sort."&offset=" . urlencode($offset) . "&archive=" . $archive . "&k=" . $k;
