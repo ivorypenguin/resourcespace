@@ -1,0 +1,5 @@
+name    : imagestream
+author  : Montala Ltd.
+version : 1.01
+desc    : Enables upload of multiple image files as a single zipped resource, with video preview and download
+config_url: /plugins/imagestream/pages/setup.php
