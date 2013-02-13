@@ -767,6 +767,7 @@ if (count($fields)>0 && $fields[0]["tab_name"]!="")
 <?php hook("extrafields");?>
 <?php
 # contributed by field
+if (!hook("replacecontributedbyfield")){
 $udata=get_user($resource["created_by"]);
 if ($udata!==false)
 	{
@@ -774,7 +775,7 @@ if ($udata!==false)
 <?php if ($show_contributed_by){?>	<div class="itemNarrow"><h3><?php echo $lang["contributedby"]?></h3><p><?php if (checkperm("u")) { ?><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/team/team_user_edit.php?ref=<?php echo $udata["ref"]?>"><?php } ?><?php echo highlightkeywords($udata["fullname"],$search)?><?php if (checkperm("u")) { ?></a><?php } ?></p></div><?php } ?>
 	<?php
 	}
-
+} // end hook replacecontributedby
 
 # Show field data
 $tabname="";
