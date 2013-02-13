@@ -2490,6 +2490,31 @@ function get_fields($field_refs)
 		}
 	return $return;
 	}
+
+function get_hidden_indexed_fields()
+	{
+	# Return an array of indexed fields to which the current user does not have access
+	# Used by do_search to ommit fields when searching.
+	$hidden=array();
+	
+	$fields=sql_query("select ref from resource_type_field where keywords_index=1 and length(name)>0");
+
+	# Apply field permissions
+	for ($n=0;$n<count($fields);$n++)
+		{
+		if ((checkperm("f*") || checkperm("f" . $fields[$n]["ref"]))
+		&& !checkperm("f-" . $fields[$n]["ref"]))
+			{
+			# Visible field
+			}
+		else
+			{
+			# Hidden field
+			$hidden[]=$fields[$n]["ref"];
+			}
+		}
+	return $hidden;
+	}
 	
 function get_category_tree_fields()
 	{

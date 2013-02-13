@@ -168,6 +168,9 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 	if ($config_search_for_number && is_numeric($search)) {$keysearch=false;}
 	
 	
+	# Fetch a list of fields that are not available to the user - these must be omitted from the search.
+	$hidden_indexed_fields=get_hidden_indexed_fields();
+	#print_r($hidden_indexed_fields);
 	
 	if ($keysearch)
 		{
@@ -237,7 +240,11 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 							{
 							debug("Field short name not found.");return false;
 							}
-						else
+						elseif (in_array($fieldinfo[0]["ref"], $hidden_indexed_fields))
+							{
+							# Attempt to directly search field that the user does not have access to.
+							return false;
+							}
 							{
 							$fieldinfo=$fieldinfo[0];
 							}
@@ -318,7 +325,7 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 				else
 					{
 
-					# Normal keyword (not tied to a field) - searches all fields
+					# Normal keyword (not tied to a field) - searches all fields that the user has access to
 					
 					# If ignoring field specifications then remove them.
 					if (strpos($keyword,":")!==false && $ignore_filters)
@@ -357,11 +364,19 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
                 if (!$omit)
 									{
 									# Include in query
-        								$sql_join.=" join resource_keyword k" . $c . " on k" . $c . ".resource=r.ref and k" . $c . ".keyword in ('" . join("','",$wildcards) . "')";
-        								$sql_exclude_fields = hook("excludefieldsfromkeywordsearch");
-                        if (!empty($sql_exclude_fields)) {
-                          $sql_join.=" and k" . $c . ".resource_type_field not in (". $sql_exclude_fields .")";
-                        }
+									$sql_join.=" join resource_keyword k" . $c . " on k" . $c . ".resource=r.ref and k" . $c . ".keyword in ('" . join("','",$wildcards) . "')";
+    								
+    								# Allow keyword exclusion via plugin hook
+    								$sql_exclude_fields = hook("excludefieldsfromkeywordsearch");
+		                        if (!empty($sql_exclude_fields)) {
+		                          $sql_join.=" and k" . $c . ".resource_type_field not in (". $sql_exclude_fields .")";
+		                        }
+                        
+		                        # Omit fields to which the user does not have access.
+		                        if (count($hidden_indexed_fields)>0)
+		                        	{
+			                        $sql_join.=" and k" . $c . ".resource_type_field not in ('". join("','",$hidden_indexed_fields) ."')";	                        
+		                        	}
                   }
 									else
 									{
@@ -383,8 +398,15 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
                                                                 $sql_exclude_fields = hook("excludefieldsfromkeywordsearch");
                                                                 $temptable_exclude='';
                                                                 if (!empty($sql_exclude_fields)) {
-                                                                  $temptable_exclude="and rk.resource_type_field not in (". $sql_exclude_fields .")";
+                                                                  $temptable_exclude.="and rk.resource_type_field not in (". $sql_exclude_fields .")";
                                                                 }
+
+										                        # Omit fields to which the user does not have access.
+										                        if (count($hidden_indexed_fields)>0)
+										                        	{
+											                        $temptable_exclude.=" and rk.resource_type_field not in ('". join("','",$hidden_indexed_fields) ."')";	                        
+										                        	}
+
 
                                                                 sql_query("create temporary table $thetemptable (resource bigint unsigned)");
                                                                 sql_query("insert into $thetemptable select distinct r.ref from resource r
@@ -467,10 +489,6 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 										}
 
 
-					                if (!empty($sql_exclude_fields)) 
-					                	{
-					                    $sql_join.=" and k" . $c . ".resource_type_field not in (". $sql_exclude_fields .")";
-						                }
 
 									if (!$omit)
 										{
@@ -479,6 +497,17 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 								                  	
 										if ($score!="") {$score.="+";}
 										$score.="k" . $c . ".hit_count";
+
+						                if (!empty($sql_exclude_fields)) 
+						                	{
+						                    $sql_join.=" and k" . $c . ".resource_type_field not in (". $sql_exclude_fields .")";
+							                }
+	
+						                if (count($hidden_indexed_fields)>0)
+				                        	{
+					                        $sql_join.=" and k" . $c . ".resource_type_field not in ('". join("','",$hidden_indexed_fields) ."')";	                        
+					                        }
+
 										}
 									else
 										{
@@ -511,8 +540,14 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 					                
 									if (!empty($sql_exclude_fields))
 										{
-									  	$exclude_sql="and k" . $c . ".resource_type_field not in (". $sql_exclude_fields .")";
+									  	$exclude_sql.="and k" . $c . ".resource_type_field not in (". $sql_exclude_fields .")";
 										}
+
+					                if (count($hidden_indexed_fields)>0)
+			                        	{
+				                        $exclude_sql.=" and k" . $c . ".resource_type_field not in ('". join("','",$hidden_indexed_fields) ."')";	                        
+				                        }										
+										
 									$test=sql_query("create temporary table $jtemptable SELECT distinct k".$c.".resource,k".$c.".hit_count" . (($quoted_string)?",k".$c.".position":"") . " from resource_keyword k".$c." where (k".$c.".keyword='$keyref' $relatedsql)  $exclude_sql");
 									
 									if (!$omit)
