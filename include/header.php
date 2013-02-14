@@ -93,6 +93,7 @@ jQuery.noConflict();
 var baseurl_short="<?php echo $baseurl_short?>";
 var baseurl="<?php echo $baseurl?>";
 var errorpageload = "<h1><?php echo $lang["error"] ?></h1><p><?php echo $lang["error-pageload"] ?></p>" ;
+var applicationname = "<?php echo $applicationname?>";
 </script>
 
 
