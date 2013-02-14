@@ -53,7 +53,7 @@ if (getval("save","")!="")
 
 
 #Check if any resources are not approved
-if (!is_collection_approved($ref))
+if (!$collection_allow_not_approved_share && !is_collection_approved($ref))
 	{
 	?>
 	<script type="text/javascript">
