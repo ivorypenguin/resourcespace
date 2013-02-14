@@ -5,6 +5,8 @@ include "../../../include/resource_functions.php";
 include "../../../include/collections_functions.php";
 include "../../../include/search_functions.php";
 
+include_once "../languages/en.php"; # Because this may not be included automatically, i.e. if the plugin is not available to all groups.
+
 # Get variables and check key is valid.
 $ref=getvalescaped("ref","");
 $key=getvalescaped("key","");
