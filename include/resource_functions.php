@@ -1860,6 +1860,13 @@ function get_resource_access($resource)
 		else {
 			$access=$resource['group_access'];
 		}
+
+	if ($access == 1 && get_edit_access($ref, $resourcedata['archive']))
+		{
+		# If access is restricted and user has edit access, grant open access.
+		$access = 0;
+		}
+
 	}
 
 	# Check for user-specific access (overrides any other restriction)
