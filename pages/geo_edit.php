@@ -141,7 +141,9 @@ if (!hook("makemarker")) {
 	    
     }
         });map.addControl(control);
-
+jQuery('#UICenter').scroll(function() {
+  map.events.clearMouseCache();console.log('sclear');
+});
     <?php if ($resource["geo_long"]!=="") {?>			 
     map.setCenter (lonLat, Math.min(zoom, map.getNumZoomLevels() - 1));
     <?php } else { ?>

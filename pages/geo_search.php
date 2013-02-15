@@ -31,7 +31,6 @@ draw: function () {
 },
 
 notice: function (bounds) {
-	
 	var blpix = new OpenLayers.Pixel(bounds.left,bounds.bottom);
 	var bl=map.getLonLatFromPixel(blpix).transform
 		(
@@ -53,7 +52,9 @@ notice: function (bounds) {
 	window.location.href="<?php echo $baseurl_short?>pages/search.php?search=!geo" + (bl.lat + "b" + bl.lon + "t" + tr.lat + "b" + tr.lon).replace(/\-/gi,'m').replace(/\./gi,'p');
 }
     });map.addControl(control);
-
+jQuery('#UICenter').scroll(function() {
+  map.events.clearMouseCache();
+});
 <?php if (isset($_COOKIE["geobound"]))
 	{
 	$bounds=$_COOKIE["geobound"];
