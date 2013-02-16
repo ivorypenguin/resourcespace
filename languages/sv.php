@@ -26,7 +26,7 @@
 # En första version av översättningen skapades av Henrik Frizén (förnamn.efternamn utan accenttecken i e-postboxen.Sveriges landskod) 20110124 för version 2295
 #
 # Senast uppdaterad av [Namn] [Datum] för version [svn-version], [kommentar]
-# Senast uppdaterad av Henrik Frizén 20130118 för version 4212
+# Senast uppdaterad av Henrik Frizén 20130216 för version 4285
 
 #
 #
@@ -105,6 +105,7 @@ $lang["fieldtype-date_and_time"]="Datum/tid";
 $lang["fieldtype-expiry_date"]="Utgångsdatum";
 $lang["fieldtype-category_tree"]="Kategoriträd";
 $lang["fieldtype-dynamic_keywords_list"]="Dynamisk nyckelordslista";
+$lang["fieldtype-dynamic_tree_in_development"]="Dynamiskt träd (under utveckling)";
 
 # Property labels (for the default properties)
 $lang["documentation-permissions"]="Se <a href=../../documentation/permissions_sv.txt target=_blank>hjälpfilen för behörigheter</a> om du behöver mer information.";
@@ -1684,3 +1685,10 @@ $lang["synchronise-changes-with-this-field"]="Synkronisera ändringar med detta 
 $lang["copy-completed"]="Kopieringen slutförd. Det nya fältet har nr ?.";
 
 $lang["nothing-to-display"]="Inget att visa.";
+$lang["report-send-all-users"]="Skicka rapporten till alla aktiva användare?";
+
+$lang["contactsheet-single"]="1 per sida";
+$lang["contact_sheet-include_header_option"]="Visa rubrik?";
+$lang["contact_sheet-add_link_option"]="Lägg till klickbar länk till sidan som visar materialet?";
+$lang["contact_sheet-add_logo_option"]="Lägg till logotyp i sidhuvudet?";
+$lang["contact_sheet-single_select_size"]="Bildkvalitet";

@@ -1,7 +1,7 @@
 <?php
 # Swedish
 # Language File for the Checkmail Plugin
-# Updated by Henrik Frizén 20130127 for svn r4224
+# Updated by Henrik Frizén 20130216 for svn r4285
 # -------
 #
 #
@@ -34,7 +34,7 @@ $lang['checkmail_html']="Tillåt html-innehåll? (experimentell, ej rekommendera
 $lang['checkmail_mail_skipped']="Överhoppat e-postmeddelande";
 
 $lang['addresourcesviaemail']="Lägg till material i grupp – per e-post";
-$lang['uploadviaemail']="Överför per e-post";
+$lang['uploadviaemail']="Lägg till material i grupp – per e-post";
 $lang['uploadviaemail-intro']="<br /><br />Om du vill överföra filer per e-post bifogar du dem i ett e-postmeddelande som du skickar till <b><a href='mailto:[toaddress]'>[toaddress]</a></b>.</p> <p>E-postmeddelandet måste skickas från <b>[fromaddress]</b>, i annat fall kommer det att ignoreras.</p><p>Observera att e-postmeddelandets ämnesrad kopieras till fältet [subjectfield] i $applicationname. </p><p> Observera även att meddelandetexten kopieras till fältet [bodyfield] i $applicationname. </p>  <p>Om flera filer bifogas i ett e-postmeddelande grupperas de i en samling. Materialen får den förvalda åtkomstnivån <b>’[access]’</b> och statusen <b>’[archive]’</b>.</p><p> [confirmation]";
 $lang['checkmail_confirmation_message']="När ditt e-postmeddelande är färdigbearbetat kommer du att få en bekräftelse per e-post. Om ditt e-postmeddelande har hoppats över av någon anledning (om det t.ex. har skickats från fel adress) kommer administratören att få besked om att det finns ett e-postmeddelande som kräver åtgärd.";
 $lang['yourresourcehasbeenuploaded']="Materialet har överförts";
