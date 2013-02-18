@@ -1,7 +1,6 @@
 <?php
 #
 # PDF Contact Sheet Functionality
-# Contributed by Tom Gleason
 #
 
 foreach ($_GET as $key => $value) {$$key = stripslashes(utf8_decode(trim($value)));}
@@ -16,6 +15,7 @@ include('../../include/collections_functions.php');
 include('../../include/image_processing.php');
 
 require_once('../../lib/tcpdf/tcpdf.php');
+require_once('../../lib/fpdi/fpdi.php');
 
 # Still making variables manually when not using Prototype: 
 $collection=getvalescaped("c","");
@@ -25,10 +25,16 @@ $order_by=getvalescaped("orderby","relevance");
 $sort=getvalescaped("sort","asc");
 $orientation=getvalescaped("orientation","");
 $sheetstyle=getvalescaped("sheetstyle","thumbnails");
+
+$logospace=0;
+$footerspace=0;
+
 global $contactsheet_header, $contact_sheet_add_link;
 $include_contactsheet_header=getvalescaped("includeheader",'');
 if ($contactsheet_header==''){$contactsheet_header=$contact_sheet_include_header;}
+
 if (getvalescaped("addlogo",$include_contactsheet_logo)=="true") {$add_contactsheet_logo=true;}else{$add_contactsheet_logo=false;}
+
 $contact_sheet_add_link=getvalescaped("addlink",$contact_sheet_add_link);
 
 if(getvalescaped("preview","")!=""){$preview=true;} else {$preview=false;}
@@ -168,43 +174,53 @@ function contact_sheet_add_image()
 	}
 
 ## Sizing calculations
-$deltay=1;
+function do_contactsheet_sizing_calculations(){
+global $sheetstyle,$deltay,$add_contactsheet_logo,$pageheight,$pagewidth,$column,$config_sheetthumb_fields,$config_sheetthumb_include_ref,$leading,$refnumberfontsize,$imagesize,$columns,$rowsperpage,$cellsize,$logospace,$page,$rowsperpage,$contact_sheet_logo_resize,$contact_sheet_custom_footerhtml;
+
 
 if ($sheetstyle=="thumbnails")
 	{
-	if ($add_contactsheet_logo)
-	{$logospace=$pageheight/9;}else{$logospace=0;}
+	if ($add_contactsheet_logo && $contact_sheet_logo_resize)
+	{$logospace=$pageheight/9;}
+
+	/*	$logospace = getimagesize("../../" . $contact_sheet_logo);
+		$logowidth=$logospace[0]/300;
+		$logospace=$logospace[1]/300;
+	}else{
+		$logospace=0;
+	}*/
 	$columns=$column;
 	#calculating sizes of cells, images, and number of rows:
 	$cellsize[0]=$cellsize[1]=($pagewidth-1.7)/$columns;
 	$imagesize=$cellsize[0]-.3;
 	# estimate rows per page based on config lines
 	$extralines=(count($config_sheetthumb_fields)!=0)?count($config_sheetthumb_fields):0;
+	if ($contact_sheet_custom_footerhtml!=''){$footerspace=$pageheight*.05;}
 	if ($config_sheetthumb_include_ref){$extralines++;}
-	$rowsperpage=($pageheight-1-$logospace-($cellsize[1]+($extralines*(($refnumberfontsize+$leading)/72))))/($cellsize[1]+($extralines*(($refnumberfontsize+$leading)/72)));
+	$rowsperpage=($pageheight-.5-$logospace-$footerspace-($cellsize[1]+($extralines*(($refnumberfontsize+$leading)/72))))/($cellsize[1]+($extralines*(($refnumberfontsize+$leading)/72)));
 	$page=1;	
 	}
 else if ($sheetstyle=="list")
 	{ 
-	if ($add_contactsheet_logo)
-	{$logospace=$pageheight/9;}else{$logospace=0;}
+	if ($add_contactsheet_logo && $contact_sheet_logo_resize)
+	{$logospace=$pageheight/9;}
 	#calculating sizes of cells, images, and number of rows:
 	$columns=1;
 	$imagesize=1.0;
 	$cellsize[0]=$pagewidth-1.7;
 	$cellsize[1]=1.2;
-	$rowsperpage=($pageheight-1.2-$logospace-$cellsize[1])/$cellsize[1];
+	if ($contact_sheet_custom_footerhtml!=''){$footerspace=$pageheight*.05;}
+	$rowsperpage=($pageheight-1.2-$logospace-$footerspace-$cellsize[1])/$cellsize[1];
 	$page=1;
 	}
 else if ($sheetstyle=="single")
 	{
 	$extralines=(count($config_sheetsingle_fields)!=0)?count($config_sheetsingle_fields):0;
-	if ($add_contactsheet_logo)
+	if ($add_contactsheet_logo && $contact_sheet_logo_resize)
 		{
 		if ($orientation=="landscape"){$logospace=$pageheight/11;if ($contactsheet_header){$extralines=$extralines + 2;}}
 		else{$logospace=$pageheight/9;}
 		}
-	else{$logospace=0;}	
 	$columns=$column;	
 	if ($config_sheetsingle_include_ref){$extralines++;}
 	
@@ -222,6 +238,9 @@ else if ($sheetstyle=="single")
 	$page=1;
 	$columns=1;
 	}
+}
+$deltay=1;
+do_contactsheet_sizing_calculations();
 
 #Get data
 $collectiondata= get_collection($collection);
@@ -245,29 +264,66 @@ for ($m=0;$m<count($getfields);$m++)
 $user= get_user($collectiondata['user']);
 if ($orientation=="landscape"){$orientation="L";}else{$orientation="P";}
 
+
+
+
+
+          
+
+    
+
+
+
 	
-class MYPDF extends TCPDF {
+class MYPDF extends FPDI {
 
 	//Page header
 	public function Header() {
-		global $contactsheet_header,$contact_sheet_logo,$add_contactsheet_logo,$contact_sheet_font,$titlefontsize,$applicationname,$collectiondata,$date,$subsetting,$lang, $pageheight, $logospace;
+		global $logowidth,$contactsheet_header,$contact_sheet_logo,$add_contactsheet_logo,$contact_sheet_font,$titlefontsize,$applicationname,$collectiondata,$date,$subsetting,$lang, $pagewidth,$pageheight, $logospace,$contact_sheet_logo_resize;
 		
 		if (isset($contact_sheet_logo) && $add_contactsheet_logo)
 			{			
-			if (file_exists("../.." . $contact_sheet_logo))
+			if (file_exists("../../" . $contact_sheet_logo))
 				{
 				$extension=pathinfo($contact_sheet_logo);$extension=$extension['extension'];
-				if ($extension=="svg")
-					{
-					$this->ImageSVG("../.." . $contact_sheet_logo, '', $pageheight/30, '', $pageheight/8,'','',"C");					
+				
+				if ($extension=="pdf")
+					{  //recommended as it works best with or without $contact_sheet_logo_resize
+					$this->setSourceFile("../../" . $contact_sheet_logo);
+					$this->_tplIdx = $this->importPage(1);
+					$logosize=$this->getTemplateSize($this->_tplIdx );
+					if (!$contact_sheet_logo_resize){	
+						$logowidth=$logosize['w'];
+						$logospace=$logosize['h'];
+						do_contactsheet_sizing_calculations(); // run this code again with new logospace
+					} 
+					else {
+						$logoratio=$logosize['w']/$logosize['h'];
+						$logowidth=$pageheight/8 * $logoratio;
 					}
+					$this->useTemplate($this->_tplIdx,$pagewidth/2-($logowidth/2),.4,$logowidth);
+				}
+				/*else if ($extension=="svg")
+					{
+						$this->ImageSVG("../../" . $contact_sheet_logo, '', $pageheight/30, '', $pageheight/8,'','',"C");					
+					}*/
 				else
 					{
-					$this->Image("../.." . $contact_sheet_logo,'',$pageheight/30,'',$pageheight/8,$extension,false,'',true,'300','C', false, false, 0, false, false, false);
+					if (!$contact_sheet_logo_resize){	
+						$logospace = getimagesize("../../" . $contact_sheet_logo);
+						$logospace=$logospace[1]/300; 
+						$this->Image("../../" . $contact_sheet_logo,'',.5,'',$logospace,$extension,false,'',true,'300','C', false, false, 0, false, false, false);
+						do_contactsheet_sizing_calculations(); // run this code again with new logospace
+					} else {
+						$this->Image("../../" . $contact_sheet_logo,'',$pageheight/30,'',$pageheight/8,$extension,false,'',true,'300','C', false, false, 0, false, false, false);	
+						
+					}
 					}
 				}
-			else
-				{exit("Contact sheet logo file not found at " . $contact_sheet_logo);}
+				else 
+				{
+				exit("Contact sheet logo file not found at " . $contact_sheet_logo);
+				}
 			}
 			if($contactsheet_header)
 			{
@@ -291,10 +347,14 @@ class MYPDF extends TCPDF {
 		}
 	}
 
+class rsPDF extends MYPDF {
+
+    var $_tplIdx;
+}
 
 
+$pdf = new rsPDF($orientation , 'in', $size, true, 'UTF-8', false); 
 
-$pdf = new MYPDF($orientation , 'in', $size, true, 'UTF-8', false); 
 $pdf->SetTitle(i18n_get_collection_name($collectiondata).' - '.nicedate($date, true, true));
 $pdf->SetAuthor($user['fullname'].' '.$user['email']);
 $pdf->SetSubject($applicationname . " - " . $lang["contactsheet"]);
@@ -304,9 +364,9 @@ $pdf->SetCellPadding(0);
 $pdf->AddPage(); 
 $pdf->SetFont($contact_sheet_font,'','','',$subsetting);
 
-$pdf->ln();$pdf->ln();
+//$pdf->ln();$pdf->ln();
 $pdf->SetFontSize($refnumberfontsize);
-$pdf->SetY($pdf->GetY() + $logospace);
+$pdf->SetX(1);$pdf->SetY(1.2 + $logospace);
 
 #Begin loop through resources, collecting Keywords too.
 $i=0;

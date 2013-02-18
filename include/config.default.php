@@ -643,7 +643,12 @@ $contact_sheet_include_header_option=false;
 
 # Add logo image to contact page? set contact_sheet_logo if set to true
 $include_contactsheet_logo=false;
-#$contact_sheet_logo="gfx/contactsheetheader.png";
+#$contact_sheet_logo="gfx/contactsheetheader.png"; // can be a png/gif/jpg or PDF file
+
+# if $contact_sheet_logo_resize==false, the image is sized at 300ppi or the PDF retains it's original dimensions.
+# if true, the logo is scaled to a hardcoded percentage of the page size.
+$contact_sheet_logo_resize=true; 
+
 # Give user option to add/remove logo?
 #$contact_sheet_logo_option=true;
 

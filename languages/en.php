@@ -827,7 +827,7 @@ $lang["relateallresources"]="Relate all resources in this collection";
 $lang["columns"]="Columns";
 $lang["contactsheetconfiguration"]="Contact sheet configuration";
 $lang["thumbnails"]="Thumbnails";
-$lang["contactsheetintrotext"]="Please select the sheet size and the number of columns for your contact sheet.";
+$lang["contactsheetintrotext"]="Please select the configuration options you'd like for your contact sheet PDF. The preview will update automatically when you change your options, unless you change the order of resources in the collection, in which case you'll need to press the \"Preview\" button to update.<br />When you're ready, press \"Create\" to generate and download your contact sheet PDF.";
 $lang["size"]="Size";
 $lang["orientation"]="Orientation";
 $lang["requiredfield"]="This is a required field";
@@ -1661,6 +1661,6 @@ $lang["report-send-all-users"]="Send the report to all active users?";
 
 $lang["contactsheet-single"]="1 per page";
 $lang["contact_sheet-include_header_option"]="Include header?";
-$lang["contact_sheet-add_link_option"]="Add clickable link to resource view page?";
+$lang["contact_sheet-add_link_option"]="Add clickable links to resource view page?";
 $lang["contact_sheet-add_logo_option"]="Add logo to top of each page?";
 $lang["contact_sheet-single_select_size"]="Image quality";
