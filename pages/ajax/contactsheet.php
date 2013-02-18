@@ -257,7 +257,14 @@ class MYPDF extends TCPDF {
 			if (file_exists("../.." . $contact_sheet_logo))
 				{
 				$extension=pathinfo($contact_sheet_logo);$extension=$extension['extension'];
-				$this->Image("../.." . $contact_sheet_logo,'C',$pageheight/30,'',$pageheight/8,$extension,false,'C',true,300,'C', false, false, 0, false, false, false);
+				if ($extension=="svg")
+					{
+					$this->ImageSVG("../.." . $contact_sheet_logo, '', $pageheight/30, '', $pageheight/8,'','',"C");					
+					}
+				else
+					{
+					$this->Image("../.." . $contact_sheet_logo,'',$pageheight/30,'',$pageheight/8,$extension,false,'',true,'300','C', false, false, 0, false, false, false);
+					}
 				}
 			else
 				{exit("Contact sheet logo file not found at " . $contact_sheet_logo);}
