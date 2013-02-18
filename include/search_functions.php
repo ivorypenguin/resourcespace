@@ -817,6 +817,12 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 		return sql_query($sql_prefix . "select distinct r.hit_count score, $select from resource r $sql_join  where has_image=1 and $sql_filter group by r.ref order by (abs(image_red-" . $rgb[0] . ")+abs(image_green-" . $rgb[1] . ")+abs(image_blue-" . $rgb[2] . ")) asc limit 500" . $sql_suffix,false,$fetchrows);
 		}
 		
+	# Has no preview image
+	if (substr($search,0,10)=="!nopreview")
+		{
+		return sql_query($sql_prefix . "select distinct r.hit_count score, $select from resource r $sql_join  where has_image=0 and $sql_filter group by r.ref" . $sql_suffix,false,$fetchrows);
+		}		
+		
 	# Similar to a colour by key
 	if (substr($search,0,10)=="!colourkey")
 		{
