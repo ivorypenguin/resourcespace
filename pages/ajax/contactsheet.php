@@ -174,7 +174,7 @@ function contact_sheet_add_image()
 
 ## Sizing calculations
 function do_contactsheet_sizing_calculations(){
-global $sheetstyle,$deltay,$add_contactsheet_logo,$pageheight,$pagewidth,$column,$config_sheetthumb_fields,$config_sheetthumb_include_ref,$leading,$refnumberfontsize,$imagesize,$columns,$rowsperpage,$cellsize,$logospace,$page,$rowsperpage,$contact_sheet_logo_resize,$contact_sheet_custom_footerhtml,$footerspace,$contactsheet_header;
+global $sheetstyle,$deltay,$add_contactsheet_logo,$pageheight,$pagewidth,$column,$config_sheetthumb_fields,$config_sheetthumb_include_ref,$leading,$refnumberfontsize,$imagesize,$columns,$rowsperpage,$cellsize,$logospace,$page,$rowsperpage,$contact_sheet_logo_resize,$contact_sheet_custom_footerhtml,$footerspace,$contactsheet_header,$config_sheetsingle_fields,$config_sheetsingle_include_ref,$orientation;
 
 
 if ($sheetstyle=="thumbnails")
@@ -218,7 +218,6 @@ else if ($sheetstyle=="single")
 	if ($add_contactsheet_logo && $contact_sheet_logo_resize)
 		{
 		if ($orientation=="landscape"){$logospace=$pageheight/11;if ($contactsheet_header){$extralines=$extralines + 2;}}
-		else{$logospace=$pageheight/9;}
 		}
 	$columns=$column;	
 	if ($config_sheetsingle_include_ref){$extralines++;}

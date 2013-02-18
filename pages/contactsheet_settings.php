@@ -36,16 +36,20 @@ include "../include/header.php";
 <select class="shrtwidth" name="sheetstyle" id="sheetstyle" onChange="
 	if (jQuery('#sheetstyle').val()=='list')
 		{
+		document.getElementById('OrientationOptions').style.display='block';		
 		document.getElementById('ThumbnailOptions').style.display='none';
 		document.getElementById('size_options').style.display='none';
 		}
 	else if (jQuery('#sheetstyle').val()=='single')
 		{
+		document.getElementById('orientation').value='portrait';
+		document.getElementById('OrientationOptions').style.display='none';	
 		document.getElementById('ThumbnailOptions').style.display='none';
 		document.getElementById('size_options').style.display='block';
 		}
 	else if (jQuery('#sheetstyle').val()=='thumbnails')
 		{
+		document.getElementById('OrientationOptions').style.display='block';		
 		document.getElementById('ThumbnailOptions').style.display='block';
 		document.getElementById('size_options').style.display='none';
 		}
@@ -168,7 +172,7 @@ foreach ($all_field_info as $sortable_field)
 </select>
 </div>
 
-<div class="Question">
+<div id="OrientationOptions" class="Question">
 <label><?php echo $lang["orientation"]?></label>
 <select class="shrtwidth" name="orientation" id="orientation" onChange="jQuery().rsContactSheet('revert');">
 <option value="portrait"><?php echo $lang["portrait"]?></option>
