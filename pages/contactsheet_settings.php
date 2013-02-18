@@ -58,14 +58,14 @@ include "../include/header.php";
 <div class="clearerleft"> </div>
 </div>
 <?php
-global $contact_sheet_include_header_option, $contact_sheet_add_link, $contact_sheet_logo_option;
+
 if ($contact_sheet_include_header_option)
 	{ ?>	
 	<div class="Question">
 	<label><?php echo $lang["contact_sheet-include_header_option"]?></label>
 	<select class="shrtwidth" name="includeheader" id="includeheader" onChange="jQuery().rsContactSheet('revert');">
 	<option value="true"><?php echo $lang["yes"]?></option>
-	<option value="false"><?php echo $lang["no"]?></option>
+	<option value="false" <?php if (!$contact_sheet_include_header){?>selected<?php } ?>><?php echo $lang["no"]?></option>
 	</select>
 	<div class="clearerleft"> </div>
 	</div>
@@ -92,7 +92,7 @@ if ($contact_sheet_single_select_size)
 
 <?php }
 
-if ($contact_sheet_logo_option)
+if ($contact_sheet_logo_option && isset($contact_sheet_logo))
 	{ ?>	
 	<div class="Question">
 	<label><?php echo $lang["contact_sheet-add_logo_option"]?></label>
@@ -111,7 +111,7 @@ if ($contact_sheet_add_link_option)
 	<label><?php echo $lang["contact_sheet-add_link_option"]?></label>
 	<select class="shrtwidth" name="addlink" id="addlink" onChange="jQuery().rsContactSheet('revert');">
 	<option value="true"><?php echo $lang["yes"]?></option>
-	<option value="false"><?php echo $lang["no"]?></option>
+	<option value="false" <?php if (!$contact_sheet_add_link){?>selected<?php } ?>><?php echo $lang["no"]?></option>
 	</select>
 	<div class="clearerleft"> </div>
 	</div>
@@ -190,13 +190,13 @@ foreach ($all_field_info as $sortable_field)
 </div>
 </form>
 </div></div>
-<div >
+<div>
 	<!-- this is the container for some Ajax fun. The image will go here...-->
 <?php $cs_size=explode("x",$contact_sheet_preview_size);$height=$cs_size[1];?>
 <?php if ($contact_sheet_previews==true){?><div style="float:left;padding:0px -50px 15px 0;height:<?php echo $height?>px;margin-top:-15px;margin-right:-50px"><img id="previewimage" name="previewimage" src=""/></div><?php } ?>
 
 	</div>
-	</div>	
+
 	<script type="text/javascript">	jQuery().rsContactSheet('preview');	</script>
 <?php		
 include "../include/footer.php";

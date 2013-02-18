@@ -3,7 +3,7 @@
 # PDF Contact Sheet Functionality
 #
 
-foreach ($_GET as $key => $value) {$$key = stripslashes(utf8_decode(trim($value)));}
+foreach ($_POST as $key => $value) {$$key = stripslashes(utf8_decode(trim($value)));}
 
 // create new PDF document
 include('../../include/db.php');
@@ -29,8 +29,7 @@ $sheetstyle=getvalescaped("sheetstyle","thumbnails");
 $logospace=0;
 $footerspace=0;
 
-global $contactsheet_header, $contact_sheet_add_link;
-$include_contactsheet_header=getvalescaped("includeheader",'');
+$contactsheet_header=getvalescaped("includeheader",'');
 if ($contactsheet_header==''){$contactsheet_header=$contact_sheet_include_header;}
 
 if (getvalescaped("addlogo",$include_contactsheet_logo)=="true") {$add_contactsheet_logo=true;}else{$add_contactsheet_logo=false;}
@@ -148,7 +147,7 @@ function contact_sheet_add_image()
 		}
 		
 	# Add the image
-	if ($contact_sheet_add_link)
+	if ($contact_sheet_add_link=="true")
 		{
 		$pdf->Image($imgpath,$posx,$posy,$imagewidth,$imageheight,$preview_extension,$baseurl. '/?r=' . $ref,'',false,300,$align,false,false,0);
 		}
@@ -175,7 +174,7 @@ function contact_sheet_add_image()
 
 ## Sizing calculations
 function do_contactsheet_sizing_calculations(){
-global $sheetstyle,$deltay,$add_contactsheet_logo,$pageheight,$pagewidth,$column,$config_sheetthumb_fields,$config_sheetthumb_include_ref,$leading,$refnumberfontsize,$imagesize,$columns,$rowsperpage,$cellsize,$logospace,$page,$rowsperpage,$contact_sheet_logo_resize,$contact_sheet_custom_footerhtml,$footerspace;
+global $sheetstyle,$deltay,$add_contactsheet_logo,$pageheight,$pagewidth,$column,$config_sheetthumb_fields,$config_sheetthumb_include_ref,$leading,$refnumberfontsize,$imagesize,$columns,$rowsperpage,$cellsize,$logospace,$page,$rowsperpage,$contact_sheet_logo_resize,$contact_sheet_custom_footerhtml,$footerspace,$contactsheet_header;
 
 
 if ($sheetstyle=="thumbnails")
@@ -325,7 +324,7 @@ class MYPDF extends FPDI {
 				exit("Contact sheet logo file not found at " . $contact_sheet_logo);
 				}
 			}
-			if($contactsheet_header)
+			if($contactsheet_header=="true")
 			{
 			$this->SetFont($contact_sheet_font,'',$titlefontsize,'',$subsetting);
 			$title = $applicationname.' - '. i18n_get_collection_name($collectiondata).' - '.nicedate($date,true,true);
@@ -366,7 +365,11 @@ $pdf->SetFont($contact_sheet_font,'','','',$subsetting);
 
 //$pdf->ln();$pdf->ln();
 $pdf->SetFontSize($refnumberfontsize);
-$pdf->SetX(1);$pdf->SetY(1.2 + $logospace);
+if($contactsheet_header=="true"){
+	$pdf->SetX(1);$pdf->SetY(1.2 + $logospace);
+} else {
+	$pdf->SetX(1);$pdf->SetY(0.8 + $logospace);
+}
 
 #Begin loop through resources, collecting Keywords too.
 $i=0;
