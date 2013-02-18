@@ -567,7 +567,13 @@ function create_previews($ref,$thumbonly=false,$extension="jpg",$previewonly=fal
 	if (!$previewonly) {generate_file_checksum($ref,$extension);}
 	# first reset preview tweaks to 0
 	sql_query("update resource set preview_tweaks = '0|1' where ref = '$ref'");
-	
+
+	// for compatibility with transform plugin, remove any
+        // transform previews for this resource when regenerating previews
+        $tpdir = get_temp_dir() . "/transform_plugin";
+        if(is_dir($tpdir) && file_exists("$tpdir/pre_$ref.jpg")){
+            unlink("$tpdir/pre_$ref.jpg");
+        }
 
 	# pages/tools/update_previews.php?previewbased=true
 	# use previewbased to avoid touching original files (to preserve manually-uploaded preview images
