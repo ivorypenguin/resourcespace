@@ -42,8 +42,6 @@ include "../include/header.php";
 		}
 	else if (jQuery('#sheetstyle').val()=='single')
 		{
-		document.getElementById('orientation').value='portrait';
-		document.getElementById('OrientationOptions').style.display='none';	
 		document.getElementById('ThumbnailOptions').style.display='none';
 		document.getElementById('size_options').style.display='block';
 		}
@@ -175,8 +173,8 @@ foreach ($all_field_info as $sortable_field)
 <div id="OrientationOptions" class="Question">
 <label><?php echo $lang["orientation"]?></label>
 <select class="shrtwidth" name="orientation" id="orientation" onChange="jQuery().rsContactSheet('revert');">
-<option value="portrait"><?php echo $lang["portrait"]?></option>
-<option value="landscape"><?php echo $lang["landscape"]?></option>
+<option value="P"><?php echo $lang["portrait"]?></option>
+<option value="L"><?php echo $lang["landscape"]?></option>
 </select>
 <div class="clearerleft"> </div>
 </div>

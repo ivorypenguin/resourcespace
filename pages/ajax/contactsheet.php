@@ -41,7 +41,7 @@ if ($sheetstyle=="single"){$imgsize=getvalescaped("ressize","lpr");}
 else{$imgsize="pre";}
 $previewpage=getvalescaped("previewpage",1);
 
-if ($preview==true){$imgsize="col";}
+if ($preview==true){$imgsize="col";}if ($sheetstyle=="single" && $preview==true){$imgsize="pre";}
 if ($size == "a4") {$width=210/25.4;$height=297/25.4;} // convert to inches
 if ($size == "a3") {$width=297/25.4;$height=420/25.4;}
 
@@ -50,7 +50,7 @@ if ($size == "legal") {$width=8.5;$height=14;}
 if ($size == "tabloid") {$width=11;$height=17;}
 
 #configuring the sheet:
-if ($orientation=="landscape"){
+if ($orientation=="L"){
 $pagewidth=$pagesize[1]=$height ;
 $pageheight=$pagesize[0]=$width;
 }else{
@@ -67,9 +67,17 @@ if (isset($print_contact_title)){
 
 function contact_sheet_add_fields($resourcedata)
 	{
-	global $pdf, $n, $getfields, $sheetstyle, $imagesize, $refnumberfontsize, $leading, $csf, $pageheight, $currentx, $currenty, $topx, $topy, $bottomx, $bottomy, $logospace, $deltay; 
+	global $pdf, $n, $getfields, $sheetstyle, $imagesize, $refnumberfontsize, $leading, $csf, $pageheight, $currentx, $currenty, $topx, $topy, $bottomx, $bottomy, $logospace, $deltay,$width,$config_sheetsingle_include_ref,$contactsheet_header,$cellsize,$ref,$pagewidth; 
 	//exit (print_r($getfields));
-	
+
+	if ($sheetstyle=="single" && $config_sheetsingle_include_ref=="true"){
+		$pdf->SetY($bottomy);
+		$pdf->MultiCell($pagewidth-2,0,'','','L',false,1);	
+		$pdf->ln();
+		$pdf->MultiCell($pagewidth-2,0,$ref,'','L',false,1);	
+	}
+
+
 	for($ff=0; $ff<count($getfields); $ff++){
 		$value="";
 		$value=str_replace("'","\'", $resourcedata['field'.$getfields[$ff]]);
@@ -99,9 +107,8 @@ function contact_sheet_add_fields($resourcedata)
 			$pdf->SetXY($currentx,$currenty);
 			}
 		else if ($sheetstyle=="single")
-			{			
-			$pdf->Text(1,(($pageheight + $imagesize) / 2) + 0.15 + (0.2*($ff+$deltay)),$value);					
-			//$pdf->SetXY($currentx,$currenty);
+			{		
+			$pdf->MultiCell($pagewidth-2,0,$value,'','L',false,1);		
 			}
 			
 		}
@@ -109,23 +116,21 @@ function contact_sheet_add_fields($resourcedata)
 	
 function contact_sheet_add_image()
 	{	
-	global $pdf, $imgpath, $sheetstyle, $imagesize, $pageheight, $pagewidth, $imagewidth, $imageheight, $preview_extension, $baseurl, $contact_sheet_add_link, $ref, $extralines, $refnumberfontsize, $cellsize, $topx, $topy, $bottomy, $align,$thumbsize,$logospace; 
-	
+	global $pdf, $imgpath, $sheetstyle, $imagesize, $pageheight, $pagewidth, $imagewidth, $imageheight, $preview_extension, $baseurl, $contact_sheet_add_link, $ref, $extralines, $refnumberfontsize, $cellsize, $topx, $topy, $bottomy, $align,$thumbsize,$logospace,$width,$contactsheet_header; 
+	$nextline="";
 	if ($sheetstyle=="single")
 		{
 		# Centre on page
-		$posx="C";
+		//$posx="C";
 		$align="C";		
-		if ($imageheight==0)
-			{
-			# landscape image - position offset needed
-			$posy = ($pageheight/2) - ($imagesize*$thumbsize[1])/($thumbsize[0]*2);
+		$nextline="N";
+			
+			$posx=((($width-2)/2)-($cellsize[0])/2);
+			if($contactsheet_header=="true"){
+				$posy=1.2 + $logospace;
+			} else {
+				$posy=0.8 + $logospace;
 			}
-		else 
-			{
-			# portrait image - centre on page
-			$posy = ($pageheight - $cellsize[1])/2;
-			}		
 		}
 	elseif ($sheetstyle=="list")
 		{
@@ -143,28 +148,31 @@ function contact_sheet_add_image()
 			{$posy=$pdf->GetY()+0.025 + $cellsize[1]/2 - ($cellsize[0] * $thumbsize[1])/($thumbsize[0]*2);}
 		else
 			{$posy=$pdf->GetY()+0.025;}
-		$align="";
+			$align="";
 		}
 		
 	# Add the image
 	if ($contact_sheet_add_link=="true")
-		{
-		$pdf->Image($imgpath,$posx,$posy,$imagewidth,$imageheight,$preview_extension,$baseurl. '/?r=' . $ref,'',false,300,$align,false,false,0);
+		{$pdf->SetMargins(.7,1.2,.7);
+		$imageinfo=$pdf->Image($imgpath,$posx,$posy,$imagewidth,$imageheight,$preview_extension,$baseurl. '/?r=' . $ref,$nextline,false,300,$align,false,false,0);
+		$pdf->SetMargins(1,1.2,.7);
 		}
 	else
 		{
-		$pdf->Image($imgpath,$posx,$posy,$imagewidth,$imageheight,$preview_extension,'','',false,300,$align,false,false,0);
+		$pdf->Image($imgpath,$posx,$posy,$imagewidth,$imageheight,$preview_extension,'',$nextline,false,300,$align,false,false,0);
 		}	
-
+			
+	$bottomy=$pdf->GetY();
 	# Add spacing cell
 	if ($sheetstyle=="list")
 		{		
 		$pdf->Cell($cellsize[0],$cellsize[1],'',0,0);		
 		}
-	else if ($sheetstyle=="single")
+	/*else if ($sheetstyle=="single")
 		{		
+		$pdf->Setx($posx+$cellsize[0]);
 		$pdf->Cell($cellsize[0],($bottomy-$topy)+$imagesize+.2,'',0,0);		
-		}
+		}*/
 	else if ($sheetstyle=="thumbnails")
 		{			
 		$pdf->Setx($topx);
@@ -182,12 +190,6 @@ if ($sheetstyle=="thumbnails")
 	if ($add_contactsheet_logo && $contact_sheet_logo_resize)
 	{$logospace=$pageheight/9;}
 
-	/*	$logospace = getimagesize("../../" . $contact_sheet_logo);
-		$logowidth=$logospace[0]/300;
-		$logospace=$logospace[1]/300;
-	}else{
-		$logospace=0;
-	}*/
 	$columns=$column;
 	#calculating sizes of cells, images, and number of rows:
 	$cellsize[0]=$cellsize[1]=($pagewidth-1.7)/$columns;
@@ -217,19 +219,19 @@ else if ($sheetstyle=="single")
 	$extralines=(count($config_sheetsingle_fields)!=0)?count($config_sheetsingle_fields):0;
 	if ($add_contactsheet_logo && $contact_sheet_logo_resize)
 		{
-		if ($orientation=="landscape"){$logospace=$pageheight/11;if ($contactsheet_header){$extralines=$extralines + 2;}}
+		if ($orientation=="L"){$logospace=$pageheight/11;if ($contactsheet_header){$extralines=$extralines + 2;}} else {$logospace=$pageheight/9;}
 		}
 	$columns=$column;	
 	if ($config_sheetsingle_include_ref){$extralines++;}
 	
 	# calculate size of single cell per page, allowing for extra lines. Needs to be smaller if landscape.
-	if ($orientation=="landscape")
+	if ($orientation=="L")
 		{
 		$cellsize[0]=$cellsize[1]=($pageheight*0.65)-($extralines*(($refnumberfontsize+$leading)/72));
 		}
 	else 
 		{
-		$cellsize[0]=$cellsize[1]=($pagewidth*0.7);
+		$cellsize[0]=$cellsize[1]=($pagewidth*0.8);
 		}
 	$imagesize=$cellsize[0]-0.3;
 	$rowsperpage=1;
@@ -260,7 +262,7 @@ for ($m=0;$m<count($getfields);$m++)
 
 	
 $user= get_user($collectiondata['user']);
-if ($orientation=="landscape"){$orientation="L";}else{$orientation="P";}
+
 
 
 
@@ -436,15 +438,6 @@ for ($n=0;$n<count($result);$n++){
 					{									
 					#Add image
 					contact_sheet_add_image();											
-					$bottomy=$pdf->GetY();	
-					$bottomx=$pdf->GetX();						
-					#render fields
-					if ($config_sheetsingle_include_ref)
-						{
-					    $pdf->SetXY($currentx,$currenty);
-					    $pdf->Text(1,(($pageheight + $imagesize) / 2) + 0.15,$ref);
-						$deltay=1;
-						}
 					contact_sheet_add_fields($result[$n]);
 					}
 				}
@@ -488,11 +481,7 @@ for ($n=0;$n<count($result);$n++){
 					#Add image
 					contact_sheet_add_image();			
 					#render fields	
-					if ($config_sheetsingle_include_ref)
-						{
-						$pdf->Text(1,(($pageheight + $imagesize) / 2) + 0.15,$ref);
-						$deltay=1;
-						}					
+					
 					contact_sheet_add_fields($result[$n]);			
 					
 					}			
