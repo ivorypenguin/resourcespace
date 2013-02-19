@@ -1,0 +1,25 @@
+<?php
+
+$youtube_publish_restypes=array(3);
+$youtube_publish_title_field=8;
+$youtube_publish_descriptionfield=18;
+$youtube_publish_keywords_fields=array('1'); # needs to be array so can add mutliple tags field
+$youtube_publish_url_field=false;
+$youtube_publish_allow_multiple=false;
+
+$youtube_publish_oauth2=true;
+$youtube_publish_developer_key="";
+
+#if not using OAuth2.0
+$youtube_publish_username="";
+$youtube_publish_password="";
+
+# If using Oauth 2.0
+# Required values can obtained from https://code.google.com/apis 
+$youtube_publish_client_id="";
+$youtube_publish_client_secret="";
+$youtube_publish_callback_url="/plugins/youtube_publish/pages/youtube_upload.php";
+
+
+
+?>
