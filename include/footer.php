@@ -43,7 +43,7 @@ function SwapCSS(css){
 	<?php }?>
 
 	jQuery.ajax({
-			url:"<?php echo $baseurl?>/pages/ajax/css/get_plugin_css.php?theme="+css,
+			url:"<?php echo $baseurl?>/pages/ajax/get_plugin_css.php?theme="+css,
 			success: function(response) {
 				jQuery('head').append(response); // add new css
 				jQuery('.plugincss0').remove(); // then remove old
