@@ -1664,3 +1664,5 @@ $lang["contact_sheet-include_header_option"]="Include header?";
 $lang["contact_sheet-add_link_option"]="Add clickable links to resource view page?";
 $lang["contact_sheet-add_logo_option"]="Add logo to top of each page?";
 $lang["contact_sheet-single_select_size"]="Image quality";
+
+$lang["caps-lock-on"]="Warning! Caps Lock is on";

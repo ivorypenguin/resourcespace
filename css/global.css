@@ -188,6 +188,7 @@ option {font-size:11px;}
 .Question{padding: 0.5em 0em 1em;}
 .QuestionSubmit{	padding: 0.75em 0em 1em;margin-top: 1em;}
 .Question label, .QuestionSubmit label{	width: 150px;float: left;margin-top: 0.4em;}
+.Question #capswarning { margin-left: 150px; display: none; color: red;font-weight: bold;}
 .Question .Lineup {margin: 3px 0px;}
 .Question .stdwidth,.stdwidth{width: 360px;font: 11px Tahoma, Arial, Helvetica, sans-serif;margin: 3px 0px;}
 .Question .medwidth,.medwidth{width: 250px;font: 11px Tahoma, Arial, Helvetica, sans-serif;margin: 3px 0px;}
