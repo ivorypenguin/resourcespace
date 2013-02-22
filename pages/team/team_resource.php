@@ -55,7 +55,7 @@ include "../../include/header.php";
 
 		<?php if (checkperm("e-1")) { ?>
 		<li><a href="<?php echo $baseurl_short?>pages/search.php?search=&archive=-1" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["viewuserpending"]?></a></li>
-		<?php } ?>
+	<?php } ?>
 		
 		<?php if (checkperm("e-2")) { ?>
 		<li><a href="<?php echo $baseurl_short?>pages/search.php?search=!contributions<?php echo $userref?>&archive=-2" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["viewcontributedps"]?></a></li>
@@ -79,7 +79,7 @@ include "../../include/header.php";
 		<li><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!unused")?>" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["viewuncollectedresources"]?></a></li>
 		<?php if (checkperm("k")): // Check if user can manage keywords and fields ?>
 			<li><a href="<?php echo $baseurl_short?>pages/team/team_related_keywords.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["managerelatedkeywords"]?></a></li>
-			<!--<li><a onClick="return CentralSpaceLoad(this,true);" href="team_fields.php"><?php echo $lang["managefieldoptions"]?></a></li>-->
+			<li><a onClick="return CentralSpaceLoad(this,true);" href="team_fields.php"><?php echo $lang["managefieldoptions"]?></a></li>
 		<?php endif // Check if user can manage keywords and fields ?>
 
 	<?php endif // Check if user can create resources ?>

@@ -1624,7 +1624,7 @@ function get_fields_with_options()
     # Used for 'manage field options' page.
 
     # Executes query.
-    $fields = sql_query("select ref, name, title, type, options ,order_by, keywords_index, partial_index, resource_type, resource_column, display_field, use_for_similar, iptc_equiv, display_template, tab_name, required, smart_theme_name, exiftool_field, advanced_search, simple_search, help_text, display_as_dropdown from resource_type_field where type=2 or type=3 order by resource_type,order_by");
+    $fields = sql_query("select ref, name, title, type, options ,order_by, keywords_index, partial_index, resource_type, resource_column, display_field, use_for_similar, iptc_equiv, display_template, tab_name, required, smart_theme_name, exiftool_field, advanced_search, simple_search, help_text, display_as_dropdown from resource_type_field where type in (2,3,9) order by resource_type,order_by");
 
     # Applies permissions and translates field titles in the newly created array.
     $return = array();
@@ -1686,7 +1686,7 @@ function get_field_options_with_stats($field)
 function save_field_options($field)
 	{
 	# Save the field options after editing.
-	global $languages;
+	global $languages,$defaultlanguage;
 	
 	$fielddata=get_field($field);
 	$options=trim_array(explode(",",$fielddata["options"]));
@@ -1698,13 +1698,15 @@ function save_field_options($field)
 			# This option/language combination is being renamed.
 
 			# Construct a new option from the posted languages
-			$new="";
+			$new="";$count=0;
 			foreach ($languages as $langcode=>$langname)
 				{
 				$val=getvalescaped("field_" . $langcode . "_" . $n,"");
-				if ($val!="") {$new.="~" . $langcode . ":" . $val;}
+				if ($val!="") {$new.="~" . $langcode . ":" . $val;$count++;}
 				}
-
+			# Only one language, do not use language syntax.
+			if ($count==1) {$new=getvalescaped("field_" . $defaultlanguage . "_" . $n,"");}
+			
 			# Construct a new options value by creating a new array replacing the item in position $n
 			$newoptions=array_merge(array_slice($options,0,$n),array($new),array_slice($options,$n+1));
 
@@ -1863,13 +1865,6 @@ function get_resource_access($resource)
 		else {
 			$access=$resource['group_access'];
 		}
-
-	if ($access == 1 && get_edit_access($ref, $resourcedata['archive']))
-		{
-		# If access is restricted and user has edit access, grant open access.
-		$access = 0;
-		}
-
 	}
 
 	# Check for user-specific access (overrides any other restriction)

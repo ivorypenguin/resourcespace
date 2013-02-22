@@ -52,9 +52,10 @@ $options=get_field_options_with_stats($field);
   
 </div>
 
-<form method=post action="<?php echo $baseurl_short?>pages/team/team_fields_edit.php">
-<input type=hidden name="show_all_languages" value="<?php echo $show_all_languages?"true":""?>">
-<input type=hidden name="save" value="true">
+<form method="post" action="<?php echo $baseurl_short?>pages/team/team_fields_edit.php">
+<input type="hidden" name="show_all_languages" value="<?php echo $show_all_languages?"true":"" ?>">
+<input type="hidden" name="save" value="true">
+<input type="hidden" name="field" value="<?php echo $field ?>">
 
 <div class="Listview">
 <table border="0" cellspacing="0" cellpadding="0" class="ListviewStyle">
