@@ -28,8 +28,12 @@ if ($use_theme_bar && !in_array($pagename,array("search_advanced","login","previ
 <?php if (!hook("replaceswapcss")){?>
 <script type="text/javascript">
 function SwapCSS(css){
+	if (css.substr(css,-5)=="space"){
+	document.getElementById('colourcss').href='<?php echo $baseurl?>/plugins/'+css+'/css/Col-' + css + '.css?css_reload_key=<?php echo $css_reload_key?>';
+	} else { 
 	document.getElementById('colourcss').href='<?php echo $baseurl?>/css/Col-' + css + '.css?css_reload_key=<?php echo $css_reload_key?>';
-
+	}
+	
 	<?php 
 	if ($global_cookies){?>
 	document.cookie ='colourcss='+css+'; path=/';<?php } 
@@ -53,8 +57,12 @@ function SwapCSS(css){
 <div id="FooterNavLeft" class=""><?php if (isset($userfixedtheme) && $userfixedtheme=="") { ?><?php echo $lang["interface"]?>:&nbsp;&nbsp;
 <?php // enable custom theme chips 
 	if (count($available_themes!=0)){
-		foreach ($available_themes as $available_theme){?>
+		foreach ($available_themes as $available_theme){
+		if (substr($available_theme,-5)=="space"){?>
+		&nbsp;<a href="#" onClick="SwapCSS('<?php echo $available_theme?>');return false;"><img src="<?php echo $baseurl?>/plugins/<?php echo $available_theme?>/gfx/<?php echo ucfirst($available_theme)?>Chip.gif" alt="" width="11" height="11" /></a>
+		<?php } else {?>
 		&nbsp;<a href="#" onClick="SwapCSS('<?php echo $available_theme?>');return false;"><img src="<?php echo $baseurl?>/gfx/interface/<?php echo ucfirst($available_theme)?>Chip.gif" alt="" width="11" height="11" /></a>
+		<?php } ?>
 	<?php }
 	}
 ?>	
