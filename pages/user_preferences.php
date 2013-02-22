@@ -3,22 +3,28 @@ include "../include/db.php";
 include "../include/authenticate.php"; if (checkperm("p")) {exit("Not allowed.");}
 include "../include/general.php";
 
-hook("prechangepasswordform");
+hook("preuserpreferencesform");
 
 if (getval("save","")!="")
 	{
-	if (getval("password","")!=getval("password2","")) {$error2=true;}
-	else
+	if (md5("RS" . $username . getvalescaped("currentpassword",""))!=$userpassword)
 		{
-		$message=change_password(getvalescaped("password",""));
-		if ($message===true)
-			{
-			redirect($baseurl_short."pages/" . ($use_theme_as_home?$baseurl_short.'pages/themes.php':$default_home_page));
-			}
-		else
-			{
-			$error=true;
-			}
+		$error3=$lang["wrongpassword"];
+		}
+	else {
+        if (getval("password","")!=getval("password2","")) {$error2=true;}
+    	else
+	    	{
+		    $message=change_password(getvalescaped("password",""));
+    		if ($message===true)
+	    		{
+		    	redirect($baseurl_short."pages/" . ($use_theme_as_home?$baseurl_short.'pages/themes.php':$default_home_page));
+			    }
+    		else
+	    		{
+		    	$error=true;
+			    }
+		    }
 		}
 	}
 include "../include/header.php";
@@ -30,7 +36,7 @@ include "../include/header.php";
 
 	<?php if (getval("expired","")!="") { ?><div class="FormError">!! <?php echo $lang["password_expired"]?> !!</div><?php } ?>
 
-	<form method="post" action="<?php echo $baseurl_short?>pages/change_password.php">
+	<form method="post" action="<?php echo $baseurl_short?>pages/user_preferences.php">
 	<input type="hidden" name="expired" value="<?php echo getvalescaped("expired","")?>">
 	<div class="Question">
 	<label for="password"><?php echo $lang["newpassword"]?></label>
@@ -45,6 +51,12 @@ include "../include/header.php";
 	<?php if (isset($error2)) { ?><div class="FormError">!! <?php echo $lang["passwordnotmatch"]?> !!</div><?php } ?>
 	<div class="clearerleft"> </div>
 	</div>
+	<div class="Question">
+	<label for="password"><?php echo $lang["yourpassword"]?></label>
+	<input type=password class="stdwidth" name="currentpassword" id="currentpassword" />
+	<div class="clearerleft"> </div>
+	<?php if (isset($error3)) { ?><div class="FormError">!! <?php echo $error3?> !!</div><?php } ?>
+	</div>
 
 
 	<div class="QuestionSubmit">
@@ -53,7 +65,7 @@ include "../include/header.php";
 	</div>
 	</form>
 
-<?php hook("afterchangepasswordform");?>
+<?php hook("afteruserpreferencesform");?>
 </div>
 <?php
 include "../include/footer.php";

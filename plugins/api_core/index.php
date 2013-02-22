@@ -6,7 +6,7 @@ if (!in_array("api_core",$plugins)){die("no access");}
 include "../../include/header.php";
 ?>
 <div class="BasicsBox">
-<p><a  onClick="return CentralSpaceLoad(this,true);" href="<?php if (getvalescaped("back","")!=""){echo $baseurl_short.getvalescaped("back","");}else{ echo $baseurl_short."pages/change_password.php";}?>">&lt; <?php echo $lang["back"]?></a></p><h1><?php echo $lang["apiaccess"]?></h1>
+<p><a  onClick="return CentralSpaceLoad(this,true);" href="<?php if (getvalescaped("back","")!=""){echo $baseurl_short.getvalescaped("back","");}else{ echo $baseurl_short."pages/user_preferences.php";}?>">&lt; <?php echo $lang["back"]?></a></p><h1><?php echo $lang["apiaccess"]?></h1>
 </div>
 
 <?php if (!$enable_remote_apis || $api_scramble_key=="abcdef123"){echo $lang["remoteapisnotavailable"]; exit();}?>

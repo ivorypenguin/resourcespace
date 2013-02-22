@@ -169,7 +169,7 @@ if (array_key_exists("user",$_COOKIE) || array_key_exists("user",$_GET) || isset
 	        $last_password_change=time()-strtotime($userdata[0]["password_last_change"]);
 			if ($last_password_change>($password_expiry*60*60*24))
 				{
-				redirect("pages/change_password.php?expired=true");
+				redirect("pages/user_preferences?expired=true");
 				}
         	}
         
