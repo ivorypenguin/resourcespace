@@ -28,28 +28,30 @@ if ($use_theme_bar && !in_array($pagename,array("search_advanced","login","previ
 <?php if (!hook("replaceswapcss")){?>
 <script type="text/javascript">
 function SwapCSS(css){
-	if (css.substr(css,-5)=="space"){
-	document.getElementById('colourcss').href='<?php echo $baseurl?>/plugins/'+css+'/css/Col-' + css + '.css?css_reload_key=<?php echo $css_reload_key?>';
+	if (css.substr(-5)=="space"){
+	document.getElementById('colourcss').href='<?php echo $baseurl?>/plugins/'+css+'/css/Col-' + css + '.css?css_reload_key=<?php echo $css_reload_key?>';	
+
 	} else { 
 	document.getElementById('colourcss').href='<?php echo $baseurl?>/css/Col-' + css + '.css?css_reload_key=<?php echo $css_reload_key?>';
 	}
 	
 	<?php 
 	if ($global_cookies){?>
-	document.cookie ='colourcss='+css+'; path=/';<?php } 
-	else { ?> 
+	document.cookie ='colourcss='+css+'; path=/';
+	<?php } else { ?> 
 	SetCookie("colourcss",css,1000);  
 	<?php }?>
-	
-<?php for ($n=0;$n<count($plugins);$n++)
-	{
-	$csspath=dirname(__FILE__)."/../plugins/" . $plugins[$n] . "/css/Col-".$theme.".css";	
-	if (file_exists($csspath))
-		{?>
-		document.getElementById('<?php echo $plugins[$n]?>css').href='<?php echo $baseurl?>/plugins/<?php echo $plugins[$n]?>/css/Col-' + css + '.css';<?php
-		}
-	}?>
+
+	jQuery.ajax({
+			url:"<?php echo $baseurl?>/pages/ajax/css/get_plugin_css.php?theme="+css,
+			success: function(response) {
+				jQuery('head').append(response); // add new css
+				jQuery('.plugincss0').remove(); // then remove old
+				jQuery('.plugincss').attr('class', 'plugincss0'); // set up new css for later removal
+				}
+			});
 }
+
 </script>
 <?php } ?>
 
@@ -59,7 +61,7 @@ function SwapCSS(css){
 	if (count($available_themes!=0)){
 		foreach ($available_themes as $available_theme){
 		if (substr($available_theme,-5)=="space"){?>
-		&nbsp;<a href="#" onClick="SwapCSS('<?php echo $available_theme?>');return false;"><img src="<?php echo $baseurl?>/plugins/<?php echo $available_theme?>/gfx/<?php echo ucfirst($available_theme)?>Chip.gif" alt="" width="11" height="11" /></a>
+		&nbsp;<a href="#" onClick="SwapCSS('<?php echo $available_theme?>');return false;"><img src="<?php echo $baseurl?>/plugins/<?php echo $available_theme?>/gfx/interface/<?php echo ucfirst($available_theme)?>Chip.gif" alt="" width="11" height="11" /></a>
 		<?php } else {?>
 		&nbsp;<a href="#" onClick="SwapCSS('<?php echo $available_theme?>');return false;"><img src="<?php echo $baseurl?>/gfx/interface/<?php echo ucfirst($available_theme)?>Chip.gif" alt="" width="11" height="11" /></a>
 		<?php } ?>

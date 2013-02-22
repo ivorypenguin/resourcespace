@@ -209,27 +209,11 @@ $extrafooterhtml="";
 <?php if ($pagename!="preview_all"){?><!--[if lte IE 7]> <link href="<?php echo $baseurl?>/css/globalIE.css?css_reload_key=<?php echo $css_reload_key?>" rel="stylesheet" type="text/css"  media="screen,projection,print" /> <![endif]--><?php } ?>
 <!--[if lte IE 5.6]> <link href="<?php echo $baseurl?>/css/globalIE5.css?css_reload_key=<?php echo $css_reload_key?>" rel="stylesheet" type="text/css"  media="screen,projection,print" /> <![endif]-->
 
-<?php
-# Include CSS files for for each of the plugins too (if provided)
-for ($n=0;$n<count($plugins);$n++)
-	{
-	$csspath=dirname(__FILE__)."/../plugins/" . $plugins[$n] . "/css/style.css";
-	if (file_exists($csspath))
-		{
-		?>
-		<link href="<?php echo $baseurl?>/plugins/<?php echo $plugins[$n]?>/css/style.css?css_reload_key=<?php echo $css_reload_key?>" rel="stylesheet" type="text/css" media="screen,projection,print"  />
-		<?php
-		}
-
-	$csspath=dirname(__FILE__)."/../plugins/" . $plugins[$n] . "/css/Col-".$theme.".css";	
-	if (file_exists($csspath))
-		{
-		?>
-		<link href="<?php echo $baseurl?>/plugins/<?php echo $plugins[$n]?>/css/Col-<?php echo $theme?>.css?css_reload_key=<?php echo $css_reload_key?>" rel="stylesheet" type="text/css" media="screen,projection,print" id="<?php echo $plugins[$n]?>css" />
-		<?php
-		}	
-	}
+<?php 
+echo get_plugin_css($theme)
+// after loading these tags we change the class on them so a new set can be added before they are removed (preventing flickering of overridden theme)
 ?>
+<script>jQuery('.plugincss').attr('class','plugincss0');</script>
 
 <?php hook("headblock"); ?>
 
