@@ -120,6 +120,10 @@ if ($search_titles)
 		{
 		$search_title = '<h1 class="searchcrumbs"><a href='.$baseurl_short.'pages/search.php?search=!userpending'.$parameters_string.'>'.$lang["userpending"].'</a>'.$searchcrumbs.'</h1> ';
 		}
+	elseif (substr($search,0,10)=="!nopreview")
+		{
+		$search_title = '<h1 class="searchcrumbs"><a href='.$baseurl_short.'pages/search.php?search=!nopreview'.$parameters_string.'>'.$lang["nopreviewresources"].'</a>'.$searchcrumbs.'</h1> ';
+		}	
     elseif (substr($search,0,14)=="!contributions")
         {
 		$cuser=substr($search,14);
