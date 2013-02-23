@@ -353,6 +353,7 @@ $lang["languageselection"]="Выбор языка";
 $lang["language"]="Язык";
 $lang["changeyourpassword"]="Изменить пароль";
 $lang["yourpassword"]="Ваш пароль";
+$lang["currentpassword"]="Текущий пароль";
 $lang["newpassword"]="Новый пароль";
 $lang["newpasswordretype"]="Новый пароль (Повторить)";
 $lang["passwordnotvalid"]="Это неправильный пароль";
@@ -789,4 +790,5 @@ $lang["newflag"]="НОВОЕ!";
 $lang["collectionsdeleteempty"]="Удалить пустые коллекции";
 $lang["collectionsdeleteemptyareyousure"]="Вы уверены, что хотите удалить все свои пустые коллекции?";
 $lang["publiccollections"]="Публичные коллекции";
+$lang["caps-lock-on"]="Внимание! Капс лок включен.";
 ?>

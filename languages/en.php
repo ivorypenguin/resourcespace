@@ -633,6 +633,7 @@ $lang["languageselection"]="Language selection";
 $lang["language"]="Language";
 $lang["changeyourpassword"]="Change your password";
 $lang["yourpassword"]="Your password";
+$lang["currentpassword"]="Current password";
 $lang["newpassword"]="New password";
 $lang["newpasswordretype"]="New password (retype)";
 $lang["passwordnotvalid"]="This is not a valid password";

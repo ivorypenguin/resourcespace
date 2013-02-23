@@ -39,6 +39,12 @@ include "../include/header.php";
 	<form method="post" action="<?php echo $baseurl_short?>pages/user_preferences.php">
 	<input type="hidden" name="expired" value="<?php echo getvalescaped("expired","")?>">
 	<div class="Question">
+	<label for="password"><?php echo $lang["currentpassword"]?></label>
+	<input type=password class="stdwidth" name="currentpassword" id="currentpassword" />
+	<div class="clearerleft"> </div>
+	<?php if (isset($error3)) { ?><div class="FormError">!! <?php echo $error3?> !!</div><?php } ?>
+	</div>
+	<div class="Question">
 	<label for="password"><?php echo $lang["newpassword"]?></label>
 	<input type="password" name="password" id="password" class="stdwidth">
 	<?php if (isset($error)) { ?><div class="FormError">!! <?php echo $message?> !!</div><?php } ?>
@@ -51,12 +57,7 @@ include "../include/header.php";
 	<?php if (isset($error2)) { ?><div class="FormError">!! <?php echo $lang["passwordnotmatch"]?> !!</div><?php } ?>
 	<div class="clearerleft"> </div>
 	</div>
-	<div class="Question">
-	<label for="password"><?php echo $lang["yourpassword"]?></label>
-	<input type=password class="stdwidth" name="currentpassword" id="currentpassword" />
-	<div class="clearerleft"> </div>
-	<?php if (isset($error3)) { ?><div class="FormError">!! <?php echo $error3?> !!</div><?php } ?>
-	</div>
+
 
 
 	<div class="QuestionSubmit">
