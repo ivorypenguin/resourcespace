@@ -812,6 +812,7 @@ $restricted_share=false;
 # Auto-completion of search (quick search only)
 $autocomplete_search=true;
 $autocomplete_search_items=15;
+$autocomplete_search_min_hitcount=10; # The minimum number of times a keyword appears in metadata before it qualifies for inclusion in auto-complete. Helps to hide spurious values.
 
 # Automatically order checkbox lists (alphabetically)
 $auto_order_checkbox=true;
