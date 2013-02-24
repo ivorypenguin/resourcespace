@@ -598,11 +598,7 @@ if (true) # Always show search header now.
 	?>
 	<div class="clearerleft"></div>
 	<?php
-	# Include public collections and themes in the main search, if configured.		
-	if (isset($collections))
-		{
-		include "../include/search_public.php";
-		}
+
 		
 	if (!is_array($result) && empty($collections))
 		{
@@ -662,7 +658,11 @@ if (true) # Always show search header now.
 		<?php } ?> <!--end hook replace listviewtitlerow-->
 		<?php
 		}
-		
+		# Include public collections and themes in the main search, if configured.		
+		if (isset($collections))
+			{
+			include "../include/search_public.php";
+			}
 
 	
 	# work out common keywords among the results
