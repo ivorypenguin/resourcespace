@@ -9,6 +9,7 @@ if (substr($search,0,11)!="!collection") {
     
 for ($n=0;$n<count($collections);$n++)
 	{
+	
 	$resources=do_search("!collection".$collections[$n]['ref']);	
 	$pub_url="search.php?search=" . urlencode("!collection" . $collections[$n]["ref"]);
 	if ($display=="thumbs")

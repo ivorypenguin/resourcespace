@@ -791,4 +791,5 @@ $lang["collectionsdeleteempty"]="Удалить пустые коллекции"
 $lang["collectionsdeleteemptyareyousure"]="Вы уверены, что хотите удалить все свои пустые коллекции?";
 $lang["publiccollections"]="Публичные коллекции";
 $lang["caps-lock-on"]="Внимание! Капс лок включен.";
+$lang["collectionnames"]="Названия коллекций";
 ?>
