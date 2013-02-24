@@ -2091,7 +2091,7 @@ function get_suggested_keywords($search,$ref="")
 	# For the given partial word, suggest complete existing keywords.
 	global $autocomplete_search_items,$autocomplete_search_min_hitcount;
 	if ($ref==""){
-		return sql_array("select keyword value from keyword where keyword like '" . escape_check($search) . "%' and hit_count >= '$autocomplete_search_min_hitcount' order by hit_count desc limit $autocomplete_search_items");
+		return sql_array("select distinct keyword value from keyword where keyword like '" . escape_check($search) . "%' and hit_count >= '$autocomplete_search_min_hitcount' order by hit_count desc limit $autocomplete_search_items");
 		}
 	else 
 		{
