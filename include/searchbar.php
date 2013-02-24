@@ -162,13 +162,14 @@ if (!$basic_simple_search)
 		$clear_function.="document.getElementById('TickBox" . $types[$n]["ref"] . "').checked=true;";
 		if ($searchbar_selectall) {$clear_function.="resetTickAll();";}
 		}
-		?>
-		<div class="tick"><?php if ($searchbar_selectall){ ?>&nbsp;&nbsp;<?php } ?><input class="tickbox" id="TickBoxCol" type="checkbox" name="resourcecol" value="yes" <?php if (((count($rt)==1) && ($rt[0]=="")) || (in_array("col",$rt))) {?>checked="true"<?php } ?>onClick="HideInapplicableSimpleSearchFields(true);<?php if ($searchbar_selectall){?>resetTickAll();<?php } ?>"/>&nbsp;<?php echo $lang["collectionnames"]?></div><?php	
-		$clear_function.="document.getElementById('TickBoxCol').checked=true;";
-		if ($searchbar_selectall) {$clear_function.="resetTickAll();";}
 		
-		?>
-		<?php
+		if ($search_includes_themes || $search_includes_public_collections || $search_includes_user_collections) 
+		    { ?>
+		    <div class="tick"><?php if ($searchbar_selectall){ ?>&nbsp;&nbsp;<?php } ?><input class="tickbox" id="TickBoxCol" type="checkbox" name="resourcecol" value="yes" <?php if (((count($rt)==1) && ($rt[0]=="")) || (in_array("col",$rt))) {?>checked="true"<?php } ?>onClick="HideInapplicableSimpleSearchFields(true);<?php if ($searchbar_selectall){?>resetTickAll();<?php } ?>"/>&nbsp;<?php echo $lang["collectionnames"]?></div><?php	
+		    $clear_function.="document.getElementById('TickBoxCol').checked=true;";
+		    if ($searchbar_selectall) {$clear_function.="resetTickAll();";}
+		    }
+
 	}
 	?>	
 	<?php if ($searchbar_selectall){?><script type="text/javascript">resetTickAll();</script><?php }?>

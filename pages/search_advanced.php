@@ -161,7 +161,7 @@ for ($n=0;$n<count($types);$n++)
 	?><td valign=middle><input type=checkbox name="resourcetype<?php echo $types[$n]["ref"]?>" value="yes" <?php if ((((count($rt)==1) && ($rt[0]=="")) || (in_array($types[$n]["ref"],$rt))) && (getval("resetform","")=="")) {?>checked<?php } ?> onChange="UpdateResultCount();"></td><td valign=middle><?php echo $types[$n]["name"]?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><?php	
 	}
 ?>
-<td valign=middle><input type=checkbox name="resourcetypecol" value="yes" <?php if ((((count($rt)==1) && ($rt[0]=="")) || (in_array("col",$rt))) && (getval("resetform","")=="")) {?>checked<?php } ?> onChange="UpdateResultCount();"></td><td valign=middle><?php echo $lang["collectionnames"]?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+
 </tr></table>
 <div class="clearerleft"> </div>
 </div>
