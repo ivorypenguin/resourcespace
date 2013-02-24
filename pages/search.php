@@ -429,7 +429,16 @@ if (true) # Always show search header now.
 	$url=$baseurl_short."pages/search.php?search=" . urlencode($search) . "&order_by=" . $order_by . "&sort=".$sort."&offset=" . $offset . "&archive=" . $archive."&sort=".$sort;
 	?>
 	<div class="TopInpageNav">
-	<div class="InpageNavLeftBlock"><?php echo $lang["youfound"]?>:<br /><span class="Selected"><?php echo number_format(is_array($result)?count($result):0)?><?php echo (count($result)==$max_results)?"+":""?></span> <?php if (count($result)==1){echo $lang["youfoundresource"];} else {echo $lang["youfoundresources"];}?></div>
+	<div class="InpageNavLeftBlock"><?php echo $lang["youfound"]?>:<br /><span class="Selected"><?php
+	$resources_count=is_array($result)?count($result):0;
+	if (isset($collections)) {
+	$results_count=count($collections)+$resources_count;
+	 echo number_format($results_count)?><?php echo ($results_count==$max_results)?"+":""?></span> <?php if ($results_count==1){echo $lang["youfoundresult"];} else {echo $lang["youfoundresults"];}
+	} else 
+	{
+	 echo number_format($resources_count)?><?php echo ($resources_count==$max_results)?"+":""?></span> <?php if ($resources_count==1){echo $lang["youfoundresource"];} else {echo $lang["youfoundresources"];}
+	}
+	 ?></div>
 	<div class="InpageNavLeftBlock"><?php echo $lang["display"]?>:<br />
 
 
