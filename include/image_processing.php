@@ -545,6 +545,9 @@ function iptc_return_utf8($text)
 	# No inconv library? Return text as-is
 	if (!function_exists("iconv")) {return $text;}
 	
+	# No expected chars set? Return as is
+	if ($iptc_expectedchars=="") {return $text;}
+	
 	$try=array("UTF-8","ISO-8859-1","Macintosh","Windows-1252");
 	for ($n=0;$n<count($try);$n++)
 		{
