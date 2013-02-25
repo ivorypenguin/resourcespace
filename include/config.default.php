@@ -225,7 +225,7 @@ if (function_exists("date_default_timezone_set")) {date_default_timezone_set("GM
 # to aid with character encoding auto-detection.
 # Several encodings will be attempted and if a character in this string is returned then this is considered
 # a match.
-# For English, there is no need to specify anything here (i.e. just an empty string)
+# For English, there is no need to specify anything here (i.e. just an empty string) - this will disable auto-detection and assume UTF-8
 # The example given is for Norwegian.
 $iptc_expectedchars="æøåÆØÅ";
 
