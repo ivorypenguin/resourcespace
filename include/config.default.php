@@ -226,8 +226,9 @@ if (function_exists("date_default_timezone_set")) {date_default_timezone_set("GM
 # Several encodings will be attempted and if a character in this string is returned then this is considered
 # a match.
 # For English, there is no need to specify anything here (i.e. just an empty string) - this will disable auto-detection and assume UTF-8
-# The example given is for Norwegian.
-$iptc_expectedchars="æøåÆØÅ";
+# The example below is for Norwegian.
+# $iptc_expectedchars="æøåÆØÅ";
+$iptc_expectedchars="";
 
 # Which field do we drop the EXIF data in to? (when NOT using exiftool)
 # Comment out these lines to disable basic EXIF reading.
