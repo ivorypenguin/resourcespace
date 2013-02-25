@@ -54,19 +54,13 @@ if ($access==2)
 <?php if (!hook("infoboxreplace")) {
 
 
-if ($infobox_display_resource_id)
-	{
-	# Display resource ID
-	?>
-	<div style="float:right;padding-right:10px;"><?php echo $lang["resourceid"] ?>: <?php echo $ref?></div>
-	<?php
-	}
+
 
 if ($infobox_display_resource_icon && $resource["file_extension"]!="")
 	{
 	# Display resource type indicator icon (no preview icon)
 	?>
-	<img style="float:right;clear:right;" src="../gfx/<?php echo get_nopreview_icon($resource["resource_type"],$resource["file_extension"],true,true) ?>">
+	<img class="InfoBoxResourceTypeIcon" src="../gfx/<?php echo get_nopreview_icon($resource["resource_type"],$resource["file_extension"],true,true) ?>">
 	<?php
 	}
 ?>
@@ -85,7 +79,17 @@ if (isset($metadata_template_title_field) && isset($metadata_template_resource_t
 	}	
 
 echo trim(htmlspecialchars(i18n_get_translated($title)))?></h2>
-<?php if ($infobox_display_resource_type){?><p><?php echo get_resource_type_name($resource['resource_type']);?></p><?php } ?>
+<?php if ($infobox_display_resource_type){?><p><?php echo get_resource_type_name($resource['resource_type']);?></p><?php } 
+
+if ($infobox_display_resource_id)
+	{
+	# Display resource ID
+	?>
+	<p><?php echo $lang["resourceid"] ?>: <?php echo $ref?></p>
+	<?php
+	}	
+	
+?>
 <?php
 # Display fields
 for ($n=0;$n<count($infobox_fields);$n++)
@@ -102,6 +106,8 @@ for ($n=0;$n<count($infobox_fields);$n++)
 				{
 				$value=nl2br(htmlspecialchars(TidyList(i18n_get_translated($value))));
 				}
+				
+			if ($type==4) {$value=nicedate($value);}
 			?>
 			<p><?php echo $value?></p>
 			<?php	

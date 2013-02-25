@@ -508,3 +508,8 @@ li.plupload_droptext
 .ui-layout-pane {
     overflow: auto;
 }
+
+.InfoBoxResourceTypeIcon
+	{
+	float:right;clear:right;padding:10px 0 10px 10px;
+	}
