@@ -178,7 +178,7 @@ for ($n=0;$n<count($types);$n++)
 if ($daterange_search)
 	{ ?>
 	<!--  date range search -->
-	<div><label><?php echo $lang["fromdate"]?></label>
+	<div><label class="InnerLabel"><?php echo $lang["fromdate"]?></label>
 	<select name="startyear" class="SearchWidth" style="width:100px;" onChange="UpdateResultCount();">
 	  <option value=""><?php echo $lang["anyyear"]?></option>
 	  <?php
@@ -210,7 +210,7 @@ if ($daterange_search)
 	  ?>
 	</select>
 	<!-- end date -->	
-	</div><br><div><label></label><label><?php echo $lang["todate"]?></label>
+	</div><br><div><label></label><label class="InnerLabel"><?php echo $lang["todate"]?></label>
 	<select name="endyear" class="SearchWidth" style="width:100px;" onChange="UpdateResultCount();">
 	  <option value=""><?php echo $lang["anyyear"]?></option>
 	  <?php
