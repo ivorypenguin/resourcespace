@@ -455,37 +455,17 @@ $titleh2 = str_replace(array("%number","%subtitle"), array("1", $lang["specifyde
 <h2><?php echo $titleh2 ?></h2>
 <p><?php echo $lang["intro-batch_edit"] ?></p>
 
-<?php if ($ref<0) { 
-	# Upload template: Show the save / clear buttons at the top too, to avoid unnecessary scrolling.
-	?>
-	<div class="QuestionSubmit">
-	<input name="resetform" type="submit" value="<?php echo $lang["clearbutton"]?>" />&nbsp;
-	<input name="save" type="submit" value="&nbsp;&nbsp;<?php echo $lang["next"]?>&nbsp;&nbsp;" /><br><br>
-	<div class="clearerleft"> </div>
-	</div>
-	<?php
-	}
+<?php
+# Upload template: Show the save / clear buttons at the top too, to avoid unnecessary scrolling.
 ?>
-
-<?php if ($metadata_read){?>
-<div class="Question" id="question_noexif">
-<label for="no_exif"><?php echo $lang["no_exif"]?></label><input type=checkbox id="no_exif" name="no_exif" value="yes" <?php if (getval("no_exif","")!="") { ?>checked<?php } ?>>
+<div class="QuestionSubmit">
+<input name="resetform" type="submit" value="<?php echo $lang["clearbutton"]?>" />&nbsp;
+<input name="save" type="submit" value="&nbsp;&nbsp;<?php echo $lang["next"]?>&nbsp;&nbsp;" /><br />
 <div class="clearerleft"> </div>
 </div>
-<?php } else { ?>
-<input type=hidden id="no_exif" name="no_exif" value="no">
-<?php } ?>
-
-<?php if($camera_autorotation){ ?>
-<div class="Question" id="question_autorotate">
-<label for="autorotate"><?php echo $lang["autorotate"]?></label><input type=checkbox id="autorotate" name="autorotate" value="yes" <?php
-if ($camera_autorotation_checked) {echo ' checked';}?>>
-<div class="clearerleft"> </div>
-</div>
-<?php } // end if camera autorotation ?>
-
 
 <?php } ?>
+<br /><h1><?php echo $lang["resourcemetadata"]?></h1>
 
 <?php if (!$multiple){?>
 <div class="Question" id="question_resourcetype">
@@ -519,129 +499,6 @@ for ($n=0;$n<count($types);$n++)
 <div class="clearerleft"> </div>
 </div>
 <?php } ?>
-
-
-<?php
-if ($ref<=0 && getval("single","")=="") { 
-
-# Add Resource Batch: specify default content - also ask which collection to add the resource to.
-if ($enable_add_collection_on_upload) 
-	{
-    $collection_add=getvalescaped("collection_add","");
-	?>
-	<div class="Question" id="question_collectionadd">
-	<label for="collection_add"><?php echo $lang["addtocollection"]?></label>
-	<select name="collection_add" id="collection_add" class="stdwidth">
-	<?php if ($upload_add_to_new_collection_opt && $collection_allow_creation) { ?><option value="-1" <?php if ($upload_add_to_new_collection){ ?>selected <?php }?>>(<?php echo $lang["createnewcollection"]?>)</option><?php } ?>
-	<?php if ($upload_do_not_add_to_new_collection_opt) { ?><option value="" <?php if (!$upload_add_to_new_collection){ ?>selected <?php }?>><?php echo $lang["batchdonotaddcollection"]?></option><?php } ?>
-	<?php
-	if ($upload_force_mycollection)
-		{
-		$list=get_user_collections($userref,"My Collection");}
-	else
-		{$list=get_user_collections($userref);}
-	$currentfound=false;
-	
-        // make sure it's possible to set the collection with collection_add (compact style "upload to this collection"
-        if ($collection_add!="")
-               {
-               # Switch to the selected collection (existing or newly created) and refresh the frame.
-               set_user_collection($userref,$collection_add);
-               refresh_collection_frame($collection_add);
-               }
-               
-               
-	for ($n=0;$n<count($list);$n++)
-		{
-		if ($collection_dropdown_user_access_mode){    
-                $colusername=$list[$n]['fullname'];
-                
-                # Work out the correct access mode to display
-                if (!hook('collectionaccessmode')) {
-                    if ($list[$n]["public"]==0){
-                        $accessmode= $lang["private"];
-                    }
-                    else{
-                        if (strlen($list[$n]["theme"])>0){
-                            $accessmode= $lang["theme"];
-                        }
-                    else{
-                            $accessmode= $lang["public"];
-                        }
-                    }
-                }
-            }	
-			
-		
-		#remove smart collections as they cannot be uploaded to.
-		if (!isset($list[$n]['savedsearch'])||(isset($list[$n]['savedsearch'])&&$list[$n]['savedsearch']==null)){
-			#show only active collections if a start date is set for $active_collections 
-			if (strtotime($list[$n]['created']) > ((isset($active_collections))?strtotime($active_collections):1))
-				{ if ($list[$n]["ref"]==$usercollection) {$currentfound=true;} ?>
-				<option value="<?php echo $list[$n]["ref"]?>" <?php if ($list[$n]['ref']==$collection_add) {?> 	selected<?php } ?>><?php echo i18n_get_collection_name($list[$n])?> <?php if ($collection_dropdown_user_access_mode){echo "(". $colusername."/".$accessmode.")"; } ?></option>
-				<?php }
-		
-			}
-		}
-	if (!$currentfound && !$upload_force_mycollection)
-		{
-		# The user's current collection has not been found in their list of collections (perhaps they have selected a theme to edit). Display this as a separate item.
-		$cc=get_collection($usercollection);
-		if ($cc!==false)
-			{$currentfound=true;
-			?>
-			<option value="<?php echo $usercollection?>" <?php if ($usercollection==$collection_add){?>selected <?php } ?>><?php echo i18n_get_collection_name($cc)?></option>
-			<?php
-			}
-		}
-	?>
-	</select>
-
-	<div class="clearerleft"> </div>
-	<div name="collectioninfo" id="collectioninfo" style="display:none;">
-	<div name="collectionname" id="collectionname" <?php if ($upload_add_to_new_collection && $upload_add_to_new_collection_opt){ ?> style="display:block;"<?php } else { ?> style="display:none;"<?php } ?>>
-	<label for="collection_add"><?php echo $lang["collectionname"]?><?php if ($upload_collection_name_required){?><sup>*</sup><?php } ?></label>
-	<input type=text id="entercolname" name="entercolname" class="stdwidth" value='<?php echo htmlentities(stripslashes(getval("entercolname","")), ENT_QUOTES);?>'> 
-	
-	</div>
-	
-	<?php if ($enable_public_collection_on_upload && ($enable_public_collections || checkperm('h')) && !checkperm('b')) { ?>
-	<label for="public"><?php echo $lang["access"]?></label>
-	<select id="public" name="public" class="shrtwidth"  <?php
-		if (checkperm('h')){ // if the user can add to a theme, include the code to toggle the theme selector
-		?>onchange="if(jQuery(this).val()==1){jQuery('#themeselect').fadeIn();resetThemeLevels();} else {jQuery('#themeselect').fadeOut(); clearThemeLevels();}"<?php 
-		}
-	?>>
-	<option value="0" selected><?php echo $lang["private"]?></option>
-	<option value="1"><?php echo $lang["public"]?></option>
-	</select>
-
-	
-	<?php 
-	if (checkperm('h')){ 
-	// if the user can add to a theme, include the theme selector
-	?>
-		<!-- select theme if collection is public -->
-		<script type="text/javascript" src="../lib/js/update_theme_levels.js"></script>
-		<input type="hidden" name="themestring" id="themestring" value="" />
-		<div id='themeselect' class='themeselect' style="display:none">
-			<?php 
-				include_once("ajax/themelevel_add.php"); 
-			?>
-		</div>
-		<!-- end select theme -->
-		</div>		
-		<?php 	
-		} // end if checkperm h 
-	} // end if public collections enabled
-} // end enable_add_collection_on_upload
-?>
-	</div> <!-- end collectioninfo -->
-	</div> <!-- end question_collectionadd -->
-
-
-<?php } ?>
-
 
 <?php
 $lastrt=-1;
@@ -731,19 +588,7 @@ if (isset($metadata_template_resource_type)&&(isset($metadata_template_title_fie
 	$fields=$newfields;
 }
 
-?>
-<br /><br /><h1><?php echo $lang["resourcemetadata"]?></h1>
 
-<?php if ($edit_show_save_clear_buttons_at_top) { ?>
-	<div class="QuestionSubmit">
-	<label for="buttons"> </label>
-	<input name="resetform" type="submit" value="<?php echo $lang["clearbutton"]?>" />&nbsp;
-	<input <?php if ($multiple) { ?>onclick="return confirm('<?php echo $lang["confirmeditall"]?>');"<?php } ?> name="save" type="submit" value="&nbsp;&nbsp;<?php echo ($ref>0)?$lang["save"]:$lang["next"]?>&nbsp;&nbsp;" /><br><br>
-	<div class="clearerleft"> </div>
-	</div>
-<?php } ?>
-
-<?php
 for ($n=0;$n<count($fields);$n++)
 	{
 	# Should this field be displayed?
@@ -788,7 +633,7 @@ for ($n=0;$n<count($fields);$n++)
 	
 	if (($fields[$n]["resource_type"]!=$lastrt)&& ($lastrt!=-1))
 		{
-		?><br><h1 id="resource_type_properties"><?php echo get_resource_type_name($fields[$n]["resource_type"])?> <?php echo $lang["properties"]?></h1><?php
+		?><br /><h1 id="resource_type_properties"><?php echo get_resource_type_name($fields[$n]["resource_type"])?> <?php echo $lang["properties"]?></h1><?php
 		}
 	$lastrt=$fields[$n]["resource_type"];
 	
@@ -937,7 +782,18 @@ if (!checkperm("F*")) # Only display Status / Access / Related Resources if full
     {
     if(!hook("replacestatusandrelationshipsheader"))
         {
-        ?><br><h1><?php echo $lang["statusandrelationships"]?></h1><?php
+        if ($ref>0 || $show_status_and_access_on_upload==true)
+        	{
+	        if ($enable_related_resources && ($multiple || $ref>0)) # Showing relationships
+	        	{
+	        	?><br><h1><?php echo $lang["statusandrelationships"]?></h1><?php
+		        }
+		    else
+		    	{
+	        	?><br><h1><?php echo $lang["status"]?></h1><?php # Not showing relationships
+		    	}
+		    }
+		    
         } /* end hook replacestatusandrelationshipsheader */
 
     # Status
@@ -1045,7 +901,7 @@ if (!checkperm("F*")) # Only display Status / Access / Related Resources if full
         } /* end hook replaceaccessselector */
 
     # Related Resources
-    if ($enable_related_resources)
+    if ($enable_related_resources && ($multiple || $ref>0)) # Not when uploading
         {
         if ($multiple) { ?><div><input name="editthis_related" id="editthis_related" value="yes" type="checkbox" onClick="var q=document.getElementById('question_related');if (q.style.display!='block') {q.style.display='block';} else {q.style.display='none';}">&nbsp;<label for="editthis<?php echo $n?>"><?php echo $lang["relatedresources"]?></label></div><?php } ?>
 
@@ -1104,7 +960,152 @@ if ($multiple && !$disable_geocoding)
 	<?php
 	hook("locationextras");
 	} 
-?>
+	
+	
+if ($ref<0)
+	{
+	?><br /><h1><?php echo $lang["upload-options"] ?></h1>
+
+	<?php if ($metadata_read){?>
+	<div class="Question" id="question_noexif">
+	<label for="no_exif"><?php echo $lang["no_exif"]?></label><input type=checkbox id="no_exif" name="no_exif" value="yes" <?php if (getval("no_exif","")!="") { ?>checked<?php } ?>>
+	<div class="clearerleft"> </div>
+	</div>
+	<?php } else { ?>
+	<input type=hidden id="no_exif" name="no_exif" value="no">
+	<?php } ?>
+	
+	<?php if($camera_autorotation){ ?>
+	<div class="Question" id="question_autorotate">
+	<label for="autorotate"><?php echo $lang["autorotate"]?></label><input type=checkbox id="autorotate" name="autorotate" value="yes" <?php
+	if ($camera_autorotation_checked) {echo ' checked';}?>>
+	<div class="clearerleft"> </div>
+	</div>
+	<?php } // end if camera autorotation ?>
+
+	<?php if (getval("single","")=="") { 
+
+	# Add Resource Batch: specify default content - also ask which collection to add the resource to.
+	if ($enable_add_collection_on_upload) 
+		{
+	    $collection_add=getvalescaped("collection_add","");
+		?>
+		<div class="Question" id="question_collectionadd">
+		<label for="collection_add"><?php echo $lang["addtocollection"]?></label>
+		<select name="collection_add" id="collection_add" class="stdwidth">
+		<?php if ($upload_add_to_new_collection_opt && $collection_allow_creation) { ?><option value="-1" <?php if ($upload_add_to_new_collection){ ?>selected <?php }?>>(<?php echo $lang["createnewcollection"]?>)</option><?php } ?>
+		<?php if ($upload_do_not_add_to_new_collection_opt) { ?><option value="" <?php if (!$upload_add_to_new_collection){ ?>selected <?php }?>><?php echo $lang["batchdonotaddcollection"]?></option><?php } ?>
+		<?php
+		if ($upload_force_mycollection)
+			{
+			$list=get_user_collections($userref,"My Collection");}
+		else
+			{$list=get_user_collections($userref);}
+		$currentfound=false;
+		
+	        // make sure it's possible to set the collection with collection_add (compact style "upload to this collection"
+	        if ($collection_add!="")
+	               {
+	               # Switch to the selected collection (existing or newly created) and refresh the frame.
+	               set_user_collection($userref,$collection_add);
+	               refresh_collection_frame($collection_add);
+	               }
+	               
+	               
+		for ($n=0;$n<count($list);$n++)
+			{
+			if ($collection_dropdown_user_access_mode){    
+	                $colusername=$list[$n]['fullname'];
+	                
+	                # Work out the correct access mode to display
+	                if (!hook('collectionaccessmode')) {
+	                    if ($list[$n]["public"]==0){
+	                        $accessmode= $lang["private"];
+	                    }
+	                    else{
+	                        if (strlen($list[$n]["theme"])>0){
+	                            $accessmode= $lang["theme"];
+	                        }
+	                    else{
+	                            $accessmode= $lang["public"];
+	                        }
+	                    }
+	                }
+	            }	
+				
+			
+			#remove smart collections as they cannot be uploaded to.
+			if (!isset($list[$n]['savedsearch'])||(isset($list[$n]['savedsearch'])&&$list[$n]['savedsearch']==null)){
+				#show only active collections if a start date is set for $active_collections 
+				if (strtotime($list[$n]['created']) > ((isset($active_collections))?strtotime($active_collections):1))
+					{ if ($list[$n]["ref"]==$usercollection) {$currentfound=true;} ?>
+					<option value="<?php echo $list[$n]["ref"]?>" <?php if ($list[$n]['ref']==$collection_add) {?> 	selected<?php } ?>><?php echo i18n_get_collection_name($list[$n])?> <?php if ($collection_dropdown_user_access_mode){echo "(". $colusername."/".$accessmode.")"; } ?></option>
+					<?php }
+			
+				}
+			}
+		if (!$currentfound && !$upload_force_mycollection)
+			{
+			# The user's current collection has not been found in their list of collections (perhaps they have selected a theme to edit). Display this as a separate item.
+			$cc=get_collection($usercollection);
+			if ($cc!==false)
+				{$currentfound=true;
+				?>
+				<option value="<?php echo $usercollection?>" <?php if ($usercollection==$collection_add){?>selected <?php } ?>><?php echo i18n_get_collection_name($cc)?></option>
+				<?php
+				}
+			}
+		?>
+		</select>
+	
+		<div class="clearerleft"> </div>
+		<div name="collectioninfo" id="collectioninfo" style="display:none;">
+		<div name="collectionname" id="collectionname" <?php if ($upload_add_to_new_collection && $upload_add_to_new_collection_opt){ ?> style="display:block;"<?php } else { ?> style="display:none;"<?php } ?>>
+		<label for="collection_add"><?php echo $lang["collectionname"]?><?php if ($upload_collection_name_required){?><sup>*</sup><?php } ?></label>
+		<input type=text id="entercolname" name="entercolname" class="stdwidth" value='<?php echo htmlentities(stripslashes(getval("entercolname","")), ENT_QUOTES);?>'> 
+		
+		</div>
+		
+		<?php if ($enable_public_collection_on_upload && ($enable_public_collections || checkperm('h')) && !checkperm('b')) { ?>
+		<label for="public"><?php echo $lang["access"]?></label>
+		<select id="public" name="public" class="shrtwidth"  <?php
+			if (checkperm('h')){ // if the user can add to a theme, include the code to toggle the theme selector
+			?>onchange="if(jQuery(this).val()==1){jQuery('#themeselect').fadeIn();resetThemeLevels();} else {jQuery('#themeselect').fadeOut(); clearThemeLevels();}"<?php 
+			}
+		?>>
+		<option value="0" selected><?php echo $lang["private"]?></option>
+		<option value="1"><?php echo $lang["public"]?></option>
+		</select>
+	
+		
+		<?php 
+		if (checkperm('h')){ 
+		// if the user can add to a theme, include the theme selector
+		?>
+			<!-- select theme if collection is public -->
+			<script type="text/javascript" src="../lib/js/update_theme_levels.js"></script>
+			<input type="hidden" name="themestring" id="themestring" value="" />
+			<div id='themeselect' class='themeselect' style="display:none">
+				<?php 
+					include_once("ajax/themelevel_add.php"); 
+				?>
+			</div>
+			<!-- end select theme -->
+			</div>		
+			<?php 	
+			} // end if checkperm h 
+		} // end if public collections enabled
+	} // end enable_add_collection_on_upload
+	?>
+		</div> <!-- end collectioninfo -->
+		</div> <!-- end question_collectionadd -->
+	
+	
+		<?php
+		}
+	}
+	?>
+		
 	
 	
 	<div class="QuestionSubmit">

@@ -811,7 +811,7 @@ $lang["warningexpired"]="Resource expired";
 $lang["warningexpiredtext"]="Warning! This resource has exceeded the expiry date. You must click the link below to enable the download functionality.";
 $lang["warningexpiredok"]="&gt; Enable resource download";
 $lang["userrequestcomment"]="Comment";
-$lang["addresourcebatchbrowser"]="Add resource batch - in browser";
+$lang["addresourcebatchbrowser"]="Upload resources";
 $lang["addresourcebatchbrowserjava"]="Add resource batch - in browser  - Java (legacy) ";
 
 $lang["addresourcebatchftp"]="Add resource batch - fetch from FTP server";
@@ -1671,3 +1671,6 @@ $lang["contact_sheet-single_select_size"]="Image quality";
 
 $lang["caps-lock-on"]="Warning! Caps Lock is on";
 $lang["collectionnames"]="Collection names";
+
+$lang["upload-options"]="Upload options";
+
