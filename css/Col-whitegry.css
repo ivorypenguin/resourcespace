@@ -84,7 +84,7 @@ input[readonly] {color: #000000;}
 .NoFind .highlight {color:#000000;font-weight: bold;}
 .NoFind a:link, .NoFind a:visited, .NoFind a:hover, .NoFind a:active {color:#000000;text-decoration:underline;}
 .RecordPanel .Title,  {	border-bottom: 1px solid #BBBBBB;}
-.RecordPanel .RecordDownload {background: #DCDCDC url(../gfx/whitegry/interface/Download.gif) repeat-x;	border: 1px solid #BBBBBB;}
+.RecordPanel .RecordDownload {background-color: #eee;	border: 1px solid #BBBBBB;}
 .RecordPanel .RecordDownload .DownloadDBlend td {border: 1px solid #E2E2E2;color: #FFFFFF;}
 .RecordPanel .RecordDownloadSpace .DownloadDBlend .DownloadButton {background: #8ab132 url(../gfx/whitegry/interface/CollectBack.gif?nc=1);background-position: 0 -8px;}
 .RecordPanel .RecordDownloadSpace .DownloadDBlend p {color: #CCCCCC;text-align: left;}
@@ -163,10 +163,25 @@ input[readonly] {color: #000000;}
 	
 /* Additional CSS effects from WhiteSpace */
 
-#ThemeBoxPanel, #SearchBoxPanel, #ResearchBoxPanel, .HomePanelIN, .RecordPanel .RecordDownload, .RecordPanel, .ResourcePanel, .ResourcePanelSmall, .ResourcePanelLarge
+#ThemeBoxPanel, #SearchBoxPanel, #ResearchBoxPanel, .HomePanelIN,  .RecordPanel, .ResourcePanel, .ResourcePanelSmall, .ResourcePanelLarge
 	{
 	border: 1px solid #d0d0d0;
-	border-radius:10px;	-moz-border-radius: 10px; -webkit-border-radius: 10px;	background: #e9e9e9 url(../gfx/whitegry/interface/shadeback.png) repeat-x 0 0;
+	border-radius:10px;	-moz-border-radius: 10px; -webkit-border-radius: 10px;	
+	xbackground: #e9e9e9 url(../gfx/whitegry/interface/shadeback.png) repeat-x 0 0;
+
+    -webkit-box-shadow: 3px 3px 3px rgba(0, 0, 0, .1);
+    -moz-box-shadow: 3px 3px 3px rgba(0, 0, 0, .1);
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, .1);
+
+background: #fefefe; /* Old browsers */
+background: -moz-linear-gradient(top, #fff 0%, #eee 100%); /* FF3.6+ */
+background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fff), color-stop(100%,#eee)); /* Chrome,Safari4+ */
+background: -webkit-linear-gradient(top, #fff 0%,#eee 100%); /* Chrome10+,Safari5.1+ */
+background: -o-linear-gradient(top, #fff 0%,#eee 100%); /* Opera 11.10+ */
+background: -ms-linear-gradient(top, #fff 0%,#eee 100%); /* IE10+ */
+background: linear-gradient(to bottom, #fff 0%,#eee 100%); /* W3C */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff', endColorstr='#eee',GradientType=0 ); /* IE6-9 */
+	
 	}
 	
 .PanelShadow
