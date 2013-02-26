@@ -1550,6 +1550,16 @@ $staticsync_ingest=false;
 #		"level"=>2
 #		);
 #
+# You can also now enter "access" in "field" to set the access level for the resource. The value must match the name of the access level
+# in the default local language. Note that custom access levels are not supported. For example, the mapping below would set anything in 
+# the projects/restricted folder to have a "Restricted" access level.
+#	$staticsync_mapfolders[]=array
+#		(
+#		"match"=>"/projects/restricted",
+#		"field"=>"Restricted",
+#		"level"=>2
+#		);
+#
 # Suffix to use for alternative files folder
 # If staticsync finds a folder in the same directory as a file with the same name as a file but with this suffix appended, then files in the folder will be treated as alternative files for the give file.
 # For example a folder/file structure might look like:

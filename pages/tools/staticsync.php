@@ -225,7 +225,10 @@ function ProcessFolder($folder)
 						update_field ($r,$staticsync_mapped_category_tree,"," . join(",",$path_parts));
 						#echo "update_field($r,$staticsync_mapped_category_tree," . "," . join(",",$path_parts) . ");\n";
 						}			
-					
+
+					// default access level. This may be overridden by metadata mapping.
+					$accessval = 0;
+
 					# StaticSync path / metadata mapping
 					# Extract metadata from the file path as per $staticsync_mapfolders in config.php
 					if (isset($staticsync_mapfolders))
@@ -235,22 +238,45 @@ function ProcessFolder($folder)
 							$match=$mapfolder["match"];
 							$field=$mapfolder["field"];
 							$level=$mapfolder["level"];
-							
+														
+							global $lang;
+
 							if (strpos("/" . $shortpath,$match)!==false)
 								{
 								# Match. Extract metadata.
 								$path_parts=explode("/",$shortpath);
 								if ($level<count($path_parts))
 									{
-									# Save the value
-									print_r($path_parts);
-									$value=$path_parts[$level-1];
-									update_field ($r,$field,$value);
-									echo " - Extracted metadata from path: $value\n";
+									// special cases first.
+									if ($field == 'access')
+										{
+											// access level is a special case
+											// first determine if the value matches a defined access level
+
+											$value = $path_parts[$level-1];
+
+											for ($n=0; $n<3; $n++){
+												// if we get an exact match or a match except for case
+												if ($value == $lang["access" . $n] || strtoupper($value) == strtoupper($lang['access' . $n])){
+													$accessval = $n;
+													echo "Will set access level to " . $lang['access' . $n] . " ($n)\n";
+												}
+											}
+
+										} else {
+										# Save the value
+										print_r($path_parts);
+										$value=$path_parts[$level-1];
+										update_field ($r,$field,$value);
+										echo " - Extracted metadata from path: $value\n";
+										}
 									}
 								}
 							}
 						}
+					
+					// update access level
+					sql_query("update resource set access = '$accessval' where ref = '$r'");
 					
 					# Add any alternative files
 					$altpath=$fullpath . $staticsync_alternatives_suffix;
