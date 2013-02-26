@@ -179,7 +179,7 @@ if ($daterange_search)
 	{ ?>
 	<!--  date range search -->
 	<div><label class="InnerLabel"><?php echo $lang["fromdate"]?></label>
-	<select name="startyear" class="SearchWidth" style="width:100px;" onChange="UpdateResultCount();">
+	<select name="startyear" class="SearchWidth" style="width:98px;" onChange="UpdateResultCount();">
 	  <option value=""><?php echo $lang["anyyear"]?></option>
 	  <?php
 	  $y=date("Y");
@@ -189,7 +189,7 @@ if ($daterange_search)
 		}
 	  ?>
 	</select>
-	<select name="startmonth" class="SearchWidth" style="width:100px;" onChange="UpdateResultCount();">
+	<select name="startmonth" class="SearchWidth" style="width:98px;" onChange="UpdateResultCount();">
 	  <option value=""><?php echo $lang["anymonth"]?></option>
 	  <?php
 	  for ($n=1;$n<=12;$n++)
@@ -199,7 +199,7 @@ if ($daterange_search)
 		}
 	  ?>
 	</select>
-	<select name="startday" class="SearchWidth" style="width:100px;" onChange="UpdateResultCount();">
+	<select name="startday" class="SearchWidth" style="width:98px;" onChange="UpdateResultCount();">
 	  <option value=""><?php echo $lang["anyday"]?></option>
 	  <?php
 	  for ($n=1;$n<=31;$n++)
@@ -211,7 +211,7 @@ if ($daterange_search)
 	</select>
 	<!-- end date -->	
 	</div><br><div><label></label><label class="InnerLabel"><?php echo $lang["todate"]?></label>
-	<select name="endyear" class="SearchWidth" style="width:100px;" onChange="UpdateResultCount();">
+	<select name="endyear" class="SearchWidth" style="width:98px;" onChange="UpdateResultCount();">
 	  <option value=""><?php echo $lang["anyyear"]?></option>
 	  <?php
 	  $y=date("Y");
@@ -221,7 +221,7 @@ if ($daterange_search)
 		}
 	  ?>
 	</select>
-	<select name="endmonth" class="SearchWidth" style="width:100px;" onChange="UpdateResultCount();">
+	<select name="endmonth" class="SearchWidth" style="width:98px;" onChange="UpdateResultCount();">
 	  <option value=""><?php echo $lang["anymonth"]?></option>
 	  <?php
 	  for ($n=1;$n<=12;$n++)
@@ -231,7 +231,7 @@ if ($daterange_search)
 		}
 	  ?>
 	</select>
-	<select name="endday" class="SearchWidth" style="width:100px;" onChange="UpdateResultCount();">
+	<select name="endday" class="SearchWidth" style="width:98px;" onChange="UpdateResultCount();">
 	  <option value=""><?php echo $lang["anyday"]?></option>
 	  <?php
 	  for ($n=1;$n<=31;$n++)
