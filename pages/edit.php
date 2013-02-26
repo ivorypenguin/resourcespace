@@ -1019,20 +1019,20 @@ if (!checkperm("F*")) # Only display Status / Access / Related Resources if full
                 <tr>
                 <td valign=middle nowrap><?php echo htmlspecialchars($groups[$n]["name"])?>&nbsp;&nbsp;</td>
 
-                <td width=10 valign=middle><input type=radio name="custom_<?php echo $groups[$n]["ref"]?>" value="0" <?php if (!$editable) { ?>disabled<?php } ?> <?php if ($access==0) { ?>checked<?php }
-                if ($edit_autosave) {?>onChange="AutoSave('Access');"<?php } ?>></td>
+                <td width=10 valign=middle><input type=radio name="custom_<?php echo $groups[$n]["ref"]?>" value="0" <?php if (!$editable) { ?>disabled<?php } ?> <?php if ($access==0) { ?>checked <?php }
+                if ($edit_autosave) {?> onChange="AutoSave('Access');"<?php } ?>></td>
 
                 <td align=left valign=middle><?php echo $lang["access0"]?></td>
 
-                <td width=10 valign=middle><input type=radio name="custom_<?php echo $groups[$n]["ref"]?>" value="1" <?php if (!$editable) { ?>disabled<?php } ?> <?php if ($access==1) { ?>checked<?php }
-                if ($edit_autosave) {?>onChange="AutoSave('Access');"<?php } ?>></td>
+                <td width=10 valign=middle><input type=radio name="custom_<?php echo $groups[$n]["ref"]?>" value="1" <?php if (!$editable) { ?>disabled<?php } ?> <?php if ($access==1) { ?>checked <?php }
+                if ($edit_autosave) {?> onChange="AutoSave('Access');"<?php } ?>></td>
 
                 <td align=left valign=middle><?php echo $lang["access1"]?></td><?php
 
                 if (checkperm("v"))
                     { ?>
-                    <td width=10 valign=middle><input type=radio name="custom_<?php echo $groups[$n]["ref"]?>" value="2" <?php if (!$editable) { ?>disabled<?php } ?> <?php if ($access==2) { ?>checked<?php }
-                    if ($edit_autosave) {?>onChange="AutoSave('Access');"<?php } ?>></td>
+                    <td width=10 valign=middle><input type=radio name="custom_<?php echo $groups[$n]["ref"]?>" value="2" <?php if (!$editable) { ?>disabled<?php } ?> <?php if ($access==2) { ?>checked <?php }
+                    if ($edit_autosave) {?> onChange="AutoSave('Access');"<?php } ?>></td>
 
                     <td align=left valign=middle><?php echo $lang["access2"]?></td><?php
                     } ?>
