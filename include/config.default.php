@@ -985,7 +985,8 @@ $collection_public_hide_owner=false;
 # 	1: Normal text box (default)
 # 	2: Large text box
 #   3: Drop down box (set options using $custom_registration_options["Field Name"]=array("Option 1","Option 2","Option 3");
-#   4: HTML block, e.g. help text paragraph (set HTML usign $custom_registration_html="<b>Some HTML</b>";
+#   4: HTML block, e.g. help text paragraph (set HTML using $custom_registration_html["Field Name"]="<b>Some HTML</b>";
+#      Optionally, you can add the language to this, ie. $custom_registration_html["Field Name"]["en"]=...
 
 # Allow user group to be selected as part of user registration?
 # User groups available for user selection must be specified using the 'Allow registration selection' option on each user group

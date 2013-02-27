@@ -87,7 +87,13 @@ if (isset($custom_registration_fields))
 		if ($type==4)
 			{
 			# HTML type - just output the HTML.
-			echo $custom_registration_html[$custom[$n]];
+			$html = $custom_registration_html[$custom[$n]];
+			if (is_string($html))
+				echo $html;
+			else if (isset($html[$language]))
+				echo $html[$language];
+			else if (isset($html[$defaultlanguage]))
+				echo $html[$defaultlanguage];
 			}
 		else
 			{
