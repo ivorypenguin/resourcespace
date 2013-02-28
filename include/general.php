@@ -1597,16 +1597,26 @@ function send_mail_phpmailer($email,$subject,$message="",$from="",$reply_to="",$
 					$$variable="<img style='border:1px solid #d1d1d1;' src='cid:$thumbcid' />";
 				}
 				
+				# deprecated by improved [img_] tag below
 				# embed images (find them in relation to storagedir so that templates are portable)...  (ex [img_storagedir_/../gfx/whitegry/titles/title.gif])
 				else if (substr($variable,0,15)=="img_storagedir_"){
 					$$variable="<img src='cid:".basename(substr($variable,15))."'/>";
 					$images[]=dirname(__FILE__).substr($variable,15);
 				}
 				
-				# embed images (ex [img_/var/www/resourcespace/gfx/whitegry/titles/title.gif])
+				# embed images - ex [img_gfx/whitegry/titles/title.gif]
 				else if (substr($variable,0,4)=="img_"){
-					$$variable="<img src='cid:".basename(substr($variable,4))."'/>";
-					$images[]=substr($variable,4);
+					
+					$image_path=substr($variable,4);
+					if (substr($image_path,0,1)=="/"){ // absolute paths
+						$images[]=$image_path;
+					}
+					else { // relative paths
+						$image_path=str_replace("../","",$image_path);
+						$images[]=dirname(__FILE__)."/../".$image_path;
+					}
+					$$variable="<img src='cid:".basename($image_path)."'/>";
+					$images[]=$image_path;
 				}
 				
 				# attach files (ex [attach_/var/www/resourcespace/gfx/whitegry/titles/title.gif])
