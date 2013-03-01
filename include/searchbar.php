@@ -165,7 +165,7 @@ if (!$basic_simple_search)
 		?><div class="spacer"></div><?php
 		if ($search_includes_themes) 
 		    { ?>
-		    <div class="tick"><?php if ($searchbar_selectall){ ?>&nbsp;&nbsp;<?php } ?><input class="tickbox" id="TickBoxThemes" type="checkbox" name="resourcethemes" value="yes" <?php if (((count($rt)==1) && ($rt[0]=="")) || (in_array("themes",$rt))) {?>checked="true"<?php } ?>onClick="HideInapplicableSimpleSearchFields(true);<?php if ($searchbar_selectall){?>resetTickAll();<?php } ?>"/>&nbsp;<?php echo $lang["themes"]?></div><?php	
+		    <div class="tick"><?php if ($searchbar_selectall){ ?>&nbsp;&nbsp;<?php } ?><input class="tickbox" id="TickBoxThemes" type="checkbox" name="resourcethemes" value="yes" <?php if (((count($rt)==1) && ($rt[0]=="")) || (in_array("themes",$rt))) {?>checked="true"<?php } ?>onClick="HideInapplicableSimpleSearchFields(true);<?php if ($searchbar_selectall){?>resetTickAll();<?php } ?>"/>&nbsp;<?php echo $lang["findcollectionthemes"]?></div><?php	
 		    $clear_function.="document.getElementById('TickBoxThemes').checked=true;";
 		    if ($searchbar_selectall) {$clear_function.="resetTickAll();";}
 		    }
