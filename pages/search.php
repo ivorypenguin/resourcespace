@@ -292,14 +292,20 @@ include ("../include/search_title_processing.php");
 
 # Do the public collection search if configured.
 
+$search_includes_themes_now=$search_includes_themes;
+$search_includes_public_collections_now=$search_includes_themes;
+$search_includes_user_collections_now=$search_includes_themes;
 if ($restypes!="") {
 $restypes_x=explode(",",$restypes);
-$search_collections_ticked=in_array("col",$restypes_x);
-} else $search_collections_ticked=true;
-if (($search_collections_ticked && ($search_includes_themes || $search_includes_public_collections || $search_includes_user_collections)) && $search!="" && substr($search,0,1)!="!" && $offset==0)
+$search_includes_themes_now=in_array("themes",$restypes_x);
+$search_includes_public_collections_now=in_array("pubcol",$restypes_x);
+$search_includes_user_collections_now=in_array("mycol",$restypes_x);
+} 
+
+if (( ($search_includes_themes_now || $search_includes_public_collections_now || $search_includes_user_collections_now)) && $search!="" && substr($search,0,1)!="!" && $offset==0)
     {
-    $collections=search_public_collections($search,"theme","ASC",!$search_includes_themes,!$search_includes_public_collections,true);
-    if ($search_includes_user_collections){
+    $collections=search_public_collections($search,"theme","ASC",!$search_includes_themes_now,!$search_includes_public_collections_now,true);
+    if ($search_includes_user_collections_now){
 		$collections=array_merge(get_user_collections($userref,$search,"name",$revsort),$collections);
 		$condensedcollectionsresults=array();
 		$colresultsdupecheck=array();

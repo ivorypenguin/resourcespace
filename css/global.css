@@ -508,3 +508,6 @@ li.plupload_droptext
 	{
 	float:right;clear:right;padding:10px 0 10px 10px;
 	}
+.spacer {
+    height: 3px;
+}
