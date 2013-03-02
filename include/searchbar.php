@@ -163,24 +163,25 @@ if (!$basic_simple_search)
 		if ($searchbar_selectall) {$clear_function.="resetTickAll();";}
 		}
 		?><div class="spacer"></div><?php
-		if ($search_includes_themes) 
+		if ($search_includes_user_collections) 
 		    { ?>
-		    <div class="tick"><?php if ($searchbar_selectall){ ?>&nbsp;&nbsp;<?php } ?><input class="tickbox" id="TickBoxThemes" type="checkbox" name="resourcethemes" value="yes" <?php if (((count($rt)==1) && ($rt[0]=="")) || (in_array("themes",$rt))) {?>checked="true"<?php } ?>onClick="HideInapplicableSimpleSearchFields(true);<?php if ($searchbar_selectall){?>resetTickAll();<?php } ?>"/>&nbsp;<?php echo $lang["findcollectionthemes"]?></div><?php	
-		    $clear_function.="document.getElementById('TickBoxThemes').checked=true;";
+		    <div class="tick"><?php if ($searchbar_selectall){ ?>&nbsp;&nbsp;<?php } ?><input class="tickbox" id="TickBoxMyCol" type="checkbox" name="resourcemycol" value="yes" <?php if (((count($rt)==1) && ($rt[0]=="")) || (in_array("mycol",$rt))) {?>checked="true"<?php } ?>onClick="HideInapplicableSimpleSearchFields(true);<?php if ($searchbar_selectall){?>resetTickAll();<?php } ?>"/>&nbsp;<?php echo $lang["mycollections"]?></div><?php	
+		    $clear_function.="document.getElementById('TickBoxMyCol').checked=true;";
 		    if ($searchbar_selectall) {$clear_function.="resetTickAll();";}
-		    }
+		    
 	    if ($search_includes_public_collections) 
 	        { ?>
 	        <div class="tick"><?php if ($searchbar_selectall){ ?>&nbsp;&nbsp;<?php } ?><input class="tickbox" id="TickBoxPubCol" type="checkbox" name="resourcepubcol" value="yes" <?php if (((count($rt)==1) && ($rt[0]=="")) || (in_array("pubcol",$rt))) {?>checked="true"<?php } ?>onClick="HideInapplicableSimpleSearchFields(true);<?php if ($searchbar_selectall){?>resetTickAll();<?php } ?>"/>&nbsp;<?php echo $lang["findpubliccollection"]?></div><?php	
 	        $clear_function.="document.getElementById('TickBoxPubCol').checked=true;";
 	        if ($searchbar_selectall) {$clear_function.="resetTickAll();";}
 	        }
-	    if ($search_includes_user_collections) 
+	    if ($search_includes_themes) 
 	        { ?>
-	        <div class="tick"><?php if ($searchbar_selectall){ ?>&nbsp;&nbsp;<?php } ?><input class="tickbox" id="TickBoxMyCol" type="checkbox" name="resourcemycol" value="yes" <?php if (((count($rt)==1) && ($rt[0]=="")) || (in_array("mycol",$rt))) {?>checked="true"<?php } ?>onClick="HideInapplicableSimpleSearchFields(true);<?php if ($searchbar_selectall){?>resetTickAll();<?php } ?>"/>&nbsp;<?php echo $lang["mycollections"]?></div><?php	
-	        $clear_function.="document.getElementById('TickBoxMyCol').checked=true;";
+	        <div class="tick"><?php if ($searchbar_selectall){ ?>&nbsp;&nbsp;<?php } ?><input class="tickbox" id="TickBoxThemes" type="checkbox" name="resourcethemes" value="yes" <?php if (((count($rt)==1) && ($rt[0]=="")) || (in_array("themes",$rt))) {?>checked="true"<?php } ?>onClick="HideInapplicableSimpleSearchFields(true);<?php if ($searchbar_selectall){?>resetTickAll();<?php } ?>"/>&nbsp;<?php echo $lang["findcollectionthemes"]?></div><?php	
+	        $clear_function.="document.getElementById('TickBoxThemes').checked=true;";
 	        if ($searchbar_selectall) {$clear_function.="resetTickAll();";}
 	        }
+	    }
 
 	}
 	?>	
