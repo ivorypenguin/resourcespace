@@ -1673,4 +1673,5 @@ $lang["caps-lock-on"]="Warning! Caps Lock is on";
 $lang["collectionnames"]="Collection names";
 $lang["findcollectionthemes"]="Collections in themes";
 $lang["upload-options"]="Upload options";
+$lang["user-preferences"]="User preferences";
 

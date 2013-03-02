@@ -223,7 +223,7 @@ $resource_title_pages=array("view","delete","log","alternative_file","alternativ
 			$pagetitle=$lang["mycontributions"];
 		}	
 		else if ($pagename=="user_preferences"){
-			$pagetitle=$lang["changeyourpassword"];
+			$pagetitle=$lang["user-preferences"];
 		}	
 		else if ($pagename=="requests"){
 			$pagetitle=$lang["myrequests"];
