@@ -944,9 +944,9 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 	$result=sql_query($results_sql,false,$fetchrows);
 
 	# Performance improvement - perform a second count-only query and pad the result array as necessary
-	if ($search_sql_double_pass_mode && count($result)>0 && count($result)>=$max_results)
+	if ($search_sql_double_pass_mode && count($result)>=$max_results)
 		{
-		$count_sql="select count(distinct r.ref) value from resource r" . $t . "  where $t2 $sql";
+		$count_sql="select count(distinct r.ref) value from resource r" . $t . "  where $t2 $sql";		
 		$count=sql_value($count_sql,0);
 		$result=array_pad($result,$count,0);
 		}
