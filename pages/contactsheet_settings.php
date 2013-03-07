@@ -94,7 +94,7 @@ if ($contact_sheet_single_select_size)
 
 <?php }
 
-if ($contact_sheet_logo_option && isset($contact_sheet_logo))
+if (isset($contact_sheet_logo_option) && $contact_sheet_logo_option && isset($contact_sheet_logo))
 	{ ?>	
 	<div class="Question">
 	<label><?php echo $lang["contact_sheet-add_logo_option"]?></label>

@@ -157,7 +157,7 @@ $groups=get_registration_selectable_usergroups();
 
 <?php if (!hook("replaceuserrequestcomment")){ ?>
 <div class="Question">
-<label for="email"><?php echo $lang["userrequestcomment"]?></label>
+<label for="userrequestcomment"><?php echo $lang["userrequestcomment"]?></label>
 <textarea name="userrequestcomment" id="userrequestcomment" class="stdwidth"><?php echo htmlspecialchars(getvalescaped("userrequestcomment",""))?></textarea>
 <div class="clearerleft"> </div>
 </div>	
