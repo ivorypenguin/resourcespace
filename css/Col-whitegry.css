@@ -180,7 +180,7 @@ background: -webkit-linear-gradient(top, #fff 0%,#eee 100%); /* Chrome10+,Safari
 background: -o-linear-gradient(top, #fff 0%,#eee 100%); /* Opera 11.10+ */
 background: -ms-linear-gradient(top, #fff 0%,#eee 100%); /* IE10+ */
 background: linear-gradient(to bottom, #fff 0%,#eee 100%); /* W3C */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fff', endColorstr='#eee',GradientType=0 ); /* IE6-9 */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#eeeeee',GradientType=0 ); /* IE6-9 */
 	
 	}
 	
