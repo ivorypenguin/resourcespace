@@ -26,7 +26,7 @@
 # En första version av översättningen skapades av Henrik Frizén (förnamn.efternamn utan accenttecken i e-postboxen.Sveriges landskod) 20110124 för version 2295
 #
 # Senast uppdaterad av [Namn] [Datum] för version [svn-version], [kommentar]
-# Senast uppdaterad av Henrik Frizén 20130216 för version 4285
+# Senast uppdaterad av Henrik Frizén 20130312 för version 4340
 
 #
 #
@@ -448,6 +448,8 @@ $lang["typespecific"]="Typspecifika";
 $lang["youfound"]="Du hittade"; # e.g. you found 17 resources
 $lang["youfoundresources"]="material"; # e.g. you found 17 resources
 $lang["youfoundresource"]="material"; # e.g. you found 1 resource
+$lang["youfoundresults"]="resultat"; # e.g. you found 17 results
+$lang["youfoundresult"]="resultat"; # e.g. you found 1 result
 $lang["display"]="Visning"; # e.g. Display: thumbnails / list
 $lang["sortorder"]="Sorteringsordning";
 $lang["relevance"]="Relevans";
@@ -488,7 +490,7 @@ $lang["request"]="Begäran";
 $lang["requestlog"]="Begäranslogg";
 $lang["searchforsimilarresources"]="Sök efter liknande material";
 $lang["clicktoviewasresultset"]="Visa dessa material som ett resultatsätt";
-$lang["searchnomatches"]="Sökningen matchade inga material.";
+$lang["searchnomatches"]="Sökningen gav inga resultat.";
 $lang["try"]="Prova";
 $lang["tryselectingallcountries"]="Prova att välja <i>Alla länder</i> i landsfältet eller";
 $lang["tryselectinganyyear"]="Prova att välja <i>Alla år</i> i årsfältet eller";
@@ -659,6 +661,7 @@ $lang["languageselection"]="Språkval";
 $lang["language"]="Språk";
 $lang["changeyourpassword"]="Byt lösenord";
 $lang["yourpassword"]="Lösenord";
+$lang["currentpassword"]="Nuvarande lösenord";
 $lang["newpassword"]="Nytt lösenord";
 $lang["newpasswordretype"]="Nytt lösenord (repetera)";
 $lang["passwordnotvalid"]="Detta är inte ett giltigt lösenord";
@@ -853,7 +856,7 @@ $lang["relateallresources"]="Skapa relationer mellan alla material i den här sa
 $lang["columns"]="Kolumner";
 $lang["contactsheetconfiguration"]="Inställningar för kontaktkopia";
 $lang["thumbnails"]="Miniatyrbilder";
-$lang["contactsheetintrotext"]="Välj arkstorlek och antal kolumner för kontaktkopian.";
+$lang["contactsheetintrotext"]="Välj inställningar för kontaktkopian. Förhandsgranskningen uppdateras automatiskt när du ändrar inställningar. Om du ändrar ordning på materialen måste du dock klicka på <b>Förhandsgranska</b> för att uppdatera förhandsgranskningen.<br />Klicka på <b>Skapa</b> när du vill generera och hämta kontaktkopian i pdf-format.";
 $lang["size"]="Storlek";
 $lang["orientation"]="Orientering";
 $lang["requiredfield"]="Obligatoriskt fält";
@@ -1119,7 +1122,7 @@ $lang["ppi"]="ppi"; # (Pixels Per Inch - used on the resource download options l
 $lang["useasthemethumbnail"]="Vill du använda det här materialet som miniatyrbild för temakategorin?";
 $lang["sessionexpired"]="Du har blivit utloggad eftersom du var inaktiv i mer än 30&nbsp;minuter. Logga in igen om du vill fortsätta.";
 
-$lang["resourcenotinresults"]="Detta material ingår inte längre i sökresultatet, navigering nästa/föregående är därför inte möjlig."; #!!!
+$lang["resourcenotinresults"]="Detta material ingår inte längre i sökresultatet, navigering till nästa/föregående är därför inte möjlig.";
 $lang["publishstatus"]="Spara med publiceringsstatus:";
 $lang["addnewcontent"]="Nytt innehåll (sida, namn)";
 $lang["hitcount"]="Antal träffar";
@@ -1553,6 +1556,7 @@ $lang["at-resolution"] = "i"; # E.g. 5.9 in x 4.4 in @ 144 PPI
 
 $lang["deletedresource"] = "Borttaget material";
 $lang["deletedresources"] = "Borttagna material";
+$lang["nopreviewresources"]= "Material utan förhandsgranskningar";
 $lang["action-delete_permanently"] = "Ta bort permanent";
 
 $lang["horizontal"] = "Horisontellt";
@@ -1689,6 +1693,12 @@ $lang["report-send-all-users"]="Skicka rapporten till alla aktiva användare?";
 
 $lang["contactsheet-single"]="1 per sida";
 $lang["contact_sheet-include_header_option"]="Visa rubrik?";
-$lang["contact_sheet-add_link_option"]="Lägg till klickbar länk till sidan som visar materialet?";
+$lang["contact_sheet-add_link_option"]="Lägg till klickbara länkar till sidorna som visar materialen?";
 $lang["contact_sheet-add_logo_option"]="Lägg till logotyp i sidhuvudet?";
 $lang["contact_sheet-single_select_size"]="Bildkvalitet";
+
+$lang["caps-lock-on"]="Varning! Versallåset är aktiverat.";
+$lang["collectionnames"]="Samlingsnamn";
+$lang["findcollectionthemes"]="Samlingar i teman";
+$lang["upload-options"]="Överföringsinställningar";
+$lang["user-preferences"]="Användarinställningar";
