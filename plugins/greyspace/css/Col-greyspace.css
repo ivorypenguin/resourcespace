@@ -347,6 +347,9 @@ input[readonly] {color: #E0E0E0;} /* Read-only form fields */
 	border-bottom: 1px solid #252525;
 	border-left: 1px solid #E0E0E0;
 	background: #505050 url(../gfx/interface/shadeback.png) repeat-x 0px 0px;
+	-webkit-box-shadow: 4px 5px 5px rgba(0, 0, 0, .18);
+	-moz-box-shadow: 4px 5px 5px rgba(0, 0, 0, .18);
+	box-shadow: 4px 5px 5px rgba(0, 0, 0, .18);
 	}
 .SearchSpace h2 {color: #E0E0E0; background: none;} /* Panel titles */
 .SearchSpace p {color: #E0E0E0; background: none;} /* Panel intro texts */
@@ -383,6 +386,9 @@ input[readonly] {color: #E0E0E0;} /* Read-only form fields */
 	border-bottom: 1px solid #252525;
 	border-left: 1px solid #E0E0E0;
 	background: #505050 url(../gfx/interface/shadeback.png) repeat-x 0px 0px;
+	-webkit-box-shadow: 4px 5px 5px rgba(0, 0, 0, .18);
+	-moz-box-shadow: 4px 5px 5px rgba(0, 0, 0, .18);
+	box-shadow: 4px 5px 5px rgba(0, 0, 0, .18);
 	}
 .HomePanelIN.HomePanelPromoted /* Home panel with promoted material */
 	{
@@ -423,6 +429,9 @@ input[readonly] {color: #E0E0E0;} /* Read-only form fields */
 	border-left: 1px solid #E0E0E0;
 	color: #252525;
 	background: #C0C0C0 url(../gfx/interface/resourcepanel.png) repeat-x 0px 0px;
+	-webkit-box-shadow: 4px 5px 5px rgba(0, 0, 0, .18);
+	-moz-box-shadow: 4px 5px 5px rgba(0, 0, 0, .18);
+	box-shadow: 4px 5px 5px rgba(0, 0, 0, .18);
 	}
 .ResourcePanel a:link, .ResourcePanelSmall a:link, .ResourcePanelLarge a:link /* Resource panel tools */
 	{color: #252525; background: none;}
@@ -456,6 +465,9 @@ input[readonly] {color: #E0E0E0;} /* Read-only form fields */
 	border-bottom: 1px solid #252525;
 	border-left: 1px solid #E0E0E0;
 	background: #505050 url(../gfx/interface/recordpanel.gif) repeat-x;
+	-webkit-box-shadow: 4px 5px 5px rgba(0, 0, 0, .18);
+	-moz-box-shadow: 4px 5px 5px rgba(0, 0, 0, .18);
+	box-shadow: 4px 5px 5px rgba(0, 0, 0, .18);
 	}
 .RecordPanel a:link {color: #F0F0F0; background: none;}
 .RecordPanel a:visited {color: #F0F0F0; background: none;}
