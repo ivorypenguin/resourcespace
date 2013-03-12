@@ -114,6 +114,7 @@ function get_collection_resources($collection)
 	
 function add_resource_to_collection($resource,$collection,$smartadd=false,$size="")
 	{
+	global $collection_allow_not_approved_share;
 	if (collection_writeable($collection)||$smartadd)
 		{	
 		hook("Addtocollectionsuccess", "", array( "resourceId" => $resource, "collectionId" => $collection ) );
@@ -129,7 +130,7 @@ function add_resource_to_collection($resource,$collection,$smartadd=false,$size=
 		if (count($keys)>0)
 			{
 			$archivestatus=sql_value("select archive as value from resource where ref='$resource'","");
-			if ($archivestatus<0) {global $lang; $lang["cantmodifycollection"]=$lang["notapprovedresources"] . $resource;return false;}
+			if ($archivestatus<0 && !$collection_allow_not_approved_share) {global $lang; $lang["cantmodifycollection"]=$lang["notapprovedresources"] . $resource;return false;}
 
 			# Set the flag so a warning appears.
 			global $collection_share_warning;
@@ -943,7 +944,7 @@ function add_saved_search_items($collection)
 				{
 				$resource=$results[$r]["ref"];
 				$archivestatus=$results[$r]["archive"];
-				if ($archivestatus<0) {array_push($resourcesnotadded,$resource);continue;}
+				if ($archivestatus<0 && !$collection_allow_not_approved_share) {array_push($resourcesnotadded,$resource);continue;}
 				sql_query("insert into external_access_keys(resource,access_key,user,collection,date) values ('$resource','" . escape_check($keys[$n]["access_key"]) . "','$userref','$collection',now())");
 				#log this
 				collection_log($collection,"s",$resource, $keys[$n]["access_key"]);
