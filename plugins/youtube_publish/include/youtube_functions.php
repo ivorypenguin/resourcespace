@@ -117,11 +117,14 @@ function get_youtube_access_token($refresh=false)
 	
 function upload_video($access_token="")
 	{
-	global $lang, $video_title, $video_description, $video_keywords, $video_category, $filename, $ref, $private, $youtube_video_url, $youtube_publish_developer_key;
+	global $lang, $video_title, $video_description, $video_keywords, $video_category, $filename, $ref, $status, $youtube_video_url, $youtube_publish_developer_key;
 
 	
-	# Set private if has been requested
-	if ($private){$private = '<yt:private/>';}else{$private = '';} 
+	# Set status as necessary
+	if ($status=="private"){$private = '<yt:private/>';} 
+		else{$private = '';}
+	if ($status=="unlisted"){$accesscontrol = '<yt:accessControl action="list" permission="denied"/>';}
+		else{$accesscontrol = '';}
 	
     $data= '<?xml version="1.0"?>
                 <entry xmlns="http://www.w3.org/2005/Atom"
@@ -135,6 +138,7 @@ function upload_video($access_token="")
                       scheme="http://gdata.youtube.com/schemas/2007/categories.cat">' . htmlspecialchars($video_category) .'</media:category>
                     <media:keywords>' . htmlspecialchars($video_keywords) . '</media:keywords>
                   </media:group>
+				  ' . $accesscontrol . '
                 </entry>';
 				
 	$data.= "\r\n\r\n";			
@@ -261,8 +265,12 @@ function upload_video($access_token="")
 	
 	$response = curl_exec( $curl );
 	$videoxml = new SimpleXmlElement($response, LIBXML_NOCDATA);
+	
 	$urlAtt = $videoxml->link->attributes();
 	$youtube_new_url	= $urlAtt['href'];
+	$youtube_urlmatch = '#http://(www\.)youtube\.com/watch\?v=([^ &\n]+)(&.*?(\n|\s))?#i';
+	preg_match($youtube_urlmatch, $youtube_new_url, $matches);	
+	$youtube_new_url=$matches[0];	
 		
 	# end of actual file upload
 	

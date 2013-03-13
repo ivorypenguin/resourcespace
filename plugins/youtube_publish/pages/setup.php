@@ -24,7 +24,7 @@ $page_def[] = config_add_text_input('youtube_publish_developer_key',$lang['youtu
 
 $page_def[] = config_add_section_header($lang['youtube_publish_mappings_title']);
 $page_def[] = config_add_single_ftype_select('youtube_publish_title_field',$lang["youtube_publish_title_field"]);
-$page_def[] = config_add_single_ftype_select('youtube_publish_descriptionfield',$lang["youtube_publish_descriptionfield"]);
+$page_def[] = config_add_multi_ftype_select('youtube_publish_descriptionfields',$lang["youtube_publish_descriptionfields"]);
 $page_def[] = config_add_multi_ftype_select('youtube_publish_keywords_fields',$lang["youtube_publish_keywords_fields"]);
 $page_def[] = config_add_single_ftype_select('youtube_publish_url_field',$lang["youtube_publish_url_field"]);
 

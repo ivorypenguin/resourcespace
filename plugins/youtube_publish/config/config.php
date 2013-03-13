@@ -2,8 +2,8 @@
 
 $youtube_publish_restypes=array(3);
 $youtube_publish_title_field=8;
-$youtube_publish_descriptionfield=18;
-$youtube_publish_keywords_fields=array('1'); # needs to be array so can add mutliple tags field
+$youtube_publish_descriptionfields=array('18');
+$youtube_publish_keywords_fields=array('1'); # needs to be array so can add multiple tags field
 $youtube_publish_url_field=false;
 $youtube_publish_allow_multiple=false;
 

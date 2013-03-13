@@ -488,7 +488,7 @@ function config_gen_setup_post($page_def,$plugin_name)
         {
         return handle_rsc_upload($plugin_name);
         }
-    elseif (getval('submit','')!='')
+    elseif ((getval('submit','')!='') || (getval('save','')!=''))
         {
         $config=array();
         foreach ($page_def as $def)
@@ -514,7 +514,7 @@ function config_gen_setup_post($page_def,$plugin_name)
                 }
             }
         set_plugin_config($plugin_name,$config);
-        redirect('pages/team/team_plugins.php');
+        if (getval('submit','')!=''){redirect('pages/team/team_plugins.php');}
         }
     }
 
@@ -599,7 +599,8 @@ function config_gen_setup_html($page_def,$plugin_name,$upload_status,$plugin_pag
 ?>
         <div class="Question">
           <label for="submit">&nbsp;</label>
-          <input type="submit" name="submit" id="submit" value="<?php echo $lang['plugins-saveconfig']?>">
+          <input type="submit" name="save" id="save" value="<?php echo $lang['plugins-saveconfig']?>">
+          <input type="submit" name="submit" id="submit" value="<?php echo $lang['plugins-saveandexit']?>">
         </div>
         <div class="clearerleft"></div>
       </form>

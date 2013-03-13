@@ -35,7 +35,8 @@ $restypes=getvalescaped("restypes","");
 $starsearch=getvalescaped("starsearch","");
 if (strpos($search,"!")!==false) {$restypes="";}
 $archive=getvalescaped("archive",0,true);
-$private=getval("private",false);
+$status=getval("status",'unlisted');
+$video_category = getvalescaped("video_category",""); // This is the uploading video category. There are only certain categories that are accepted. 
 if ($youtube_publish_url_field>0){$youtube_url=sql_value("select value from resource_data where resource='$ref' and resource_type_field=$youtube_publish_url_field", "");}
 $youtube_error=false;
 
@@ -109,7 +110,6 @@ if( isset( $_POST['video_title'] ) && isset( $_POST['video_description'] ) )
 	$video_title = getvalescaped("video_title","");
 	$video_description = getval("video_description","");	
 	$video_keywords = getvalescaped("video_keywords","");
-    $video_category = getvalescaped("video_category",""); // This is the uploading video category. There are only certain categories that are accepted. See below 
 	$filename=get_data_by_field($ref,$filename_field);
 	//Set values so that upload can be retried if for example the access token ahs expired and needed to be refreshed
 	$uploadsuccess=false;
@@ -152,7 +152,15 @@ if( isset( $_POST['video_title'] ) && isset( $_POST['video_description'] ) )
 			
 $title=get_data_by_field($ref,$youtube_publish_title_field);
 
-$description=get_data_by_field($ref,$youtube_publish_descriptionfield);
+#$description=get_data_by_field($ref,$youtube_publish_descriptionfield);
+$description="";
+foreach ($youtube_publish_descriptionfields as $youtube_publish_descriptionfield)
+	{
+	$resource_description=get_data_by_field($ref,$youtube_publish_descriptionfield);
+	if($description!=''){$description.="\r\n";}
+	$description.=$resource_description;
+	}
+
 
 $video_keywords="";
 foreach ($youtube_publish_keywords_fields as $youtube_publish_keywords_field)
@@ -245,68 +253,70 @@ if ($youtube_username != '')
 
 <form action="<?php echo $baseurl ?>/plugins/youtube_publish/pages/youtube_upload.php?resource=<?php echo $ref ?>" method="post">
 	<div class="Question" >
-		<label for="video_title">Video Title</label>
+		<label for="video_title"><?php echo $lang["youtube_publish_video_title"] ?></label>
 		<input type="text" class="stdwidth" name="video_title" value="<?php echo $title; ?>"/>
 		<br>
-		<label for="video_description">Video Description</label>
-		<textarea class="stdwidth" rows="6" columns="50" id="video-description" name="video_description"><?php echo strip_tags($description) . "\r\n" . $baseurl . "/?r=" . $ref; ?></textarea>
+		<label for="video_description"><?php echo $lang["youtube_publish_video_description"] ?></label>
+		<textarea class="stdwidth" rows="6" columns="50" id="video-description" name="video_description"><?php echo strip_tags($description); ?></textarea>
 		<br>
-		<label for="video_description">Video Tags</label>
+		<label for="video_keywords"><?php echo $lang["youtube_publish_video_tags"] ?></label>
 		<textarea class="stdwidth" rows="6" columns="50" id="video_keywords" name="video_keywords"><?php echo htmlspecialchars($video_keywords); ?></textarea>
 		<br>
 	</div>	
 	<div class="Question" >
 	
-		<p><?php echo $lang["youtube_publish_as"] ?>
-		<select name="private">
-		<option value="false"><?php echo $lang["youtube_publish_public"] . "&nbsp;&nbsp;" ?></option>
-		<option value="true" <?php if ($private) { ?>selected<?php } ?>><?php echo $lang["youtube_publish_private"] . "&nbsp;&nbsp;" ?></option>
+		<label for="status"><?php echo $lang["youtube_publish_access"] ?></label>
+		<select name="status">
+		<option value="public" <?php if ($status=="public") {echo "selected";} ?>><?php echo $lang["youtube_publish_public"] . "&nbsp;&nbsp;" ?></option>
+		<option value="private" <?php if ($status=="private") {echo "selected";} ?>><?php echo $lang["youtube_publish_private"] . "&nbsp;&nbsp;" ?></option>
+		<option value="unlisted" <?php if ($status=="unlisted") {echo "selected";} ?> ><?php echo $lang["youtube_publish_unlisted"] . "&nbsp;&nbsp;" ?></option>		
+		
 		</select>
 		</p>
 	</div>	
 	
 	<div class="Question" >
 	
-		<p><?php echo $lang["youtube_publish_category"] ?>
+		<label for="status"><?php echo $lang["youtube_publish_category"] ?></label>
 		<select name="video_category">
-			<option value="Film"><?php echo $lang["youtube_publish_film"] . "&nbsp;&nbsp;" ?></option>
-			<option value="Autos"><?php echo $lang["youtube_publish_autos"] . "&nbsp;&nbsp;" ?></option>
-			<option value="Music"><?php echo $lang["youtube_publish_music"] . "&nbsp;&nbsp;" ?></option>
-			<option value="Animals"><?php echo $lang["youtube_publish_animals"] . "&nbsp;&nbsp;" ?></option>
-			<option value="Sports"><?php echo $lang["youtube_publish_sports"] . "&nbsp;&nbsp;" ?></option>
-			<option value="Travel"><?php echo $lang["youtube_publish_travel"] . "&nbsp;&nbsp;" ?></option>
-			<option value="Shortmov"><?php echo $lang["youtube_publish_shortmov"] . "&nbsp;&nbsp;" ?></option>
-			<option value="Games"><?php echo $lang["youtube_publish_games"] . "&nbsp;&nbsp;" ?></option>
-			<option value="Videblog"><?php echo $lang["youtube_publish_videblog"] . "&nbsp;&nbsp;" ?></option>
-			<option value="People"><?php echo $lang["youtube_publish_people"] . "&nbsp;&nbsp;" ?></option>
-			<option value="Comedy"><?php echo $lang["youtube_publish_comedy"] . "&nbsp;&nbsp;" ?></option>
-			<option value="Entertainment"><?php echo $lang["youtube_publish_entertainment"] . "&nbsp;&nbsp;" ?></option>
-			<option value="News"><?php echo $lang["youtube_publish_news"] . "&nbsp;&nbsp;" ?></option>
-			<option value="Howto"><?php echo $lang["youtube_publish_howto"] . "&nbsp;&nbsp;" ?></option>
-			<option value="Education"><?php echo $lang["youtube_publish_education"] . "&nbsp;&nbsp;" ?></option>
-			<option value="Tech"><?php echo $lang["youtube_publish_tech"] . "&nbsp;&nbsp;" ?></option>
-			<option value="Nonprofit"><?php echo $lang["youtube_publish_nonprofit"] . "&nbsp;&nbsp;" ?></option>
-			<option value="Movies"><?php echo $lang["youtube_publish_movies"] . "&nbsp;&nbsp;" ?></option>
-			<option value="Movies_anime_action"><?php echo $lang["youtube_publish_movies_anime_action"] . "&nbsp;&nbsp;" ?></option>
-			<option value="Movies_action_adventure"><?php echo $lang["youtube_publish_movies_action_adventure"] . "&nbsp;&nbsp;" ?></option>
-			<option value="Movies_classics"><?php echo $lang["youtube_publish_movies_classics"] . "&nbsp;&nbsp;" ?></option>
-			<option value="Movies_comedy"><?php echo $lang["youtube_publish_movies_comedy"] . "&nbsp;&nbsp;" ?></option>
-			<option value="Movies_documentary"><?php echo $lang["youtube_publish_movies_documentary"] . "&nbsp;&nbsp;" ?></option>
-			<option value="Movies_drama"><?php echo $lang["youtube_publish_movies_drama"] . "&nbsp;&nbsp;" ?></option>
-			<option value="Movies_family"><?php echo $lang["youtube_publish_movies_family"] . "&nbsp;&nbsp;" ?></option>
-			<option value="Movies_foreign"><?php echo $lang["youtube_publish_movies_foreign"] . "&nbsp;&nbsp;" ?></option>
-			<option value="Movies_horror"><?php echo $lang["youtube_publish_movies_horror"] . "&nbsp;&nbsp;" ?></option>
-			<option value="Movies_sci_fi_fantasy"><?php echo $lang["youtube_publish_movies_sci_fi_fantasy"] . "&nbsp;&nbsp;" ?></option>
-			<option value="Movies_thriller"><?php echo $lang["youtube_publish_movies_thriller"] . "&nbsp;&nbsp;" ?></option>
-			<option value="Movies_shorts"><?php echo $lang["youtube_publish_movies_shorts"] . "&nbsp;&nbsp;" ?></option>
-			<option value="Shows"><?php echo $lang["youtube_publish_shows"] . "&nbsp;&nbsp;" ?></option>
-			<option value="Trailers"><?php echo $lang["youtube_publish_trailers"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Film" <?php if ($video_category=="Film") {echo "selected";} ?>><?php echo $lang["youtube_publish_film"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Autos" <?php if ($video_category=="Autos") {echo "selected";} ?>><?php echo $lang["youtube_publish_autos"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Music" <?php if ($video_category=="Music") {echo "selected";} ?>><?php echo $lang["youtube_publish_music"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Animals" <?php if ($video_category=="Animals") {echo "selected";} ?>><?php echo $lang["youtube_publish_animals"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Sports" <?php if ($video_category=="Sports") {echo "selected";} ?>><?php echo $lang["youtube_publish_sports"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Travel" <?php if ($video_category=="Travel") {echo "selected";} ?>><?php echo $lang["youtube_publish_travel"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Shortmov" <?php if ($video_category=="Shortmov") {echo "selected";} ?>><?php echo $lang["youtube_publish_shortmov"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Games" <?php if ($video_category=="Games") {echo "selected";} ?>><?php echo $lang["youtube_publish_games"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Videblog" <?php if ($video_category=="Videblog") {echo "selected";} ?>><?php echo $lang["youtube_publish_videblog"] . "&nbsp;&nbsp;" ?></option>
+			<option value="People" <?php if ($video_category=="People") {echo "selected";} ?>><?php echo $lang["youtube_publish_people"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Comedy" <?php if ($video_category=="Comedy") {echo "selected";} ?>><?php echo $lang["youtube_publish_comedy"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Entertainment" <?php if ($video_category=="Entertainment") {echo "selected";} ?>><?php echo $lang["youtube_publish_entertainment"] . "&nbsp;&nbsp;" ?></option>
+			<option value="News" <?php if ($video_category=="News") {echo "selected";} ?>><?php echo $lang["youtube_publish_news"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Howto" <?php if ($video_category=="Howto") {echo "selected";} ?>><?php echo $lang["youtube_publish_howto"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Education" <?php if ($video_category=="Education") {echo "selected";} ?>><?php echo $lang["youtube_publish_education"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Tech" <?php if ($video_category=="Tech") {echo "selected";} ?>><?php echo $lang["youtube_publish_tech"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Nonprofit" <?php if ($video_category=="Nonprofit") {echo "selected";} ?>><?php echo $lang["youtube_publish_nonprofit"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Movies" <?php if ($video_category=="Movies") {echo "selected";} ?>><?php echo $lang["youtube_publish_movies"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Movies_anime_action" <?php if ($video_category=="Movies_anime_action") {echo "selected";} ?>><?php echo $lang["youtube_publish_movies_anime_action"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Movies_action_adventure" <?php if ($video_category=="Movies_action_adventure") {echo "selected";} ?>><?php echo $lang["youtube_publish_movies_action_adventure"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Movies_classics" <?php if ($video_category=="Movies_classics") {echo "selected";} ?>><?php echo $lang["youtube_publish_movies_classics"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Movies_comedy" <?php if ($video_category=="Movies_comedy") {echo "selected";} ?>><?php echo $lang["youtube_publish_movies_comedy"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Movies_documentary" <?php if ($video_category=="Movies_documentary") {echo "selected";} ?>><?php echo $lang["youtube_publish_movies_documentary"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Movies_drama" <?php if ($video_category=="Movies_drama") {echo "selected";} ?>><?php echo $lang["youtube_publish_movies_drama"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Movies_family" <?php if ($video_category=="Movies_family") {echo "selected";} ?>><?php echo $lang["youtube_publish_movies_family"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Movies_foreign" <?php if ($video_category=="Movies_foreign") {echo "selected";} ?>><?php echo $lang["youtube_publish_movies_foreign"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Movies_horror" <?php if ($video_category=="Movies_horror") {echo "selected";} ?>><?php echo $lang["youtube_publish_movies_horror"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Movies_sci_fi_fantasy" <?php if ($video_category=="Movies_sci_fi_fantasy") {echo "selected";} ?>><?php echo $lang["youtube_publish_movies_sci_fi_fantasy"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Movies_thriller" <?php if ($video_category=="Movies_thriller") {echo "selected";} ?>><?php echo $lang["youtube_publish_movies_thriller"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Movies_shorts" <?php if ($video_category=="Movies_shorts") {echo "selected";} ?>><?php echo $lang["youtube_publish_movies_shorts"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Shows" <?php if ($video_category=="Shows") {echo "selected";} ?>><?php echo $lang["youtube_publish_shows"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Trailers" <?php if ($video_category=="Trailers") {echo "selected";} ?>><?php echo $lang["youtube_publish_trailers"] . "&nbsp;&nbsp;" ?></option>
 
 		</select>
 		</p>
 	</div>	
 	
-	<input type="submit" value="Upload" onClick="return confirmSubmit()"/>
+	<input type="submit" value="<?php echo $lang["youtube_publish_button_text"]; ?>" onClick="return confirmSubmit()"/>
 	
 	
 </form> 
