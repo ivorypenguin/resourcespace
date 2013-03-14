@@ -1,9 +1,10 @@
 <?php
 #
-# Reindex.php
+# Reindex_by_collection.php
 #
 #
 # Reindexes the resource metadata. This should be unnecessary unless the resource_keyword table has been corrupted.
+# This script allows administrators to target resources in a particular collection for reindexing.
 #
 
 include "../../include/db.php";
@@ -11,8 +12,6 @@ include "../../include/authenticate.php"; if (!checkperm("a")) {exit("Permission
 include "../../include/general.php";
 include "../../include/resource_functions.php";
 include "../../include/image_processing.php";
-
-$collection = '1807';
 
 $sql="";
 $collection = getval("collection","");
