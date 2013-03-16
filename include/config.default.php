@@ -1557,7 +1557,7 @@ $staticsync_ingest=false;
 #	$staticsync_mapfolders[]=array
 #		(
 #		"match"=>"/projects/restricted",
-#		"field"=>"Restricted",
+#		"field"=>"access",
 #		"level"=>2
 #		);
 #
