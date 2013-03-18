@@ -18,6 +18,8 @@ function get_resource_path($ref,$getfilepath,$size,$generate,$extension="jpg",$s
 		{
 		# For the full size, check to see if the full path is set and if so return that.
 		global $get_resource_path_fpcache;
+		truncate_cache_arrays();
+
 		if (!isset($get_resource_path_fpcache[$ref])) {$get_resource_path_fpcache[$ref]=sql_value("select file_path value from resource where ref='$ref'","");}
 		$fp=$get_resource_path_fpcache[$ref];
 		
@@ -134,6 +136,7 @@ function get_resource_data($ref,$cache=true)
 	# Returns basic resource data (from the resource table alone) for resource $ref.
 	# For 'dynamic' field data, see get_resource_field_data
 	global $default_resource_type, $get_resource_data_cache,$always_record_resource_creator;
+	truncate_cache_arrays();
 	if ($cache && isset($get_resource_data_cache[$ref])) {return $get_resource_data_cache[$ref];}
 	$resource=sql_query("select *,mapzoom from resource where ref='$ref'");
 	if (count($resource)==0) 
@@ -3511,3 +3514,20 @@ function resolve_user_emails($ulist){
 	return $emails_key_required;
 }	
 }
+
+
+function truncate_cache_arrays(){
+    $cache_array_limit = 2000;
+    // function to prevent cache arrays from going rogue
+    // this will prevent long-running scripts from dying as these
+    // caches exhaust available memory.
+    if (count($GLOBALS['get_resource_data_cache']) > $cache_array_limit){
+        $GLOBALS['get_resource_data_cache'] = array();
+        // future improvement: get rid of only oldest, instead of clearing all?
+        // this would require a way to guage the age of the entry.
+    }
+    if (count($GLOBALS['get_resource_path_fpcache']) > $cache_array_limit){
+        $GLOBALS['get_resource_path_fpcache'] = array();
+    }
+}
+
