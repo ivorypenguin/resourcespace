@@ -1306,7 +1306,7 @@ function config_custom_select($name, $label, $available, $value)
     }
 
 function get_plugin_css($theme){
-	global $plugins,$baseurl;
+	global $plugins,$baseurl,$language;
 	$plugincss="";
 	for ($n=0;$n<count($plugins);$n++)
 	{
@@ -1315,9 +1315,18 @@ function get_plugin_css($theme){
 		{
 		$plugincss.='<link href="'.$baseurl.'/plugins/'.$plugins[$n].'/css/style.css" rel="stylesheet" type="text/css" media="screen,projection,print" class="plugincss" />
 		';
-
 		}	
-		
+
+	# Allow language specific CSS files
+	$csspath=dirname(__FILE__)."/../plugins/" . $plugins[$n] . "/css/style-" . $language . ".css";
+	if (file_exists($csspath))
+		{
+		$plugincss.='<link href="'.$baseurl.'/plugins/'.$plugins[$n].'/css/style-' . $language . '.css" rel="stylesheet" type="text/css" media="screen,projection,print" class="plugincss" />
+		';
+		}	
+
+
+	# Allow colour theme specific styles
 	$csspath=dirname(__FILE__)."/../plugins/" . $plugins[$n] . "/css/Col-".$theme.".css";	
 	if (file_exists($csspath))
 		{
