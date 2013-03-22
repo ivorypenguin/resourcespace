@@ -1867,6 +1867,13 @@ function get_resource_access($resource)
 		}
 	}
 
+	if ($access == 1 && get_edit_access($ref, $resourcedata['archive']))
+		{
+		# If access is restricted and user has edit access, grant open access.
+		$access = 0;
+		}
+
+
 	# Check for user-specific access (overrides any other restriction)
 	global $userref;
 
