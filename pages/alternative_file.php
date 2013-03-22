@@ -26,6 +26,7 @@ $resourcedata=get_resource_data($resource);
 # Not allowed to edit this resource?
 if ((!checkperm("e" . $resourcedata["archive"])) && ($resource>0)) {exit ("Permission denied.");}
 
+hook("pageevaluation");
 
 # Fetch alternative file data
 $file=get_alternative_file($resource,$ref);if ($file===false) {exit("Alternative file not found.");}

@@ -33,6 +33,7 @@ http://www.resourcespace.org/
 -->
 <?php } ?>
 <head>
+<?php if(!hook("customhtmlheader")): ?>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <META HTTP-EQUIV="CACHE-CONTROL" CONTENT="NO-CACHE">
 <META HTTP-EQUIV="PRAGMA" CONTENT="NO-CACHE">
@@ -231,6 +232,7 @@ if ($infobox)
 <?php
 	}
 ?>
+<?php endif; # !hook("customhtmlheader") ?>
 </head>
 
 <body <?php if (isset($bodyattribs)) { ?><?php echo $bodyattribs?><?php } if($infobox) {?> onmousemove="InfoBoxMM(event);"<?php } ?>>

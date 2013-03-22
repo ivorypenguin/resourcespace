@@ -32,6 +32,7 @@ include "../include/header.php";
     <?php if (getval("user","")!="" || getval("k","")!="" || isset($anonymous_login)) { # User logged in? ?>
  
  	<?php
+	if(!hook("donebacktoresource")):
  	# Ability to link back to a resource page
 	$resource=getval("resource","");
 	if ($resource!="")
@@ -40,6 +41,7 @@ include "../include/header.php";
 	    <p><a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $resource?>&k=<?php echo getval("k","") ?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>">&gt;&nbsp;<?php echo $lang["backtoresourceview"]?></a></p>
 		<?php
 		}
+	endif; # hook donebacktoresource
 	?>
  
 	<?php if (getval("k","")=="") { ?>

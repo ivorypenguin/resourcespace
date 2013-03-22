@@ -149,6 +149,7 @@ jQuery(document).ready(function(){
 <div class="clearerleft"> </div>
 </div>
 
+<?php if(!hook("advsearchrestypes")): ?>
 <div class="Question">
 <label><?php echo $lang["resourcetypes"]?></label><?php
 $rt=explode(",",getvalescaped("restypes",""));
@@ -165,6 +166,7 @@ for ($n=0;$n<count($types);$n++)
 </tr></table>
 <div class="clearerleft"> </div>
 </div>
+<?php endif; ?>
 
 
 <!-- Search for resource ID(s) -->

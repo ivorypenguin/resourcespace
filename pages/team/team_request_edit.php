@@ -16,7 +16,9 @@ $ref=getvalescaped("ref","",true);
 if (getval("submitted","")!="")
 	{
 	# Save research request data
+	if(!hook("saverequest", "", array($ref))):
 	save_request($ref);
+	endif;
 	redirect ($baseurl_short."pages/team/team_request.php?reload=true&nc=" . time());
 	}
 
@@ -46,6 +48,8 @@ else
 
 <div class="Question"><label><?php echo $lang["requestedby"]?></label><div class="Fixed"><?php echo $request["fullname"]?> (<?php echo $request["username"]?> / <?php echo $request["email"]?>)</div>
 <div class="clearerleft"> </div></div>
+
+<?php hook("morerequesterinfo"); ?>
 
 <div class="Question"><label><?php echo $lang["date"]?></label><div class="Fixed"><?php echo nicedate($request["created"],true,true)?></div>
 <div class="clearerleft"> </div></div>

@@ -74,6 +74,8 @@ include "../include/header.php";
 <div class="clearerleft"> </div>
 </div>
 
+<?php hook("resemailmoreinfo"); ?>
+
 <div class="Question">
 <label for="message"><?php echo $lang["message"]?></label><textarea class="stdwidth" rows=6 cols=50 name="message" id="message"></textarea>
 <div class="clearerleft"> </div>

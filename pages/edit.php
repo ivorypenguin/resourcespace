@@ -797,6 +797,8 @@ if (!checkperm("F*")) # Only display Status / Access / Related Resources if full
 		    
         } /* end hook replacestatusandrelationshipsheader */
 
+    hook("statreladdtopfields");
+
     # Status
     if ($ref>0 || $show_status_and_access_on_upload==true)
         {

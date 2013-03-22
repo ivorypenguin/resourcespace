@@ -166,6 +166,8 @@ if ($direct_download && !$save_as){
 <iframe id="dlIFrm" frameborder=0 scrolling="auto" <?php if ($debug_direct_download){?>width="600" height="200"<?php } else { ?>width="0" height="0"<?php } ?>> This browser can not use IFRAME. </iframe>
 <?php }
 
+hook("pageevaluation");
+
 # Load resource field data
 $fields=get_resource_field_data($ref,false,true,-1,$k!="",$use_order_by_tab_view);
 

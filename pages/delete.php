@@ -30,6 +30,8 @@ $error="";
 # Not allowed to edit this resource? They shouldn't have been able to get here.
 if (!get_edit_access($ref,$resource["archive"])) {exit ("Permission denied.");}
 
+hook("pageevaluation");
+
 if (getval("save","")!="")
 	{
 	if ($delete_requires_password && md5("RS" . $username . getvalescaped("password",""))!=$userpassword)

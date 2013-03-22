@@ -93,6 +93,7 @@ include "../include/header.php";
 		?>
 		<p><?php echo $lang["selectgenerateurlexternal"] ?></p>
 		
+		<?php if(!hook('replaceemailaccessselector')): ?>
 		<div class="Question" id="question_access">
 		<label for="archive"><?php echo $lang["access"]?></label>
 		<select class="stdwidth" name="access" id="access">
@@ -104,6 +105,7 @@ include "../include/header.php";
 		</select>
 		<div class="clearerleft"> </div>
 		</div>
+		<?php endif; #hook replaceemailaccessselector ?>
 		
 		<div class="Question">
 		<label><?php echo $lang["expires"]?></label>

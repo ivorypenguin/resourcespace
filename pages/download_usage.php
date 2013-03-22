@@ -10,6 +10,8 @@ $size=getval("size","");
 $ext=getval("ext","");
 $alternative=getval("alternative",-1);
 
+hook("pageevaluation");
+
 if (getval("save","")!="")
 	{
 	$usage=getvalescaped("usage","");

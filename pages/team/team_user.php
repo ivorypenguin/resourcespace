@@ -88,6 +88,7 @@ $atoz.="</div>";
 <br />
 
 <div class="Listview">
+<?php if(!hook('overrideuserlist')): ?>
 <table border="0" cellspacing="0" cellpadding="0" class="ListviewStyle">
 <tr class="ListviewTitleStyle">
 <td><a href="<?php echo $baseurl ?>/pages/team/team_user.php?offset=0&group=<?php echo $group; ?>&order_by=<?php echo (($order_by=="u.username")?"u.username+desc":"u.username")?>&find=<?php echo urlencode($find)?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["username"]?></a></td>
@@ -139,6 +140,7 @@ for ($n=$offset;(($n<count($users)) && ($n<($offset+$per_page)));$n++)
 ?>
 
 </table>
+<?php endif; // hook overrideuserlist ?>
 </div>
 <div class="BottomInpageNav"><?php pager(false); ?></div>
 </div>

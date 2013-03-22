@@ -24,6 +24,7 @@ $resource=get_resource_data($ref);
 # Not allowed to edit this resource?
 if ((!checkperm("e" . $resource["archive"])) && ($ref>0)) {exit ("Permission denied.");}
 
+hook("pageevaluation");
 
 # Handle adding a new file
 if (getval("newfile","")!="")
