@@ -99,21 +99,21 @@ function do_report($ref,$from_y,$from_m,$from_d,$to_y,$to_m,$to_d,$download=true
 			if ($n==0)
 				{
 				$f=0;
-				$output.="<tr>";
+				$output.="<tr>\r\n";
 				foreach ($result as $key => $value)
 					{
 					$f++;
 					if ($key=="thumbnail")
-						{$output.="<td><strong>Link</strong></td>";}
+						{$output.="<td><strong>Link</strong></td>\r\n";}
 					else
 						{
-						$output.="<td><strong>" . lang_or_i18n_get_translated($key,"columnheader-") . "</strong></td>";
+						$output.="<td><strong>" . lang_or_i18n_get_translated($key,"columnheader-") . "</strong></td>\r\n";
 						}
 					}
-				$output.="</tr>";
+				$output.="</tr>\r\n";
 				}
 			$f=0;
-			$output.="<tr>";
+			$output.="<tr>\r\n";
 			foreach ($result as $key => $value)
 				{
 				$f++;
@@ -128,16 +128,16 @@ function do_report($ref,$from_y,$from_m,$from_d,$to_y,$to_m,$to_d,$download=true
 						{
 						$thm_url=get_resource_path($value,false,"col",false,"",-1,1,false);
 						}
-					$output.="<td><a href=\"" . $baseurl . "/?r=" . $value .  "\" target=\"_blank\"><img src=\"" . $thm_url . "\"></a></td>";
+					$output.="<td><a href=\"" . $baseurl . "/?r=" . $value .  "\" target=\"_blank\"><img src=\"" . $thm_url . "\"></a></td>\r\n";
 					}
 				else
 					{
-					$output.="<td>" . lang_or_i18n_get_translated($value, "usergroup-") . "</td>";
+					$output.="<td>" . lang_or_i18n_get_translated($value, "usergroup-") . "</td>\r\n";
 					}
 				}
-			$output.="</tr>";
+			$output.="</tr>\r\n";
 			}
-		$output.="</table>";
+		$output.="</table>\r\n";
 		if (count($results)==0) {$output.=$lang["reportempty"];}
 		return $output;
 		}
