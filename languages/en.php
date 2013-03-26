@@ -144,6 +144,7 @@ $lang["property-hide_when_restricted"]="Hide when restricted";
 $lang["property-omit_when_copying"]="Omit when copying";
 $lang["property-sync_with_field"]="Sync with field";
 $lang["information-copy_field"]="<a href=field_copy.php?ref=%ref>Copy field</a>";
+$lang["information-display_condition"]="Display condition: this field will only display if the following conditions are met. Uses same format as group search filter i.e. shortname=value1|value2, shortnamea=validoptiona;shortnameb=validoptionb1|validoptionb2";
 
 $lang["property-query"]="Query";
 

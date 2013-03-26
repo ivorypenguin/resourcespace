@@ -324,8 +324,7 @@ function EditNav() # Create a function so this can be repeated at the end of the
 </script>
 
 <form method="post" action="<?php echo $baseurl_short?>pages/edit.php?ref=<?php echo $ref?>&amp;uploader=<?php echo getval("uploader","") ?>&amp;single=<?php echo getval("single","") ?>&amp;local=<?php echo getval("local","") ?>&amp;search=<?php echo urlencode($search)?>&amp;offset=<?php echo $offset?>&amp;order_by=<?php echo $order_by?>&amp;sort=<?php echo $sort?>&amp;archive=<?php echo $archive?>&amp;collection=<?php echo $collection ?>&amp;metadatatemplate=<?php echo getval("metadatatemplate","") ?>" id="mainform">
-<div class="BasicsBox">
-<input name="save" type="submit" value="&nbsp;&nbsp;<?php echo $lang["next"]?>&nbsp;&nbsp;" class="defaultbutton" />
+<div class="BasicsBox"> 
 <input type="hidden" name="submitted" value="true">
 <?php 
 if ($multiple) { ?>
@@ -589,7 +588,7 @@ if (isset($metadata_template_resource_type)&&(isset($metadata_template_title_fie
 	$fields=$newfields;
 }
 
-
+$required_fields_exempt=array(); # new array to contain required fields that have not met the display condition 
 for ($n=0;$n<count($fields);$n++)
 	{
 	# Should this field be displayed?
@@ -622,7 +621,187 @@ for ($n=0;$n<count($fields);$n++)
 			if ($original_field["ref"]==$fields[$n]["ref"]) {$value=$original_field["value"];}
 			}
 		}
+		
+	#Check if field has a display condition set
+	$displaycondition=true;
+	if ($fields[$n]["display_condition"]!="")
+		{
+		$s=explode(";",$fields[$n]["display_condition"]);
+		$condref=0;
+		foreach ($s as $condition) # Check each condition
+			{
+			$displayconditioncheck=false;
+			$s=explode("=",$condition);
+			for ($cf=0;$cf<count($fields);$cf++) # Check each field to see if needs to be checked
+				{
+				if ($s[0]==$fields[$cf]["name"]) # this field needs to be checked
+					{
+					$scriptconditions[$condref]["field"] = $fields[$cf]["ref"];  # add new jQuery code to check value
+					
+					$checkvalues=$s[1];
+					$validvalues=explode("|",strtoupper($checkvalues));
+					$scriptconditions[$condref]["valid"]= "\"";
+					$scriptconditions[$condref]["valid"].= implode("\",\"",$validvalues);
+					$scriptconditions[$condref]["valid"].= "\"";
+					$v=trim_array(explode(",",strtoupper($fields[$cf]["value"])));
+					foreach ($validvalues as $validvalue)
+						{
+						if (in_array($validvalue,$v)) {$displayconditioncheck=true;} # this is  a valid value						
+						}
+					if (!$displayconditioncheck) {$displaycondition=false;$required_fields_exempt[]=$fields[$n]["ref"];}
+					#add jQuery code to update on changes
+						if ($fields[$cf]["type"]==2) # add onchange event to each checkbox field
+							{
+							# construct the value from the ticked boxes
+							$val=","; # Note: it seems wrong to start with a comma, but this ensures it is treated as a comma separated list by split_keywords(), so if just one item is selected it still does individual word adding, so 'South Asia' is split to 'South Asia','South','Asia'.
+							$options=trim_array(explode(",",$fields[$cf]["options"]));
+							?><script type="text/javascript">
+							jQuery(document).ready(function() {<?php
+							
+							
+							
+								for ($m=0;$m<count($options);$m++)
+									{
+									$name=$fields[$cf]["ref"] . "_" . md5($options[$m]);
+									echo "
+									jQuery('input[name=\"" . $name . "\"]').change(function (){
+										checkDisplayCondition" . $fields[$n]["ref"] . "();
+										});";
+									}
+									
+									
+									
+									
+									?>
+								}); 
+							</script><?php							
+							}	
+						else
+							{
+							?>
+							<script type="text/javascript">
+							jQuery(document).ready(function() {
+								jQuery('#field_<?php echo $fields[$cf]["ref"];?>').change(function (){
+								
+								checkDisplayCondition<?php echo $fields[$n]["ref"];?>();
+									
+								});
+							}); 
+							</script>
+						<?php	
+							}
+					}
+					
+				} # see if next field needs to be checked
+							
+			$condref++;
+			} # check next condition
+		
+		?>
+		<script type="text/javascript">
+		function checkDisplayCondition<?php echo $fields[$n]["ref"];?>() 
+			{
+			<?php echo "field" . $fields[$n]["ref"] . "status=jQuery('#question_" . $n . "').css('display');
+			"; 
+			echo "newfield" . $fields[$n]["ref"] . "status='none';
+			"; 
+			echo "newfield" . $fields[$n]["ref"] . "provisional=true;
+			"; 
+			
+			foreach ($scriptconditions as $scriptcondition)
+				{
+				echo "newfield" . $fields[$n]["ref"] . "provisionaltest=false;
+				";
+				echo "if (jQuery('#field_" . $scriptcondition["field"] . "').length!=0)
+					{";
+					echo "
+					fieldcheck" . $scriptcondition["field"] . "=jQuery('#field_" . $scriptcondition["field"] . "').val().toUpperCase();
+					";
+					echo "fieldvalues" . $scriptcondition["field"] . "=fieldcheck" . $scriptcondition["field"] . ".split(',');
+					//alert(fieldvalues" . $scriptcondition["field"] . ");
+					}";
+					
+				echo "
+				else
+					{
+					";
+					echo "fieldvalues" . $scriptcondition["field"] . "=new Array();
+					";
+					echo "checkedvals" . $scriptcondition["field"] . "=jQuery('input[name^=" . $scriptcondition["field"] . "_]')
+					";
+					echo "jQuery.each(checkedvals" . $scriptcondition["field"] . ",function(){
+						if (jQuery(this).is(':checked'))
+							{
+							checktext" . $scriptcondition["field"] . "=jQuery(this).parent().next().text().toUpperCase();
+							checktext" . $scriptcondition["field"] . " = jQuery.trim(checktext" . $scriptcondition["field"] . ");
+							fieldvalues" . $scriptcondition["field"] . ".push(checktext" . $scriptcondition["field"] . ");
+							//alert(fieldvalues" . $scriptcondition["field"] . ");
+							}
+						
+						
+						})
+					}";
+					
+				echo "fieldokvalues" . $scriptcondition["field"] . "=new Array();
+				";
+				echo "fieldokvalues" . $scriptcondition["field"] . "=[" . $scriptcondition["valid"] . "];
+				";
+				echo "jQuery.each(fieldvalues" . $scriptcondition["field"] . ",function(f,v){
+						//alert(\"checking value \" + fieldvalues" . $scriptcondition["field"] . " + \" against \" + fieldokvalues" . $scriptcondition["field"] . ");
+						//alert(jQuery.inArray(fieldvalues" . $scriptcondition["field"] . ",fieldokvalues" . $scriptcondition["field"] . "));
+						if ((jQuery.inArray(v,fieldokvalues" . $scriptcondition["field"] . "))>-1 || (fieldvalues" . $scriptcondition["field"] . " ==fieldokvalues" . $scriptcondition["field"] ." ))
+							{
+							newfield" . $fields[$n]["ref"] . "provisionaltest=true;
+							}
+						});
+					
+					if (newfield" . $fields[$n]["ref"] . "provisionaltest==false)
+						{newfield" . $fields[$n]["ref"] . "provisional=false;}
+					";
+				}
+				
+			echo "
+				exemptfieldsval=jQuery('#exemptfields').val();
+				exemptfieldsarr=exemptfieldsval.split(',');
+				if (newfield" . $fields[$n]["ref"] . "provisional==true)
+					{
+					if (jQuery.inArray(" . $fields[$n]["ref"] . ",exemptfieldsarr))
+						{
+						exemptfieldsarr.splice(jQuery.inArray(" . $fields[$n]["ref"] . ", exemptfieldsarr), 1 );
+						}
+					newfield" . $fields[$n]["ref"] . "status='block'
+					}
+				else
+					{
+					
+				
+					if ((jQuery.inArray(" . $fields[$n]["ref"] . ",exemptfieldsarr))==-1)
+						{
+						exemptfieldsarr.push(" . $fields[$n]["ref"] . ")
+						}
+					}
+				jQuery('#exemptfields').val(exemptfieldsarr.join(","));
+				
+				
+				";
+			
+			echo "if (newfield" . $fields[$n]["ref"] . "status!=field" . $fields[$n]["ref"] . "status)
+					{
+					jQuery('#question_" . $n . "').slideToggle();
+					if (jQuery('#question_" . $n . "').css('display')=='block')
+						{jQuery('#question_" . $n . "').css('border-top','');}
+					else
+						{jQuery('#question_" . $n . "').css('border-top','none');}
+					}				
+					
+					";
+			?>}
+		</script>
+	<?php		
+		
+		}
 	
+		
 	if ($multilingual_text_fields)
 		{
 		# Multilingual text fields - find all translations and display the translation for the current language.
@@ -689,7 +868,7 @@ for ($n=0;$n<count($fields);$n++)
 		}
 	?>
 
-	<div class="Question" id="question_<?php echo $n?>" <?php if ($multiple) {?>style="display:none;border-top:none;"<?php } ?>>
+	<div class="Question" id="question_<?php echo $n?>" <?php if ($multiple || !$displaycondition) {?>style="display:none;border-top:none;"<?php } ?>>
 	<label for="<?php echo $name?>"><?php if (!$multiple) {?><?php echo htmlspecialchars($fields[$n]["title"])?> <?php if (!$is_template && $fields[$n]["required"]==1) { ?><sup>*</sup><?php } ?><?php } ?></label>
 
 	<?php
@@ -745,6 +924,8 @@ for ($n=0;$n<count($fields);$n++)
 	}
 }
 
+# Add required_fields_exempt so it is submitted with POST
+echo " <input type=hidden name=\"exemptfields\" id=\"exemptfields\" value=\"" . implode(",",$required_fields_exempt) . "\">";	
 
 # Work out the correct archive status.
 if ($ref<0) # Upload template.

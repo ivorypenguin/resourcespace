@@ -214,7 +214,9 @@ function save_resource_data($ref,$multi)
 				}
 			
 			# Check required fields have been entered.
-			if ($fields[$n]["required"]==1 && ($val=="" || $val==","))
+			$exemptfields = getvalescaped("exemptfields","");
+			$exemptfields = explode(",",$exemptfields);
+			if ($fields[$n]["required"]==1 && ($val=="" || $val==",") && !in_array($fields[$n]["ref"],$exemptfields))
 				{
 				global $lang;
 				$errors[$fields[$n]["ref"]]=i18n_get_translated($fields[$n]["title"]).": ".$lang["requiredfield"];
