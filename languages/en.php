@@ -1443,7 +1443,7 @@ $lang["item_deleted"]="Item deleted";
 $lang["viewing_version_created_by"]="Viewing version created by";
 $lang["on_date"]="on";
 $lang["launchpermissionsmanager"]="Launch permissions manager";
-$lang["confirm-deletion"]="Are you sure?";
+$lang["confirm-deletion"]="Are you sure you want to delete?";
 
 # Permissions Manager
 $lang["permissionsmanager"]="Permissions manager";
