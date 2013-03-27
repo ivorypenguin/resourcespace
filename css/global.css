@@ -27,7 +27,7 @@ a:active {text-decoration:underline;}
 input[readonly] {border: none; background: none;}
 input,textarea {box-sizing: border-box;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;}
 option {font-size:11px;}
-input.defaultbutton {position: absolute; left: -100%;}
+input.defaultbutton {position: absolute; left: -100%; width: 0; height: 0;}
 
 /*General tags*/
 .clearer {clear:both;}
