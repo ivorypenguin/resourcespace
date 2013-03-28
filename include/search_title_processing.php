@@ -84,7 +84,7 @@ if ($search_titles)
         }
     elseif ($search=="" && $archive==0)
         {
-        $search_title = '<h1 class="searchcrumbs"><a href="'.$baseurl_short.'pages/search.php?search=">All Resources</a></h1> ';
+        $search_title = '<h1 class="searchcrumbs"><a href="'.$baseurl_short.'pages/search.php?search=">'.$lang["allresources"].'</a></h1> ';
         }
     elseif (substr($search,0,5)=="!last")
         {
