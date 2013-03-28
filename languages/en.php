@@ -1676,4 +1676,4 @@ $lang["collectionnames"]="Collection names";
 $lang["findcollectionthemes"]="Collections in themes";
 $lang["upload-options"]="Upload options";
 $lang["user-preferences"]="User preferences";
-
+$lang["allresources"]="All Resources";

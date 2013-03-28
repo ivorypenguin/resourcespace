@@ -82,6 +82,10 @@ if ($search_titles)
         hook("collectionsearchtitlemod");
         $search_title.= '<div align="left"><h1><div class="searchcrumbs"><span id="coltitle'.$collection.'"><a '.$alt_text.' href='.$baseurl_short.'pages/search.php?search=!collection'.$collection.$parameters_string.'>'.i18n_get_collection_name($collectiondata).($display_user_and_access?" (".$colusername."/".$colaccessmode.")":"").'</a></span>'.$searchcrumbs.'</div></h1> ';
         }
+    elseif ($search=="" && $archive==0)
+        {
+        $search_title = '<h1 class="searchcrumbs"><a href="'.$baseurl_short.'pages/search.php?search=">All Resources</a></h1> ';
+        }
     elseif (substr($search,0,5)=="!last")
         {
 		$searchq=substr($search,5);
