@@ -492,6 +492,7 @@ elseif (strlen($resource["file_extension"])>0 && !($access==1 && $restricted_ful
 	$path=get_resource_path($ref,true,"",false,$resource["file_extension"]);
 	if (file_exists($path))
 		{
+			if(!hook("origdownloadlink")):
 		?>
 		<tr class="DownloadDBlend">
 		<td><h2><?php echo (isset($original_download_name)) ? str_replace_formatted_placeholder("%extension", $resource["file_extension"], $original_download_name, true) : str_replace_formatted_placeholder("%extension", $resource["file_extension"], $lang["originalfileoftype"]); ?></h2></td>
@@ -505,6 +506,7 @@ elseif (strlen($resource["file_extension"])>0 && !($access==1 && $restricted_ful
 		</td>
 		</tr>
 		<?php
+			endif; # hook origdownloadlink
 		}
 	} 
 else

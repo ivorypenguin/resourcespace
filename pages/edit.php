@@ -465,6 +465,9 @@ $titleh2 = str_replace(array("%number","%subtitle"), array("1", $lang["specifyde
 </div>
 
 <?php } ?>
+
+<?php hook("editbefresmetadata"); ?>
+
 <br /><h1><?php echo $lang["resourcemetadata"]?></h1>
 
 <?php if (!$multiple){?>
@@ -1145,7 +1148,7 @@ if ($multiple && !$disable_geocoding)
 	hook("locationextras");
 	} 
 	
-	
+if(!hook("replaceuploadoptions")):	
 if ($ref<0)
 	{
 	?><br /><h1><?php echo $lang["upload-options"] ?></h1>
@@ -1288,6 +1291,7 @@ if ($ref<0)
 		<?php
 		}
 	}
+endif; # hook replaceuploadoptions
 	?>
 		
 	
