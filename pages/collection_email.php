@@ -6,7 +6,45 @@ include "../include/resource_functions.php";
 include "../include/search_functions.php";
 
 
+$themeshare=getvalescaped("catshare",false);
+$themecount=0;
+$subthemes=getvalescaped("subthemes",false);
+$linksuffix="";
 $ref=getvalescaped("ref","");
+if ($themeshare)
+	{
+	# came here from theme category share page
+	$themes=array();
+	reset($_POST);reset($_GET);
+	foreach (array_merge($_GET, $_POST) as $key=>$value) 
+		{
+		// only set necessary vars
+		if (substr($key,0,5)=="theme" && $value!=""){
+			$themes[$themecount]=urldecode($value);
+			$themecount++;
+			}
+		}
+	$linksuffix="?";
+	for ($x=0;$x<count($themes);$x++){
+		if ($x!=0){ $linksuffix.="&"; }
+		$linksuffix.="theme" . $x;
+		#$linksuffix.=($x==0)?"":$x;
+		$linksuffix.="=". urlencode($themes[$x]);
+		$themename=$themes[$x];
+		}
+
+	$collectionstoshare=get_themes($themes,$subthemes);
+	#exit (print_r($collectionstoshare) . $subthemes);
+	if ($ref=="")
+		{
+		foreach($collectionstoshare as $collection)
+			{
+			if ($ref!=""){$ref.=", ";}
+			$ref.=$collection["ref"];
+			}
+		}
+	}
+
 
 # Fetch collection data
 if (!is_numeric($ref)) ##  multiple collections may be referenced
@@ -85,14 +123,21 @@ $users=get_users();
 include "../include/header.php";
 ?>
 <div class="BasicsBox">
-<h1><?php echo $lang["emailcollection"]?></h1>
+<h1><?php if ($themeshare){echo $lang["email_theme_category"];} else {echo $lang["emailcollection"];}?></h1>
 
-<p><?php echo text("introtext")?></p>
+<p><?php 
+if ($themeshare)
+	{
+	if (text("introtextthemeshare")!=""){echo text("introtextthemeshare");} else {echo text("introtext");}
+	}
+else 
+	{echo text("introtext");}?>
+</p>
 
-<form name="collectionform" method=post id="collectionform" action="<?php echo $baseurl_short?>pages/collection_email.php">
+<form name="collectionform" method=post id="collectionform" action="<?php echo $baseurl_short?>pages/collection_email.php<?php echo $linksuffix ?>">
 <input type=hidden name=redirect id=redirect value=yes>
 <input type=hidden name=ref value="<?php echo $ref?>">
-<?php if ($email_multi_collections) { ?>
+<?php if ($email_multi_collections || $themeshare) { ?>
 <script type="text/javascript">
    function getSelected(opt) {
       var sel = '';
@@ -110,53 +155,88 @@ include "../include/header.php";
 </script>
 <?php } ?>
 <div class="Question">
-<label><?php echo $lang["collectionname"]?></label><div class="Fixed"><?php 
-	if (! $email_multi_collections) { 
+<label><?php if ($themeshare) {echo $lang["themes"];} else {echo $lang["collectionname"];}?></label><div class="Fixed"><?php 
+	if (!$email_multi_collections &&  !$themeshare) { 
 		echo i18n_get_collection_name($collection);
 	} else { ##  this select copied from collections.php 
-?>
-		<select name="collection" multiple="multiple" size="10" class="SearchWidthExt" style="width:365px;" 
-			onchange="document.getElementById('refDiv').innerHTML = getSelected(this); " >
-		<?php
-		$list=get_user_collections($userref);
-		$found=false;
-		for ($n=0;$n<count($list);$n++)
+		
+			?>		
+			<select name="collection" multiple="multiple" size="10" class="SearchWidthExt" style="width:365px;" 
+				onchange="document.getElementById('refDiv').innerHTML = getSelected(this); " >
+			<?php
+			if ($themeshare)
+		
 			{
-
-            if ($collection_dropdown_user_access_mode){    
-                foreach ($users as $user){
-                    if ($user['ref']==$list[$n]['user']){$colusername=$user['fullname'];}
-                }
-                # Work out the correct access mode to display
-                if (!hook('collectionaccessmode')) {
-                    if ($list[$n]["public"]==0){
-                        $accessmode= $lang["private"];
-                    }
-                    else{
-                        if (strlen($list[$n]["theme"])>0){
-                            $accessmode= $lang["theme"];
-                        }
-                    else{
-                            $accessmode= $lang["public"];
-                        }
-                    }
-                }
-            }
-
-
-                ?>	
-			<option value="<?php echo $list[$n]["ref"]?>" <?php if ($ref==$list[$n]["ref"]) {?> 	selected<?php $found=true;} ?>><?php echo i18n_get_collection_name($list[$n])?><?php if ($collection_dropdown_user_access_mode){echo "&nbsp;&nbsp;(". $colusername."/".$accessmode.")"; } ?></option>
-			<?php 
-			}
-		if ($found==false)
-			{
-			# Add this one at the end, it can't be found
-			$notfound=get_collection($ref);
-			if ($notfound!==false)
+			for ($n=0;$n<count($collectionstoshare);$n++)
 				{
-				?>
-				<option value="<?php echo $ref?>" selected><?php echo $notfound["name"]?></option>
-				<?php
+
+				if ($collection_dropdown_user_access_mode){    
+					foreach ($users as $user){
+						if ($user['ref']==$collectionstoshare[$n]['user']){$colusername=$user['fullname'];}
+					}
+					# Work out the correct access mode to display
+					if (!hook('collectionaccessmode')) {
+						if ($collectionstoshare[$n]["public"]==0){
+							$accessmode= $lang["private"];
+						}
+						else{
+							if (strlen($collectionstoshare[$n]["theme"])>0){
+								$accessmode= $lang["theme"];
+							}
+						else{
+								$accessmode= $lang["public"];
+							}
+						}
+					}
+				}
+					?>	
+				<option value="<?php echo $collectionstoshare[$n]["ref"]?>" selected><?php echo i18n_get_collection_name($collectionstoshare[$n])?><?php if ($collection_dropdown_user_access_mode){echo "&nbsp;&nbsp;(". $colusername."/".$accessmode.")"; } ?></option>
+				<?php 
+				}
+			
+			}
+		else
+			{
+			$list=get_user_collections($userref);
+			$found=false;
+			for ($n=0;$n<count($list);$n++)
+				{
+
+				if ($collection_dropdown_user_access_mode){    
+					foreach ($users as $user){
+						if ($user['ref']==$list[$n]['user']){$colusername=$user['fullname'];}
+					}
+					# Work out the correct access mode to display
+					if (!hook('collectionaccessmode')) {
+						if ($list[$n]["public"]==0){
+							$accessmode= $lang["private"];
+						}
+						else{
+							if (strlen($list[$n]["theme"])>0){
+								$accessmode= $lang["theme"];
+							}
+						else{
+								$accessmode= $lang["public"];
+							}
+						}
+					}
+				}
+
+
+					?>	
+				<option value="<?php echo $list[$n]["ref"]?>" <?php if ($ref==$list[$n]["ref"]) {?> 	selected<?php $found=true;} ?>><?php echo i18n_get_collection_name($list[$n])?><?php if ($collection_dropdown_user_access_mode){echo "&nbsp;&nbsp;(". $colusername."/".$accessmode.")"; } ?></option>
+				<?php 
+				}
+			if ($found==false)
+				{
+				# Add this one at the end, it can't be found
+				$notfound=get_collection($ref);
+				if ($notfound!==false)
+					{
+					?>
+					<option value="<?php echo $ref?>" selected><?php echo $notfound["name"]?></option>
+					<?php
+					}
 				}
 			}
 		?>
@@ -164,12 +244,13 @@ include "../include/header.php";
 </div>
 <div class="clearerleft"> </div>
 </div>
-
-<div class="Question">
-<label><?php echo $lang["collectionid"]?></label><div id="refDiv" class="Fixed"><?php echo $collection_prefix . $collection["ref"]?></div>
-<div class="clearerleft"> </div>
-</div>
-
+<?php if (!$themeshare) 
+	{?>
+	<div class="Question">
+	<label><?php echo $lang["collectionid"]?></label><div id="refDiv" class="Fixed"><?php echo $collection_prefix . $ref?></div>
+	<div class="clearerleft"> </div>
+	</div>
+	<?php } ?>
 <div class="Question">
 <label for="message"><?php echo $lang["message"]?></label><textarea class="stdwidth" rows=6 cols=50 name="message" id="message"></textarea>
 <div class="clearerleft"> </div>

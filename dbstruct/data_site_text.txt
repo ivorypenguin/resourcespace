@@ -82,7 +82,7 @@ team_batch_upload,introtext,"",53,en,,,
 team_batch_select,introtext,"",54,en,,,
 download_click,introtext,"To download the resource file, right click the link below and choose ""Save As..."". You will then be asked where you would like to save the file. To open the file in your browser simply click the link.",55,en,,,
 collection_manage,newcollection,"To create a new collection, enter a short name.",56,en,,,
-collection_email,introtext,"Complete the form below to e-mail this collection. The user(s) will receive a link to the resource rather than file attachments so they can choose and download the appropriate resources.",57,en,,,
+collection_email,introtext,"Please complete the form below. The recipients will receive an email containing links to the collections rather than file attachments so they can choose and download the appropriate resources.",57,en,,,
 all,footer,"Powered by <a target=""_blank"" href=""http://www.resourcespace.org/"">ResourceSpace</a>: Open Source Digital Asset Management",58,en,,,
 change_language,introtext,"Please select your language below.",59,en,,,
 all,searchpanel,"Search using descriptions, keywords and resource numbers",60,es,,,
@@ -559,3 +559,4 @@ team_batch_upload,introtext,"",390,sv,,,0
 team_batch_select,introtext,"",391,sv,,,0
 team_batch,introtext,"",392,sv,,,0
 team_archive,introtext,"Om du vill redigera ett arkiverat material gör du det enklast genom att söka efter det här och sedan klicka på <b>Redigera</b> på sidan som visar materialet. Alla material som väntar på arkivering kan enkelt nås från länken nedan. Lägg till eventuell relevant information innan du flyttar materialet till arkivet.",393,sv,,,0
+collection_email,introtextthemeshare,"Complete the form below to e-mail the themes in this theme category. The recipients will receive an email containing links to each of the themes.",,en,,,

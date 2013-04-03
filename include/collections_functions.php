@@ -543,7 +543,7 @@ function collections_comparator_desc($a, $b)
 	}		
 
 if (!function_exists("get_themes")){
-function get_themes($themes=array(""))
+function get_themes($themes=array(""),$subthemes=false)
 	{	
 	$themes_order_by=getvalescaped("themes_order_by",getvalescaped("saved_themes_order_by","name"));
 	$sort=getvalescaped("sort",getvalescaped("saved_themes_sort","ASC"));	
@@ -559,7 +559,7 @@ function get_themes($themes=array(""))
 		}
 		else {
 			global $theme_category_levels;
-			if (($x+1)<=$theme_category_levels){
+			if (($x+1)<=$theme_category_levels && !$subthemes){
 			$sql.=" and (theme".($x+1)."='' or theme".($x+1)." is null) ";
 			}
 		}

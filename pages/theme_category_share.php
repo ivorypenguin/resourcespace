@@ -20,13 +20,14 @@ reset($_POST);reset($_GET);foreach (array_merge($_GET, $_POST) as $key=>$value) 
 $header=getvalescaped("header","");
 $smart_theme=getvalescaped("smart_theme","");
 $showexisting=getvalescaped("showexisting","");
+$subthemes=getvalescaped("subthemes",false);
 
 $linksuffix="?";
 for ($x=0;$x<count($themes);$x++){
 	if ($x!=0){ $linksuffix.="&"; }
-	$linksuffix.="theme";
-	$linksuffix.=($x==0)?"":$x;
+	$linksuffix.="theme" . ($x+1);
 	$linksuffix.="=". urlencode($themes[$x]);
+	$themename=$themes[$x];
 }
 
 $linksuffixprev=explode("&",$linksuffix);
@@ -43,15 +44,18 @@ if (getval("deleteaccess","")!="")
 include "../include/header.php";
 
 ?>
-<div class="BasicsBox"> 
-<form method=post id="themeform" action="<?php echo $baseurl_short?>pages/theme_category_share.php" onsubmit="return CentralSpacePost(this,true)">
-<input type="hidden" name="generateurl" id="generateurl" value="">
 
-<div class="VerticalNav">
+<div class="BasicsBox"> 
+<form method=post id="themeform" action="<?php echo $baseurl_short?>pages/theme_category_share.php<?php echo $linksuffix ?>" onsubmit="return CentralSpacePost(this,true)">
+<input type="hidden" name="generateurl" id="generateurl" value="">
+<p><a href='<?php echo $baseurl_short?>pages/themes.php<?php echo $linksuffixprev?>' onclick="return CentralSpaceLoad(this,true);"><?php echo "&lt;&lt;&nbsp;".$lang['back']?></a></p>
+<h1><?php echo $lang["share_theme_category"] . " - " . $themename?></h1>
+
+
 <?php
 
 // Get collections under the theme
-$collectionstoshare=get_themes($themes);
+$collectionstoshare=get_themes($themes,$subthemes);
 
 if (count($collectionstoshare)<1) # There are no collections in this theme
 		{
@@ -83,69 +87,115 @@ else
 	
 	$access=getvalescaped("access","");
 	$expires=getvalescaped("expires","");
-	if (getvalescaped("generateurl","")=="")
+	if (getvalescaped("generateurl","")=="" && $access=="")
 		{
 		?>
-		<p><a href='<?php echo $baseurl_short?>pages/themes.php<?php echo $linksuffixprev?>' onclick="return CentralSpaceLoad(this,true);"><?php echo "&lt;&nbsp;".$lang['back']?></a></p>
-		<h1><?php echo $lang["share_theme_category"] ?></h1>
-		<p><?php echo $lang["selectgenerateurlexternal"] ?></p>
-		
-		<div class="Question" id="question_access">
-		<label for="archive"><?php echo $lang["access"]?></label>
-		<select class="stdwidth" name="access" id="access">
-		<?php
-		# List available access levels. The highest level must be the minimum user access level.
-		for ($n=$minaccess;$n<=1;$n++) { ?>
-		<option value="<?php echo $n?>"><?php echo $lang["access" . $n]?></option>
-		<?php } ?>
-		</select>
-		<div class="clearerleft"> </div>
+		<div class="Question">
+			<label for="subthemes"><?php echo $lang["share_theme_category_subcategories"]?></label>
+			<input type="checkbox" id="subthemes" name="subthemes" value="true" <?php if ($subthemes){echo "checked";} ?>>
+			<div class="clearerleft"> </div>
 		</div>
-		
 		<?php
-		for ($x=0;$x<$themecount;$x++)
+		}
+	
+	if (getvalescaped("generateurl","")=="")
+		{ ?>
+									
+			<div class="VerticalNav">
+
+			<li><a id="emaillink" onClick="var _href=jQuery('#emaillink').attr('href');var subthemes=jQuery('#subthemes').val();jQuery('#emaillink').attr('href',_href + '&subthemes=' + subthemes);return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short . "pages/collection_email.php" . $linksuffix . "&catshare=true\">" . $lang["email_theme_category"];?></a></li>
+			<li><a id="urllink" onClick="var _href=jQuery('#urllink').attr('href');var subthemes=jQuery('#subthemes').val();jQuery('#urllink').attr('href',_href + '&subthemes=' + subthemes);return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short . "pages/theme_category_share.php" . $linksuffix . "&generateurl=true&subthemes=" . $subthemes . "\">" . $lang["generateurls"];?></a></li>
+		<?php }
+	else	
+		{?>
+		
+			
+		<?php
+		if ($access=="")
 			{
-			if ($x==0)
-				{?>
-				<input type="hidden" name="theme" id="theme" value="<?php echo i18n_get_translated($themes[$x])?>">
+			if (!($hide_internal_sharing_url))
+				{
+				?>
+				<p><?php echo $lang["generateurlinternal"]?></p>
+				
+				<p><input class="URLDisplay" type="text" value="<?php echo $baseurl?>/pages/themes.php<?php echo $linksuffix?>">
 				<?php
 				}
-			else
+			?>
+			<p><?php echo $lang["selectgenerateurlexternalthemecat"] ?></p>
+			<div class="Question" id="question_access">
+			<label for="archive"><?php echo $lang["access"]?></label>
+			<select class="stdwidth" name="access" id="access">
+			<?php
+			# List available access levels. The highest level must be the minimum user access level.
+			for ($n=$minaccess;$n<=1;$n++) { ?>
+			<option value="<?php echo $n?>"><?php echo $lang["access" . $n]?></option>
+			<?php } ?>
+			</select>
+			<div class="clearerleft"> </div>
+			</div>
+			
+			<?php
+			for ($x=0;$x<$themecount;$x++)
 				{ ?>
-				<input type="hidden" name="theme<?php echo $x+1 ?>" id="theme<?php echo $x+1 ?>" value="<?php echo i18n_get_translated($themes[$x]) ?>">
-				<?php }
+					<input type="hidden" name="theme<?php echo $x+1 ?>" id="theme<?php echo $x+1 ?>" value="<?php echo i18n_get_translated($themes[$x]) ?>">
+				<?php 
+				}
+			?>
+			
+			<div class="Question">
+			<label><?php echo $lang["expires"]?></label>
+			<select name="expires" class="stdwidth">
+			<option value=""><?php echo $lang["never"]?></option>
+			<?php for ($n=1;$n<=150;$n++)
+				{
+				$date=time()+(60*60*24*$n);
+				?><option <?php $d=date("D",$date);if (($d=="Sun") || ($d=="Sat")) { ?>style="background-color:#cccccc"<?php } ?> value="<?php echo date("Y-m-d",$date)?>"><?php echo nicedate(date("Y-m-d",$date),false,true)?></option>
+				<?php
+				}
+			?>
+			</select>
+			<div class="clearerleft"> </div>
+			</div>			
+			
+			<div class="QuestionSubmit" style="padding-top:0;margin-top:0;">
+			<label for="buttons"> </label>
+			<input onclick="jQuery('#generateurl').val(true);" type="submit"  value="&nbsp;&nbsp;<?php echo $lang["generateexternalurls"]?>&nbsp;&nbsp;" />
+			</div>
+			
+			</div>
+			<?php			
 			}
-		?>
-		
-		<div class="Question">
-		<label><?php echo $lang["expires"]?></label>
-		<select name="expires" class="stdwidth">
-		<option value=""><?php echo $lang["never"]?></option>
-		<?php for ($n=1;$n<=150;$n++)
+		else
 			{
-			$date=time()+(60*60*24*$n);
-			?><option <?php $d=date("D",$date);if (($d=="Sun") || ($d=="Sat")) { ?>style="background-color:#cccccc"<?php } ?> value="<?php echo date("Y-m-d",$date)?>"><?php echo nicedate(date("Y-m-d",$date),false,true)?></option>
+			# Access has been selected. Generate a URL.			
+			?>
+			<p><?php echo $lang["generatethemeurlsexternal"]?></p>
+			<p>
+			<textarea class="URLDisplay" cols="100" rows="<?php echo count($collectionstoshare)*4+1; ?>" ><?php
+			$unapproved_collection=false; 
+			foreach($collectionstoshare as $collection){	
+				$ref=$collection["ref"];
+				
+				#Check if any resources are not approved
+				if (!is_collection_approved($ref)) {
+					echo str_replace("%collectionname%", i18n_get_collection_name($collection), $lang["collection-name"]) . "\r\n" . $lang["notapprovedsharecollection"] . "\r\n\r\n";
+					$unapproved_collection=true;
+				} else {
+					echo str_replace("%collectionname%", i18n_get_collection_name($collection), $lang["collection-name"]) . "\r\n" . $baseurl?>/?c=<?php echo $ref?>&k=<?php echo generate_collection_access_key($ref,0,"URL",$access,$expires) . "\r\n" . ($expires!="" ? str_replace("%date%", $expires, $lang["expires-date"]) : str_replace("%date%", $lang["never"], $lang["expires-date"])) . "\r\n\r\n";
+				}
+			}
+			?>
+			</textarea>
+			<?php if ($unapproved_collection){?><script>alert('<?php echo $lang['notapprovedsharetheme']?>');</script><?php } ?>
+			</p>
 			<?php
 			}
-		?>
-		</select>
-		<div class="clearerleft"> </div>
-		</div>
-		
-		<div class="QuestionSubmit" style="padding-top:0;margin-top:0;">
-		<label for="buttons"> </label>
-		<input onclick="jQuery('#generateurl').val(true);" type="submit"  value="&nbsp;&nbsp;<?php echo $lang["generateexternalurl"]?>&nbsp;&nbsp;" />
-		</div>
-		
-		</div>
-		
-		<input type="hidden" id="deleteaccess" name="deleteaccess" value=""/>
-		<input type="hidden" id="ref" name="ref" value=""/>
-		</form>	
-		<?php
-		
-		//Display existing shares for collections in theme
+		}
+	//Display existing shares for collections in theme
 
+	if ($access=="")
+		{
 		foreach($collectionstoshare as $collection)
 			{			
 			$ref=$collection["ref"];
@@ -199,36 +249,14 @@ else
 				</div>
 				<?php
 				}
-			?></div><?php }
-		}
-	else
-		{
-		# Access has been selected. Generate a URL.
-		?>
-		<p><a href='<?php echo $baseurl_short?>pages/theme_category_share.php<?php echo $linksuffix?>' onclick="return CentralSpaceLoad(this,true);"><?php echo "&lt;&nbsp;".$lang['back']?></a></p>
-		<p><?php echo $lang["generatethemeurlsexternal"]?></p>
-		<p>
-		<textarea cols="100" rows="50" ><?php
-		$unapproved_collection=false; 
-		foreach($collectionstoshare as $collection){	
-			$ref=$collection["ref"];
-			
-			#Check if any resources are not approved
-			if (!is_collection_approved($ref)) {
-				echo str_replace("%collectionname%", i18n_get_collection_name($collection), $lang["collection-name"]) . "\r\n" . $lang["notapprovedsharecollection"] . "\r\n\r\n";
-				$unapproved_collection=true;
-			} else {
-				echo str_replace("%collectionname%", i18n_get_collection_name($collection), $lang["collection-name"]) . "\r\n" . $baseurl?>/?c=<?php echo $ref?>&k=<?php echo generate_collection_access_key($ref,0,"URL",$access,$expires) . "\r\n" . ($expires!="" ? str_replace("%date%", $expires, $lang["expires-date"]) : str_replace("%date%", $lang["never"], $lang["expires-date"])) . "\r\n\r\n";
-			}
-		}
-		?>
-		</textarea>
-		<?php if ($unapproved_collection){?><script>alert('<?php echo $lang['notapprovedsharetheme']?>');</script><?php } ?>
-		</p>
-		<?php
-		}
-	?>
+				?></div>
+			<?php }
+		}?>	
+	
 	</div>
+	<input type="hidden" id="deleteaccess" name="deleteaccess" value=""/>
+	<input type="hidden" id="ref" name="ref" value=""/>
+	</form>	
 	<?php
 	}
 
