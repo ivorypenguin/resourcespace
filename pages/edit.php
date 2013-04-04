@@ -1191,7 +1191,7 @@ if ($ref<0)
 		$currentfound=false;
 		
 	        // make sure it's possible to set the collection with collection_add (compact style "upload to this collection"
-	        if ($collection_add!="" && getval("resetform","")=="" && !$save_errors)
+	        if ($collection_add!="" && getval("resetform","")=="" && (!isset($save_errors) || !$save_errors))
 	               {
 	               # Switch to the selected collection (existing or newly created) and refresh the frame.
 	               set_user_collection($userref,$collection_add);
