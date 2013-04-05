@@ -20,7 +20,7 @@ reset($_POST);reset($_GET);foreach (array_merge($_GET, $_POST) as $key=>$value) 
 $header=getvalescaped("header","");
 $smart_theme=getvalescaped("smart_theme","");
 $showexisting=getvalescaped("showexisting","");
-$subthemes=getvalescaped("subthemes",false);
+if(getvalescaped("subthemes","false")!="false"){$subthemes=true;}else{$subthemes=false;}
 
 $linksuffix="?";
 for ($x=0;$x<count($themes);$x++){
@@ -103,8 +103,8 @@ else
 									
 			<div class="VerticalNav">
 
-			<li><a id="emaillink" onClick="var _href=jQuery('#emaillink').attr('href');var subthemes=jQuery('#subthemes').val();jQuery('#emaillink').attr('href',_href + '&subthemes=' + subthemes);return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short . "pages/collection_email.php" . $linksuffix . "&catshare=true\">" . $lang["email_theme_category"];?></a></li>
-			<li><a id="urllink" onClick="var _href=jQuery('#urllink').attr('href');var subthemes=jQuery('#subthemes').val();jQuery('#urllink').attr('href',_href + '&subthemes=' + subthemes);return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short . "pages/theme_category_share.php" . $linksuffix . "&generateurl=true&subthemes=" . $subthemes . "\">" . $lang["generateurls"];?></a></li>
+			<li><a id="emaillink" onClick="var _href=jQuery('#emaillink').attr('href');var subthemes=document.getElementById('subthemes').checked;jQuery('#emaillink').attr('href',_href + '&subthemes=' + subthemes);return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short . "pages/collection_email.php" . $linksuffix . "&catshare=true\">" . $lang["email_theme_category"];?></a></li>
+			<li><a id="urllink" onClick="var _href=jQuery('#urllink').attr('href');var subthemes=document.getElementById('subthemes').checked;jQuery('#urllink').attr('href',_href + '&subthemes=' + subthemes);return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short . "pages/theme_category_share.php" . $linksuffix . "&generateurl=true&subthemes=" . $subthemes . "\">" . $lang["generateurls"];?></a></li>
 		<?php }
 	else	
 		{?>

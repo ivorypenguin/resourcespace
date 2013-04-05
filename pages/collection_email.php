@@ -8,7 +8,7 @@ include "../include/search_functions.php";
 
 $themeshare=getvalescaped("catshare",false);
 $themecount=0;
-$subthemes=getvalescaped("subthemes",false);
+if(getvalescaped("subthemes","false")!="false"){$subthemes=true;}else{$subthemes=false;}
 $linksuffix="";
 $ref=getvalescaped("ref","");
 if ($themeshare)
