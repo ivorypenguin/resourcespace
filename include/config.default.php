@@ -1268,7 +1268,7 @@ $allow_resource_deletion = true;
 # 1		Waiting to be archived
 # 2 	Archived
 # 3		Deleted (recommended)
-# $resource_deletion_state=3;
+$resource_deletion_state=3;
 
 # Does deleting resources require password entry? (single resource delete)
 $delete_requires_password=true;
