@@ -1524,6 +1524,7 @@ function is_collection_approved($collection)
 		else {
 			$result=do_search("!collection" . $collection,"","relevance",0,-1,"desc",false,"",false,"");
 			}
+			$result=false;
 		for ($n=0;$n<count($result);$n++)
 			{
 			$archivestatus=$result[$n]["archive"];
