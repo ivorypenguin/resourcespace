@@ -4,8 +4,10 @@ include "../include/general.php";
 include "../include/resource_functions.php"; //for checking scr access
 include "../include/search_functions.php";
 include "../include/collections_functions.php";
+
 # External access support (authenticate only if no key provided, or if invalid access key provided)
-$k=getvalescaped("k","");if (($k=="") || (!check_access_key_collection(str_replace("!collection","",getvalescaped("search","")),$k))) {include "../include/authenticate.php";}
+$s=explode(" ",getvalescaped("search",""));
+$k=getvalescaped("k","");if (($k=="") || (!check_access_key_collection(str_replace("!collection","",$s[0]),$k))) {include "../include/authenticate.php";}
 
  # Disable info box for external users.
 if ($k!="") {$infobox=false;}
