@@ -143,6 +143,7 @@ if (!hook("replaceloginform")) {
   <p>
   <?php if ($allow_account_request) { ?><a href="pages/user_request.php">&gt; <?php echo $lang["nopassword"]?> </a><?php } ?>
   <?php if ($allow_password_reset) { ?><br/><a href="pages/user_password.php">&gt; <?php echo $lang["forgottenpassword"]?></a><?php } ?>
+  <?php hook("loginformlink") ?> 
   </p>
   
   
