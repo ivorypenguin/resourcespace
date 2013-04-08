@@ -619,9 +619,17 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 			$s=explode("=",$sf[$n]);
 			if (count($s)!=2) {exit ("Search filter is not correctly configured for this user group.");}
 
+			# Support for "NOT" matching. Return results only where the specified value or values are NOT set.
+			$filterfield=$s[0];$filter_not=false;
+			if (substr($filterfield,-1)=="!")
+				{
+				$filter_not=true;
+				$filterfield=substr($filterfield,0,-1);# Strip off the exclamation mark.
+				}
+
 			# Find field(s) - multiple fields can be returned to support several fields with the same name.
-			$f=sql_array("select ref value from resource_type_field where name='" . escape_check($s[0]) . "'");
-			if (count($f)==0) {exit ("Field(s) with short name '" . $s[0] . "' not found in user group search filter.");}
+			$f=sql_array("select ref value from resource_type_field where name='" . escape_check($filterfield) . "'");
+			if (count($f)==0) {exit ("Field(s) with short name '" . $filterfield . "' not found in user group search filter.");}
 			
 			# Find keyword(s)
 			$ks=explode("|",strtolower(escape_check($s[1])));
@@ -630,7 +638,17 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 			$kw=sql_array("select ref value from keyword where keyword in ('" . join("','",$ks) . "')");
 			#if (count($k)==0) {exit ("At least one of keyword(s) '" . join("', '",$ks) . "' not found in user group search filter.");}
 					
-			$sql_join.=" join resource_keyword filter" . $n . " on r.ref=filter" . $n . ".resource and filter" . $n . ".resource_type_field in ('" . join("','",$f) . "') and filter" . $n . ".keyword in ('" . join("','",$kw) . "') ";	
+		    if (!$filter_not)
+		    	{
+		    	# Standard operation ('=' syntax)
+			    $sql_join.=" join resource_keyword filter" . $n . " on r.ref=filter" . $n . ".resource and filter" . $n . ".resource_type_field in ('" . join("','",$f) . "') and filter" . $n . ".keyword in ('" . 	join("','",$kw) . "') ";	
+			    }
+			else
+				{
+				# Inverted NOT operation ('!=' syntax)
+				if ($sql_filter!="") {$sql_filter.=" and ";}
+				$sql_filter .= "r.ref not in (select resource from resource_keyword where resource_type_field in ('" . join("','",$f) . "') and keyword in ('" . 	join("','",$kw) . "'))"; # Filter out resources that do contain the keyword(s)
+				}
 			}
 		}
 		
