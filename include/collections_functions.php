@@ -701,7 +701,7 @@ function populate_smart_theme_tree_node($tree,$node,$return,$indent,$levels)
 	}
 
 if (!function_exists("email_collection")){
-function email_collection($colrefs,$collectionname,$fromusername,$userlist,$message,$feedback,$access=-1,$expires="",$useremail="",$from_name="",$cc="")
+function email_collection($colrefs,$collectionname,$fromusername,$userlist,$message,$feedback,$access=-1,$expires="",$useremail="",$from_name="",$cc="",$themeshare=false,$themename="",$themeurlsuffix="")
 	{
 	# Attempt to resolve all users in the string $userlist to user references.
 	# Add $collection to these user's 'My Collections' page
@@ -770,6 +770,16 @@ function email_collection($colrefs,$collectionname,$fromusername,$userlist,$mess
 	else { $subject=$applicationname.": ".$collectionname;}
 	
 	if ($fromusername==""){$fromusername=$applicationname;}
+	
+	$externalmessage=$lang["emailcollectionmessageexternal"];
+	$internalmessage=$lang["emailcollectionmessage"];
+	$viewlinktext=$lang["clicklinkviewcollection"];
+	if ($themeshare) // Change the text if sharing a theme category
+		{
+		$externalmessage=$lang["emailthemecollectionmessageexternal"];
+		$internalmessage=$lang["emailthememessage"];
+		$viewlinktext=$lang["clicklinkviewcollections"];
+		}
 		
 	##  loop through recipients
 	for ($nx1=0;$nx1<count($emails);$nx1++)
@@ -777,54 +787,87 @@ function email_collection($colrefs,$collectionname,$fromusername,$userlist,$mess
 		## loop through collections
 		$list="";
 		$list2="";
-		for ($nx2=0;$nx2<count($reflist);$nx2++)
+		$origviewlinktext=$viewlinktext; // Save this text as we may change it for internal theme shares for this user
+		if ($themeshare && !$key_required[$nx1]) # don't send a whole list of collections if internal, just send the theme category URL
 			{
 			$url="";
-			$key="";
+			$subject=$applicationname.": " . $themename;
+			$url=$baseurl . "/pages/themes.php" . $themeurlsuffix;			
+			$viewlinktext=$lang["clicklinkviewthemes"];
 			$emailcollectionmessageexternal=false;
-			# Do we need to add an external access key for this user (e-mail specified rather than username)?
-			if ($key_required[$nx1])
-				{
-				$k=generate_collection_access_key($reflist[$nx2],$feedback,$emails[$nx1],$access,$expires);
-				$key="&k=". $k;
-				$emailcollectionmessageexternal=true;
-				}
-			$url=$baseurl . 	"/?c=" . $reflist[$nx2] . $key;		
-			$collection = array();
-			$collection = sql_query("select name,savedsearch from collection where ref='$reflist[$nx2]'");
-			if ($collection[0]["name"]!="") {$collection_name = i18n_get_collection_name($collection[0]);}
-			else {$collection_name = $reflist[$nx2];}
 			if ($use_phpmailer){
-				$link="<a href=\"$url\">$collection_name</a>";	
-				$list.= $htmlbreak.$link;	
-				// alternate list style				
-				$list2.=$htmlbreak.$collection_name.' -'.$htmlbreaksingle.$url;
-				$templatevars['list2']=$list2;					
+					$link="<a href=\"$url\">" . $themename . "</a>";	
+					
+					$list.= $htmlbreak.$link;	
+					// alternate list style				
+					$list2.=$htmlbreak.$themename.' -'.$htmlbreaksingle.$url;
+					$templatevars['list2']=$list2;					
+					}
+				else
+					{
+					$list.= $htmlbreak.$url;
+					}
+			for ($nx2=0;$nx2<count($reflist);$nx2++)
+				{				
+				#log this
+				collection_log($reflist[$nx2],"E",0, $emails[$nx1]);
 				}
-			else
+			
+			}
+		else
+			{
+			for ($nx2=0;$nx2<count($reflist);$nx2++)
 				{
-				$list.= $htmlbreak.$url;
+				$url="";
+				$key="";
+				$emailcollectionmessageexternal=false;
+				# Do we need to add an external access key for this user (e-mail specified rather than username)?
+				if ($key_required[$nx1])
+					{
+					$k=generate_collection_access_key($reflist[$nx2],$feedback,$emails[$nx1],$access,$expires);
+					$key="&k=". $k;
+					$emailcollectionmessageexternal=true;
+					}
+				$url=$baseurl . 	"/?c=" . $reflist[$nx2] . $key;		
+				$collection = array();
+				$collection = sql_query("select name,savedsearch from collection where ref='$reflist[$nx2]'");
+				if ($collection[0]["name"]!="") {$collection_name = i18n_get_collection_name($collection[0]);}
+				else {$collection_name = $reflist[$nx2];}
+				if ($use_phpmailer){
+					$link="<a href=\"$url\">$collection_name</a>";	
+					$list.= $htmlbreak.$link;	
+					// alternate list style				
+					$list2.=$htmlbreak.$collection_name.' -'.$htmlbreaksingle.$url;
+					$templatevars['list2']=$list2;					
+					}
+				else
+					{
+					$list.= $htmlbreak.$url;
+					}
+				#log this
+				collection_log($reflist[$nx2],"E",0, $emails[$nx1]);
 				}
-			#log this
-			collection_log($reflist[$nx2],"E",0, $emails[$nx1]);
 			}
 		//$list.=$htmlbreak;	
 		$templatevars['list']=$list;
 		$templatevars['from_name']=$from_name;
-		if ($emailcollectionmessageexternal){
-			$template="emailcollectionexternal";
+		if ($emailcollectionmessageexternal ){
+			$template=($themeshare)?"emailthemeexternal":"emailcollectionexternal";
 		}
 		else {
-			$template="emailcollection";
+			$template=($themeshare)?"emailtheme":"emailcollection";
 		}
-		$body=$templatevars['fromusername']." " . (($emailcollectionmessageexternal)?$lang["emailcollectionmessageexternal"]:$lang["emailcollectionmessage"]) . "\n\n" . $templatevars['message']."\n\n" . $lang["clicklinkviewcollection"] ."\n\n".$templatevars['list'];
+		$body=$templatevars['fromusername']." " . (($emailcollectionmessageexternal)?$externalmessage:$internalmessage) . "\n\n" . $templatevars['message']."\n\n" . $viewlinktext ."\n\n".$templatevars['list'];
+		#exit ($body . "<br>" . $viewlinktext);	
 		send_mail($emails[$nx1],$subject,$body,$fromusername,$useremail,$template,$templatevars,$from_name,$cc);
+		$viewlinktext=$origviewlinktext;
 		}
 		
 	# Return an empty string (all OK).
 	return "";
 	}
 }	
+
 
 function generate_collection_access_key($collection,$feedback=0,$email="",$access=-1,$expires="")
 	{
@@ -1523,8 +1566,8 @@ function is_collection_approved($collection)
 		if (is_array($collection)){$result=$collection;}
 		else {
 			$result=do_search("!collection" . $collection,"","relevance",0,-1,"desc",false,"",false,"");
-			}
-			$result=false;
+			}	
+		if (!is_array($result)){return true;}
 		for ($n=0;$n<count($result);$n++)
 			{
 			$archivestatus=$result[$n]["archive"];

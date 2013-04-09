@@ -20,7 +20,7 @@ reset($_POST);reset($_GET);foreach (array_merge($_GET, $_POST) as $key=>$value) 
 $header=getvalescaped("header","");
 $smart_theme=getvalescaped("smart_theme","");
 $showexisting=getvalescaped("showexisting","");
-if(getvalescaped("subthemes","false")!="false"){$subthemes=true;}else{$subthemes=false;}
+$subthemes=getvalescaped("subthemes",false);
 
 $linksuffix="?";
 for ($x=0;$x<count($themes);$x++){
@@ -87,17 +87,7 @@ else
 	
 	$access=getvalescaped("access","");
 	$expires=getvalescaped("expires","");
-	if (getvalescaped("generateurl","")=="" && $access=="")
-		{
-		?>
-		<div class="Question">
-			<label for="subthemes"><?php echo $lang["share_theme_category_subcategories"]?></label>
-			<input type="checkbox" id="subthemes" name="subthemes" value="true" <?php if ($subthemes){echo "checked";} ?>>
-			<div class="clearerleft"> </div>
-		</div>
-		<?php
-		}
-	
+		
 	if (getvalescaped("generateurl","")=="")
 		{ ?>
 									
@@ -105,6 +95,7 @@ else
 
 			<li><a id="emaillink" onClick="var _href=jQuery('#emaillink').attr('href');var subthemes=document.getElementById('subthemes').checked;jQuery('#emaillink').attr('href',_href + '&subthemes=' + subthemes);return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short . "pages/collection_email.php" . $linksuffix . "&catshare=true\">" . $lang["email_theme_category"];?></a></li>
 			<li><a id="urllink" onClick="var _href=jQuery('#urllink').attr('href');var subthemes=document.getElementById('subthemes').checked;jQuery('#urllink').attr('href',_href + '&subthemes=' + subthemes);return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short . "pages/theme_category_share.php" . $linksuffix . "&generateurl=true&subthemes=" . $subthemes . "\">" . $lang["generateurls"];?></a></li>
+			</div>
 		<?php }
 	else	
 		{?>
@@ -156,14 +147,18 @@ else
 			?>
 			</select>
 			<div class="clearerleft"> </div>
-			</div>			
-			
+			</div>	
+			<div class="Question">
+				<label for="subthemes"><?php echo $lang["share_theme_category_subcategories"]?></label>
+				<input type="checkbox" id="subthemes" name="subthemes" value="true" <?php if ($subthemes){echo "checked";} ?>>
+				<div class="clearerleft"> </div>
+			</div>
+						
 			<div class="QuestionSubmit" style="padding-top:0;margin-top:0;">
 			<label for="buttons"> </label>
 			<input onclick="jQuery('#generateurl').val(true);" type="submit"  value="&nbsp;&nbsp;<?php echo $lang["generateexternalurls"]?>&nbsp;&nbsp;" />
 			</div>
 			
-			</div>
 			<?php			
 			}
 		else
@@ -253,10 +248,11 @@ else
 			<?php }
 		}?>	
 	
-	</div>
 	<input type="hidden" id="deleteaccess" name="deleteaccess" value=""/>
 	<input type="hidden" id="ref" name="ref" value=""/>
 	</form>	
+	
+	</div>
 	<?php
 	}
 

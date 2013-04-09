@@ -6,13 +6,14 @@ include "../include/resource_functions.php";
 include "../include/search_functions.php";
 
 
-$themeshare=getvalescaped("catshare",false);
+$themeshare=getvalescaped("catshare","false");
 $themecount=0;
 if(getvalescaped("subthemes","false")!="false"){$subthemes=true;}else{$subthemes=false;}
 $linksuffix="";
 $ref=getvalescaped("ref","");
-if ($themeshare)
+if ($themeshare!="false")
 	{
+	$themeshare=true;
 	# came here from theme category share page
 	$themes=array();
 	reset($_POST);reset($_GET);
@@ -27,33 +28,31 @@ if ($themeshare)
 	$linksuffix="?";
 	for ($x=0;$x<count($themes);$x++){
 		if ($x!=0){ $linksuffix.="&"; }
-		$linksuffix.="theme" . $x;
-		#$linksuffix.=($x==0)?"":$x;
+		$linksuffix.="theme" . ($x+1);
 		$linksuffix.="=". urlencode($themes[$x]);
 		$themename=$themes[$x];
-		}
-
+	}
 	$collectionstoshare=get_themes($themes,$subthemes);
-	#exit (print_r($collectionstoshare) . $subthemes);
-	if ($ref=="")
+	foreach($collectionstoshare as $collection)
 		{
-		foreach($collectionstoshare as $collection)
-			{
-			if ($ref!=""){$ref.=", ";}
-			$ref.=$collection["ref"];
-			}
+		if ($ref!=""){$ref.=", ";}
+		$ref.=$collection["ref"];
 		}
+	$linksuffix.="&catshare=true";
+		
 	}
-
-
-# Fetch collection data
-if (!is_numeric($ref)) ##  multiple collections may be referenced
+else
 	{
-	$refArray = explode(',',$ref);
-	$collection=get_collection($refArray[0]);if ($collection===false) {exit("Collection not found.");}
-	}
-else {
-$collection=get_collection($ref);if ($collection===false) {exit("Collection not found.");}
+	$themeshare=false;
+	# Fetch collection data
+	if (!is_numeric($ref)) ##  multiple collections may be referenced
+		{
+		$refArray = explode(',',$ref);
+		$collection=get_collection($refArray[0]);if ($collection===false) {exit("Collection not found.");}
+		}
+	else {
+	$collection=get_collection($ref);if ($collection===false) {exit("Collection not found.");}
+		}
 	}
 
 $errors="";
@@ -72,8 +71,7 @@ if (getval("save","")!="")
 	if (!$use_user_email){$from_name=$applicationname;} else {$from_name=$userfullname;} // make sure from_name matches email
 	
 	if (getval("ccme",false)){ $cc=$useremail;} else {$cc="";}
-	
-	$errors=email_collection($ref,i18n_get_collection_name($collection),$userfullname,$users,$message,$feedback,$access,$expires,$user_email,$from_name,$cc);
+	$errors=email_collection($ref,i18n_get_collection_name($collection),$userfullname,$users,$message,$feedback,$access,$expires,$user_email,$from_name,$cc,$themeshare,$themename,$linksuffix);
 
 	if ($errors=="")
 		{
@@ -126,10 +124,8 @@ include "../include/header.php";
 <h1><?php if ($themeshare){echo $lang["email_theme_category"];} else {echo $lang["emailcollection"];}?></h1>
 
 <p><?php 
-if ($themeshare)
-	{
-	if (text("introtextthemeshare")!=""){echo text("introtextthemeshare");} else {echo text("introtext");}
-	}
+if ($themeshare && text("introtextthemeshare")!="")
+	{echo text("introtextthemeshare");}
 else 
 	{echo text("introtext");}?>
 </p>
@@ -137,7 +133,7 @@ else
 <form name="collectionform" method=post id="collectionform" action="<?php echo $baseurl_short?>pages/collection_email.php<?php echo $linksuffix ?>">
 <input type=hidden name=redirect id=redirect value=yes>
 <input type=hidden name=ref value="<?php echo $ref?>">
-<?php if ($email_multi_collections || $themeshare) { ?>
+<?php if ($email_multi_collections && !$themeshare) { ?>
 <script type="text/javascript">
    function getSelected(opt) {
       var sel = '';
@@ -153,50 +149,31 @@ else
       return sel.substring(2, sel.length );
    }
 </script>
-<?php } ?>
-<div class="Question">
-<label><?php if ($themeshare) {echo $lang["themes"];} else {echo $lang["collectionname"];}?></label><div class="Fixed"><?php 
-	if (!$email_multi_collections &&  !$themeshare) { 
-		echo i18n_get_collection_name($collection);
-	} else { ##  this select copied from collections.php 
-		
+<?php } 
+
+
+if ($themeshare)
+	{?>
+	<div class="Question">
+		<label for="subthemes"><?php echo $lang["share_theme_category_subcategories"]?></label>
+		<input type="checkbox" id="subthemes" name="subthemes" value="true" <?php if ($subthemes){echo "checked";} ?>>
+		<div class="clearerleft"> </div>
+	</div>
+	<?php
+	}
+else
+	{?>	
+	<div class="Question">
+	<label><?php if ($themeshare) {echo $lang["themes"];} else {echo $lang["collectionname"];}?></label><div class="Fixed"><?php 
+		if (!$email_multi_collections &&  !$themeshare) { 
+			echo i18n_get_collection_name($collection);
+		} else { ##  this select copied from collections.php 
+			
 			?>		
 			<select name="collection" multiple="multiple" size="10" class="SearchWidthExt" style="width:365px;" 
 				onchange="document.getElementById('refDiv').innerHTML = getSelected(this); " >
 			<?php
-			if ($themeshare)
-		
-			{
-			for ($n=0;$n<count($collectionstoshare);$n++)
-				{
-
-				if ($collection_dropdown_user_access_mode){    
-					foreach ($users as $user){
-						if ($user['ref']==$collectionstoshare[$n]['user']){$colusername=$user['fullname'];}
-					}
-					# Work out the correct access mode to display
-					if (!hook('collectionaccessmode')) {
-						if ($collectionstoshare[$n]["public"]==0){
-							$accessmode= $lang["private"];
-						}
-						else{
-							if (strlen($collectionstoshare[$n]["theme"])>0){
-								$accessmode= $lang["theme"];
-							}
-						else{
-								$accessmode= $lang["public"];
-							}
-						}
-					}
-				}
-					?>	
-				<option value="<?php echo $collectionstoshare[$n]["ref"]?>" selected><?php echo i18n_get_collection_name($collectionstoshare[$n])?><?php if ($collection_dropdown_user_access_mode){echo "&nbsp;&nbsp;(". $colusername."/".$accessmode.")"; } ?></option>
-				<?php 
-				}
 			
-			}
-		else
-			{
 			$list=get_user_collections($userref);
 			$found=false;
 			for ($n=0;$n<count($list);$n++)
@@ -238,19 +215,13 @@ else
 					<?php
 					}
 				}
-			}
-		?>
-		</select> <?php } ?>
-</div>
-<div class="clearerleft"> </div>
-</div>
-<?php if (!$themeshare) 
-	{?>
-	<div class="Question">
-	<label><?php echo $lang["collectionid"]?></label><div id="refDiv" class="Fixed"><?php echo $collection_prefix . $ref?></div>
-	<div class="clearerleft"> </div>
-	</div>
-	<?php } ?>
+			
+			?>
+			</select> <?php } ?>
+			</div>
+			<div class="clearerleft"> </div>
+			</div>
+	<?php }?>
 <div class="Question">
 <label for="message"><?php echo $lang["message"]?></label><textarea class="stdwidth" rows=6 cols=50 name="message" id="message"></textarea>
 <div class="clearerleft"> </div>
@@ -327,7 +298,7 @@ for ($n=$minaccess;$n<=1;$n++) { ?>
 <?php if(!hook("replaceemailsubmitbutton")){?>
 <div class="QuestionSubmit">
 <label for="buttons"> </label>			
-<input name="save" type="submit" value="&nbsp;&nbsp;<?php echo $lang["emailcollection"]?>&nbsp;&nbsp;" />
+<input name="save" type="submit" value="&nbsp;&nbsp;<?php if ($themeshare){echo $lang["email_theme_category"];} else {echo $lang["emailcollection"];}?>&nbsp;&nbsp;" />
 </div>
 <?php } # end hook replaceemailsubmitbutton ?>
 

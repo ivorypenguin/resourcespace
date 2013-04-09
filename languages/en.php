@@ -366,6 +366,10 @@ $lang["selectcollection"]="Select collection";
 $lang["total"]="Total";
 $lang["ownedbyyou"]="owned by you";
 $lang["edit_theme_category"]="Edit theme category";
+$lang["emailthemecollectionmessageexternal"]="has e-mailed you collections of resources from $applicationname."; 
+$lang["emailthememessage"]="has e-mailed you a selection of themes from $applicationname which have been added to your 'My collections' page.";
+$lang["clicklinkviewthemes"]="Click the link below to view the themes.";
+$lang["clicklinkviewcollections"]="Click the links below to view the collections.";
 
 # Lightbox
 $lang["lightbox-image"] = "Image";
@@ -746,7 +750,7 @@ $lang["share"]="Share";
 $lang["sharecollection"]="Share collection";
 $lang["sharecollection-name"]="Share collection - %collectionname"; # %collectionname will be replaced, e.g. Share Collection - Cars
 $lang["share_theme_category"]="Share theme category";
-$lang["share_theme_category_subcategories"]="Include subcategories?";
+$lang["share_theme_category_subcategories"]="Include themes in subcategories for external users?";
 $lang["email_theme_category"]="E-mail theme category";
 $lang["generateurl"]="Generate URL";
 $lang["generateurls"]="Generate URLs";

@@ -322,7 +322,7 @@ behavior: url('../css/iepngfix.htc');
 .CategoryTree {border-top:1px solid black;border-left:1px solid black;border-bottom:2px solid black;border-right:2px solid black;background-color:white;overflow:auto;width:550px;height:400px;display:none;color: black;font-weight: normal;}
 
 
-.URLDisplay {width: 500px;font: 11px Tahoma, Arial, Helvetica, sans-serif;}
+.URLDisplay {width: 100%;font: 11px Tahoma, Arial, Helvetica, sans-serif;}
 
 
 /* Autocomplete dropdown CSS - colours can be overridden in the colour CSS files */
