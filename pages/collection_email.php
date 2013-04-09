@@ -37,9 +37,7 @@ if ($themeshare!="false")
 		{
 		if ($ref!=""){$ref.=", ";}
 		$ref.=$collection["ref"];
-		}
-	$linksuffix.="&catshare=true";
-		
+		}		
 	}
 else
 	{
@@ -130,7 +128,7 @@ else
 	{echo text("introtext");}?>
 </p>
 
-<form name="collectionform" method=post id="collectionform" action="<?php echo $baseurl_short?>pages/collection_email.php<?php echo $linksuffix ?>">
+<form name="collectionform" method=post id="collectionform" action="<?php echo $baseurl_short?>pages/collection_email.php<?php echo $linksuffix ?>&catshare=true">
 <input type=hidden name=redirect id=redirect value=yes>
 <input type=hidden name=ref value="<?php echo $ref?>">
 <?php if ($email_multi_collections && !$themeshare) { ?>
