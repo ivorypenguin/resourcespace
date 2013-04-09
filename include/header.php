@@ -23,7 +23,7 @@ if ($display_user_rating_stars && $star_search){
 		setcookie("starsearch",$starsearch);
 	    }
 	}
-?><!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+?><!DOCTYPE html">
 <html>	<?php if ($include_rs_header_info){?>
 <!--<?php hook("copyrightinsert");?>
 ResourceSpace version <?php echo $productversion?>
