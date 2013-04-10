@@ -173,7 +173,7 @@ else
 				$ref=$collection["ref"];
 				
 				#Check if any resources are not approved
-				if (!is_collection_approved($ref)) {
+				if (!is_collection_approved($ref) && !$collection_allow_not_approved_share) {
 					echo str_replace("%collectionname%", i18n_get_collection_name($collection), $lang["collection-name"]) . "\r\n" . $lang["notapprovedsharecollection"] . "\r\n\r\n";
 					$unapproved_collection=true;
 				} else {
