@@ -285,7 +285,22 @@ function get_resource_types($types="")
 	# Returns a list of resource types. The standard resource types are translated using $lang. Custom resource types are i18n translated.
 	
 	// support getting info for a comma-delimited list of restypes (as in a search)
-	if ($types==""){$sql="";} else {$sql=" where ref in ($types) ";}
+	if ($types==""){$sql="";} else
+		{
+		# Ensure $types are suitably quoted and escaped
+		$cleantypes="";
+		$s=explode(",",$types);
+		foreach ($s as $type)
+			{
+			if (is_numeric(str_replace("'","",$type))) # Process numeric types only, to avoid inclusion of collection-based filters (mycol, public, etc.)
+				{
+				if (strpos($type,"'")===false) {$type="'" . $type . "'";}
+				if ($cleantypes!="") {$cleantypes.=",";}
+				$cleantypes.=$type;
+				}
+			}
+		$sql=" where ref in ($cleantypes) ";
+		}
 	
 	$r=sql_query("select * from resource_type $sql order by order_by,ref");
 	$return=array();
