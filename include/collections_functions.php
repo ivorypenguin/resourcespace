@@ -753,7 +753,7 @@ function email_collection($colrefs,$collectionname,$fromusername,$userlist,$mess
 	# Send an e-mail to each resolved user
 	
 	# htmlbreak is for composing list
-	$htmlbreak="";
+	$htmlbreak="\r\n";
 	global $use_phpmailer;
 	if ($use_phpmailer){$htmlbreak="<br><br>";$htmlbreaksingle="<br>";} 
 	
@@ -842,7 +842,7 @@ function email_collection($colrefs,$collectionname,$fromusername,$userlist,$mess
 					}
 				else
 					{
-					$list.= $htmlbreak.$url;
+					$list.= $htmlbreak . $collection_name . $htmlbreak . $url . $htmlbreak;
 					}
 				#log this
 				collection_log($reflist[$nx2],"E",0, $emails[$nx1]);
