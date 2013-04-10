@@ -941,13 +941,12 @@ function get_search_title($searchstring){
 	
 	global $lang,$userref,$baseurl,$collectiondata,$result,$display;
 	
-	parse_str($searchstring);
-	
-	if (!isset($archive)){$archive=0;}
-	if (!isset($search)){$search="";}
-	if (!isset($starsearch)){$starsearch="";}
-	if (!isset($restypes)){$restypes="";}
-	
+	parse_str($searchstring,$searchvars);
+	if (isset($searchvars["archive"])){$archive=$searchvars["archive"];}else{$archive=0;}
+	if (isset($searchvars["search"])){$search=$searchvars["search"];}else{$search="";}
+	if (isset($searchvars["starsearch"])){$starsearch=$searchvars["starsearch"];}else{$starsearch="";}
+	if (isset($searchvars["restypes"])){$restypes=$searchvars["restypes"];}else{$restypes="";}
+
 	$collection_dropdown_user_access_mode=false;
 	include(dirname(__FILE__)."/search_title_processing.php");
 
