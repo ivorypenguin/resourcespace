@@ -23,7 +23,7 @@ if ($display_user_rating_stars && $star_search){
 		setcookie("starsearch",$starsearch);
 	    }
 	}
-?><!DOCTYPE html">
+?><!DOCTYPE html>
 <html>	<?php if ($include_rs_header_info){?>
 <!--<?php hook("copyrightinsert");?>
 ResourceSpace version <?php echo $productversion?>
