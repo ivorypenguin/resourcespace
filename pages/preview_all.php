@@ -190,6 +190,7 @@ if (!file_exists($path))
 	{
 	$info=get_resource_data($ref);
 	$url="../gfx/" . get_nopreview_icon($info["resource_type"],$info["file_extension"],false);
+	$path=$url;
 	$border=false;
 	}
 
@@ -201,7 +202,7 @@ if (!hook("replacepreviewalltitle")){ ?><a href="<?php echo $baseurl_short?>page
 	
 	<div class="ResourceShel_" id="ResourceShel_<?php echo $ref?>">
 	<?php if ($vertical=="h"){?>&nbsp;<?php if (!hook("replacepreviewalltitle")){ ?><a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $result[$x]['ref']?>&search=<?php echo $search?>&order_by=<?php echo $order_by?>&archive=<?php echo $archive?>&k=<?php echo $k?>&sort=<?php echo $sort?>"><?php echo i18n_get_translated($result[$x]['field'.$view_title_field])?></a><?php } /* end hook replacepreviewalltitle */?><br/><?php } ?>
-	<?php $imageinfo = getimageSize( $url ); 
+	<?php $imageinfo = getimageSize( $path ); 
 	$imageheight=$imageinfo[1];?>
     <?php $flvfile=get_resource_path($ref,true,"pre",false,$ffmpeg_preview_extension);
 if (!file_exists($flvfile)) {$flvfile=get_resource_path($ref,true,"",false,$ffmpeg_preview_extension);}
@@ -218,7 +219,7 @@ if (!(isset($resource['is_transcoding']) && $resource['is_transcoding']==1) && f
 		// leave preview to the custom mp3 player
 		}	
     else{?>
-<?php if (!$allow_reorder){?><a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $result[$x]['ref']?>&search=<?php echo $search?>&order_by=<?php echo $order_by?>&archive=<?php echo $archive?>&k=<?php echo $k?>&sort=<?php echo $sort?>"><?php } //end if !reorder?><img class="image" id="image<?php echo $ref?>" imageheight="<?php echo $imageheight?>" src="<?php echo $url?>" alt="" style="height:<?php echo $height?>px;border:1px solid white;" /><?php if (!$allow_reorder){?></a><?php } //end if !reorder?><br/><br/>
+<?php if (!$allow_reorder){?><a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $result[$x]['ref']?>&search=<?php echo $search?>&order_by=<?php echo $order_by?>&archive=<?php echo $archive?>&k=<?php echo $k?>&sort=<?php echo $sort?>"><?php } //end if !reorder?><img class="Picture<?php if (!$border){?>Doc<?php } ?>" id="image<?php echo $ref?>" imageheight="<?php echo $imageheight?>" src="<?php echo $url?>" alt="" style="height:<?php echo $height?>px;" /><?php if (!$allow_reorder){?></a><?php } //end if !reorder?><br/><br/>
 <?php } ?>
 <?php if ($search_titles){$heightmod=150;} else {$heightmod=120;}
 if ($collections_compact_style){$heightmod=$heightmod+20;}?>
