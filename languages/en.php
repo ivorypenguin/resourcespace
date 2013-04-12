@@ -1686,3 +1686,6 @@ $lang["findcollectionthemes"]="Collections in themes";
 $lang["upload-options"]="Upload options";
 $lang["user-preferences"]="User preferences";
 $lang["allresources"]="All Resources";
+
+
+$lang["smart_collection_result_limit"]="Smart collection: result count limit";

@@ -747,29 +747,37 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 		$collection=explode(" ",$search);$collection=str_replace("!collection","",$collection[0]);
 		$collection=explode(",",$collection);// just get the number
 		$collection=escape_check($collection[0]);
+
 		# smart collections update
 		global $allow_smart_collections;
 		if ($allow_smart_collections){
 			$smartsearch_ref=sql_value("select savedsearch value from collection where ref='$collection'","");
 
 			if ($smartsearch_ref!=""){
-				$smartsearch=sql_query("select * from collection_savedsearch where ref='$smartsearch_ref'");
+				$smartsearch=sql_query("select search,restypes,starsearch,archive,created,result_limit from collection_savedsearch where ref='$smartsearch_ref'");
 				if (isset($smartsearch[0]['search'])){
 					$smartsearch=$smartsearch[0];
-					$results=do_search($smartsearch['search'], $smartsearch['restypes'], "relevance", $smartsearch['archive'],-1,"desc",true,$smartsearch['starsearch']);
+					
+					# Option to limit results;
+					$result_limit=$smartsearch["result_limit"]; if ($result_limit=="") {$result_limit=-1;}
+					
+					$results=do_search($smartsearch['search'], $smartsearch['restypes'], "relevance", $smartsearch['archive'],$result_limit,"desc",true,$smartsearch['starsearch']);
 					# results is a list of the current search without any restrictions
 					# we need to compare against the current collection contents to minimize inserts and deletions
 					$current=sql_query("select resource from collection_resource where collection='$collection'");
 					$current_contents=array(); $results_contents=array();
 					if (!empty($current)){foreach($current as $current_item){ $current_contents[]=$current_item['resource'];}}
-					if (!empty($results)&&is_array($results)){foreach($results as $results_item){ $results_contents[]=$results_item['ref'];}}
+					
+					$counter=0;
+					if (!empty($results)&&is_array($results)){foreach($results as $results_item){ $results_contents[]=$results_item['ref'];$counter++;if ($counter>=$result_limit && $result_limit!=-1) {break;}}}
 				
+					# Add any new resources
 						for ($n=0;$n<count($results_contents);$n++)
 							{
 							if (!in_array($results_contents[$n],$current_contents)){ add_resource_to_collection($results_contents[$n],$collection,true);}
 							}
 					
-
+				    # Remove any resources no longer present.
 						for ($n=0;$n<count($current_contents);$n++)
 							{
 							if (!in_array($current_contents[$n],$results_contents)){ remove_resource_from_collection($current_contents[$n],$collection,true);}

@@ -6,6 +6,6 @@
 #
 $lang["refine"]="Refine";
 $lang["refineresults"]="Search within these results";
-$lang["additionalkeywords"]="Additional Keywords";
-$lang["clearsearch"]="Clear Search Terms";
-?>
+$lang["additionalkeywords"]="Additional keywords";
+$lang["clearsearch"]="Clear search terms";
+

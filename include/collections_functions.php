@@ -477,6 +477,15 @@ function save_collection($ref)
 				}
 			}
 		}
+		
+	# Update limit count for saved search
+	if (isset($_POST["result_limit"]))
+		{
+		sql_query("update collection_savedsearch set result_limit='" . getvalescaped("result_limit","") . "' where collection='$ref'");
+		
+		}
+	
+	refresh_collection_frame();
 	}
 
 function get_max_theme_levels(){
@@ -956,7 +965,7 @@ function get_search_title($searchstring){
 		foreach($resource_types as $type){
 			$typenames[]=$type['name'];
 		}
-		$search_title.=" [".implode(',',$typenames)."]";
+		$search_title.=" [".implode(', ',$typenames)."]";
 	}
 	$title=str_replace(">","",strip_tags($search_title));
 	return $title;

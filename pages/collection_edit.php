@@ -83,6 +83,17 @@ include "../include/header.php";
 <div class="clearerleft"> </div>
 </div>
 
+<?php if ($collection["savedsearch"]!="") { 
+$result_limit=sql_value("select result_limit value from collection_savedsearch where collection='$ref'","");	
+?>
+<div class="Question">
+<label for="name"><?php echo $lang["smart_collection_result_limit"] ?></label><input type=text class="stdwidth" name="result_limit" id="result_limit" value="<?php echo $result_limit ?>" />
+<div class="clearerleft"> </div>
+</div>
+<?php } ?>
+
+
+
 <div class="Question">
 <label for="public"><?php echo $lang["access"]?></label>
 <?php if ($collection["cant_delete"]==1) { 
