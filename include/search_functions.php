@@ -759,7 +759,7 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 					$results=do_search($smartsearch['search'], $smartsearch['restypes'], "relevance", $smartsearch['archive'],-1,"desc",true,$smartsearch['starsearch']);
 					# results is a list of the current search without any restrictions
 					# we need to compare against the current collection contents to minimize inserts and deletions
-					$current=sql_query("select resource from collection_resource where collection=$collection");
+					$current=sql_query("select resource from collection_resource where collection='$collection'");
 					$current_contents=array(); $results_contents=array();
 					if (!empty($current)){foreach($current as $current_item){ $current_contents[]=$current_item['resource'];}}
 					if (!empty($results)&&is_array($results)){foreach($results as $results_item){ $results_contents[]=$results_item['ref'];}}
