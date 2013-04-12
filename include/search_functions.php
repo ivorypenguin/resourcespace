@@ -746,14 +746,14 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 		# Extract the collection number
 		$collection=explode(" ",$search);$collection=str_replace("!collection","",$collection[0]);
 		$collection=explode(",",$collection);// just get the number
-		$collection=$collection[0];
+		$collection=escape_check($collection[0]);
 		# smart collections update
 		global $allow_smart_collections;
 		if ($allow_smart_collections){
-			$smartsearch_ref=sql_value("select savedsearch value from collection where ref=$collection","");
+			$smartsearch_ref=sql_value("select savedsearch value from collection where ref='$collection'","");
 
 			if ($smartsearch_ref!=""){
-				$smartsearch=sql_query("select * from collection_savedsearch where ref=$smartsearch_ref");
+				$smartsearch=sql_query("select * from collection_savedsearch where ref='$smartsearch_ref'");
 				if (isset($smartsearch[0]['search'])){
 					$smartsearch=$smartsearch[0];
 					$results=do_search($smartsearch['search'], $smartsearch['restypes'], "relevance", $smartsearch['archive'],-1,"desc",true,$smartsearch['starsearch']);
