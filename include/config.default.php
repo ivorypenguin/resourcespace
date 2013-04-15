@@ -1191,7 +1191,7 @@ $xl_thumbs_display_fields=array(8,3);
 # array of defined xl_thumbs_display_fields to apply CSS modifications to (via $xl_search_results_title_wordwrap, $xl_search_results_title_height, $xl_search_results_title_trim)
 $xl_thumbs_display_extended_fields=array();
 	# $xl_search_result_title_height=26;
-	$xl_search_results_title_trim=40;
+	$xl_search_results_title_trim=60;
 	$xl_search_results_title_wordwrap=100;
 	
 # Enable small thumbnails option for search screen
