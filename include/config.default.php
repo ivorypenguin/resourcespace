@@ -1185,7 +1185,7 @@ $thumbs_display_extended_fields=array();
 	$search_results_title_wordwrap=100; // Force breaking up of very large titles so they wrap to multiple lines (useful when using multi line titles with $search_result_title_height). By default this is set very high so that breaking doesn't occur. If you use titles that have large unbroken words (e.g. filenames with no spaces) then it may be useful to set this value to something lower, e.g. 20
 	
 # Enable extra large thumbnails option for search screen
-$xlthumbs=false;
+$xlthumbs=true;
 # Extra Large Display Fields:  array of fields to display on the xlarge thumbnail view.
 $xl_thumbs_display_fields=array(8,3);
 # array of defined xl_thumbs_display_fields to apply CSS modifications to (via $xl_search_results_title_wordwrap, $xl_search_results_title_height, $xl_search_results_title_trim)
