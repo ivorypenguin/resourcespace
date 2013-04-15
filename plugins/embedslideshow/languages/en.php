@@ -12,16 +12,16 @@ $lang["embedslideshow_size"]="Slideshow size?";
 $lang["sizename_pixels"]="%name (%pixels pixels)"; # %name and %pixels will be replaced, e.g. Preview (600 pixels)
 $lang["embedslideshow_transitiontime"]="Slide duration?";
 
-$lang["embedslideshow"]="Embed Slideshow";
+$lang["embedslideshow"]="Embed slideshow";
 $lang["embedslideshow_action_description"]="This will create an external share key and generate a corresponding block of HTML that can be inserted into an external website.";
 $lang["generateslideshowhtml"]="Generate slideshow HTML";
 $lang["slideshow"]="Slideshow";
 $lang["slideshowhtml"]="Slideshow HTML";
-$lang["slideshowpreview"]="Slideshow Preview";
+$lang["slideshowpreview"]="Slideshow preview";
 $lang["embedslideshow_notavailable"]="Sorry, this slideshow is no longer available.";
 $lang["embedslideshow_alreadyonpage"]="Enter a page number into the box on the right to jump to a specific page.";
 
-$lang["embedslideshow_maximise_option"]="Maximise Option?";
+$lang["embedslideshow_maximise_option"]="Maximise option?";
 
 $lang["embedslideshow_seconds"]="? seconds";
 $lang["embedslideshow_notransition"]="No automatic transition";

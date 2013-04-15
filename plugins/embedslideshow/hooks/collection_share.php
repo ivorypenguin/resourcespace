@@ -45,7 +45,7 @@ function HookEmbedslideshowCollection_shareExtra_share_options()
 
 		<div class="Question">		
 		<label><?php echo $lang["embedslideshow_maximise_option"] ?></label>
-		<input type="checkbox" value="1" name="maximise" <?php if (!isset($_POST["size"]) || (isset($_POST["maximise"]) && $_POST["maximise"]=="1")) { ?>checked<?php } ?>>
+		<input type="checkbox" value="1" name="maximise" <?php if (isset($_POST["maximise"]) && $_POST["maximise"]=="1") { ?>checked<?php } ?>>
 		<div class="clearerleft"></div>
 		</div>		
 
