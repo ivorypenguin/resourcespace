@@ -24,9 +24,83 @@ if (getval("save","")!="")
 	resource_log($ref,'e',$speedtaggingfield,"",$oldval,$keywords);
 	}
 
+	
+# append resource type restrictions based on 'T' permission	
+	# look for all 'T' permissions and append to the SQL filter.
+	global $userpermissions;
+	$rtfilter=array();
+	$sql_join="";
+	$sql_filter="";
+	for ($n=0;$n<count($userpermissions);$n++)
+		{
+		if (substr($userpermissions[$n],0,1)=="T")
+			{
+			$rt=substr($userpermissions[$n],1);
+			if (is_numeric($rt)) {$rtfilter[]=$rt;}
+			}
+		}
+	if (count($rtfilter)>0)
+		{
+		$sql_filter.=" and r.resource_type not in (" . join(",",$rtfilter) . ")";
+		}
+	
+	# append "use" access rights, do not show restricted resources unless admin
+	if (!checkperm("v"))
+		{
+		$sql_filter.=" and r.access<>'2'";
+		}
+	# ------ Search filtering: If search_filter is specified on the user group, then we must always apply this filter.
+	global $usersearchfilter;
+	$sf=explode(";",$usersearchfilter);
+	if (strlen($usersearchfilter)>0)
+		{
+		for ($n=0;$n<count($sf);$n++)
+			{
+			$s=explode("=",$sf[$n]);
+			if (count($s)!=2) {exit ("Search filter is not correctly configured for this user group.");}
+
+			# Support for "NOT" matching. Return results only where the specified value or values are NOT set.
+			$filterfield=$s[0];$filter_not=false;
+			if (substr($filterfield,-1)=="!")
+				{
+				$filter_not=true;
+				$filterfield=substr($filterfield,0,-1);# Strip off the exclamation mark.
+				}
+
+			# Find field(s) - multiple fields can be returned to support several fields with the same name.
+			$f=sql_array("select ref value from resource_type_field where name='" . escape_check($filterfield) . "'");
+			if (count($f)==0) {exit ("Field(s) with short name '" . $filterfield . "' not found in user group search filter.");}
+			
+			# Find keyword(s)
+			$ks=explode("|",strtolower(escape_check($s[1])));
+			$modifiedsearchfilter=hook("modifysearchfilter");
+			if ($modifiedsearchfilter){$ks=$modifiedsearchfilter;} 
+			$kw=sql_array("select ref value from keyword where keyword in ('" . join("','",$ks) . "')");
+			#if (count($k)==0) {exit ("At least one of keyword(s) '" . join("', '",$ks) . "' not found in user group search filter.");}
+					
+		    if (!$filter_not)
+		    	{
+		    	# Standard operation ('=' syntax)
+			    $sql_join.=" join resource_keyword filter" . $n . " on r.ref=filter" . $n . ".resource and filter" . $n . ".resource_type_field in ('" . join("','",$f) . "') and filter" . $n . ".keyword in ('" . 	join("','",$kw) . "') ";	
+			    }
+			else
+				{
+				# Inverted NOT operation ('!=' syntax)
+				if ($sql_filter!="") {$sql_filter.=" and ";}
+				$sql_filter .= "r.ref not in (select resource from resource_keyword where resource_type_field in ('" . join("','",$f) . "') and keyword in ('" . 	join("','",$kw) . "'))"; # Filter out resources that do contain the keyword(s)
+				}
+			}
+		}
+		
+		
+
 # Fetch a resource
-$ref=sql_value("select r.ref value,count(*) c from resource r left outer join resource_keyword rk on r.ref=rk.resource and rk.resource_type_field='$speedtaggingfield' where r.has_image=1 and archive=0 group by r.ref  order by c,rand() limit 1",0);
+
+$ref=sql_value("select r.ref value,count(*) c from resource r left outer join resource_keyword rk on r.ref=rk.resource and rk.resource_type_field='$speedtaggingfield' $sql_join where r.has_image=1 and archive=0 $sql_filter group by r.ref  order by c,rand() limit 1",0);
 if ($ref==0) {exit ("No resources to tag.");}
+
+
+
 
 # Load resource data
 $resource=get_resource_data($ref);
