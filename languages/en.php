@@ -1689,4 +1689,3 @@ $lang["allresources"]="All Resources";
 
 $lang["smart_collection_result_limit"]="Smart collection: result count limit";
 
-$lang["untaggedresources"]="Resources with no %field data";
