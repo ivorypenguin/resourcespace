@@ -92,13 +92,17 @@ if ($search_titles)
 		$searchq=explode(" ",$searchq);
 		$searchq=rtrim(trim($searchq[0]),",");
 		if (is_numeric($searchq)){
+			$fref=$searchq;
 			$ftitle=sql_value("select title value from resource_type_field where ref='" . $searchq . "'","");}
 		else {
-			$ftitle=sql_value("select title value from resource_type_field where name='" . $searchq . "'","");
+			$ftitleref=sql_query("select title,ref from resource_type_field where name='" . $searchq . "'","");
+			if (!isset($ftitleref[0])){exit ("invalid !empty search");}
+			$ftitle=$ftitleref[0]['title'];
+			$fref=$ftitleref[0]['ref'];
 		}
-		if ($ftitle==""){exit ("invalid !nodata search");}
+		if ($ftitle==""){exit ("invalid !empty search");}
 		
-        $search_title = '<h1 class="searchcrumbs"><a href='.$baseurl_short.'pages/search.php?search=!nodata'.$searchq.$parameters_string.'>'.str_replace("%field",i18n_get_translated($ftitle),$lang["untaggedresources"]).'</a>'.$searchcrumbs.'</h1> ';
+        $search_title = '<h1 class="searchcrumbs"><a href='.$baseurl_short.'pages/search.php?search=!nodata'.$fref.$parameters_string.'>'.str_replace("%field",i18n_get_translated($ftitle),$lang["untaggedresources"]).'</a>'.$searchcrumbs.'</h1> ';
         }    
     elseif (substr($search,0,5)=="!last")
         {

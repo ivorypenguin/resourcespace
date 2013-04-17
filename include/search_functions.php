@@ -903,6 +903,9 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 	# Search for resources with an empty field, ex: !empty18  or  !emptycaption
 	if (substr($search,0,6)=="!empty"){
 		$nodatafield=explode(" ",$search);$nodatafield=str_replace("!empty","",$nodatafield[0]);
+
+		if (!is_numeric($nodatafield)){$nodatafield=sql_value("select ref value from resource_type_field where name='$nodatafield'","");}
+		if ($nodatafield==""){exit('invalid !empty search');}
 	
 		return sql_query("$sql_prefix select distinct r.hit_count score,$select from resource r left outer join resource_data rd on r.ref=rd.resource and rd.resource_type_field='$nodatafield' $sql_join where (rd.value ='' or rd.value is null)  and $sql_filter group by r.ref order by $order_by $sql_suffix");
 		}
