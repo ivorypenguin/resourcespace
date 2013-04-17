@@ -923,6 +923,7 @@ function save_user($ref)
 	if (getval("deleteme","")!="")
 		{
 		sql_query("delete from user where ref='$ref'");
+		return true;
 		}
 	else
 		{
