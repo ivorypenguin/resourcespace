@@ -902,8 +902,8 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 	
 	# Search for resources with an empty field, ex: !empty18  or  !emptycaption
 	if (substr($search,0,6)=="!empty"){
-		$nodatafield=explode(" ",$search);$nodatafield=str_replace("!empty","",$nodatafield[0]);
-
+		$nodatafield=explode(" ",$search);$nodatafield=rtrim(str_replace("!empty","",$nodatafield[0]),',');
+		
 		if (!is_numeric($nodatafield)){$nodatafield=sql_value("select ref value from resource_type_field where name='$nodatafield'","");}
 		if ($nodatafield==""){exit('invalid !empty search');}
 	
