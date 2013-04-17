@@ -86,6 +86,20 @@ if ($search_titles)
         {
         $search_title = '<h1 class="searchcrumbs"><a href="'.$baseurl_short.'pages/search.php?search=">'.$lang["allresources"].'</a></h1> ';
         }
+    elseif (substr($search,0,6)=="!empty")
+        {
+		$searchq=substr($search,6);
+		$searchq=explode(" ",$searchq);
+		$searchq=rtrim(trim($searchq[0]),",");
+		if (is_numeric($searchq)){
+			$ftitle=sql_value("select title value from resource_type_field where ref='" . $searchq . "'","");}
+		else {
+			$ftitle=sql_value("select title value from resource_type_field where name='" . $searchq . "'","");
+		}
+		if ($ftitle==""){exit ("invalid !nodata search");}
+		
+        $search_title = '<h1 class="searchcrumbs"><a href='.$baseurl_short.'pages/search.php?search=!nodata'.$searchq.$parameters_string.'>'.str_replace("%field",i18n_get_translated($ftitle),$lang["untaggedresources"]).'</a>'.$searchcrumbs.'</h1> ';
+        }    
     elseif (substr($search,0,5)=="!last")
         {
 		$searchq=substr($search,5);
