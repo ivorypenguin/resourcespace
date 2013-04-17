@@ -900,6 +900,13 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 		return sql_query($sql_prefix . "SELECT distinct $select FROM resource r $sql_join  where r.ref>0 and r.ref not in (select c.resource from collection_resource c) and $sql_filter" . $sql_suffix,false,$fetchrows);
 		}	
 	
+	# Search for resources with an empty field, ex: !empty18  or  !emptycaption
+	if (substr($search,0,7)=="!empty"){
+		$nodatafield=explode(" ",$search);$nodatafield=str_replace("!empty","",$nodatafield[0]);
+	
+		return sql_query("$sql_prefix select distinct r.hit_count score,$select from resource r left outer join resource_keyword rk on r.ref=rk.resource and rk.resource_type_field='$nodatafield' $sql_join where rk.keyword is null and $sql_filter group by r.ref order by $order_by $sql_suffix");
+		}
+	
 	# Search for a list of resources
 	# !listall = archive state is not applied as a filter to the list of resources.
 	if (substr($search,0,5)=="!list") 

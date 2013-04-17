@@ -1613,7 +1613,6 @@ $lang["createnewentryfor"]="Create new entry for";
 $lang["confirmcreatenewentryfor"]="Are you sure you wish to create a new keyword list entry for '%%'?";
 
 $lang["editresourcepreviews"]="Edit Resource Previews";
-
 $lang["can_assign_resource_requests"]="Can assign resource requests to others";
 $lang["can_be_assigned_resource_requests"]="Can be assigned resource requests (also; can only see resource requests assigned to them in the Manage Resource Requests area)";
 
@@ -1689,3 +1688,5 @@ $lang["allresources"]="All Resources";
 
 
 $lang["smart_collection_result_limit"]="Smart collection: result count limit";
+
+$lang["untaggedresources"]="Resources with no %field data";
