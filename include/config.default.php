@@ -257,6 +257,9 @@ $exiftool_write=true;
 # Set metadata_read to false to omit the option to extract metadata.
 $metadata_read=true;
 
+# If metadata_read is true, set whether the default setting on the edit/upload page is to extract metadata (true means the metadata will be extracted)
+$metadata_read_default=true;
+
 # If Exiftool path is set, do NOT send files with the following extensions to exiftool for processing
 # For example: $exiftool_no_process=array("eps","png");
 $exiftool_no_process=array();

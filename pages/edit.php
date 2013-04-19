@@ -138,7 +138,7 @@ if ((getval("autosave","")!="") || (getval("tweak","")=="" && getval("submitted"
 			}		
 
 		$save_errors=save_resource_data($ref,$multiple);
-		$no_exif=getval("no_exif","");
+		$no_exif=getval("no_exif",($metadata_read_default)?"":"no");
 		$autorotate = getval("autorotate","");
 
 		if ($upload_collection_name_required){
@@ -1156,7 +1156,7 @@ if ($ref<0)
 
 	<?php if ($metadata_read){?>
 	<div class="Question" id="question_noexif">
-	<label for="no_exif"><?php echo $lang["no_exif"]?></label><input type=checkbox id="no_exif" name="no_exif" value="yes" <?php if (getval("no_exif","")!="") { ?>checked<?php } ?>>
+	<label for="no_exif"><?php echo $lang["no_exif"]?></label><input type=checkbox id="no_exif" name="no_exif" value="yes" <?php if (getval("no_exif",($metadata_read_default)?"":"no")!="") { ?>checked<?php } ?>>
 	<div class="clearerleft"> </div>
 	</div>
 	<?php } else { ?>
