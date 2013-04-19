@@ -685,7 +685,7 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 		$last=explode(",",$search);
 		$last=str_replace("!last","",$last[0]);
 		
-		if (!is_numeric($last)) {$last=1000;} # 'Last' must be a number. SQL injection filter.
+		if (!is_numeric($last)) {$last=1000;$search="!last1000";} # 'Last' must be a number. SQL injection filter.
 		
 		# Fix the order by for this query (special case due to inner query)
 		$order_by=str_replace("r.rating","rating",$order_by);

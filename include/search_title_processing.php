@@ -109,6 +109,7 @@ if ($search_titles)
 		$searchq=substr($search,5);
 		$searchq=explode(",",$searchq);
 		$searchq=$searchq[0];
+		if (!is_numeric($searchq)){$searchq=1000;}  # 'Last' must be a number. SQL injection filter.
         $search_title = '<h1 class="searchcrumbs"><a href='.$baseurl_short.'pages/search.php?search=!last'.$searchq.$parameters_string.'>'.str_replace('%qty',$searchq,$lang["n_recent"]).'</a>'.$searchcrumbs.'</h1> ';
         }
     elseif (substr($search,0,8)=="!related")
