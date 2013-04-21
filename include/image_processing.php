@@ -1573,7 +1573,7 @@ function get_image_orientation($file)
 
 function AutoRotateImage ($src_image){
 	global $imagemagick_path;
-	global $camera_autorotation_ext;
+	global $camera_autorotation_ext, $camera_autorotation_gm;
 
 	if (!isset($imagemagick_path)){
 		return false; // for the moment, this only works for imagemagick
@@ -1596,8 +1596,23 @@ function AutoRotateImage ($src_image){
 	$new_image = $noext . '-autorotated.' . $ext ;
 	$src_image = $src_image;
 
-    $command = $convert_fullpath . ' ' . escapeshellarg($src_image) . ' -auto-orient ' .  escapeshellarg($new_image);
-	run_command($command);
+	if ($camera_autorotation_gm) {
+		$exiftool_fullpath=get_utility_path("exiftool");
+		$orientation=get_image_orientation($src_image);
+			if ($orientation!=0)
+				{
+                if ($convert_fullpath!=false)
+                    {
+                    $command = $convert_fullpath .' '. $src_image .' -rotate +' . $orientation  .' '. $new_image;
+                    $wait = run_command($command);
+                    }
+				}
+		$command = $exiftool_fullpath. ' Orientation=1 '. $new_image;
+	}
+	else {
+	    $command = $convert_fullpath . ' ' . escapeshellarg($src_image) . ' -auto-orient ' .  escapeshellarg($new_image);
+		run_command($command);
+	}
 	if (file_exists($new_image)){
 		unlink($src_image);
 		rename($new_image,$src_image);

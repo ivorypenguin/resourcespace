@@ -1859,6 +1859,7 @@ $web_config_edit=false;
 $camera_autorotation = false;
 $camera_autorotation_checked = true;
 $camera_autorotation_ext = array('jpg','jpeg','tif','tiff','png','dng'); // only try to autorotate these formats
+$camera_autorotation_gm = false;
 
 # display swf in full on the view page (note that jpg previews aren't created yet)
 $display_swf=false;
