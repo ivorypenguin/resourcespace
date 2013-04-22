@@ -9,13 +9,13 @@ include "../include/search_functions.php";
 $themeshare=getvalescaped("catshare","false");
 $themecount=0;
 if(getvalescaped("subthemes","false")!="false"){$subthemes=true;}else{$subthemes=false;}
-$linksuffix="";
+$linksuffix="?";
 $ref=getvalescaped("ref","");
 if ($themeshare!="false")
 	{
 	$themeshare=true;
 	# came here from theme category share page
-	$themes=array();
+	$themes=array("");
 	reset($_POST);reset($_GET);
 	foreach (array_merge($_GET, $_POST) as $key=>$value) 
 		{
@@ -25,7 +25,6 @@ if ($themeshare!="false")
 			$themecount++;
 			}
 		}
-	$linksuffix="?";
 	for ($x=0;$x<count($themes);$x++){
 		if ($x!=0){ $linksuffix.="&"; }
 		$linksuffix.="theme" . ($x+1);
