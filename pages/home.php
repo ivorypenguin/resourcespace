@@ -256,6 +256,7 @@ if (isset($custom_home_panels))
 ?>
 
 <?php 
+if(!hook("homefeaturedcol")):
 /* ------------ Collections promoted to the home page ------------------- */
 $home_collections=get_home_page_promoted_collections();
 foreach ($home_collections as $home_collection)
@@ -275,6 +276,7 @@ foreach ($home_collections as $home_collection)
 	</div>
 	<?php
 	}
+endif; # end hook homefeaturedcol
 ?>
 
 
