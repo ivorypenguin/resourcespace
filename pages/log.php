@@ -95,7 +95,7 @@ if ($k=="") { ?>
 $log=get_resource_log($ref);
 for ($n=0;$n<count($log);$n++)
 	{
-	if (!isset($lang["log-".$log[$n]["type"]])){$lang["log-".$log[$n]["type"]]=str_replace("[type]",$log[$n]["type"],$lang["log-missinglang"]);}
+	if (!isset($lang["log-".$log[$n]["type"]])){$lang["log-".$log[$n]["type"]]="";}
 	?>
 	<!--List Item-->
 	<tr>

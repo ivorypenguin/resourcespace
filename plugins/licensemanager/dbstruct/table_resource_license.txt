@@ -1,0 +1,7 @@
+ref,int(11),NO,PRI,,auto_increment
+resource,int(11),YES,MUL,,
+outbound,int(11),YES,MUL,,
+holder,text,YES,,,
+license_usage,text,YES,,,
+description,text,YES,,,
+expires,date,YES,,,

@@ -56,7 +56,7 @@ $jumpcount=1;
 
 for ($n=$offset;(($n<count($log))&& ($n<($offset+$per_page)));$n++)
 	{
-	if (!isset($lang["log-".$log[$n]["type"]])){$lang["log-".$log[$n]["type"]]=str_replace("[type]",$log[$n]["type"],$lang["log-missinglang"]);}	
+	if (!isset($lang["log-".$log[$n]["type"]])){$lang["log-".$log[$n]["type"]]="";}	
 	?>
 	<!--List Item-->
 	<tr>
