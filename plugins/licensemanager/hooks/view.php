@@ -4,7 +4,7 @@ function HookLicensemanagerViewCustompanels()
 	{
 	global $lang,$baseurl_short,$ref,$edit_access;
 	
-	$licenses=sql_query("select ref,outbound,holder,license_usage,description,expires from resource_license where resource='$ref'");
+	$licenses=sql_query("select ref,outbound,holder,license_usage,description,expires from resource_license where resource='$ref' order by ref");
 	?>
     <!-- Begin Geolocation Section -->
     <div class="RecordBox">
