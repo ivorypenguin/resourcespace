@@ -83,7 +83,7 @@ include "../../../include/header.php";
 <div class="Question"><label><?php echo $lang["type"]?></label>
 <div class="Fixed">
 <input type=radio name="outbound" id="outbound_1" value="1" <?php if ($license["outbound"]==1) { ?>checked<?php } ?> /> <strong><?php echo $lang["outbound"] ?></strong> <?php echo $lang["outbound_license_description"] ?>
-<br/><label></label>
+&nbsp;&nbsp;
 <input type=radio name="outbound" id="outbound_0" value="0" <?php if ($license["outbound"]==0) { ?>checked<?php } ?> /> <strong><?php echo $lang["inbound"] ?></strong> <?php echo $lang["inbound_license_description"] ?>
 </div>
 <div class="clearerleft"> </div></div>
