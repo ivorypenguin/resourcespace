@@ -3118,12 +3118,12 @@ function run_command($command)
 	global $debug_log;
 	debug("CLI command: $command");
 	if($debug_log)
-		{$process = @proc_open($command, array(1 => array('pipe', 'w'), 2 => array('pipe', 'w')), $pipe, NULL, NULL, array('bypass_shell' => true));}
+		{$process = @proc_open($command, array(1 => array('pipe', 'w'), 2 => array('pipe', 'a')), $pipe, NULL, NULL, array('bypass_shell' => true));}
 	else
 		{$process = @proc_open($command, array(1 => array('pipe', 'w')), $pipe, NULL, NULL, array('bypass_shell' => true));}
 	if (is_resource($process)) {
 		$output = trim(stream_get_contents($pipe[1]));
-	  	if ($debug_log)
+ 	if ($debug_log)
 			{
 			debug("CLI output: $output");
 			debug("CLI errors: ". trim(stream_get_contents($pipe[2])));
