@@ -138,7 +138,7 @@ if ((getval("autosave","")!="") || (getval("tweak","")=="" && getval("submitted"
 			}		
 
 		$save_errors=save_resource_data($ref,$multiple);
-		$no_exif=getval("no_exif",($metadata_read_default)?"":"no");
+		$no_exif=getval("no_exif",($metadata_read_default)?"":"yes");
 		$autorotate = getval("autorotate","");
 
 		if ($upload_collection_name_required){
