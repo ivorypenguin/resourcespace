@@ -212,6 +212,8 @@ jQuery(".checkselect").each(function(index, Element)
 </head>
 
 <body class="CollectBack" id="collectbody"<?php if ($infobox) { ?> OnMouseMove="InfoBoxMM(event);"<?php } ?>>
+<script>usercollection='<?php echo $collection?>';</script>
+
 <?php
 
 $add=getvalescaped("add","");
