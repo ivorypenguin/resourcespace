@@ -262,7 +262,7 @@ $home_collections=get_home_page_promoted_collections();
 foreach ($home_collections as $home_collection)
 	{
 	?>
-	<div class="HomePanel"><div class="HomePanelIN HomePanelPromoted">
+	<div class="HomePanel HomePanelPromoted"><div class="HomePanelIN HomePanelPromotedIN">
 	<div class="HomePanelPromotedImageWrap">
 	
 	<div style="padding-top:<?php echo floor((155-$home_collection["thumb_height"])/2) ?>px;">
