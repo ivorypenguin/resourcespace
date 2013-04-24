@@ -41,6 +41,7 @@ if ($themeshare!="false")
 else
 	{
 	$themeshare=false;
+	$themename="";
 	# Fetch collection data
 	if (!is_numeric($ref)) ##  multiple collections may be referenced
 		{
@@ -127,7 +128,7 @@ else
 	{echo text("introtext");}?>
 </p>
 
-<form name="collectionform" method=post id="collectionform" action="<?php echo $baseurl_short?>pages/collection_email.php<?php echo $linksuffix ?>&catshare=true">
+<form name="collectionform" method=post id="collectionform" action="<?php echo $baseurl_short?>pages/collection_email.php<?php echo $linksuffix ?>&catshare=<?php if($themeshare==true){echo "true";}else{echo "false";}?>">
 <input type=hidden name=redirect id=redirect value=yes>
 <input type=hidden name=ref value="<?php echo $ref?>">
 <?php if ($email_multi_collections && !$themeshare) { ?>
