@@ -264,7 +264,13 @@ if (isset($k) && $k!="" && isset($search) && !isset($usercollection))
 		$usercollection = substr($search,11);
     }
 }
-?><script>usercollection='<?php echo $usercollection?>';</script><?php 
+?><script>
+<?php if (!isset($usercollection)){?>
+	usercollection='';
+<?php } else { ?>
+	usercollection='<?php echo $usercollection?>';
+<?php } ?>
+</script><?php 
 
  if ($collections_footer && !in_array($pagename,$omit_collectiondiv_load_pages) && !checkperm("b") && isset($usercollection)) {?><div id="CollectionDiv" class="CollectBack AjaxCollect ui-layout-south"></div>
 <script type="text/javascript">
