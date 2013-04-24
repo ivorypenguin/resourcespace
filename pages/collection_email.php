@@ -37,6 +37,7 @@ if ($themeshare!="false")
 		if ($ref!=""){$ref.=", ";}
 		$ref.=$collection["ref"];
 		}		
+	$ref=explode(", ",$ref);$ref=array_unique($ref);$ref=implode(", ",$ref);
 	}
 else
 	{
