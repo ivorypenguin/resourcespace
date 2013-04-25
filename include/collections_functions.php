@@ -976,23 +976,6 @@ function add_saved_search_items($collection)
 	# Adds resources from a search to the collection.
 	$results=do_search(getvalescaped("addsearch",""), getvalescaped("restypes",""), "relevance", getvalescaped("archive","",true));
 
-	# Add to collection
-	if (is_array($results))
-            {
-            for ($n=0;$n<count($results);$n++)
-                {
-                $resource=$results[$n]["ref"];
-                if (!in_array($resource,$resourcesnotadded))
-                	{
-                    sql_query("delete from collection_resource where resource='$resource' and collection='$collection'");
-                    sql_query("insert into collection_resource(resource,collection) values ('$resource','$collection')");
-					
-					#log this
-					collection_log($collection,"a",$resource);
-					}
-                }
-            }
-
 	# Check if this collection has already been shared externally. If it has, we must add a further entry
 	# for this specific resource, and warn the user that this has happened.
 	$keys=get_collection_external_access($collection);
@@ -1019,7 +1002,19 @@ function add_saved_search_items($collection)
 				}
 			}
 		}
-                
+
+	if (is_array($results))
+                {
+                for ($n=0;$n<count($results);$n++)
+                        {
+                        $resource=$results[$n]["ref"];
+       			if (!in_array($resource,$resourcesnotadded))
+				{
+				sql_query("delete from collection_resource where resource='$resource' and collection='$collection'");
+				sql_query("insert into collection_resource(resource,collection) values ('$resource','$collection')");
+				}
+                        }
+                }
 	return $resourcesnotadded;
 	}
 
