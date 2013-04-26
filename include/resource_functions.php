@@ -314,6 +314,9 @@ function save_resource_data_multi($collection)
 	# Save all submitted data for collection $collection, this is for the 'edit multiple resources' feature
 	# Loop through the field data and save (if necessary)
 	$list=get_collection_resources($collection);
+
+	$tmp = hook("altercollist", "", array("save_resource_data_multi", $list)); if(is_array($tmp)) { if(count($tmp)>0) $list = $tmp; else return true; } // alter the collection list to spare some when saving multiple, if you need
+
 	$ref=$list[0];
 	$fields=get_resource_field_data($ref,true);
 	global $auto_order_checkbox;
