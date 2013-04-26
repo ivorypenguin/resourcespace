@@ -1036,6 +1036,8 @@ function allow_multi_edit($collection)
 		
 	}
 
+	if(hook('denyaftermultiedit', '', array($collection))) { return false; }
+
 	return true;
 	
 	# Updated: 2008-01-21: Edit all now supports multiple types, so always return true.
