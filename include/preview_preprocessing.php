@@ -646,32 +646,59 @@ if ((!isset($newfile)) && (!in_array($extension, $ffmpeg_audio_extensions)))
 		* that will give us a source bitmap of approximately 1600 pixels.
 		*/
 
-			$pdfinfocommand="pdfinfo ".escapeshellarg($file);
-			$pdfinfo=run_command($pdfinfocommand);
-			$pdfinfo=explode("\n",$pdfinfo);
-			$pdfinfo=preg_grep("/Page size/",$pdfinfo);
-			sort($pdfinfo);
-			#die(print_r($pdfinfo));
-			if (isset($pdfinfo[0])){
-				$pdfinfo=$pdfinfo[0];
-				}
-			else {
-				$pdfinfo="";
-				}
-			if ($pdfinfo!=""){	
-				$pdfinfo=str_replace("Page size:","",$pdfinfo);
-				$pdfinfo=str_replace("pts","",$pdfinfo);
-				$pdfinfo=str_replace(" x","",$pdfinfo);
-				$pdfinfo=explode(" ",trim($pdfinfo));
-				if($pdfinfo[0]>$pdfinfo[1]){
-					$pdf_max_dim=$pdfinfo[0];
+			if ($extension=="pdf"){
+				$pdfinfocommand="pdfinfo ".escapeshellarg($file);
+				$pdfinfo=run_command($pdfinfocommand);
+				$pdfinfo=explode("\n",$pdfinfo);
+				$pdfinfo=preg_grep("/Page size/",$pdfinfo);
+				sort($pdfinfo);
+				#die(print_r($pdfinfo));
+				if (isset($pdfinfo[0])){
+					$pdfinfo=$pdfinfo[0];
 					}
-				else{
-					$pdf_max_dim=$pdfinfo[1];
+				else {
+					$pdfinfo="";
 					}
+				if ($pdfinfo!=""){	
+					$pdfinfo=str_replace("Page size:","",$pdfinfo);
+					$pdfinfo=str_replace("pts","",$pdfinfo);
+					$pdfinfo=str_replace(" x","",$pdfinfo);
+					$pdfinfo=explode(" ",trim($pdfinfo));
+					if($pdfinfo[0]>$pdfinfo[1]){
+						$pdf_max_dim=$pdfinfo[0];
+						}
+					else{
+						$pdf_max_dim=$pdfinfo[1];
+						}
+				
+				}
 				$resolution=ceil((max($scr_width,$scr_height)*2)/($pdf_max_dim/72));
 				}
-			}
+			if ($extension=="eps"){
+				$pdfinfocommand="identify ".escapeshellarg($file);
+				$pdfinfo=run_command($pdfinfocommand);
+				$pdfinfo=explode(" ",$pdfinfo);
+				if (isset($pdfinfo[2])){
+					$pdfinfo=$pdfinfo[2];
+					$pdfinfo=explode("+",$pdfinfo);
+					$pdfinfo=$pdfinfo[0];
+					}
+				else {
+					$pdfinfo="";
+					}
+				if ($pdfinfo!=""){	
+					$pdfinfo=str_replace("x"," ",$pdfinfo);
+					$pdfinfo=explode(" ",trim($pdfinfo));
+					if($pdfinfo[0]>$pdfinfo[1]){
+						$pdf_max_dim=$pdfinfo[0];
+						}
+					else{
+						$pdf_max_dim=$pdfinfo[1];
+						}
+				}
+				$resolution=ceil((max($scr_width,$scr_height)*2)/($pdf_max_dim/72));
+				}
+		}
 		
 	# Create multiple pages.
 	for ($n=1;$n<=$pdf_pages;$n++)
