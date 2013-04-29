@@ -374,7 +374,11 @@ if (!hook('collectionaccessmode')) {
 
     <?php     
     # If this collection is (fully) editable, then display an edit all link
-    if (($collections[$n]["count"] > 0) && allow_multi_edit($collections[$n]["ref"]) && $show_edit_all_link ) { ?>&nbsp;<a href="<?php echo $baseurl_short?>pages/edit.php?collection=<?php echo $collections[$n]["ref"]?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["action-editall"]?></a>&nbsp;<?php } ?>
+    if ($show_edit_all_link && ($collections[$n]["count"] > 0))
+	{
+	    if (allow_multi_edit($collections[$n]["ref"])) { ?>&nbsp;<a href="<?php echo $baseurl_short?>pages/edit.php?collection=<?php echo $collections[$n]["ref"]?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["action-editall"]?></a>&nbsp;<?php } 
+	}
+	?>
 
 	<?php if (($username==$collections[$n]["username"]) || (checkperm("h"))) {?><a href="<?php echo $baseurl_short?>pages/collection_log.php?ref=<?php echo $collections[$n]["ref"]?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["log"]?></a><?php } ?>
 
