@@ -1284,10 +1284,12 @@ if ($ref<0)
 			<?php 	
 			} // end if checkperm h 
 		} // end if public collections enabled
+	?>
+	</div> <!-- end collectioninfo -->
+	</div> <!-- end question_collectionadd -->
+	<?php
 	} // end enable_add_collection_on_upload
 	?>
-		</div> <!-- end collectioninfo -->
-		</div> <!-- end question_collectionadd -->
 	
 	
 		<?php
