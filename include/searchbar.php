@@ -406,7 +406,7 @@ if (!$basic_simple_search)
 			// Display waiting message
 			if (clickedfield!='<?php echo $optionfields[$n]?>')
 				{
-				if (jQuery('field_<?php echo $optionfields[$n]?>').attr('selectedIndex', 0);)
+				if (jQuery('field_<?php echo $optionfields[$n]?>').attr('selectedIndex', 0))
 					{
 					jQuery('field_<?php echo $optionfields[$n]?>').html("<option value=''><?php echo $lang["pleasewaitsmall"] ?></option>");
 					}
