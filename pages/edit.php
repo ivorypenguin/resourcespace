@@ -469,8 +469,6 @@ $titleh2 = str_replace(array("%number","%subtitle"), array("1", $lang["specifyde
 
 <?php hook("editbefresmetadata"); ?>
 
-<br /><h1><?php echo $lang["resourcemetadata"]?></h1>
-
 <?php if (!$multiple){?>
 <div class="Question" id="question_resourcetype">
 <label for="resourcetype"><?php echo $lang["resourcetype"]?></label>
@@ -503,7 +501,6 @@ for ($n=0;$n<count($types);$n++)
 <div class="clearerleft"> </div>
 </div>
 <?php } ?>
-
 <?php
 $lastrt=-1;
 
@@ -591,7 +588,7 @@ if (isset($metadata_template_resource_type)&&(isset($metadata_template_title_fie
 	}
 	$fields=$newfields;
 }
-
+?><br /><h1><?php echo $lang["resourcemetadata"]?></h1><?php
 $required_fields_exempt=array(); # new array to contain required fields that have not met the display condition 
 for ($n=0;$n<count($fields);$n++)
 	{
