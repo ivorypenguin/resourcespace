@@ -57,6 +57,61 @@ $results=do_search($search,$restypes,$order_by,$archive,-1,$sort,false,$starsear
 
 if (!is_array($results)){$results=array();}
 
+$paginate=false;
+if (getval("results_per_page","")!="" || getval("page","")!=""){
+    $paginate=true;
+    $results_per_page=getval("results_per_page",15);
+    $page=getval("page",1);
+    $min_result=($page-1)*$results_per_page;
+    $max_result=($page*$results_per_page)-1;
+
+    // build a new array with pagination info
+    $pagination=array();
+    $pagination["total_pages"]=ceil(count($results)/$results_per_page);
+    
+    // default to first page if an invalid page is given.
+    if ($page>$pagination["total_pages"]){
+        $page=1;
+        $min_result=0;
+        $max_result=$results_per_page-1;
+    }
+    
+    $pagination["total_resources"]=count($results);
+    $pagination["per_page"]=$results_per_page;
+    $pagination["page"]=$page;
+    
+
+    /* commented out as it should probably be done application side
+    // build a next/prev query strings for easier pagination:
+    // $url=$_SERVER['REQUEST_URI'];
+    // $urlparts=parse_url($url);
+
+    // parse_str($urlparts['query'],$queryparts);
+    // $newquery=array();
+    // foreach ($queryparts as $key=>$value){
+    //  if ($key!='page' && $key!='key' && $key!='results_per_page'){
+    //  $newquery[$key]=$value;
+    //  }
+    // }
+    // $newquery=http_build_query($newquery);
+    // protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"],0,5))=='https'?'https':'http';
+    // if (($page+1)<=$pagination["total_pages"]){
+    //  $pagination["next_page"]=$newquery."&page=".($page+1);
+    // }
+    // if (($page-1)>0){
+    //  $pagination["previous_page"]=$newquery."&page=".($page-1);
+    // }
+    */
+    
+    $newresult=array();
+    for ($n=0;$n<count($results);$n++){
+        if (($n>=$min_result) && $n<=$max_result){
+        $newresult[]=$results[$n];
+        }
+    }
+    $results=$newresult;
+}
+
 if (getval("previewsize","")!=""){
     for($n=0;$n<count($results);$n++){
         $access=get_resource_access($results[$n]);
@@ -108,66 +163,7 @@ if (getval("videosonly","")!=""){
 	$results=$newresult;
 }
 
-$paginate=false;
-if (getval("results_per_page","")!="" || getval("page","")!=""){
-	$paginate=true;
-	$results_per_page=getval("results_per_page",15);
-	$page=getval("page",1);
-	$min_result=($page-1)*$results_per_page;
-	$max_result=($page*$results_per_page)-1;
-
-	// build a new array with pagination info
-	$newresult=array();
-	$newresult["pagination"]["total_pages"]=ceil(count($results)/$results_per_page);
-	
-	// default to first page if an invalid page is given.
-	if ($page>$newresult["pagination"]["total_pages"]){
-		$page=1;
-		$min_result=0;
-		$max_result=$results_per_page-1;
-	}
-	
-	$newresult["pagination"]["total_resources"]=count($results);
-	$newresult["pagination"]["per_page"]=$results_per_page;
-	$newresult["pagination"]["page"]=$page;
-	
-
-	/* commented out as it should probably be done application side
-	// build a next/prev query strings for easier pagination:
-	// $url=$_SERVER['REQUEST_URI'];
-	// $urlparts=parse_url($url);
-
-	// parse_str($urlparts['query'],$queryparts);
-	// $newquery=array();
-	// foreach ($queryparts as $key=>$value){
-	//	if ($key!='page' && $key!='key' && $key!='results_per_page'){
-	//	$newquery[$key]=$value;
-	//	}
-	// }
-	// $newquery=http_build_query($newquery);
-	// protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"],0,5))=='https'?'https':'http';
-	// if (($page+1)<=$newresult["pagination"]["total_pages"]){
-	//	$newresult["pagination"]["next_page"]=$newquery."&page=".($page+1);
-	// }
-	// if (($page-1)>0){
-	//	$newresult["pagination"]["previous_page"]=$newquery."&page=".($page-1);
-	// }
-	*/
-	
-	for ($n=0;$n<count($results);$n++){
-		if (($n>=$min_result) && $n<=$max_result){
-		$newresult["resources"][]=$results[$n];
-		}
-	}
-	$results=$newresult;
-}
-
-if (getval("content","")=="json"){
-header('Content-type: application/json');
-echo json_encode($results);
-}
-
-else if (getval("content","")=="xml" && !$paginate){
+if (getval("content","")=="xml" && !$paginate){
     header('Content-type: application/xml');
     echo '<?xml version="1.0" encoding="UTF-8"?><results>';
     foreach ($results as $result){
@@ -184,8 +180,7 @@ else if (getval("content","")=="xml" && !$paginate){
 
 else if (getval("content","")=="xml" && $paginate){
 
-	$pagination=$results["pagination"];
-	$resources=$results["resources"];
+	$resources=$results;
    
     header('Content-type: application/xml');
     echo '<?xml version="1.0" encoding="UTF-8"?>';
@@ -214,7 +209,13 @@ else if (getval("content","")=="xml" && $paginate){
 	echo '</results>';
 }
 
-else echo json_encode($results); // echo json without headers by default
+else {
+    header('Content-type: application/json');
+    if ($paginate) {
+        $results = array('resources' => $results, 'pagination' => $pagination);
+    }
+    echo json_encode($results); // echo json without headers by default
+} 
 
 
 
