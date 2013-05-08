@@ -1415,6 +1415,7 @@ function upload_preview($ref)
     
     # Work out extension
     $extension=explode(".",$filename);$extension=trim(strtolower($extension[count($extension)-1]));
+    if ($extension=="jpeg"){$extension="jpg";}
 
 	# Move uploaded file into position.	
     $filepath=get_resource_path($ref,true,"tmp",true,$extension);

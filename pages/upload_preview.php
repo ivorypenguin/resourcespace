@@ -49,8 +49,7 @@ include "../include/header.php";
 <script language="JavaScript">
 // Check allowed extensions:
 function check(filename) {
-	var allowedExtensions='jpg'.toLowerCase();	
-	if (allowedExtensions.length==0){return true;}
+	var allowedExtensions='jpg,jpeg';
 	var ext = filename.substr(filename.lastIndexOf('.'));
 	ext =ext.substr(1).toLowerCase();
 	if (allowedExtensions.indexOf(ext)==-1){ return false;} else {return true;}
@@ -70,7 +69,7 @@ function check(filename) {
 
 <div class="QuestionSubmit">
 <label for="buttons"> </label>			
-<input name="save" type="submit" onclick="if (!check(this.form.userfile.value)){$('invalid').style.display='block';return false;}else {$('invalid').style.display='none';}" value="&nbsp;&nbsp;<?php echo $lang["upload_file"]?>&nbsp;&nbsp;" />
+<input name="save" type="submit" onclick="if (!check(this.form.userfile.value)){document.getElementById('invalid').style.display='block';return false;}else {document.getElementById('invalid').style.display='none';}" value="&nbsp;&nbsp;<?php echo $lang["upload_file"]?>&nbsp;&nbsp;" />
 </div>
 
 <p><a onClick="return CentralSpaceLoad(this,true);" href="edit.php?ref=<?php echo $ref?>">&gt; <?php echo $lang["backtoeditresource"]?></a></p>
