@@ -759,7 +759,7 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 					$smartsearch=$smartsearch[0];
 					
 					# Option to limit results;
-					$result_limit=$smartsearch["result_limit"]; if ($result_limit=="") {$result_limit=-1;}
+					$result_limit=$smartsearch["result_limit"]; if ($result_limit=="" || $result_limit==0) {$result_limit=-1;}
 					
 					$results=do_search($smartsearch['search'], $smartsearch['restypes'], "relevance", $smartsearch['archive'],$result_limit,"desc",true,$smartsearch['starsearch']);
 					# results is a list of the current search without any restrictions
