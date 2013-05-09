@@ -2056,7 +2056,7 @@ $collection_allow_creation=true;
 $daterange_search=false;
 
 # Keyboard navigation allows using left and right arrows to browse through resources in view/search/preview modes
-$keyboard_navigation=false;
+$keyboard_navigation=true;
 
 # Keyboard control codes
 # Previous/next resource, default: left/right arrows
