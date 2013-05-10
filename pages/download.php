@@ -9,7 +9,7 @@ include "../include/resource_functions.php";
 ob_end_clean(); 
 
 
-if(strlen(getval('direct',''))>0){$direct = true;} else { $direct = false;}
+if(strlen(getvalescaped('direct',''))>0){$direct = true;} else { $direct = false;}
 
 # if direct downloading without authentication is enabled, skip the authentication step entirely
 if (!($direct_download_noauth && $direct)){
@@ -20,10 +20,12 @@ if (!($direct_download_noauth && $direct)){
 $ref=getvalescaped("ref","",true);
 $size=getvalescaped("size","");
 $ext=getvalescaped("ext","");
+if(!preg_match('/^[a-zA-Z0-9]+$/', $ext)){$ext="jpg";}
+
 $alternative=getvalescaped("alternative",-1);
 $page=getvalescaped("page",1);
-$usage=getval("usage","-1");
-$usagecomment=getval("usagecomment","");
+$usage=getvalescaped("usage","-1");
+$usagecomment=getvalescaped("usagecomment","");
 
 
 $resource_data=get_resource_data($ref);

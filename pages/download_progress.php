@@ -8,6 +8,7 @@ $k=getvalescaped("k","");if (($k=="") || (!check_access_key(getvalescaped("ref",
 $ref=getval("ref","");
 $size=getval("size","");
 $ext=getval("ext","");
+if(!preg_match('/^[a-zA-Z0-9]+$/', $ext)){$ext="jpg";}
 $alternative=getval("alternative",-1);
 $search=getvalescaped("search","");
 $usage=getval("usage","-1");

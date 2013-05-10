@@ -116,10 +116,10 @@ if (!$config_search_for_number || !is_numeric($search)) # Don't do this when the
 				
 				# Construct the date from the supplied dropdown values
 				$key_month=str_replace("_year","_month",$key);
-				if (getval($key_month,"")!="") {$value.="-" . getval($key_month,"");}
+				if (getvalescaped($key_month,"")!="") {$value.="-" . getvalescaped($key_month,"");}
 
 				$key_day=str_replace("_year","_day",$key);
-				if (getval($key_day,"")!="") {$value.="-" . getval($key_day,"");}
+				if (getvalescaped($key_day,"")!="") {$value.="-" . getvalescaped($key_day,"");}
 				
 				$search=(($search=="")?"":join(", ",split_keywords($search)) . ", ") . str_replace("_year","",substr($key,6)) . ":" . $value;
 				}
@@ -161,8 +161,8 @@ if (!$config_search_for_number || !is_numeric($search)) # Don't do this when the
 	}
 
 $searchresourceid = "";
-if (is_numeric(trim(getval("searchresourceid","")))){
-	$searchresourceid = trim(getval("searchresourceid",""));
+if (is_numeric(trim(getvalescaped("searchresourceid","")))){
+	$searchresourceid = trim(getvalescaped("searchresourceid",""));
 	$search = "!resource$searchresourceid";
 }
 	
@@ -183,7 +183,7 @@ $jumpcount=0;
 # but it seems custom display fields like title or country should be the opposite.
 $default_sort="DESC";
 if (substr($order_by,0,5)=="field"){$default_sort="ASC";}
-$sort=getval("sort",$default_sort);setcookie("saved_sort",$sort);
+$sort=getvalescaped("sort",$default_sort);setcookie("saved_sort",$sort);
 $revsort = ($sort=="ASC") ? "DESC" : "ASC";
 
 ## If displaying a collection
@@ -196,7 +196,7 @@ $collectionresources=get_collection_resources($usercollection);
 }
 
 # fetch resource types from query string and generate a resource types cookie
-if (getval("resetrestypes","")=="")
+if (getvalescaped("resetrestypes","")=="")
 	{
 	$restypes=getvalescaped("restypes","");
 	}
@@ -216,7 +216,7 @@ else
 	}
 
 # if search is not a special search (ie. !recent), use starsearchvalue.
-if (getval("search","")!="" && strpos(getval("search",""),"!")!==false)
+if (getvalescaped("search","")!="" && strpos(getvalescaped("search",""),"!")!==false)
 	{
 	$starsearch="";
 	}
@@ -238,7 +238,7 @@ if (!array_key_exists("search",$_GET) && !array_key_exists("search",$_POST))
 hook("searchparameterhandler");	
 	
 # If requested, refresh the collection frame (for redirects from saves)
-if (getval("refreshcollectionframe","")!="")
+if (getvalescaped("refreshcollectionframe","")!="")
 	{
 	refresh_collection_frame();
 	}

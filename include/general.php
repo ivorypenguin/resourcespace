@@ -8,7 +8,9 @@ function get_resource_path($ref,$getfilepath,$size,$generate,$extension="jpg",$s
 	{
 	# returns the correct path to resource $ref of size $size ($size==empty string is original resource)
 	# If one or more of the folders do not exist, and $generate=true, then they are generated
-	
+	if(!preg_match('/^[a-zA-Z0-9]+$/', $extension)){$extension="jpg";}
+//	if(preg_match('/\w/', $extension)){$extension="jpg";}
+
 	    $override=hook("get_resource_path_override","general",array($ref,$getfilepath,$size,$generate,$extension,$scramble,$page,$watermarked,$file_modified,$alternative,$includemodified));
 	    if (is_string($override)) {return $override;}
 
