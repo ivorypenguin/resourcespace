@@ -34,7 +34,7 @@ function errorhandler($errno, $errstr, $errfile, $errline)
 		<p style="font-size:11px;color:black;margin-top:20px;">Please <a href="#" onClick="history.go(-1)">go back</a> and try something else.</p>
 		<?php global $show_error_messages; if ($show_error_messages) { ?>
 		<p style="font-size:11px;color:black;">You can <a href="<?php echo $baseurl?>/pages/check.php">check</a> your installation configuration.</p>
-		<hr style="margin-top:20px;"><p style="font-size:11px;color:black;"><?php echo "$errfile line $errline: $errstr"; ?></p>
+		<hr style="margin-top:20px;"><p style="font-size:11px;color:black;"><?php echo htmlspecialchars("$errfile line $errline: $errstr"); ?></p>
 		<?php } ?>
 		</div>
 		<?php
