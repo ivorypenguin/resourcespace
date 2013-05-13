@@ -6,8 +6,8 @@ include "../include/resource_functions.php";
 include "../include/collections_functions.php";
 
 $status="";
-$resource_type=getvalescaped("resource_type","");
-$collection_add=getvalescaped("collection_add","");
+$resource_type=getvalescaped("resource_type","",true);
+$collection_add=getvalescaped("collection_add","",true);
 
 $collectiondata=get_collection($collection_add);
 $collectionname=$collectiondata['name'];
@@ -131,7 +131,7 @@ else
             <!-- param name="CODE"    value="wjhk.jupload2.JUploadApplet" / -->
             <!-- param name="ARCHIVE" value="wjhk.jupload.jar" / -->
             <!-- param name="type"    value="application/x-java-applet;version=1.5" /  -->
-            <param name="postURL" value="<?php echo $baseurl_short?>pages/upload_java.php?collection_add=<?php echo $collection_add?>&user=<?php echo urlencode($username."|".$session_hash)?>&resource_type=<?php echo $resource_type?>&no_exif=<?php echo getval("no_exif","") ?>&autorotate=<?php echo getval('autorotate','') ?>&replace_resource=<?php echo $replace_resource?>" />
+            <param name="postURL" value="<?php echo $baseurl_short?>pages/upload_java.php?collection_add=<?php echo urlencode($collection_add)?>&user=<?php echo urlencode($session_hash)?>&resource_type=<?php echo urlencode($resource_type)?>&no_exif=<?php echo urlencode(getval("no_exif","")) ?>&autorotate=<?php echo urlencode(getval('autorotate','')) ?>&replace_resource=<?php echo urlencode($replace_resource)?>" />
             <param name="allowedFileExtensions" value="<?php echo $allowed?>">
             <param name="nbFilesPerRequest" value="1">
             <param name="allowHttpPersistent" value="false">

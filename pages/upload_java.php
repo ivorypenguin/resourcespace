@@ -6,8 +6,8 @@ include "../include/image_processing.php";
 include "../include/resource_functions.php";
 include "../include/collections_functions.php";
 $status="";
-$resource_type=getvalescaped("resource_type","");
-$collection_add=getvalescaped("collection_add","");
+$resource_type=getvalescaped("resource_type","",true);
+$collection_add=getvalescaped("collection_add","",true);
 $collectionname=getvalescaped("entercolname","");
 
 $search=getvalescaped("search","");
@@ -237,14 +237,14 @@ if (test==null || typeof(test)=="undefined") {
 		window.location.href="<?php echo $baseurl_short?>pages/search.php";
 	}
 }
-popUp('<?php echo $baseurl_short?>pages/upload_java_popup.php?collection_add=<?php echo $collection_add?>&resource_type=<?php echo $resource_type?>&no_exif=<?php echo urlencode(getvalescaped("no_exif",""))?>&autorotate=<?php echo urlencode(getvalescaped("autorotate",""))?>&replace_resource=<?php echo $replace_resource?>');
+popUp('<?php echo $baseurl_short?>pages/upload_java_popup.php?collection_add=<?php echo urlencode($collection_add)?>&resource_type=<?php echo urlencode($resource_type)?>&no_exif=<?php echo urlencode(getvalescaped("no_exif",""))?>&autorotate=<?php echo urlencode(getvalescaped("autorotate",""))?>&replace_resource=<?php echo urlencode($replace_resource)?>');
 
 </script>
 <?php }?>
 <div class="BasicsBox" id="uploadbox"> 
 <?php if ($alternative!=""){?><p>
-<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/edit.php?ref=<?php echo $alternative?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>">&lt;&nbsp;<?php echo $lang["backtoeditresource"]?></a><br / >
-<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $alternative?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>">&lt; <?php echo $lang["backtoresourceview"]?></a></p><?php } ?>
+<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/edit.php?ref=<?php echo urlencode($alternative)?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>">&lt;&nbsp;<?php echo $lang["backtoeditresource"]?></a><br / >
+<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo urlencode($alternative)?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>">&lt; <?php echo $lang["backtoresourceview"]?></a></p><?php } ?>
 <?php if ($alternative!=""){$resource=get_resource_data($alternative);
 	if ($alternative_file_resource_preview){ 
 		$imgpath=get_resource_path($resource['ref'],true,"col",false);
@@ -311,7 +311,7 @@ else
             <!-- param name="CODE"    value="wjhk.jupload2.JUploadApplet" / -->
             <!-- param name="ARCHIVE" value="wjhk.jupload.jar" / -->
             <!-- param name="type"    value="application/x-java-applet;version=1.5" /  -->
-            <param name="postURL" value="<?php echo $baseurl_short?>pages/upload_java.php?replace=<?php echo $replace ?>&alternative=<?php echo $alternative ?>&collection_add=<?php echo $collection_add?>&user=<?php echo urlencode($username."|".$session_hash)?>&resource_type=<?php echo $resource_type?>&no_exif=<?php echo getval("no_exif","")?>&autorotate=<?php echo getval("autorotate","")?>&replace_resource=<?php echo $replace_resource?>" />
+            <param name="postURL" value="<?php echo $baseurl_short?>pages/upload_java.php?replace=<?php echo urlencode($replace) ?>&alternative=<?php echo urlencode($alternative) ?>&collection_add=<?php echo urlencode($collection_add)?>&user=<?php echo urlencode($username."|".$session_hash)?>&resource_type=<?php echo urlencode($resource_type)?>&no_exif=<?php echo urlencode(getval("no_exif",""))?>&autorotate=<?php echo urlencode(getval("autorotate",""))?>&replace_resource=<?php echo urlencode($replace_resource)?>" />
             <param name="allowedFileExtensions" value="<?php echo $allowed?>">
             <param name="nbFilesPerRequest" value="1">
             <param name="allowHttpPersistent" value="false">
@@ -348,8 +348,8 @@ else
 ?>
 
 <?php if ($alternative=="" && !$hide_uploadertryother) { ?>
-<br><p><a href="<?php echo $baseurl_short?>pages/upload_plupload.php?resource_type=<?php echo getvalescaped("resource_type",""); ?>&alternative=<?php echo $alternative ?>&collection_add=<?php echo $collection_add;?>&entercolname=<?php echo$collectionname;?>&replace=<?php echo urlencode(getvalescaped("replace","")); ?>
-&no_exif=<?php echo urlencode(getvalescaped("no_exif","")); ?>&autorotate=<?php echo urlencode(getvalescaped("autorotate","")); ?>&replace_resource=<?php echo $replace_resource?>">&gt; <?php echo $lang["uploadertryplupload"]; ?></a></p>
+<br><p><a href="<?php echo $baseurl_short?>pages/upload_plupload.php?resource_type=<?php echo urlencode(getvalescaped("resource_type","")); ?>&alternative=<?php echo urlencode($alternative) ?>&collection_add=<?php echo urlencode($collection_add);?>&entercolname=<?php echo urlencode($collectionname);?>&replace=<?php echo urlencode(getvalescaped("replace","")); ?>
+&no_exif=<?php echo urlencode(getvalescaped("no_exif","")); ?>&autorotate=<?php echo urlencode(getvalescaped("autorotate","")); ?>&replace_resource=<?php echo urlencode($replace_resource)?>">&gt; <?php echo $lang["uploadertryplupload"]; ?></a></p>
 <?php } ?>
 
 <p><a target="_blank" href="http://www.java.com/getjava">&gt; <?php echo $lang["getjava"] ?></a></p>

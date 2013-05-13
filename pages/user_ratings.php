@@ -5,7 +5,7 @@ include "../include/authenticate.php";
 include "../include/header.php";
 include "../include/resource_functions.php";
 
-$ref=getval("ref","");
+$ref=getval("ref","",true);
 $resource=get_resource_data($ref);
 # fetch the current search (for finding simlar matches)
 $search=getvalescaped("search","");
@@ -22,7 +22,7 @@ $sort=getval("sort",$default_sort);
 
 ?>
 <div class="BasicsBox"> 
-<p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl?>/pages/view.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>">&lt;&nbsp;<?php echo $lang["backtoresourceview"]?></a></p>
+<p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl?>/pages/view.php?ref=<?php echo urlencode($ref)?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>">&lt;&nbsp;<?php echo $lang["backtoresourceview"]?></a></p>
   <h1><?php echo $lang["userratingstatsforresource"]." ".$ref;?></h1>
   
 <table class="InfoTable">

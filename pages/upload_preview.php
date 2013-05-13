@@ -36,7 +36,7 @@ $maxsize="200000000"; #200MB
 if (array_key_exists("userfile",$_FILES))
     {
 	$status=upload_preview($ref);
-	redirect($baseurl_short."pages/edit.php?refreshcollectionframe=true&ref=" . $ref."&search=".urlencode($search)."&offset=".$offset."&order_by=".$order_by."&sort=".$sort."&archive=".$archive);
+	redirect($baseurl_short."pages/edit.php?refreshcollectionframe=true&ref=" . urlencode($ref)."&search=".urlencode($search)."&offset=".urlencode($offset)."&order_by=".urlencode($order_by)."&sort=".urlencode($sort)."&archive=".urlencode($archive));
     }
     
 include "../include/header.php";
@@ -57,7 +57,7 @@ function check(filename) {
 </script>
 <form method="post" class="form" enctype="multipart/form-data" action="upload_preview.php">
 <input type="hidden" name="MAX_FILE_SIZE" value="<?php echo $maxsize?>">
-<input type="hidden" name="ref" value="<?php echo $ref?>">
+<input type="hidden" name="ref" value="<?php echo htmlspecialchars($ref)?>">
 <br/>
 <?php if ($status!="") { ?><?php echo $status?><?php } ?>
 <div id="invalid" style="display:none;" class="FormIncorrect"><?php echo str_replace_formatted_placeholder("%extensions", "JPG", $lang['invalidextension_mustbe-extensions']); ?></div>
@@ -72,7 +72,7 @@ function check(filename) {
 <input name="save" type="submit" onclick="if (!check(this.form.userfile.value)){document.getElementById('invalid').style.display='block';return false;}else {document.getElementById('invalid').style.display='none';}" value="&nbsp;&nbsp;<?php echo $lang["upload_file"]?>&nbsp;&nbsp;" />
 </div>
 
-<p><a onClick="return CentralSpaceLoad(this,true);" href="edit.php?ref=<?php echo $ref?>">&gt; <?php echo $lang["backtoeditresource"]?></a></p>
+<p><a onClick="return CentralSpaceLoad(this,true);" href="edit.php?ref=<?php echo urlencode($ref)?>">&gt; <?php echo $lang["backtoeditresource"]?></a></p>
 
 </form>
 </div>

@@ -22,7 +22,7 @@ if (extension_loaded("uploadprogress")){
 
 
 $ref=getvalescaped("ref","",true);
-$resource_type=getvalescaped("resource_type","");
+$resource_type=getvalescaped("resource_type","",true);
 $status="";
 if ($ref!=""){
 $allowed_extensions=get_allowed_extensions($ref);
@@ -63,7 +63,7 @@ if (array_key_exists("userfile",$_FILES))
 		resource_log($ref,"u",0);
 
 		$status=upload_file($ref,(getval("no_exif","")!=""),false,(getval("autorotate","")!=""));
-		redirect($baseurl_short."pages/edit.php?refreshcollectionframe=true&ref=" . $ref."&search=".urlencode($search)."&offset=".$offset."&order_by=".$order_by."&sort=".$sort."&archive=".$archive);
+		redirect($baseurl_short."pages/edit.php?refreshcollectionframe=true&ref=" . urlencode($ref)."&search=".urlencode($search)."&offset=".urlencode($offset)."&order_by=".urlencode($order_by)."&sort=".urlencode($sort)."&archive=".urlencode($archive));
 		}	
 	}
 
@@ -128,8 +128,8 @@ else
 ?>
 <?php hook("upload_page_top"); ?>
 <?php if ($ref!=""){?><p>
-	<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/edit.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>">&lt;&nbsp;<?php echo $lang["backtoeditresource"]?></a><br / >
-	<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>">&lt;&nbsp;<?php echo $lang["backtoresourceview"]?></a>
+	<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/edit.php?ref=<?php echo urlencode($ref)?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>">&lt;&nbsp;<?php echo $lang["backtoeditresource"]?></a><br / >
+	<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo urlencode($ref)?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>">&lt;&nbsp;<?php echo $lang["backtoresourceview"]?></a>
 </p>
 <?php } ?>
 <h1><?php echo $titleh1 ?></h1>
@@ -159,9 +159,9 @@ function check(filename) {
 </script>
 
 <form method="post" class="form" enctype="multipart/form-data" action="<?php echo $baseurl_short?>pages/upload.php">
-<input type="hidden" name="ref" value="<?php echo $ref ?>" />
-<input type="hidden" name="resource_type" value="<?php echo $resource_type ?>" />
-<input type="hidden" name="archive" value="<?php echo $archive ?>" />
+<input type="hidden" name="ref" value="<?php echo htmlspecialchars($ref) ?>" />
+<input type="hidden" name="resource_type" value="<?php echo htmlspecialchars($resource_type) ?>" />
+<input type="hidden" name="archive" value="<?php echo htmlspecialchars($archive) ?>" />
 <br/>
 <?php if ($status!="") { ?><?php echo $status?><?php } ?>
 <div id="invalid" style="display:none;" class="FormIncorrect"><?php echo str_replace_formatted_placeholder("%extensions", str_replace(",",", ",$allowed_extensions), $lang['invalidextension_mustbe-extensions'])?></div>
@@ -213,7 +213,7 @@ if (getvalescaped("upload_a_file","")!="" || getvalescaped("replace_file","")!="
 
 <?php if (!$hide_uploadertryother) { ?>
 <br />
-<p>&gt; <a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/upload_plupload.php?replace_resource=<?php echo $ref ?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>"><?php echo $lang["uploadertryplupload"]?></a></p>
+<p>&gt; <a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/upload_plupload.php?replace_resource=<?php echo urlencode($ref) ?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>"><?php echo $lang["uploadertryplupload"]?></a></p>
 <?php } ?>
 
 </form>
