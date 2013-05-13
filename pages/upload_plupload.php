@@ -293,7 +293,7 @@ jQuery(document).ready(function () {
 	jQuery("#pluploader").pluploadQueue({
 		// General settings
 		runtimes : '<?php echo $plupload_runtimes ?>',
-		url: '<?php echo $baseurl_short?>pages/upload_plupload.php?replace=<?php echo $replace ?>&alternative=<?php echo $alternative ?>&collection_add=<?php echo $collection_add?>&user=<?php echo urlencode($username."|".$session_hash)?>&resource_type=<?php echo $resource_type?>&no_exif=<?php echo getval("no_exif","")?>&autorotate=<?php echo getval("autorotate","")?>&replace_resource=<?php echo $replace_resource?>',
+		url: '<?php echo $baseurl_short?>pages/upload_plupload.php?replace=<?php echo $replace ?>&alternative=<?php echo $alternative ?>&collection_add=<?php echo $collection_add?>&resource_type=<?php echo $resource_type?>&no_exif=<?php echo getval("no_exif","")?>&autorotate=<?php echo getval("autorotate","")?>&replace_resource=<?php echo $replace_resource?>',
 		chunk_size : '5mb',	
 		multiple_queues: true,
 
