@@ -229,7 +229,7 @@ else
 # If returning to an old search, restore the page/order by
 if (!array_key_exists("search",$_GET) && !array_key_exists("search",$_POST))
 	{
-	$offset=getvalescaped("saved_offset",0);setcookie("saved_offset",$offset);
+	$offset=getvalescaped("saved_offset",0,true);setcookie("saved_offset",$offset);
 	$order_by=getvalescaped("saved_order_by","relevance");setcookie("saved_order_by",$order_by);
 	$sort=getvalescaped("saved_sort","");setcookie("saved_sort",$sort);
 	$archive=getvalescaped("saved_archive",0);setcookie("saved_archive",$archive);
@@ -349,11 +349,11 @@ if ($display_user_rating_stars && $k=="")
 			});
 		jQuery.ajax({
 		  type: 'GET',
-		  url: 'search.php?search=!collection<?php echo $collection ?>&reorder=true',
+		  url: 'search.php?search=!collection<?php echo urlencode($collection) ?>&reorder=true',
 		  data: {order:JSON.stringify(newOrder)},
 		  success: function(){
 		  <?php if (isset($usercollection) && ($usercollection==$collection)) { ?>
-			 UpdateCollectionDisplay('<?php echo isset($k)?$k:"" ?>');
+			 UpdateCollectionDisplay('<?php echo isset($k)?urlencode($k):"" ?>');
 		  <?php } ?>
 			} 
 		});
@@ -434,7 +434,7 @@ if ($infobox_image_mode)
 #if (is_array($result)||(isset($collections)&&(count($collections)>0)))
 if (true) # Always show search header now.
 	{
-	$url=$baseurl_short."pages/search.php?search=" . urlencode($search) . "&order_by=" . $order_by . "&sort=".$sort."&offset=" . $offset . "&archive=" . $archive."&sort=".$sort;
+	$url=$baseurl_short."pages/search.php?search=" . urlencode($search) . "&order_by=" . urlencode($order_by) . "&sort=".urlencode($sort)."&offset=" . urlencode($offset) . "&archive=" . urlencode($archive)."&sort=".urlencode($sort);
 	?>
 	<div class="TopInpageNav">
 	<div class="InpageNavLeftBlock"><?php echo $lang["youfound"]?>:<br /><span class="Selected"><?php
@@ -454,17 +454,17 @@ if (true) # Always show search header now.
 
 	<?php if ($display_selector_dropdowns){?>
 	<select class="medcomplementwidth ListDropdown" style="width:auto" id="displaysize" name="displaysize" onchange="CentralSpaceLoad(this.value,true);">
-	<?php if ($xlthumbs==true) { ?><option <?php if ($display=="xlthumbs"){?>selected="selected"<?php } ?> value="<?php echo $url?>&display=xlthumbs&k=<?php echo $k?>"><?php echo $lang["xlthumbs"]?></option><?php } ?>
-	<option <?php if ($display=="thumbs"){?>selected="selected"<?php } ?> value="<?php echo $url?>&display=thumbs&k=<?php echo $k?>"><?php echo $lang["largethumbs"]?></option>
-	<?php if ($smallthumbs==true) { ?><option <?php if ($display=="smallthumbs"){?>selected="selected"<?php } ?> value="<?php echo $url?>&display=smallthumbs&k=<?php echo $k?>"><?php echo $lang["smallthumbs"]?></option><?php } ?>
-	<option <?php if ($display=="list"){?>selected="selected"<?php } ?> value="<?php echo $url?>&display=list&k=<?php echo $k?>"><?php echo $lang["list"]?></option>
+	<?php if ($xlthumbs==true) { ?><option <?php if ($display=="xlthumbs"){?>selected="selected"<?php } ?> value="<?php echo $url?>&display=xlthumbs&k=<?php echo urlencode($k) ?>"><?php echo $lang["xlthumbs"]?></option><?php } ?>
+	<option <?php if ($display=="thumbs"){?>selected="selected"<?php } ?> value="<?php echo $url?>&display=thumbs&k=<?php echo urlencode($k) ?>"><?php echo $lang["largethumbs"]?></option>
+	<?php if ($smallthumbs==true) { ?><option <?php if ($display=="smallthumbs"){?>selected="selected"<?php } ?> value="<?php echo $url?>&display=smallthumbs&k=<?php echo urlencode($k) ?>"><?php echo $lang["smallthumbs"]?></option><?php } ?>
+	<option <?php if ($display=="list"){?>selected="selected"<?php } ?> value="<?php echo $url?>&display=list&k=<?php echo urlencode($k) ?>"><?php echo $lang["list"]?></option>
 	</select>&nbsp;
 	<?php } else { ?>
 
-	<?php if ($xlthumbs==true) { ?> <?php if ($display=="xlthumbs") { ?><span class="Selected"><?php echo $lang["xlthumbs"]?></span><?php } else { ?><a href="<?php echo $url?>&display=xlthumbs&k=<?php echo $k?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["xlthumbs"]?></a><?php } ?>&nbsp; |&nbsp;<?php } ?>
-	<?php if ($display=="thumbs") { ?> <span class="Selected"><?php echo $lang["largethumbs"]?></span><?php } else { ?><a href="<?php echo $url?>&display=thumbs&k=<?php echo $k?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["largethumbs"]?></a><?php } ?>&nbsp; |&nbsp; 
-	<?php if ($smallthumbs==true) { ?> <?php if ($display=="smallthumbs") { ?><span class="Selected"><?php echo $lang["smallthumbs"]?></span><?php } else { ?><a href="<?php echo $url?>&display=smallthumbs&k=<?php echo $k?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["smallthumbs"]?></a><?php } ?>&nbsp; |&nbsp;<?php } ?>
-	<?php if ($display=="list") { ?> <span class="Selected"><?php echo $lang["list"]?></span><?php } else { ?><a href="<?php echo $url?>&display=list&k=<?php echo $k?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["list"]?></a><?php } ?> <?php hook("adddisplaymode"); ?> 
+	<?php if ($xlthumbs==true) { ?> <?php if ($display=="xlthumbs") { ?><span class="Selected"><?php echo $lang["xlthumbs"]?></span><?php } else { ?><a href="<?php echo $url?>&display=xlthumbs&k=<?php echo urlencode($k) ?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["xlthumbs"]?></a><?php } ?>&nbsp; |&nbsp;<?php } ?>
+	<?php if ($display=="thumbs") { ?> <span class="Selected"><?php echo $lang["largethumbs"]?></span><?php } else { ?><a href="<?php echo $url?>&display=thumbs&k=<?php echo urlencode($k) ?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["largethumbs"]?></a><?php } ?>&nbsp; |&nbsp; 
+	<?php if ($smallthumbs==true) { ?> <?php if ($display=="smallthumbs") { ?><span class="Selected"><?php echo $lang["smallthumbs"]?></span><?php } else { ?><a href="<?php echo $url?>&display=smallthumbs&k=<?php echo urlencode($k) ?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["smallthumbs"]?></a><?php } ?>&nbsp; |&nbsp;<?php } ?>
+	<?php if ($display=="list") { ?> <span class="Selected"><?php echo $lang["list"]?></span><?php } else { ?><a href="<?php echo $url?>&display=list&k=<?php echo urlencode($k) ?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["list"]?></a><?php } ?> <?php hook("adddisplaymode"); ?> 
 
 
 	<?php } ?>
@@ -475,7 +475,7 @@ if (true) # Always show search header now.
 		<select class="medcomplementwidth ListDropdown" style="width:auto" id="resultsdisplay" name="resultsdisplay" onchange="CentralSpaceLoad(this.value,true);">
 		<?php for($n=0;$n<count($results_display_array);$n++){
 			if ($display_selector_dropdowns){?>
-				<option <?php if ($per_page==$results_display_array[$n]){?>selected="selected"<?php } ?> value="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=<?php echo $order_by?>&archive=<?php echo $archive?>&k=<?php echo $k?>&per_page=<?php echo $results_display_array[$n]?>&sort=<?php echo $sort?>"><?php echo $results_display_array[$n]?></option>
+				<option <?php if ($per_page==$results_display_array[$n]){?>selected="selected"<?php } ?> value="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=<?php echo urlencode($order_by)?>&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>&per_page=<?php echo urlencode($results_display_array[$n])?>&sort=<?php echo urlencode($sort)?>"><?php echo urlencode($results_display_array[$n])?></option>
 			<?php } ?>
 		<?php } ?>	
 		</select>
@@ -489,41 +489,41 @@ if (true) # Always show search header now.
 		$rel=$lang["relevance"];
 		if(!hook("replaceasadded")) { if (strpos($search,"!")!==false) {$rel=$lang["asadded"];} }
 		?>
-		<div class="InpageNavLeftBlock "><?php echo $lang["sortorder"]?>:<br /><?php if ($order_by=="relevance") {?><span class="Selected"><?php echo $rel?></span><?php } else { ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=relevance&archive=<?php echo $archive?>&k=<?php echo $k?>" onClick="return CentralSpaceLoad(this);"><?php echo $rel?></a><?php } ?>
+		<div class="InpageNavLeftBlock "><?php echo $lang["sortorder"]?>:<br /><?php if ($order_by=="relevance") {?><span class="Selected"><?php echo $rel?></span><?php } else { ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=relevance&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>" onClick="return CentralSpaceLoad(this);"><?php echo $rel?></a><?php } ?>
 		
 		<?php if ($random_sort){?>
 		&nbsp;|&nbsp;
-		<?php if ($order_by=="random") {?><span class="Selected"><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=random&archive=<?php echo $archive?>&k=<?php echo $k?>&sort=<?php echo $revsort?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["random"]?></a></span><?php } else { ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=random&archive=<?php echo $archive?>&k=<?php echo $k?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["random"]?></a><?php } ?>
+		<?php if ($order_by=="random") {?><span class="Selected"><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=random&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>&sort=<?php echo urlencode($revsort) ?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["random"]?></a></span><?php } else { ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=random&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["random"]?></a><?php } ?>
 		<?php } ?>
 
         <?php if ($popularity_sort){?>
 		&nbsp;|&nbsp;
-		<?php if ($order_by=="popularity") {?><span class="Selected"><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=popularity&archive=<?php echo $archive?>&k=<?php echo $k?>&sort=<?php echo $revsort?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["popularity"]?></a><div class="<?php echo $sort?>">&nbsp;</div></span><?php } else { ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=popularity&archive=<?php echo $archive?>&k=<?php echo $k?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["popularity"]?></a><?php } ?>
+		<?php if ($order_by=="popularity") {?><span class="Selected"><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=popularity&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>&sort=<?php echo urlencode($revsort)?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["popularity"]?></a><div class="<?php echo urlencode($sort)?>">&nbsp;</div></span><?php } else { ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=popularity&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["popularity"]?></a><?php } ?>
         <?php } ?>
 		
 		<?php if ($orderbyrating) { ?>
 		&nbsp;|&nbsp;
-		<?php if ($order_by=="rating") {?><span class="Selected"><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=rating&archive=<?php echo $archive?>&k=<?php echo $k?>&sort=<?php echo $revsort?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["rating"]?></a><div class="<?php echo $sort?>">&nbsp;</div></span><?php } else { ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=rating&archive=<?php echo $archive?>&k=<?php echo $k?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["rating"]?></a><?php } ?>
+		<?php if ($order_by=="rating") {?><span class="Selected"><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=rating&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>&sort=<?php echo urlencode($revsort)?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["rating"]?></a><div class="<?php echo urlencode($sort)?>">&nbsp;</div></span><?php } else { ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=rating&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["rating"]?></a><?php } ?>
 		<?php } ?>
 		
 		<?php if ($date_column){?>
 		&nbsp;|&nbsp;
-		<?php if ($order_by=="date") {?><span class="Selected"><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=date&archive=<?php echo $archive?>&k=<?php echo $k?>&sort=<?php echo $revsort?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["date"]?></a><div class="<?php echo $sort?>">&nbsp;</div></span><?php } else { ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=date&archive=<?php echo $archive?>&k=<?php echo $k?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["date"]?></a><?php } ?>
+		<?php if ($order_by=="date") {?><span class="Selected"><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=date&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>&sort=<?php echo urlencode($revsort)?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["date"]?></a><div class="<?php echo urlencode($sort)?>">&nbsp;</div></span><?php } else { ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=date&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["date"]?></a><?php } ?>
 		<?php } ?>
 		
 		<?php if ($colour_sort) { ?>
 		&nbsp;|&nbsp;
-		<?php if ($order_by=="colour") {?><span class="Selected"><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=colour&archive=<?php echo $archive?>&k=<?php echo $k?>&sort=<?php echo $revsort?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["colour"]?></a><div class="<?php echo $sort?>">&nbsp;</div></span><?php } else { ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=colour&archive=<?php echo $archive?>&k=<?php echo $k?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["colour"]?></a><?php } ?>
+		<?php if ($order_by=="colour") {?><span class="Selected"><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=colour&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>&sort=<?php echo urlencode($revsort)?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["colour"]?></a><div class="<?php echo urlencode($sort)?>">&nbsp;</div></span><?php } else { ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=colour&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["colour"]?></a><?php } ?>
 		<?php } ?>
 		
 		<?php if ($order_by_resource_id) { ?>
 		&nbsp;|&nbsp;
-		<?php if ($order_by=="resourceid") {?><span class="Selected"><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=resourceid&archive=<?php echo $archive?>&k=<?php echo $k?>&sort=<?php echo $revsort?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["resourceid"]?></a><div class="<?php echo $sort?>">&nbsp;</div></span><?php } else { ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=resourceid&archive=<?php echo $archive?>&k=<?php echo $k?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["resourceid"]?></a><?php } ?>
+		<?php if ($order_by=="resourceid") {?><span class="Selected"><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=resourceid&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>&sort=<?php echo urlencode($revsort)?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["resourceid"]?></a><div class="<?php echo urlencode($sort)?>">&nbsp;</div></span><?php } else { ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=resourceid&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["resourceid"]?></a><?php } ?>
 		<?php } ?>
 		
 		<?php if ($order_by_resource_type){?>
 		&nbsp;|&nbsp;
-		<?php if ($order_by=="resourcetype") {?> <span class="Selected"><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=resourcetype&archive=<?php echo $archive?>&k=<?php echo $k?>&sort=<?php echo $revsort?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["type"]?></a><div class="<?php echo $sort?>">&nbsp;</div></span><?php } else { ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=resourcetype&archive=<?php echo $archive?>&k=<?php echo $k?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["type"]?></a><?php } ?>
+		<?php if ($order_by=="resourcetype") {?> <span class="Selected"><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=resourcetype&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>&sort=<?php echo urlencode($revsort)?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["type"]?></a><div class="<?php echo urlencode($sort)?>">&nbsp;</div></span><?php } else { ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=resourcetype&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["type"]?></a><?php } ?>
 		<?php } ?>
 		
 		<?php # add thumbs_display_fields to sort order links for thumbs views
@@ -533,7 +533,7 @@ if (true) # Always show search header now.
 				if (!isset($metadata_template_title_field)){$metadata_template_title_field=false;} 
 				if ($sf[$x]['ref']!=$metadata_template_title_field){?>
 				&nbsp;|&nbsp;
-				<?php if ($order_by=="field".$sf[$x]['ref']) {?><span class="Selected"><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&sort=<?php echo $revsort?>&order_by=field<?php echo $sf[$x]['ref']?>&archive=<?php echo $archive?>&k=<?php echo $k?>" onClick="return CentralSpaceLoad(this);"><?php echo $sf[$x]['title']?></a><div class="<?php echo $sort?>">&nbsp;</div></span><?php } else { ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=field<?php echo $sf[$x]['ref']?>&archive=<?php echo $archive?>&k=<?php echo $k?>" onClick="return CentralSpaceLoad(this);"><?php echo $sf[$x]['title']?></a><?php } ?>
+				<?php if ($order_by=="field".$sf[$x]['ref']) {?><span class="Selected"><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&sort=<?php echo urlencode($revsort)?>&order_by=field<?php echo $sf[$x]['ref']?>&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>" onClick="return CentralSpaceLoad(this);"><?php echo htmlspecialchars($sf[$x]['title'])?></a><div class="<?php echo urlencode($sort)?>">&nbsp;</div></span><?php } else { ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=field<?php echo $sf[$x]['ref']?>&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>" onClick="return CentralSpaceLoad(this);"><?php echo htmlspecialchars($sf[$x]['title'])?></a><?php } ?>
 				<?php } ?>
 				<?php } ?>
 			<?php } ?>		
@@ -546,7 +546,7 @@ if (true) # Always show search header now.
 		<div class="InpageNavLeftBlock"><?php echo $lang["resultsdisplay"]?>:<br />
 		<?php 
 		for($n=0;$n<count($results_display_array);$n++){?>
-		<?php if ($per_page==$results_display_array[$n]){?><span class="Selected"><?php echo $results_display_array[$n]?></span><?php } else { ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=<?php echo $order_by?>&archive=<?php echo $archive?>&k=<?php echo $k?>&per_page=<?php echo $results_display_array[$n]?>&sort=<?php echo $sort?>" onClick="return CentralSpaceLoad(this);"><?php echo $results_display_array[$n]?></a><?php } ?><?php if ($n>-1&&$n<count($results_display_array)-1){?>&nbsp;|<?php } ?>
+		<?php if ($per_page==$results_display_array[$n]){?><span class="Selected"><?php echo urlencode($results_display_array[$n])?></span><?php } else { ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=<?php echo urlencode($order_by)?>&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>&per_page=<?php echo urlencode($results_display_array[$n])?>&sort=<?php echo urlencode($sort)?>" onClick="return CentralSpaceLoad(this);"><?php echo urlencode($results_display_array[$n])?></a><?php } ?><?php if ($n>-1&&$n<count($results_display_array)-1){?>&nbsp;|<?php } ?>
 		<?php } ?>
 		</div>
 		<?php } ?>
@@ -621,6 +621,7 @@ if (true) # Always show search header now.
 		
 	if (!is_array($result) && empty($collections))
 		{
+		// No matches found
 		?>
 		<div class="BasicsBox"> 
 		  <div class="NoFind">
@@ -663,14 +664,14 @@ if (true) # Always show search header now.
 
 		for ($x=0;$x<count($df);$x++)
 			{?>
-			<?php if ($order_by=="field".$df[$x]['ref']) {?><td class="Selected"><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&sort=<?php echo $revsort?>&order_by=field<?php echo $df[$x]['ref']?>&archive=<?php echo $archive?>&k=<?php echo $k?>" onClick="return CentralSpaceLoad(this);"><?php echo $df[$x]['title']?></a><div class="<?php echo $sort?>">&nbsp;</div></td><?php } else { ?><td><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=field<?php echo $df[$x]['ref']?>&sort=<?php echo $revsort?>&archive=<?php echo $archive?>&k=<?php echo $k?>" onClick="return CentralSpaceLoad(this);"><?php echo $df[$x]['title']?></a></td><?php } ?>
+			<?php if ($order_by=="field".$df[$x]['ref']) {?><td class="Selected"><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&sort=<?php echo urlencode($revsort)?>&order_by=field<?php echo $df[$x]['ref']?>&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>" onClick="return CentralSpaceLoad(this);"><?php echo htmlspecialchars($df[$x]['title'])?></a><div class="<?php echo urlencode($sort)?>">&nbsp;</div></td><?php } else { ?><td><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=field<?php echo $df[$x]['ref']?>&sort=<?php echo urlencode($revsort)?>&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>" onClick="return CentralSpaceLoad(this);"><?php echo htmlspecialchars($df[$x]['title'])?></a></td><?php } ?>
 			<?php }
 		
-		if ($display_user_rating_stars && $k==""){?><td><?php if ($order_by=="popularity") {?><span class="Selected"><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=popularity&archive=<?php echo $archive?>&k=<?php echo $k?>&sort=<?php echo $revsort?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["popularity"]?></a><div class="<?php echo $sort?>">&nbsp;</div></span><?php } else { ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=popularity&archive=<?php echo $archive?>&k=<?php echo $k?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["popularity"]?></a><?php } ?></td><?php } ?>
+		if ($display_user_rating_stars && $k==""){?><td><?php if ($order_by=="popularity") {?><span class="Selected"><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=popularity&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>&sort=<?php echo urlencode($revsort)?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["popularity"]?></a><div class="<?php echo urlencode($sort)?>">&nbsp;</div></span><?php } else { ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=popularity&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["popularity"]?></a><?php } ?></td><?php } ?>
 		<td>&nbsp;</td><!-- contains admin ratings -->
-		<?php if ($id_column){?><?php if ($order_by=="resourceid"){?><td class="Selected"><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&sort=<?php echo $revsort?>&order_by=resourceid&archive=<?php echo $archive?>&k=<?php echo $k?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["id"]?></a><div class="<?php echo $sort?>">&nbsp;</div></td><?php } else { ?><td><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&sort=<?php echo $revsort?>&order_by=resourceid&archive=<?php echo $archive?>&k=<?php echo $k?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["id"]?></a></td><?php } ?><?php } ?>
-		<?php if ($resource_type_column){?><?php if ($order_by=="resourcetype"){?><td class="Selected"><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&sort=<?php echo $revsort?>&order_by=resourcetype&archive=<?php echo $archive?>&k=<?php echo $k?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["type"]?></a><div class="<?php echo $sort?>">&nbsp;</div></td><?php } else { ?><td><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&sort=<?php echo $revsort?>&order_by=resourcetype&archive=<?php echo $archive?>&k=<?php echo $k?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["type"]?></a></td><?php } ?><?php } ?>
-		<?php if ($date_column){?><?php if ($order_by=="date"){?><td class="Selected"><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&sort=<?php echo $revsort?>&order_by=date&archive=<?php echo $archive?>&k=<?php echo $k?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["date"]?></a><div class="<?php echo $sort?>">&nbsp;</div></td><?php } else { ?><td><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&sort=<?php echo $revsort?>&order_by=date&archive=<?php echo $archive?>&k=<?php echo $k?>" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["date"]?></a></td><?php } ?><?php } ?>
+		<?php if ($id_column){?><?php if ($order_by=="resourceid"){?><td class="Selected"><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&sort=<?php echo urlencode($revsort)?>&order_by=resourceid&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["id"]?></a><div class="<?php echo urlencode($sort)?>">&nbsp;</div></td><?php } else { ?><td><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&sort=<?php echo urlencode($revsort)?>&order_by=resourceid&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["id"]?></a></td><?php } ?><?php } ?>
+		<?php if ($resource_type_column){?><?php if ($order_by=="resourcetype"){?><td class="Selected"><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&sort=<?php echo urlencode($revsort)?>&order_by=resourcetype&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["type"]?></a><div class="<?php echo urlencode($sort)?>">&nbsp;</div></td><?php } else { ?><td><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&sort=<?php echo urlencode($revsort)?>&order_by=resourcetype&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["type"]?></a></td><?php } ?><?php } ?>
+		<?php if ($date_column){?><?php if ($order_by=="date"){?><td class="Selected"><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&sort=<?php echo urlencode($revsort)?>&order_by=date&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["date"]?></a><div class="<?php echo urlencode($sort)?>">&nbsp;</div></td><?php } else { ?><td><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&sort=<?php echo urlencode($revsort)?>&order_by=date&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["date"]?></a></td><?php } ?><?php } ?>
 		<?php hook("addlistviewtitlecolumn");?>
 		<td><div class="ListTools"><?php echo $lang["tools"]?></div></td>
 		</tr>
@@ -724,7 +725,7 @@ if (true) # Always show search header now.
 				{
 				if ($n==0 || ((isset($result[$n-1])) && $result[$n]["resource_type"]!=$result[$n-1]["resource_type"]))
 					{
-					echo "<h1 class=\"SearchResultsDivider\" style=\"clear:left;\">" . $rtypes[$result[$n]["resource_type"]] .  "</h1>";
+					echo "<h1 class=\"SearchResultsDivider\" style=\"clear:left;\">" . htmlspecialchars($rtypes[$result[$n]["resource_type"]]) .  "</h1>";
 					}
 				}
 			
@@ -799,12 +800,12 @@ if (true) # Always show search header now.
 <div class="BottomInpageNav">
 
 	<?php if (!checkperm("b") && $k=="") { ?>
-	<?php if($allow_save_search) { ?><div class="InpageNavLeftBlock"><a onClick="return CollectionDivLoad(this);" href="<?php echo $baseurl_short?>pages/collections.php?addsearch=<?php echo urlencode($search)?>&restypes=<?php echo urlencode($restypes)?>&archive=<?php echo $archive?>">&gt;&nbsp;<?php echo $lang["savethissearchtocollection"]?></a></div><?php } ?>
-	<?php if($allow_smart_collections && substr($search,0,11)!="!collection") { ?><div class="InpageNavLeftBlock"><a onClick="return CollectionDivLoad(this);" href="<?php echo $baseurl_short?>pages/collections.php?addsmartcollection=<?php echo urlencode($search)?>&restypes=<?php echo urlencode($restypes)?>&archive=<?php echo $archive?>&starsearch=<?php echo $starsearch?>">&gt;&nbsp;<?php echo $lang["savesearchassmartcollection"]?></a></div><?php } ?>
-	<?php global $smartsearch; if($allow_smart_collections && substr($search,0,11)=="!collection" && (is_array($smartsearch[0]) && !empty($smartsearch[0]))) { $smartsearch=$smartsearch[0];?><div class="InpageNavLeftBlock"><a onClick="return CentralSpaceLoad(this,true);" href="search.php?search=<?php echo urlencode($smartsearch['search'])?>&restypes=<?php echo urlencode($smartsearch['restypes'])?>&archive=<?php echo $smartsearch['archive']?>&starsearch=<?php echo $smartsearch['starsearch']?>">&gt;&nbsp;<?php echo $lang["dosavedsearch"]?></a></div><?php } ?>
-	<div class="InpageNavLeftBlock"><a onClick="return CollectionDivLoad(this);" href="<?php echo $baseurl_short?>pages/collections.php?addsearch=<?php echo urlencode($search)?>&restypes=<?php echo urlencode($restypes)?>&archive=<?php echo $archive?>&mode=resources">&gt;&nbsp;<?php echo $lang["savesearchitemstocollection"]?></a></div>
+	<?php if($allow_save_search) { ?><div class="InpageNavLeftBlock"><a onClick="return CollectionDivLoad(this);" href="<?php echo $baseurl_short?>pages/collections.php?addsearch=<?php echo urlencode($search)?>&restypes=<?php echo urlencode($restypes)?>&archive=<?php echo urlencode($archive) ?>">&gt;&nbsp;<?php echo $lang["savethissearchtocollection"]?></a></div><?php } ?>
+	<?php if($allow_smart_collections && substr($search,0,11)!="!collection") { ?><div class="InpageNavLeftBlock"><a onClick="return CollectionDivLoad(this);" href="<?php echo $baseurl_short?>pages/collections.php?addsmartcollection=<?php echo urlencode($search)?>&restypes=<?php echo urlencode($restypes)?>&archive=<?php echo urlencode($archive) ?>&starsearch=<?php echo urlencode($starsearch) ?>">&gt;&nbsp;<?php echo $lang["savesearchassmartcollection"]?></a></div><?php } ?>
+	<?php global $smartsearch; if($allow_smart_collections && substr($search,0,11)=="!collection" && (is_array($smartsearch[0]) && !empty($smartsearch[0]))) { $smartsearch=$smartsearch[0];?><div class="InpageNavLeftBlock"><a onClick="return CentralSpaceLoad(this,true);" href="search.php?search=<?php echo urlencode($smartsearch['search'])?>&restypes=<?php echo urlencode($smartsearch['restypes'])?>&archive=<?php echo urlencode($smartsearch['archive']) ?>&starsearch=<?php echo urlencode($smartsearch['starsearch']) ?>">&gt;&nbsp;<?php echo $lang["dosavedsearch"]?></a></div><?php } ?>
+	<div class="InpageNavLeftBlock"><a onClick="return CollectionDivLoad(this);" href="<?php echo $baseurl_short?>pages/collections.php?addsearch=<?php echo urlencode($search)?>&restypes=<?php echo urlencode($restypes)?>&archive=<?php echo urlencode($archive) ?>&mode=resources">&gt;&nbsp;<?php echo $lang["savesearchitemstocollection"]?></a></div>
 	<?php if($show_searchitemsdiskusage) {?>
-	<div class="InpageNavLeftBlock"><a onClick="return CentralSpaceLoad(this);" href="<?php echo $baseurl_short?>pages/search_disk_usage.php?search=<?php echo urlencode($search)?>&restypes=<?php echo urlencode($restypes)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&k=<?php echo $k?>">&gt;&nbsp;<?php echo $lang["searchitemsdiskusage"]?></a></div>
+	<div class="InpageNavLeftBlock"><a onClick="return CentralSpaceLoad(this);" href="<?php echo $baseurl_short?>pages/search_disk_usage.php?search=<?php echo urlencode($search)?>&restypes=<?php echo urlencode($restypes)?>&offset=<?php echo urlencode($offset) ?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>">&gt;&nbsp;<?php echo $lang["searchitemsdiskusage"]?></a></div>
   <?php } ?>
 
 	<?php } ?>
