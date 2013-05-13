@@ -37,7 +37,7 @@ $linksuffixprev=implode('&',$linksuffixprev);
 # Process deletion of access keys
 if (getval("deleteaccess","")!="")
 	{
-	$ref=getvalescaped("ref","");	
+	$ref=getvalescaped("ref","",true);	
 	delete_collection_access_key($ref,getvalescaped("deleteaccess",""));
 	}
 
@@ -177,7 +177,7 @@ else
 					echo str_replace("%collectionname%", i18n_get_collection_name($collection), $lang["collection-name"]) . "\r\n" . $lang["notapprovedsharecollection"] . "\r\n\r\n";
 					$unapproved_collection=true;
 				} else {
-					echo str_replace("%collectionname%", i18n_get_collection_name($collection), $lang["collection-name"]) . "\r\n" . $baseurl?>/?c=<?php echo $ref?>&k=<?php echo generate_collection_access_key($ref,0,"URL",$access,$expires) . "\r\n" . ($expires!="" ? str_replace("%date%", $expires, $lang["expires-date"]) : str_replace("%date%", $lang["never"], $lang["expires-date"])) . "\r\n\r\n";
+					echo str_replace("%collectionname%", i18n_get_collection_name($collection), $lang["collection-name"]) . "\r\n" . $baseurl?>/?c=<?php echo urlencode($ref)?>&k=<?php echo generate_collection_access_key($ref,0,"URL",$access,$expires) . "\r\n" . ($expires!="" ? str_replace("%date%", $expires, $lang["expires-date"]) : str_replace("%date%", $lang["never"], $lang["expires-date"])) . "\r\n\r\n";
 				}
 			}
 			?>
@@ -226,7 +226,7 @@ else
 					{
 					?>
 					<tr>
-					<td><div class="ListTitle"><a target="_blank" href="<?php echo $baseurl . "?c=" . $ref . "&k=" . $keys[$n]["access_key"]?>"><?php echo $keys[$n]["access_key"]?></a></div></td>
+					<td><div class="ListTitle"><a target="_blank" href="<?php echo $baseurl . "?c=" . urlencode($ref) . "&k=" . $keys[$n]["access_key"]?>"><?php echo $keys[$n]["access_key"]?></a></div></td>
 					<td><?php echo resolve_users($keys[$n]["users"])?></td>
 					<!--<td><?php echo $keys[$n]["emails"]?></td>-->
 					<td><?php echo nicedate($keys[$n]["maxdate"],true);	?></td>
@@ -234,7 +234,7 @@ else
 					<td><?php echo ($keys[$n]["expires"]=="")?$lang["never"]:nicedate($keys[$n]["expires"],false)?></td>
 					<td><?php echo ($keys[$n]["access"]==-1)?"":$lang["access" . $keys[$n]["access"]]; ?></td>
 					<td><div class="ListTools">
-					<a href="#" onClick="if (confirm('<?php echo $lang["confirmdeleteaccess"]?>')) {document.getElementById('deleteaccess').value='<?php echo $keys[$n]["access_key"] ?>';document.getElementById('ref').value='<?php echo $ref ?>';document.getElementById('themeform').submit(); }">&gt;&nbsp;<?php echo $lang["action-delete"]?></a>
+					<a href="#" onClick="if (confirm('<?php echo $lang["confirmdeleteaccess"]?>')) {document.getElementById('deleteaccess').value='<?php echo $keys[$n]["access_key"] ?>';document.getElementById('ref').value='<?php echo htmlspecialchars($ref) ?>';document.getElementById('themeform').submit(); }">&gt;&nbsp;<?php echo $lang["action-delete"]?></a>
 					</div></td>
 					</tr>
 					<?php

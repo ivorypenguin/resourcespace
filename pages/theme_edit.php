@@ -27,7 +27,7 @@ reset($_POST);reset($_GET);foreach (array_merge($_GET, $_POST) as $key=>$value) 
 
 # Work out theme name and level, also construct back link
 $link="themes.php?";
-$lastlevelchange=getvalescaped("lastlevelchange",1);
+$lastlevelchange=getvalescaped("lastlevelchange",1,true);
 $link.="lastlevelchange=" . $lastlevelchange . "&";
 for ($x=0;$x<$themecount;$x++)
 	{
@@ -81,7 +81,7 @@ if (!checkperm("t")) {
 	<form method=post id="themeform" action="<?php echo $baseurl_short?>pages/theme_edit.php">
 		<input type="hidden" name="collection_column" id="collection_column" value="<?php echo $collection_column?>">
 		<input type="hidden" name="link" id="link" value="<?php echo $link?>">
-		<input type="hidden" name="lastlevelchange" id="lastlevelchange" value="<?php echo $lastlevelchange?>">
+		<input type="hidden" name="lastlevelchange" id="lastlevelchange" value="<?php echo htmlspecialchars($lastlevelchange)?>">
 
 		<?php
 		for ($x=0;$x<$themecount;$x++)

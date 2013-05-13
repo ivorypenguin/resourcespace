@@ -26,7 +26,7 @@ if (($ref=="") && ($lower==""))
 	for ($n=1;$n<=$max;$n+=1000)
 		{
 		$upper=$n+999;if ($upper>$max) {$upper=$max;}
-		?><p><a href="<?php echo $baseurl_short?>pages/spider.php?password=<?php echo $password?>&lower=<?php echo $n?>&higher=<?php echo $upper?>"><?php echo $n?> to <?php echo $upper?></a></p><?php
+		?><p><a href="<?php echo $baseurl_short?>pages/spider.php?password=<?php echo urlencode($password)?>&lower=<?php echo $n?>&higher=<?php echo $upper?>"><?php echo $n?> to <?php echo $upper?></a></p><?php
 		}
 	?></body></html><?php
 	}
@@ -45,7 +45,7 @@ if ($lower!="")
 		if (in_array($access,$spider_access))
 			{
 			?>
-			<a href="<?php echo $baseurl_short?>pages/spider.php?password=<?php echo $password?>&ref=<?php echo $list[$n]?>"><?php echo $list[$n]?></a>
+			<a href="<?php echo $baseurl_short?>pages/spider.php?password=<?php echo urlencode($password)?>&ref=<?php echo $list[$n]?>"><?php echo $list[$n]?></a>
 			<?php
 			}
 		}
@@ -71,7 +71,7 @@ if ($ref!="")
 	<meta name="country" content="<?php echo TidyList($resource["field3"])?>">
 	<meta name="date" content="<?php echo $resource["field".$date_field]?>">
 	<meta name="thumbnail" content="<?php echo $thumbnail?>">
-	<meta name="target" content="<?php echo $baseurl?>/pages/view.php?ref=<?php echo $ref?>">
+	<meta name="target" content="<?php echo $baseurl?>/pages/view.php?ref=<?php echo urlencode($ref)?>">
 	<?php
 	$textblock="";
 	for ($n=0;$n<count($resourcedata);$n++)

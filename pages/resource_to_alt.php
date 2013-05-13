@@ -34,7 +34,7 @@ if ($ref > 0 && $alt > 0) {
 
 		// we're in business - do a copy
 		if (alt_from_resource($alt,$ref,'',$delete)){
-			header("Location:".$baseurl_short."pages/view.php?ref=$ref\n\n");
+			header("Location:".$baseurl_short."pages/view.php?ref=".urlencode($ref)."\n\n");
 			exit;
 		} else {
 			echo "Something bad happened.";

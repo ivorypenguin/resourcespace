@@ -5,8 +5,7 @@ include "../include/general.php";
 include "../include/request_functions.php";
 include "../include/collections_functions.php";
 
-$ref=getval("ref","");
-$k=getval("k","");
+$ref=getvalescaped("ref","",true);
 $error=false;
 
 if (isset($anonymous_login) && $username == $anonymous_login){
@@ -20,7 +19,7 @@ if (getval("save","")!="")
 	if ($k!="" || $user_is_anon || $userrequestmode==0)
 		{
 		# Request mode 0 : Simply e-mail the request.
-		if (($k!="" || $user_is_anon) && (getval("fullname","")=="" || getval("email","")==""))
+		if (($k!="" || $user_is_anon) && (getval("fullname","")=="" || getvalescaped("email","")==""))
 			{
 			$result=false; # Required fields not completed.
 			}
@@ -57,11 +56,11 @@ include "../include/header.php";
   <p><?php echo text("introtext")?></p>
   
 	<form method="post" action="resource_request.php">  
-	<input type=hidden name=ref value="<?php echo $ref?>">
+	<input type=hidden name=ref value="<?php echo htmlspecialchars($ref)?>">
 	
 	<div class="Question">
 	<label><?php echo $lang["resourceid"]?></label>
-	<div class="Fixed"><?php echo $ref?></div>
+	<div class="Fixed"><?php echo htmlspecialchars($ref)?></div>
 	<div class="clearerleft"> </div>
 	</div>
 	
@@ -69,28 +68,28 @@ include "../include/header.php";
 	<div class="Question">
 	<label><?php echo $lang["fullname"]?> <sup>*</sup></label>
 	<input type="hidden" name="fullname_label" value="<?php echo $lang["fullname"]?>">
-	<input name="fullname" class="stdwidth" value="<?php echo getval("fullname","") ?>">
+	<input name="fullname" class="stdwidth" value="<?php echo htmlspecialchars(getvalescaped("fullname","")) ?>">
 	<div class="clearerleft"> </div>
 	</div>
 	
 	<div class="Question">
 	<label><?php echo $lang["emailaddress"]?> <sup>*</sup></label>
 	<input type="hidden" name="email_label" value="<?php echo $lang["emailaddress"]?>">
-	<input name="email" class="stdwidth" value="<?php echo getval("email","") ?>">
+	<input name="email" class="stdwidth" value="<?php echo htmlspecialchars(getvalescaped("email","")) ?>">
 	<div class="clearerleft"> </div>
 	</div>
 
 	<div class="Question">
 	<label><?php echo $lang["contacttelephone"]?></label>
 	<input type="hidden" name="contact_label" value="<?php echo $lang["contacttelephone"]?>">
-	<input name="contact" class="stdwidth" value="<?php echo getval("contact","") ?>">
+	<input name="contact" class="stdwidth" value="<?php echo htmlspecialchars(getvalescaped("contact","")) ?>">
 	<div class="clearerleft"> </div>
 	</div>
 	<?php } ?>
 
 	<div class="Question">
 	<label for="request"><?php echo $lang["requestreason"]?> <sup>*</sup></label>
-	<textarea class="stdwidth" name="request" id="request" rows=5 cols=50><?php echo getval("request","") ?></textarea>
+	<textarea class="stdwidth" name="request" id="request" rows=5 cols=50><?php echo htmlspecialchars(getvalescaped("request","")) ?></textarea>
 	<div class="clearerleft"> </div>
 	</div>
 
@@ -155,7 +154,7 @@ if (isset($custom_request_fields))
 	<div class="QuestionSubmit">
 	<?php if ($error) { ?><div class="FormError">!! <?php echo $error ?> !!</div><?php } ?>
 	<label for="buttons"> </label>			
-	<input name="cancel" type="button" value="&nbsp;&nbsp;<?php echo $lang["cancel"]?>&nbsp;&nbsp;" onclick="document.location='view.php?ref=<?php echo $ref?>';"/>&nbsp;
+	<input name="cancel" type="button" value="&nbsp;&nbsp;<?php echo $lang["cancel"]?>&nbsp;&nbsp;" onclick="document.location='view.php?ref=<?php echo htmlspecialchars($ref)?>';"/>&nbsp;
 	<input name="save" type="submit" value="&nbsp;&nbsp;<?php echo $lang["requestresource"]?>&nbsp;&nbsp;" />
 	</div>
 	</form>

@@ -158,14 +158,14 @@ function DisplayTheme($themes=array())
 		<div class="Listview" style="margin-top:10px;margin-bottom:5px;clear:left;">
 		<table border="0" cellspacing="0" cellpadding="0" class="ListviewStyle">
 		<tr class="ListviewBoxedTitleStyle">
-		<td><?php if ($themes_order_by=="name") {?><span class="Selected"><?php } if($themes_column_sorting) { ?><a href="<?php echo $baseurl_short?>pages/themes.php?<?php echo $themeslinks?>themes_order_by=name&sort=<?php echo $revsort?>" onClick="return CentralSpaceLoad(this);"><?php } ?><?php echo $lang["collectionname"]?><?php  if($themes_category_split_pages) { ?></a><?php } ?><?php if ($themes_order_by=="name") {?><div class="<?php echo $sort?>">&nbsp;</div><?php } ?></td>
+		<td><?php if ($themes_order_by=="name") {?><span class="Selected"><?php } if($themes_column_sorting) { ?><a href="<?php echo $baseurl_short?>pages/themes.php?<?php echo $themeslinks?>themes_order_by=name&sort=<?php echo urlencode($revsort)?>" onClick="return CentralSpaceLoad(this);"><?php } ?><?php echo $lang["collectionname"]?><?php  if($themes_category_split_pages) { ?></a><?php } ?><?php if ($themes_order_by=="name") {?><div class="<?php echo htmlspecialchars($sort)?>">&nbsp;</div><?php } ?></td>
 		<?php if ($themes_ref_column){?>
-		<td><?php if ($themes_order_by=="ref") {?><span class="Selected"><?php } if($themes_column_sorting) { ?><a href="<?php echo $baseurl_short?>pages/themes.php?<?php echo $themeslinks?>themes_order_by=ref&sort=<?php echo $revsort?>" onClick="return CentralSpaceLoad(this);"><?php } ?><?php echo $lang["id"]?><?php  if($themes_category_split_pages) { ?></a><?php } ?><?php if ($themes_order_by=="ref") {?><div class="<?php echo $sort?>">&nbsp;</div><?php } ?></td>
+		<td><?php if ($themes_order_by=="ref") {?><span class="Selected"><?php } if($themes_column_sorting) { ?><a href="<?php echo $baseurl_short?>pages/themes.php?<?php echo $themeslinks?>themes_order_by=ref&sort=<?php echo urlencode($revsort)?>" onClick="return CentralSpaceLoad(this);"><?php } ?><?php echo $lang["id"]?><?php  if($themes_category_split_pages) { ?></a><?php } ?><?php if ($themes_order_by=="ref") {?><div class="<?php echo htmlspecialchars($sort)?>">&nbsp;</div><?php } ?></td>
 		<?php } ?>
 		<?php if ($themes_date_column){?>
-		<td><?php if ($themes_order_by=="created") {?><span class="Selected"><?php } if($themes_column_sorting) { ?><a href="<?php echo $baseurl_short?>pages/themes.php?<?php echo $themeslinks?>themes_order_by=created&sort=<?php echo $revsort?>" onClick="return CentralSpaceLoad(this);"><?php } ?><?php echo $lang["created"]?><?php  if($themes_category_split_pages) { ?></a><?php } ?><?php if ($themes_order_by=="created") {?><div class="<?php echo $sort?>">&nbsp;</div><?php } ?></td>
+		<td><?php if ($themes_order_by=="created") {?><span class="Selected"><?php } if($themes_column_sorting) { ?><a href="<?php echo $baseurl_short?>pages/themes.php?<?php echo $themeslinks?>themes_order_by=created&sort=<?php echo urlencode($revsort)?>" onClick="return CentralSpaceLoad(this);"><?php } ?><?php echo $lang["created"]?><?php  if($themes_category_split_pages) { ?></a><?php } ?><?php if ($themes_order_by=="created") {?><div class="<?php echo htmlspecialchars($sort)?>">&nbsp;</div><?php } ?></td>
 		<?php } ?>
-		<td><?php if ($themes_order_by=="c") {?><span class="Selected"><?php } if($themes_column_sorting) { ?><a href="<?php echo $baseurl_short?>pages/themes.php?<?php echo $themeslinks?>themes_order_by=c&sort=<?php echo $revsort?>" onClick="return CentralSpaceLoad(this);"><?php } ?><?php echo $lang["itemstitle"]?><?php  if($themes_category_split_pages) { ?></a><?php } ?><?php if ($themes_order_by=="c") {?><div class="<?php echo $sort?>">&nbsp;</div><?php } ?></td>
+		<td><?php if ($themes_order_by=="c") {?><span class="Selected"><?php } if($themes_column_sorting) { ?><a href="<?php echo $baseurl_short?>pages/themes.php?<?php echo $themeslinks?>themes_order_by=c&sort=<?php echo urlencode($revsort)?>" onClick="return CentralSpaceLoad(this);"><?php } ?><?php echo $lang["itemstitle"]?><?php  if($themes_category_split_pages) { ?></a><?php } ?><?php if ($themes_order_by=="c") {?><div class="<?php echo htmlspecialchars($sort)?>">&nbsp;</div><?php } ?></td>
 		<?php hook("beforecollectiontoolscolumnheader","themes",array($themeslinks));?>
 		<td><div class="ListTools"><?php echo $lang["tools"]?></div></td>
 		</tr>
@@ -520,7 +520,7 @@ if ($header=="" && !isset($themes[0]))
 				{
 				# Sub node, display node name and make it a link to the previous level.
 				?>
-				<a href="<?php echo $baseurl_short?>pages/themes.php?smart_theme=<?php echo $headers[$n]["ref"] ?>&node=<?php echo getval("parentnode",0) ?>&nodename=<?php echo getval("parentnodename","") ?>" onClick="return CentralSpaceLoad(this,true);"><?php echo getval("nodename","???") ?></a>
+				<a href="<?php echo $baseurl_short?>pages/themes.php?smart_theme=<?php echo $headers[$n]["ref"] ?>&node=<?php echo urlencode(getval("parentnode",0)) ?>&nodename=<?php echo urlencode(getval("parentnodename","")) ?>" onClick="return CentralSpaceLoad(this,true);"><?php echo getval("nodename","???") ?></a>
 				<?php
 				}
 			?>
@@ -552,7 +552,7 @@ if ($header=="" && !isset($themes[0]))
 					{
 					# Has children. Default action is to navigate to a deeper level.
 					?>
-					<a href="<?php echo $baseurl_short?>pages/themes.php?smart_theme=<?php echo $headers[$n]["ref"] ?>&node=<?php echo $themes[$m]["node"] ?>&parentnode=<?php echo $node ?>&parentnodename=<?php echo urlencode(getval("nodename","")) ?>&nodename=<?php echo urlencode($themes[$m]["name"]) ?>" onClick="return CentralSpaceLoad(this,true);">
+					<a href="<?php echo $baseurl_short?>pages/themes.php?smart_theme=<?php echo $headers[$n]["ref"] ?>&node=<?php echo $themes[$m]["node"] ?>&parentnode=<?php echo urlencode($node) ?>&parentnodename=<?php echo urlencode(getval("nodename","")) ?>&nodename=<?php echo urlencode($themes[$m]["name"]) ?>" onClick="return CentralSpaceLoad(this,true);">
 					<?php
 					}
 				else
@@ -570,7 +570,7 @@ if ($header=="" && !isset($themes[0]))
 				<td><div class="ListTools">
 				<a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($s)?>&resetrestypes=true" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $themes_category_split_pages?$lang["action-viewmatchingresources"]:$lang["viewall"]?></a>
 				<?php if ($themes_category_split_pages) { ?>
-				<a href="<?php echo $baseurl_short?>pages/themes.php?smart_theme=<?php echo $headers[$n]["ref"] ?>&node=<?php echo $themes[$m]["node"] ?>&parentnode=<?php echo $node ?>&parentnodename=<?php echo urlencode(getval("nodename","")) ?>&nodename=<?php echo urlencode($themes[$m]["name"]) ?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["action-expand"]?></a>
+				<a href="<?php echo $baseurl_short?>pages/themes.php?smart_theme=<?php echo $headers[$n]["ref"] ?>&node=<?php echo $themes[$m]["node"] ?>&parentnode=<?php echo urlencode($node) ?>&parentnodename=<?php echo urlencode(getval("nodename","")) ?>&nodename=<?php echo urlencode($themes[$m]["name"]) ?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["action-expand"]?></a>
 				<?php }
                 hook("additionalsmartthemetool");?>
 				</div></td>

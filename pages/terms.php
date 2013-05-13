@@ -5,7 +5,7 @@ include "../include/general.php";
 # No need to check access key for this page as it merely redirects to other pages
 $k=getvalescaped("k","");if ($k=="") {include "../include/authenticate.php";}
 
-$url=getval("url","pages/home.php");
+$url=getvalescaped("url","pages/home.php");
 
 if ($terms_download==false && getval("noredir","")=="") {redirect($url);}
 
@@ -35,8 +35,8 @@ include "../include/header.php";
 	<div class="clearerleft"> </div>
 	</div>
 	
-	<form method="post" action="<?php echo $baseurl_short?>pages/terms.php?k=<?php echo $k; ?>">
-	<input type=hidden name="url" value="<?php echo $url?>">
+	<form method="post" action="<?php echo $baseurl_short?>pages/terms.php?k=<?php echo urlencode($k); ?>">
+	<input type=hidden name="url" value="<?php echo htmlspecialchars($url)?>">
 	<div class="QuestionSubmit">
 	<label for="buttons"> </label>		
 	<input name="decline" type="button" value="&nbsp;&nbsp;<?php echo $lang["idecline"]?>&nbsp;&nbsp;" onClick="history.go(-1);return false;"/>
