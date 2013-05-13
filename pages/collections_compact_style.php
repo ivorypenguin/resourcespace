@@ -185,7 +185,7 @@ hook("collectiontoolcompact2","",array("collection"=>$collection,"count_result"=
 
 <!-- edit metadata -->    
 <?php # If this collection is (fully) editable, then display an extra edit all link
-if ($show_edit_all_link && $count_result>0 && $col_editable) { ?>
+if ($count_result>0 && $col_editable) { ?>
     <option value="<?php echo htmlspecialchars($collection) ?>|0|0|<?php echo $baseurl_short?>pages/edit.php?collection=<?php echo urlencode($collection) ?>|main|false">&gt;&nbsp;<?php echo $lang["action-editall"]?>...</option>
 <?php } ?>
 <!-- end edit metadata -->
