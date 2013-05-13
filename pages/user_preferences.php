@@ -30,7 +30,7 @@ if (getval("save","")!="")
 include "../include/header.php";
 ?>
 <div class="BasicsBox"> 
-	<?php if ($userpassword=="b58d18f375f68d13587ce8a520a87919"){?><div class="FormError"><?php echo $lang['secureyouradminaccount'];?></div><?php } ?>
+	<?php if ($userpassword=="b58d18f375f68d13587ce8a520a87919"){?><div class="FormError" style="margin:0;"><?php echo $lang['secureyouradminaccount'];?></div><p></p><?php } ?>
 	<h1><?php echo $lang["changeyourpassword"]?></h1>
 
     <p><?php echo text("introtext")?></p>
