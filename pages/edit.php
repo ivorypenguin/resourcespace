@@ -311,11 +311,11 @@ function EditNav() # Create a function so this can be repeated at the end of the
 	global $baseurl_short,$ref,$search,$offset,$order_by,$sort,$archive,$lang;
 	?>
 	<div class="TopInpageNav">
-	<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/edit.php?ref=<?php echo $ref?>&amp;search=<?php echo urlencode($search)?>&amp;offset=<?php echo $offset?>&amp;order_by=<?php echo $order_by?>&amp;sort=<?php echo $sort?>&amp;archive=<?php echo $archive?>&amp;go=previous">&lt;&nbsp;<?php echo $lang["previousresult"]?></a>
+	<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/edit.php?ref=<?php echo urlencode($ref) ?>&amp;search=<?php echo urlencode($search)?>&amp;offset=<?php echo urlencode($offset) ?>&amp;order_by=<?php echo urlencode($order_by) ?>&amp;sort=<?php echo urlencode($sort) ?>&amp;archive=<?php echo urlencode($archive) ?>&amp;go=previous">&lt;&nbsp;<?php echo $lang["previousresult"]?></a>
 	|
-	<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php<?php if (strpos($search,"!")!==false) {?>?search=<?php echo urlencode($search)?>&amp;offset=<?php echo $offset?>&amp;order_by=<?php echo $order_by?>&amp;sort=<?php echo $sort?><?php } ?>"><?php echo $lang["viewallresults"]?></a>
+	<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php<?php if (strpos($search,"!")!==false) {?>?search=<?php echo urlencode($search)?>&amp;offset=<?php echo urlencode($offset) ?>&amp;order_by=<?php echo urlencode($order_by) ?>&amp;sort=<?php echo urlencode($sort) ?><?php } ?>"><?php echo $lang["viewallresults"]?></a>
 	|
-	<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/edit.php?ref=<?php echo $ref?>&amp;search=<?php echo urlencode($search)?>&amp;offset=<?php echo $offset?>&amp;order_by=<?php echo $order_by?>&amp;sort=<?php echo $sort?>&amp;archive=<?php echo $archive?>&amp;go=next"><?php echo 		$lang["nextresult"]?>&nbsp;&gt;</a>
+	<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/edit.php?ref=<?php echo urlencode($ref) ?>&amp;search=<?php echo urlencode($search)?>&amp;offset=<?php echo urlencode($offset) ?>&amp;order_by=<?php echo urlencode($order_by) ?>&amp;sort=<?php echo urlencode($sort) ?>&amp;archive=<?php echo urlencode($archive) ?>&amp;go=next"><?php echo 		$lang["nextresult"]?>&nbsp;&gt;</a>
 	</div>
 	<?php
 	}
@@ -323,7 +323,7 @@ function EditNav() # Create a function so this can be repeated at the end of the
 ?>
 </script>
 
-<form method="post" action="<?php echo $baseurl_short?>pages/edit.php?ref=<?php echo $ref?>&amp;uploader=<?php echo getval("uploader","") ?>&amp;single=<?php echo getval("single","") ?>&amp;local=<?php echo getval("local","") ?>&amp;search=<?php echo urlencode($search)?>&amp;offset=<?php echo $offset?>&amp;order_by=<?php echo $order_by?>&amp;sort=<?php echo $sort?>&amp;archive=<?php echo $archive?>&amp;collection=<?php echo $collection ?>&amp;metadatatemplate=<?php echo getval("metadatatemplate","") ?>" id="mainform">
+<form method="post" action="<?php echo $baseurl_short?>pages/edit.php?ref=<?php echo urlencode($ref) ?>&amp;uploader=<?php echo getval("uploader","") ?>&amp;single=<?php echo getval("single","") ?>&amp;local=<?php echo getval("local","") ?>&amp;search=<?php echo urlencode($search)?>&amp;offset=<?php echo urlencode($offset) ?>&amp;order_by=<?php echo urlencode($order_by) ?>&amp;sort=<?php echo urlencode($sort) ?>&amp;archive=<?php echo urlencode($archive) ?>&amp;collection=<?php echo $collection ?>&amp;metadatatemplate=<?php echo getval("metadatatemplate","") ?>" id="mainform">
 <div class="BasicsBox">
 <input name="save" type="submit" value="&nbsp;&nbsp;<?php echo $lang["next"]?>&nbsp;&nbsp;" class="defaultbutton" />
 <input type="hidden" name="submitted" value="true">
@@ -336,7 +336,7 @@ echo ($qty==1 ? $lang["resources_selected-1"] : str_replace("%number", $qty, $la
 echo text("multiple"); ?></p>
 
 <?php } elseif ($ref>0) { ?>
-<p><a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>" onClick="return CentralSpaceLoad(this,true);">&lt; <?php echo $lang["backtoresourceview"]?></a></p>
+<p><a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo urlencode($ref) ?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset) ?>&order_by=<?php echo urlencode($order_by) ?>&sort=<?php echo urlencode($sort) ?>&archive=<?php echo urlencode($archive) ?>" onClick="return CentralSpaceLoad(this,true);">&lt; <?php echo $lang["backtoresourceview"]?></a></p>
 
 <h1 id="editresource"><?php echo $lang["editresource"]?></h1>
 
@@ -348,7 +348,7 @@ if (!$multiple) { EditNav(); }
 
 <div class="Question" id="resource_ref_div" style="border-top:none;">
 <label><?php echo $lang["resourceid"]?></label>
-<div class="Fixed"><?php echo $ref?></div>
+<div class="Fixed"><?php echo urlencode($ref) ?></div>
 <div class="clearerleft"> </div>
 </div>
 
@@ -373,17 +373,17 @@ else
 if ($resource["file_extension"]!="") { ?><strong><?php echo str_replace_formatted_placeholder("%extension", $resource["file_extension"], $lang["cell-fileoftype"]) . " (" . formatfilesize(@filesize_unlimited(get_resource_path($ref,true,"",false,$resource["file_extension"]))) . ")" ?></strong><br /><?php } ?>
 
 	<?php if ($resource["has_image"]!=1) { ?>
-	<a href="<?php echo $baseurl_short?>pages/upload.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&upload_a_file=true" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["uploadafile"]?></a>
+	<a href="<?php echo $baseurl_short?>pages/upload.php?ref=<?php echo urlencode($ref) ?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset) ?>&order_by=<?php echo urlencode($order_by) ?>&sort=<?php echo urlencode($sort) ?>&archive=<?php echo urlencode($archive) ?>&upload_a_file=true" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["uploadafile"]?></a>
 	<?php } else { ?>
-	<a href="<?php echo $baseurl_short?>pages/upload_<?php echo $top_nav_upload_type ?>.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&replace_resource=<?php echo $ref ?>&resource_type=<?php echo $resource['resource_type']?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["replacefile"]?></a>
+	<a href="<?php echo $baseurl_short?>pages/upload_<?php echo $top_nav_upload_type ?>.php?ref=<?php echo urlencode($ref) ?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset) ?>&order_by=<?php echo urlencode($order_by) ?>&sort=<?php echo urlencode($sort) ?>&archive=<?php echo urlencode($archive) ?>&replace_resource=<?php echo urlencode($ref)  ?>&resource_type=<?php echo $resource['resource_type']?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["replacefile"]?></a>
 	<?php hook("afterreplacefile"); ?>
 	<?php } ?>
 	<?php if (! $disable_upload_preview) { ?><br />
-	<a href="<?php echo $baseurl_short?>pages/upload_preview.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["uploadpreview"]?></a><?php } ?>
+	<a href="<?php echo $baseurl_short?>pages/upload_preview.php?ref=<?php echo urlencode($ref) ?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset) ?>&order_by=<?php echo urlencode($order_by) ?>&sort=<?php echo urlencode($sort) ?>&archive=<?php echo urlencode($archive) ?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["uploadpreview"]?></a><?php } ?>
 	<?php if (! $disable_alternative_files) { ?><br />
-	<a href="<?php echo $baseurl_short?>pages/alternative_files.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>"  onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["managealternativefiles"]?></a><?php } ?>
+	<a href="<?php echo $baseurl_short?>pages/alternative_files.php?ref=<?php echo urlencode($ref) ?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset) ?>&order_by=<?php echo urlencode($order_by) ?>&sort=<?php echo urlencode($sort) ?>&archive=<?php echo urlencode($archive) ?>"  onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["managealternativefiles"]?></a><?php } ?>
 	<?php if ($allow_metadata_revert){?><br />
-	<a href="<?php echo $baseurl_short?>pages/edit.php?ref=<?php echo $ref?>&exif=true&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>" onClick="return confirm('<?php echo $lang["confirm-revertmetadata"]?>');">&gt; 
+	<a href="<?php echo $baseurl_short?>pages/edit.php?ref=<?php echo urlencode($ref) ?>&exif=true&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset) ?>&order_by=<?php echo urlencode($order_by) ?>&sort=<?php echo urlencode($sort) ?>&archive=<?php echo urlencode($archive) ?>" onClick="return confirm('<?php echo $lang["confirm-revertmetadata"]?>');">&gt; 
 	<?php echo $lang["action-revertmetadata"]?></a><?php } ?>
 	<?php hook("afterfileoptions"); ?>
 </div>
@@ -478,7 +478,7 @@ onChange="<?php if ($ref>0) { ?>if (confirm('<?php echo $lang["editresourcetypew
 $types=get_resource_types();
 for ($n=0;$n<count($types);$n++)
 	{
-	?><option value="<?php echo $types[$n]["ref"]?>" <?php if ($resource["resource_type"]==$types[$n]["ref"]) {?>selected<?php } ?>><?php echo $types[$n]["name"]?></option><?php
+	?><option value="<?php echo $types[$n]["ref"]?>" <?php if ($resource["resource_type"]==$types[$n]["ref"]) {?>selected<?php } ?>><?php echo htmlspecialchars($types[$n]["name"])?></option><?php
 	}
 ?></select>
 <div class="clearerleft"> </div>
@@ -495,7 +495,7 @@ for ($n=0;$n<count($types);$n++)
 $types=get_resource_types();
 for ($n=0;$n<count($types);$n++)
 	{
-	?><option value="<?php echo $types[$n]["ref"]?>" <?php if ($resource["resource_type"]==$types[$n]["ref"]) {?>selected<?php } ?>><?php echo $types[$n]["name"]?></option><?php
+	?><option value="<?php echo $types[$n]["ref"]?>" <?php if ($resource["resource_type"]==$types[$n]["ref"]) {?>selected<?php } ?>><?php echo htmlspecialchars($types[$n]["name"])?></option><?php
 	}
 ?></select>
 <div class="clearerleft"> </div>
@@ -529,7 +529,7 @@ if (isset($metadata_template_resource_type) && !$multiple && !checkperm("F*"))
 	foreach ($templates as $template)
 		{
 		?>
-		<option value="<?php echo $template["ref"] ?>"><?php echo $template["field$metadata_template_title_field"] ?></option>
+		<option value="<?php echo $template["ref"] ?>"><?php echo htmlspecialchars($template["field$metadata_template_title_field"]) ?></option>
 		<?php	
 		}
 	?>
@@ -817,7 +817,7 @@ for ($n=0;$n<count($fields);$n++)
 	
 	if (($fields[$n]["resource_type"]!=$lastrt)&& ($lastrt!=-1))
 		{
-		?><br /><h1 id="resource_type_properties"><?php echo get_resource_type_name($fields[$n]["resource_type"])?> <?php echo $lang["properties"]?></h1><?php
+		?><br /><h1 id="resource_type_properties"><?php echo htmlspecialchars(get_resource_type_name($fields[$n]["resource_type"]))?> <?php echo $lang["properties"]?></h1><?php
 		}
 	$lastrt=$fields[$n]["resource_type"];
 	
@@ -829,7 +829,7 @@ for ($n=0;$n<count($fields);$n++)
 
 	?>
 	<?php if ($multiple && !hook("replace_edit_all_checkbox","",array($fields[$n]["ref"]))) { # Multiple items, a toggle checkbox appears which activates the question
-	?><div><input name="editthis_<?php echo $name?>" id="editthis_<?php echo $n?>" type="checkbox" value="yes" onClick="var q=document.getElementById('question_<?php echo $n?>');var m=document.getElementById('modeselect_<?php echo $n?>');var f=document.getElementById('findreplace_<?php echo $n?>');if (this.checked) {q.style.display='block';m.style.display='block';} else {q.style.display='none';m.style.display='none';f.style.display='none';document.getElementById('modeselectinput_<?php echo $n?>').selectedIndex=0;}">&nbsp;<label for="editthis<?php echo $n?>"><?php echo htmlspecialchars($fields[$n]["title"])?></label></div><?php } ?>
+	?><div><input name="editthis_<?php echo htmlspecialchars($name)?>" id="editthis_<?php echo $n?>" type="checkbox" value="yes" onClick="var q=document.getElementById('question_<?php echo $n?>');var m=document.getElementById('modeselect_<?php echo $n?>');var f=document.getElementById('findreplace_<?php echo $n?>');if (this.checked) {q.style.display='block';m.style.display='block';} else {q.style.display='none';m.style.display='none';f.style.display='none';document.getElementById('modeselectinput_<?php echo $n?>').selectedIndex=0;}">&nbsp;<label for="editthis<?php echo $n?>"><?php echo htmlspecialchars($fields[$n]["title"])?></label></div><?php } ?>
 
 	<?php
 	if ($multiple && !hook("replace_edit_all_mode_select","",array($fields[$n]["ref"])))
@@ -873,7 +873,7 @@ for ($n=0;$n<count($fields);$n++)
 	?>
 
 	<div class="Question" id="question_<?php echo $n?>" <?php if ($multiple || !$displaycondition) {?>style="display:none;border-top:none;"<?php } ?>>
-	<label for="<?php echo $name?>"><?php if (!$multiple) {?><?php echo htmlspecialchars($fields[$n]["title"])?> <?php if (!$is_template && $fields[$n]["required"]==1) { ?><sup>*</sup><?php } ?><?php } ?></label>
+	<label for="<?php echo htmlspecialchars($name)?>"><?php if (!$multiple) {?><?php echo htmlspecialchars($fields[$n]["title"])?> <?php if (!$is_template && $fields[$n]["required"]==1) { ?><sup>*</sup><?php } ?><?php } ?></label>
 
 	<?php
 	# Autosave display
@@ -955,7 +955,7 @@ if ($ref<0) # Upload template.
         {
         # Hide the dropdown, and set the default status.
         ?>
-        <input type=hidden name="archive" id="archive" value="<?php echo $status?>"><?php
+        <input type=hidden name="archive" id="archive" value="<?php echo htmlspecialchars($status)?>"><?php
         }
     }
 else # Edit Resource(s).
@@ -1021,7 +1021,7 @@ if (!checkperm("F*")) # Only display Status / Access / Related Resources if full
             { 
             # Upload template and the status and access fields are configured to be hidden on uploads.
             ?>
-            <input type=hidden name="access" value="<?php echo $resource["access"]?>"><?php
+            <input type=hidden name="access" value="<?php echo htmlspecialchars($resource["access"])?>"><?php
             }
         else
             {
@@ -1176,7 +1176,7 @@ if (!$multiple && $ref>0) {EditNav();}
 		{	
 		?>
 	    <script type="text/javascript">
-	    alert('<?php echo $save_error_message ?>');
+	    alert('<?php echo htmlspecialchars($save_error_message) ?>');
 	    </script><?php
 	    }
     }
