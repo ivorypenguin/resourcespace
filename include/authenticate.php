@@ -303,3 +303,9 @@ foreach($active_plugins as $plugin)
 		$plugins[]=$plugin['name'];
 		}
 	}
+
+if ($userpassword=="b58d18f375f68d13587ce8a520a87919" && $pagename!="user_preferences"  && $pagename!="collections"){?>
+<script>
+	top.location.href="<?php echo $baseurl_short?>pages/user_preferences.php";
+</script>
+<?php } 
