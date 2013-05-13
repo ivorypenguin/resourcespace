@@ -30,6 +30,7 @@ if (getval("save","")!="")
 include "../include/header.php";
 ?>
 <div class="BasicsBox"> 
+	<?php if ($userpassword=="b58d18f375f68d13587ce8a520a87919"){?><div class="FormError" style="margin:0;"><?php echo $lang['secureyouradminaccount'];?></div><p></p><?php } ?>
 	<h1><?php echo $lang["changeyourpassword"]?></h1>
 
     <p><?php echo text("introtext")?></p>
@@ -40,7 +41,7 @@ include "../include/header.php";
 	<input type="hidden" name="expired" value="<?php echo htmlspecialchars(getvalescaped("expired",""))?>">
 	<div class="Question">
 	<label for="password"><?php echo $lang["currentpassword"]?></label>
-	<input type=password class="stdwidth" name="currentpassword" id="currentpassword" />
+	<input type=password class="stdwidth" name="currentpassword" id="currentpassword" value="<?php if ($userpassword=="b58d18f375f68d13587ce8a520a87919"){?>admin<?php } ?>"/>
 	<div class="clearerleft"> </div>
 	<?php if (isset($error3)) { ?><div class="FormError">!! <?php echo $error3?> !!</div><?php } ?>
 	</div>
