@@ -114,15 +114,15 @@ include ("../include/search_title_processing.php");
 <script type="text/javascript">
 function ReorderResources(id1,id2)
     {
-    CentralSpaceLoad('<?php echo $baseurl_short?>pages/preview_all.php?reorder=' + id1 + '-' + id2+'&ref=<?php echo $colref?>&vertical=<?php echo $vertical?>&search=<?php echo urlencode($search)?>&order_by=<?php echo $order_by?>&archive=<?php echo $archive?>&k=<?php echo $k?>&sort=<?php echo $sort?>');
-    CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?ref=<?php echo $colref?>');
+    CentralSpaceLoad('<?php echo $baseurl_short?>pages/preview_all.php?reorder=' + id1 + '-' + id2+'&ref=<?php echo urlencode($colref)?>&vertical=<?php echo urlencode($vertical)?>&search=<?php echo urlencode($search)?>&order_by=<?php echo urlencode($order_by)?>&archive=<?php echo urlencode($archive)?>&k=<?php echo urlencode($k)?>&sort=<?php echo urlencode($sort)?>');
+    CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?ref=<?php echo urlencode($colref)?>');
     }
 </script>
 <br/>
 <table id="preview_all_table" style="width:100%;">
-<tr><p style="margin:7px 0 7px 0;padding:0;"><a class="enterLink" href="<?php if ($backto!=''){echo $backto;} else { echo $baseurl_short.'pages/search';}?>.php?search=%21collection<?php echo $colref?>&order_by=<?php echo $order_by?>&col_order_by=<?php echo $col_order_by?>&sort=<?php echo $sort?>&k=<?php echo $k?>">&lt; <?php echo $lang["backtoresults"]?></a>
-&nbsp;&nbsp;<a href="<?php echo $baseurl_short?>pages/preview_all.php?backto=<?php echo $backto?>&ref=<?php echo $colref?>&vertical=h&offset=<?php echo $offset?>&search=<?php echo urlencode($search)?>&order_by=<?php echo $order_by?>&col_order_by=<?php echo $col_order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&k=<?php echo $k?>">&gt; <?php echo $lang["horizontal"]; ?> </a>
-&nbsp;&nbsp;<a href="<?php echo $baseurl_short?>pages/preview_all.php?backto=<?php echo $backto?>&ref=<?php echo $colref?>&vertical=v&offset=<?php echo $offset?>&search=<?php echo urlencode($search)?>&order_by=<?php echo $order_by?>&col_order_by=<?php echo $col_order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&k=<?php echo $k?>">&gt; <?php echo $lang["vertical"]; ?> </a>
+<tr><p style="margin:7px 0 7px 0;padding:0;"><a class="enterLink" href="<?php if ($backto!=''){echo urlencode($backto);} else { echo $baseurl_short.'pages/search';}?>.php?search=%21collection<?php echo urlencode($colref)?>&order_by=<?php echo urlencode($order_by)?>&col_order_by=<?php echo urlencode($col_order_by)?>&sort=<?php echo urlencode($sort)?>&k=<?php echo urlencode($k)?>">&lt; <?php echo $lang["backtoresults"]?></a>
+&nbsp;&nbsp;<a href="<?php echo $baseurl_short?>pages/preview_all.php?backto=<?php echo urlencode($backto)?>&ref=<?php echo urlencode($colref)?>&vertical=h&offset=<?php echo urlencode($offset)?>&search=<?php echo urlencode($search)?>&order_by=<?php echo urlencode($order_by)?>&col_order_by=<?php echo urlencode($col_order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>&k=<?php echo urlencode($k)?>">&gt; <?php echo $lang["horizontal"]; ?> </a>
+&nbsp;&nbsp;<a href="<?php echo $baseurl_short?>pages/preview_all.php?backto=<?php echo urlencode($backto)?>&ref=<?php echo urlencode($colref)?>&vertical=v&offset=<?php echo urlencode($offset)?>&search=<?php echo urlencode($search)?>&order_by=<?php echo urlencode($order_by)?>&col_order_by=<?php echo urlencode($col_order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>&k=<?php echo urlencode($k)?>">&gt; <?php echo $lang["vertical"]; ?> </a>
 </tr>
 
 <?php if (!$collections_compact_style){
@@ -197,11 +197,11 @@ if (!file_exists($path))
 ?>
     
 <?php if ($vertical=="v"){
-if (!hook("replacepreviewalltitle")){ ?><a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $result[$x]['ref']?>&search=<?php echo $search?>&order_by=<?php echo $order_by?>&archive=<?php echo $archive?>&k=<?php echo $k?>&sort=<?php echo $sort?>">&nbsp;<?php echo i18n_get_translated($result[$x]['field'.$view_title_field])?></a><?php } /* end hook replacepreviewalltitle */?></tr><tr><?php }else { ?>
+if (!hook("replacepreviewalltitle")){ ?><a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $result[$x]['ref']?>&search=<?php echo urlencode($search)?>&order_by=<?php echo urlencode($order_by)?>&archive=<?php echo urlencode($archive)?>&k=<?php echo urlencode($k)?>&sort=<?php echo urlencode($sort)?>">&nbsp;<?php echo i18n_get_translated($result[$x]['field'.$view_title_field])?></a><?php } /* end hook replacepreviewalltitle */?></tr><tr><?php }else { ?>
 <td style="padding:10px;"><?php } ?>
 	
-	<div class="ResourceShel_" id="ResourceShel_<?php echo $ref?>">
-	<?php if ($vertical=="h"){?>&nbsp;<?php if (!hook("replacepreviewalltitle")){ ?><a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $result[$x]['ref']?>&search=<?php echo $search?>&order_by=<?php echo $order_by?>&archive=<?php echo $archive?>&k=<?php echo $k?>&sort=<?php echo $sort?>"><?php echo i18n_get_translated($result[$x]['field'.$view_title_field])?></a><?php } /* end hook replacepreviewalltitle */?><br/><?php } ?>
+	<div class="ResourceShel_" id="ResourceShel_<?php echo htmlspecialchars($ref)?>">
+	<?php if ($vertical=="h"){?>&nbsp;<?php if (!hook("replacepreviewalltitle")){ ?><a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $result[$x]['ref']?>&search=<?php echo urlencode($search)?>&order_by=<?php echo urlencode($order_by)?>&archive=<?php echo urlencode($archive)?>&k=<?php echo urlencode($k)?>&sort=<?php echo urlencode($sort)?>"><?php echo i18n_get_translated($result[$x]['field'.$view_title_field])?></a><?php } /* end hook replacepreviewalltitle */?><br/><?php } ?>
 	<?php $imageinfo = getimageSize( $path ); 
 	$imageheight=$imageinfo[1];?>
     <?php $flvfile=get_resource_path($ref,true,"pre",false,$ffmpeg_preview_extension);
@@ -219,7 +219,7 @@ if (!(isset($resource['is_transcoding']) && $resource['is_transcoding']==1) && f
 		// leave preview to the custom mp3 player
 		}	
     else{?>
-<?php if (!$allow_reorder){?><a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $result[$x]['ref']?>&search=<?php echo $search?>&order_by=<?php echo $order_by?>&archive=<?php echo $archive?>&k=<?php echo $k?>&sort=<?php echo $sort?>"><?php } //end if !reorder?><img class="Picture<?php if (!$border){?>Doc<?php } ?>" id="image<?php echo $ref?>" imageheight="<?php echo $imageheight?>" src="<?php echo $url?>" alt="" style="height:<?php echo $height?>px;" /><?php if (!$allow_reorder){?></a><?php } //end if !reorder?><br/><br/>
+<?php if (!$allow_reorder){?><a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $result[$x]['ref']?>&search=<?php echo urlencode($search)?>&order_by=<?php echo urlencode($order_by)?>&archive=<?php echo urlencode($archive)?>&k=<?php echo urlencode($k)?>&sort=<?php echo urlencode($sort)?>"><?php } //end if !reorder?><img class="Picture<?php if (!$border){?>Doc<?php } ?>" id="image<?php echo htmlspecialchars($ref)?>" imageheight="<?php echo $imageheight?>" src="<?php echo $url?>" alt="" style="height:<?php echo $height?>px;" /><?php if (!$allow_reorder){?></a><?php } //end if !reorder?><br/><br/>
 <?php } ?>
 <?php if ($search_titles){$heightmod=150;} else {$heightmod=120;}
 if ($collections_compact_style){$heightmod=$heightmod+20;}?>
@@ -228,20 +228,20 @@ var maxheight=window.innerHeight-<?php echo $heightmod?>;
 if (isNaN(maxheight)){maxheight=document.documentElement.clientHeight-<?php echo $heightmod?>;}
 if (maxheight><?php echo $imageheight?>){
 	
-	document.getElementById('image<?php echo $ref?>').style.height='<?php echo $imageheight?>px';}
-	else { document.getElementById('image<?php echo $ref?>').style.height=maxheight+'px';} </script>
+	document.getElementById('image<?php echo htmlspecialchars($ref)?>').style.height='<?php echo $imageheight?>px';}
+	else { document.getElementById('image<?php echo htmlspecialchars($ref)?>').style.height=maxheight+'px';} </script>
 </div></div>
 <?php if ($allow_reorder) { 
 		# Javascript drag/drop enabling.
 		?>
 		<script type="text/javascript">
 			jQuery(document).ready(function() {
-				jQuery('#ResourceShel_<?php echo $ref?>').draggable({ handle: ".ResourceShel_", revert: true });
-				jQuery('#ResourceShel_<?php echo $ref?>').droppable({
+				jQuery('#ResourceShel_<?php echo htmlspecialchars($ref)?>').draggable({ handle: ".ResourceShel_", revert: true });
+				jQuery('#ResourceShel_<?php echo htmlspecialchars($ref)?>').droppable({
 					accept: ".ResourceShel_",
 					hoverclass: 'ReorderHover',
 					drop: function(event, ui) {
-						ReorderResources(ui.draggable.attr("id").substring(13),<?php echo $ref?>,1);
+						ReorderResources(ui.draggable.attr("id").substring(13),<?php echo htmlspecialchars($ref)?>,1);
 					}
 				});
 			});
@@ -258,7 +258,7 @@ if (maxheight><?php echo $imageheight?>){
 
 <script type="text/javascript">
 <?php if ($preview_all_hide_collections){ ?>
-	CollectionDivLoad("<?php echo $baseurl ?>/pages/collections.php?ref=<?php echo $ref ?>&search=<?php echo $search?>&order_by=<?php echo $order_by?>&archive=<?php echo $archive?>&k=<?php echo $k?>&sort=<?php echo $sort?>&thumbs=hide");
+	CollectionDivLoad("<?php echo $baseurl ?>/pages/collections.php?ref=<?php echo urlencode($ref) ?>&search=<?php echo urlencode($search)?>&order_by=<?php echo urlencode($order_by)?>&archive=<?php echo urlencode($archive)?>&k=<?php echo urlencode($k)?>&sort=<?php echo urlencode($sort)?>&thumbs=hide");
 <?php } ?>
 
 	window.onresize=function(event){

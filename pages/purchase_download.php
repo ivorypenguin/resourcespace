@@ -6,7 +6,7 @@ include "../include/resource_functions.php";
 include "../include/search_functions.php";
 include "../include/collections_functions.php";
 
-$collection=getvalescaped("collection","");
+$collection=getvalescaped("collection","",true);
 
 # Reload collection frame to show new (empty) basket
 refresh_collection_frame($usercollection);
@@ -57,7 +57,7 @@ else
 		$title=get_data_by_field($resource["ref"],$view_title_field);
 		?><td><h2><?php echo i18n_get_translated($title) ?></h2></td>
 		<td class="DownloadButton">
-		<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/download.php?ref=<?php echo $resource["ref"] ?>&size=<?php echo $size ?>"><?php echo $lang["action-download"]?></a>
+		<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/download.php?ref=<?php echo urlencode($resource["ref"]) ?>&size=<?php echo $size ?>"><?php echo $lang["action-download"]?></a>
 		</td>
 		</tr><?php	
 		}
