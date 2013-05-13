@@ -30,8 +30,8 @@ function perform_login()
 	# This may change the $username, $password, and $password_hash
     hook("externalauth","",array($username, $password)); #Attempt external auth if configured
 
-	$session_hash=md5($password_hash . $username . $password . time());
-	if ($enable_remote_apis){$session_hash=md5($password_hash.$username.time());} // no longer necessary to omit password in this hash for api support
+	# Generate a new session hash.
+	$session_hash=generate_session_hash();
 
 	$valid=sql_query("select ref,usergroup from user where username='".escape_check($username)."' and (password='".escape_check($password)."' or password='".escape_check($password_hash)."')");
 
@@ -118,4 +118,15 @@ function build_user_cookie($username, $session_hash)
 	{
 	return $username . '|' . $session_hash;
 	}
+	
+function generate_session_hash()
+	{
+	# Generates a unique session hash
+	while (true)
+		{
+		$session=md5(rand() . microtime());
+		if (sql_value("select count(*) value from user where session='" . escape_check($session) . "'",0)==0) {return $session;} # Return a unique hash only.
+		}	
+	}
+	
 ?>

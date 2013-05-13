@@ -944,6 +944,10 @@ $max_login_attempts_per_username=5;
 # How long the user must wait after failing the login $max_login_attempts_per_ip or $max_login_attempts_per_username times.
 $max_login_attempts_wait_minutes=10;
 
+# How long to wait (in seconds) before returning a 'password incorrect' message (for logins) or 'e-mail not found' message (for the request new password page)
+# This can help to deter 'brute force' attacks, trying to find user's passwords or e-mail addresses in use.
+$password_brute_force_delay=4;
+
 # Use imperial instead of metric for the download size guidelines
 $imperial_measurements=false;
 

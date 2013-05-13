@@ -64,8 +64,9 @@ elseif (array_key_exists("username",$_POST) && getval("langupdate","")=="")
 		# Set the session cookie.
 		if ($global_cookies){$cookie_path="/";setcookie("user","",1);} 
 		else {$cookie_path="";setcookie("user","",1,"/");}
-			
-		setcookie("user",$username . "|" . $result['session_hash'],$expires,$cookie_path);
+		
+		# Set user cookie, setting secure only flag if a HTTPS site, and also setting the HTTPOnly flag so this cookie cannot be probed by scripts (mitigating potential XSS vuln.)
+		setcookie("user",$result['session_hash'],$expires,$cookie_path,"",substr($baseurl,0,5)=="https",true);
 
         # Set default resource types
         setcookie("restypes",$default_res_types);
@@ -79,8 +80,10 @@ elseif (array_key_exists("username",$_POST) && getval("langupdate","")=="")
         }
     else
         {
+        sleep($password_brute_force_delay);
+        
 		$error=$result['error'];
-                hook("dispcreateacct");
+        hook("dispcreateacct");
         }
     }
 }
@@ -88,9 +91,8 @@ elseif (array_key_exists("username",$_POST) && getval("langupdate","")=="")
 if ((getval("logout","")!="") && array_key_exists("user",$_COOKIE))
     {
     #fetch username and update logged in status
-    $s=explode("|",$_COOKIE["user"]);
-    $username=escape_check($s[0]);
-    sql_query("update user set logged_in=0,session='' where username='$username'");
+    $session=escape_check($_COOKIE["user"]);
+    sql_query("update user set logged_in=0,session='' where session='$session'");
         
     #blank cookie
     if ($global_cookies){

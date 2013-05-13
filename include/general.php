@@ -990,9 +990,11 @@ function email_user_welcome($email,$username,$password,$usergroup)
 
 function email_reminder($email)
 	{
+	# Send a password reminder.
+	global $password_brute_force_delay;
 	if ($email=="") {return false;}
 	$details=sql_query("select username from user where email like '$email' and approved=1");
-	if (count($details)==0) {return false;}
+	if (count($details)==0) {sleep($password_brute_force_delay);return false;}
 	$details=$details[0];
 	global $applicationname,$email_from,$baseurl,$lang,$email_url_remind_user;
 	$password=make_password();

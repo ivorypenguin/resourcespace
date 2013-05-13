@@ -75,29 +75,26 @@ function ip_matches($ip, $ip_restrict)
 
 if (array_key_exists("user",$_COOKIE) || array_key_exists("user",$_GET) || isset($anonymous_login) && !$api || hook('provideusercredentials'))
     {
+    $username="";
 	if (array_key_exists("user",$_GET))
 		{
-	    $s=explode("|",$_GET["user"]);
-        $username=escape_check($s[0]);
-	    $session_hash=escape_check($s[1]);
+	    $session_hash=escape_check($_GET["user"]);
 		}
-  elseif (array_key_exists("user",$_COOKIE))
-  	{
-    $s=explode("|",$_COOKIE["user"]);
-      $username=escape_check($s[0]);
-    $session_hash=escape_check($s[1]);
-    }
-	else if (isset($anonymous_login))
+	elseif (array_key_exists("user",$_COOKIE))
+  		{
+	  	$session_hash=escape_check($_COOKIE["user"]);
+	  	}
+	elseif (isset($anonymous_login))
 		{
 		$username=$anonymous_login;
 		$session_hash="";
 		}
 
-	$hashsql="and u.session='$session_hash'";
-	if (isset($anonymous_login) && ($username==$anonymous_login)) {$hashsql="";} # Automatic anonymous login, do not require session hash.
+	$user_select_sql="and u.session='$session_hash'";
+	if (isset($anonymous_login) && ($username==$anonymous_login)) {$user_select_sql="and u.username='$username'";} # Automatic anonymous login, do not require session hash.
 	hook('provideusercredentials');
 
-    $userdata=sql_query("select u.ref, u.username, g.permissions, g.fixed_theme, g.parent, u.usergroup, u.current_collection, u.last_active, timestampdiff(second,u.last_active,now()) idle_seconds,u.email, u.password, u.fullname, g.search_filter, g.edit_filter, g.ip_restrict ip_restrict_group, g.name groupname, u.ip_restrict ip_restrict_user, resource_defaults, u.password_last_change,g.config_options,g.request_mode from user u,usergroup g where u.usergroup=g.ref and u.username='$username' $hashsql and u.approved=1 and (u.account_expires is null or u.account_expires='0000-00-00 00:00:00' or u.account_expires>now())");
+    $userdata=sql_query("select u.ref, u.username, g.permissions, g.fixed_theme, g.parent, u.usergroup, u.current_collection, u.last_active, timestampdiff(second,u.last_active,now()) idle_seconds,u.email, u.password, u.fullname, g.search_filter, g.edit_filter, g.ip_restrict ip_restrict_group, g.name groupname, u.ip_restrict ip_restrict_user, resource_defaults, u.password_last_change,g.config_options,g.request_mode from user u,usergroup g where u.usergroup=g.ref $user_select_sql and u.approved=1 and (u.account_expires is null or u.account_expires='0000-00-00 00:00:00' or u.account_expires>now())");
     if (count($userdata)>0)
         {
         $valid=true;
