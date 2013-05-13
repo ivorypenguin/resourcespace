@@ -268,7 +268,7 @@ if (isset($k) && $k!="" && isset($search) && !isset($usercollection))
 <?php if (!isset($usercollection)){?>
 	usercollection='';
 <?php } else { ?>
-	usercollection='<?php echo $usercollection?>';
+	usercollection='<?php echo htmlspecialchars($usercollection) ?>';
 <?php } ?>
 </script><?php 
 
@@ -279,7 +279,7 @@ if (isset($k) && $k!="" && isset($search) && !isset($usercollection))
 	<?php if (!isset($thumbs)){$thumbs=getval("thumbs",$thumbs_default);}?>
 
 function setContent() {
-	thumbs="<?php echo $thumbs?>";	
+	thumbs="<?php echo htmlspecialchars($thumbs) ?>";	
 	myLayout=jQuery('body').layout({
 		//closable:false,
 		resizable:true,livePaneResizing:true,triggerEventsDuringLiveResize: false,
@@ -291,10 +291,10 @@ function setContent() {
 		south__onclose_start: function(pane){
 			if (pane=="south"){
 			if(jQuery('.ui-layout-south').height()>=<?php echo $collection_frame_height?> && thumbs!="hide"){
-				CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=hide&collection='+usercollection+'<?php echo (isset($k)) ? "&k=$k" : ""; ?>');
+				CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=hide&collection='+usercollection+'<?php echo urlencode((isset($k)) ? "&k=$k" : ""); ?>');
 				document.cookie = "thumbs=hide";
 			} else if(jQuery('.ui-layout-south').height()==40 && thumbs=="hide"){
-				CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=show&collection='+usercollection+'<?php echo (isset($k)) ? "&k=$k" : ""; ?>');
+				CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=show&collection='+usercollection+'<?php echo urlencode((isset($k)) ? "&k=$k" : ""); ?>');
 				document.cookie = "thumbs=show";
 			}
 			return false;
@@ -304,10 +304,10 @@ function setContent() {
 			if (pane=="south"){
 			if(jQuery('.ui-layout-south').height()<<?php echo $collection_frame_height?> && thumbs!="hide"){
 				document.cookie = "thumbs=hide";
-				CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=hide&collection='+usercollection+'<?php echo (isset($k)) ? "&k=$k" : ""; ?>');
+				CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=hide&collection='+usercollection+'<?php echo urlencode((isset($k)) ? "&k=$k" : ""); ?>');
 			} else if(jQuery('.ui-layout-south').height()>40 && thumbs=="hide"){
 				document.cookie = "thumbs=show";
-				CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=show&collection='+usercollection+'<?php echo (isset($k)) ? "&k=$k" : ""; ?>');
+				CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=show&collection='+usercollection+'<?php echo urlencode((isset($k)) ? "&k=$k" : ""); ?>');
 			}return false;
 			}
 		}
@@ -318,7 +318,7 @@ function setContent() {
 }
 
 window.onload = function() {
-    setContent(); CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=<?php echo $thumbs; ?>&collection='+usercollection+'<?php echo (isset($k)) ? "&k=$k" : ""; ?>');}
+    setContent(); CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=<?php echo urlencode($thumbs); ?>&collection='+usercollection+'<?php echo urlencode((isset($k)) ? "&k=$k" : ""); ?>');}
 </script>
 <?php } // end omit_collectiondiv_load_pages ?>	
 

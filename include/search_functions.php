@@ -1094,14 +1094,14 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
 			echo "title=\"" . htmlspecialchars(lang_or_i18n_get_translated($field["tooltip_text"], "fieldtooltip-")) . "\"";
 			}
 		?>>
-		<label><?php echo lang_or_i18n_get_translated($field["title"], "fieldtitle-")?></label>
+		<label><?php echo htmlspecialchars(lang_or_i18n_get_translated($field["title"], "fieldtitle-")) ?></label>
 		<?php
 		}
 	else
 		{
 		?>
 		<div class="SearchItem">
-		<?php echo lang_or_i18n_get_translated($field["title"], "fieldtitle-")?></br>
+		<?php echo htmlspecialchars(lang_or_i18n_get_translated($field["title"], "fieldtitle-")) ?></br>
 		<?php
 		}
 
@@ -1202,7 +1202,7 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
 							if ($option!="")
 								{
 								?>
-								<td valign=middle><input type=checkbox id="<?php echo $name?>" name="<?php echo $name?>" value="yes" <?php if (in_array(cleanse_string($trans,true),$set)) {?>checked<?php } ?> <?php if ($autoupdate) { ?>onClick="UpdateResultCount();"<?php } ?>></td><td valign=middle><?php echo htmlspecialchars($trans)?>&nbsp;&nbsp;</td>
+								<td valign=middle><input type=checkbox id="<?php echo htmlspecialchars($name) ?>" name="<?php echo ($name) ?>" value="yes" <?php if (in_array(cleanse_string($trans,true),$set)) {?>checked<?php } ?> <?php if ($autoupdate) { ?>onClick="UpdateResultCount();"<?php } ?>></td><td valign=middle><?php echo htmlspecialchars($trans)?>&nbsp;&nbsp;</td>
 
 								<?php
 								}
@@ -1228,7 +1228,7 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
 					if ($option!="")
 						{
 						?>
-						<td valign=middle><input type=checkbox id="<?php echo $name?>" name="<?php echo $name?>" value="yes" <?php if (in_array(cleanse_string(i18n_get_translated($option),true),$set)) {?>checked<?php } ?> <?php if ($autoupdate) { ?>onClick="UpdateResultCount();"<?php } ?>></td><td valign=middle><?php echo htmlspecialchars($trans)?>&nbsp;&nbsp;</td>
+						<td valign=middle><input type=checkbox id="<?php echo htmlspecialchars($name) ?>" name="<?php echo htmlspecialchars($name) ?>" value="yes" <?php if (in_array(cleanse_string(i18n_get_translated($option),true),$set)) {?>checked<?php } ?> <?php if ($autoupdate) { ?>onClick="UpdateResultCount();"<?php } ?>></td><td valign=middle><?php echo htmlspecialchars($trans)?>&nbsp;&nbsp;</td>
 						<?php
 						}
 					}
@@ -1264,7 +1264,7 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
 			?>
 			<!--  date range search start -->			
 			<div><label><?php echo $lang["fromdate"]?></label>
-			<select name="<?php echo $name?>_startyear" class="SearchWidth" style="width:100px;" <?php if ($autoupdate) { ?>onChange="UpdateResultCount();"<?php } ?>>
+			<select name="<?php echo htmlspecialchars($name) ?>_startyear" class="SearchWidth" style="width:100px;" <?php if ($autoupdate) { ?>onChange="UpdateResultCount();"<?php } ?>>
 			  <option value=""><?php echo $lang["anyyear"]?></option>
 			  <?php
 			  $y=date("Y");
@@ -1392,7 +1392,7 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
 					{
 					# Found a first level
 					?>
-					<option <?php if (in_array(cleanse_string($s[2],true),$set)) {?>selected<?php } ?>><?php echo $s[2] ?></option>
+					<option <?php if (in_array(cleanse_string($s[2],true),$set)) {?>selected<?php } ?>><?php echo htmlspecialchars($s[2]) ?></option>
 					<?php
 					
 					# Parse tree again looking for level twos at this point
@@ -1403,7 +1403,7 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
 							{
 							# Found a first level
 							?>
-							<option value="<?php echo $s[2] . "," . $v[2] ?>" <?php if (in_array(cleanse_string($s[2],true),$set) && in_array(cleanse_string($v[2],true),$set)) {?>selected<?php } ?>>&nbsp;-&nbsp;<?php echo $v[2] ?></option>
+							<option value="<?php echo htmlspecialchars($s[2]) . "," . htmlspecialchars($v[2]) ?>" <?php if (in_array(cleanse_string($s[2],true),$set) && in_array(cleanse_string($v[2],true),$set)) {?>selected<?php } ?>>&nbsp;-&nbsp;<?php echo htmlspecialchars($v[2]) ?></option>
 							<?php
 							}						
 						}

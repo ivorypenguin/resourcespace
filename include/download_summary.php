@@ -36,7 +36,7 @@ foreach ($download_summary as $usage)
 		{
 		?>
 		<tr class="DownloadDBlend" >
-		<td><?php echo $download_usage_options[$usage["usageoption"]]?></td>
+		<td><?php echo htmlspecialchars($download_usage_options[$usage["usageoption"]]) ?></td>
 		<td width="20%"><?php echo $usage["c"]?></th>		
 		</tr>
 		<?php

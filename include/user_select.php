@@ -15,7 +15,7 @@ if ($userstring=="") {$userstring=$default_user_select;}
 <!-- -->
 
 <!-- user string -->
-<tr><td colspan="2" align="left"><textarea rows=6 class="stdwidth" name="users" id="users" <?php if (!$sharing_userlists){?>onChange="this.value=this.value.replace(/[^,] /g,function replacespaces(str) {return str.substring(0,1) + ', ';});"<?php } else { ?>onChange="addUser();checkUserlist();updateUserSelect();"<?php } ?>><?php echo $userstring; ?></textarea></td></tr>
+<tr><td colspan="2" align="left"><textarea rows=6 class="stdwidth" name="users" id="users" <?php if (!$sharing_userlists){?>onChange="this.value=this.value.replace(/[^,] /g,function replacespaces(str) {return str.substring(0,1) + ', ';});"<?php } else { ?>onChange="addUser();checkUserlist();updateUserSelect();"<?php } ?>><?php echo htmlspecialchars($userstring); ?></textarea></td></tr>
 <!-- -->
 
 
@@ -129,7 +129,7 @@ function checkUserlist()
 
 function saveUserList()
 	{
-	var parameters = 'userref=<?php echo $userref?>&userstring='+ document.getElementById("users").value+'&userlistname='+document.getElementById("userlist_name_value").value;
+	var parameters = 'userref=<?php echo htmlspecialchars($userref) ?>&userstring='+ document.getElementById("users").value+'&userlistname='+document.getElementById("userlist_name_value").value;
 	jQuery.ajax("<?php echo $baseurl?>/pages/ajax/userlist_save.php",
 		{
 		data: parameters,
@@ -163,7 +163,7 @@ function deleteUserList()
 
 function updateUserSelect()
 	{
-	var parameters = 'userref=<?php echo $userref?>&userstring='+document.getElementById("users").value;
+	var parameters = 'userref=<?php echo htmlspecialchars($userref) ?>&userstring='+document.getElementById("users").value;
 	jQuery("#userlist_select").load("<?php echo $baseurl?>/pages/ajax/userlist_select_update.php",
 		
 		parameters,

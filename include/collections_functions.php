@@ -229,13 +229,13 @@ function refresh_collection_frame($collection="")
     if (getvalescaped("ajax",false))
 	{
 	echo "<script  type=\"text/javascript\">
-	CollectionDivLoad(\"" . $baseurl . "/pages/collections.php" . ((getval("k","")!="")?"?collection=" . getval("collection",$collection) . "&k=" . getval("k","") . "&":"?") . "nc=" . time() . "\");	
+	CollectionDivLoad(\"" . $baseurl . "/pages/collections.php" . ((getval("k","")!="")?"?collection=" . urlencode(getval("collection",$collection)) . "&k=" . urlencode(getval("k","")) . "&":"?") . "nc=" . time() . "\");	
 	</script>";
 	}
     else
 	{
 	$headerinsert.="<script  type=\"text/javascript\">
-	CollectionDivLoad(\"" . $baseurl . "/pages/collections.php" . ((getval("k","")!="")?"?collection=" . getval("collection",$collection) . "&k=" . getval("k","") . "&":"?") . "nc=" . time() . "\");
+	CollectionDivLoad(\"" . $baseurl . "/pages/collections.php" . ((getval("k","")!="")?"?collection=" . urlencode(getval("collection",$collection)) . "&k=" . urlencode(getval("k","")) . "&":"?") . "nc=" . time() . "\");
 	</script>";
 	}
 
@@ -1550,7 +1550,7 @@ function draw_compact_style_selector($collection,$onhover=true){
 	if ($pagename!="collections"){$hovertag="#CentralSpace";} 
 	if ($pagename=="collections"){$hovertag=".CollectBack";} 
 	
-	?>	<select readonly="readonly" onmouseover="jQuery('#tempoption<?php echo $tag?>').html('<?php echo $lang['loading']?>');if (this.id=='temp<?php echo $tag?>'){jQuery.ajax({type: 'GET',url:  '<?php echo $baseurl_short?>pages/collections_compact_style.php?collection=<?php echo $collection?>&pagename=<?php echo $pagename?>&colselectload=true',success: function(msg){if(msg != 0) {jQuery('#temp<?php echo $tag?>').replaceWith(msg);} }});}" <?php if ($pagename=="collections"){if ($collection_dropdown_user_access_mode){?>class="SearchWidthExp" style="margin:0;"<?php } else { ?> class="SearchWidth" style="margin:0;"<?php } } ?> class="ListDropdown" <?php if ($pagename=="search" && $display=="xlthumbs"){?>style="margin:-5px 0px 0px 5px"<?php } ?> <?php if ($pagename=="search" && ( $display=="thumbs" || $display=="smallthumbs")){?>style="margin:-5px 0px 0px 4px "<?php } ?> id="temp<?php echo $tag?>"><option id="tempoption<?php echo $tag?>"><?php echo $lang['select'];?></option></select><?php
+	?>	<select readonly="readonly" onmouseover="jQuery('#tempoption<?php echo urlencode($tag) ?>').html('<?php echo $lang['loading']?>');if (this.id=='temp<?php echo urlencode($tag) ?>'){jQuery.ajax({type: 'GET',url:  '<?php echo $baseurl_short?>pages/collections_compact_style.php?collection=<?php echo urlencode($collection) ?>&pagename=<?php echo urlencode($pagename) ?>&colselectload=true',success: function(msg){if(msg != 0) {jQuery('#temp<?php echo urlencode($tag) ?>').replaceWith(msg);} }});}" <?php if ($pagename=="collections"){if ($collection_dropdown_user_access_mode){?>class="SearchWidthExp" style="margin:0;"<?php } else { ?> class="SearchWidth" style="margin:0;"<?php } } ?> class="ListDropdown" <?php if ($pagename=="search" && $display=="xlthumbs"){?>style="margin:-5px 0px 0px 5px"<?php } ?> <?php if ($pagename=="search" && ( $display=="thumbs" || $display=="smallthumbs")){?>style="margin:-5px 0px 0px 4px "<?php } ?> id="temp<?php echo urlencode($tag) ?>"><option id="tempoption<?php echo urlencode($tag) ?>"><?php echo $lang['select'];?></option></select><?php
 	
 	// onhover indicates whether this should be immediately loaded or loaded on page hover (to preload these after page load)
 	// NOTE: I've removed this in an attempt to load these only on mouseover select on Desktop in an attempt to eliminate unneeded ajax calls

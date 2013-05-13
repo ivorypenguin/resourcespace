@@ -1797,7 +1797,7 @@ function save_field_options($field)
 function get_resources_matching_keyword($keyword,$field)
 	{
 	# Returns an array of resource references for resources matching the given keyword string.
-	$keyref=resolve_keyword($keyword);echo $keyref;
+	$keyref=resolve_keyword($keyword);
 	return sql_array("select distinct resource value from resource_keyword where keyword='$keyref' and resource_type_field='$field'");
 	}
 	

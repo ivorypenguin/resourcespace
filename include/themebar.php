@@ -19,18 +19,18 @@ onclick="
 var theme_display=get_cookie('theme_<?php echo $n?>');
 if (theme_display=='off'){var toggle_theme_display='on';} else { var toggle_theme_display='off';}
 SetCookie('theme_<?php echo $n?>',toggle_theme_display,1000);
-jQuery('#themebar_<?php echo str_replace(array("\""," "),"",$themename)?>').slideToggle(0.2);
+jQuery('#themebar_<?php echo htmlspecialchars(str_replace(array("\""," "),"",$themename)) ?>').slideToggle(0.2);
 
 
 return false;">                
                
-	<a href='#'><b><?php echo stripslashes(i18n_get_translated(str_replace("*","",$themename)))?></b></a></div>
+	<a href='#'><b><?php echo htmlspecialchars(stripslashes(i18n_get_translated(str_replace("*","",$themename)))) ?></b></a></div>
                
-<div id="themebar_<?php echo str_replace(array("\""," "),"",$themename)?>" style="display:<?php if ($theme_display == 'off'){echo 'none';} else {echo '';}?>" >
+<div id="themebar_<?php echo htmlspecialchars(str_replace(array("\""," "),"",$themename)) ?>" style="display:<?php if ($theme_display == 'off'){echo 'none';} else {echo '';}?>" >
                 <?php
                 for ($m=0;$m<count($themes);$m++)
                         { ?><br>
-                        &nbsp;&nbsp;&nbsp;<a href="<?php echo $baseurl?>/pages/search.php?search=!collection<?php echo $themes[$m]["ref"]?>&bc_from=themes"  title="<?php echo $lang["collectionviewhover"]?>"><?php echo i18n_get_collection_name($themes[$m])?></a>
+                        &nbsp;&nbsp;&nbsp;<a href="<?php echo $baseurl?>/pages/search.php?search=!collection<?php echo $themes[$m]["ref"]?>&bc_from=themes"  title="<?php echo $lang["collectionviewhover"]?>"><?php echo htmlspecialchars(i18n_get_collection_name($themes[$m])) ?></a>
                         <?php
                         }
                 ?><br><br></div><?php
@@ -95,12 +95,12 @@ onclick="
 var smart_theme_display=get_cookie('smart_theme_<?php echo $n?>');
 if (smart_theme_display=='off'){var toggle_smart_theme_display='on';} else { var toggle_smart_theme_display='off';}
 SetCookie('smart_theme_<?php echo $n?>',toggle_smart_theme_display,1000);
-jQuery('#<?php echo $header_name?>').slideToggle(0.2);
+jQuery('#<?php echo htmlspecialchars($header_name) ?>').slideToggle(0.2);
 return false;">
 
-                        <?php echo "<a href='#'><B>".str_replace("*","",i18n_get_translated($headers[$n]["smart_theme_name"]))."</B></a><br>"?></div>
+                        <?php echo "<a href='#'><B>".str_replace("*","",htmlspecialchars(i18n_get_translated($headers[$n]["smart_theme_name"])))."</B></a><br>"?></div>
                
-<div id="<?php echo $header_name?>" style="display:<?php if ($smart_theme_display == 'off'){echo 'none';} else {echo '';}?>" >
+<div id="<?php echo htmlspecialchars($header_name) ?>" style="display:<?php if ($smart_theme_display == 'off'){echo 'none';} else {echo '';}?>" >
                         <?php
                         $themes=get_smart_themes($headers[$n]["ref"],0,true);
 
@@ -117,7 +117,7 @@ return false;">
                                 ?>
                                 <br>
 
-                                <?php echo $indent?><a href="<?php echo $baseurl?>/pages/search.php?search=<?php echo urlencode($s)?>"><?php echo i18n_get_collection_name($themes[$m])?></a>
+                                <?php echo $indent?><a href="<?php echo $baseurl?>/pages/search.php?search=<?php echo urlencode($s)?>"><?php echo htmlspecialchars(i18n_get_collection_name($themes[$m])) ?></a>
                                 <?php
                                 }
                         ?><br><br>

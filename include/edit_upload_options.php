@@ -78,7 +78,7 @@ if ($ref<0)
 				#show only active collections if a start date is set for $active_collections 
 				if (strtotime($list[$n]['created']) > ((isset($active_collections))?strtotime($active_collections):1))
 					{ if ($list[$n]["ref"]==$usercollection) {$currentfound=true;} ?>
-					<option value="<?php echo $list[$n]["ref"]?>" <?php if ($list[$n]['ref']==$collection_add) {?> 	selected<?php } ?>><?php echo i18n_get_collection_name($list[$n])?> <?php if ($collection_dropdown_user_access_mode){echo "(". $colusername."/".$accessmode.")"; } ?></option>
+					<option value="<?php echo $list[$n]["ref"]?>" <?php if ($list[$n]['ref']==$collection_add) {?> 	selected<?php } ?>><?php echo htmlspecialchars(i18n_get_collection_name($list[$n])) ?> <?php if ($collection_dropdown_user_access_mode){echo htmlspecialchars("(". $colusername."/".$accessmode.")"); } ?></option>
 					<?php }
 			
 				}
@@ -90,7 +90,7 @@ if ($ref<0)
 			if ($cc!==false)
 				{$currentfound=true;
 				?>
-				<option value="<?php echo $usercollection?>" <?php if ($usercollection==$collection_add){?>selected <?php } ?>><?php echo i18n_get_collection_name($cc)?></option>
+				<option value="<?php echo htmlspecialchars($usercollection) ?>" <?php if ($usercollection==$collection_add){?>selected <?php } ?>><?php echo htmlspecialchars(i18n_get_collection_name($cc)) ?></option>
 				<?php
 				}
 			}

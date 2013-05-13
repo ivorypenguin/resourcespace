@@ -158,7 +158,7 @@ if (!$basic_simple_search)
 	$clear_function="";
 	for ($n=0;$n<count($types);$n++)
 		{
-		?><div class="tick"><?php if ($searchbar_selectall){ ?>&nbsp;&nbsp;<?php } ?><input class="tickbox" id="TickBox<?php echo $types[$n]["ref"]?>" type="checkbox" name="resource<?php echo $types[$n]["ref"]?>" value="yes" <?php if (((count($rt)==1) && ($rt[0]=="")) || (in_array($types[$n]["ref"],$rt))) {?>checked="true"<?php } ?> onClick="HideInapplicableSimpleSearchFields(true);<?php if ($searchbar_selectall){?>resetTickAll();<?php } ?>"/>&nbsp;<?php echo $types[$n]["name"]?></div><?php	
+		?><div class="tick"><?php if ($searchbar_selectall){ ?>&nbsp;&nbsp;<?php } ?><input class="tickbox" id="TickBox<?php echo $types[$n]["ref"]?>" type="checkbox" name="resource<?php echo $types[$n]["ref"]?>" value="yes" <?php if (((count($rt)==1) && ($rt[0]=="")) || (in_array($types[$n]["ref"],$rt))) {?>checked="true"<?php } ?> onClick="HideInapplicableSimpleSearchFields(true);<?php if ($searchbar_selectall){?>resetTickAll();<?php } ?>"/>&nbsp;<?php echo htmlspecialchars($types[$n]["name"]) ?></div><?php	
 		$clear_function.="document.getElementById('TickBox" . $types[$n]["ref"] . "').checked=true;";
 		if ($searchbar_selectall) {$clear_function.="resetTickAll();";}
 		}
@@ -210,7 +210,7 @@ if (!$basic_simple_search)
 	for ($n=0;$n<count($fields);$n++)
 		{
 		hook("modifysearchfieldtitle");?>
-		<div class="SearchItem" id="simplesearch_<?php echo $fields[$n]["ref"] ?>" <?php if (strlen($fields[$n]["tooltip_text"])>=1){echo "title=\"" . htmlspecialchars(lang_or_i18n_get_translated($fields[$n]["tooltip_text"], "fieldtooltip-")) . "\"";}?>><?php echo $fields[$n]["title"]?><br />
+		<div class="SearchItem" id="simplesearch_<?php echo $fields[$n]["ref"] ?>" <?php if (strlen($fields[$n]["tooltip_text"])>=1){echo "title=\"" . htmlspecialchars(lang_or_i18n_get_translated($fields[$n]["tooltip_text"], "fieldtooltip-")) . "\"";}?>><?php echo htmlspecialchars($fields[$n]["title"]) ?><br />
 		<?php
 		
 		$value=""; # to do, fetch set value.
@@ -226,7 +226,7 @@ if (!$basic_simple_search)
 			case 5:
 			case 9:
 			?>	
-			<input class="SearchWidth" type=text name="field_<?php echo $fields[$n]["name"]?>" id="field_<?php echo $fields[$n]["name"]?>" value="<?php echo htmlspecialchars($value)?>"><?php
+			<input class="SearchWidth" type=text name="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>" id="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>" value="<?php echo htmlspecialchars($value)?>"><?php
 			if ($autocomplete_search) { 
 				# Auto-complete search functionality
 				?></div>
@@ -234,7 +234,7 @@ if (!$basic_simple_search)
 				
 				jQuery(document).ready(function () { 
 				
-					jQuery("#field_<?php echo $fields[$n]["name"]?>").autocomplete( { source: "<?php echo $baseurl?>/pages/ajax/autocomplete_search.php?field=<?php echo $fields[$n]["name"]?>&fieldref=<?php echo $fields[$n]["ref"]?>"} );
+					jQuery("#field_<?php echo htmlspecialchars($fields[$n]["name"])?>").autocomplete( { source: "<?php echo $baseurl?>/pages/ajax/autocomplete_search.php?field=<?php echo htmlspecialchars($fields[$n]["name"]) ?>&fieldref=<?php echo $fields[$n]["ref"]?>"} );
 					})
 				
 				</script>
@@ -255,7 +255,7 @@ if (!$basic_simple_search)
 			
 			$optionfields[]=$fields[$n]["name"]; # Append to the option fields array, used by the AJAX dropdown filtering
 			?>
-			<select id="field_<?php echo $fields[$n]["name"]?>" name="field_drop_<?php echo $fields[$n]["name"]?>" class="SearchWidth" onChange="FilterBasicSearchOptions('<?php echo $fields[$n]["name"]?>',<?php echo $fields[$n]["resource_type"]?>);">
+			<select id="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>" name="field_drop_<?php echo htmlspecialchars($fields[$n]["name"]) ?>" class="SearchWidth" onChange="FilterBasicSearchOptions('<?php echo htmlspecialchars($fields[$n]["name"]) ?>',<?php echo htmlspecialchars($fields[$n]["resource_type"]) ?>);">
 			  <option selected="selected" value="">&nbsp;</option>
 			  <?php
 			  for ($m=0;$m<count($options);$m++)
@@ -265,7 +265,7 @@ if (!$basic_simple_search)
 					{
 					if (!hook('modifysearchfieldvalues')) 
 						{
-						?><option <?php if (cleanse_string($c,false)==$value) { ?>selected<?php } ?>><?php echo $c?></option><?php
+						?><option <?php if (cleanse_string($c,false)==$value) { ?>selected<?php } ?>><?php echo htmlspecialchars($c) ?></option><?php
                         }
                     }
 				}
@@ -286,7 +286,7 @@ if (!$basic_simple_search)
 			if (count($s)>=2) {$d_month=$s[1];}
 			if (count($s)>=3) {$d_day=$s[2];}
 			?>
-			<select id="field_<?php echo $fields[$n]["name"]?>_year" name="field_<?php echo $fields[$n]["name"]?>_year" <?php if (!$searchbyday) { ?>style="width:60px;"<?php } ?>>
+			<select id="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>_year" name="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>_year" <?php if (!$searchbyday) { ?>style="width:60px;"<?php } ?>>
 			  <option selected="selected" value=""><?php echo $lang["anyyear"]?></option>
 			  <?php
 			  $y=date("Y");
@@ -297,7 +297,7 @@ if (!$basic_simple_search)
 			  ?>
 			</select>
 				
-			<select id="field_<?php echo $fields[$n]["name"]?>_month" name="field_<?php echo $fields[$n]["name"]?>_month" class="SearchWidth" style="width:45px;">
+			<select id="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>_month" name="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>_month" class="SearchWidth" style="width:45px;">
 			  <option selected="selected" value=""><?php echo $lang["anymonth"]?></option>
 			  <?php
 			  for ($d=1;$d<=12;$d++)
@@ -308,7 +308,7 @@ if (!$basic_simple_search)
 			  ?>		
 			</select>
 		
-			<select id="field_<?php echo $fields[$n]["name"]?>_day" name="field_<?php echo $fields[$n]["name"]?>_day" class="SearchWidth" style="width:45px;">
+			<select id="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>_day" name="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>_day" class="SearchWidth" style="width:45px;">
 			  <option selected="selected" value=""><?php echo $lang["anyday"]?></option>
 			  <?php
 			  for ($d=1;$d<=31;$d++)
@@ -339,9 +339,9 @@ if (!$basic_simple_search)
 			$value=str_replace(";",",",$value);
 			?>
 			
-			<div id="field_<?php echo $fields[$n]["name"]?>" >
-			<div id="<?php echo $fields[$n]["name"]?>_statusbox" class="MiniCategoryBox"></div>
-			<input type="hidden" name="field_cat_<?php echo $fields[$n]["name"]?>" id="<?php echo $fields[$n]["name"]?>_category" value="<?php echo $value?>">
+			<div id="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>" >
+			<div id="<?php echo htmlspecialchars($fields[$n]["name"]) ?>_statusbox" class="MiniCategoryBox"></div>
+			<input type="hidden" name="field_cat_<?php echo htmlspecialchars($fields[$n]["name"]) ?>" id="<?php echo htmlspecialchars($fields[$n]["name"]) ?>_category" value="<?php echo htmlspecialchars($value) ?>">
 			
 			
 			<?php
@@ -401,14 +401,14 @@ if (!$basic_simple_search)
 		<?php for ($n=0;$n<count($optionfields);$n++)
 			{
 			?>
-			Filter += "<?php if ($n>0) {echo ";";} ?><?php echo $optionfields[$n]?>:" + jQuery('#field_<?php echo $optionfields[$n]?>').value;
+			Filter += "<?php if ($n>0) {echo ";";} ?><?php echo htmlspecialchars($optionfields[$n]) ?>:" + jQuery('#field_<?php echo htmlspecialchars($optionfields[$n])?>').value;
 			
 			// Display waiting message
-			if (clickedfield!='<?php echo $optionfields[$n]?>')
+			if (clickedfield!='<?php echo htmlspecialchars($optionfields[$n]) ?>')
 				{
-				if (jQuery('field_<?php echo $optionfields[$n]?>').attr('selectedIndex', 0))
+				if (jQuery('field_<?php echo htmlspecialchars($optionfields[$n]) ?>').attr('selectedIndex', 0))
 					{
-					jQuery('field_<?php echo $optionfields[$n]?>').html("<option value=''><?php echo $lang["pleasewaitsmall"] ?></option>");
+					jQuery('field_<?php echo htmlspecialchars($optionfields[$n]) ?>').html("<option value=''><?php echo $lang["pleasewaitsmall"] ?></option>");
 					}
 				}
 			else
@@ -435,14 +435,14 @@ if (!$basic_simple_search)
 				if (reset)
 					{
 					// When clicking checkboxes, always reset any resource type specific fields.
-					document.getElementById('field_<?php echo $fields[$n]["name"]?>').value='';
+					document.getElementById('field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>').value='';
 					}
 					
 				if (!document.getElementById('TickBox<?php echo $fields[$n]["resource_type"] ?>').checked)
 					{
 					document.getElementById('simplesearch_<?php echo $fields[$n]["ref"] ?>').style.display='none';
 					// Also deselect it.
-					document.getElementById('field_<?php echo $fields[$n]["name"]?>').value='';
+					document.getElementById('field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>').value='';
 					}
 				else
 					{document.getElementById('simplesearch_<?php echo $fields[$n]["ref"] ?>').style.display='block';}
@@ -497,7 +497,7 @@ if (!$basic_simple_search)
 	
     <?php if ($star_search && $display_user_rating_stars){?>
 	<div class="SearchItem"><?php echo $lang["starsminsearch"];?><br />
-	<input type="hidden" id="starsearch" name="starsearch" class="SearchWidth" value="<?php echo $starsearch;?>">
+	<input type="hidden" id="starsearch" name="starsearch" class="SearchWidth" value="<?php echo htmlspecialchars($starsearch);?>">
 		<?php if ($starsearch=="") {$starsearch=0;}?>		
 		<div  class="RatingStars" onMouseOut="StarSearchRatingDisplay(document.getElementById('starsearch').value,'StarCurrent');">&nbsp;<?php 
 		for ($z=1;$z<=5;$z++)
