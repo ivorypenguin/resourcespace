@@ -32,7 +32,7 @@ if ($api && $enable_remote_apis ){
 
 			$result=perform_login();
 			if ($result['valid'])
-				$_COOKIE['user']=build_user_cookie($username, $result['session_hash']);
+				$_COOKIE['user']=$result['session_hash'];
 	        else
 				unset($_COOKIE['user']);
 			}

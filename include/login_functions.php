@@ -114,10 +114,6 @@ function perform_login()
 	return $result;
 	}
 
-function build_user_cookie($username, $session_hash)
-	{
-	return $username . '|' . $session_hash;
-	}
 	
 function generate_session_hash()
 	{
