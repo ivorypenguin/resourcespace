@@ -60,19 +60,19 @@ if ($go!="")
 include "../include/header.php";
 ?>
 <div class="BasicsBox">
-<p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>">&lt;&nbsp;<?php echo $lang["backtoresourceview"]?></a></p>
+<p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo urlencode($ref)?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>">&lt;&nbsp;<?php echo $lang["backtoresourceview"]?></a></p>
 
 
 <div class="backtoresults">
-<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/request_log.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&k=<?php echo $k ?>&go=previous&<?php echo hook("nextpreviousextraurl") ?>">&lt;&nbsp;<?php echo $lang["previousresult"]?></a>
+<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/request_log.php?ref=<?php echo urlencode($ref)?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>&k=<?php echo urlencode($k) ?>&go=previous&<?php echo hook("nextpreviousextraurl") ?>">&lt;&nbsp;<?php echo $lang["previousresult"]?></a>
 <?php 
 hook("viewallresults");
 if ($k=="") { ?>
 |
-<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&k=<?php echo $k?>"><?php echo $lang["viewallresults"]?></a>
+<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>&k=<?php echo urlencode($k)?>"><?php echo $lang["viewallresults"]?></a>
 <?php } ?>
 |
-<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/request_log.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&k=<?php echo $k?>&go=next&<?php echo hook("nextpreviousextraurl") ?>"><?php echo $lang["nextresult"]?>&nbsp;&gt;</a>
+<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/request_log.php?ref=<?php echo urlencode($ref)?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>&k=<?php echo urlencode($k)?>&go=next&<?php echo hook("nextpreviousextraurl") ?>"><?php echo $lang["nextresult"]?>&nbsp;&gt;</a>
 </div>
 
 <h1><?php echo $lang["requestlog"] . " : " . $lang["resourceid"] . " " .  $ref ?></h1>
@@ -95,7 +95,7 @@ if ($k=="") { ?>
 
 <?php
 #$log=get_resource_log($ref);
-$log=sql_query("select rq.created date, rq.ref ref, u.fullname username, rq.comments, rq.status status, rq.reason reason, rq.reasonapproved reasonapproved from request rq left outer join user u on u.ref=rq.user left outer join collection_resource cr on cr.collection=rq.collection where cr.resource=$ref;");
+$log=sql_query("select rq.created date, rq.ref ref, u.fullname username, rq.comments, rq.status status, rq.reason reason, rq.reasonapproved reasonapproved from request rq left outer join user u on u.ref=rq.user left outer join collection_resource cr on cr.collection=rq.collection where cr.resource='$ref';");
 
 for ($n=0;$n<count($log);$n++)
 	{
@@ -105,7 +105,7 @@ for ($n=0;$n<count($log);$n++)
 	<td nowrap><?php echo nicedate($log[$n]["date"],true,true)?></td>
 	<td nowrap><?php echo $log[$n]["ref"] ?></td>
 	<td nowrap><?php echo $log[$n]["username"] ?></td>
-	<td><?php echo $log[$n]["comments"] ?></td>
+	<td><?php echo htmlspecialchars($log[$n]["comments"]) ?></td>
 	<td nowrap><?php
 	switch ($log[$n]["status"])
 		{

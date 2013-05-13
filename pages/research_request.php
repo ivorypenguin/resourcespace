@@ -100,14 +100,14 @@ for ($n=0;$n<count($users);$n++)
 <div class="Question" id="resourcetype">
 <label><?php echo $lang["resourcetype"]?></label>
 <div class="tickset lineup">
-<?php $types=get_resource_types();for ($n=0;$n<count($types);$n++) {?><div class="Inline"><input id="TickBox" type=checkbox name="resource<?php echo $types[$n]["ref"]?>" value="yes" checked>&nbsp;<?php echo $types[$n]["name"]?></div><?php } ?>
+<?php $types=get_resource_types();for ($n=0;$n<count($types);$n++) {?><div class="Inline"><input id="TickBox" type=checkbox name="resource<?php echo $types[$n]["ref"]?>" value="yes" checked>&nbsp;<?php echo htmlspecialchars($types[$n]["name"])?></div><?php } ?>
 </div>
 <div class="clearerleft"> </div>
 </div>
 
 <div class="Question" id="noresourcesrequired">
 <label><?php echo $lang["noresourcesrequired"]?></label>
-<input name="noresources" class="shrtwidth" value="<?php echo getval("noresources","")?>">
+<input name="noresources" class="shrtwidth" value="<?php echo htmlspecialchars(getval("noresources",""))?>">
 <div class="clearerleft"> </div>
 </div>
 
