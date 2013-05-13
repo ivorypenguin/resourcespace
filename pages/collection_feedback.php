@@ -47,8 +47,8 @@ include "../include/header.php";
 <?php if ($done) { ?><p><?php echo $lang["feedbacksent"]?></p><?php } else { ?>
 
 <form method="post" action="<?php echo $baseurl_short?>pages/collection_feedback.php">
-<input type="hidden" name="k" value="<?php echo $k?>">
-<input type="hidden" name="collection" value="<?php echo $collection?>">
+<input type="hidden" name="k" value="<?php echo htmlspecialchars($k) ?>">
+<input type="hidden" name="collection" value="<?php echo htmlspecialchars($collection) ?>">
 
 <?php if ($feedback_resource_select)
 	{
@@ -68,7 +68,7 @@ include "../include/header.php";
 		else {$displaytitle=$title;}
 		?>	
 		<!--Resource Panel-->
-		<div class="ResourcePanelShell" id="ResourceShell<?php echo $ref?>">
+		<div class="ResourcePanelShell" id="ResourceShell<?php echo urlencode($ref)?>">
 		<div class="ResourcePanel">
 		
 		<table border="0" class="ResourceAlign<?php if (in_array($result[$n]["resource_type"],$videotypes)) { ?> IconVideo<?php } ?>"><tr><td>
@@ -86,15 +86,15 @@ include "../include/header.php";
 				$path=get_resource_path ($ref, false,"",false,$result[$n]["preview_extension"],-1,1,$use_watermark,$result[$n]["file_modified"]);
 				}
 		
-		?><a class="lightbox" href="<?php echo $path?>" title="<?php echo $displaytitle?>"><img width="<?php echo $result[$n]["thumb_width"]?>" height="<?php echo $result[$n]["thumb_height"]?>" src="<?php echo get_resource_path($ref,false,"thm",false,$result[$n]["preview_extension"],-1,1,(checkperm("w") || ($k!="" && isset($watermark))) && $access==1,$result[$n]["file_modified"])?>" class="ImageBorder"></a>
+		?><a class="lightbox" href="<?php echo $path?>" title="<?php echo htmlspecialchars($displaytitle) ?>"><img width="<?php echo $result[$n]["thumb_width"]?>" height="<?php echo $result[$n]["thumb_height"]?>" src="<?php echo get_resource_path($ref,false,"thm",false,$result[$n]["preview_extension"],-1,1,(checkperm("w") || ($k!="" && isset($watermark))) && $access==1,$result[$n]["file_modified"])?>" class="ImageBorder"></a>
 		<?php } else { ?>		<img border=0 src="../gfx/<?php echo get_nopreview_icon($result[$n]["resource_type"],$result[$n]["file_extension"],false) ?>"/><?php } ?>
 
 		
 		</td>
 		</tr></table>
-		<span class="ResourceSelect"><input type="checkbox" name="select_<?php echo $ref?>" value="yes"></span>
+		<span class="ResourceSelect"><input type="checkbox" name="select_<?php echo urlencode($ref) ?>" value="yes"></span>
 
-		<div class="ResourcePanelInfo"><?php echo $displaytitle?>&nbsp;</div>
+		<div class="ResourcePanelInfo"><?php echo htmlspecialchars($displaytitle) ?>&nbsp;</div>
 			
 		<div class="clearer"> </div>
 		</div>

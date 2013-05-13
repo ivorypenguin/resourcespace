@@ -4,6 +4,7 @@ include "../include/general.php";
 
 $url=getval("url","");
 $url=str_replace(" ","%20",$url);
+$url=str_replace("\"","",$url); # Prevent HTML injection
 
 include "../include/header.php";
 ?>

@@ -26,10 +26,10 @@ include "../include/header.php";
 <div class="BasicsBox">
 
 <form method=post action="<?php echo $baseurl_short?>pages/download_usage.php" onSubmit="if ((jQuery('#usagecomment').val()=='') || (jQuery('#usage').val()=='')) {alert('<?php echo $lang["usageincorrect"] ?>');return false;} else {return CentralSpacePost(this,true);}">
-<input type="hidden" name="ref" value="<?php echo $ref ?>" />
-<input type="hidden" name="size" value="<?php echo $size ?>" />
-<input type="hidden" name="ext" value="<?php echo $ext ?>" />
-<input type="hidden" name="alternative" value="<?php echo $alternative ?>" />
+<input type="hidden" name="ref" value="<?php echo htmlspecialchars($ref) ?>" />
+<input type="hidden" name="size" value="<?php echo htmlspecialchars($size) ?>" />
+<input type="hidden" name="ext" value="<?php echo htmlspecialchars($ext) ?>" />
+<input type="hidden" name="alternative" value="<?php echo htmlspecialchars($alternative) ?>" />
 <input type="hidden" name="save" value="true" />
 
 <h1><?php echo $lang["usage"]?></h1>
@@ -44,7 +44,7 @@ include "../include/header.php";
 for ($n=0;$n<count($download_usage_options);$n++)
 	{
 	?>
-	<option value="<?php echo $n; ?>"><?php echo $download_usage_options[$n] ?></option>	
+	<option value="<?php echo $n; ?>"><?php echo htmlspecialchars($download_usage_options[$n]) ?></option>	
 	<?php
 	}
 ?>

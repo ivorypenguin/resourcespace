@@ -4,7 +4,7 @@ include "../include/authenticate.php";
 include "../include/general.php";
 include("../include/collections_functions.php");
 
-$collection=getvalescaped("ref","");
+$collection=getvalescaped("ref","",true);
 $collectiondata= get_collection($collection);
 
 include "../include/header.php";
@@ -21,7 +21,7 @@ include "../include/header.php";
  and then thumbnails it for the ajax request. This creates a very small but helpful 
  preview image that can be judged before initiating a download of sometimes several MB.--></div>
 <form method=post name="contactsheetform" id="contactsheetform" action="<?php echo $baseurl_short?>pages/ajax/contactsheet.php" >
-<input type=hidden name="c" value="<?php echo $collection?>">
+<input type=hidden name="c" value="<?php echo htmlspecialchars($collection) ?>">
 
 <!--<div name="error" id="error"></div>-->
 <div style="clear:left;"> </div>
@@ -83,7 +83,7 @@ if ($contact_sheet_single_select_size)
 	<?php
 	foreach($sizes as $size)
         {
-        echo '    <option value="'. $size['id'] . '"' . ($size['id']=='lpr'?' selected':'') . '>' . $size['name'] . '</option>';
+        echo '    <option value="'. $size['id'] . '"' . ($size['id']=='lpr'?' selected':'') . '>' . htmlspecialchars($size['name']) . '</option>';
         }
 		
 	?>	
@@ -124,7 +124,7 @@ if ($contact_sheet_add_link_option)
 
 <div class="Question">
 <label><?php echo $lang["size"]?></label>
-<select class="shrtwidth" name="size" id="size" onChange="jQuery().rsContactSheet('revert');"><?php echo $papersize_select ?>
+<select class="shrtwidth" name="size" id="size" onChange="jQuery().rsContactSheet('revert');"><?php echo htmlspecialchars($papersize_select) ?>
 </select>
 <div class="clearerleft"> </div>
 </div>
@@ -144,7 +144,7 @@ foreach ($all_field_info as $sortable_field)
 	{ 	
 		// don't display the ones we've already covered above.
 		if (!($sortable_field["title"] == $lang["date"] || $sortable_field["title"] == $lang["colour"])){
-		?><option value="<?php echo $sortable_field['ref']?>"><?php echo $sortable_field["title"]?></option><?php
+		?><option value="<?php echo $sortable_field['ref']?>"><?php echo htmlspecialchars($sortable_field["title"]) ?></option><?php
 		}
 	}	
 ?>
@@ -153,7 +153,7 @@ foreach ($all_field_info as $sortable_field)
 </div>
 
 <div class="Question">
-<label><?php echo $lang["sort-type"]?></label>
+<label><?php echo htmlspecialchars($lang["sort-type"]) ?></label>
 <select class="shrtwidth" name="sort" id="sort" onChange="jQuery().rsContactSheet('preview');">
 <option value="asc" selected><?php echo $lang["ascending"]?></option>
 <option value="desc"><?php echo $lang["descending"]?></option>
@@ -195,7 +195,7 @@ foreach ($all_field_info as $sortable_field)
 <div>
 	<!-- this is the container for some Ajax fun. The image will go here...-->
 <?php $cs_size=explode("x",$contact_sheet_preview_size);$height=$cs_size[1];?>
-<?php if ($contact_sheet_previews==true){?><div style="float:left;padding:0px -50px 15px 0;height:<?php echo $height?>px;margin-top:-15px;margin-right:-50px"><img id="previewimage" name="previewimage" src=""/></div><?php } ?>
+<?php if ($contact_sheet_previews==true){?><div style="float:left;padding:0px -50px 15px 0;height:<?php echo htmlspecialchars($height) ?>px;margin-top:-15px;margin-right:-50px"><img id="previewimage" name="previewimage" src=""/></div><?php } ?>
 
 	</div>
 

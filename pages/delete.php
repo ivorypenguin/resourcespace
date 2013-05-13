@@ -66,18 +66,18 @@ else
 ?>
 
 <div class="BasicsBox"> 
-  <p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>">&lt; <?php echo $lang["backtoresourceview"]?></a></p>
+  <p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo urlencode($ref) ?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset) ?>&order_by=<?php echo urlencode($order_by) ?>&sort=<?php echo urlencode($sort) ?>&archive=<?php echo urlencode($archive) ?>">&lt; <?php echo $lang["backtoresourceview"]?></a></p>
   <h1><?php echo $lang["deleteresource"]?></h1>
   <p><?php echo text("introtext")?></p>
   
   <?php if ($resource["archive"]==3) { ?><p><strong><?php echo $lang["finaldeletion"] ?></strong></p><?php } ?>
   
 	<form method="post" action="<?php echo $baseurl_short?>pages/delete.php">  
-	<input type=hidden name=ref value="<?php echo $ref?>">
+	<input type=hidden name=ref value="<?php echo urlencode($ref) ?>">
 	
 	<div class="Question">
 	<label><?php echo $lang["resourceid"]?></label>
-	<div class="Fixed"><?php echo $ref?></div>
+	<div class="Fixed"><?php echo urlencode($ref) ?></div>
 	<div class="clearerleft"> </div>
 	</div>
 	
@@ -86,7 +86,7 @@ else
 	<label for="password"><?php echo $lang["yourpassword"]?></label>
 	<input type=password class="shrtwidth" name="password" id="password" />
 	<div class="clearerleft"> </div>
-	<?php if ($error!="") { ?><div class="FormError">!! <?php echo $error?> !!</div><?php } ?>
+	<?php if ($error!="") { ?><div class="FormError">!! <?php echo htmlspecialchars($error) ?> !!</div><?php } ?>
 	</div>
 	<?php } ?>
 	

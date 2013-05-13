@@ -468,7 +468,7 @@ function ajax_download()
 	
     ifrm.src = "<?php echo $baseurl_short?>pages/collection_download.php?submitted=true&"+jQuery('#myform').serialize();
     
-	progress= jQuery("progress3").PeriodicalUpdater("<?php echo $baseurl_short?>pages/ajax/collection_download_progress.php?id=<?php echo $uniqid?>", {
+	progress= jQuery("progress3").PeriodicalUpdater("<?php echo $baseurl_short?>pages/ajax/collection_download_progress.php?id=<?php echo urlencode($uniqid) ?>", {
         method: 'post',          // method; get or post
         data: '',               //  e.g. {name: "John", greeting: "hello"}
         minTimeout: 500,       // starting value for the timeout in milliseconds
@@ -517,11 +517,11 @@ function ajax_download()
 	<form id='myform'>
 <?php } ?>
 
-<input type=hidden name="collection" value="<?php echo $collection?>">
-<input type=hidden name="k" value="<?php echo $k?>">
+<input type=hidden name="collection" value="<?php echo htmlspecialchars($collection) ?>">
+<input type=hidden name="k" value="<?php echo htmlspecialchars($k) ?>">
 
 <?php if ($use_zip_extension){?>
-	<input type=hidden name="id" value="<?php echo $uniqid?>">
+	<input type=hidden name="id" value="<?php echo htmlspecialchars($uniqid) ?>">
 	<iframe id="downloadiframe" <?php if (!$debug_direct_download){?>style="display:none;"<?php } ?>></iframe>
 <?php } ?>
 
@@ -566,7 +566,7 @@ if (array_key_exists('original',$available_sizes)) {
 foreach ($available_sizes as $key=>$value) {
     foreach($sizes as $size){if ($size['id']==$key) {$sizename=$size['name'];}}
 	if ($key!='original') {
-	    ?><option value="<?php echo $key?>"><?php
+	    ?><option value="<?php echo htmlspecialchars($key) ?>"><?php
 	    $qty_values = count($value);
         echo $sizename . " (" . $qty_values . " " . $lang["of"] . " " . count($result) . " ";
         switch ($qty_values) {
@@ -633,7 +633,7 @@ if ($archiver)
     <select name="settings" class="stdwidth" id="archivesettings"><?php
     foreach ($collection_download_settings as $key=>$value)
         { ?>
-        <option value="<?php echo $key ?>"><?php echo lang_or_i18n_get_translated($value["name"],"archive-") ?></option><?php
+        <option value="<?php echo htmlspecialchars($key) ?>"><?php echo lang_or_i18n_get_translated($value["name"],"archive-") ?></option><?php
         } ?>
     </select>
     <div class="clearerleft"></div></div><br>

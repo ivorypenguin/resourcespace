@@ -10,7 +10,7 @@ $themeshare=getvalescaped("catshare","false");
 $themecount=0;
 if(getvalescaped("subthemes","false")!="false"){$subthemes=true;}else{$subthemes=false;}
 $linksuffix="?";
-$ref=getvalescaped("ref","");
+$ref=getvalescaped("ref","",true);
 if ($themeshare!="false")
 	{
 	$themeshare=true;
@@ -131,7 +131,7 @@ else
 
 <form name="collectionform" method=post id="collectionform" action="<?php echo $baseurl_short?>pages/collection_email.php<?php echo $linksuffix ?>&catshare=<?php if($themeshare==true){echo "true";}else{echo "false";}?>">
 <input type=hidden name=redirect id=redirect value=yes>
-<input type=hidden name=ref value="<?php echo $ref?>">
+<input type=hidden name=ref value="<?php echo urlencode($ref) ?>">
 <?php if ($email_multi_collections && !$themeshare) { ?>
 <script type="text/javascript">
    function getSelected(opt) {
@@ -200,7 +200,7 @@ else
 
 
 					?>	
-				<option value="<?php echo $list[$n]["ref"]?>" <?php if ($ref==$list[$n]["ref"]) {?> 	selected<?php $found=true;} ?>><?php echo i18n_get_collection_name($list[$n])?><?php if ($collection_dropdown_user_access_mode){echo "&nbsp;&nbsp;(". $colusername."/".$accessmode.")"; } ?></option>
+				<option value="<?php echo $list[$n]["ref"]?>" <?php if ($ref==$list[$n]["ref"]) {?> 	selected<?php $found=true;} ?>><?php echo htmlspecialchars(i18n_get_collection_name($list[$n])) ?><?php if ($collection_dropdown_user_access_mode){echo htmlspecialchars("&nbsp;&nbsp;(". $colusername."/".$accessmode.")"); } ?></option>
 				<?php 
 				}
 			if ($found==false)
@@ -210,7 +210,7 @@ else
 				if ($notfound!==false)
 					{
 					?>
-					<option value="<?php echo $ref?>" selected><?php echo $notfound["name"]?></option>
+					<option value="<?php echo urlencode($ref) ?>" selected><?php echo $notfound["name"]?></option>
 					<?php
 					}
 				}

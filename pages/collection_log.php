@@ -44,8 +44,8 @@ for ($n=0;$n<count($log);$n++)
 	?>
 	<!--List Item-->
 	<tr>
-	<td><?php echo nicedate($log[$n]["date"],true)?></td>
-	<td><?php echo $log[$n]["username"]?> (<?php echo $log[$n]["fullname"]?>)</td>
+	<td><?php echo htmlspecialchars(nicedate($log[$n]["date"],true)) ?></td>
+	<td><?php echo htmlspecialchars($log[$n]["username"]) ?> (<?php echo htmlspecialchars($log[$n]["fullname"])?>)</td>
 	<td><?php 
 		echo $lang["collectionlog-" . $log[$n]["type"]] ;
 		if ($log[$n]["notes"] != "" ) { 
@@ -57,8 +57,8 @@ for ($n=0;$n<count($log);$n++)
 			echo $newnotes;
 		}
 		?></td>
-	<td><?php if ($log[$n]['resource']!=0){?><a onClick="return CentralSpaceLoad(this,true);" href='<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $log[$n]["resource"]?>'><?php echo $log[$n]["resource"]?></a><?php } ?></td>
-	<td><?php if ($log[$n]['resource']!=0){?><a onClick="return CentralSpaceLoad(this,true);" href='<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $log[$n]["resource"]?>'><?php echo i18n_get_translated($log[$n]["title"])?></a><?php } ?></td>
+	<td><?php if ($log[$n]['resource']!=0){?><a onClick="return CentralSpaceLoad(this,true);" href='<?php echo $baseurl_short?>pages/view.php?ref=<?php echo urlencode($log[$n]["resource"]) ?>'><?php echo $log[$n]["resource"]?></a><?php } ?></td>
+	<td><?php if ($log[$n]['resource']!=0){?><a onClick="return CentralSpaceLoad(this,true);" href='<?php echo $baseurl_short?>pages/view.php?ref=<?php echo urlencode($log[$n]["resource"]) ?>'><?php echo i18n_get_translated($log[$n]["title"])?></a><?php } ?></td>
 	</tr> 
 <?php } ?>
 </table>

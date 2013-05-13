@@ -50,11 +50,11 @@ include "../include/header.php";
 
 <div class="BasicsBox"> 
 <form method=post id="collectionform" action="<?php echo $baseurl_short?>pages/collection_share.php">
-<input type="hidden" name="ref" id="ref" value="<?php echo $ref ?>">
+<input type="hidden" name="ref" id="ref" value="<?php echo htmlspecialchars($ref) ?>">
 <input type="hidden" name="deleteaccess" id="deleteaccess" value="">
 <input type="hidden" name="generateurl" id="generateurl" value="">
 
-<h1><?php echo str_replace("%collectionname", i18n_get_collection_name($collection), $lang["sharecollection-name"]);?></h1>
+<h1><?php echo htmlspecialchars(str_replace("%collectionname", i18n_get_collection_name($collection), $lang["sharecollection-name"]));?></h1>
 
 <?php if (isset($show_error)){?>
     <script type="text/javascript">
@@ -69,9 +69,9 @@ include "../include/header.php";
 <div class="VerticalNav">
 <ul>
 
-<li><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_email.php?ref=<?php echo $ref?>"><?php echo $lang["emailcollection"]?></a></li>
+<li><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_email.php?ref=<?php echo urlencode($ref) ?>"><?php echo $lang["emailcollection"]?></a></li>
 
-<li><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_share.php?ref=<?php echo $ref?>&generateurl=true"><?php echo $lang["generateurl"]?></a></li>
+<li><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_share.php?ref=<?php echo urlencode($ref) ?>&generateurl=true"><?php echo $lang["generateurl"]?></a></li>
 
 <?php hook("extra_share_options") ?>
 
@@ -82,7 +82,7 @@ include "../include/header.php";
 		?>
 		<p><?php echo $lang["generateurlinternal"]?></p>
 		
-		<p><input class="URLDisplay" type="text" value="<?php echo $baseurl?>/?c=<?php echo $ref?>">
+		<p><input class="URLDisplay" type="text" value="<?php echo $baseurl?>/?c=<?php echo urlencode($ref) ?>">
 		<?php
 		}
 		
@@ -134,7 +134,7 @@ include "../include/header.php";
 		?>
 		<p><?php echo $lang["generateurlexternal"]?></p>
 	
-		<p><input class="URLDisplay" type="text" value="<?php echo $baseurl?>/?c=<?php echo $ref?>&k=<?php echo generate_collection_access_key($ref,0,"URL",$access,$expires)?>">
+		<p><input class="URLDisplay" type="text" value="<?php echo $baseurl?>/?c=<?php echo urlencode($ref) ?>&k=<?php echo generate_collection_access_key($ref,0,"URL",$access,$expires)?>">
 		<?php
 		}
 	}
@@ -153,7 +153,7 @@ include "../include/header.php";
 		<div class="Question">
 		<label for="users"><?php echo $lang["attachedusers"]?></label>
 		<div class="Fixed"><?php echo (($collection["users"]=="")?$lang["noattachedusers"]:htmlspecialchars($collection["users"])); ?><br /><br />
-		<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_edit.php?ref=<?php echo $ref; ?>">&gt;&nbsp;<?php echo $lang["action-edit"];?></a>
+		<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_edit.php?ref=<?php echo urlencode($ref); ?>">&gt;&nbsp;<?php echo $lang["action-edit"];?></a>
 		</div>
 		<div class="clearerleft"> </div>
 		</div>
@@ -193,15 +193,15 @@ include "../include/header.php";
 			{
 			?>
 			<tr>
-			<td><div class="ListTitle"><a target="_blank" href="<?php echo $baseurl . "?c=" . $ref . "&k=" . $keys[$n]["access_key"]?>"><?php echo $keys[$n]["access_key"]?></a></div></td>
-			<td><?php echo resolve_users($keys[$n]["users"])?></td>
-			<td><?php echo $keys[$n]["emails"]?></td>
-			<td><?php echo nicedate($keys[$n]["maxdate"],true);	?></td>
-			<td><?php echo nicedate($keys[$n]["lastused"],true); ?></td>
-			<td><?php echo ($keys[$n]["expires"]=="")?$lang["never"]:nicedate($keys[$n]["expires"],false)?></td>
-			<td><?php echo ($keys[$n]["access"]==-1)?"":$lang["access" . $keys[$n]["access"]]; ?></td>
+			<td><div class="ListTitle"><a target="_blank" href="<?php echo $baseurl . "?c=" . urlencode($ref) . "&k=" . urlencode($keys[$n]["access_key"]) ?>"><?php echo htmlspecialchars($keys[$n]["access_key"]) ?></a></div></td>
+			<td><?php echo htmlspecialchars(resolve_users($keys[$n]["users"]))?></td>
+			<td><?php echo htmlspecialchars($keys[$n]["emails"]) ?></td>
+			<td><?php echo htmlspecialchars(nicedate($keys[$n]["maxdate"],true));	?></td>
+			<td><?php echo htmlspecialchars(nicedate($keys[$n]["lastused"],true)); ?></td>
+			<td><?php echo htmlspecialchars(($keys[$n]["expires"]=="")?$lang["never"]:nicedate($keys[$n]["expires"],false)) ?></td>
+			<td><?php echo htmlspecialchars(($keys[$n]["access"]==-1)?"":$lang["access" . $keys[$n]["access"]]); ?></td>
 			<td><div class="ListTools">
-			<a href="#" onClick="if (confirm('<?php echo $lang["confirmdeleteaccess"]?>')) {document.getElementById('deleteaccess').value='<?php echo $keys[$n]["access_key"] ?>';document.getElementById('collectionform').submit(); }">&gt;&nbsp;<?php echo $lang["action-delete"]?></a>
+			<a href="#" onClick="if (confirm('<?php echo $lang["confirmdeleteaccess"]?>')) {document.getElementById('deleteaccess').value='<?php echo htmlspecialchars($keys[$n]["access_key"]) ?>';document.getElementById('collectionform').submit(); }">&gt;&nbsp;<?php echo $lang["action-delete"]?></a>
 			</div></td>
 			</tr>
 			<?php

@@ -15,18 +15,18 @@ include "../include/header.php";
 	<div class="VerticalNav">
 	<ul>
 	
-	<li><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/edit.php?ref=-<?php echo $userref?>&uploader=plupload"><?php echo $lang["addresourcebatchbrowser"];?></a></li>
+	<li><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/edit.php?ref=-<?php echo urlencode($userref) ?>&uploader=plupload"><?php echo $lang["addresourcebatchbrowser"];?></a></li>
 	
 	<?php if (checkperm("e-2")) { ?>
-	<li><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php?search=!contributions<?php echo $userref?>&archive=-2"><?php echo $lang["viewcontributedps"]?></a></li>
+	<li><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php?search=!contributions<?php echo urlencode($userref) ?>&archive=-2"><?php echo $lang["viewcontributedps"]?></a></li>
 	<?php } ?>
 	
 	<?php if (checkperm("e-1")) { ?>
-	<li><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php?search=!contributions<?php echo $userref?>&archive=-1"><?php echo $lang["viewcontributedpr"]?></a></li>
+	<li><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php?search=!contributions<?php echo urlencode($userref) ?>&archive=-1"><?php echo $lang["viewcontributedpr"]?></a></li>
 	<?php } ?>
 	
 	<?php if ($show_user_contributed_resources) { ?>
-	<li><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php?search=!contributions<?php echo $userref?>&archive=0"><?php echo $lang["viewcontributedsubittedl"]?></a></li>
+	<li><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php?search=!contributions<?php echo urlencode($userref) ?>&archive=0"><?php echo $lang["viewcontributedsubittedl"]?></a></li>
 	<?php } ?>
 	
 	</ul>

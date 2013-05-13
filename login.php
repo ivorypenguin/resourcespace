@@ -25,14 +25,6 @@ $lockouts=sql_value("select count(*) value from ip_lockout where ip='" . escape_
 # Also check that the username provided has not been locked out due to excessive login attempts.
 $ulockouts=sql_value("select count(*) value from user where username='" . getvalescaped("username","") . "' and login_tries>='" . $max_login_attempts_per_username . "' and date_add(login_last_try,interval " . $max_login_attempts_wait_minutes . " minute)>now()",0);
 
-# Default the username to the stored username in the case of session expiry (if configured)
-$stored_username="";
-if ($login_remember_username && isset($_COOKIE["user"]))
-	{
-    $s=explode("|",$_COOKIE["user"]);
-    $stored_username=$s[0];
-	}
-
 if ($lockouts>0 || $ulockouts>0)
 	{
 	$error=str_replace("?",$max_login_attempts_wait_minutes,$lang["max_login_attempts_exceeded"]);
@@ -106,9 +98,6 @@ if ((getval("logout","")!="") && array_key_exists("user",$_COOKIE))
     setcookie("search","");	
     setcookie("saved_offset","");	
     setcookie("saved_archive","");	
-
-    #Do not show stored username.
-    $stored_username="";
     
     unset($username);
     
@@ -155,7 +144,7 @@ if (!hook("replaceloginform")) {
   <input type="hidden" name="url" value="<?php echo htmlspecialchars($url)?>">
 		<div class="Question">
 			<label for="username"><?php echo $lang["username"]?> </label>
-			<input type="text" name="username" id="username" class="stdwidth" <?php if (!$login_autocomplete) { ?>AUTOCOMPLETE="OFF"<?php } ?> value="<?php echo htmlspecialchars(getval("username",$stored_username)) ?>" />
+			<input type="text" name="username" id="username" class="stdwidth" <?php if (!$login_autocomplete) { ?>AUTOCOMPLETE="OFF"<?php } ?> value="<?php echo htmlspecialchars(getval("username","")) ?>" />
 			<div class="clearerleft"> </div>
 		</div>
 		
@@ -193,25 +182,13 @@ if (!hook("replaceloginform")) {
   <p>&nbsp;</p>
 
 <?php
+# Javascript to default the focus to the username box
+?>
+<script type="text/javascript">
+document.getElementById('username').focus();
+</script>
+<?php
 
-if ($stored_username!="")
-	{
-    # Javascript to default the focus to the password box
-    ?>
-    <script type="text/javascript">
-	document.getElementById('password').focus();
-    </script>
-    <?php
-	}
-else
-	{
-    # Javascript to default the focus to the username box
-    ?>
-    <script type="text/javascript">
-	document.getElementById('username').focus();
-    </script>
-    <?php
-	}
 }
 include "include/footer.php";
 ?>

@@ -26,8 +26,7 @@ include "../include/header.php";
 
 <div class="BasicsBox">
     <h1><?php echo $lang["complete"]?></h1>
-    <p><?php echo text(getvalescaped("text",""))?></p>
-
+    <p><?php echo text(htmlspecialchars(getvalescaped("text",""))) ?></p>
    
     <?php if (getval("user","")!="" || getval("k","")!="" || isset($anonymous_login)) { # User logged in? ?>
  
@@ -38,14 +37,14 @@ include "../include/header.php";
 	if ($resource!="")
 		{
 		?>
-	    <p><a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $resource?>&k=<?php echo getval("k","") ?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>">&gt;&nbsp;<?php echo $lang["backtoresourceview"]?></a></p>
+	    <p><a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo urlencode($resource) ?>&k=<?php echo urlencode(getval("k","")) ?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset) ?>&order_by=<?php echo ($order_by) ?>&sort=<?php echo urlencode($sort) ?>&archive=<?php echo urlencode($archive) ?>">&gt;&nbsp;<?php echo $lang["backtoresourceview"]?></a></p>
 		<?php
 		}
 	endif; # hook donebacktoresource
 	?>
  
 	<?php if (getval("k","")=="") { ?>
-    <p><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>">&gt;&nbsp;<?php echo $lang["backtoresults"]?></a></p>
+    <p><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset) ?>&order_by=<?php echo urlencode($order_by) ?>&sort=<?php echo urlencode($sort) ?>&archive=<?php echo urlencode($archive) ?>">&gt;&nbsp;<?php echo $lang["backtoresults"]?></a></p>
 
     <p><a href="<?php echo ($use_theme_as_home?$baseurl_short.'pages/themes.php':$default_home_page)?>">&gt;&nbsp;<?php echo $lang["backtohome"]?></a></p>
 

@@ -13,7 +13,7 @@ $find=getvalescaped("find","");
 $col_order_by=getvalescaped("col_order_by","name");
 $order_by=getvalescaped("order_by","");
 $sort=getval("sort","ASC");
-$backto=getval("backto","");
+$backto=getval("backto","");$backto=str_replace("\"","",$backto);#Prevent injection
 $done=false;
 
 # Fetch collection data
@@ -64,12 +64,12 @@ if (getval("tweak","")!="")
 	
 include "../include/header.php";
 ?>
-<p style="margin:7px 0 7px 0;padding:0;"><a onClick="return CentralSpaceLoad(this,true);" href="<?php if ($backto!=''){echo $backto;} else { echo $baseurl_short.'pages/search';}?>.php?search=!collection<?php echo $ref?>&order_by=<?php echo $order_by?>&col_order_by=<?php echo $col_order_by?>&sort=<?php echo $sort?>&k=<?php echo $k?>">&lt; <?php echo $lang["backtoresults"]?></a></p><br />
+<p style="margin:7px 0 7px 0;padding:0;"><a onClick="return CentralSpaceLoad(this,true);" href="<?php if ($backto!=''){echo $backto;} else { echo $baseurl_short.'pages/search';}?>.php?search=!collection<?php echo urlencode($ref)?>&order_by=<?php echo urlencode($order_by) ?>&col_order_by=<?php echo urlencode($col_order_by) ?>&sort=<?php echo urlencode($sort) ?>&k=<?php echo urlencode($k) ?>">&lt; <?php echo $lang["backtoresults"]?></a></p><br />
 <div class="BasicsBox">
 <h1><?php echo $lang["editresourcepreviews"]?></h1>
 <p><?php echo text("introtext")?></p>
 <form method=post id="collectionform" action="<?php echo $baseurl_short?>pages/collection_edit_previews.php">
-<input type=hidden value='<?php echo $ref?>' name="ref" id="ref"/>
+<input type=hidden value='<?php echo urlencode($ref) ?>' name="ref" id="ref"/>
 
 <?php if (!checkperm("F*")) { ?>
 <div class="Question">

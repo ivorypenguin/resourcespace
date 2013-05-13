@@ -29,7 +29,7 @@ include "../include/header.php";
 <label for="password"><?php echo $lang["language"]?></label>
 <select class="stdwidth" name="language">
 <?php reset ($languages); foreach ($languages as $key=>$value) { ?>
-<option value="<?php echo $key?>" <?php if ($language==$key) { ?>selected<?php } ?>><?php echo $value?></option>
+<option value="<?php echo htmlspecialchars($key)?>" <?php if ($language==$key) { ?>selected<?php } ?>><?php echo htmlspecialchars($value) ?></option>
 <?php } ?>
 </select>
 <div class="clearerleft"> </div>

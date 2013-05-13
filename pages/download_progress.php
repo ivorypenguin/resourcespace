@@ -8,7 +8,7 @@ $k=getvalescaped("k","");if (($k=="") || (!check_access_key(getvalescaped("ref",
 $ref=getval("ref","");
 $size=getval("size","");
 $ext=getval("ext","");
-if(!preg_match('/^[a-zA-Z0-9]+$/', $ext)){$ext="jpg";}
+if(!preg_match('/^[a-zA-Z0-9]+$/', $ext)){$ext="jpg";} # Mitigate path injection
 $alternative=getval("alternative",-1);
 $search=getvalescaped("search","");
 $usage=getval("usage","-1");
@@ -17,12 +17,12 @@ $usagecomment=getval("usagecomment","");
 
 if ($download_usage && getval("usage","")=="" && !$direct_download)
 	{
-	redirect($baseurl_short."pages/download_usage.php?ref=" . $ref  . "&size=" . $size . "&ext=" . $ext . "&k=" . $k . "&alternative=" . $alternative);
+	redirect($baseurl_short."pages/download_usage.php?ref=" . urlencode($ref)  . "&size=" . urlencode($size) . "&ext=" . urlencode($ext) . "&k=" . urlencode($k) . "&alternative=" . urlencode($alternative));
 	}
 
 if (!($url=hook("getdownloadurl", "", array($ref, $size, $ext, 1, $alternative)))) // used in remotedownload-plugin
 	{
-	$url=$baseurl."/pages/download.php?ref=" . $ref  . "&size=" . $size . "&ext=" . $ext . "&k=" . $k . "&alternative=" . $alternative . "&usage=" . $usage . "&usagecomment=" . urlencode($usagecomment);
+	$url=$baseurl."/pages/download.php?ref=" . urlencode($ref)  . "&size=" . urlencode($size) . "&ext=" . urlencode($ext) . "&k=" . urlencode($k) . "&alternative=" . urlencode($alternative) . "&usage=" . urlencode($usage) . "&usagecomment=" . urlencode($usagecomment);
 	}
 
 # For Opera and Internet Explorer 7 - redirected downloads are always blocked, so use the '$save_as' config option
@@ -56,8 +56,8 @@ if (!$save_as)
     <h1><?php echo $lang["downloadinprogress"]?></h1>
     <p><?php echo text("introtext")?></p>
 	<?php } ?>
-    <p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $ref?>&k=<?php echo $k?>&search=<?php echo urlencode(getval("search",""))?>&offset=<?php echo urlencode(getval("offset",""))?>&order_by=<?php echo urlencode(getval("order_by",""))?>&sort=<?php echo urlencode(getval("sort",""))?>&archive=<?php echo urlencode(getval("archive",""))?>">&gt;&nbsp;<?php echo $lang["backtoresourceview"]?></a></p>
-    <p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php?k=<?php echo $k?>&search=<?php echo urlencode(getval("search",""))?>&offset=<?php echo urlencode(getval("offset",""))?>&order_by=<?php echo urlencode(getval("order_by",""))?>&sort=<?php echo urlencode(getval("sort",""))?>&archive=<?php echo urlencode(getval("archive",""))?>">&gt;&nbsp;<?php echo $lang["backtoresults"]?></a></p>
+    <p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo urlencode($ref) ?>&k=<?php echo urlencode($k) ?>&search=<?php echo urlencode(getval("search",""))?>&offset=<?php echo urlencode(getval("offset",""))?>&order_by=<?php echo urlencode(getval("order_by",""))?>&sort=<?php echo urlencode(getval("sort",""))?>&archive=<?php echo urlencode(getval("archive",""))?>">&gt;&nbsp;<?php echo $lang["backtoresourceview"]?></a></p>
+    <p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php?k=<?php echo urlencode($k) ?>&search=<?php echo urlencode(getval("search",""))?>&offset=<?php echo urlencode(getval("offset",""))?>&order_by=<?php echo urlencode(getval("order_by",""))?>&sort=<?php echo urlencode(getval("sort",""))?>&archive=<?php echo urlencode(getval("archive",""))?>">&gt;&nbsp;<?php echo $lang["backtoresults"]?></a></p>
     
     <?php if ($k=="") { ?>
     <p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/home.php">&gt;&nbsp;<?php echo $lang["backtohome"]?></a></p>

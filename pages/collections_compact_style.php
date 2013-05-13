@@ -87,13 +87,13 @@ if (count($colresult)>0 && checkperm("e" . $colresult[0]["archive"]) && allow_mu
 
 <!-- viewall *-->
 <?php if ($pagename!="search" && $count_result>0){
-    ?><option value="<?php echo $collection?>|0|0|<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $collection)?>|main|false">&gt;&nbsp;<?php echo $lang["viewall"]?></option>
+    ?><option value="<?php echo urlencode($collection) ?>|0|0|<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $collection)?>|main|false">&gt;&nbsp;<?php echo $lang["viewall"]?></option>
 <?php } ?>
 <!-- end viewall -->
 
 <!-- preview all *-->
 <?php if ($preview_all && $count_result>0){?>
-<option value="<?php echo $collection?>|0|0|<?php echo $baseurl_short?>pages/preview_all.php?ref=<?php echo $collection?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&col_order_by=<?php echo $col_order_by?>&sort=<?php echo $sort?>&find=<?php echo urlencode($find)?>&backto=<?php if (in_array($pagename,$main_pages)){echo $pagename;}?>|main|false">&gt;&nbsp;<?php echo $lang["preview_all"]?></option>
+<option value="<?php echo htmlspecialchars($collection) ?>|0|0|<?php echo $baseurl_short?>pages/preview_all.php?ref=<?php echo urlencode($collection) ?>&offset=<?php echo urlencode($offset) ?>&order_by=<?php echo urlencode($order_by) ?>&col_order_by=<?php echo urlencode($col_order_by) ?>&sort=<?php echo urlencode($sort) ?>&find=<?php echo urlencode($find)?>&backto=<?php if (in_array($pagename,$main_pages)){echo urlencode($pagename);}?>|main|false">&gt;&nbsp;<?php echo $lang["preview_all"]?></option>
 <?php } ?>
 <!-- end preview_all -->
 
@@ -110,22 +110,22 @@ hook("collectiontoolcompact2","",array("collection"=>$collection,"count_result"=
 <?php ob_start();} ?>
 
 <!-- select collection *-->
-<?php if (!checkperm("b") &&  $pagename!="collections"){?><option id="selectcollection" value="<?php echo $collection?>|0|0|<?php echo $baseurl_short?>pages/collections.php?collection=<?php echo $collection?>|collections|false">&gt;&nbsp;<?php echo $lang['selectcollection'];?></option>
+<?php if (!checkperm("b") &&  $pagename!="collections"){?><option id="selectcollection" value="<?php echo htmlspecialchars($collection) ?>|0|0|<?php echo $baseurl_short?>pages/collections.php?collection=<?php echo urlencode($collection) ?>|collections|false">&gt;&nbsp;<?php echo $lang['selectcollection'];?></option>
 <?php } ?>
 <!-- end select collection -->
 
  <!-- add to my collections (for public and themed) *-->
-<?php if (!checkperm("b") && $userref!=$cinfo["user"] && ($pagename=="collection_public" || $pagename=="themes" || $pagename=="themes"))	{?>&nbsp;<option id="addcollection" value="<?php echo $collection?>|0|0|<?php echo $baseurl_short?>pages/collections.php?addcollection=<?php echo $collection?>&offset=<?php echo $offset?>&col_order_by=<?php echo $col_order_by?>&sort=<?php echo $sort?>&find=<?php echo urlencode($find)?>|collections|false">&gt;&nbsp;<?php echo $lang["addtomycollections"]?></option>
+<?php if (!checkperm("b") && $userref!=$cinfo["user"] && ($pagename=="collection_public" || $pagename=="themes" || $pagename=="themes"))	{?>&nbsp;<option id="addcollection" value="<?php echo urlencode($collection) ?>|0|0|<?php echo $baseurl_short?>pages/collections.php?addcollection=<?php echo urlencode($collection) ?>&offset=<?php echo urlencode($offset) ?>&col_order_by=<?php echo urlencode($col_order_by) ?>&sort=<?php echo urlencode($sort) ?>&find=<?php echo urlencode($find)?>|collections|false">&gt;&nbsp;<?php echo $lang["addtomycollections"]?></option>
 <?php } ?>
 
  <!--remove -->
-<?php if (!checkperm("b") && $userref!=$cinfo["user"] && ($pagename=="collection_manage" || $pagename=="collections" || $pagename=="search"))	{?>&nbsp;<option id="remove" value="<?php echo $collection?>|0|<?php echo $baseurl_short?>pages/collection_manage.php?remove=<?php echo $collection?>|<?php if (in_array($pagename,$main_pages)){echo $baseurl_short.'pages/'.$pagename.'.php?offset='.$offset.'&col_order_by='.$col_order_by.'&sort='.$sort.'&find='.urlencode($find);} else { echo $baseurl_short.'pages/collections.php';}?>|<?php if (in_array($pagename,$main_pages)){echo 'main';} else { echo 'collections';}?>|collections">&gt;&nbsp;<?php echo $lang["action-remove"]?></option>
+<?php if (!checkperm("b") && $userref!=$cinfo["user"] && ($pagename=="collection_manage" || $pagename=="collections" || $pagename=="search"))	{?>&nbsp;<option id="remove" value="<?php echo urlencode($collection) ?>|0|<?php echo $baseurl_short?>pages/collection_manage.php?remove=<?php echo urlencode($collection) ?>|<?php if (in_array($pagename,$main_pages)){echo $baseurl_short.'pages/'.$pagename.'.php?offset='.$offset.'&col_order_by='.$col_order_by.'&sort='.$sort.'&find='.urlencode($find);} else { echo $baseurl_short.'pages/collections.php';}?>|<?php if (in_array($pagename,$main_pages)){echo 'main';} else { echo 'collections';}?>|collections">&gt;&nbsp;<?php echo $lang["action-remove"]?></option>
 <?php } ?>
 <!-- end remove -->
 
 <!-- feedback -->
 <?php if ($feedback) {?>
-<option value="<?php echo $collection?>|0|0|<?php echo $baseurl_short?>pages/collection_feedback.php?collection=<?php echo $collection?>&offset=<?php echo $offset?>&col_order_by=<?php echo $col_order_by?>&sort=<?php echo $sort?>&find=<?php echo urlencode($find)?>|main|false">&gt;&nbsp;<?php echo $lang["sendfeedback"]?>...</option>
+<option value="<?php echo htmlspecialchars($collection) ?>|0|0|<?php echo $baseurl_short?>pages/collection_feedback.php?collection=<?php echo urlencode($collection) ?>&offset=<?php echo $offset?>&col_order_by=<?php echo $col_order_by?>&sort=<?php echo $sort?>&find=<?php echo urlencode($find)?>|main|false">&gt;&nbsp;<?php echo $lang["sendfeedback"]?>...</option>
 <?php } ?>
 <!-- end feedback -->
 
@@ -137,7 +137,7 @@ hook("collectiontoolcompact2","",array("collection"=>$collection,"count_result"=
     if ($min_access!=0)
         {
         ?>
-        <option value="<?php echo $collection?>|0|0|<?php echo $baseurl_short?>pages/collection_request.php?ref=<?php echo $collection?>&offset=<?php echo $offset?>&col_order_by=<?php echo $col_order_by?>&sort=<?php echo $sort?>&find=<?php echo urlencode($find)?>|main|false">&gt;&nbsp;<?php echo 	$lang["requestall"]?>...</option>
+        <option value="<?php echo $collection?>|0|0|<?php echo $baseurl_short?>pages/collection_request.php?ref=<?php echo urlencode($collection) ?>&offset=<?php echo urlencode($offset) ?>&col_order_by=<?php echo urlencode($col_order_by) ?>&sort=<?php echo urlencode($sort) ?>&find=<?php echo urlencode($find)?>|main|false">&gt;&nbsp;<?php echo 	$lang["requestall"]?>...</option>
         <?php
         }
     }
@@ -146,36 +146,36 @@ hook("collectiontoolcompact2","",array("collection"=>$collection,"count_result"=
 
 <!-- share -->
 <?php if ($allow_share && $count_result>0) { ?>
-<option value="<?php echo $collection?>|0|0|<?php echo $baseurl_short?>pages/collection_share.php?ref=<?php echo $collection?>&offset=<?php echo $offset?>&col_order_by=<?php echo $col_order_by?>&sort=<?php echo $sort?>&find=<?php echo urlencode($find)?>|main|false">&gt;&nbsp;<?php echo $lang["sharecollection"]?>...</option>
+<option value="<?php echo htmlspecialchars($collection) ?>|0|0|<?php echo $baseurl_short?>pages/collection_share.php?ref=<?php echo urlencode($collection) ?>&offset=<?php echo urlencode($offset) ?>&col_order_by=<?php echo urlencode($col_order_by) ?>&sort=<?php echo urlencode($sort) ?>&find=<?php echo urlencode($find)?>|main|false">&gt;&nbsp;<?php echo $lang["sharecollection"]?>...</option>
 <?php } ?>
 <!-- end share -->
 
 <!-- collection download -->
     <?php if ((isset($zipcommand) || isset($collection_download)) && $count_result>0) { ?>
-    <option value="<?php echo $collection?>|0|0|<?php echo $baseurl_short?>pages/terms.php?url=<?php echo urlencode("pages/collection_download.php?collection=" .  $collection )?>|main">&gt;&nbsp;<?php echo $lang["zipall"]?>...</option>
+    <option value="<?php echo htmlspecialchars($collection) ?>|0|0|<?php echo $baseurl_short?>pages/terms.php?url=<?php echo urlencode("pages/collection_download.php?collection=" .  $collection )?>|main">&gt;&nbsp;<?php echo $lang["zipall"]?>...</option>
     <?php } ?>
 <!-- end collection download -->
 
 <!-- upload *-->
-<?php global $top_nav_upload_type;if ((checkperm("c") || checkperm("d")) && $cinfo["savedsearch"]==0 && ($userref==$cinfo["user"] || $cinfo["allow_changes"]==1 || checkperm("h"))) {?>&nbsp;<option id="uploadtocollection" value="<?php echo $collection?>|0|0|<?php echo $baseurl_short?>pages/edit.php?uploader=<?php echo $top_nav_upload_type?>&ref=-<?php echo $userref?>&collection_add=<?php echo $collection?>|main|collections">&gt;&nbsp;<?php echo $lang["action-upload-to-collection"]?>...</option>
+<?php global $top_nav_upload_type;if ((checkperm("c") || checkperm("d")) && $cinfo["savedsearch"]==0 && ($userref==$cinfo["user"] || $cinfo["allow_changes"]==1 || checkperm("h"))) {?>&nbsp;<option id="uploadtocollection" value="<?php echo htmlspecialchars($collection) ?>|0|0|<?php echo $baseurl_short?>pages/edit.php?uploader=<?php echo urlencode($top_nav_upload_type) ?>&ref=-<?php echo urlencode($userref) ?>&collection_add=<?php echo urlencode($collection) ?>|main|collections">&gt;&nbsp;<?php echo $lang["action-upload-to-collection"]?>...</option>
 <?php } ?>
 <!-- end upload-->
 
 <!-- edit collection -->
 <?php if (!hook("replacecompactstyleeditcollection","",array("collection"=>$collection,"count_result"=>$count_result,"cinfo"=>$cinfo,"colresult"=>$colresult,"col_editable"=>$col_editable))){?>
 <?php if (!checkperm("b") && (!collection_is_research_request($collection)) || (!checkperm("r"))) { ?>
-    <?php if (($userref==$cinfo["user"]) || (checkperm("h"))) {?><option value="<?php echo $collection?>|0|0|<?php echo $baseurl_short?>pages/collection_edit.php?pagename=<?php echo $pagename?>&ref=<?php echo $collection?>&offset=<?php echo $offset?>&col_order_by=<?php echo $col_order_by?>&sort=<?php echo $sort?>&find=<?php echo urlencode($find)?>|main|false">&gt;&nbsp;<?php echo $lang["editcollection"]?>...</option><?php } ?>
+    <?php if (($userref==$cinfo["user"]) || (checkperm("h"))) {?><option value="<?php echo htmlspecialchars($collection) ?>|0|0|<?php echo $baseurl_short?>pages/collection_edit.php?pagename=<?php echo urlencode($pagename) ?>&ref=<?php echo urlencode($collection)?>&offset=<?php echo urlencode($offset)?>&col_order_by=<?php echo urlencode($col_order_by) ?>&sort=<?php echo urlencode($sort) ?>&find=<?php echo urlencode($find)?>|main|false">&gt;&nbsp;<?php echo $lang["editcollection"]?>...</option><?php } ?>
     <?php } else {
     $research=sql_value("select ref value from research_request where collection='$collection'",0);	
 	?>
-    <option value="<?php echo $collection?>|0|0|<?php echo $baseurl_short?>pages/team/team_research.php|main|false">&gt;&nbsp;<?php echo $lang["manageresearchrequests"]?>...</option>    
-    <option value="<?php echo $collection?>|0|0|<?php echo $baseurl_short?>pages/team/team_research_edit.php?ref=<?php echo $research?>|main|false">&gt;&nbsp;<?php echo $lang["editresearchrequests"]?>...</option>    
+    <option value="<?php echo htmlspecialchars($collection) ?>|0|0|<?php echo $baseurl_short?>pages/team/team_research.php|main|false">&gt;&nbsp;<?php echo $lang["manageresearchrequests"]?>...</option>    
+    <option value="<?php echo htmlspecialchars($collection) ?>|0|0|<?php echo $baseurl_short?>pages/team/team_research_edit.php?ref=<?php echo htmlspecialchars($research) ?>|main|false">&gt;&nbsp;<?php echo $lang["editresearchrequests"]?>...</option>    
 <?php } ?>
 <?php } ?>
 <!-- end edit collection -->
 
 <!-- delete -->
-<?php if (!checkperm("b") && (($userref==$cinfo["user"]) || checkperm("h")) && ($cinfo["cant_delete"]==0)) {?>&nbsp;<option id="delete" value="<?php echo $collection?>|<?php echo $lang["collectiondeleteconfirm"]?>|<?php echo $baseurl_short?>pages/collection_manage.php?delete=<?php echo $collection?>|<?php if (in_array($pagename,$main_pages)){echo $pagename.'.php?offset='.$offset.'&col_order_by='.$col_order_by.'&sort='.$sort.'&find='.urlencode($find);} else { echo $baseurl_short.'pages/collections.php';}?>|<?php if (in_array($pagename,$main_pages)){echo 'main';} else { echo 'collections';}?>|both">&gt;&nbsp;<?php echo $lang["action-deletecollection"];?>...</option>
+<?php if (!checkperm("b") && (($userref==$cinfo["user"]) || checkperm("h")) && ($cinfo["cant_delete"]==0)) {?>&nbsp;<option id="delete" value="<?php echo htmlspecialchars($collection) ?>|<?php echo $lang["collectiondeleteconfirm"]?>|<?php echo $baseurl_short?>pages/collection_manage.php?delete=<?php echo urlencode($collection) ?>|<?php if (in_array($pagename,$main_pages)){echo $pagename.'.php?offset='.$offset.'&col_order_by='.$col_order_by.'&sort='.$sort.'&find='.urlencode($find);} else { echo $baseurl_short.'pages/collections.php';}?>|<?php if (in_array($pagename,$main_pages)){echo 'main';} else { echo 'collections';}?>|both">&gt;&nbsp;<?php echo $lang["action-deletecollection"];?>...</option>
 <?php } ?>
 <!-- end delete and remove-->
 
@@ -186,30 +186,30 @@ hook("collectiontoolcompact2","",array("collection"=>$collection,"count_result"=
 <!-- edit metadata -->    
 <?php # If this collection is (fully) editable, then display an extra edit all link
 if ($show_edit_all_link && $count_result>0 && $col_editable) { ?>
-    <option value="<?php echo $collection?>|0|0|<?php echo $baseurl_short?>pages/edit.php?collection=<?php echo $collection?>|main|false">&gt;&nbsp;<?php echo $lang["action-editall"]?>...</option>
+    <option value="<?php echo htmlspecialchars($collection) ?>|0|0|<?php echo $baseurl_short?>pages/edit.php?collection=<?php echo urlencode($collection) ?>|main|false">&gt;&nbsp;<?php echo $lang["action-editall"]?>...</option>
 <?php } ?>
 <!-- end edit metadata -->
 
 <!-- edit previews -->
 <?php if ($count_result>0 && $col_editable) { ?>
-<option value="<?php echo $collection?>|0|0|<?php echo $baseurl_short?>pages/collection_edit_previews.php?ref=<?php echo $collection?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&col_order_by=<?php echo $col_order_by?>&sort=<?php echo $sort?>&find=<?php echo urlencode($find)?>&backto=<?php if (in_array($pagename,$main_pages)){echo $pagename;}?>|main|false">&gt;&nbsp;<?php echo $lang['editcollectionresources']?>...</option>
+<option value="<?php echo htmlspecialchars($collection) ?>|0|0|<?php echo $baseurl_short?>pages/collection_edit_previews.php?ref=<?php echo urlencode($collection) ?>&offset=<?php echo urlencode($offset) ?>&order_by=<?php echo urlencode($order_by) ?>&col_order_by=<?php echo urlencode($col_order_by) ?>&sort=<?php echo urlencode($sort) ?>&find=<?php echo urlencode($find)?>&backto=<?php if (in_array($pagename,$main_pages)){echo htmlspecialchars($pagename) ;}?>|main|false">&gt;&nbsp;<?php echo $lang['editcollectionresources']?>...</option>
 <?php } ?>
 <!-- end previews  -->
 
 <!-- empty *-->
-<?php if (!checkperm("b") && $cinfo['savedsearch']=='' && (($userref==$cinfo["user"]) || checkperm("h"))  && $count_result>0) {?>&nbsp;<option id="removeall" value="<?php echo $collection?>|<?php echo $lang["emptycollectionareyousure"]?>|<?php echo $baseurl_short?>pages/collection_manage.php?removeall=<?php echo $collection?>|<?php if (in_array($pagename,$main_pages)){echo $baseurl_short.'pages/'.$pagename.'.php|main|both';}else {echo $baseurl_short.'pages/collections.php|collections|both';}?>">&gt;&nbsp;<?php echo $lang["emptycollection"]?>...</option>
+<?php if (!checkperm("b") && $cinfo['savedsearch']=='' && (($userref==$cinfo["user"]) || checkperm("h"))  && $count_result>0) {?>&nbsp;<option id="removeall" value="<?php echo htmlspecialchars($collection) ?>|<?php echo $lang["emptycollectionareyousure"]?>|<?php echo $baseurl_short?>pages/collection_manage.php?removeall=<?php echo urlencode($collection) ?>|<?php if (in_array($pagename,$main_pages)){echo $baseurl_short.'pages/'.$pagename.'.php|main|both';}else {echo $baseurl_short.'pages/collections.php|collections|both';}?>">&gt;&nbsp;<?php echo $lang["emptycollection"]?>...</option>
 <?php } ?>
 <!-- end empty-->
 
 <!-- delete resources *-->
-<?php if ((checkperm("e0") || checkperm("e1") || checkperm("e2")) && !checkperm("D") && $count_result>0) {?>&nbsp;<option id="removeall" value="<?php echo $collection?>|<?php echo $lang["deleteallsure"]?>|<?php echo $baseurl_short?>pages/collection_manage.php?deleteall=<?php echo $collection?>|<?php if (in_array($pagename,$main_pages)){echo $baseurl_short.'pages/'.$pagename.'.php|main|collections';}else {echo $baseurl_short.'pages/collections.php|collections|main';}?>">&gt;&nbsp;<?php echo $lang["deleteresources"]?>...</option>
+<?php if ((checkperm("e0") || checkperm("e1") || checkperm("e2")) && !checkperm("D") && $count_result>0) {?>&nbsp;<option id="removeall" value="<?php echo htmlspecialchars($collection) ?>|<?php echo $lang["deleteallsure"]?>|<?php echo $baseurl_short?>pages/collection_manage.php?deleteall=<?php echo $collection?>|<?php if (in_array($pagename,$main_pages)){echo $baseurl_short.'pages/'.$pagename.'.php|main|collections';}else {echo $baseurl_short.'pages/collections.php|collections|main';}?>">&gt;&nbsp;<?php echo $lang["deleteresources"]?>...</option>
 <?php } ?>
 <!-- end delete resources-->
 
 <!-- purge -->
 <?php if (!checkperm("b") && $collection_purge && $count_result>0){ 
     if (checkperm("e0") && $cinfo["cant_delete"] == 0) {
-        ?><option id="purge" value="<?php echo $collection?>|<?php echo $lang["purgecollectionareyousure"]?>|<?php echo $baseurl_short?>pages/collection_manage.php?purge=<?php echo $collection?>&offset=<?php echo $offset?>&col_order_by=<?php echo $col_order_by?>&sort=<?php echo $sort?>&find=<?php echo urlencode($find)?>|<?php if (in_array($pagename,$main_pages)){echo $baseurl_short.'pages/'.$pagename.'.php|main|collections';}else {echo $baseurl_short.'pages/collections.php|collections|main';}?>">&gt;&nbsp;<?php echo $lang["purgeanddelete"]?>...</option><?php 
+        ?><option id="purge" value="<?php echo htmlspecialchars($collection) ?>|<?php echo $lang["purgecollectionareyousure"]?>|<?php echo $baseurl_short?>pages/collection_manage.php?purge=<?php echo urlencode($collection) ?>&offset=<?php echo urlencode($offset) ?>&col_order_by=<?php echo urlencode($col_order_by) ?>&sort=<?php echo urlencode($sort) ?>&find=<?php echo urlencode($find)?>|<?php if (in_array($pagename,$main_pages)){echo $baseurl_short.'pages/'.$pagename.'.php|main|collections';}else {echo $baseurl_short.'pages/collections.php|collections|main';}?>">&gt;&nbsp;<?php echo $lang["purgeanddelete"]?>...</option><?php 
     } 
 } ?>
 <!-- end purge -->
@@ -220,7 +220,7 @@ if ($show_edit_all_link && $count_result>0 && $col_editable) { ?>
 
 <!-- contactsheet -->
 <?php if ($contact_sheet==true && $count_result>0) { ?>
-<option value="<?php echo $collection?>|0|0|<?php echo $baseurl_short?>pages/contactsheet_settings.php?ref=<?php echo $collection?>|main|false">&gt;&nbsp;<?php echo $lang["contactsheet"]?>...</option>
+<option value="<?php echo htmlspecialchars($collection)?>|0|0|<?php echo $baseurl_short?>pages/contactsheet_settings.php?ref=<?php echo urlencode($collection) ?>|main|false">&gt;&nbsp;<?php echo $lang["contactsheet"]?>...</option>
 <?php } ?>
 <!-- end contactsheet -->
 
@@ -233,7 +233,7 @@ if ($show_edit_all_link && $count_result>0 && $col_editable) { ?>
 
 <!-- log -->
 <?php if (($userref==$cinfo["user"]) || (checkperm("h"))) {?>
-    <option value="<?php echo $collection?>|0|0|<?php echo $baseurl_short?>pages/collection_log.php?ref=<?php echo $collection?>&offset=<?php echo $offset?>&col_order_by=<?php echo $col_order_by?>&sort=<?php echo $sort?>&find=<?php echo urlencode($find)?>|main|false">&gt;&nbsp;<?php echo $lang["action-log"]?></option>
+    <option value="<?php echo urlencode($collection) ?>|0|0|<?php echo $baseurl_short?>pages/collection_log.php?ref=<?php echo urlencode($collection) ?>&offset=<?php echo urlencode($offset) ?>&col_order_by=<?php echo urlencode($col_order_by) ?>&sort=<?php echo urlencode($sort) ?>&find=<?php echo urlencode($find)?>|main|false">&gt;&nbsp;<?php echo $lang["action-log"]?></option>
 <?php } ?>
 <!-- end log -->
 

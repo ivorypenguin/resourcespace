@@ -61,13 +61,13 @@ include "../include/header.php";
 <div class="BasicsBox">
 <h1><?php echo $lang["editcollection"]?></h1>
 <p><?php echo text("introtext")?></p>
-<form method=post id="collectionform" action="<?php echo $baseurl_short?>pages/collection_edit.php" onSubmit="if (jQuery('#usercollection').html()!='<?php echo $ref?>'){return CentralSpacePost(this,true);}">
+<form method=post id="collectionform" action="<?php echo $baseurl_short?>pages/collection_edit.php" onSubmit="if (jQuery('#usercollection').html()!='<?php echo htmlspecialchars($ref) ?>'){return CentralSpacePost(this,true);}">
 <input type=hidden name=redirect id=redirect value=yes>
-<input type=hidden name=ref value="<?php echo $ref?>">
+<input type=hidden name=ref value="<?php echo htmlspecialchars($ref) ?>">
 <input type=hidden name="submitted" value="true">
 
 <div class="Question">
-<label for="name"><?php echo $lang["name"]?></label><input type=text class="stdwidth" name="name" id="name" value="<?php echo $collection["name"]?>" maxlength="100" <?php if ($collection["cant_delete"]==1) { ?>readonly=true<?php } ?>>
+<label for="name"><?php echo $lang["name"]?></label><input type=text class="stdwidth" name="name" id="name" value="<?php echo htmlspecialchars($collection["name"]) ?>" maxlength="100" <?php if ($collection["cant_delete"]==1) { ?>readonly=true<?php } ?>>
 <div class="clearerleft"> </div>
 </div>
 
@@ -79,7 +79,7 @@ include "../include/header.php";
 </div>
 
 <div class="Question">
-<label><?php echo $lang["id"]?></label><div class="Fixed"><?php echo $collection["ref"]?></div>
+<label><?php echo $lang["id"]?></label><div class="Fixed"><?php echo htmlspecialchars($collection["ref"]) ?></div>
 <div class="clearerleft"> </div>
 </div>
 
@@ -87,7 +87,7 @@ include "../include/header.php";
 $result_limit=sql_value("select result_limit value from collection_savedsearch where collection='$ref'","");	
 ?>
 <div class="Question">
-<label for="name"><?php echo $lang["smart_collection_result_limit"] ?></label><input type=text class="stdwidth" name="result_limit" id="result_limit" value="<?php echo $result_limit ?>" />
+<label for="name"><?php echo $lang["smart_collection_result_limit"] ?></label><input type=text class="stdwidth" name="result_limit" id="result_limit" value="<?php echo htmlspecialchars($result_limit) ?>" />
 <div class="clearerleft"> </div>
 </div>
 <?php } ?>
@@ -183,7 +183,7 @@ if ($theme_category_levels>=$i)
 	<?php 
 	$lastselected=false;
 	for ($n=0;$n<count($themes);$n++) { ?>
-	<option <?php if ($collection["theme".$themeindex]==$themes[$n]) { ?>selected<?php } ?>><?php echo $themes[$n] ?></option>
+	<option <?php if ($collection["theme".$themeindex]==$themes[$n]) { ?>selected<?php } ?>><?php echo htmlspecialchars($themes[$n]) ?></option>
 	<?php if ($collection["theme".$themeindex]==$themes[$n] && $i==$orig_themecount){$lastselected=true;} ?>
 	<?php } ?>
 	</select>
@@ -209,7 +209,7 @@ if ($theme_category_levels>=$i)
 		if ($theme_category_levels>=$i)	{
 			if ($i==1){$themeindex="";}else{$themeindex=$i;}	
 			?>
-			<input type=hidden name="theme<?php echo $themeindex?>" value="<?php echo $collection["theme".$themeindex]?>">
+			<input type=hidden name="theme<?php echo $themeindex?>" value="<?php echo htmlspecialchars($collection["theme".$themeindex]) ?>">
 			<?php
 		}
 	}	
@@ -243,7 +243,7 @@ if (checkperm("h") && $collection['public']==1)
 		<?php foreach ($resources as $resource)
 			{
 			?>
-			<option value="<?php echo $resource["ref"] ?>" <?php if ($resource["ref"]==$collection["home_page_image"]) { ?>selected<?php } ?>><?php echo str_replace(array("%ref", "%title"), array($resource["ref"], i18n_get_translated($resource["field" . $view_title_field])), $lang["ref-title"]) ?></option>
+			<option value="<?php echo htmlspecialchars($resource["ref"]) ?>" <?php if ($resource["ref"]==$collection["home_page_image"]) { ?>selected<?php } ?>><?php echo str_replace(array("%ref", "%title"), array($resource["ref"], i18n_get_translated($resource["field" . $view_title_field])), $lang["ref-title"]) ?></option>
 			<?php
 			}
 		?>
@@ -304,7 +304,7 @@ if ($enable_collection_copy)
 	$list=get_user_collections($userref);
 	for ($n=0;$n<count($list);$n++)
 		{
-		if ($ref!=$list[$n]["ref"]){?><option value="<?php echo $list[$n]["ref"]?>"><?php echo htmlspecialchars($list[$n]["name"])?></option> <?php }
+		if ($ref!=$list[$n]["ref"]){?><option value="<?php echo htmlspecialchars($list[$n]["ref"]) ?>"><?php echo htmlspecialchars($list[$n]["name"])?></option> <?php }
 		}
 	?>
 	</select>
@@ -322,7 +322,7 @@ if ($enable_collection_copy)
 <div class="Question">
 <label><?php echo $lang["collectionlog"]?></label>
 <div class="Fixed">
-<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_log.php?ref=<?php echo $ref?>"><?php echo $lang["log"]?> &gt;</a>
+<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_log.php?ref=<?php echo urlencode($ref) ?>"><?php echo $lang["log"]?> &gt;</a>
 </div>
 <div class="clearerleft"> </div>
 </div>

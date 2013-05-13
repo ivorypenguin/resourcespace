@@ -5,7 +5,7 @@ include "../include/general.php";
 include "../include/collections_functions.php";
 include "../include/request_functions.php";
 
-$ref=getval("ref","");
+$ref=getval("ref","",true);
 $cinfo=get_collection($ref);
 $error=false;
 
@@ -39,11 +39,11 @@ include "../include/header.php";
   <p><?php echo text("introtext")?></p>
   
 	<form method="post" action="<?php echo $baseurl_short?>pages/collection_request.php">  
-	<input type=hidden name=ref value="<?php echo $ref?>">
+	<input type=hidden name=ref value="<?php echo htmlspecialchars($ref) ?>">
 	
 	<div class="Question">
 	<label><?php echo $lang["collectionname"]?></label>
-	<div class="Fixed"><?php echo $cinfo["name"]?></div>
+	<div class="Fixed"><?php echo htmlspecialchars($cinfo["name"]) ?></div>
 	<div class="clearerleft"> </div>
 	</div>
 
@@ -53,20 +53,20 @@ include "../include/header.php";
 	<div class="Question">
 	<label><?php echo $lang["fullname"]?></label>
 	<input type="hidden" name="fullname_label" value="<?php echo $lang["fullname"]?>">
-	<input name="fullname" class="stdwidth" value="<?php echo getval("fullname","") ?>"">
+	<input name="fullname" class="stdwidth" value="<?php echo htmlspecialchars(getval("fullname","")) ?>">
 	<div class="clearerleft"> </div>
 	</div>
 	
 	<div class="Question">
 	<label><?php echo $lang["emailaddress"]?></label>
 	<input type="hidden" name="email_label" value="<?php echo $lang["emailaddress"]?>">
-	<input name="email" class="stdwidth" value="<?php echo getval("email","") ?>">
+	<input name="email" class="stdwidth" value="<?php echo htmlspecialchars(getval("email","")) ?>">
 	<div class="clearerleft"> </div>
 	</div>
 
 	<div class="Question">
 	<label><?php echo $lang["contacttelephone"]?></label>
-	<input name="contact" class="stdwidth" value="<?php echo getval("contact","") ?>">
+	<input name="contact" class="stdwidth" value="<?php echo htmlspecialchars(getval("contact","")) ?>">
 	<input type="hidden" name="contact_label" value="<?php echo $lang["contacttelephone"]?>">
 	<div class="clearerleft"> </div>
 	</div>
@@ -74,7 +74,7 @@ include "../include/header.php";
 	
 	<div class="Question">
 	<label for="requestreason"><?php echo $lang["requestreason"]?> <sup>*</sup></label>
-	<textarea class="stdwidth" name="request" id="request" rows=5 cols=50><?php echo getval("request","") ?></textarea>
+	<textarea class="stdwidth" name="request" id="request" rows=5 cols=50><?php echo htmlspecialchars(getval("request","")) ?></textarea>
 	<div class="clearerleft"> </div>
 	</div>
 
@@ -141,7 +141,7 @@ if (isset($custom_request_fields))
 	<div class="QuestionSubmit">
 	<?php if ($error) { ?><div class="FormError">!! <?php echo $error ?> !!</div><?php } ?>
 	<label for="buttons"> </label>			
-	<input name="cancel" type="button" value="&nbsp;&nbsp;<?php echo $lang["cancel"]?>&nbsp;&nbsp;" onclick="document.location='<?php echo $baseurl_short?>pages/search.php?search=!collection<?php echo $ref?>';"/>&nbsp;
+	<input name="cancel" type="button" value="&nbsp;&nbsp;<?php echo $lang["cancel"]?>&nbsp;&nbsp;" onclick="document.location='<?php echo $baseurl_short?>pages/search.php?search=!collection<?php echo urlencode($ref) ?>';"/>&nbsp;
 	<input name="save" type="submit" value="&nbsp;&nbsp;<?php echo $lang["requestcollection"]?>&nbsp;&nbsp;" />
 	</div>
 	</form>
