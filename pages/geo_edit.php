@@ -8,7 +8,7 @@ include "../include/header.php";
 if ($disable_geocoding){exit("Geomapping disabled.");}
 
 # Fetch resource data.
-$ref = getvalescaped('ref','');
+$ref = getvalescaped('ref','',true);
 if ($ref=='') {die;}
 $resource=get_resource_data($ref);
 if ($resource==false) {die;}

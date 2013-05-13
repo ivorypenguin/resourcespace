@@ -65,7 +65,7 @@ else
 	}
 $bounds=explode(",",$bounds);
 ?>
-map.setCenter(new OpenLayers.LonLat(<?php echo $bounds[0] ?>,<?php echo $bounds[1] ?>),<?php echo $bounds[2] ?>);
+map.setCenter(new OpenLayers.LonLat(<?php echo htmlspecialchars($bounds[0]) ?>,<?php echo htmlspecialchars($bounds[1]) ?>),<?php echo $bounds[2] ?>);
 
 
 	

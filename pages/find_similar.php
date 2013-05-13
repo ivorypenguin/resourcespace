@@ -4,7 +4,7 @@ include "../include/authenticate.php"; if (!checkperm("s")) {exit ("Permission d
 include "../include/general.php";
 include "../include/search_functions.php";
 
-$resource_type=getvalescaped("resource_type","");
+$resource_type=getvalescaped("resource_type","",true);
 
 # Loop through all the submitted keywords, build a search string
 $search=array();
@@ -50,7 +50,7 @@ if (getval("countonly","")!="")
 else
 	{
 	# redirect to the search page.
-	redirect ($baseurl_short."pages/search.php?search=" . urlencode(join(", ",$search)) . "&resetrestypes=yes&resource" . $resource_type . "=yes");
+	redirect ($baseurl_short."pages/search.php?search=" . urlencode(join(", ",$search)) . "&resetrestypes=yes&resource" . urlencode($resource_type) . "=yes");
 	}
 
 ?>
