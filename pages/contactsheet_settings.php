@@ -124,7 +124,7 @@ if ($contact_sheet_add_link_option)
 
 <div class="Question">
 <label><?php echo $lang["size"]?></label>
-<select class="shrtwidth" name="size" id="size" onChange="jQuery().rsContactSheet('revert');"><?php echo htmlspecialchars($papersize_select) ?>
+<select class="shrtwidth" name="size" id="size" onChange="jQuery().rsContactSheet('revert');"><?php echo $papersize_select ?>
 </select>
 <div class="clearerleft"> </div>
 </div>
