@@ -1741,6 +1741,7 @@ $qlpreview_exclude_extensions=array("tif","tiff");
 
 
 # Log developer debug information to the debug log (filestore/tmp/debug.txt)?
+# As the default location is world-readable it is recommended for live systems to change the location to somewhere outside of the web directory by setting $debug_log_location below
 $debug_log=false;
 
 # Debug log location. Optional. Used to specify a full path to debug file. Ensure folder permissions allow write access by web service account
