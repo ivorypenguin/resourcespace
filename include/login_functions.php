@@ -54,7 +54,9 @@ function perform_login()
 		$result['password_hash']=$password_hash;
 
 		# Update the user record. Set the password hash again in case a plain text password was provided.
-		sql_query("update user set password='".escape_check($password_hash)."',session='".escape_check($session_hash)."',last_active=now(),login_tries=0,lang='".getvalescaped("language","")."' where username='".escape_check($username)."' and (password='".escape_check($password)."' or password='".escape_check($password_hash)."')");
+		# Omit updating session has if using an API, because we don't want API usage to log users out, and there is no 'session' to remember in such a case.
+		if ($api){$session_hash_sql="";} else {$session_hash_sql=",session='".escape_check($session_hash)."'";}
+		sql_query("update user set password='".escape_check($password_hash)."' $session_hash_sql ,last_active=now(),login_tries=0,lang='".getvalescaped("language","")."' where username='".escape_check($username)."' and (password='".escape_check($password)."' or password='".escape_check($password_hash)."')");
 
 		# Log this
 		$userref=$valid[0]["ref"];

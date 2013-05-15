@@ -11,8 +11,7 @@ if (!function_exists('filter_var')){  //If running on PHP without filter_var, de
 		}
 	}
 }
-if (file_exists("../config.php"))
-	die(1);
+if (file_exists("../include/config.php")){die(1);}
 if ($_REQUEST['mysqlserver']==''){
 	echo '202';
 	exit();

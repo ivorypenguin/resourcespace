@@ -32,9 +32,13 @@ if ($api && $enable_remote_apis ){
 
 			$result=perform_login();
 			if ($result['valid'])
+				{
 				$_COOKIE['user']=$result['session_hash'];
+				}
 	        else
+				{
 				unset($_COOKIE['user']);
+				}
 			}
 	}
 }
@@ -90,7 +94,7 @@ if (array_key_exists("user",$_COOKIE) || array_key_exists("user",$_GET) || isset
 		$session_hash="";
 		}
 
-	$user_select_sql="and u.session='$session_hash'";
+	if (!$api){ $user_select_sql="and u.session='$session_hash'"; } else { $user_select_sql=""; }
 	if (isset($anonymous_login) && ($username==$anonymous_login)) {$user_select_sql="and u.username='$username'";} # Automatic anonymous login, do not require session hash.
 	hook('provideusercredentials');
 
