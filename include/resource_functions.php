@@ -1878,8 +1878,8 @@ function get_resource_access($resource)
 		$access = 0;
 		}
 
-	global $open_access_for_contributor;
-	if ($open_access_for_contributor && $access == 1)
+	global $open_access_for_contributor, $userref;
+	if ($open_access_for_contributor && $access == 1 && $resourcedata['created_by'] == $userref)
 		{
 		# If access is restricted and user has contributed resource, grant open access.
 		$access = 0;
