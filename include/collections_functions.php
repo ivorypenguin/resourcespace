@@ -948,7 +948,7 @@ function get_search_title($searchstring){
 	$use_refine_searchstring=true;
 	$search_titles_shortnames=false;
 	
-	global $lang,$userref,$baseurl,$collectiondata,$result,$display;
+	global $lang,$userref,$baseurl,$collectiondata,$result,$display,$pagename,$collection,$userrequestmode,$preview_all;
 	
 	parse_str($searchstring,$searchvars);
 	if (isset($searchvars["archive"])){$archive=$searchvars["archive"];}else{$archive=0;}

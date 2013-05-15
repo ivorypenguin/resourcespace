@@ -91,6 +91,7 @@ $result = do_search($search, $restypes, "relevance", $archive, 100, "desc", fals
 
 # Create a title for the feed
 $searchstring = "search=$search&restypes=$restypes&archive=$archive&starsearch=$starsearch";
+if (substr($search,0,11)=="!collection"){$collection=substr($search,11);$collection=explode(" ",$collection);$collection=$collection[0];$collectiondata=get_collection($collection);}
 $feed_title = xml_entities($applicationname ." - " .get_search_title($searchstring));
 
 

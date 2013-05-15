@@ -88,7 +88,7 @@ function HookRefineresultsSearchSearchstringprocessing()
 			}
 		else
 			{
-			$search.="," . $refine;	
+			$search.=", " . $refine;	
 			}
 		}
 	$search=refine_searchstring($search);	
