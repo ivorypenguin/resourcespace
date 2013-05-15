@@ -46,7 +46,7 @@ if (getval("save","")!="")
 		
 		hook("custompostdeleteresource");
 		
-		redirect($baseurl_short."pages/done.php?text=deleted&refreshcollection=true&search=".urlencode($search)."&offset=".$offset."&order_by=".$order_by."&sort=".$sort."&archive=".$archive);
+		redirect($baseurl_short."pages/done.php?text=deleted&refreshcollection=true&search=".urlencode($search)."&offset=".urlencode($offset)."&order_by=".urlencode($order_by)."&sort=".urlencode($sort)."&archive=".urlencode($archive));
 		}
 	}
 include "../include/header.php";
@@ -72,7 +72,7 @@ else
   
   <?php if ($resource["archive"]==3) { ?><p><strong><?php echo $lang["finaldeletion"] ?></strong></p><?php } ?>
   
-	<form method="post" action="<?php echo $baseurl_short?>pages/delete.php">  
+	<form method="post" action="<?php echo $baseurl_short?>pages/delete.php?ref=<?php echo urlencode($ref) ?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset) ?>&order_by=<?php echo urlencode($order_by) ?>&sort=<?php echo urlencode($sort) ?>&archive=<?php echo urlencode($archive) ?>>  
 	<input type=hidden name=ref value="<?php echo urlencode($ref) ?>">
 	
 	<div class="Question">
