@@ -137,8 +137,8 @@ function generate_session_hash($password_hash)
 		$suffix="";
 		while (true)
 			{
-			$session=md5($scramble_key . $password_hash . date("Ymd"));
-			if (sql_value("select count(*) value from user where session='" . escape_check($session) . "'",0)==0) {return $session;} # Return a unique hash only.
+			$session=md5($scramble_key . $password_hash . date("Ymd") . $suffix);
+			if (sql_value("select count(*) value from user where session='" . escape_check($session) . "' and password<>'" . escape_check($password_hash) . "'",0)==0) {return $session;} # Return a unique hash only.
 			$suffix.="."; # Extremely unlikely case that this was not a unique session (hash collision) - alter the string slightly and try again.
 			}	
 		}	
