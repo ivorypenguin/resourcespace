@@ -60,7 +60,7 @@ for ($n=0;$n<count($collections);$n++)
             <?php if (in_array($df[$x]['ref'],$thumbs_display_extended_fields)){
                 ?><div class="extended">
             <?php } ?>
-            <?php if ($x==count($df)-1){?><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $pub_url?>" title="<?php echo htmlspecialchars(str_replace(array("\"","'"),"",i18n_get_collection_name($collections[$n]))) ?>"><?php echo highlightkeywords(htmlspecialchars(tidy_trim(i18n_get_collection_name($collections[$n]),32),$search))?></a><?php } ?>&nbsp;<?php if (in_array($df[$x]['ref'],$thumbs_display_extended_fields)){ ?></div>
+            <?php if ($x==count($df)-1){?><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $pub_url?>" title="<?php echo htmlspecialchars(str_replace(array("\"","'"),"",i18n_get_collection_name($collections[$n]))) ?>"><?php echo highlightkeywords(htmlspecialchars(tidy_trim(i18n_get_collection_name($collections[$n]),32)),$search)?></a><?php } ?>&nbsp;<?php if (in_array($df[$x]['ref'],$thumbs_display_extended_fields)){ ?></div>
             <?php }
         ?></div><?php } ?>
         <?php } ?>
