@@ -4,6 +4,7 @@ include dirname(__FILE__) . "/../../include/general.php";
 include dirname(__FILE__) . "/../../include/resource_functions.php";
 include dirname(__FILE__) . "/../../include/image_processing.php";
 
+ob_end_clean();
 set_time_limit(60*60*40);
 
 if ($argc == 2)
