@@ -323,7 +323,19 @@ function get_resource_top_keywords($resource,$count)
 	# This is for the 'Find Similar' search.
 	# Keywords that are too short or too long, or contain numbers are dropped - they are probably not as meaningful in
 	# the contexts of this search (consider being offered "12" or "OKB-34" as an option?)
-	return sql_array("select distinct k.ref,k.keyword value from keyword k,resource_keyword r,resource_type_field f where k.ref=r.keyword and r.resource='$resource' and f.ref=r.resource_type_field and f.use_for_similar=1 and length(k.keyword)>=3 and length(k.keyword)<=15 and k.keyword not like '%0%' and k.keyword not like '%1%' and k.keyword not like '%2%' and k.keyword not like '%3%' and k.keyword not like '%4%' and k.keyword not like '%5%' and k.keyword not like '%6%' and k.keyword not like '%7%' and k.keyword not like '%8%' and k.keyword not like '%9%' order by k.hit_count desc limit $count");
+	$return=array();
+	$keywords=sql_query("select distinct k.ref,k.keyword keyword,f.ref field,f.resource_type from keyword k,resource_keyword r,resource_type_field f where k.ref=r.keyword and r.resource='$resource' and f.ref=r.resource_type_field and f.use_for_similar=1 and length(k.keyword)>=3 and length(k.keyword)<=15 and k.keyword not like '%0%' and k.keyword not like '%1%' and k.keyword not like '%2%' and k.keyword not like '%3%' and k.keyword not like '%4%' and k.keyword not like '%5%' and k.keyword not like '%6%' and k.keyword not like '%7%' and k.keyword not like '%8%' and k.keyword not like '%9%' order by k.hit_count desc limit $count");
+	foreach ($keywords as $keyword)
+		{
+		# Apply permissions and strip out any results the user does not have access to.
+		if ((checkperm("f*") || checkperm("f" . $keyword["field"]))
+		&& !checkperm("f-" . $keyword["field"]) && !checkperm("T" . $keyword["resource_type"]))
+			{
+			# Has access to this field.
+			$return[]=$keyword["keyword"];
+			}
+		}
+	return $return;
 	}
 
 if (!function_exists("split_keywords")){
