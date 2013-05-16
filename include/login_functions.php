@@ -31,7 +31,7 @@ function perform_login()
     hook("externalauth","",array($username, $password)); #Attempt external auth if configured
 
 	# Generate a new session hash.
-	$session_hash=generate_session_hash();
+	$session_hash=generate_session_hash($password_hash);
 
 	$valid=sql_query("select ref,usergroup from user where username='".escape_check($username)."' and (password='".escape_check($password)."' or password='".escape_check($password_hash)."')");
 
@@ -117,14 +117,32 @@ function perform_login()
 	}
 
 	
-function generate_session_hash()
+function generate_session_hash($password_hash)
 	{
 	# Generates a unique session hash
-	while (true)
+	global $randomised_session_hash,$scramble_key;
+	
+	if ($randomised_session_hash)
 		{
-		$session=md5(rand() . microtime());
-		if (sql_value("select count(*) value from user where session='" . escape_check($session) . "'",0)==0) {return $session;} # Return a unique hash only.
+		# Completely randomised session hashes. May be more secure, but allows only one user at a time.
+		while (true)
+			{
+			$session=md5(rand() . microtime());
+			if (sql_value("select count(*) value from user where session='" . escape_check($session) . "'",0)==0) {return $session;} # Return a unique hash only.
+			}	
+		}
+	else
+		{
+		# Session hash is based on the password hash and the date, so there is one new session hash each day. Allows two users to use the same login.
+		$suffix="";
+		while (true)
+			{
+			$session=md5($scramble_key . $password_hash . date("Ymd"));
+			if (sql_value("select count(*) value from user where session='" . escape_check($session) . "'",0)==0) {return $session;} # Return a unique hash only.
+			$suffix.="."; # Extremely unlikely case that this was not a unique session (hash collision) - alter the string slightly and try again.
+			}	
 		}	
+		
 	}
 	
 ?>

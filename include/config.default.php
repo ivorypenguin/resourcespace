@@ -917,6 +917,10 @@ $session_length=30;
 # Automatically log a user out at the end of a session (a period of idleness equal to $session_length above).
 $session_autologout=false;
 
+# Randomised session hash?
+# Setting to 'true' means each new session is completely unique each login. This may be more secure as the hash is less easy to guess but means that only one user can use a given user account at any one time.
+$randomised_session_hash=false;
+
 # Allow browsers to save the login information on the login form.
 $login_autocomplete=true;
 
