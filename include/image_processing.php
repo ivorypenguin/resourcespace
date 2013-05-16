@@ -562,7 +562,10 @@ function iptc_return_utf8($text)
  
 function create_previews($ref,$thumbonly=false,$extension="jpg",$previewonly=false,$previewbased=false,$alternative=-1)
 	{
-    global $imagemagick_path, $preview_generate_max_file_size;
+    global $keep_for_hpr,$imagemagick_path, $preview_generate_max_file_size;
+    
+    // keep_for_hpr will be set to true if necessary in preview_preprocessing.php to indicate that an intermediate jpg can serve as the hpr.
+    // otherwise when the file extension is a jpg it's assumed no hpr is needed.
 
 	# Debug
 	debug("create_previews(ref=$ref,thumbonly=$thumbonly,extension=$extension,previewonly=$previewonly,previewbased=$previewbased,alternative=$alternative)");
@@ -762,7 +765,7 @@ function create_previews($ref,$thumbonly=false,$extension="jpg",$previewonly=fal
 
 function create_previews_using_im($ref,$thumbonly=false,$extension="jpg",$previewonly=false,$previewbased=false,$alternative=-1)
 	{
-	global $imagemagick_path,$imagemagick_preserve_profiles,$imagemagick_quality,$imagemagick_colorspace;
+	global $keep_for_hpr,$imagemagick_path,$imagemagick_preserve_profiles,$imagemagick_quality,$imagemagick_colorspace;
 
 	$icc_transform_complete=false;
 	debug("create_previews_using_im(ref=$ref,thumbonly=$thumbonly,extension=$extension,previewonly=$previewonly,previewbased=$previewbased,alternative=$alternative)");
@@ -827,7 +830,13 @@ function create_previews_using_im($ref,$thumbonly=false,$extension="jpg",$previe
 
 		$ps=sql_query("select * from preview_size $sizes order by width desc, height desc");
 		for ($n=0;$n<count($ps);$n++)
-			{
+			{ 
+			# If this is just a jpg resource, we avoid the hpr size because the resource itself is an original sized jpg. 
+			# If preview_preprocessing indicates the intermediate jpg should be kept as the hpr image, do that. 
+			if ($keep_for_hpr && $ps[$n]['id']=="hpr"){
+				rename($file,$hpr_path);$keep_for_hpr=false;
+			}
+			
 			# If we've already made the LPR or SCR then use those for the remaining previews.
 			# As we start with the large and move to the small, this will speed things up.
 			if(file_exists($hpr_path)){$file=$hpr_path;}

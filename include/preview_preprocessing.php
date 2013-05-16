@@ -12,6 +12,9 @@ global $dUseCIEColor;
 $exiftool_fullpath = get_utility_path("exiftool");
 $ghostscript_fullpath = get_utility_path("ghostscript");
 
+global $keep_for_hpr;
+$preprocess=true; // indicate that an intermediate jpg is being made, so that image_processing doesn't skip the hpr
+
 if (!$previewonly)
 	{
 	$file=get_resource_path($ref,true,"",false,$extension,-1,1,false,"",$alternative); 
@@ -281,7 +284,7 @@ if (($extension=="cr2" || $extension=="nef" || $extension=="dng" || $extension==
                         $wait = run_command($command);
                         }
 					}
-				$newfile = $target;
+				$newfile = $target;$keep_for_hpr=true;
 				}
 			else
 				{
