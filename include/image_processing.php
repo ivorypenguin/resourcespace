@@ -387,6 +387,8 @@ function extract_exif_comment($ref,$extension="")
             	}
 			}
         
+        # Update portrait_landscape_field (when reverting metadata this was getting lost)
+        update_portrait_landscape_field($ref);
         
 		# now we lookup fields from the database to see if a corresponding value
 		# exists in the uploaded file
@@ -1005,9 +1007,22 @@ function extract_mean_colour($image,$ref)
 	
 	$colkey=get_colour_key($image);
 
+	update_portrait_landscape_field($ref,$image);
+
+	sql_query("update resource set image_red='$totalred', image_green='$totalgreen', image_blue='$totalblue',colour_key='$colkey',thumb_width='$width', thumb_height='$height' where ref='$ref'");
+	}
+
+function update_portrait_landscape_field($ref,$image=""){
+	# updates portrait_landscape_field
+
 	global $portrait_landscape_field,$lang;
-	if (isset($portrait_landscape_field))
-		{
+	if (isset($portrait_landscape_field)){
+		if ($image==""){
+			$image=@imagecreatefromjpeg(get_resource_path($ref,true,"thm",false,"jpg"));
+			}
+	
+		$width=imagesx($image);$height=imagesy($image);
+	
 		# Write 'Portrait' or 'Landscape' to the appropriate field.
 		if ($width>$height) {
 			$portland=$lang["landscape"];
@@ -1020,9 +1035,6 @@ function extract_mean_colour($image,$ref)
 		}	
 		update_field($ref,$portrait_landscape_field,$portland);
 		}
-
-	
-	sql_query("update resource set image_red='$totalred', image_green='$totalgreen', image_blue='$totalblue',colour_key='$colkey',thumb_width='$width', thumb_height='$height' where ref='$ref'");
 	}
 
 function get_colour_key($image)
