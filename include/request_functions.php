@@ -253,6 +253,8 @@ function managed_collection_request($ref,$details,$ref_is_resource=false)
 	# Create the request
 	sql_query("insert into request(user,collection,created,request_mode,status,comments) values ('$userref','$ref',now(),1,0,'" . escape_check($message) . "')");
 	$request=sql_insert_id();
+
+	hook("afterrequestcreate", "", array($request));
 	
 	# Send the e-mail		
 	$userconfirmmessage = $lang["requestsenttext"];
