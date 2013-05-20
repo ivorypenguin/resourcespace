@@ -396,7 +396,7 @@ if (!$download && !$original && getval("slideshow","")==""){
 	unlink(get_temp_dir() . "/transform_plugin/pre_$ref.jpg");
     }
 
-    header("Location:../../../pages/view.php?ref=$ref\n\n");
+    redirect("pages/view.php?ref=$ref");
     exit;
 
 } elseif (getval("slideshow","")!="")

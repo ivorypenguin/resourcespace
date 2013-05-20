@@ -27,7 +27,7 @@ if (getval("save","")!="")
 	# Save news
 	If ($createnews) {add_news($date,$title,$body);}
 	else {update_news($ref,$date,$title,$body);}
-	header("location:".$baseurl."/plugins/news/pages/news_edit.php?findtext=".$findtext."&offset=".$offset);
+	redirect("plugins/news/pages/news_edit.php?findtext=".$findtext."&offset=".$offset);
 	}
 	
 # Fetch news data

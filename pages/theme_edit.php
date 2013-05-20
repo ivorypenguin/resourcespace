@@ -11,7 +11,7 @@ function save_themename()
 		global $baseurl, $link, $themename, $collection_column;
 		$sql="update collection set	" . $collection_column . "='" . getvalescaped("rename","") . "' where " . $collection_column . "='" . escape_check($themename)."'";
 		sql_query($sql);
-		header("location:".$baseurl. "/pages/" . $link);
+		redirect("pages/" . $link);
 	}
 
 $themes=array();

@@ -24,7 +24,7 @@ if ($delete!="")
 
 if (getval("create","")!="")
 	{
-	header("location:".$baseurl."/plugins/news/pages/news_content_edit.php?ref=new");
+	redirect("plugins/news/pages/news_content_edit.php?ref=new");
 	}
 
 include dirname(__FILE__)."/../../../include/header.php";

@@ -18,18 +18,18 @@ If (!isset($ref)){$ref=getvalescaped("ref","",true);}
 
 if ((getval("edit","")!="") && (checkperm("o")))
 	{
-	header("location:".$baseurl."/plugins/news/pages/news_content_edit.php?ref=".$ref);
+	redirect("plugins/news/pages/news_content_edit.php?ref=".$ref);
 	}
 		
 if ((getval("previous","")!=""))
 	{
 	$ref=getvalescaped("ref","",true);$ref--;
-	header("location:".$baseurl."/plugins/news/pages/news.php?ref=".$ref);
+	redirect("plugins/news/pages/news.php?ref=".$ref);
 	}
 if ((getval("next","")!=""))
 	{
 	$ref=getvalescaped("ref","",true);$ref++;
-	header('location: '.$baseurl.'/plugins/news/pages/news.php?ref='.$ref);
+	redirect("plugins/news/pages/news.php?ref=".$ref);
 	}
 
 if ($ref=="")
