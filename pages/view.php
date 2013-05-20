@@ -434,10 +434,14 @@ if ($resource["has_image"]==1 && $download_multisize)
 			{
 			?>
 			<td class="DownloadButton">
-			<?php if (!$direct_download || $save_as){
-				?><a id="downloadlink" <?php if (!hook("downloadlink","",array("ref=" . $ref . "&k=" . $k . "&size=" . $sizes[$n]["id"] . "&ext=" . $sizes[$n]["extension"]))) { ?>href="<?php echo $baseurl ?>/pages/terms.php?ref=<?php echo urlencode($ref)?>&search=<?php echo urlencode($search) ?>&k=<?php echo urlencode($k)?>&url=<?php echo urlencode("pages/download_progress.php?ref=" . $ref . "&size=" . $sizes[$n]["id"] . "&ext=" . $sizes[$n]["extension"] . "&k=" . $k . "&search=" . urlencode($search) . "&offset=" . $offset . "&archive=" . $archive . "&sort=".$sort."&order_by=" . urlencode($order_by))?>"<?php } ?> onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["action-download"]?></a>
-			<?php 
-			} 
+			<?php if (!$direct_download || $save_as)
+				{
+				if(!hook("downloadbuttonreplace"))
+					{
+					?><a id="downloadlink" <?php if (!hook("downloadlink","",array("ref=" . $ref . "&k=" . $k . "&size=" . $sizes[$n]["id"] . "&ext=" . $sizes[$n]["extension"]))) { ?>href="<?php echo $baseurl ?>/pages/terms.php?ref=<?php echo urlencode($ref)?>&search=<?php echo urlencode($search) ?>&k=<?php echo urlencode($k)?>&url=<?php echo urlencode("pages/download_progress.php?ref=" . $ref . "&size=" . $sizes[$n]["id"] . "&ext=" . $sizes[$n]["extension"] . "&k=" . $k . "&search=" . urlencode($search) . "&offset=" . $offset . "&archive=" . $archive . "&sort=".$sort."&order_by=" . urlencode($order_by))?>"<?php } ?> onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["action-download"]?></a>
+					<?php 
+					}
+				} 
 			else { ?>
 				<a id="downloadlink" href="#" onclick="directDownload('<?php echo $baseurl_short?>pages/download_progress.php?ref=<?php echo urlencode($ref) ?>&size=<?php echo $sizes[$n]['id']?>&ext=<?php echo $sizes[$n]['extension']?>&k=<?php echo urlencode($k)?>')"><?php echo $lang["action-download"]?></a>
 			<?php } // end if direct_download ?>
@@ -620,9 +624,15 @@ if ($access==0) # open access only (not restricted)
 		
 		<?php if ($access==0){?>
 		<td class="DownloadButton">
-		<?php if (!$direct_download || $save_as){?>
-		<a <?php if (!hook("downloadlink","",array("ref=" . $ref . "&alternative=" . $altfiles[$n]["ref"] . "&k=" . $k . "&ext=" . $altfiles[$n]["file_extension"]))) { ?>href="<?php echo $baseurl_short?>pages/terms.php?ref=<?php echo urlencode($ref)?>&k=<?php echo urlencode($k)?>&search=<?php echo urlencode($search) ?>&url=<?php echo urlencode("pages/download_progress.php?ref=" . $ref . "&ext=" . $altfiles[$n]["file_extension"] . "&k=" . $k . "&alternative=" . $altfiles[$n]["ref"] . "&search=" . urlencode($search) . "&offset=" . $offset . "&archive=" . $archive . "&sort=".$sort."&order_by=" . urlencode($order_by))?>"<?php } ?> onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["action-download"] ?></a>
-		<?php } else { ?>
+		<?php 		
+		if (!$direct_download || $save_as)
+			{
+			if(!hook("downloadbuttonreplace"))
+				{
+				?><a <?php if (!hook("downloadlink","",array("ref=" . $ref . "&alternative=" . $altfiles[$n]["ref"] . "&k=" . $k . "&ext=" . $altfiles[$n]["file_extension"]))) { ?>href="<?php echo $baseurl_short?>pages/terms.php?ref=<?php echo urlencode($ref)?>&k=<?php echo urlencode($k)?>&search=<?php echo urlencode($search) ?>&url=<?php echo urlencode("pages/download_progress.php?ref=" . $ref . "&ext=" . $altfiles[$n]["file_extension"] . "&k=" . $k . "&alternative=" . $altfiles[$n]["ref"] . "&search=" . urlencode($search) . "&offset=" . $offset . "&archive=" . $archive . "&sort=".$sort."&order_by=" . urlencode($order_by))?>"<?php } ?> onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["action-download"] ?></a><?php 
+				}
+			}
+		else { ?>
 			<a href="#" onclick="directDownload('<?php echo $baseurl_short?>pages/download_progress.php?ref=<?php echo urlencode($ref)?>&ext=<?php echo $altfiles[$n]["file_extension"]?>&k=<?php echo urlencode($k)?>&alternative=<?php echo $altfiles[$n]["ref"]?>')"><?php echo $lang["action-download"]?></a>
 		<?php } // end if direct_download ?></td></td>
 		<?php } else { ?>
