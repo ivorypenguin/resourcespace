@@ -2105,3 +2105,6 @@ $order_by_resource_type=false;
 
 # Upload Options at top of Edit page (Collection, import metadata checkbox) at top of edit page, rather than the bottom (default).
 $edit_upload_options_at_top=false;
+
+# Option to select metadata field that will be used for downloaded filename (do not include file extension)
+#$download_filename_field=8;

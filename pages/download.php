@@ -121,21 +121,33 @@ if ($noattach=="")
 			# append preview size to base name if not the original
 			if ($size!=""){$filename=strip_extension(mb_basename($origfile))."-".$size.".".$ext;}
 			else {$filename = strip_extension(mb_basename($origfile)).".".$ext;}
-			
+
 			if ($prefix_resource_id_to_filename) { $filename = $prefix_filename_string . $ref . "_" . $filename; }
 			}
 		}
-	
+
+	if ($download_filename_id_only){$filename=$ref . "." . $ext;}
+
+	if (isset($download_filename_field))
+		{
+		$newfilename=get_data_by_field($ref,$download_filename_field);
+		if ($newfilename)
+			{
+			$filename = trim(nl2br(strip_tags($newfilename)));
+			$filename=substr($filename,0,200) . "." . $ext;
+			}
+		}
+
 	# Remove critical characters from filename
 	$filename = preg_replace('/:/', '_', $filename);
 
-	if ($download_filename_id_only){$filename=$ref . "." . $ext;}
-        hook("downloadfilename");
-	
-	if (!$direct){		
+    	hook("downloadfilename");
+
+	if (!$direct)
+		{
 		# We use quotes around the filename to handle filenames with spaces.
 		header(sprintf('Content-Disposition: attachment; filename="%s"', $filename));
-	}
+		}
 	}
 
 # We assign a default mime-type, in case we can find the one associated to the file extension.
@@ -143,7 +155,7 @@ $mime="application/octet-stream";
 
 
 if ($noattach=="")
-	{		
+	{
 	# Get mime type via exiftool if possible
 	$exiftool_fullpath = get_utility_path("exiftool");
 	if ($exiftool_fullpath!=false)
