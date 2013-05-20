@@ -11,7 +11,7 @@ $ref=getvalescaped("ref","",true);
 # if bypass sharing page option is on, redirect to e-mail
 if ($bypass_share_screen)
 	{
-	header( 'Location:'.$baseurl_short.'pages/collection_email.php?ajax=' . urlencode(getval("ajax","")) . '&ref='.$ref ) ;
+	redirect('pages/collection_email.php?ref='.$ref ) ;
 	}
 
 $collection=get_collection($ref);
