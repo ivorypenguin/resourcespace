@@ -1012,15 +1012,19 @@ function extract_mean_colour($image,$ref)
 	sql_query("update resource set image_red='$totalred', image_green='$totalgreen', image_blue='$totalblue',colour_key='$colkey',thumb_width='$width', thumb_height='$height' where ref='$ref'");
 	}
 
-function update_portrait_landscape_field($ref,$image=""){
+function update_portrait_landscape_field($ref,$image=null){
 	# updates portrait_landscape_field
 
 	global $portrait_landscape_field,$lang;
 	if (isset($portrait_landscape_field)){
-		if ($image==""){
-			$image=@imagecreatefromjpeg(get_resource_path($ref,true,"thm",false,"jpg"));
+		if (!$image){ 
+			$thumbfile=get_resource_path($ref,true,"thm",false,"jpg");
+			if (!file_exists($thumbfile)){ 
+				return; 
 			}
-	
+			$image=@imagecreatefromjpeg($thumbfile);
+			}
+		
 		$width=imagesx($image);$height=imagesy($image);
 	
 		# Write 'Portrait' or 'Landscape' to the appropriate field.
