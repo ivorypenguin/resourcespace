@@ -185,8 +185,8 @@ if ($k!="") {$edit_access=0;}
 
 
 <?php 
-# Check if actually coming from a search, but not a special search or direct access e.g. ?r=1234. Blank searches have restypes set in cookie.
-if (($usearch!="" || $restypes!="" || $archive==-1 || $archive==-2) && (isset($_GET['search']))) { ?>
+# Check if actually coming from a search, but not if a numeric search and config_search_for_number is set or if this is a direct request e.g. ?r=1234.
+if (isset($_GET["search"]) && !($config_search_for_number && is_numeric($usearch))) { ?>
 <div class="backtoresults">
 <a class="prevLink" href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo urlencode($ref)?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>&k=<?php echo urlencode($k) ?>&go=previous&<?php echo hook("nextpreviousextraurl") ?>" onClick="return CentralSpaceLoad(this);">&lt;&nbsp;<?php echo $lang["previousresult"]?></a>
 <?php 
