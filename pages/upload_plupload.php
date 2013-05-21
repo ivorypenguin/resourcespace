@@ -93,7 +93,7 @@ if ($_FILES)
 
 	# Banned extension?
 	global $banned_extensions;
-	if (in_array($extension,$banned_extensions))
+	if (in_array($extension,$banned_extensions) || ($allowed_extensions!="" && !in_array($extension,explode(",",$allowed_extensions))))
 		{
 		die('{"jsonrpc" : "2.0", "error" : {"code": 105, "message": "Banned file extension."}, "id" : "id"}');
 		}
