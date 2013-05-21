@@ -87,6 +87,17 @@ if ($_FILES)
 	$chunks = isset($_REQUEST["chunks"]) ? intval($_REQUEST["chunks"]) : 0;
 	$plfilename = isset($_REQUEST["name"]) ? $_REQUEST["name"] : '';
 
+	# Work out the extension
+	$extension=explode(".",$plfilename);
+	$extension=trim(strtolower($extension[count($extension)-1]));
+
+	# Banned extension?
+	global $banned_extensions;
+	if (in_array($extension,$banned_extensions))
+		{
+		die('{"jsonrpc" : "2.0", "error" : {"code": 105, "message": "Banned file extension."}, "id" : "id"}');
+		}
+
 	// Clean the filename for security reasons
 	$plfilename = preg_replace('/[^\w\._]+/', '_', $plfilename);
 
@@ -190,9 +201,6 @@ if ($_FILES)
 				# Add a new alternative file
 				$aref=add_alternative_file($alternative,$plfilename);
 				
-				# Work out the extension
-				$extension=explode(".",$plfilepath); $extension=trim(strtolower($extension[count($extension)-1]));
-
 				# Find the path for this resource.
 				$path=get_resource_path($alternative, true, "", true, $extension, -1, 1, false, "", $aref);
 				
