@@ -323,7 +323,7 @@ window.onload = function() {
 <?php } // end omit_collectiondiv_load_pages ?>	
 
 
-
+<?php hook("afteruilayout");?>
 
 
 </body>

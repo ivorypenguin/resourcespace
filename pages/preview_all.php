@@ -264,7 +264,7 @@ if (maxheight><?php echo $imageheight?>){
 	window.onresize=function(event){
 	var maxheight=window.innerHeight-<?php echo $heightmod?>;
     if (isNaN(maxheight)){maxheight=document.documentElement.clientHeight-<?php echo $heightmod?>;}
-	jQuery('.image').each(function () {
+	jQuery('.Picture').each(function () {
 		if (maxheight> jQuery(this).attr("imageheight").replace(/px,*\)*/g,"")){jQuery(this).height(jQuery(this).attr("imageheight")+'px'); }
 		else { jQuery(this).height(maxheight+'px');} } );}
 </script>
