@@ -148,6 +148,8 @@ jQuery(document).ready(function() {
         
          switch (e.which) 
          {
+			 
+		    <?php hook ("addhotkeys"); //this comes first so overriding the below is possible ?>
             // left arrow
             case <?php echo $keyboard_navigation_prev; ?>: if (jQuery('.prevLink').length > 0) jQuery('.prevLink').click();
                      <?php 
@@ -190,6 +192,7 @@ jQuery(document).ready(function() {
                      break;
             case <?php echo $keyboard_navigation_zoom; ?>: if (jQuery('.enterLink').length > 0) window.location=jQuery('.enterLink').attr("href");
                      break;
+          
          }
          
      }
