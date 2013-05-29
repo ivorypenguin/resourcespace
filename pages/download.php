@@ -134,7 +134,9 @@ if ($noattach=="")
 		if ($newfilename)
 			{
 			$filename = trim(nl2br(strip_tags($newfilename)));
-			$filename=substr($filename,0,200) . "." . $ext;
+			if ($size!=""){$filename=substr($filename,0,200)."-".$size.".".$ext;}
+			else{$filename=substr($filename,0,200) . "." . $ext;}
+			if ($prefix_resource_id_to_filename) { $filename = $prefix_filename_string . $ref . "_" . $filename; }
 			}
 		}
 
