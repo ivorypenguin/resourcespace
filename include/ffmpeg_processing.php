@@ -29,7 +29,10 @@ else
 	if (!isset($_SERVER['argv'][6])) {exit("Snapshottime param missing");}
 	$snapshottime=$_SERVER['argv'][6];
 
-	debug ("Starting ffmpeg_processing.php async with parameters: ref=$ref, file=$file, target=$target, previewonly=$previewonly, snapshottime=$snapshottime");
+	if (!isset($_SERVER['argv'][7])) {exit("Alternative param missing");}
+	$alternative=$_SERVER['argv'][7];
+
+	debug ("Starting ffmpeg_processing.php async with parameters: ref=$ref, file=$file, target=$target, previewonly=$previewonly, snapshottime=$snapshottime, alternative=$alternative");
 
 	sql_query("UPDATE resource SET is_transcoding = 1 WHERE ref = '".escape_check($ref)."'");
 	}
@@ -199,14 +202,16 @@ if (isset($ffmpeg_alternatives))
             if($tmp) {$shell_exec_cmd = $tmp;}
 
             $output = run_command($shell_exec_cmd);
-			
+
+	    if(isset($qtfaststart_path))
+			{
 			if($qtfaststart_path && file_exists($qtfaststart_path . "/qt-faststart") && in_array($ffmpeg_alternatives[$n]["extension"], $qtfaststart_extensions) ){
 				$apathtmp=$apath.".tmp";
 				rename($apath, $apathtmp);
 				$output=run_command($qtfaststart_path . "/qt-faststart " . escapeshellarg($apathtmp) . " " . escapeshellarg($apath)." 2>&1");
 				unlink($apathtmp);
+				}
 			}
-
 			if (file_exists($apath))
 				{
 				# Update the database with the new file details.
