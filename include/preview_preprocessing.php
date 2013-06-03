@@ -542,7 +542,6 @@ if (($ffmpeg_fullpath!=false) && !isset($newfile) && in_array($extension, $ffmpe
 	                		escapeshellarg($file) . " " . 
 	                		escapeshellarg($target) . " " . 
 	                		escapeshellarg($previewonly) . " " . 
-					escapeshellarg($snapshottime) . " " . 
 					escapeshellarg($snapshottime) . " " .
                                       	escapeshellarg($alternative) . " " .
                                        	"> /dev/null 2>&1 &");
