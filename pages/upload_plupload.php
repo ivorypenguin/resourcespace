@@ -284,7 +284,7 @@ if ($_FILES)
     }
 $headerinsert.= "
 <link href=\"../lib/plupload/jquery.plupload.queue/css/jquery.plupload.queue.css?" . $css_reload_key . "\" rel=\"stylesheet\" type=\"text/css\" media=\"screen,projection,print\"  />
-<script type=\"text/javascript\" src=\"http://bp.yahooapis.com/2.4.21/browserplus-min.js?" . $css_reload_key . "\"></script>
+<script type=\"text/javascript\" src=\"".$baseurl_short."lib/js/browserplus-min.js?" . $css_reload_key . "\"></script>
 <script type=\"text/javascript\" src=\"../lib/plupload/plupload.full.js?" . $css_reload_key . "\"></script>
 <script type=\"text/javascript\" src=\"../lib/plupload/jquery.plupload.queue/jquery.plupload.queue.js?" . $css_reload_key . "\"></script>
 ";
