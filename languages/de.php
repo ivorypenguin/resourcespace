@@ -878,8 +878,8 @@ $lang["password_matches_existing"]="Das eingegebene Passwort ist identisch mit d
 $lang["password_expired"]="Ihr Passwort ist abgelaufen. Sie müssen ein neues Passwort eingeben";
 $lang["max_login_attempts_exceeded"]="Sie haben die maximale Anzahl an Login Versuchen überschritten. Sie müssen ? Minuten warten, bis Sie es erneut versuchen können.";
 
-$lang["newlogindetails"]="Dies sind Ihre neuen Login Daten."; # For new password mail
-$lang["youraccountdetails"]="Ihre Daten"; # Subject of mail sent to user on user details save
+$lang["newlogindetails"]="Dies sind Ihre neuen Login-Daten."; # For new password mail
+$lang["youraccountdetails"]="Ihre Login-Daten"; # Subject of mail sent to user on user details save
 
 $lang["copyfromcollection"]="Aus Kollektion kopieren";
 $lang["donotcopycollection"]="Nicht aus einer Kollektion kopieren";
