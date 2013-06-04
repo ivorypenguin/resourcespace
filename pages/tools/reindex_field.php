@@ -39,7 +39,7 @@ if (getval("submit","")!="")
 		$ref=$row["resource"];
 		$value=$row["value"];
 	
-		if ($fieldinfo["type"]==3 || $fieldinfo["type"]==2)
+		if ($fieldinfo["type"]==3 || $fieldinfo["type"]==2 || $fieldinfo["type"]==9)
 			{
 			# Prepend a comma when indexing dropdowns to ensure full value is also indexed
 			$value="," . $value;
