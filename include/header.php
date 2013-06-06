@@ -100,12 +100,6 @@ jQuery(document).ready(function() {
 <!-- end of jQuery / jQueryUI load -->
 
 <script type="text/javascript">
-<?php if ($ajax_url_rewrites){ ?>
-	rewriteUrls=true;
-	<?php if ($ajax_url_rewrite_debug){?>rewriteUrlsDebug=true;<?php } ?>
-<?php } else { ?>
-	rewriteUrls=false;rewriteUrlsDebug=false;
-<?php } ?>
 	ajaxLoadingTimer=<?php echo $ajax_loading_timer;?>;
 </script>
 

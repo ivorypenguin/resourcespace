@@ -2047,14 +2047,6 @@ $plupload_clearqueue=true;
 #Send confirmation emails to user when request sent or assigned
 $request_senduserupdates=true;
 
-# $ajax_url_rewrites is the on-off switch for any suggested improvements and debugging tools for ajax loading
-# $ajax_url_rewrite_debug helps identify relative urls in the code , which should still gradually be fixed.
-# Enables ajax loading when folder level changes to eliminate more page refreshes and url confusions 
-# This is made possible by live translation of img.src, a.href, iframe.src, script.src, and form.action, from relative to absolute URLS
-# and perhaps other experiments within the ajax loaded context
-$ajax_url_rewrites=false;
-$ajax_url_rewrite_debug=false;
-
 # Allow users to create new collections. Set to false to prevent creation of new collections.
 $collection_allow_creation=true;
 
