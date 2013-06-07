@@ -24,18 +24,31 @@ $readonly=($pagename=="search_advanced");
 		{
 		// var keyword=document.getElementById("<?php echo $name ?>_selector").value;
 		var keyword=ui.item.value;
-		
+
 		if (keyword.substring(0,<?php echo mb_strlen($lang["createnewentryfor"], 'UTF-8') ?>)=="<?php echo $lang["createnewentryfor"] ?>")
 			{
 			keyword=keyword.substring(<?php echo mb_strlen($lang["createnewentryfor"], 'UTF-8')+1 ?>);
 
 			// Add the word.
-			jQuery.post("<?php echo $baseurl?>/pages/edit_fields/9_ajax/add_keyword.php?field=<?php echo $field["ref"] ?>&keyword=" + encodeURI(keyword));
-			}
+			args = {field: '<?php echo $field["ref"] ?>', keyword: escape(keyword)};
+			jQuery.ajax({
+				type: "POST",
+				url: '<?php echo $baseurl?>/pages/edit_fields/9_ajax/add_keyword.php',
+				data: args,
+				success: function(result) {
+					addKeyword_<?php echo $name ?>(keyword);
+					updateSelectedKeywords_<?php echo $name ?>(true);
+					document.getElementById('<?php echo $name ?>_selector').value='';
+					}
+				});
 
-		addKeyword_<?php echo $name ?>(keyword);
-		updateSelectedKeywords_<?php echo $name ?>(true);
-		document.getElementById('<?php echo $name ?>_selector').value='';
+			}
+		else
+			{
+			addKeyword_<?php echo $name ?>(keyword);
+			updateSelectedKeywords_<?php echo $name ?>(true);
+			document.getElementById('<?php echo $name ?>_selector').value='';
+			}
 		return false;
 		}
 
@@ -52,7 +65,7 @@ $readonly=($pagename=="search_advanced");
 		counter=0;
 		for (var n=0;n<KeywordCounter_<?php echo $name ?>;n++)
 			{
-			if (keyword!=Keywords_<?php echo $name ?>[n]) {replacement[counter]=Keywords_<?php echo $name ?>[n];counter++;}
+			if (keyword!=escape(Keywords_<?php echo $name ?>[n])) {replacement[counter]=Keywords_<?php echo $name ?>[n];counter++;}
 			}
 		Keywords_<?php echo $name ?> = replacement;
 		KeywordCounter_<?php echo $name ?> =counter;
@@ -65,7 +78,7 @@ $readonly=($pagename=="search_advanced");
 		var value="";
 		for (var n=0;n<KeywordCounter_<?php echo $name ?>;n++)
 			{
-			html+='<a href="#" onClick="removeKeyword_<?php echo $name ?>(\'' + Keywords_<?php echo $name ?>[n] +'\',true);return false;">[ x ]</a> &nbsp;' + Keywords_<?php echo $name ?>[n] + '<br/>';
+			html+='<a href="#" onClick="removeKeyword_<?php echo $name ?>(\'' + escape(Keywords_<?php echo $name ?>[n]) +'\',true);return false;">[ x ]</a> &nbsp;' + Keywords_<?php echo $name ?>[n] + '<br/>';
 			value+="," + resolveTranslated_<?php echo $name ?>(Keywords_<?php echo $name ?>[n]);
 			}
 		document.getElementById('<?php echo $name?>_selected').innerHTML=html;
