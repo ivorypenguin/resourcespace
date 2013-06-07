@@ -909,7 +909,15 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 		if ($nodatafield=="" ||!is_numeric($nodatafield)){exit('invalid !empty search');}
 		$rtype=sql_value("select resource_type value from resource_type_field where ref='$nodatafield'",0);
 		
-		if ($rtype!=0){$restypesql="r.resource_type ='$rtype' and ";} else {$restypesql="";}
+		if ($rtype!=0){
+			if ($rtype==999){
+				$restypesql="(r.archive=1 or r.archive=2) and ";$sql_filter=str_replace("archive='0'","(archive=1 or archive=2)",$sql_filter);
+			} else {
+				$restypesql="r.resource_type ='$rtype' and ";
+			} 
+		} else {
+				$restypesql="";
+			}
 
 		return sql_query("$sql_prefix select distinct r.hit_count score,$select from resource r left outer join resource_data rd on r.ref=rd.resource and rd.resource_type_field='$nodatafield' $sql_join where $restypesql (rd.value ='' or rd.value is null or rd.value=',')  and $sql_filter group by r.ref order by $order_by $sql_suffix");
 		}
