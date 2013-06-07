@@ -575,7 +575,7 @@ function config_gen_setup_html($page_def,$plugin_name,$upload_status,$plugin_pag
                 break;
             case 'multi_user_select':
                 config_multi_user_select($def[1], $def[2], $GLOBALS[$def[1]], $def[3]);
-                break;
+                break;			
             case 'single_ftype_select':
                 config_single_ftype_select($def[1], $def[2], $GLOBALS[$def[1]], $def[3]);
                 break;
@@ -593,6 +593,9 @@ function config_gen_setup_html($page_def,$plugin_name,$upload_status,$plugin_pag
                 break;
             case 'db_multi_select':
                 config_db_multi_select($def[1], $def[2], $GLOBALS[$def[1]], $def[3], $def[4], $def[5], $def[6], $def[7], $def[8]);
+                break;
+	    case 'multi_group_select':
+                config_multi_group_select($def[1], $def[2], $GLOBALS[$def[1]], $def[3]);
                 break;
             }
         }
@@ -914,6 +917,8 @@ function config_multi_user_select($name, $label, $current=array(), $width=300)
   <div class="clearerleft"></div>
 <?php
     }
+	
+
 
 /**
  * Return a data structure that will instruct the configuration page generator functions to
@@ -926,6 +931,51 @@ function config_multi_user_select($name, $label, $current=array(), $width=300)
 function config_add_multi_user_select($config_var, $label, $width=300)
     {
     return array('multi_user_select', $config_var, $label, $width);
+    }
+	
+	
+/**
+ * Generate an html multi-select block for selecting from among RS user groups.
+ *
+ * An array consisting of the group keys (i.e., values from the "ref" column of the usergroup table) for the
+ * selected groups is the value posted.
+ *
+ * @param string $name the name of the select block. Usually the name of the config variable being set.
+ * @param string $label the user text displayed to label the select block. Usually a $lang string.
+ * @param integer array $current the current value of the config variable being set.
+ * @param integer $width the width of the input field in pixels. Default: 300.
+ */
+function config_multi_group_select($name, $label, $current=array(), $width=300)
+    {
+    global $lang;
+?>
+  <div class="Question">
+    <label for="<?php echo $name?>" title="<?php echo str_replace('%cvn', $name, $lang['plugins-configvar'])?>"><?php echo $label?></label>
+    <select name="<?php echo $name?>[]" id="<?php echo $name?>" multiple="multiple" size="7" style="width:<?php echo $width ?>px">
+<?php
+    $usergroups=get_usergroups();
+    foreach ($usergroups as $usergroup)
+        {
+        echo '    <option value="' . $usergroup['ref'] . '"' . ((in_array($usergroup['ref'],$current))?' selected':'') . '>' . $usergroup['name'] . '</option>';
+        }
+?>
+    </select>
+  </div>
+  <div class="clearerleft"></div>
+<?php
+    }
+	
+/**
+ * Return a data structure that will instruct the configuration page generator functions to
+ * add a multiple RS user select configuration variable to the setup page.
+ *
+ * @param string $config_var the name of the configuration variable to be added.
+ * @param string $label the user text displayed to label the select block. Usually a $lang string.
+ * @param integer $width the width of the input field in pixels. Default: 300.
+ */
+function config_add_multi_group_select($config_var, $label, $width=300)
+    {
+    return array('multi_group_select', $config_var, $label, $width);
     }
 
 /**
