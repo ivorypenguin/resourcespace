@@ -1584,9 +1584,9 @@ function search_form_to_search_query($fields,$fromsearchbar=false)
 						$p.=mb_strtolower(i18n_get_translated($options[$m]), 'UTF-8');
 						}
 					}
-				if ($c==count($options) && !$checkbox_and)
+				if (($c==count($options) && !$checkbox_and) && (count($options)>1))
 					{
-					# all options ticked - omit from the search (unless using AND matching)
+					# all options ticked - omit from the search (unless using AND matching, or there is only one option intended as a boolean selection)
 					$p="";
 					}
 				if ($p!="")
