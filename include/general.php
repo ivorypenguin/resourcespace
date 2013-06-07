@@ -775,11 +775,15 @@ function get_field_options($ref)
 	return $options;
 	}
 	
-function get_data_by_field($resource,$field)
-	{
+function get_data_by_field($resource,$field){
 	# Return the resource data for field $field in resource $resource
-	return sql_value("select value from resource_data where resource='$resource' and resource_type_field='$field'","");
+	# $field can also be a shortname
+	if (is_numeric($field)){
+		return sql_value("select value from resource_data where resource='$resource' and resource_type_field='$field'","");
+	} else {
+		return sql_value("select value from resource_data where resource='$resource' and resource_type_field=(select ref from resource_type_field where name='".escape_check($field)."')","");
 	}
+}
 	
 if (!function_exists("get_users")){		
 function get_users($group=0,$find="",$order_by="u.username",$usepermissions=false,$fetchrows=-1)
