@@ -30,7 +30,7 @@ $readonly=($pagename=="search_advanced");
 			keyword=keyword.substring(<?php echo mb_strlen($lang["createnewentryfor"], 'UTF-8')+1 ?>);
 
 			// Add the word.
-			args = {field: '<?php echo $field["ref"] ?>', keyword: escape(keyword)};
+			args = {field: '<?php echo $field["ref"] ?>', keyword: keyword};
 			jQuery.ajax({
 				type: "POST",
 				url: '<?php echo $baseurl?>/pages/edit_fields/9_ajax/add_keyword.php',
