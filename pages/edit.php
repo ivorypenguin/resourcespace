@@ -666,9 +666,9 @@ for ($n=0;$n<count($fields);$n++)
 							
 								for ($m=0;$m<count($options);$m++)
 									{
-									$name=$fields[$cf]["ref"] . "_" . md5($options[$m]);
+									$checkname=$fields[$cf]["ref"] . "_" . md5($options[$m]);
 									echo "
-									jQuery('input[name=\"" . $name . "\"]').change(function (){
+									jQuery('input[name=\"" . $checkname . "\"]').change(function (){
 										checkDisplayCondition" . $fields[$n]["ref"] . "();
 										});";
 									}
