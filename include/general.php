@@ -1532,9 +1532,9 @@ function send_mail_phpmailer($email,$subject,$message="",$from="",$reply_to="",$
 	global $email_footer,$storagedir;
 	$phpversion=phpversion();
 	if ($phpversion>='5.3') {
-	if (file_exists(dirname(__FILE__)."/../lib/phpmailer_v5_1/class.phpmailer.php")){
-		include_once(dirname(__FILE__)."/../lib/phpmailer_v5_1/class.phpmailer.php");
-		include_once(dirname(__FILE__)."/../lib/phpmailer/class.html2text.php");
+	if (file_exists(dirname(__FILE__)."/../lib/phpmailer_v5.2.6/class.phpmailer.php")){
+		include_once(dirname(__FILE__)."/../lib/phpmailer_v5.2.6/class.phpmailer.php");
+		include_once(dirname(__FILE__)."/../lib/phpmailer_v5.2.6/extras/class.html2text.php");
 		}
 	} else {
 	// less than 5.3
