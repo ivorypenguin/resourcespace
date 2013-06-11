@@ -320,6 +320,8 @@ $ffmpeg_preview_options="-f flv -ar 22050 -b 650k -ab 32k -ac 1";
 #$ffmpeg_global_options = "-loglevel panic"; # can be used for recent versions of ffmpeg when verbose output prevents run_command completing
 #$ffmpeg_global_options = "-v panic"; # use for older versions of ffmpeg  as above
 $ffmpeg_global_options = "";
+#$ffmpeg_snapshot_fraction=0.1; # Set this to specify a point in the video at which snapshot image is taken. Expressed as a proportion of the video duration so must be set between 0 and 1. Only valid if duration is greater than 10 seconds.
+#$ffmpeg_snapshot_seconds=10;  # Set this to specify the number of seconds into the video at which snapshot should be taken, overrides the $ffmpeg_snapshot_fraction setting
 
 # If uploaded file is FLV, should we transcode it anyway?
 $ffmpeg_preview_force=false;

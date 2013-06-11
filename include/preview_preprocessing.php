@@ -5,7 +5,7 @@
 # for example types that use GhostScript or FFmpeg.
 #
 
-global $imagemagick_path, $imagemagick_preserve_profiles, $imagemagick_quality, $imagemagick_colorspace, $ghostscript_path, $pdf_pages, $antiword_path, $unoconv_path, $pdf_dynamic_rip, $ffmpeg_audio_extensions, $ffmpeg_audio_params, $qlpreview_path,$ffmpeg_supported_extensions, $qlpreview_exclude_extensions, $ffmpeg_global_options;
+global $imagemagick_path, $imagemagick_preserve_profiles, $imagemagick_quality, $imagemagick_colorspace, $ghostscript_path, $pdf_pages, $antiword_path, $unoconv_path, $pdf_dynamic_rip, $ffmpeg_audio_extensions, $ffmpeg_audio_params, $qlpreview_path,$ffmpeg_supported_extensions, $qlpreview_exclude_extensions, $ffmpeg_global_options,$ffmpeg_snapshot_fraction, $ffmpeg_snapshot_seconds;
 global $dUseCIEColor;
 
 # Locate utilities
@@ -503,25 +503,26 @@ $ffmpeg_fullpath = get_utility_path("ffmpeg");
 if (($ffmpeg_fullpath!=false) && !isset($newfile) && in_array($extension, $ffmpeg_supported_extensions))
         {
         $snapshottime = 1;
-        $out = run_command($ffmpeg_fullpath . " -i " . escapeshellarg($file) . " 2>&1");
+        $out = run_command($ffmpeg_fullpath . " -i " . escapeshellarg($file), true);
         if(preg_match("/Duration: (\d+):(\d+):(\d+)\.\d+, start/", $out, $match))
         	{
-			$duration = $match[1]*3600+$match[2]*60+$match[3];
-			if($duration>10)
-				{
-				$snapshottime = 5;
-				}
-			elseif($snapshottime > 2)
-				{
-				$snapshottime = floor($duration / 10);
-				}
+		$duration = $match[1]*3600+$match[2]*60+$match[3];
+		if($duration>10)
+			{
+			$snapshottime = floor($duration * $ffmpeg_snapshot_fraction);
 			}
-		
-		if ($extension=="mxf")
-			{ $snapshottime = 0; }
+		if(isset($ffmpeg_snapshot_seconds)) // Overrides the other settings
+			{
+			if($ffmpeg_snapshot_seconds<$duration)
+				{$snapshottime = $ffmpeg_snapshot_seconds;}
+			}
+		}
+	if ($extension=="mxf")
+		{ $snapshottime = 0; }
 
         if(!hook("previewpskipthumb")): 
-        $output = run_command($ffmpeg_fullpath . " $ffmpeg_global_options -i " . escapeshellarg($file) . " -f image2 -vframes 1 -ss ".$snapshottime." " . escapeshellarg($target));
+     
+   $output = run_command($ffmpeg_fullpath . " $ffmpeg_global_options -i " . escapeshellarg($file) . " -f image2 -vframes 1 -ss ".$snapshottime." " . escapeshellarg($target));
         endif;
 
         if (file_exists($target)) 
