@@ -194,6 +194,7 @@ $handle = fopen($path, "r");
 while($sent < $filesize)
 	{
 	echo fread($handle, $blocksize);
+	ob_flush();
 	$sent += $blocksize;
 	}
 
