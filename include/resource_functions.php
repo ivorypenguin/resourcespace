@@ -712,7 +712,7 @@ function update_field($resource,$field,$value)
 			remove_keyword_mappings($resource,i18n_get_indexable($existing),$field,$fieldinfo["partial_index"]);
 			}
 		
-		if (($fieldinfo['type'] == 2 || $fieldinfo['type'] == 3 || $fieldinfo['type'] == 7) && substr($value,0,1) <> ','){
+		if (($fieldinfo['type'] == 2 || $fieldinfo['type'] == 3 || $fieldinfo['type'] == 7|| $fieldinfo['type'] == 9) && substr($value,0,1) <> ','){
 			$value = ','.$value;
 		}
 		
