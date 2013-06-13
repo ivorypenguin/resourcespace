@@ -5,14 +5,11 @@ include "../../../include/db.php";
 if (array_key_exists("user",$_COOKIE))
    	{
 	# Check to see if this user is logged in.
-    $s=explode("|",$_COOKIE["user"]);
-    $username=escape_check($s[0]);
-    $session_hash=escape_check($s[1]);
-
-    $loggedin=sql_value("select count(*) value from user where session='$session_hash' and approved=1 and timestampdiff(second,last_active,now())<(30*60)",0);
-    if ($loggedin>0)
-        {
-        # User is logged in. Proceed to full authentication.
+	$session_hash=$_COOKIE["user"];
+	$loggedin=sql_value("select count(*) value from user where session='$session_hash' and approved=1 and timestampdiff(second,last_active,now())<(30*60)",0);
+	if ($loggedin>0 || $session_hash=="|") // Also checks for dummy cookie used in external authentication
+        	{
+	        # User is logged in. Proceed to full authentication.
 		include "../../../include/authenticate.php";
 		}
 	}
@@ -155,29 +152,29 @@ for ($n=1;$n<=count($feedback_questions);$n++)
 
 		<?php if ($type==3) { # Single Select List
 				?>
-		<div class="Fixed">
+		<table cellpadding=2 cellspacing=0>
 		<?php foreach (explode(",",$feedback_questions[$n]["options"]) as $option)
 			{
 			?>
-			<input type="radio" name="question_<?php echo $n?>" value="<?php echo htmlspecialchars($option);?>" <?php if ($option==getvalescaped("question_" . $n,"")) { ?>checked<?php } ?>><?php echo htmlspecialchars($option);?><br />
+			<tr><td width="1"><input type="radio" name="question_<?php echo $n?>" value="<?php echo htmlspecialchars($option);?>" <?php if ($option==getvalescaped("question_" . $n,"")) { ?>checked<?php } ?>></td><td><?php echo htmlspecialchars($option);?></td></tr>
 			<?php
 			}
 		?>
-		</div>
+		</table>
 		<?php } ?>
 		
 		<?php if ($type==5) { # Multi Select List
 		?>
-		<div class="Fixed">
+		<table cellpadding=2 cellspacing=0>
 		<?php $opt=0;foreach (explode(",",$feedback_questions[$n]["options"]) as $option)
 			{
 			?>
-			<input type="checkbox" name="question_<?php echo $n?>_<?php echo $opt?>" value="yes" <?php if (getvalescaped("question_" . $n . "_" . $opt,"")!="") { ?>checked<?php } ?>><?php echo htmlspecialchars($option);?><br />
+			<tr><td width="1"><input type="checkbox" name="question_<?php echo $n?>_<?php echo $opt?>" value="yes" <?php if (getvalescaped("question_" . $n . "_" . $opt,"")!="") { ?>checked<?php } ?>></td><td><?php echo htmlspecialchars($option);?></td></tr>
 			<?php
 			$opt++;
 			}
 		?>
-		</div>
+		</table>
 		<?php } ?>
 
 		
