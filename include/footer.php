@@ -321,7 +321,7 @@ window.onload = function() {
     setContent(); CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=<?php echo urlencode($thumbs); ?>&collection='+usercollection+'<?php echo (isset($k) ? "&k=".urlencode($k) : ""); ?>');}
 </script>
 <?php } // end omit_collectiondiv_load_pages 
-else {?><div id="CollectionDiv" class="CollectBack AjaxCollect ui-layout-south"></div><script>myLayout=jQuery('body').layout();jQuery('.ui-layout-resizer-south').hide();	</script><?php } ?>
+else {?><div class="ui-layout-south"></div><script>myLayout=jQuery('body').layout();jQuery('.ui-layout-resizer-south').hide();	</script><?php } ?>
 
 
 <?php hook("afteruilayout");?>
