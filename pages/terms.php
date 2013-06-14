@@ -7,6 +7,9 @@ $k=getvalescaped("k","");if ($k=="") {include "../include/authenticate.php";}
 
 $url=getvalescaped("url","pages/home.php");
 
+$newurl = hook("beforeredirectchangeurl");
+if (is_string($newurl)) {$url = $newurl;}
+
 if ($terms_download==false && getval("noredir","")=="") {redirect($url);}
 
 if (getval("save","")!="")
