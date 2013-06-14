@@ -72,7 +72,7 @@ else
     <?php } ?>
 
 	<?php if (isset($zipcommand) || $collection_download) { ?>
-	&nbsp;<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_download.php?collection=<?php echo $collections[$n]["ref"]?>"
+	&nbsp;<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short ?>pages/terms.php?url=<?php echo urlencode("pages/collection_download.php?collection=" . $collections[$n]["ref"])?>"
 	>&gt;&nbsp;<?php echo $lang["action-download"]?></a>
 	<?php } ?>
 	

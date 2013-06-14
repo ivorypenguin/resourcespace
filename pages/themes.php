@@ -196,7 +196,7 @@ function DisplayTheme($themes=array())
                 <?php if (!checkperm("b")) { ?>&nbsp;<?php echo change_collection_link($getthemes[$m]["ref"]); } ?>
 
                 <?php if (isset($zipcommand) || $collection_download) { ?>
-                &nbsp;<a href="<?php echo $baseurl_short?>pages/collection_download.php?collection=<?php echo $getthemes[$m]["ref"]?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["action-download"]?></a>
+                &nbsp;<a href="<?php echo $baseurl_short?>pages/terms.php?url=<?php echo urlencode("pages/collection_download.php?collection=" . $getthemes[$m]["ref"])?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["action-download"]?></a>
                 <?php } ?>
 
                 <?php if ($contact_sheet==true) { ?>
