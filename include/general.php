@@ -1427,7 +1427,23 @@ function send_mail($email,$subject,$message,$from="",$reply_to="",$html_template
 	# old mail function remains the same to avoid possible issues with phpmailer
 	# send_mail_phpmailer allows for the use of text and html (multipart) emails,
 	# and the use of email templates in Manage Content 
-		
+
+	global $email_from_user;
+	if($email_from_user)
+		{
+		global $username, $useremail, $userfullname;
+		$from_name=($userfullname!="")?$userfullname:$username;
+		$from=$useremail;
+		$reply_to=$useremail;
+		}
+
+	global $email_copy_admin;
+	if($email_copy_admin)
+		{
+		global $email_notify;
+		$cc.="," . $email_notify;
+		}
+
 	# Send a mail - but correctly encode the message/subject in quoted-printable UTF-8.
 	global $use_phpmailer;
 	if ($use_phpmailer){

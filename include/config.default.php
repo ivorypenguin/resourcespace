@@ -2102,3 +2102,9 @@ $edit_upload_options_at_top=false;
 
 # Option to select metadata field that will be used for downloaded filename (do not include file extension)
 #$download_filename_field=8;
+
+# option to always send emails from the logged in user
+$email_from_user=false;
+
+# option to always cc admin on emails from the logged in user
+$email_copy_admin=false;
