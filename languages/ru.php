@@ -797,4 +797,7 @@ $lang["caps-lock-on"]="Внимание! Капс лок включен.";
 $lang["collectionnames"]="Названия коллекций";
 $lang["findcollectionthemes"]="Коллекции в темах";
 $lang["user-preferences"]="Мои настройки";
+$lang["all"]="Все";
+$lang["allresourcessearchbar"]="Все объекты";
+$lang["allcollectionssearchbar"]="Все коллекции";
 ?>

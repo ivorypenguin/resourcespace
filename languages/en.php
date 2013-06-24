@@ -1272,6 +1272,8 @@ $lang["uploadertryplupload"]="<strong>NEW</strong> - Try out the new style uploa
 $lang["getjava"]="To ensure that you have the latest Java software on your system, visit the Java website.";
 
 $lang["all"]="All";
+$lang["allresourcessearchbar"]="All resources";
+$lang["allcollectionssearchbar"]="All collections";
 $lang["backtoresults"]="Back to results";
 
 $lang["preview_all"]="Preview all";
