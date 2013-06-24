@@ -127,6 +127,13 @@ var applicationname = "<?php echo $applicationname?>";
 
 
 <script src="<?php echo $baseurl_short?>lib/js/global.js?css_reload_key=<?php echo $css_reload_key?>" type="text/javascript"></script>
+
+<script type="text/javascript">
+jQuery(document).ready(function() {
+ top.history.replaceState(jQuery('#CentralSpace').html(), applicationname);
+});
+</script>
+
 <?php if ($keyboard_navigation) { ?>
 <script type="text/javascript">
 
