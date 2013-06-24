@@ -1205,6 +1205,7 @@ function UpdateFSResultCount()
 <input type="hidden" name="countonly" id="countonly" value="">
 <?php
 $keywords=get_resource_top_keywords($ref,30);
+$keywords = array_values(array_unique($keywords));
 $searchwords=split_keywords($search);
 for ($n=0;$n<count($keywords);$n++)
 	{
