@@ -49,7 +49,6 @@ http://www.resourcespace.org/
 <script src="<?php echo $baseurl?>/lib/js/easyTooltip.js?css_reload_key=<?php echo $css_reload_key?>" type="text/javascript"></script>
 <link type="text/css" href="<?php echo $baseurl?>/css/ui-lightness/jquery-ui-1.8.20.custom.css?css_reload_key=<?php echo $css_reload_key?>" rel="stylesheet" />
 <script src="<?php echo $baseurl?>/lib/js/jquery.ui.touch-punch.min.js"></script>
-<script src="<?php echo $baseurl?>/lib/js/jquery.cookie.js"></script>
 <!--[if lte IE 9]><script src="<?php echo $baseurl?>/lib/historyapi/history.min.js"></script><![endif]-->
 <?php if ($image_preview_zoom) { ?><script src="<?php echo $baseurl?>/lib/js/jquery.zoom.js"></script><?php } ?>
 
