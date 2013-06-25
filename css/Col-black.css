@@ -162,3 +162,13 @@ input[readonly] {color: #FFFFFF;}
 	{
 	background: none;
 	}
+.collapsed
+    {
+    background: url(../gfx/black/interface/HomeArrow.gif) no-repeat top left;
+    background-position:3px 3px;  
+    }
+.expanded
+    {
+    background: url(../gfx/black/interface/HomeArrowDown.gif) no-repeat top left;    
+     background-position:0px 6px; 
+    }

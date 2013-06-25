@@ -165,7 +165,16 @@ input[readonly] {color: #FFFFFF;}
 	{
 	background: none;
 	}
-
+.collapsed
+    {
+    background: url(../gfx/greyblu/interface/HomeArrow.gif) no-repeat top left;
+    background-position:3px 3px;  
+    }
+.expanded
+    {
+    background: url(../gfx/greyblu/interface/HomeArrowDown.gif) no-repeat top left;    
+     background-position:0px 6px; 
+    }
 #ThemeBoxPanel, #SearchBoxPanel, #ResearchBoxPanel, .HomePanelIN, .RecordPanel .RecordDownload, .RecordPanel, .ResourcePanel, .ResourcePanelSmall, .ResourcePanelLarge
 	{
     -webkit-box-shadow: 4px 5px 5px rgba(0, 0, 0, .15);

@@ -258,16 +258,33 @@ jQuery(document).ready(function()
         {
         cur=jQuery(this).next();
         cur_id=cur.attr("id");
-        if (cur.is(':visible')) SetCookie(cur_id, "collapsed");
-        else SetCookie(cur_id, "expanded");
+        if (cur.is(':visible'))
+            {
+            SetCookie(cur_id, "collapsed");
+            jQuery(this).removeClass('expanded');
+            jQuery(this).addClass('collapsed');
+            }
+        else
+            {
+            SetCookie(cur_id, "expanded")
+            jQuery(this).addClass('expanded');
+            jQuery(this).removeClass('collapsed');
+            }
+
         cur.slideToggle();
        
         
         return false;
-        }).next().each(function() 
+        }).each(function() 
             {
-                cur_id=jQuery(this).attr("id"); 
-                if (getCookie(cur_id)=="collapsed") jQuery(this).hide();
+                cur_id=jQuery(this).next().attr("id"); 
+                if (getCookie(cur_id)=="collapsed")
+                    {
+                    jQuery(this).next().hide();
+                    jQuery(this).addClass('collapsed');
+                    }
+                else jQuery(this).addClass('expanded');
+
             });
     });
 

@@ -188,4 +188,14 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
 	{
 	background: none;
 	}
-	
+.collapsed
+    {
+    background: url(../gfx/whitegry/interface/HomeArrow.gif) no-repeat top left;
+    background-position:3px 3px;  
+    }
+.expanded
+    {
+    background: url(../gfx/whitegry/interface/HomeArrowDown.gif) no-repeat top left;    
+     background-position:0px 6px; 
+    }
+    
