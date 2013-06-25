@@ -350,7 +350,11 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 						# Handle wildcards
 						if (strpos($keyword,"*")!==false || $wildcard_always_applied)
 							{
-							if ($wildcard_always_applied && strpos($keyword,"*")===false) {$keyword.="*";} # Suffix asterisk if none supplied and using $wildcard_always_applied mode.
+							if ($wildcard_always_applied && strpos($keyword,"*")===false)
+								{
+								# Surround with asterisks if none supplied and using $wildcard_always_applied mode.
+								$keyword="*".$keyword."*";
+								}
 							
 							# Keyword contains a wildcard. Expand.
 							$c++;
