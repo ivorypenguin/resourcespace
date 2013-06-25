@@ -2,8 +2,8 @@
 if(!hook("replaceuploadoptions")):	
 if ($ref<0)
 	{
-	?><br /><h1><?php echo $lang["upload-options"] ?></h1>
-
+	?><h1 class="CollapsibleSectionHead"><?php echo $lang["upload-options"] ?></h1>
+    <div class="CollapsibleSection" id="UploadOptionsSection">
 	<?php if ($metadata_read){?>
 	<div class="Question" id="question_noexif">
 	<input type=hidden id="no_exif" name="no_exif" value="">
@@ -145,4 +145,7 @@ if ($ref<0)
 		<?php
 		}
 	}
+?>
+</div>
+<?php
 endif; # hook replaceuploadoptions

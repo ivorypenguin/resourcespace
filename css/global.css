@@ -1,3 +1,6 @@
+/* @override 
+	http://rs.local/resourcespace/css/global.css?css_reload_key=55 */
+
 /*Create Base font for relative sizing*/
 html {height:100%;}
 body {width:100%;height:100%; margin:0;padding:0;font-family:Tahoma, Arial, Helvetica, sans-serif;font-size:11px;text-align: center;}
@@ -46,7 +49,7 @@ input.defaultbutton {position: absolute; left: -100%; width: 0; height: 0;}
 
 .headerlink {margin:20px 25px; position: absolute; display: block; width: 400px; height: 55px;  top: 0px; left: 0px;}
 
-#Footer {margin:20px 25px;padding:0;text-align:left;}
+#Footer {clear: both; margin:20px 25px;padding:0;text-align:left;}
 #FooterNavRight {float:right;text-align:right;margin-top: 10px;clear: right;}
 #FooterNavRightBottom {float:right;text-align:right;margin-top: 10px;clear: right;}
 #FooterNavLeft {float:left;text-align:left;margin-top: 10px;}
@@ -503,12 +506,21 @@ li.plupload_droptext
 	}
 .ui-layout-pane {
     overflow: auto;
-}
+    }
 
 .InfoBoxResourceTypeIcon
 	{
 	float:right;clear:right;padding:10px 0 10px 10px;
 	}
-.spacer {
+.spacer 
+    {
     height: 8px;
-}
+    }
+.CollapsibleSectionHead 
+    {
+    cursor: pointer;
+    }
+.CollapsibleSection 
+    {
+    margin-bottom: 10px;
+    }
