@@ -1146,9 +1146,6 @@ $order_by_resource_id=false;
 # Enable find similar search?
 $enable_find_similar=true;
 
-##  Hide the 'link' link on view.php (link is back to the same page)
-$disable_link_in_view = false;
-
 ##  The URL that goes in the bottom of the 'emaillogindetails' / 'emailreminder' email templates (save_user function in general.php)
 ##  If blank, uses $baseurl 
 $email_url_save_user = ""; //emaillogindetails
