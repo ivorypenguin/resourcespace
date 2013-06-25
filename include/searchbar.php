@@ -163,7 +163,7 @@ if (!$basic_simple_search)
 		if ($searchbar_selectall) {$clear_function.="resetTickAll();";}
 		}
 		?><div class="spacer"></div>
-		<?php if ($searchbar_selectall) { ?>
+		<?php if ($searchbar_selectall && ($search_includes_user_collections || $search_includes_public_collections || $search_includes_theme)) { ?>
 		<script type="text/javascript">	
 		function resetTickAllColl(){
 			var checkcount=0;
@@ -184,7 +184,7 @@ if (!$basic_simple_search)
 		    <div class="tick"><?php if ($searchbar_selectall){ ?>&nbsp;&nbsp;<?php } ?><input class="tickboxcoll" id="TickBoxMyCol" type="checkbox" name="resourcemycol" value="yes" <?php if (((count($rt)==1) && ($rt[0]=="")) || (in_array("mycol",$rt))) {?>checked="true"<?php } ?>onClick="HideInapplicableSimpleSearchFields(true);<?php if ($searchbar_selectall){?>resetTickAllColl();<?php } ?>"/>&nbsp;<?php echo $lang["mycollections"]?></div><?php	
 		    $clear_function.="document.getElementById('TickBoxMyCol').checked=true;";
 		    if ($searchbar_selectall) {$clear_function.="resetTickAllColl();";}
-		    
+		    }
 	    if ($search_includes_public_collections) 
 	        { ?>
 	        <div class="tick"><?php if ($searchbar_selectall){ ?>&nbsp;&nbsp;<?php } ?><input class="tickboxcoll" id="TickBoxPubCol" type="checkbox" name="resourcepubcol" value="yes" <?php if (((count($rt)==1) && ($rt[0]=="")) || (in_array("pubcol",$rt))) {?>checked="true"<?php } ?>onClick="HideInapplicableSimpleSearchFields(true);<?php if ($searchbar_selectall){?>resetTickAllColl();<?php } ?>"/>&nbsp;<?php echo $lang["findpubliccollection"]?></div><?php	
@@ -197,7 +197,7 @@ if (!$basic_simple_search)
 	        $clear_function.="document.getElementById('TickBoxThemes').checked=true;";
 	        if ($searchbar_selectall) {$clear_function.="resetTickAllColl();";}
 	        }
-	    }
+	   
 
 	}
 	?>	
