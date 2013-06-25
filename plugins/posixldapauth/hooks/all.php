@@ -2,6 +2,10 @@
 
 function HookPosixldapauthAllExternalauth($uname, $pword)
 {
+	/* Set the following debug flag to true for more debugging information
+	*/
+	$ldap_debug = true;
+	
 	include_once "include/collections_functions.php";
 
 	include_once "plugins/posixldapauth/config/config.default.php";
@@ -15,9 +19,13 @@ function HookPosixldapauthAllExternalauth($uname, $pword)
 	global $password_hash,$use_plugins_manager,$ldapauth;
 	$debugMode = false;
         
+    if ($ldap_debug) { error_log( __FILE__ . " " . __METHOD__ . " " . __LINE__ . "  Starting Debug") ; }    
+        
+        
 	if ($use_plugins_manager==true)
 	{
 		$ldapauth = get_plugin_config("posixldapauth");
+		
 
 		if ($ldapauth==null || $ldapauth['enable']==false) 
 		{
@@ -35,6 +43,24 @@ function HookPosixldapauthAllExternalauth($uname, $pword)
 		{
 			$ldapauth['ldapmemberfieldtype'] = 0;	
 		}
+		
+		if ($ldap_debug) { error_log( __FILE__ . " " . __METHOD__ . " " . __LINE__ . "  Configuration") ; }
+		
+		if ($ldap_debug) {
+			foreach ( $ldapauth as $key => $value ) {
+				if ($key == "groupmap") {
+					foreach ($ldapauth['groupmap'] as $ldapGrpName => $arrLdapGrp) {	
+						if ($arrLdapGrp['enabled'])	{
+							error_log( $ldapGrpName . " is enabled and mapped to " . $arrLdapGrp['rsGroup']);
+							
+						}
+					} 	
+				} else {
+					error_log( $key . " = " . $value);	
+				}  
+ 	
+			} 		
+		}
 	}
 	
 	if ($uname != "" && $pword != "") 
@@ -43,6 +69,8 @@ function HookPosixldapauthAllExternalauth($uname, $pword)
 		$ldapConf['host'] = $ldapauth['ldapserver'];
 		$ldapConf['basedn'] = $ldapauth['basedn'];
 		$objLdapAuth = new ldapAuth($ldapConf);	
+		if ($ldap_debug) { $objLdapAuth->ldap_debug = true; };
+		
 		// connect to the ldap
 		if ($objLdapAuth->connect())
 		{
@@ -50,19 +78,15 @@ function HookPosixldapauthAllExternalauth($uname, $pword)
 			// see if we can bind with the username and password.
 			if($objLdapAuth->auth($uname,$pword,$ldapauth['ldaptype'],$ldapauth['ldapusercontainer']))
 			{
-				if ($debugMode)
-				{
-					echo "all.php: line 55 : auth to ldap server is successful \r\n";
-				}
+				if ($ldap_debug) { error_log( __FILE__ . " " . __METHOD__ . " " . __LINE__ . " auth to ldap server is successful ") ; }
+			
 				$auth = true;
 				// get the user info etc	
 				$userDetails = $objLdapAuth->getUserDetails($uname);
 				//print_r($userDetails);
-				if ($debugMode)
-				{
-					echo "all.php: line 63 : cn=" . $userDetails["cn"] . "\r\n";
-					echo "all.php: line 64 : dn=" . $userDetails["dn"] . "\r\n"; 	
-				}
+				if ($ldap_debug) { error_log( __FILE__ . " " . __METHOD__ . " " . __LINE__ . "  cn=" . $userDetails["cn"]) ; }
+				if ($ldap_debug) { error_log( __FILE__ . " " . __METHOD__ . " " . __LINE__ . "  dn=" . $userDetails["dn"]) ; }
+				
 				
 				$user_cn = $userDetails["cn"];
 				$user_dn = $userDetails["dn"];
@@ -77,6 +101,7 @@ function HookPosixldapauthAllExternalauth($uname, $pword)
 				$uexists=sql_query('select ref from user where username="'.$uname.$ldapauth['usersuffix'].'"');
 				if (count($uexists)>=1) 
 				{
+					if ($ldap_debug) { error_log( __FILE__ . " " . __METHOD__ . " " . __LINE__ . "  User has allready been added to RS, updating password") ; }
 					// if we get here, the user has already been added to RS.
 					$username=$uname.$ldapauth['usersuffix'];
 					$password_hash= md5("RS".$username.$password);
@@ -87,6 +112,7 @@ function HookPosixldapauthAllExternalauth($uname, $pword)
 				elseif ($ldapauth['createusers']) 
 				{
 					
+					if ($ldap_debug) { error_log( __FILE__ . " " . __METHOD__ . " " . __LINE__ . "  Create Users is Enabled") ; }
 					// else, is we have specified to create users from the LDAP, we need to get info about the user
 					// to add them to resource space.
 					$nuser = array();
@@ -108,7 +134,7 @@ function HookPosixldapauthAllExternalauth($uname, $pword)
 					
 					if ($ldapauth['groupbased'])
 					{
-						//echo "group based";
+						if ($ldap_debug) { error_log( __FILE__ . " " . __METHOD__ . " " . __LINE__ . "  Group Based is Enabled, checking Groups") ; }
 						// set match to false as default"
 						$match = false;						
 						/* 	At this point we want to do a switch on the type of directory we are authenticing against
@@ -117,53 +143,39 @@ function HookPosixldapauthAllExternalauth($uname, $pword)
 							We also need to check for higher numbered groups, ie if a user is amember of staff, and of admin users,
 							we need to give them the highest access!
 						*/
-						//switch ($ldapauth['ldaptype'])
-						//{
-						//	case 0:
-								// Open Directory!
-								// set the uid, ie the username...
-								$objLdapAuth->userName = $uname;
-									
-								// now we cycle through the config array to check groups!
-								foreach ($ldapauth['groupmap'] as $ldapGrpName => $arrLdapGrp)
+						if ($ldap_debug) { error_log( __FILE__ . " " . __METHOD__ . " " . __LINE__ . "  Group Based is Enabled, checking Groups") ; }
+						
+						// set the uid, ie the username...
+						$objLdapAuth->userName = $uname;
+							
+						// now we cycle through the config array to check groups!
+						foreach ($ldapauth['groupmap'] as $ldapGrpName => $arrLdapGrp)
+						{
+							// check to see if we are allowing users in this group to log in?
+							if ($arrLdapGrp['enabled'])
+							{
+								if ($ldap_debug) { error_log( __FILE__ . " " . __METHOD__ . " " . __LINE__ . "  Checking Group " . $ldapGrpName) ; }
+								// get the group name and check group membership	
+								if ($objLdapAuth->checkGroupByName($ldapGrpName,$ldapauth['ldaptype'],$ldapauth['ldapgroupcontainer'],$ldapauth['ldapmemberfield'],$ldapauth['ldapmemberfieldtype']))
 								{
-									// check to see if we are allowing users in this group to log in?
-									if ($arrLdapGrp['enabled'])
+									if ( $match )
 									{
-										// get the group name and check group membership	
-										if ($objLdapAuth->checkGroupByName($ldapGrpName,$ldapauth['ldaptype'],$ldapauth['ldapgroupcontainer'],$ldapauth['ldapmemberfield'],$ldapauth['ldapmemberfieldtype']))
+										if ($currentGroupLevel < $arrLdapGrp['rsGroup'])
 										{
-											if ( $match )
-											{
-												if ($currentGroupLevel < $arrLdapGrp['rsGroup'])
-												{
-													$nuser['usergroup'] = $arrLdapGrp['rsGroup'];
-													$currentGroupLevel = $arrLdapGrp['rsGroup'];
-												}
-											} else {	
-												$match = true;
-											
-												$nuser['usergroup'] = $arrLdapGrp['rsGroup'];
-												$currentGroupLevel = $arrLdapGrp['rsGroup'];
-											} 
+											$nuser['usergroup'] = $arrLdapGrp['rsGroup'];
+											$currentGroupLevel = $arrLdapGrp['rsGroup'];
 										}
-									}	
+									} else {	
+										$match = true;
+									
+										$nuser['usergroup'] = $arrLdapGrp['rsGroup'];
+										$currentGroupLevel = $arrLdapGrp['rsGroup'];
+									} 
+									if ($ldap_debug) { error_log( __FILE__ . " " . __METHOD__ . " " . __LINE__ . "  Match found in group " . $ldapGrpName) ; }
 								}
-								//break;
-							//case 1:
-								// Active Directory - memberof?
-								/* These are the steps we need to take:
-								1. Connect
-								2. Bind using the supplied credentials - or maybe we don't as the user will have bound!
-								3. Get the users info and check 'member of' field
-								4. compare to enabled groups.
-								*/
-						/*		
-								break;
-							case 2:
-								// Novell 
-								break;
-						}*/
+							}	
+						}
+						
 						
 						// if we haven't managed to find a group match that is allowed to log into RS, then
 						// we return false!	- we ned to modify this to use the group set if group based is not enabled!

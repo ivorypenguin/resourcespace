@@ -101,6 +101,17 @@ function testLdapConn()
 		var addomain = document.getElementById('addomain').value;
 		var addressurl = addressurl + "&rootdn="+rootdn+"&rootpass="+rootpass+"&addomain="+addomain;
 	}
+	// this is additional stuff for language support:
+	var lang_status_error = document.getElementById('lang_status_error').value;
+	var lang_server_error = document.getElementById('lang_server_error').value;
+	var lang_passed = document.getElementById('lang_passed').value;
+	var lang_could_not_connect = document.getElementById('lang_could_not_connect').value;
+	var lang_could_not_bind = document.getElementById('lang_could_not_bind').value;
+	var lang_test_passed = document.getElementById('lang_test_passed').value;
+	var lang_test_failed = document.getElementById('lang_test_failed').value;
+	// add to the address url!
+	addressurl = addressurl + "&lang_status_error"+lang_status_error+"&lang_server_error"+lang_server_error+"&lang_passed"+lang_passed+"&lang_could_not_connect"+lang_could_not_connect+"&lang_could_not_bind"+lang_could_not_bind+"&lang_test_passed"+lang_test_passed+"&lang_test_failed"+lang_test_failed;
+	
 	
 	// now we've built the address url we can call the ajax routine!
 	http.open("GET",addressurl,true);
@@ -120,6 +131,11 @@ function testLdapResponse ()
 	{
 	    var response = http.responseText;
 		//alert(response	);
+		
+		// language support:
+		var lang_status_error = document.getElementById('lang_status_error').value;
+		var lang_server_error = document.getElementById('lang_server_error').value;
+		
 		try 
 		{
 			if (http.status == 200)
@@ -127,10 +143,10 @@ function testLdapResponse ()
 					alert(response);
 					
 			} else {
-				alert(status_error_in + " " + response);
+				alert(lang_status_error + " " + response);
 			} // end status check
 		}catch (e) {
-            alert(server_error + " " + e);
+            alert(lang_server_error + " " + e);
 		} // end try
 		
 	}	

@@ -4,6 +4,9 @@ include "../../../include/authenticate.php"; if (!checkperm("u")) {exit ($lang['
 include "../../../include/general.php";
 
 $usergroups = sql_query("SELECT ref,name FROM usergroup");
+/* Set the following debug flag to true for more debugging information
+*/
+$ldap_debug = true;
 
 // for test
 //$ldapauth['ldapgroupfield'] = 'memberUid';

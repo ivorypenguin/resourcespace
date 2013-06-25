@@ -36,6 +36,8 @@ class ldapAuth
 	*/
 	public $ldaprdn;		// rdn;
 	
+	public $ldap_debug;
+	
 	/** 	
 	* This constructs the object, and gets the config
 	* @access public
@@ -58,6 +60,7 @@ class ldapAuth
 		$this->ldapconn = ldap_connect($this->ldapconfig['host'])
 	    	or die($lang['posixldapauth_could_not_connect_to_ldap_server']);
 		ldap_set_option($this->ldapconn, LDAP_OPT_PROTOCOL_VERSION, 3);
+		if ($this->ldap_debug) { error_log( __FILE__ . " " . __METHOD__ . " " . __LINE__ . " Connected to LDAP Server " . $this->ldapconfig['host']); }
 		return 1;
 	}
 	
@@ -68,6 +71,7 @@ class ldapAuth
 	*/
 	function unBind()
 	{
+		if ($this->ldap_debug) { error_log( __FILE__ . " " . __METHOD__ . " " . __LINE__ . " Unbinding from LDAP Server " . $this->ldapconfig['host']); }
 		ldap_unbind($this->ldapconn);	
 	}
 	
@@ -86,10 +90,12 @@ class ldapAuth
 		$this->userName = $username;
 		$this->ldappass = $pass;
 		
+		if ($this->ldap_debug) { error_log( __FILE__ . " " . __METHOD__ . " " . __LINE__ . " Attempting to Auth " . $this->userName); }
+		
 		if ($ldapType == 1)
 		{
 			// Active Directory, format is user@domain
-			$this->ldaprdn = $username;// ."@".$userContainer;	
+			$this->ldaprdn = $username ;//."@".$userContainer;	
 			
 		} else {
 			// OD - requires full DN.
@@ -98,10 +104,12 @@ class ldapAuth
 		
 		if (@ldap_bind($this->ldapconn, $this->ldaprdn, $this->ldappass)) {
 			// now check if this is AD, and if so, set the DN correctly!
+			if ($this->ldap_debug) { error_log( __FILE__ . " " . __METHOD__ . " " . __LINE__ . " Auth Succesfull for " . $this->ldaprdn); }
 			if ($ldapType == 1)
 			{
 				// get the shortname from the username (ie user@domain becomes user)
 				$usercn = stristr($username,"@",true);
+				if ($this->ldap_debug) { echo "user cn = ". $usercn . "\r\n"; }
 				// set the search filter * attributes we want
 				$filter="(samaccountname=".$usercn.")";
 				$attributes=array("dn","cn");
@@ -113,12 +121,13 @@ class ldapAuth
 				// get the info
 				$number_returned = ldap_count_entries($this->ldapconn, $search);
 				$info = ldap_get_entries($this->ldapconn, $search);
-				
+				//print_r ($info);
 				// set the rdn
 				$this->ldaprdn = $info[0]["dn"];
 			}
 	        return 1;
 	    } else {
+	        if ($this->ldap_debug) { error_log( __FILE__ . " " . __METHOD__ . " " . __LINE__ . " Auth Failed " . $this->userName . " " . ldap_error($this->ldapconn)); }
 	        return 0;
 	    }
 		
@@ -269,13 +278,19 @@ class ldapAuth
 		
 		// search for the group
 		if (!($search = ldap_search($this->ldapconn, $this->ldapconfig['basedn'], $gid ,$attributes))) {
+			if ($this->ldap_debug) { error_log( __FILE__ . " " . __METHOD__ . " " . __LINE__ . " Group NOT Found " . $gid); }
 			die($lang['posixldapauth_unable_to_search_ldap_server']);
+			
 		}
+		if ($this->ldap_debug) { error_log( __FILE__ . " " . __METHOD__ . " " . __LINE__ . " Group WAS Found " . $gid); }
+		
 		$info = ldap_get_entries($this->ldapconn, $search);
 		
 		// cycle through the group memebers to see if we can find the user.
 		// we check each part of the returned array to find the member field identify as the array might not be in order!
 		// This also helps prevent it bombing if it can't find the member field identifier, ie it's been overridden wrongly.
+		if ($this->ldap_debug) { error_log( __FILE__ . " " . __METHOD__ . " " . __LINE__ . " Searching for user  " . $this->$userField ); }
+		
 		foreach ($info as $level1) 
 		{
 			if ( (isset ($level1[0])) && ($level1[0] == $memField) )
@@ -283,8 +298,12 @@ class ldapAuth
 				// we've found the members array, so cycle through them.
 				foreach ($level1[$memField] as $member)
 				{
+					if ($this->ldap_debug) { error_log( __FILE__ . " " . __METHOD__ . " " . __LINE__ . " Group Member Found " . $member ); }
 					// $this->$userfiled will be expanded to either $this->ldaprdn or $this->userName
-					if ($member == $this->$userField) { $found = true; }		
+					if ($member == $this->$userField) { 
+						$found = true; 
+						if ($this->ldap_debug) { error_log( __FILE__ . " " . __METHOD__ . " " . __LINE__ . " MATCH FOUND " . $member . " : " . $this->$userField); }
+						}		
 				}
 			}
 		}
