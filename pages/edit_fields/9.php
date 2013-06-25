@@ -82,8 +82,7 @@ $readonly=($pagename=="search_advanced");
 			value+="," + resolveTranslated_<?php echo $name ?>(Keywords_<?php echo $name ?>[n]);
 			}
 		document.getElementById('<?php echo $name?>_selected').innerHTML=html;
-		document.getElementById('<?php echo $name?>').value=value;
-		
+		jQuery('#<?php echo $name?>').val(value).change(); // Set value and call change to trigger a display condition check if required.
 		// Update the result counter, if the function is available (e.g. on Advanced Search).
 		if( typeof( UpdateResultCount ) == 'function' )
 			{

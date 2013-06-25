@@ -1072,7 +1072,7 @@ function get_advanced_search_fields($archive=false)
 	{
 	# Returns a list of fields suitable for advanced searching.	
 	$return=array();
-	$fields=sql_query("select ref, name, title, type, options ,order_by, keywords_index, partial_index, resource_type, resource_column, display_field, use_for_similar, iptc_equiv, display_template, tab_name, required, smart_theme_name, exiftool_field, advanced_search, simple_search, help_text, tooltip_text, display_as_dropdown from resource_type_field where advanced_search=1 and keywords_index=1 and length(name)>0 " . (($archive)?"":"and resource_type<>999") . " order by resource_type,order_by");
+	$fields=sql_query("select ref, name, title, type, options ,order_by, keywords_index, partial_index, resource_type, resource_column, display_field, use_for_similar, iptc_equiv, display_template, tab_name, required, smart_theme_name, exiftool_field, advanced_search, simple_search, help_text, tooltip_text, display_as_dropdown, display_condition from resource_type_field where advanced_search=1 and keywords_index=1 and length(name)>0 " . (($archive)?"":"and resource_type<>999") . " order by resource_type,order_by");
 	# Apply field permissions
 	for ($n=0;$n<count($fields);$n++)
 		{
@@ -1092,15 +1092,159 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
 	# $name		the input name to use in the form (post name)
 	# $value	the default value to set for this field, if any
 	
-	global $auto_order_checkbox,$lang,$category_tree_open,$minyear,$daterange_search,$is_search;
+	global $auto_order_checkbox,$lang,$category_tree_open,$minyear,$daterange_search,$is_search,$values,$n;
 	$name="field_" . $field["ref"];
+	
+	#Check if field has a display condition set
+	$displaycondition=true;
+	if ($field["display_condition"]!="")
+		{
+		$s=explode(";",$field["display_condition"]);
+		$condref=0;
+		foreach ($s as $condition) # Check each condition
+			{
+			$displayconditioncheck=false;
+			$s=explode("=",$condition);
+			global $fields;
+			for ($cf=0;$cf<count($fields);$cf++) # Check each field to see if needs to be checked
+				{
+				if ($s[0]==$fields[$cf]["name"]) # this field needs to be checked
+					{
+					$scriptconditions[$condref]["field"] = $fields[$cf]["ref"];  # add new jQuery code to check value
+					$checkvalues=$s[1];
+					$validvalues=explode("|",strtoupper($checkvalues));
+					$scriptconditions[$condref]["valid"]= "\"";
+					$scriptconditions[$condref]["valid"].= implode("\",\"",$validvalues);
+					$scriptconditions[$condref]["valid"].= "\"";
+					if(isset($values[$fields[$cf]["name"]])) // Check if there is a matching value passed from search
+						{
+						$v=trim_array(explode(" ",strtoupper($values[$fields[$cf]["name"]])));
+						foreach ($validvalues as $validvalue)
+							{
+							if (in_array($validvalue,$v)) {$displayconditioncheck=true;} # this is  a valid value
+							}
+						}
+					if (!$displayconditioncheck) {$displaycondition=false;}
+					#add jQuery code to update on changes
+						if ($fields[$cf]["type"]==2) # add onchange event to each checkbox field
+							{
+							# construct the value from the ticked boxes
+							$val=","; # Note: it seems wrong to start with a comma, but this ensures it is treated as a comma separated list by split_keywords(), so if just one item is selected it still does individual word adding, so 'South Asia' is split to 'South Asia','South','Asia'.
+							$options=trim_array(explode(",",$fields[$cf]["options"]));
+							?><script type="text/javascript">
+							jQuery(document).ready(function() {<?php
+								for ($m=0;$m<count($options);$m++)
+									{
+									$checkname=$fields[$cf]["ref"] . "_" . md5($options[$m]);
+									echo "
+									jQuery('input[name=\"" . $checkname . "\"]').change(function (){
+										checkDisplayCondition" . $field["ref"] . "();
+										});";
+									}
+									?>
+								});
+							</script><?php
+							}
+						else
+							{
+							?>
+							<script type="text/javascript">
+							jQuery(document).ready(function() {
+								jQuery('#field_<?php echo $fields[$cf]["ref"];?>').change(function (){
+								checkDisplayCondition<?php echo $field["ref"];?>();
+								});
+							});
+							</script>
+						<?php
+							}
+					}
+				} # see if next field needs to be checked
+
+			$condref++;
+			} # check next condition
+
+		?>
+		<script type="text/javascript">
+		function checkDisplayCondition<?php echo $field["ref"];?>()
+			{
+			<?php echo "field" . $field["ref"] . "status=jQuery('#question_" . $n . "').css('display');
+			";
+			echo "newfield" . $field["ref"] . "status='none';
+			";
+			echo "newfield" . $field["ref"] . "provisional=true;
+			";
+
+			foreach ($scriptconditions as $scriptcondition)
+				{
+				echo "newfield" . $field["ref"] . "provisionaltest=false;
+				";
+				echo "if (jQuery('#field_" . $scriptcondition["field"] . "').length!=0)
+					{";
+					echo "
+					fieldcheck" . $scriptcondition["field"] . "=jQuery('#field_" . $scriptcondition["field"] . "').val().toUpperCase();
+					";
+					echo "fieldvalues" . $scriptcondition["field"] . "=fieldcheck" . $scriptcondition["field"] . ".split(',');
+					}";
+
+				echo "
+					else
+					{
+					";
+					echo "fieldvalues" . $scriptcondition["field"] . "=new Array();
+					";
+					echo "checkedvals" . $scriptcondition["field"] . "=jQuery('input[name^=" . $scriptcondition["field"] . "_]')
+					";
+					echo "jQuery.each(checkedvals" . $scriptcondition["field"] . ",function(){
+						if (jQuery(this).is(':checked'))
+							{
+							checktext" . $scriptcondition["field"] . "=jQuery(this).parent().next().text().toUpperCase();
+							checktext" . $scriptcondition["field"] . " = jQuery.trim(checktext" . $scriptcondition["field"] . ");
+							fieldvalues" . $scriptcondition["field"] . ".push(checktext" . $scriptcondition["field"] . ");
+							}
+
+						})
+					}";
+
+				echo "fieldokvalues" . $scriptcondition["field"] . "=new Array();
+				";
+				echo "fieldokvalues" . $scriptcondition["field"] . "=[" . $scriptcondition["valid"] . "];
+				";
+				echo "jQuery.each(fieldvalues" . $scriptcondition["field"] . ",function(f,v){
+						if ((jQuery.inArray(v,fieldokvalues" . $scriptcondition["field"] . "))>-1 || (fieldvalues" . $scriptcondition["field"] . " ==fieldokvalues" . $scriptcondition["field"] ." ))
+							{
+							newfield" . $field["ref"] . "provisionaltest=true;
+							}
+						});
+
+					if (newfield" . $field["ref"] . "provisionaltest==false)
+						{newfield" . $field["ref"] . "provisional=false;}
+					";
+				}
+
+			echo "if (newfield" . $fields[$n]["ref"] . "provisional==true)
+					{
+					newfield" . $fields[$n]["ref"] . "status='block'
+					}
+				  if (newfield" . $field["ref"] . "status!=field" . $field["ref"] . "status)
+					{
+					jQuery('#question_" . $n . "').slideToggle();
+					if (jQuery('#question_" . $n . "').css('display')=='block')
+						{jQuery('#question_" . $n . "').css('border-top','');}
+					else
+						{jQuery('#question_" . $n . "').css('border-top','none');}
+					}
+					";
+			?>}
+		</script>
+	<?php
+		}
 
 	$is_search = true;
 
 	if (!$forsearchbar)
 		{
 		?>
-		<div class="Question" <?php
+		<div class="Question" id="question_<?php echo $n ?>" <?php if (!$displaycondition) {?>style="display:none;border-top:none;"<?php } ?><?php
 		if (strlen($field["tooltip_text"])>=1)
 			{
 			echo "title=\"" . htmlspecialchars(lang_or_i18n_get_translated($field["tooltip_text"], "fieldtooltip-")) . "\"";
@@ -1124,7 +1268,7 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
 		case 1:
 		case 5:
 		case 8:
-		?><input class="<?php echo $class ?>" type=text name="field_<?php echo $field["ref"]?>" value="<?php echo htmlspecialchars($value)?>" <?php if ($autoupdate) { ?>onChange="UpdateResultCount();"<?php } ?> onKeyPress="if (!(updating)) {setTimeout('UpdateResultCount()',2000);updating=true;}"><?php
+		?><input class="<?php echo $class ?>" type=text name="field_<?php echo $field["ref"]?>" id="field_<?php echo $field["ref"]?>" value="<?php echo htmlspecialchars($value)?>" <?php if ($autoupdate) { ?>onChange="UpdateResultCount();"<?php } ?> onKeyPress="if (!(updating)) {setTimeout('UpdateResultCount()',2000);updating=true;}"><?php
 		break;
 	
 		case 2: 
