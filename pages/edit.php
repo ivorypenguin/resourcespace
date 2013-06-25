@@ -258,7 +258,7 @@ jQuery(document).ready(function()
         {
         cur=jQuery(this).next();
         cur_id=cur.attr("id");
-        if (cur.is(':hidden')) jQuery.cookie(cur_id, "open", { expires: 7, path: '/' });
+        if (cur.is(':visible')) jQuery.cookie(cur_id, "collapsed", { expires: 7, path: '/' });
         else jQuery.removeCookie(cur_id, { path: '/' });
         cur.slideToggle();
        
@@ -267,7 +267,7 @@ jQuery(document).ready(function()
         }).next().each(function() 
             {
                 cur_id=jQuery(this).attr("id"); 
-                if (jQuery.cookie(cur_id)!="open") jQuery(this).hide();
+                if (jQuery.cookie(cur_id)=="collapsed") jQuery(this).hide();
             });
     });
 
@@ -508,7 +508,7 @@ for ($n=0;$n<count($types);$n++)
 # Multiple method of changing resource type.
  ?>
 <h1 class="CollapsibleSectionHead"><?php echo $lang["resourcetype"] ?></h1>
-<div class="CollapsibleSection" id="ResourceTypeSection"><input name="editresourcetype" id="editresourcetype" type="checkbox" value="yes" onClick="var q=document.getElementById('editresourcetype_question');if (this.checked) {q.style.display='block';alert('<?php echo $lang["editallresourcetypewarning"] ?>');} else {q.style.display='none';}">&nbsp;<label for="editresourcetype"><?php echo $lang["resourcetype"] ?></label>
+<div class="CollapsibleSection" id="ResourceTypeSection<?php if ($ref==-1) echo "Upload"; ?>"><input name="editresourcetype" id="editresourcetype" type="checkbox" value="yes" onClick="var q=document.getElementById('editresourcetype_question');if (this.checked) {q.style.display='block';alert('<?php echo $lang["editallresourcetypewarning"] ?>');} else {q.style.display='none';}">&nbsp;<label for="editresourcetype"><?php echo $lang["resourcetype"] ?></label>
 <div class="Question" style="display:none;" id="editresourcetype_question">
 <label for="resourcetype"><?php echo $lang["resourcetype"]?></label>
 <select name="resource_type" id="resourcetype" class="stdwidth">
@@ -616,7 +616,7 @@ if (isset($metadata_template_resource_type)&&(isset($metadata_template_title_fie
 </div>
 <div id="CollapsibleSections">
 <h1  class="CollapsibleSectionHead"><?php echo $lang["resourcemetadata"]?></h1>
-<div class="CollapsibleSection" id="ResourceMetadataSection"><?php
+<div class="CollapsibleSection" id="ResourceMetadataSection<?php if ($ref==-1) echo "Upload"; ?>"><?php
 $required_fields_exempt=array(); # new array to contain required fields that have not met the display condition 
 for ($n=0;$n<count($fields);$n++)
 	{
@@ -842,7 +842,7 @@ for ($n=0;$n<count($fields);$n++)
 	
 	if (($fields[$n]["resource_type"]!=$lastrt)&& ($lastrt!=-1))
 		{
-		?></div><h1  class="CollapsibleSectionHead" id="resource_type_properties"><?php echo htmlspecialchars(get_resource_type_name($fields[$n]["resource_type"]))?> <?php echo $lang["properties"]?></h1><div class="CollapsibleSection" id="ResourceProperties<?php echo $fields[$n]["resource_type"]; ?>Section"><?php
+		?></div><h1  class="CollapsibleSectionHead" id="resource_type_properties"><?php echo htmlspecialchars(get_resource_type_name($fields[$n]["resource_type"]))?> <?php echo $lang["properties"]?></h1><div class="CollapsibleSection" id="ResourceProperties<?php if ($ref==-1) echo "Upload"; ?><?php echo $fields[$n]["resource_type"]; ?>Section"><?php
 		}
 	$lastrt=$fields[$n]["resource_type"];
 	
@@ -997,11 +997,11 @@ if (!checkperm("F*")) # Only display Status / Access / Related Resources if full
         	{
 	        if ($enable_related_resources && ($multiple || $ref>0)) # Showing relationships
 	        	{
-	        	?></div><h1 class="CollapsibleSectionHead"><?php echo $lang["statusandrelationships"]?></h1><div class="CollapsibleSection" id="StatusRelationshipsSection"><?php
+	        	?></div><h1 class="CollapsibleSectionHead"><?php echo $lang["statusandrelationships"]?></h1><div class="CollapsibleSection" id="StatusRelationshipsSection<?php if ($ref==-1) echo "Upload"; ?>"><?php
 		        }
 		    else
 		    	{
-	        	?></div><h1 class="CollapsibleSectionHead"><?php echo $lang["status"]?></h1><div class="CollapsibleSection" id="StatusSection"><?php # Not showing relationships
+	        	?></div><h1 class="CollapsibleSectionHead"><?php echo $lang["status"]?></h1><div class="CollapsibleSection" id="StatusSection<?php if ($ref==-1) echo "Upload"; ?>"><?php # Not showing relationships
 		    	}
 		    }
 		    
@@ -1138,7 +1138,7 @@ if (false && !$disable_geocoding)
 	{
 	# Multiple method of changing location.
 	 ?>
-	</div><h1  class="CollapsibleSectionHead" id="location_title"><?php echo $lang["location-title"] ?></h1><div class="CollapsibleSection" id="LocationSection">
+	</div><h1  class="CollapsibleSectionHead" id="location_title"><?php echo $lang["location-title"] ?></h1><div class="CollapsibleSection" id="LocationSection<?php if ($ref==-1) echo "Upload"; ?>">
 	<div><input name="editlocation" id="editlocation" type="checkbox" value="yes" onClick="var q=document.getElementById('editlocation_question');if (this.checked) {q.style.display='block';} else {q.style.display='none';}">&nbsp;<label for="editlocation"><?php echo $lang["location"] ?></label></div>
 	<div class="Question" style="display:none;" id="editlocation_question">
 	<label for="location"><?php echo $lang["latlong"]?></label>
@@ -1168,14 +1168,15 @@ if (false && !$disable_geocoding)
 		<option value="17">17</option>
 		<option value="18">18</option>
 	</select>
-	<div class="clearerleft"> </div>
 	</div>
+	<div class="clearerleft"> </div>
+	
 	
 	<?php
 	hook("locationextras");
 	} 
 	?>
-	</div>
+	
 	<?php
 	
 	
