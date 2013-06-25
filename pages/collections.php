@@ -392,7 +392,11 @@ if ($count_result>$max_collection_thumbs && $k=="")
 	}
 
 # ---------------------------- Maximised view -------------------------------------------------------------------------
-if ($basket)
+if (hook("replacecollectionsmax", "", array($k!="")))
+	{
+	# ------------------------ Hook defined view ----------------------------------
+	}
+else if ($basket)
 	{
 	# ------------------------ Basket Mode ----------------------------------------
 	?>
@@ -718,7 +722,11 @@ else
 <!--Title-->	
 <?php if (!hook("nothumbs")) {
 
-if ($basket)
+if (hook("replacecollectionsmin", "", array($k!="")))
+	{
+	# ------------------------ Hook defined view ----------------------------------
+	}
+else if ($basket)
 	{
 	# ------------------------ Basket Mode ----------------------------------------
 	?>
