@@ -258,8 +258,8 @@ jQuery(document).ready(function()
         {
         cur=jQuery(this).next();
         cur_id=cur.attr("id");
-        if (cur.is(':visible')) jQuery.cookie(cur_id, "collapsed", { expires: 7, path: '/' });
-        else jQuery.removeCookie(cur_id, { path: '/' });
+        if (cur.is(':visible')) SetCookie(cur_id, "collapsed");
+        else SetCookie(cur_id, "expanded");
         cur.slideToggle();
        
         
@@ -267,7 +267,7 @@ jQuery(document).ready(function()
         }).next().each(function() 
             {
                 cur_id=jQuery(this).attr("id"); 
-                if (jQuery.cookie(cur_id)=="collapsed") jQuery(this).hide();
+                if (getCookie(cur_id)=="collapsed") jQuery(this).hide();
             });
     });
 
