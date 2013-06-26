@@ -470,7 +470,7 @@ function save_collection($ref)
 		$resources=do_search("!collection" . $ref);
 		for ($n=0;$n<count($resources);$n++)
 			{
-			if (checkperm("e" . $resources[$n]["archive"]))
+			if (get_edit_access($resources[$n]["ref"]))
 				{
 				delete_resource($resources[$n]["ref"]);	
 				collection_log($ref,"D",$resources[$n]["ref"]);

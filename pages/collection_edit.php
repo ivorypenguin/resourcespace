@@ -283,7 +283,7 @@ if (checkperm("h") && $collection['public']==1)
 </div>
 <?php } ?>
 
-<?php if (!$collections_compact_style && (checkperm("e0") || checkperm("e1") || checkperm("e2")) && !checkperm("D") && $colcount!=0) { ?>
+<?php if (!$collections_compact_style && allow_multi_edit($ref) && !checkperm("D") && $colcount!=0) { ?>
 <div class="Question">
 <label for="deleteall"><?php echo $lang["deleteallresourcesfromcollection"]?></label><input type=checkbox id="deleteall" name="deleteall" onClick="if (this.checked) {return confirm('<?php echo $lang["deleteallsure"]?>');}">
 <div class="clearerleft"> </div>
