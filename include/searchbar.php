@@ -163,7 +163,7 @@ if (!$basic_simple_search)
 		if ($searchbar_selectall) {$clear_function.="resetTickAll();";}
 		}
 		?><div class="spacer"></div>
-		<?php if ($searchbar_selectall && ($search_includes_user_collections || $search_includes_public_collections || $search_includes_theme)) { ?>
+		<?php if ($searchbar_selectall && ($search_includes_user_collections || $search_includes_public_collections || $search_includes_themes)) { ?>
 		<script type="text/javascript">	
 		function resetTickAllColl(){
 			var checkcount=0;
