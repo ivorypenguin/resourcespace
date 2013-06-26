@@ -963,7 +963,7 @@ $lang["setup-visitwiki"]='Visit the <a target="_blank" href="http://wiki.resourc
 $lang["php-config-file"]="PHP config: '%phpinifile'"; # %phpinifile will be replaced, e.g. PHP config: '/etc/php5/apache2/php.ini'
 $lang["setup-checkconfigwrite"]="Write access to config directory:";
 $lang["setup-checkstoragewrite"]="Write access to storage directory:";
-$lang["setup-welcome"]="Welcome to ResourceSpace";
+$lang["setup-welcome"]="JOE COLLETTS RESOURCESPACE TESTING DEVELOPMENT WEBSITE";
 $lang["setup-introtext"]="Thanks for choosing ResourceSpace.  This configuration script will help you setup ResourceSpace.  This process only needs to be completed once.";
 $lang["setup-checkerrors"]="Pre-configuration errors were detected.<br />  Please resolve these errors and return to this page to continue.";
 $lang["setup-errorheader"]="There were errors detected in your configuration.  See below for detailed error messages.";
@@ -1153,6 +1153,7 @@ $lang["no_exif"]="Do not import embedded EXIF/IPTC/XMP metadata for this upload"
 $lang["difference"]="Difference";
 $lang["viewdeletedresources"]="View deleted resources";
 $lang["finaldeletion"]="This resource is already in the 'deleted' state. This action will completely remove the resource from the system.";
+$lang["diskerror"]="Quota exceeded";
 
 $lang["nocookies"]="A cookie could not be set correctly. Please make sure you have cookies enabled in your browser settings.";
 
