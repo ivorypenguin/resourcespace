@@ -1,0 +1,4 @@
+name    : lightbox_preview
+author  : Axel Dörfler
+version : 1.0
+desc    : Use lightbox to preview the image in view.php rather than preview.php
