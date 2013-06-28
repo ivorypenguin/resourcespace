@@ -2,11 +2,6 @@
 
 include dirname(__FILE__) . "/../include/utility.php";
 
-function HookLightbox_previewSearchMoresearchcriteria()
-	{
-	addLightBoxHeader();
-	}
-
 function HookLightbox_previewSearchReplacefullscreenpreviewicon()
 	{
 	global $baseurl_short, $ref, $result, $n, $k, $search, $offset, $sort, $order_by, $archive,

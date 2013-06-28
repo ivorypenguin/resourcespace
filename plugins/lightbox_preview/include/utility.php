@@ -29,13 +29,6 @@ function getPreviewURL($resource)
 	return $url;
 	}
 
-function addLightBoxHeader()
-	{
-	global $headerinsert, $css_reload_key;
-	$headerinsert.="<script src=\"../lib/lightbox/js/jquery.lightbox-0.5.min.js\" type=\"text/javascript\"></script>";
-	$headerinsert.="<link type=\"text/css\" href=\"../lib/lightbox/css/jquery.lightbox-0.5.css?css_reload_key=" . $css_reload_key . "\" rel=\"stylesheet\">";
-	}
-
 function addLightBox($selector)
 	{
 	global $baseurl_short, $lang;
@@ -63,8 +56,7 @@ function setLink($selector, $url, $title)
 			jQuery('<?php echo $selector ?>')
 					.attr('href', '<?php echo $url ?>')
 					.attr('title', '<?php echo htmlspecialchars(i18n_get_translated($title)) ?>')
-					.attr('rel', 'lightbox[test]')
-					.attr('rev', 'test');
+					.attr('rel', 'lightbox')
 		});
 		</script>
 	<?php
