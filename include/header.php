@@ -309,6 +309,7 @@ else
 	<?php
 	} /* end replaceheadernav1 */
 	}
+hook("afterheadernav1");
 ?>
 </div>
 
