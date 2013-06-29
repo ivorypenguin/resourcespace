@@ -406,9 +406,14 @@ if ($modified_omit_searchbar_pages){$omit_searchbar_pages=$modified_omit_searchb
 
 if (!in_array($pagename,$omit_searchbar_pages) && ($loginterms==false)) 	
 	{
+	?>
+    <div id="SearchBarContainer">
+    <?php
 	include "searchbar.php";
 	}
-?>	
+	?>
+    </div>
+    	
 
 
 
