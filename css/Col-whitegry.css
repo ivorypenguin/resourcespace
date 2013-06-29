@@ -104,7 +104,7 @@ input[readonly] {color: #000000;}
 .highlight {color: #990000;}
 
 .Tab a {border: 1px solid #BBBBBB;border-bottom-style: none;color: #666666;background-color:#C3C3C3;}
-.StyledTabbedPanel {border: 1px solid #BBBBBB;background-image: url(../gfx/whitegry/interface/Download.gif);}
+.StyledTabbedPanel {border: 1px solid #BBBBBB;background: url(../gfx/whitegry/interface/Download.gif) repeat-x; background-color:#d8d8d8; }
 .TabSelected a {font-weight:bold; background-color:#B2B2B2;color:white;}
 
 .InfoTable {border-collapse:collapse;}
