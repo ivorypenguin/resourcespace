@@ -330,7 +330,11 @@ if ((($config_search_for_number && is_numeric($search)) || $searchresourceid > 0
 
 # Include the page header to and render the search results
 include "../include/header.php";
-
+    ?>
+    <script type="text/javascript">
+    ReloadSearchBar();
+    </script>
+    <?php
 if ($display_user_rating_stars && $k=="")
 	{
 	?>
@@ -341,6 +345,7 @@ if ($display_user_rating_stars && $k=="")
 	if ($allow_reorder && $display!="list" && $order_by=="relevance") {
 ?>
 	<script type="text/javascript">
+	
 	function ReorderResources(idsInOrder)
 		{
 		var newOrder = [];
