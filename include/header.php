@@ -408,16 +408,15 @@ if (!in_array($pagename,$omit_searchbar_pages) && ($loginterms==false))
 	{
 	?>
     <div id="SearchBarContainer">
-    <?php
+    <?
 	include "searchbar.php";
-	}
+	
 	?>
     </div>
-    	
+    <?php
+    }	
 
 
-
-<?php 
 # Determine which content holder div to use
 if (($pagename=="login") || ($pagename=="user_password") || ($pagename=="user_request")) {$div="CentralSpaceLogin";}
 else {$div="CentralSpace";}
