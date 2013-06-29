@@ -408,7 +408,7 @@ if (!in_array($pagename,$omit_searchbar_pages) && ($loginterms==false))
 	{
 	?>
     <div id="SearchBarContainer">
-    <?
+    <?php
 	include "searchbar.php";
 	
 	?>
