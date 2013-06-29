@@ -103,9 +103,30 @@ input[readonly] {color: #000000;}
 
 .highlight {color: #990000;}
 
-.Tab a {border: 1px solid #BBBBBB;border-bottom-style: none;color: #666666;background-color:#C3C3C3;}
-.StyledTabbedPanel {border: 1px solid #BBBBBB;background: url(../gfx/whitegry/interface/Download.gif) repeat-x; background-color:#d8d8d8; }
-.TabSelected a {font-weight:bold; background-color:#B2B2B2;color:white;}
+.Tab a {border: 1px solid #BBBBBB;border-bottom-style: none;color: #aaaaaa;  }
+.StyledTabbedPanel 
+    {
+    background: #fefefe; /* Old browsers */
+    background: -moz-linear-gradient(top, #fff 0%, #eee 100%); /* FF3.6+ */
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fff), color-stop(100%,#eee)); /* Chrome,Safari4+ */
+    background: -webkit-linear-gradient(top, #fff 0%,#eee 100%); /* Chrome10+,Safari5.1+ */
+    background: -o-linear-gradient(top, #fff 0%,#eee 100%); /* Opera 11.10+ */
+    background: -ms-linear-gradient(top, #fff 0%,#eee 100%); /* IE10+ */
+    background: linear-gradient(to bottom, #fff 0%,#eee 100%); /* W3C */
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#eeeeee',GradientType=0 ); /* IE6-9 */
+	border: 1px solid #BBBBBB;
+	
+
+    }
+.TabSelected  
+    { 
+    background: #ffffff;  
+    border-bottom: 1px solid #ffffff; 
+    border-top: 1px solid #ffffff;
+    border-left: #bbbbbb;
+    margin-right: 5px; 
+    }
+.TabSelected a { margin: 0; color: #666666; }
 
 .InfoTable {border-collapse:collapse;}
 .InfoTable tr {background-image: url(../gfx/whitegry/interface/SearchBox.gif);background-repeat: repeat-x;background-color: #597499;}
