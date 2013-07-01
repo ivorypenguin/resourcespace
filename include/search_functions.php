@@ -1428,7 +1428,7 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
 				}
 			?>
 			<!--  date range search start -->			
-			<div><label><?php echo $lang["fromdate"]?></label>
+			<div><label class="InnerLabel"><?php echo $lang["fromdate"]?></label>
 			<select name="<?php echo htmlspecialchars($name) ?>_startyear" class="SearchWidth" style="width:100px;" <?php if ($autoupdate) { ?>onChange="UpdateResultCount();"<?php } ?>>
 			  <option value=""><?php echo $lang["anyyear"]?></option>
 			  <?php
@@ -1459,7 +1459,7 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
 				}
 			  ?>
 			</select>	
-			</div><br><div><label></label><label><?php echo $lang["todate"]?></label><select name="<?php echo $name?>_endyear" class="SearchWidth" style="width:100px;" <?php if ($autoupdate) { ?>onChange="UpdateResultCount();"<?php } ?>>
+			</div><br><div><label></label><label class="InnerLabel"><?php echo $lang["todate"]?></label><select name="<?php echo $name?>_endyear" class="SearchWidth" style="width:100px;" <?php if ($autoupdate) { ?>onChange="UpdateResultCount();"<?php } ?>>
 			  <option value=""><?php echo $lang["anyyear"]?></option>
 			  <?php
 			  $y=date("Y");
