@@ -413,7 +413,7 @@ for ($n=0;$n<count($fields);$n++)
 			}
 		?>
 		</div><h1 class="CollapsibleSectionHead" id="AdvancedSearchTypeSpecificSection<?php echo $fields[$n]["resource_type"]; ?>Head" <?php if (in_array($fields[$n]["resource_type"], $hiddentypes)) {?> style="display: none;" <?php } ?>><?php echo $lang["typespecific"] . ": " . $label ?></h1>
-		<div class="CollapsibleSection" id="AdvancedSearchTypeSpecificSection<?php echo $fields[$n]["resource_type"]; ?>">
+		<div class="CollapsibleSection" id="AdvancedSearchTypeSpecificSection<?php echo $fields[$n]["resource_type"]; ?>" <?php if (in_array($fields[$n]["resource_type"], $hiddentypes)) {?> style="display: none;" <?php } ?>>
 		<?php
 		}
 
