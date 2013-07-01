@@ -1072,18 +1072,23 @@ function suggest_refinement($refs,$search)
 	return $suggest;
 	}
 	
-function get_advanced_search_fields($archive=false)
+function get_advanced_search_fields($archive=false, $hiddenfields="")
 	{
 	# Returns a list of fields suitable for advanced searching.	
 	$return=array();
+   
+	$hiddenfields=explode(",",$hiddenfields);
+
 	$fields=sql_query("select ref, name, title, type, options ,order_by, keywords_index, partial_index, resource_type, resource_column, display_field, use_for_similar, iptc_equiv, display_template, tab_name, required, smart_theme_name, exiftool_field, advanced_search, simple_search, help_text, tooltip_text, display_as_dropdown, display_condition from resource_type_field where advanced_search=1 and keywords_index=1 and length(name)>0 " . (($archive)?"":"and resource_type<>999") . " order by resource_type,order_by");
-	# Apply field permissions
+	# Apply field permissions and check for fields hidden in advanced search
 	for ($n=0;$n<count($fields);$n++)
 		{
+    
 		if ((checkperm("f*") || checkperm("f" . $fields[$n]["ref"]))
-		&& !checkperm("f-" . $fields[$n]["ref"]) && !checkperm("T" . $fields[$n]["resource_type"]))
+		&& !checkperm("f-" . $fields[$n]["ref"]) && !checkperm("T" . $fields[$n]["resource_type"]) && !in_array($fields[$n]["ref"], $hiddenfields)) 
 		{$return[]=$fields[$n];}
 		}
+    
 	return $return;
 	}
 

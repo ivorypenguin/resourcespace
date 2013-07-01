@@ -513,6 +513,11 @@ li.plupload_droptext
     {
     height: 8px;
     }
+.BasicsBox h1.CollapsibleSectionHead  
+    {
+    padding-left: 17px;
+    cursor: pointer;
+    }
 .CollapsibleSectionHead 
     {
     padding-left: 17px;

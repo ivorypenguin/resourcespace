@@ -17,12 +17,18 @@ if (getval("submitted","")=="yes" && getval("resetform","")=="")
 	reset($_POST);foreach ($_POST as $key=>$value)
 		{
 		if (substr($key,0,12)=="resourcetype") {if ($restypes!="") {$restypes.=",";} $restypes.=substr($key,12);}
+		if ($key=="hiddenfields") 
+		    {
+		    $hiddenfields=$value;
+		 
+		
+		    }
 		}
 	setcookie("restypes",$restypes);
 		
 	# advanced search - build a search query and redirect
-	$fields=get_advanced_search_fields();
-
+	$fields=get_advanced_search_fields(false, $hiddenfields );
+    
 	# Build a search query from the search form
 	$search=search_form_to_search_query($fields);
 	$search=refine_searchstring($search);
@@ -51,6 +57,8 @@ if (getval("submitted","")=="yes" && getval("resetform","")=="")
 		?>
 		<html>
 		<script type="text/javascript">
+	
+		
 		<?php if ($count==0) { ?>
 		parent.document.getElementById("dosearch").disabled=true;
 		parent.document.getElementById("dosearch").value="<?php echo $lang["nomatchingresources"]?>";
@@ -107,7 +115,67 @@ $allwords=str_replace(", ","",$allwords);
 if (getval("resetform","")!="") {$found_year="";$found_month="";$found_day="";$found_start_date="";$found_end_date="";$allwords="";$starsearch="";}
 include "../include/header.php";
 ?>
+<script type="text/javascript">
+ 
 
+jQuery(document).ready(function()
+    {
+    jQuery('.ResourceTypeCheckbox').change(function() 
+        {
+        id=(this.name).substr(12);
+        if (jQuery(this).is(":checked")) 
+            {
+            jQuery('#AdvancedSearchTypeSpecificSection'+id).show();
+            jQuery('#AdvancedSearchTypeSpecificSection'+id+'Head').show();
+            }
+        else 
+            {
+            jQuery('#AdvancedSearchTypeSpecificSection'+id).hide();
+            jQuery('#AdvancedSearchTypeSpecificSection'+id+'Head').hide();
+            }
+        
+        
+        UpdateResultCount();
+        });
+    jQuery('.CollapsibleSectionHead').click(function() 
+        {
+        cur=jQuery(this).next();
+        cur_id=cur.attr("id");
+        if (cur.is(':visible'))
+            {
+            SetCookie(cur_id, "collapsed");
+            jQuery(this).removeClass('expanded');
+            jQuery(this).addClass('collapsed');
+            
+            }
+        else
+            {
+            SetCookie(cur_id, "expanded");
+            jQuery(this).addClass('expanded');
+            jQuery(this).removeClass('collapsed');
+            }
+    
+        cur.slideToggle(400, function () 
+            {
+            UpdateResultCount();
+            });
+        
+        
+        return false;
+        }).each(function() 
+            {
+                cur_id=jQuery(this).next().attr("id"); 
+                if (getCookie(cur_id)=="collapsed")
+                    {
+                    jQuery(this).next().hide();
+                    jQuery(this).addClass('collapsed');
+                  
+                    }
+                else jQuery(this).addClass('expanded');
+
+            });
+    });
+</script>
 <div class="BasicsBox">
 <h1><?php echo ($archive==0)?$lang["advancedsearch"]:$lang["archiveonlysearch"]?> </h1>
 <p class="tight"><?php echo text("introtext")?></p>
@@ -124,13 +192,27 @@ function UpdateResultCount()
 	// set the target of the form to be the result count iframe and submit
 	document.getElementById("advancedform").target="resultcount";
 	document.getElementById("countonly").value="yes";
-	document.getElementById("advancedform").submit();
+	
+	
+	jQuery("#advancedform").submit();
 	document.getElementById("advancedform").target="";
 	document.getElementById("countonly").value="";
 	}
 	
 jQuery(document).ready(function(){
-	
+	    jQuery('#advancedform').submit(function() {
+	       var inputs = jQuery('#advancedform :input');
+	       var hiddenfields = Array();
+	       inputs.each(function() {
+	       
+	           if (jQuery(this).parent().is(":hidden")) hiddenfields.push((this.name).substr(6));
+	           
+	       });
+	      jQuery("#hiddenfields").val(hiddenfields.toString());
+	    
+    	    
+    	    	
+	    });
 		jQuery('.Question').easyTooltip({
 			xOffset: -50,
 			yOffset: 40,
@@ -144,10 +226,13 @@ jQuery(document).ready(function(){
 
 
 <!-- Search across all fields -->
+<input type="hidden" id="hiddenfields" name="hiddenfields" value="">
 <div class="Question">
 <label for="allfields"><?php echo $lang["allfields"]?></label><input class="stdwidth" type=text name="allfields" id="allfields" value="<?php echo htmlspecialchars($allwords)?>" onChange="UpdateResultCount();">
 <div class="clearerleft"> </div>
 </div>
+<h1><?php echo $lang["resources"] ?></h1>
+<div  id="AdvancedSearchResourceSection">
 
 <?php if(!hook("advsearchrestypes")): ?>
 <div class="Question">
@@ -156,10 +241,11 @@ $rt=explode(",",getvalescaped("restypes",""));
 $types=get_resource_types();
 $wrap=0;
 ?><table><tr><?php
+$hiddentypes=Array();
 for ($n=0;$n<count($types);$n++)
 	{
 	$wrap++;if ($wrap>4) {$wrap=1;?></tr><tr><?php }
-	?><td valign=middle><input type=checkbox name="resourcetype<?php echo $types[$n]["ref"]?>" value="yes" <?php if ((((count($rt)==1) && ($rt[0]=="")) || (in_array($types[$n]["ref"],$rt))) && (getval("resetform","")=="")) {?>checked<?php } ?> onChange="UpdateResultCount();"></td><td valign=middle><?php echo htmlspecialchars($types[$n]["name"])?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><?php	
+	?><td valign=middle><input type=checkbox class="ResourceTypeCheckbox" name="resourcetype<?php echo $types[$n]["ref"]?>" value="yes" <?php if ((((count($rt)==1) && ($rt[0]=="")) || (in_array($types[$n]["ref"],$rt))) && (getval("resetform","")=="")) { ?>checked<?php } else $hiddentypes[]=$types[$n]["ref"]; ?>></td><td valign=middle><?php echo htmlspecialchars($types[$n]["name"])?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><?php	
 	}
 ?>
 
@@ -326,7 +412,8 @@ for ($n=0;$n<count($fields);$n++)
 			if ($rtypes[$m]["ref"]==$fields[$n]["resource_type"]) {$label=$rtypes[$m]["name"];}
 			}
 		?>
-		<h1><?php echo $lang["typespecific"] . ": " . $label ?></h1>
+		</div><h1 class="CollapsibleSectionHead" id="AdvancedSearchTypeSpecificSection<?php echo $fields[$n]["resource_type"]; ?>Head" <?php if (in_array($fields[$n]["resource_type"], $hiddentypes)) {?> style="display: none;" <?php } ?>><?php echo $lang["typespecific"] . ": " . $label ?></h1>
+		<div class="CollapsibleSection" id="AdvancedSearchTypeSpecificSection<?php echo $fields[$n]["resource_type"]; ?>">
 		<?php
 		}
 
@@ -336,8 +423,10 @@ for ($n=0;$n<count($fields);$n++)
 	
 	# Render this field
 	render_search_field($fields[$n],$value,true);
+
 	}
 ?>
+</div>
 <div class="QuestionSubmit">
 <label for="buttons"> </label>
 <input name="dosearch" id="dosearch" type="submit" value="<?php echo $lang["action-viewmatchingresources"]?>" />

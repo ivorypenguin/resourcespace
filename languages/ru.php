@@ -800,4 +800,5 @@ $lang["user-preferences"]="Мои настройки";
 $lang["all"]="Все";
 $lang["allresourcessearchbar"]="Все объекты";
 $lang["allcollectionssearchbar"]="Все коллекции";
+$lang["resources"]="Объекты";
 ?>
