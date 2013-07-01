@@ -61,7 +61,7 @@ function i18n_get_translated($text)
 		$textLanguage=substr($s[$n],0,$p);
         if ($textLanguage==$language) {return substr($s[$n],$p+1);}
         
-        if ($textLanguage==$asdefaultlanguage || $p==0) {$default=substr($s[$n],$p+1);}
+        if ($textLanguage==$asdefaultlanguage || $p==0 || $n==1) {$default=substr($s[$n],$p+1);}
         }    
     
     # Translation not found? Return default language
