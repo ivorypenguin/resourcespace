@@ -554,7 +554,8 @@ elseif ($k!="")
     
     <?php 
     # If this collection is (fully) editable, then display an extra edit all link
-    if ((count($result)>0) && checkperm("e" . $result[0]["archive"]) && allow_multi_edit($result)) { ?>
+    # We check the status of the first resource as a performance optimisation because in many cases users will not have edit access at all, and therefore this avoids unnecessary call to allow multi edit
+    if ((count($result)>0) && $show_edit_all_link && checkperm("e" . $result[0]["archive"]) && allow_multi_edit($result)) { ?>
     <li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $usercollection)?>">&gt; <?php echo $lang["viewall"]?></a></li>
     <li><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/edit.php?collection=<?php echo urlencode($usercollection) ?>">&gt; <?php echo $lang["action-editall"]?></a></li>
 
