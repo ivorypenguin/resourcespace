@@ -82,7 +82,13 @@ function do_report($ref,$from_y,$from_m,$from_d,$to_y,$to_m,$to_d,$download=true
 				$f++;
 				if ($f>1) {echo ",";}
 				if ($key!="thumbnail")
-					{echo "\"" . lang_or_i18n_get_translated($value, "usergroup-") . "\"";}
+					{
+					$value=lang_or_i18n_get_translated($value, "usergroup-");
+					$value=str_replace('"','""',$value); # escape double quotes
+					if (substr($value,0,1)==",") {$value=substr($value,1);} # Remove comma prefix on dropdown / checkbox values 
+					echo "\"" . $value  . "\"";
+						
+					}
 				}
 			echo "\n";
 			}
