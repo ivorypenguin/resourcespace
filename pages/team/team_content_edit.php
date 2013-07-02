@@ -17,7 +17,7 @@ $findpage=getvalescaped("findpage","");
 $findname=getvalescaped("findname","");
 $findtext=getvalescaped("findtext","");
 $newhelp=getvalescaped("newhelp","");
-$editlanguage=getvalescaped("editlanguage",$defaultlanguage);
+$editlanguage=getvalescaped("editlanguage",isset($defaultlanguage) ? $defaultlanguage : $language);
 $editgroup=getvalescaped("editgroup","");
 
 # get custom value from database, unless it has been newly passed from team_content.php
