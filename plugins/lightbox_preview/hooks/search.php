@@ -24,8 +24,12 @@ function HookLightbox_previewSearchReplacefullscreenpreviewicon()
 			echo $lang["fullscreenpreview"]?>"><img src="<?php echo $baseurl_short?>gfx/interface/sp.gif" alt="<?php echo $lang["fullscreenpreview"]?>" width="22" height="12" /></a></span>
 	<?php
 	setLink('#previewlink' . $ref, $url, $value);
-	addLightBox('.IconPreview a');
 	return true;
+	}
+
+function HookLightbox_previewSearchEndofsearchpage()
+	{
+	addLightBox('.IconPreview a');
 	}
 
 ?>

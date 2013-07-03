@@ -1,8 +1,8 @@
 <?php
 
-function getPreviewURLForType($resource, $type)
+function getPreviewURLForType($resource, $type, $alternative = -1)
 	{
-	global $alternative, $use_watermark;
+	global $use_watermark;
 
 	$path = get_resource_path($resource['ref'], true, $type, false, $resource["preview_extension"],
 			-1, 1, $use_watermark, "", $alternative);
@@ -13,17 +13,17 @@ function getPreviewURLForType($resource, $type)
 			-1, 1, $use_watermark, "", $alternative);
 	}
 
-function getPreviewURL($resource)
+function getPreviewURL($resource, $alternative = -1)
 	{
 	if ($resource['has_image'] != 1)
 		return false;
 
 	// Try 'pre' first
-	$url = getPreviewURLForType($resource, 'scr');
+	$url = getPreviewURLForType($resource, 'scr', $alternative);
 	if ($url == false)
 		{
 		// and then 'pre'
-		$url = getPreviewURLForType($resource, 'pre');
+		$url = getPreviewURLForType($resource, 'pre', $alternative);
 		}
 
 	return $url;
@@ -48,7 +48,7 @@ function addLightBox($selector)
 	<?php
 	}
 
-function setLink($selector, $url, $title)
+function setLink($selector, $url, $title, $rel = 'lightbox')
 	{
 	?>
 		<script>
@@ -56,15 +56,15 @@ function setLink($selector, $url, $title)
 			jQuery('<?php echo $selector ?>')
 					.attr('href', '<?php echo $url ?>')
 					.attr('title', '<?php echo htmlspecialchars(i18n_get_translated($title)) ?>')
-					.attr('rel', 'lightbox')
+					.attr('rel', '<?php echo $rel ?>');
 		});
 		</script>
 	<?php
 	}
 
-function addLightBoxToLink($selector, $url, $title)
+function addLightBoxToLink($selector, $url, $title, $rel = 'lightbox')
 	{
-	setLink($selector, $url, $title);
+	setLink($selector, $url, $title, $rel);
 	addLightBox($selector);
 	}
 
