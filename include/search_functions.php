@@ -729,7 +729,7 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 				$dupequery = "select distinct r.hit_count score, $select from resource r $sql_join join $thetemptable on r.file_checksum = $thetemptable.hash where $sql_filter order by file_checksum";
 				sql_query("create temporary table $thetemptable (`hash` varchar(255) NOT NULL,`hashcount` int(10) default NULL, KEY `Index 1` (`hash`))",false);
 				sql_query("insert into $thetemptable select file_checksum, count(file_checksum) from resource where archive = 0 and ref > 0 and file_checksum <> '' and file_checksum is not null group by file_checksum having count(file_checksum) > 1",false);
-				$duperesult = sql_query($dupequery,false,$fetchrows);
+				$duperesult = sql_query($sql_prefix . $dupequery . $sql_suffix,false,$fetchrows);
 				return $duperesult;
 			} else {
 				return false;
