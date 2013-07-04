@@ -219,19 +219,30 @@ jQuery(".checkselect").each(function(index, Element)
 $add=getvalescaped("add","");
 if ($add!="")
 	{
-	hook("preaddtocollection");
-	#add to current collection
-	if (add_resource_to_collection($add,$usercollection,false,getvalescaped("size",""))==false)
-		{ ?><script language="Javascript">alert("<?php echo $lang["cantmodifycollection"]?>");</script><?php };
+	if(strpos($add,",")>0)
+		{
+		$addarray=explode(",",$add);
+		}
+	if(!is_array($add))
+		{
+		$addarray[0]=$add;
+		unset($add);
+		}	
+	foreach ($addarray as $add)
+		{
+		hook("preaddtocollection");
+		#add to current collection
+		if (add_resource_to_collection($add,$usercollection,false,getvalescaped("size",""))==false)
+			{ ?><script language="Javascript">alert("<?php echo $lang["cantmodifycollection"]?>");</script><?php };
+		
+		# Log this	
+		daily_stat("Add resource to collection",$add);
 	
-   	# Log this
-	daily_stat("Add resource to collection",$add);
-	
-	# Update resource/keyword kit count
-	$search=getvalescaped("search","");
-	if ((strpos($search,"!")===false) && ($search!="")) {update_resource_keyword_hitcount($add,$search);}
-	hook("postaddtocollection");
-	
+		# Update resource/keyword kit count
+		$search=getvalescaped("search","");
+		if ((strpos($search,"!")===false) && ($search!="")) {update_resource_keyword_hitcount($add,$search);}
+		hook("postaddtocollection");
+		}	
 	# Show warning?
 	if (isset($collection_share_warning) && $collection_share_warning)
 		{
