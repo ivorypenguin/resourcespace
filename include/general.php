@@ -3236,7 +3236,7 @@ function error_alert($error,$back=true){
 	foreach ($GLOBALS as $key=>$value){
 		$$key=$value;
 	} 
-	if ($back){include($storagedir."/../include/header.php");}
+	if ($back){include(dirname(__FILE__)."/header.php");}
 	echo "<script type='text/javascript'>
 	alert('$error');";
 	if ($back){echo "history.go(-1);";}
