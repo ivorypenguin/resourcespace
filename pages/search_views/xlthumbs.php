@@ -183,7 +183,7 @@
 
 		<!-- Checkboxes -->
 		<?php if(!hook("thumbscheckboxes")){?>
-		<?php if ($use_checkboxes_for_selection){?><input type="checkbox" id="check<?php echo htmlspecialchars($ref)?>" class="checkselect" <?php if (in_array($ref,$collectionresources)){ ?>checked<?php } ?> onclick="if (jQuery('#check<?php echo htmlspecialchars($ref)?>').attr('checked')=='checked') { AddResourceToCollection(<?php echo htmlspecialchars($ref)?>); } else if (jQuery('#check<?php echo htmlspecialchars($ref)?>').attr('checked')!='checked'){ RemoveResourceFromCollection(<?php echo htmlspecialchars($ref)?>); }"><?php } ?>
+		<?php if ($use_checkboxes_for_selection){?><input type="checkbox" id="check<?php echo htmlspecialchars($ref)?>" class="checkselect" <?php if (in_array($ref,$collectionresources)){ ?>checked<?php } ?> onclick="if (jQuery('#check<?php echo htmlspecialchars($ref)?>').attr('checked')=='checked') { AddResourceToCollection(event,<?php echo htmlspecialchars($ref)?>); } else if (jQuery('#check<?php echo htmlspecialchars($ref)?>').attr('checked')!='checked'){ RemoveResourceFromCollection(<?php echo htmlspecialchars($ref)?>); }"><?php } ?>
 		<?php } # end hook thumbscheckboxes?>
 		<?php } // end hook replaceresourcetoolsxl ?>
 	</div>

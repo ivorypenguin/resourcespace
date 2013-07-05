@@ -1324,7 +1324,7 @@ function add_to_collection_link($resource,$search="",$extracode="",$size="")
     # Generates a HTML link for adding a resource to a collection
     global $lang;
 
-    return "<a class=\"addToCollection\" href=\"#\" title=\"" . $lang["addtocurrentcollection"] . "\" onClick=\"AddResourceToCollection('" . $resource . "','" . $size . "');" . $extracode . "return false;\">";
+    return "<a class=\"addToCollection\" href=\"#\" title=\"" . $lang["addtocurrentcollection"] . "\" onClick=\"AddResourceToCollection(event,'" . $resource . "','" . $size . "');" . $extracode . "return false;\">";
 
     }
 }
