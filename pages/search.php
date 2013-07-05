@@ -178,6 +178,11 @@ if ($order_by=="") {$order_by=$default_sort;}
 $per_page=getvalescaped("per_page",$default_perpage);setcookie("per_page",$per_page);
 $archive=getvalescaped("archive",0);if (strpos($search,"!")===false) {setcookie("saved_archive",$archive);}
 $jumpcount=0;
+if($recent_search_period_select==true)
+	{
+	$daylimit=getvalescaped("daylimit",60);setcookie("daylimit",$daylimit);
+	}
+else {$daylimit="";}
 
 # Most sorts such as popularity, date, and ID should be descending by default,
 # but it seems custom display fields like title or country should be the opposite.
@@ -252,7 +257,7 @@ if (strpos($search,"!")!==false) {$restypes="";}
 # Do the search!
 $search=refine_searchstring($search);
 if (strpos($search,"!")===false) {setcookie("search",$search);}
-$result=do_search($search,$restypes,$order_by,$archive,$per_page+$offset,$sort,false,$starsearch);
+$result=do_search($search,$restypes,$order_by,$archive,$per_page+$offset,$sort,false,$starsearch,false,false,$daylimit);
 
 # Allow results to be processed by a plugin
 $hook_result=hook("process_search_results","search",array("result"=>$result,"search"=>$search));
@@ -487,6 +492,18 @@ if (true) # Always show search header now.
 	</div>
 	<?php } 
 	
+	if ($display_selector_dropdowns && $recent_search_period_select && substr($search,0,5)=="!last"){?>
+	<div class="InpageNavLeftBlock"><?php echo $lang["period"]?>:<br />
+		<select class="medcomplementwidth ListDropdown" style="width:auto" id="resultsdisplay" name="resultsdisplay" onchange="CentralSpaceLoad(this.value,true);">
+		<?php for($n=0;$n<count($recent_search_period_array);$n++){
+			if ($display_selector_dropdowns){?>
+				<option <?php if ($daylimit==$recent_search_period_array[$n]){?>selected="selected"<?php } ?> value="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=<?php echo urlencode($order_by)?>&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>&per_page=<?php echo urlencode($per_page)?>&sort=<?php echo urlencode($sort)?>"><?php echo urlencode($results_display_array[$n])?>&daylimit=<?php echo urlencode(str_replace("?",$recent_search_period_array[$n],$lang["lastndays"]))?></option>
+			<?php } ?>
+		<?php } ?>	
+		</select>
+	</div>
+	<?php } 
+	
 	# order by
 	#if (strpos($search,"!")===false)
 	if ($search!="!duplicates" && $search!="!unused") # Ordering enabled for collections/themes too now at the request of N Ward / Oxfam
@@ -554,7 +571,17 @@ if (true) # Always show search header now.
 		<?php if ($per_page==$results_display_array[$n]){?><span class="Selected"><?php echo urlencode($results_display_array[$n])?></span><?php } else { ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=<?php echo urlencode($order_by)?>&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>&per_page=<?php echo urlencode($results_display_array[$n])?>&sort=<?php echo urlencode($sort)?>" onClick="return CentralSpaceLoad(this);"><?php echo urlencode($results_display_array[$n])?></a><?php } ?><?php if ($n>-1&&$n<count($results_display_array)-1){?>&nbsp;|<?php } ?>
 		<?php } ?>
 		</div>
+		<?php } 
+	
+		if (!$display_selector_dropdowns && $recent_search_period_select && substr($search,0,5)=="!last"){?>
+		<div class="InpageNavLeftBlock"><?php echo $lang["period"]?>:<br />
+		<?php 
+		for($n=0;$n<count($recent_search_period_array);$n++){
+			if ($daylimit==$recent_search_period_array[$n]){?><span class="Selected"><?php echo htmlspecialchars(str_replace("?",$recent_search_period_array[$n],$lang["lastndays"]))?></span><?php } else { ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=<?php echo urlencode($order_by)?>&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>&per_page=<?php echo urlencode($per_page)?>&sort=<?php echo urlencode($sort)?>&daylimit=<?php echo urlencode($recent_search_period_array[$n])?>" onClick="return CentralSpaceLoad(this);"><?php echo htmlspecialchars(str_replace("?",$recent_search_period_array[$n],$lang["lastndays"]))?></a><?php } ?><?php if ($n>-1&&$n<count($recent_search_period_array)-1){?>&nbsp;|<?php } ?>
 		<?php } ?>
+		</div>
+		<?php } ?>		
+		
 	<?php
 
 		

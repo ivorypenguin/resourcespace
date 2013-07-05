@@ -4,7 +4,7 @@
 #  - For resource indexing / keyword creation, see resource_functions.php
 
 if (!function_exists("do_search")) {
-function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchrows=-1,$sort="desc",$access_override=false,$starsearch=0,$ignore_filters=false,$return_disk_usage=false)
+function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchrows=-1,$sort="desc",$access_override=false,$starsearch=0,$ignore_filters=false,$return_disk_usage=false,$recent_search_daylimit="")
 	{	
 	debug("search=$search restypes=$restypes archive=$archive");
 	
@@ -695,8 +695,7 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 		# Fix the order by for this query (special case due to inner query)
 		$order_by=str_replace("r.rating","rating",$order_by);
 		
-		global $recent_search_daylimit;
-		if(isset($recent_search_daylimit))
+		if($recent_search_daylimit!="")
 			{
 			$sql_filter.= " and creation_date > (curdate() - interval " . $recent_search_daylimit . " DAY)";
 			}
