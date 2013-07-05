@@ -2105,3 +2105,6 @@ $email_from_user=false;
 
 # option to always cc admin on emails from the logged in user
 $email_copy_admin=false;
+
+# Option to limit recent search to resources uploaded in the last X days
+#$recent_search_daylimit=30;
