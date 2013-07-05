@@ -390,15 +390,35 @@ jQuery(document).ready(function () {
 		}
 	});
 
+	  <?php if ($plupload_clearqueue && checkperm("d") ){?>
+	          //remove the completed files once complete
+	          uploader.bind('UploadComplete', function(up, files) {
+	                                  jQuery('.plupload_done').slideUp('2000', function() {
+	                                          uploader.splice();
+	                                          window.location.href='<?php echo $baseurl_short?>pages/search.php?search=!contributions<?php echo urlencode($userref) ?>&archive=-2';
+	                                          
+	                                  });
+	          });
+	  
+	          
+	 
+	          
+	  <?php } ?>
+	  
+	          <?php if ($plupload_clearqueue && !checkperm("d") ){?>
+	          //remove the completed files once complete
+	          uploader.bind('UploadComplete', function(up, files) {
+	                                  jQuery('.plupload_done').slideUp('2000', function() {
+	                                          uploader.splice();        
+	                                  });
+	          });
+	  
+	                
+	 
+	                
+		  <?php } ?>
+	             
 
-	<?php if ($plupload_clearqueue){?>
-		//remove the completed files once complete 
-		uploader.bind('UploadComplete', function(up, files) {
-					jQuery('.plupload_done').slideUp('2000', function() {
-						uploader.splice();
-					});
-		});
-	<?php } ?>
 	
 	// Client side form validation
 	jQuery('form.pluploadform').submit(function(e) {
