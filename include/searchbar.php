@@ -472,58 +472,52 @@ if (!$basic_simple_search)
 	})
 	</script>
 		
-	<div id="basicdate" class="SearchItem"><?php echo $lang["bydate"]?><br />
-	<select id="basicyear" name="year" class="SearchWidth" <?php if (!$searchbyday) { ?>style="width:70px;"<?php } ?>>
-	  <option selected="selected" value=""><?php echo $lang["anyyear"]?></option>
-	  <?php
-	  $y=date("Y");
-	  for ($n=$y;$n>=$minyear;$n--)
-		{
-		?><option <?php if ($n==$found_year) { ?>selected<?php } ?>><?php echo $n?></option><?php
-		}
-	  ?>
-	</select>
-
-	<?php if ($searchbyday) { ?><br /><?php } ?>
-
-	<select id="basicmonth" name="month" class="SearchWidth" style="width:80px;">
-	  <option selected="selected" value=""><?php echo $lang["anymonth"]?></option>
-	  <?php
-	  for ($n=1;$n<=12;$n++)
-		{
-		$m=str_pad($n,2,"0",STR_PAD_LEFT);
-		?><option <?php if ($n==$found_month) { ?>selected<?php } ?> value="<?php echo $m?>"><?php echo $lang["months"][$n-1]?></option><?php
-		}
-	  ?>
-
-	</select>
-
-	<?php if ($searchbyday) { ?>
-	<select id="basicday" name="day" class="SearchWidth" style="width:73px;">
-	  <option selected="selected" value=""><?php echo $lang["anyday"]?></option>
-	  <?php
-	  for ($n=1;$n<=31;$n++)
-		{
-		$m=str_pad($n,2,"0",STR_PAD_LEFT);
-		?><option <?php if ($n==$found_day) { ?>selected<?php } ?> value="<?php echo $m?>"><?php echo $m?></option><?php
-		}
-	  ?>
-	</select>
-	<?php } ?>
+	<div id="basicdate" class="SearchItem"><?php if ($simple_search_date) 
+   			{
+				?>	
 	
-    <?php if ($star_search && $display_user_rating_stars){?>
-	<div class="SearchItem"><?php echo $lang["starsminsearch"];?><br />
-	<input type="hidden" id="starsearch" name="starsearch" class="SearchWidth" value="<?php echo htmlspecialchars($starsearch);?>">
-		<?php if ($starsearch=="") {$starsearch=0;}?>		
-		<div  class="RatingStars" onMouseOut="StarSearchRatingDisplay(document.getElementById('starsearch').value,'StarCurrent');">&nbsp;<?php 
-		for ($z=1;$z<=5;$z++)
-			{
-			?><a href="#" onMouseOver="StarSearchRatingDisplay(<?php echo $z?>,'StarSelect');" onClick="document.getElementById('starsearch').value=<?php echo $z?>;return false;"><span id="RatingStar-<?php echo $z?>" class="Star<?php echo ($z<=$starsearch?"Current":"Empty")?>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></a><?php
-			}
-		?>
-		</div>
-	</div>
-	<?php } ?>
+				 <?php  echo $lang["bydate"]?><br />
+	<select id="basicyear" name="year" class="SearchWidth" <?php if (!$searchbyday) { ?>style="width:70px;"<?php } ?>>
+	          <option selected="selected" value=""><?php echo $lang["anyyear"]?></option>
+	          <?php
+	          
+	          
+	          $y=date("Y");
+	          for ($n=$y;$n>=$minyear;$n--)
+	                {
+	                ?><option <?php if ($n==$found_year) { ?>selected<?php } ?>><?php echo $n?></option><?php
+	                }
+	          ?>
+	        </select> 
+	
+	        <?php if ($searchbyday) { ?><br /><?php } ?>
+	
+	        <select id="basicmonth" name="month" class="SearchWidth" style="width:80px;">
+	          <option selected="selected" value=""><?php echo $lang["anymonth"]?></option>
+	          <?php
+	          for ($n=1;$n<=12;$n++)
+	                {
+	                $m=str_pad($n,2,"0",STR_PAD_LEFT);
+	                ?><option <?php if ($n==$found_month) { ?>selected<?php } ?> value="<?php echo $m?>"><?php echo $lang["months"][$n-1]?></option><?php
+	                }
+	          ?>
+	
+	        </select> 
+	
+	        <?php if ($searchbyday) { ?>
+	        <select id="basicday" name="day" class="SearchWidth" style="width:73px;">
+	          <option selected="selected" value=""><?php echo $lang["anyday"]?></option>
+	          <?php
+	          for ($n=1;$n<=31;$n++)
+	                {
+	                $m=str_pad($n,2,"0",STR_PAD_LEFT);
+	                ?><option <?php if ($n==$found_day) { ?>selected<?php } ?> value="<?php echo $m?>"><?php echo $m?></option><?php
+	                }
+	          ?>
+	        </select>
+	        <?php } 
+				}     			
+     			?>
 	
     <?php if (isset($resourceid_simple_search) and $resourceid_simple_search){ ?>
              <div class="SearchItem"><?php echo $lang["resourceid"]?><br />
