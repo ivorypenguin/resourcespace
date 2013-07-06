@@ -1233,6 +1233,8 @@ if (!$multiple && $ref>0) {EditNav();}
     }
 
 hook("autolivejs");
-
+?>
+</div>
+<?php
 include "../include/footer.php";
 ?>
