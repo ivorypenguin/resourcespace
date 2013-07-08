@@ -55,6 +55,12 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 		if ($sql_filter!="") {$sql_filter.=" and ";}
 		$sql_filter.="user_rating >= '$starsearch'";
 		}	
+	
+	if($recent_search_daylimit!="")
+			{
+			if ($sql_filter!="") {$sql_filter.=" and ";}
+			$sql_filter.= "creation_date > (curdate() - interval " . $recent_search_daylimit . " DAY)";
+			}
 
 	# If returning disk used by the resources in the search results ($return_disk_usage=true) then wrap the returned SQL in an outer query that sums disk usage.
 	$sql_prefix="";$sql_suffix="";
@@ -694,13 +700,8 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 		
 		# Fix the order by for this query (special case due to inner query)
 		$order_by=str_replace("r.rating","rating",$order_by);
-		
-		if($recent_search_daylimit!="")
-			{
-			$sql_filter.= " and creation_date > (curdate() - interval " . $recent_search_daylimit . " DAY)";
-			}
-		
-		return sql_query($sql_prefix . "select distinct *,r2.hit_count score from (select $select from resource r $sql_join  where $sql_filter order by ref desc limit $last ) r2 order by $order_by" . $sql_suffix,false,$fetchrows);
+				
+		return sql_query($sql_prefix . "select distinct *,r2.hit_count score from (select $select from resource r $sql_join where $sql_filter order by ref desc limit $last ) r2 order by $order_by" . $sql_suffix,false,$fetchrows);
 		}
 	
 	# View Resources With No Downloads

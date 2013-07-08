@@ -178,11 +178,13 @@ if ($order_by=="") {$order_by=$default_sort;}
 $per_page=getvalescaped("per_page",$default_perpage);setcookie("per_page",$per_page);
 $archive=getvalescaped("archive",0);if (strpos($search,"!")===false) {setcookie("saved_archive",$archive);}
 $jumpcount=0;
+//only set the cookie if config option is set, otherwise user cannot clear this 
 if($recent_search_period_select==true)
 	{
-	$daylimit=getvalescaped("daylimit",60);setcookie("daylimit",$daylimit);
+	$daylimit=getvalescaped("daylimit",60);
+	setcookie("daylimit",$daylimit);
 	}
-else {$daylimit="";}
+else {$daylimit=getvalescaped("daylimit","");setcookie("daylimit","");}
 
 # Most sorts such as popularity, date, and ID should be descending by default,
 # but it seems custom display fields like title or country should be the opposite.
@@ -492,14 +494,15 @@ if (true) # Always show search header now.
 	</div>
 	<?php } 
 	
-	if ($display_selector_dropdowns && $recent_search_period_select && substr($search,0,5)=="!last"){?>
+	if ($display_selector_dropdowns && $recent_search_period_select && (strpos($search,"!")!==false)){?>
 	<div class="InpageNavLeftBlock"><?php echo $lang["period"]?>:<br />
 		<select class="medcomplementwidth ListDropdown" style="width:auto" id="resultsdisplay" name="resultsdisplay" onchange="CentralSpaceLoad(this.value,true);">
 		<?php for($n=0;$n<count($recent_search_period_array);$n++){
 			if ($display_selector_dropdowns){?>
 				<option <?php if ($daylimit==$recent_search_period_array[$n]){?>selected="selected"<?php } ?> value="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=<?php echo urlencode($order_by)?>&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>&per_page=<?php echo urlencode($per_page)?>&sort=<?php echo urlencode($sort)?>"><?php echo urlencode($results_display_array[$n])?>&daylimit=<?php echo urlencode(str_replace("?",$recent_search_period_array[$n],$lang["lastndays"]))?></option>
 			<?php } ?>
-		<?php } ?>	
+		<?php } ?>
+		<option <?php if ($daylimit==""){?>selected="selected"<?php } ?> value="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=<?php echo urlencode($order_by)?>&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>&per_page=<?php echo urlencode($per_page)?>&sort=<?php echo urlencode($sort)?>"><?php echo urlencode($results_display_array[$n])?>&daylimit=<?php echo $lang["anyday"] ?></option>
 		</select>
 	</div>
 	<?php } 
@@ -573,12 +576,14 @@ if (true) # Always show search header now.
 		</div>
 		<?php } 
 	
-		if (!$display_selector_dropdowns && $recent_search_period_select && substr($search,0,5)=="!last"){?>
+		if (!$display_selector_dropdowns && $recent_search_period_select){?>
 		<div class="InpageNavLeftBlock"><?php echo $lang["period"]?>:<br />
 		<?php 
 		for($n=0;$n<count($recent_search_period_array);$n++){
-			if ($daylimit==$recent_search_period_array[$n]){?><span class="Selected"><?php echo htmlspecialchars(str_replace("?",$recent_search_period_array[$n],$lang["lastndays"]))?></span><?php } else { ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=<?php echo urlencode($order_by)?>&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>&per_page=<?php echo urlencode($per_page)?>&sort=<?php echo urlencode($sort)?>&daylimit=<?php echo urlencode($recent_search_period_array[$n])?>" onClick="return CentralSpaceLoad(this);"><?php echo htmlspecialchars(str_replace("?",$recent_search_period_array[$n],$lang["lastndays"]))?></a><?php } ?><?php if ($n>-1&&$n<count($recent_search_period_array)-1){?>&nbsp;|<?php } ?>
-		<?php } ?>
+			if ($daylimit==$recent_search_period_array[$n]){?><span class="Selected"><?php echo htmlspecialchars(str_replace("?",$recent_search_period_array[$n],$lang["lastndays"]))?> &nbsp;|&nbsp;</span><?php } else { ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=<?php echo urlencode($order_by)?>&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>&per_page=<?php echo urlencode($per_page)?>&sort=<?php echo urlencode($sort)?>&daylimit=<?php echo urlencode($recent_search_period_array[$n])?>" onClick="return CentralSpaceLoad(this);"><?php echo htmlspecialchars(str_replace("?",$recent_search_period_array[$n],$lang["lastndays"]))?></a>&nbsp;|&nbsp;<?php } 
+			}
+		if ($daylimit==""){?><span class="Selected"><?php echo $lang["anyday"] ?></span><?php } else { ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=<?php echo urlencode($order_by)?>&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>&per_page=<?php echo urlencode($per_page)?>&sort=<?php echo urlencode($sort)?>&daylimit=" onClick="return CentralSpaceLoad(this);"><?php echo $lang["anyday"]?></a><?php } 
+		?>				
 		</div>
 		<?php } ?>		
 		

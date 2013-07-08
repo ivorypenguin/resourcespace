@@ -2112,3 +2112,8 @@ $email_copy_admin=false;
 # Option to limit recent search to resources uploaded in the last X days
 $recent_search_period_select=false;
 $recent_search_period_array=array(1,7,14,60);
+
+#Option for recent link to use recent X days instead of recent X resources
+$recent_search_by_days=false;
+$recent_search_by_days_default=60;
+
