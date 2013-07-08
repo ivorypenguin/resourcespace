@@ -2117,4 +2117,4 @@ $recent_search_period_array=array(1,7,14,60);
 $recent_search_by_days=false;
 $recent_search_by_days_default=60;
 
-$simple_search_reset_after_search=true;
+$simple_search_reset_after_search=false;
