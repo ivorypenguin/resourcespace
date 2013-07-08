@@ -130,7 +130,6 @@ if ($ref<0)
 				?>
 			</div>
 			<!-- end select theme -->
-			</div>		
 			<?php 	
 			} // end if checkperm h 
 		} // end if public collections enabled
