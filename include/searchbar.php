@@ -529,6 +529,24 @@ if (!$basic_simple_search)
 				}     			
      			?>
 	
+	
+	    <?php if ($star_search && $display_user_rating_stars){?>
+        <div class="SearchItem"><?php echo $lang["starsminsearch"];?><br />
+        <input type="hidden" id="starsearch" name="starsearch" class="SearchWidth" value="<?php echo htmlspecialchars($starsearch);?>">
+                <?php if ($starsearch=="") {$starsearch=0;}?>           
+                <div  class="RatingStars" onMouseOut="StarSearchRatingDisplay(document.getElementById('starsearch').value,'StarCurrent');">&nbsp;<?php 
+                for ($z=1;$z<=5;$z++)
+                        {
+                        ?><a href="#" onMouseOver="StarSearchRatingDisplay(<?php echo $z?>,'StarSelect');" onClick="document.getElementById('starsearch').value=<?php echo $z?>;return false;"><span id="RatingStar-<?php echo $z?>" class="Star<?php echo ($z<=$starsearch?"Current":"Empty")?>">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></a><?php
+                        }
+                ?>
+                </div>
+        </div>
+        <?php } ?>
+        
+
+	
+	
     <?php if (isset($resourceid_simple_search) and $resourceid_simple_search){ ?>
              <div class="SearchItem"><?php echo $lang["resourceid"]?><br />
              <input id="searchresourceid" name="searchresourceid" type="text" class="SearchWidth" value="" />
@@ -566,6 +584,10 @@ if (!$basic_simple_search)
 	-->
 	
 	<?php } ?>
+	
+	
+	
+	
 	
 	<?php hook("searchbarbeforebuttons"); ?>
 		
