@@ -340,6 +340,7 @@ include "../include/header.php";
     ?>
     <script type="text/javascript">
     ReloadSearchBar();
+    ReloadLinks();
     </script>
     <?php
 if ($display_user_rating_stars && $k=="")
