@@ -223,7 +223,7 @@ if ($add!="")
 		{
 		$addarray=explode(",",$add);
 		}
-	if(!is_array($add))
+	else
 		{
 		$addarray[0]=$add;
 		unset($add);
