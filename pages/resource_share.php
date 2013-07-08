@@ -27,7 +27,7 @@ include "../include/header.php";
 <div class="BasicsBox">
 <p><a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo urlencode($ref)?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by) ?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>"  onClick="return CentralSpaceLoad(this,true);">&lt;&nbsp;<?php echo $lang["backtoresourceview"]?></a></p>
 
-<h1>Share Resource</h1>
+<h1><?php echo $lang["share-resource"] ?></h1>
 
 
 <div class="BasicsBox"> 

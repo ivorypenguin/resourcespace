@@ -1696,3 +1696,4 @@ $lang["untaggedresources"]="Resources with no %field data";
 
 $lang["secureyouradminaccount"]="Welcome! To secure your server, you are required to change the default password now.";
 $lang["resources"]="Resources";
+$lang["share-resource"]="Share Resource";
