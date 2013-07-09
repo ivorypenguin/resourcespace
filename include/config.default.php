@@ -2105,10 +2105,10 @@ $edit_upload_options_at_top=false;
 #$download_filename_field=8;
 
 # option to always send emails from the logged in user
-$email_from_user=false;
+$always_email_from_user=false;
 
 # option to always cc admin on emails from the logged in user
-$email_copy_admin=false;
+$always_email_copy_admin=false;
 
 # Option to limit recent search to resources uploaded in the last X days
 $recent_search_period_select=false;

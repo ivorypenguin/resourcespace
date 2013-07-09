@@ -275,7 +275,7 @@ for ($n=$minaccess;$n<=1;$n++) { ?>
 <?php } # end hook replaceemailrequestfeedback ?>
 <?php } ?>
 
-<?php if ($email_from_user){?>
+<?php if ($email_from_user && !always_email_from_user){?>
 <?php if ($useremail!="") { # Only allow this option if there is an email address available for the user.
 ?>
 <div class="Question">

@@ -1429,7 +1429,7 @@ function send_mail($email,$subject,$message,$from="",$reply_to="",$html_template
 	# and the use of email templates in Manage Content 
 
 	global $email_from_user;
-	if($email_from_user)
+	if($always_email_from_user)
 		{
 		global $username, $useremail, $userfullname;
 		$from_name=($userfullname!="")?$userfullname:$username;
@@ -1438,7 +1438,7 @@ function send_mail($email,$subject,$message,$from="",$reply_to="",$html_template
 		}
 
 	global $email_copy_admin;
-	if($email_copy_admin)
+	if($always_email_copy_admin)
 		{
 		global $email_notify;
 		$cc.="," . $email_notify;
