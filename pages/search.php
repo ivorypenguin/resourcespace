@@ -337,12 +337,15 @@ if ((($config_search_for_number && is_numeric($search)) || $searchresourceid > 0
 
 # Include the page header to and render the search results
 include "../include/header.php";
-    ?>
-    <script type="text/javascript">
-    ReloadSearchBar();
-    ReloadLinks();
-    </script>
-    <?php
+if($k=="")
+	{
+	 ?>
+	<script type="text/javascript">
+	ReloadSearchBar();
+	ReloadLinks();
+	</script>
+ 	<?php
+	}
 if ($display_user_rating_stars && $k=="")
 	{
 	?>
