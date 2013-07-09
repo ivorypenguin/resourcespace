@@ -12,7 +12,6 @@ function HookFilterboxAllSearchbarreplace()
 	<form method="post" action="<?php echo $baseurl_short?>pages/search.php?k=<?php echo $k ?>" onSubmit="return CentralSpacePost (this,true);">
 	<div class="Question" id="question_related" style="border-top:none;">
 	<input class="SearchWidth" type=text id="refine_keywords" name="refine_keywords" autofocus />
-
 	<?php if ($autocomplete_search)
 		{
 		# Auto-complete search functionality
