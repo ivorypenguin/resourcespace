@@ -1162,8 +1162,9 @@ $disable_alternative_files = false;
 $hide_access_column_public = false;
 #collection_manage.php - hide 'access' column
 $hide_access_column = false;
-#collection_manage.php - show 'edit all' link on collections
-$show_edit_all_link = false;
+
+# Enable the 'edit all' function in both the collection bar and My Collections
+$show_edit_all_link = true;
 
 #Bypass share.php and go straight to e-mail
 $bypass_share_screen = false;
