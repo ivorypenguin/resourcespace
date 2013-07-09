@@ -10,7 +10,7 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 	
 	# globals needed for hooks	 
 	global $sql,$order,$select,$sql_join,$sql_filter,$orig_order,$checkbox_and,$collections_omit_archived,$search_sql_double_pass_mode;
-	
+
 	# Takes a search string $search, as provided by the user, and returns a results set
 	# of matching resources.
 	# If there are no matches, instead returns an array of suggested searches.
@@ -959,7 +959,7 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 	# hook implementations will set the value.  So, you know that the value set
 	# will always be the correct one (unless two plugins use the same !<type> value).
 	$sql="";
-	hook ("addspecialsearch");	
+	hook("addspecialsearch", "", array($search));
 	if($sql != "")
 	{
 		debug("Addspecialsearch hook returned useful results.");
