@@ -1,18 +1,18 @@
 <?php
 
-function HookFilterboxSearchSearchbarreplace()
+function HookFilterboxAllSearchbarreplace()
 	{
-	global $lang, $search, $archive, $baseurl, $autocomplete_search;
+	global $lang, $search, $archive, $baseurl, $autocomplete_search, $baseurl_short, $k, $quicksearch;
 	include_once(dirname(__FILE__)."/../../../include/search_functions.php");
 	?>
 
 	<h2><?php echo $lang["filtertitle"]?></h2>
 	<p><?php echo $lang["filtertext"]?></p>
 
-	<form method="post">
+	<form method="post" action="<?php echo $baseurl_short?>pages/search.php?k=<?php echo $k ?>" onSubmit="return CentralSpacePost (this,true);">
 	<div class="Question" id="question_related" style="border-top:none;">
-	<input class="SearchWidth" type=text id="refine_keywords" name="refine_keywords" value=""
-		   autofocus />
+	<input class="SearchWidth" type=text id="refine_keywords" name="refine_keywords" autofocus />
+
 	<?php if ($autocomplete_search)
 		{
 		# Auto-complete search functionality
@@ -26,7 +26,8 @@ function HookFilterboxSearchSearchbarreplace()
 		}
 	?>
 	<input type=hidden name="archive" value="<?php echo $archive?>" />
-	<input type=hidden name="search" value="<?php echo htmlspecialchars($search) ?>" />
+<input type=hidden name="search" value="<?php echo htmlspecialchars(stripslashes(@$quicksearch))?>"
+    />
 	</div>
 
 	<div class="QuestionSubmit"
@@ -48,7 +49,7 @@ function HookFilterboxSearchSearchbarreplace()
 global $basic_simple_search;
 if ($basic_simple_search)
 	{
-	function HookFilterboxSearchSearchbarbeforebottomlinks()
+	function HookFilterboxAllSearchbarbeforebottomlinks()
 		{
 		global $lang;
 		?>
@@ -59,12 +60,22 @@ if ($basic_simple_search)
 
 function HookFilterboxSearchSearchstringprocessing()
 	{
-	global $search;
-	$refine=trim(getvalescaped("refine_keywords", ""));
-	if ($refine != "")
-		$search .= ",".$refine;
-
-	$search=refine_searchstring($search);
+	global $search,$k;
+	$refine=trim(getvalescaped("refine_keywords",""));
+	if ($refine!="")
+		{
+		if ($k!="")
+			{
+			# Slightly different behaviour when searching within external shares. There is no search bar, so the provided string is the entirity of the search.
+			$s=explode(" ",$search);
+			$search=$s[0] . " " . $refine;	
+			}
+		else
+			{
+			$search.=", " . $refine;	
+			}
+		}
+	$search=refine_searchstring($search);	
 	}
 
 ?>
