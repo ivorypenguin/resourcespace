@@ -2119,3 +2119,6 @@ $recent_search_by_days=false;
 $recent_search_by_days_default=60;
 
 $simple_search_reset_after_search=false;
+
+#download_chunk_size - for resource downloads. This can be amended to suit local setup. For instance try changing this to 4096 if experiencing slow downloads
+$download_chunk_size=(2 << 20); 

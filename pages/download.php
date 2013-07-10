@@ -186,16 +186,15 @@ set_time_limit(0);
 #readfile($path);
 
 # New method
-$blocksize = (2 << 20); //2M chunks
 $sent = 0;
 $handle = fopen($path, "r");
 
 // Now we need to loop through the file and echo out chunks of file data
 while($sent < $filesize)
 	{
-	echo fread($handle, $blocksize);
+	echo fread($handle, $download_chunk_size);
 	ob_flush();
-	$sent += $blocksize;
+	$sent += $download_chunk_size;
 	}
 
 
