@@ -1428,7 +1428,7 @@ function send_mail($email,$subject,$message,$from="",$reply_to="",$html_template
 	# send_mail_phpmailer allows for the use of text and html (multipart) emails,
 	# and the use of email templates in Manage Content 
 
-	global $email_from_user;
+	global $always_email_from_user;
 	if($always_email_from_user)
 		{
 		global $username, $useremail, $userfullname;
@@ -1437,7 +1437,7 @@ function send_mail($email,$subject,$message,$from="",$reply_to="",$html_template
 		$reply_to=$useremail;
 		}
 
-	global $email_copy_admin;
+	global $always_email_copy_admin;
 	if($always_email_copy_admin)
 		{
 		global $email_notify;
