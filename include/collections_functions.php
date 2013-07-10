@@ -117,14 +117,7 @@ function add_resource_to_collection($resource,$collection,$smartadd=false,$size=
 	global $collection_allow_not_approved_share;
 	if (collection_writeable($collection)||$smartadd)
 		{	
-		hook("Addtocollectionsuccess", "", array( "resourceId" => $resource, "collectionId" => $collection ) );
-		sql_query("delete from collection_resource where resource='$resource' and collection='$collection'");
-		sql_query("insert into collection_resource(resource,collection,purchase_size) values ('$resource','$collection','$size')");
-		
-		#log this
-		collection_log($collection,"a",$resource);
-		
-		# Check if this collection has already been shared externally. If it has, we must add a further entry
+		# Check if this collection has already been shared externally. If it has, we must fail if not permitted or add a further entry
 		# for this specific resource, and warn the user that this has happened.
 		$keys=get_collection_external_access($collection);
 		if (count($keys)>0)
@@ -146,6 +139,15 @@ function add_resource_to_collection($resource,$collection,$smartadd=false,$size=
 				}
 			
 			}
+		
+		hook("Addtocollectionsuccess", "", array( "resourceId" => $resource, "collectionId" => $collection ) );
+		sql_query("delete from collection_resource where resource='$resource' and collection='$collection'");
+		sql_query("insert into collection_resource(resource,collection,purchase_size) values ('$resource','$collection','$size')");
+		
+		#log this
+		collection_log($collection,"a",$resource);
+		
+		
 
 		return true;
 		}
@@ -983,7 +985,7 @@ function add_saved_search_items($collection)
 	if (count($keys)>0)
 		{
 		# Set the flag so a warning appears.
-		global $collection_share_warning;
+		global $collection_share_warning, $collection_allow_not_approved_share;
 		$collection_share_warning=true;
 		
 		for ($n=0;$n<count($keys);$n++)

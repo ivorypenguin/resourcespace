@@ -233,15 +233,19 @@ if ($add!="")
 		hook("preaddtocollection");
 		#add to current collection
 		if (add_resource_to_collection($add,$usercollection,false,getvalescaped("size",""))==false)
-			{ ?><script language="Javascript">alert("<?php echo $lang["cantmodifycollection"]?>");</script><?php };
+			{ ?>
+			<script language="Javascript">alert("<?php echo $lang["cantmodifycollection"]?>");</script><?php
+			}
+		else
+			{
+			# Log this	
+			daily_stat("Add resource to collection",$add);
 		
-		# Log this	
-		daily_stat("Add resource to collection",$add);
-	
-		# Update resource/keyword kit count
-		$search=getvalescaped("search","");
-		if ((strpos($search,"!")===false) && ($search!="")) {update_resource_keyword_hitcount($add,$search);}
-		hook("postaddtocollection");
+			# Update resource/keyword kit count
+			$search=getvalescaped("search","");
+			if ((strpos($search,"!")===false) && ($search!="")) {update_resource_keyword_hitcount($add,$search);}
+			hook("postaddtocollection");
+			}
 		}	
 	# Show warning?
 	if (isset($collection_share_warning) && $collection_share_warning)
