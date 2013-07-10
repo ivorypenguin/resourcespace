@@ -10,7 +10,7 @@ function ip_matches_regexp($ip, $ip_restrict)
 
 function HookAuto_loginAllProvideusercredentials()
 	{
-	global $username, $hashsql, $session_hash;
+	global $username, $hashsql, $session_hash, $user_select_sql;
 
 	if (array_key_exists("user",$_COOKIE) || array_key_exists("user",$_GET))
 		return false;
@@ -24,6 +24,7 @@ function HookAuto_loginAllProvideusercredentials()
 			$username=$result['username'];
 			$hashsql='';
 			$session_hash='';
+			$user_select_sql="and u.username='$username'";
 			return true;
 			}
 		}
