@@ -127,6 +127,9 @@ if ($_FILES)
 	if (!file_exists($targetDir))
 		@mkdir($targetDir,0777,true);
 
+	
+
+
 	// Remove old temp files	
 	if ($cleanupTargetDir && is_dir($targetDir) && ($dir = opendir($targetDir))) {
 		while (($file = readdir($dir)) !== false) {
@@ -303,7 +306,7 @@ jQuery(document).ready(function () {
 	jQuery("#pluploader").pluploadQueue({
 		// General settings
 		runtimes : '<?php echo $plupload_runtimes ?>',
-		url: '<?php echo $baseurl_short?>pages/upload_plupload.php?replace=<?php echo urlencode($replace) ?>&alternative=<?php echo urlencode($alternative) ?>&collection_add=<?php echo urlencode($collection_add)?>&resource_type=<?php echo urlencode($resource_type)?>&no_exif=<?php echo urlencode(getval("no_exif",""))?>&autorotate=<?php echo urlencode(getval("autorotate",""))?>&replace_resource=<?php echo urlencode($replace_resource)?>',
+		url: '<?php echo $baseurl_short?>pages/upload_plupload.php?replace=<?php echo urlencode($replace) ?>&alternative=<?php echo urlencode($alternative) ?>&collection_add=<?php echo urlencode($collection_add)?>&resource_type=<?php echo urlencode($resource_type)?>&no_exif=<?php echo urlencode(getval("no_exif",""))?>&autorotate=<?php echo urlencode(getval("autorotate",""))?>&replace_resource=<?php echo urlencode($replace_resource)?>&archive=<?php echo urlencode($archive) ?>',
 		chunk_size : '5mb',	
 		multiple_queues: true,
 
@@ -395,7 +398,7 @@ jQuery(document).ready(function () {
 	          uploader.bind('UploadComplete', function(up, files) {
 	                                  jQuery('.plupload_done').slideUp('2000', function() {
 	                                          uploader.splice();
-	                                          window.location.href='<?php echo $baseurl_short?>pages/search.php?search=!contributions<?php echo urlencode($userref) ?>&archive=-2';
+	                                          window.location.href='<?php echo $baseurl_short?>pages/search.php?search=!contributions<?php echo urlencode($userref) ?>&archive=<?php echo urlencode($archive) ?>';
 	                                          
 	                                  });
 	          });
@@ -463,9 +466,11 @@ jQuery(document).ready(function () {
    include "../include/footer.php";
    exit();
    }
-	
-        
-
+   
+   
+   
+   
+   
 
 
  if  ($alternative!=""){?><p> <a href="<?php echo $baseurl_short?>pages/edit.php?ref=<?php echo urlencode($alternative)?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>">&lt;&nbsp;<?php echo $lang["backtoeditresource"]?></a><br / >
