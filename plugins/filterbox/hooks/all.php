@@ -1,11 +1,33 @@
 <?php
 
-function HookFilterboxAllSearchbarreplace()
+function HookFilterboxAllPreheaderoutput()
 	{
-	global $lang, $search, $archive, $baseurl, $autocomplete_search, $baseurl_short, $k, $quicksearch;
+	global $pagename;
+
+	if (getval('ajax', '') == '')
+		return;
+
+	?>
+	<script type="text/javascript">
+	var pagename="<?php echo $pagename?>";
+	jQuery(document).ready(function() {
+		if (pagename == 'search')
+			jQuery('.FilterBox#SearchBoxPanel').fadeIn(150);
+		else
+			jQuery('.FilterBox#SearchBoxPanel').fadeOut(150);
+	});
+	</script>
+	<?php
+	}
+
+function HookFilterboxAllSearchbarbeforeboxpanel()
+	{
+	global $lang, $search, $archive, $baseurl, $autocomplete_search, $baseurl_short, $k, $quicksearch, $pagename;
 	include_once(dirname(__FILE__)."/../../../include/search_functions.php");
 	?>
 
+	<div class="FilterBox" id="SearchBoxPanel" style="display: <?php echo $pagename == 'search' ? 'block' : 'none' ?>">
+	<div class="SearchSpace FilterBox">
 	<h2><?php echo $lang["filtertitle"]?></h2>
 	<p><?php echo $lang["filtertext"]?></p>
 
@@ -25,8 +47,7 @@ function HookFilterboxAllSearchbarreplace()
 		}
 	?>
 	<input type=hidden name="archive" value="<?php echo $archive?>" />
-<input type=hidden name="search" value="<?php echo htmlspecialchars(stripslashes(@$quicksearch))?>"
-    />
+	<input type=hidden name="search" value="<?php echo htmlspecialchars(stripslashes(@$quicksearch))?>" />
 	</div>
 
 	<div class="QuestionSubmit"
@@ -39,10 +60,7 @@ function HookFilterboxAllSearchbarreplace()
 	</div>
 	</div>
 	<br />
-	<div id="SearchBoxPanel">
-	<div class="SearchSpace">
 	<?php
-	return false;
 	}
 
 global $basic_simple_search;
@@ -57,7 +75,7 @@ if ($basic_simple_search)
 		}
 	}
 
-function HookFilterboxSearchSearchstringprocessing()
+function HookFilterboxAllSearchstringprocessing()
 	{
 	global $search,$k;
 	$refine=trim(getvalescaped("refine_keywords",""));
@@ -67,14 +85,14 @@ function HookFilterboxSearchSearchstringprocessing()
 			{
 			# Slightly different behaviour when searching within external shares. There is no search bar, so the provided string is the entirity of the search.
 			$s=explode(" ",$search);
-			$search=$s[0] . " " . $refine;	
+			$search=$s[0] . " " . $refine;
 			}
 		else
 			{
-			$search.=", " . $refine;	
+			$search.=", " . $refine;
 			}
 		}
-	$search=refine_searchstring($search);	
+	$search=refine_searchstring($search);
 	}
 
 ?>

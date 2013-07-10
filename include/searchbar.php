@@ -102,9 +102,7 @@ if ($display_user_rating_stars && $star_search){ ?>
 
 <div id="SearchBox">
 
-
-
-
+<?php hook("searchbarbeforeboxpanel"); ?>
 
 <?php if (checkperm("s") && (!isset($k) || $k=="")) { ?>
 <div id="SearchBoxPanel">
