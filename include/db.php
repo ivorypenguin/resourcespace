@@ -817,6 +817,10 @@ function checkperm($perm)
     
 function pagename()
 	{
+	$name=getvalescaped('pagename', '');
+	if (!empty($name))
+		return $name;
+
 	$urlparts=explode("/",$_SERVER["PHP_SELF"]);
     $url=$urlparts[count($urlparts)-1];
     return escape_check($url);
