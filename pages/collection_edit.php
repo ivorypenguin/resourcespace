@@ -13,6 +13,10 @@ $find=getvalescaped("find","");
 $col_order_by=getvalescaped("col_order_by","name");
 $sort=getval("sort","ASC");
 
+# Does this user have edit access to collections? Variable will be found in functions below.  
+$multi_edit=allow_multi_edit($ref);
+
+
 # Fetch collection data
 $collection=get_collection($ref);if ($collection===false) {
 	$error=$lang['error-collectionnotfound'];
@@ -270,7 +274,7 @@ if (checkperm("h") && $collection['public']==1)
 	?><input type=hidden id="allow_changes" name="allow_changes" value="checked">
 <?php } ?>
 
-<?php if ((checkperm("e0") || checkperm("e1") || checkperm("e2")) && $colcount>1) { ?>
+<?php if ($multi_edit && $colcount>1) { ?>
 <div class="Question">
 <label for="allow_changes"><?php echo $lang["relateallresources"]?></label><input type=checkbox id="relateall" name="relateall">
 <div class="clearerleft"> </div>
@@ -283,7 +287,7 @@ if (checkperm("h") && $collection['public']==1)
 </div>
 <?php } ?>
 
-<?php if (!$collections_compact_style && allow_multi_edit($ref) && !checkperm("D") && $colcount!=0) { ?>
+<?php if (!$collections_compact_style && $multi_edit && !checkperm("D") && $colcount!=0) { ?>
 <div class="Question">
 <label for="deleteall"><?php echo $lang["deleteallresourcesfromcollection"]?></label><input type=checkbox id="deleteall" name="deleteall" onClick="if (this.checked) {return confirm('<?php echo $lang["deleteallsure"]?>');}">
 <div class="clearerleft"> </div>
