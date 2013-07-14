@@ -1695,5 +1695,12 @@ $lang["smart_collection_result_limit"]="Smart collection: result count limit";
 $lang["untaggedresources"]="Resources with no %field data";
 
 $lang["secureyouradminaccount"]="Welcome! To secure your server, you are required to change the default password now.";
+$lang["resources-all-types"]="Resources of all types";
+$lang["search-mode"]="Search mode";
+$lang["global"]="Global";
+$lang["action-viewmatchingresults"]="View matching results";
+$lang["nomatchingresults"]="No matching results";
+$lang["matchingresults"]="matching results"; # e.g. 17 matching results=======
 $lang["resources"]="Resources";
 $lang["share-resource"]="Share Resource";
+$lang["scope"]="Scope";

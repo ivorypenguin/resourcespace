@@ -201,6 +201,7 @@ $allow_reorder=false;
 if ($use_checkboxes_for_selection){
 $collectionresources=get_collection_resources($usercollection);
 }
+    $hiddenfields=getvalescaped("hiddenfields","");
 
 # fetch resource types from query string and generate a resource types cookie
 if (getvalescaped("resetrestypes","")=="")
@@ -213,14 +214,19 @@ else
 	reset($_POST);reset($_GET);foreach (array_merge($_GET, $_POST) as $key=>$value)
 
 		{
+		
+	    $hiddenfields=Array();
+		//$hiddenfields=explode(",",$hiddenfields);
 		if ($key=="rttickall" && $value=="on"){$restypes="";break;}	
-		if (substr($key,0,8)=="resource") {if ($restypes!="") {$restypes.=",";} $restypes.=substr($key,8);}
+		if ((substr($key,0,8)=="resource")&&!in_array($key, $hiddenfields)) {if ($restypes!="") {$restypes.=",";} $restypes.=substr($key,8);}
 		}
+
 	setcookie("restypes",$restypes);
 
 	# This is a new search, log this activity
 	if ($archive==2) {daily_stat("Archive search",0);} else {daily_stat("Search",0);}
 	}
+
 
 # if search is not a special search (ie. !recent), use starsearchvalue.
 if (getvalescaped("search","")!="" && strpos(getvalescaped("search",""),"!")!==false)
@@ -261,6 +267,7 @@ $search=refine_searchstring($search);
 if (strpos($search,"!")===false) {setcookie("search",$search);}
 hook('searchaftersearchcookie');
 $result=do_search($search,$restypes,$order_by,$archive,$per_page+$offset,$sort,false,$starsearch,false,false,$daylimit);
+$collections=do_collections_search($search,$restypes);
 
 # Allow results to be processed by a plugin
 $hook_result=hook("process_search_results","search",array("result"=>$result,"search"=>$search));
@@ -300,34 +307,6 @@ if ($allow_reorder && $display!="list")
 
 include ("../include/search_title_processing.php");
 
-# Do the public collection search if configured.
-
-$search_includes_themes_now=$search_includes_themes;
-$search_includes_public_collections_now=$search_includes_themes;
-$search_includes_user_collections_now=$search_includes_themes;
-if ($restypes!="") {
-$restypes_x=explode(",",$restypes);
-$search_includes_themes_now=in_array("themes",$restypes_x);
-$search_includes_public_collections_now=in_array("pubcol",$restypes_x);
-$search_includes_user_collections_now=in_array("mycol",$restypes_x);
-} 
-
-if (( ($search_includes_themes_now || $search_includes_public_collections_now || $search_includes_user_collections_now)) && $search!="" && substr($search,0,1)!="!" && $offset==0)
-    {
-    $collections=search_public_collections($search,"theme","ASC",!$search_includes_themes_now,!$search_includes_public_collections_now,true);
-    if ($search_includes_user_collections_now){
-		$collections=array_merge(get_user_collections($userref,$search,"name",$revsort),$collections);
-		$condensedcollectionsresults=array();
-		$colresultsdupecheck=array();
-		foreach($collections as $collection){
-			if (!in_array($collection['ref'],$colresultsdupecheck)){
-				$condensedcollectionsresults[]=$collection;
-				$colresultsdupecheck[]=$collection['ref'];
-			}
-		}
-		$collections=$condensedcollectionsresults;
-	}
-}
     
 # Special case: numeric searches (resource ID) and one result: redirect immediately to the resource view.
 if ((($config_search_for_number && is_numeric($search)) || $searchresourceid > 0) && is_array($result) && count($result)==1)

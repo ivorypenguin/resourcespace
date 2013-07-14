@@ -244,33 +244,62 @@ function refresh_collection_frame($collection="")
     }
 
 if (!function_exists("search_public_collections")){	
-function search_public_collections($search="", $order_by="name", $sort="ASC", $exclude_themes=true, $exclude_public=false, $include_resources=false, $override_group_restrict=false)
+function search_public_collections($search="", $order_by="name", $sort="ASC", $exclude_themes=true, $exclude_public=false, $include_resources=false, $override_group_restrict=false, $search_user_collections=false)
 	{
+	global $userref;
 	# Performs a search for themes / public collections.
 	# Returns a comma separated list of resource refs in each collection, used for thumbnail previews.
 	$sql="";
 	$keysql="";
 	# Keywords searching?
-	if (strlen($search)==1 && !is_numeric($search))
+	$keywords=split_keywords($search);  
+	if (strlen($search)==1 && !is_numeric($search)) 
 		{
 		# A-Z search
 		$sql="and c.name like '$search%'";
 		}
-	elseif (strlen($search)>1 || is_numeric($search))
+	elseif (substr($search,0,16)=="collectiontitle:")
+	    {
+	    # A-Z specific title search
+	    
+	    $newsearch="";
+	    for ($n=0;$n<count($keywords);$n++)
+	    	{
+	    	   if (substr($keywords[$n],0,16)=="collectiontitle:") $newsearch.=" ".substr($keywords[$n],16);    // wildcard * - %
+	    	}
+	    	if (strpos($newsearch,"*")===false) $newsearch.="%";
+	    	else $newsearch=str_replace("*", "%", $newsearch);
+	    	$newsearch=trim($newsearch);
+	    	$sql="and c.name like '$newsearch'";
+	    	
+	    }
+	if (strlen($search)>1 || is_numeric($search))
 		{  
-		$keywords=split_keywords($search);
+		
 		$keyrefs=array();
 		for ($n=0;$n<count($keywords);$n++)
 			{
-			$keyref=resolve_keyword($keywords[$n],false);
-			if ($keyref!==false) {$keyrefs[]=$keyref;}
-
-			$keysql.="join collection_keyword k" . $n . " on k" . $n . ".collection=c.ref and (k" . $n . ".keyword='$keyref')";	
-			//$keysql="or keyword in (" . join (",",$keyrefs) . ")";
+			if (substr($keywords[$n],0,16)!="collectiontitle:")
+    		    {
+    		    if (substr($keywords[$n],0,16)=="collectionowner:") 
+    		        {
+    			    $keywords[$n]=substr($keywords[$n],16);
+	    		    $keyref=$keywords[$n];
+                       $sql.=" and (u.username rlike '$keyref' or u.fullname rlike '$keyref')";	
+                    }
+                else 
+                    {
+                    if (substr($keywords[$n],0,19)=="collectionkeywords:") $keywords[$n]=substr($keywords[$n],19);
+                    $keyref=resolve_keyword($keywords[$n],false);
+                    if ($keyref!==false) {$keyrefs[]=$keyref;}
+                    $keysql.="join collection_keyword k" . $n . " on k" . $n . ".collection=c.ref and (k" . $n . ".keyword='$keyref')";	
+                    }
+			    //$keysql="or keyword in (" . join (",",$keyrefs) . ")";
+			    }
 			}
-
+        
         global $search_public_collections_ref;
-        if ($search_public_collections_ref){$spcr="or c.ref='$search'";} else {$spcr="";}    
+        if ($search_public_collections_ref && is_numeric($search)){$spcr="or c.ref='$search'";} else {$spcr="";}    
 		//$sql.="and (c.name rlike '$search' or u.username rlike '$search' or u.fullname rlike '$search' $spcr )";
 		}
 
@@ -283,7 +312,7 @@ function search_public_collections($search="", $order_by="name", $sort="ASC", $e
 		{
 		$sql.=" and length(c.theme)>0";
 		}
-		
+	
 	# Restrict to parent, child and sibling groups?
 	global $public_collections_confine_group,$userref,$usergroup;
 	if ($public_collections_confine_group && !$override_group_restrict)
@@ -297,17 +326,63 @@ function search_public_collections($search="", $order_by="name", $sort="ASC", $e
 		$sql.=" and u.usergroup in ('" . join ("','",$groups) . "')";
 		}
 	
+	if ($search_user_collections) $sql_public="(c.public=1 or c.user=$userref)";
+	else $sql_public="c.public=1";
+
 	# Run the query
 	if ($include_resources)
-		{
-            return sql_query("select distinct c.*,u.username,u.fullname, group_concat(distinct cr.resource order by cr.rating desc,cr.date_added) resources, count( DISTINCT cr.resource ) count from collection c left join collection_resource cr on c.ref=cr.collection left outer join user u on c.user=u.ref left outer join collection_keyword k on c.ref=k.collection $keysql where c.public=1 $sql group by c.ref order by $order_by $sort");
+		{    
+		 
+            return sql_query("select distinct c.*,u.username,u.fullname, group_concat(distinct cr.resource order by cr.rating desc,cr.date_added) resources, count( DISTINCT cr.resource ) count from collection c left join collection_resource cr on c.ref=cr.collection left outer join user u on c.user=u.ref left outer join collection_keyword k on c.ref=k.collection $keysql where $sql_public $sql group by c.ref order by $order_by $sort");
+           
 		}
 	else
 		{
-		    return sql_query("select distinct c.*,u.username,u.fullname from collection c left outer join user u on c.user=u.ref left outer join collection_keyword k on c.ref=k.collection $keysql where c.public=1 $sql group by c.ref order by $order_by $sort");
+		    return sql_query("select distinct c.*,u.username,u.fullname from collection c left outer join user u on c.user=u.ref left outer join collection_keyword k on c.ref=k.collection $keysql where $sql_public $sql group by c.ref order by $order_by $sort");
+		 
 		}
 	}
 }
+
+
+function do_collections_search($search,$restypes,$archive=0)
+    {
+    global $search_includes_themes, $search_includes_public_collections, $search_includes_user_collections, $userref;
+    $result="";
+    
+    # Recognise a quoted search, which is a search for an exact string
+    $quoted_string=false;
+    if (substr($search,0,1)=="\"" && substr($search,-1,1)=="\"") 
+        {
+        $quoted_string=true;
+        $search=substr($search,1,-1);
+        } 
+    $search_includes_themes_now=$search_includes_themes;
+    $search_includes_public_collections_now=$search_includes_public_collections;
+    $search_includes_user_collections_now=$search_includes_user_collections;
+    if ($restypes!="") 
+        {
+        $restypes_x=explode(",",$restypes);
+        $search_includes_themes_now=in_array("themes",$restypes_x);
+        $search_includes_public_collections_now=in_array("pubcol",$restypes_x);
+        $search_includes_user_collections_now=in_array("mycol",$restypes_x);
+        } 
+
+    if ($search_includes_themes_now || $search_includes_public_collections_now || $search_includes_user_collections_now)
+        {
+        
+        $collections=search_public_collections($search,"theme","ASC",!$search_includes_themes_now,!$search_includes_public_collections_now,true,false, $search_includes_user_collections_now);
+        $condensedcollectionsresults=array();
+        $result=$collections;
+
+    	}
+       
+    
+    		
+    return $result;
+    }
+
+
 
 function add_collection($user,$collection)
 	{

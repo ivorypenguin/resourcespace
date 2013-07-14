@@ -3,6 +3,8 @@
 # Functions to perform searches (read only)
 #  - For resource indexing / keyword creation, see resource_functions.php
 
+
+        
 if (!function_exists("do_search")) {
 function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchrows=-1,$sort="desc",$access_override=false,$starsearch=0,$ignore_filters=false,$return_disk_usage=false,$recent_search_daylimit="")
 	{	
@@ -43,7 +45,7 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 	$sql_filter="";
 	# append resource type filtering
 
-	if ($restypes!="")
+	if (($restypes!="")&&(substr($restypes,0,6)!="Global"))
 		{
 		if ($sql_filter!="") {$sql_filter.=" and ";}
 		$restypes_x=explode(",",$restypes);
@@ -161,7 +163,7 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 		{
 		$select.=",r.field".$datajoin." ";
 		}	
-	
+
 	# Prepare SQL to add join table for all provided keywods
 	
 	$suggested=$keywords; # a suggested search
@@ -177,7 +179,7 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 	
 	# Fetch a list of fields that are not available to the user - these must be omitted from the search.
 	$hidden_indexed_fields=get_hidden_indexed_fields();
-	#print_r($hidden_indexed_fields);
+
 	
 	if ($keysearch)
 		{
@@ -1097,7 +1099,26 @@ function get_advanced_search_fields($archive=false, $hiddenfields="")
     
 	return $return;
 	}
+function get_advanced_search_collection_fields($archive=false, $hiddenfields="")
+	{
+	# Returns a list of fields suitable for advanced searching.	
+	$return=array();
+   
+	$hiddenfields=explode(",",$hiddenfields);
 
+	$fields[]=Array ("ref" => "collection_title", "name" => "collectiontitle", "display_condition" => "", "tooltip_text" => "", "title"=>"Title", "type" => 0);
+	$fields[]=Array ("ref" => "collection_keywords", "name" => "collectionkeywords", "display_condition" => "", "tooltip_text" => "", "title"=>"Keywords", "type" => 0);
+	$fields[]=Array ("ref" => "collection_owner", "name" => "collectionowner", "display_condition" => "", "tooltip_text" => "", "title"=>"Owner", "type" => 0);
+	# Apply field permissions and check for fields hidden in advanced search
+	for ($n=0;$n<count($fields);$n++)
+		{
+    
+		if (!in_array($fields[$n]["ref"], $hiddenfields))
+		{$return[]=$fields[$n];}
+		}
+    
+	return $return;
+	}
 function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$forsearchbar=false,$limit_keywords=array())
 	{
 	# Renders the HTML for the provided $field for inclusion in a search form, for example the

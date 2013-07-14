@@ -167,7 +167,7 @@ $lang["resourcetitle"]="Название объекта";
 $lang["filename"]="Оригинал файла";
 $lang["requestresource"]="Запрос объектов";
 $lang["requestall"]="Запросить все";
-$lang["action-viewmatchingresources"]="Посмотреть соответствие объектов";
+$lang["action-viewmatchingresources"]="Посмотреть соответствующие объекты";
 $lang["nomatchingresources"]="Нет соответствующих объектов";
 $lang["matchingresources"]="соответствующие объекты";
 $lang["advancedsearch"]="Расширенный поиск";
@@ -340,6 +340,7 @@ $lang["tools"]="Инструменты";
 $lang["created"]="Создано";
 $lang["user"]="Пользователь";
 $lang["owner"]="Владелец";
+$lang["Owner"]="Владелец";
 $lang["message"]="Сообщение";
 $lang["name"]="Имя";
 $lang["action"]="Действий";
@@ -696,6 +697,7 @@ $lang["fieldtitle-file_size"]=$lang["filesize"]="Размер файла";
 $lang["fieldtitle-category"]="Категория";
 $lang["fieldtitle-subject"]="Предмет";
 $lang["fieldtitle-author"]="Автор";
+$lang["fieldtitle-owner"]="Владелец";
 
 #Location Data
 $lang["geographicsearch"]="Географический поиск";
@@ -801,4 +803,11 @@ $lang["all"]="Все";
 $lang["allresourcessearchbar"]="Все объекты";
 $lang["allcollectionssearchbar"]="Все коллекции";
 $lang["resources"]="Объекты";
+$lang["resources-all-types"]="Объекты всех типов";
+$lang["search-mode"]="Тип поиска";
+$lang["global"]="Глобальный";
+$lang["action-viewmatchingresources"]="Посмотреть результаты";
+$lang["nomatchingresults"]="Нет результатов";
+$lang["matchingresults"]="результатов"; # e.g. 17 matching results
+
 ?>
