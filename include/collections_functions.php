@@ -247,6 +247,7 @@ if (!function_exists("search_public_collections")){
 function search_public_collections($search="", $order_by="name", $sort="ASC", $exclude_themes=true, $exclude_public=false, $include_resources=false, $override_group_restrict=false, $search_user_collections=false)
 	{
 	global $userref;
+
 	# Performs a search for themes / public collections.
 	# Returns a comma separated list of resource refs in each collection, used for thumbnail previews.
 	$sql="";
@@ -308,7 +309,7 @@ function search_public_collections($search="", $order_by="name", $sort="ASC", $e
 		$sql.=" and (length(c.theme)=0 or c.theme is null)";
 		}
 	
-	if ($exclude_public) # Exclude public only collections (return only themes)
+	if (($exclude_public) && !$search_user_collections) # Exclude public only collections (return only themes)
 		{
 		$sql.=" and length(c.theme)>0";
 		}
@@ -332,14 +333,14 @@ function search_public_collections($search="", $order_by="name", $sort="ASC", $e
 	# Run the query
 	if ($include_resources)
 		{    
-		 
+		 debug("restypes select distinct c.*,u.username,u.fullname, group_concat(distinct cr.resource order by cr.rating desc,cr.date_added) resources, count( DISTINCT cr.resource ) count from collection c left join collection_resource cr on c.ref=cr.collection left outer join user u on c.user=u.ref left outer join collection_keyword k on c.ref=k.collection $keysql where $sql_public $sql group by c.ref order by $order_by $sort");
             return sql_query("select distinct c.*,u.username,u.fullname, group_concat(distinct cr.resource order by cr.rating desc,cr.date_added) resources, count( DISTINCT cr.resource ) count from collection c left join collection_resource cr on c.ref=cr.collection left outer join user u on c.user=u.ref left outer join collection_keyword k on c.ref=k.collection $keysql where $sql_public $sql group by c.ref order by $order_by $sort");
            
 		}
 	else
 		{
 		    return sql_query("select distinct c.*,u.username,u.fullname from collection c left outer join user u on c.user=u.ref left outer join collection_keyword k on c.ref=k.collection $keysql where $sql_public $sql group by c.ref order by $order_by $sort");
-		 
+		    debug("restypes select distinct c.*,u.username,u.fullname from collection c left outer join user u on c.user=u.ref left outer join collection_keyword k on c.ref=k.collection $keysql where $sql_public $sql group by c.ref order by $order_by $sort");
 		}
 	}
 }
