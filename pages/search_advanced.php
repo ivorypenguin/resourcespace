@@ -467,14 +467,14 @@ function resetTickAllColl(){
 </script>
 <div class="Question">
 <label><?php echo $lang["scope"]?></label><?php
-$rt=explode(",",getvalescaped("restypes",""));
+
 $types=get_resource_types();
 $wrap=0;
 ?><table><tr>
 <td align="middle"><input type='checkbox' id='rttickallcoll' name='rttickallcoll' checked onclick='jQuery("#advancedform .tickboxcoll").each (function(index,Element) {jQuery(Element).attr("checked",(jQuery("#rttickallcoll").attr("checked")=="checked"));});  '/>&nbsp;<?php echo $lang['allcollectionssearchbar']?></td>
 <?php }?>
 <?php
-$rt=explode(",",@$restypes);
+
 $clear_function="";
 if ($search_includes_user_collections) 
     { ?>
@@ -496,6 +496,7 @@ if ($search_includes_themes)
     }
 ?>
 </tr></table></div>
+<script type="text/javascript">resetTickAllColl();</script>
 <?php
 
 $fields=get_advanced_search_collection_fields();
