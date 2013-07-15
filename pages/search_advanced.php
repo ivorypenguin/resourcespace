@@ -239,12 +239,6 @@ jQuery(document).ready(function(){
 </script>
 
 
-<!-- Search across all fields -->
-<input type="hidden" id="hiddenfields" name="hiddenfields" value="">
-<div class="Question">
-<label for="allfields"><?php echo $lang["allfields"]?></label><input class="stdwidth" type=text name="allfields" id="allfields" value="<?php echo htmlspecialchars($allwords)?>" onChange="UpdateResultCount();">
-<div class="clearerleft"> </div>
-</div>
 
 
 
@@ -276,6 +270,12 @@ for ($n=0;$n<count($types);$n++)
 <div class="clearerleft"> </div>
 </div>
 <?php endif; ?>
+<!-- Search across all fields -->
+<input type="hidden" id="hiddenfields" name="hiddenfields" value="">
+<div class="Question">
+<label for="allfields"><?php echo $lang["allfields"]?></label><input class="stdwidth" type=text name="allfields" id="allfields" value="<?php echo htmlspecialchars($allwords)?>" onChange="UpdateResultCount();">
+<div class="clearerleft"> </div>
+</div>
 
 <h1 class="AdvancedSectionHead" id="AdvancedSearchTypeSpecificSectionGlobalHead" <?php if ($opensection!="Global") {?> style="display: none;" <?php } ?>><?php echo $lang["resourcetype-global_fields"]; ?></h1>
 <div class="AdvancedSection" id="AdvancedSearchTypeSpecificSectionGlobal" <?php if ($opensection!="Global") {?> style="display: none;" <?php } ?>>
