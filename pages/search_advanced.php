@@ -453,10 +453,10 @@ for ($n=0;$n<count($fields);$n++)
 	}
 ?>
 </div>
-
+<?php if  ($search_includes_user_collections || $search_includes_public_collections || $search_includes_themes) { ?>
 <h1 class="AdvancedSectionHead" id="AdvancedSearchTypeSpecificSectionCollectionsHead" <?php if ($opensection!="Collections") {?> style="display: none;" <?php } ?>><?php echo $lang["collections"]; ?></h1>
 <div class="AdvancedSection" id="AdvancedSearchTypeSpecificSectionCollections" <?php if ($opensection!="Collections") {?> style="display: none;" <?php } ?>>
-<?php if  ($search_includes_user_collections || $search_includes_public_collections || $search_includes_themes) { ?>
+
 <script type="text/javascript">	
 function resetTickAllColl(){
 	var checkcount=0;
@@ -476,7 +476,7 @@ $types=get_resource_types();
 $wrap=0;
 ?><table><tr>
 <td align="middle"><input type='checkbox' id='rttickallcoll' name='rttickallcoll' checked onclick='jQuery("#advancedform .tickboxcoll").each (function(index,Element) {jQuery(Element).attr("checked",(jQuery("#rttickallcoll").attr("checked")=="checked"));}); UpdateResultCount(); ' />&nbsp;<?php echo $lang['allcollectionssearchbar']?></td>
-<?php }?>
+
 <?php
 
 $clear_function="";
@@ -515,6 +515,7 @@ for ($n=0;$n<count($fields);$n++)
 
 ?>
 </div>
+<?php }?>
 <div class="QuestionSubmit">
 <label for="buttons"> </label>
 <input name="dosearch" id="dosearch" type="submit" value="<?php echo $lang["action-viewmatchingresults"]?>" />
