@@ -151,16 +151,16 @@ jQuery(document).ready(function()
             jQuery('#AdvancedSearchTypeSpecificSection'+id).show();
             jQuery('#AdvancedSearchTypeSpecificSection'+id+'Head').show();
             
-           // if (id=="Collections") 
-            //    {
-                //jQuery("#AdvancedSearchTypeSpecificSectionGlobalHead").hide();
-                //jQuery("#AdvancedSearchTypeSpecificSectionGlobal").hide()
-          //      }
-           // else 
-          //     {
-                //jQuery("#AdvancedSearchTypeSpecificSectionGlobalHead").show();
-                //jQuery("#AdvancedSearchTypeSpecificSectionGlobal").show()
-          //      }
+            if (id=="Collections") 
+                {
+                jQuery("#AdvancedSearchTypeSpecificSectionGlobalHead").hide();
+                jQuery("#AdvancedSearchTypeSpecificSectionGlobal").hide()
+                }
+            else 
+               {
+                jQuery("#AdvancedSearchTypeSpecificSectionGlobalHead").show();
+                jQuery("#AdvancedSearchTypeSpecificSectionGlobal").show()
+                }
             }
         else 
             {
@@ -170,8 +170,8 @@ jQuery(document).ready(function()
            
             if (id=="Collections") 
                 {
-                //jQuery("#AdvancedSearchTypeSpecificSectionGlobalHead").show();
-                //jQuery("#AdvancedSearchTypeSpecificSectionGlobal").show()
+                jQuery("#AdvancedSearchTypeSpecificSectionGlobalHead").show();
+                jQuery("#AdvancedSearchTypeSpecificSectionGlobal").show()
 
                 }
             jQuery('#AdvancedSearchTypeSpecificSectionGlobal').show();
