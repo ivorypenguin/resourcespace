@@ -140,7 +140,7 @@ jQuery(document).ready(function()
     jQuery('.SearchTypeCheckbox').change(function() 
         {
         id=(this.name).substr(12);
-        
+       
         if (jQuery(this).is(":checked")) 
             {
             jQuery('.SearchTypeCheckbox').removeAttr('checked');
@@ -148,7 +148,8 @@ jQuery(document).ready(function()
             jQuery('.AdvancedSectionHead').hide();
             jQuery('.AdvancedSection').hide();
             SetCookie("advancedsearchsection", id);
-            jQuery('#AdvancedSearchTypeSpecificSection'+id).show();
+            
+            if (getCookie('AdvancedSearchTypeSpecificSection'+id)!="collapsed") jQuery('#AdvancedSearchTypeSpecificSection'+id).show();
             jQuery('#AdvancedSearchTypeSpecificSection'+id+'Head').show();
             
             if (id=="Collections") 
@@ -159,7 +160,7 @@ jQuery(document).ready(function()
             else 
                {
                 jQuery("#AdvancedSearchTypeSpecificSectionGlobalHead").show();
-                jQuery("#AdvancedSearchTypeSpecificSectionGlobal").show()
+                if (getCookie('AdvancedSearchTypeSpecificSectionGlobal')!="collapsed") jQuery("#AdvancedSearchTypeSpecificSectionGlobal").show()
                 }
             }
 //        else 
@@ -183,7 +184,39 @@ jQuery(document).ready(function()
         
         UpdateResultCount();
         });
-
+    jQuery('.CollapsibleSectionHead').click(function() 
+            {
+            cur=jQuery(this).next();
+            cur_id=cur.attr("id");
+            if (cur.is(':visible'))
+                {
+                SetCookie(cur_id, "collapsed");
+                jQuery(this).removeClass('expanded');
+                jQuery(this).addClass('collapsed');
+                }
+            else
+                {
+                SetCookie(cur_id, "expanded")
+                jQuery(this).addClass('expanded');
+                jQuery(this).removeClass('collapsed');
+                }
+    
+            cur.slideToggle();
+           
+            
+            return false;
+            }).each(function() 
+                {
+                    cur_id=jQuery(this).next().attr("id"); 
+                    if (getCookie(cur_id)=="collapsed")
+                        {
+                        jQuery(this).next().hide();
+                        jQuery(this).addClass('collapsed');
+                        }
+                    else jQuery(this).addClass('expanded');
+    
+                });
+    
     });
 </script>
 <div class="BasicsBox">
@@ -277,8 +310,8 @@ for ($n=0;$n<count($types);$n++)
 <div class="clearerleft"> </div>
 </div>
 
-<h1 class="AdvancedSectionHead" id="AdvancedSearchTypeSpecificSectionGlobalHead" <?php if ($opensection!="Global") {?> style="display: none;" <?php } ?>><?php echo $lang["resourcetype-global_fields"]; ?></h1>
-<div class="AdvancedSection" id="AdvancedSearchTypeSpecificSectionGlobal" <?php if ($opensection!="Global") {?> style="display: none;" <?php } ?>>
+<h1 class="AdvancedSectionHead CollapsibleSectionHead" id="AdvancedSearchTypeSpecificSectionGlobalHead" <?php if ($opensection=="Collections") {?> style="display: none;" <?php } ?>><?php echo $lang["resourcetype-global_fields"]; ?></h1>
+<div class="AdvancedSection" id="AdvancedSearchTypeSpecificSectionGlobal" <?php if ($opensection=="Collections") {?> style="display: none;" <?php } ?>>
  
 <!-- Search for resource ID(s) -->
 <div class="Question">
@@ -437,7 +470,7 @@ for ($n=0;$n<count($fields);$n++)
 			if ($rtypes[$m]["ref"]==$fields[$n]["resource_type"]) {$label=$rtypes[$m]["name"];}
 			}
 		?>
-		</div><h1 class="AdvancedSectionHead" id="AdvancedSearchTypeSpecificSection<?php echo $fields[$n]["resource_type"]; ?>Head" <?php if ($opensection!=$fields[$n]["resource_type"]) {?> style="display: none;" <?php } ?>><?php echo $lang["typespecific"] . ": " . $label ?></h1>
+		</div><h1 class="AdvancedSectionHead CollapsibleSectionHead" id="AdvancedSearchTypeSpecificSection<?php echo $fields[$n]["resource_type"]; ?>Head" <?php if ($opensection!=$fields[$n]["resource_type"]) {?> style="display: none;" <?php } ?>><?php echo $lang["typespecific"] . ": " . $label ?></h1>
 		<div class="AdvancedSection" id="AdvancedSearchTypeSpecificSection<?php echo $fields[$n]["resource_type"]; ?>" <?php if ($opensection!=$fields[$n]["resource_type"]) {?> style="display: none;" <?php } ?>>
 		<?php
 
