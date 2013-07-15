@@ -339,10 +339,9 @@ function get_resource_top_keywords($resource,$count)
 	}
 
 if (!function_exists("split_keywords")){
-function split_keywords($search,$index=false,$partial_index=false,$is_date=false)
+function split_keywords($search,$index=false,$partial_index=false,$is_date=false,$is_html=false)
 	{
 	# Takes $search and returns an array of individual keywords.
-	
 	global $config_trimchars, $daterange_search;
 
 	if ($index && $is_date)
@@ -372,7 +371,7 @@ function split_keywords($search,$index=false,$partial_index=false,$is_date=false
 	# we support keywords with spaces.
 		{
 		if ((strpos($ns,"startdate")==false && strpos($ns,"enddate")==false && strpos($ns,"range")==false) || (!$daterange_search))
-			{$ns=cleanse_string($ns,true,!$index);}
+			{$ns=cleanse_string($ns,true,!$index,$is_html);}
 		$return=explode(",",$ns);
 		# If we are indexing, append any values that contain spaces.
 					
@@ -408,7 +407,7 @@ function split_keywords($search,$index=false,$partial_index=false,$is_date=false
 		# split using spaces and similar chars (according to configured whitespace characters)
 		if (strpos($ns,"range")===false)
 			{
-			$ns=explode(" ",cleanse_string($ns,false,!$index));
+			$ns=explode(" ",cleanse_string($ns,false,!$index,$is_html));
 			}
 		else
 			{
@@ -425,12 +424,17 @@ function split_keywords($search,$index=false,$partial_index=false,$is_date=false
 }
 
 if (!function_exists("cleanse_string")){
-function cleanse_string($string,$preserve_separators,$preserve_hyphen=false)
+function cleanse_string($string,$preserve_separators,$preserve_hyphen=false,$is_html=false)
         {
         # Removes characters from a string prior to keyword splitting, for example full stops
         # Also makes the string lower case ready for indexing.
         global $config_separators;
         $separators=$config_separators;
+
+		  if($is_html)
+		  	{
+		  	$string= html_entity_decode($string,ENT_QUOTES,'UTF-8');
+		  	} 			       
         
         if ($preserve_hyphen)
         	{

@@ -199,9 +199,11 @@ function save_resource_data($ref,$multi)
 					{
 					# Date field? These need indexing differently.
 					$is_date=($fields[$n]["type"]==4 || $fields[$n]["type"]==6);
+
+					$is_html=($fields[$n]["type"]==8);					
 					
-					remove_keyword_mappings($ref, i18n_get_indexable($oldval), $fields[$n]["ref"], $fields[$n]["partial_index"],$is_date);
-					add_keyword_mappings($ref, i18n_get_indexable($val), $fields[$n]["ref"], $fields[$n]["partial_index"],$is_date);
+					remove_keyword_mappings($ref, i18n_get_indexable($oldval), $fields[$n]["ref"], $fields[$n]["partial_index"],$is_date,'','',$is_html);
+					add_keyword_mappings($ref, i18n_get_indexable($val), $fields[$n]["ref"], $fields[$n]["partial_index"],$is_date,'','',$is_html);
 					}
 				
 					# If this is a 'joined' field we need to add it to the resource column
@@ -223,7 +225,8 @@ function save_resource_data($ref,$multi)
 				}
 			}
 		}
-    //die();
+    //die();	   
+    
 	# Always index the resource ID as a keyword
 	remove_keyword_mappings($ref, $ref, -1);
 	add_keyword_mappings($ref, $ref, -1);
@@ -477,8 +480,11 @@ function save_resource_data_multi($collection)
 						{
 						# Date field? These need indexing differently.
 						$is_date=($fields[$n]["type"]==4 || $fields[$n]["type"]==6); 
-						remove_keyword_mappings($ref,i18n_get_indexable($oldval),$fields[$n]["ref"],$fields[$n]["partial_index"],$is_date);
-						add_keyword_mappings($ref,i18n_get_indexable($newval),$fields[$n]["ref"],$fields[$n]["partial_index"],$is_date);
+
+						$is_html=($fieldinfo["type"]==8);							
+						
+						remove_keyword_mappings($ref,i18n_get_indexable($oldval),$fields[$n]["ref"],$fields[$n]["partial_index"],$is_date,'','',$is_html);
+						add_keyword_mappings($ref,i18n_get_indexable($newval),$fields[$n]["ref"],$fields[$n]["partial_index"],$is_date,'','',$is_html);
 						}
 					}
 				}
@@ -620,15 +626,14 @@ function save_resource_data_multi($collection)
 }
 
 if (!function_exists("remove_keyword_mappings")){
-function remove_keyword_mappings($ref,$string,$resource_type_field,$partial_index=false,$is_date=false,$optional_column='',$optional_value='')
+function remove_keyword_mappings($ref,$string,$resource_type_field,$partial_index=false,$is_date=false,$optional_column='',$optional_value='',$is_html=false)
 	{
 	# Removes one instance of each keyword->resource mapping for each occurrence of that
 	# keyword in $string.
 	# This is used to remove keyword mappings when a field has changed.
 	# We also decrease the hit count for each keyword.
 	if (trim($string)=="") {return false;}
-	$keywords=split_keywords($string,true,$partial_index,$is_date);
-	
+	$keywords=split_keywords($string,true,$partial_index,$is_date,$is_html);
 	for ($n=0;$n<count($keywords);$n++)
 		{
 		if (is_array($keywords[$n])){
@@ -648,14 +653,14 @@ function remove_keyword_mappings($ref,$string,$resource_type_field,$partial_inde
 }
 
 if (!function_exists("add_keyword_mappings")){		
-function add_keyword_mappings($ref,$string,$resource_type_field,$partial_index=false,$is_date=false,$optional_column='',$optional_value='')
+function add_keyword_mappings($ref,$string,$resource_type_field,$partial_index=false,$is_date=false,$optional_column='',$optional_value='',$is_html=false)
 	{
 	# For each instance of a keyword in $string, add a keyword->resource mapping.
 	# Create keywords that do not yet exist.
 	# Increase the hit count of each keyword that matches.
 	# Store the position and field the string was entered against for advanced searching.
 	if (trim($string)=="") {return false;}
-	$keywords=split_keywords($string,true,$partial_index,$is_date);
+	$keywords=split_keywords($string,true,$partial_index,$is_date,$is_html);
 
 	for ($n=0;$n<count($keywords);$n++)
 		{
@@ -701,15 +706,19 @@ function update_field($resource,$field,$value)
 
 	# Fetch some information about the field
 	$fieldinfo=sql_query("select keywords_index,resource_column,partial_index,type from resource_type_field where ref='$field'");
+
 	if (count($fieldinfo)==0) {return false;} else {$fieldinfo=$fieldinfo[0];}
 	
 	if ($fieldinfo["keywords_index"])
 		{
+		
+		$is_html=($fieldinfo["type"]==8);	
+		
 		# Fetch previous value and remove the index for those keywords
 		$existing=sql_value("select value from resource_data where resource='$resource' and resource_type_field='$field'","");
 		if (strlen($existing)>0)
 			{
-			remove_keyword_mappings($resource,i18n_get_indexable($existing),$field,$fieldinfo["partial_index"]);
+			remove_keyword_mappings($resource,i18n_get_indexable($existing),$field,$fieldinfo["partial_index"],false,'','',$is_html);
 			}
 		
 		if (($fieldinfo['type'] == 2 || $fieldinfo['type'] == 3 || $fieldinfo['type'] == 7|| $fieldinfo['type'] == 9) && substr($value,0,1) <> ','){
@@ -719,7 +728,7 @@ function update_field($resource,$field,$value)
 		$value=strip_leading_comma($value);	
 		
 		# Index the new value
-		add_keyword_mappings($resource,i18n_get_indexable($value),$field,$fieldinfo["partial_index"]);
+		add_keyword_mappings($resource,i18n_get_indexable($value),$field,$fieldinfo["partial_index"],false,'','',$is_html);
 		}
 		
 	# Delete the old value (if any) and add a new value.
@@ -2496,8 +2505,9 @@ function reindex_resource($ref)
 			
 			# Date field? These need indexing differently.
 			$is_date=($data[$m]["type"]==4 || $data[$m]["type"]==6);
-			
-			add_keyword_mappings($ref,i18n_get_indexable($value),$data[$m]["ref"],$data[$m]["partial_index"],$is_date);		
+
+			$is_html=($fieldinfo["type"]==8);					
+			add_keyword_mappings($ref,i18n_get_indexable($value),$data[$m]["ref"],$data[$m]["partial_index"],$is_date,'','',$is_html);		
 			}
 		}
 	
