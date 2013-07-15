@@ -1696,7 +1696,7 @@ $lang["untaggedresources"]="Resources with no %field data";
 
 $lang["secureyouradminaccount"]="Welcome! To secure your server, you are required to change the default password now.";
 $lang["resources-all-types"]="Resources of all types";
-$lang["search-mode"]="Search mode";
+$lang["search-mode"]="Search for...";
 $lang["global"]="Global";
 $lang["action-viewmatchingresults"]="View matching results";
 $lang["nomatchingresults"]="No matching results";

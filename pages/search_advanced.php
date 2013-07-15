@@ -8,7 +8,11 @@ include "../include/collections_functions.php";
 $archive=getvalescaped("archive",0,true);
 $starsearch=getvalescaped("starsearch","");	
 setcookie("starsearch",$starsearch);
-if (!isset($_COOKIE["advancedsearchsection"])) $opensection="Global";
+if (!isset($_COOKIE["advancedsearchsection"])) 
+    {
+     if (isset($default_advanced_search_mode)) $opensection=$default_advanced_search_mode;
+     else  $opensection="Global";
+    }
 else $opensection=$_COOKIE["advancedsearchsection"];
 
 # Disable auto-save function, only applicable to edit form. Some fields pick up on this value when rendering then fail to work.
