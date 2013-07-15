@@ -162,23 +162,23 @@ jQuery(document).ready(function()
                 jQuery("#AdvancedSearchTypeSpecificSectionGlobal").show()
                 }
             }
-        else 
-            {
-            jQuery('.SearchTypeCheckbox').removeAttr('checked');
-            jQuery('.AdvancedSectionHead').hide();
-            jQuery('.AdvancedSection').hide();
-           
-            if (id=="Collections") 
-                {
-                jQuery("#AdvancedSearchTypeSpecificSectionGlobalHead").show();
-                jQuery("#AdvancedSearchTypeSpecificSectionGlobal").show()
-
-                }
-            jQuery('#AdvancedSearchTypeSpecificSectionGlobal').show();
-            jQuery('#AdvancedSearchTypeSpecificSectionGlobalHead').show();
-            SetCookie("advancedsearchsection", "Global");
-             jQuery('#SearchGlobal').attr('checked','checked');
-            }
+//        else 
+//            {
+//            jQuery('.SearchTypeCheckbox').removeAttr('checked');
+//            jQuery('.AdvancedSectionHead').hide();
+//            jQuery('.AdvancedSection').hide();
+//           
+//            if (id=="Collections") 
+//                {
+//                jQuery("#AdvancedSearchTypeSpecificSectionGlobalHead").show();
+//                jQuery("#AdvancedSearchTypeSpecificSectionGlobal").show()
+//
+//                }
+//            jQuery('#AdvancedSearchTypeSpecificSectionGlobal').show();
+//            jQuery('#AdvancedSearchTypeSpecificSectionGlobalHead').show();
+//            SetCookie("advancedsearchsection", "Global");
+//             jQuery('#SearchGlobal').attr('checked','checked');
+//            }
         
         
         UpdateResultCount();
@@ -256,19 +256,19 @@ $rt=explode(",",getvalescaped("restypes",""));
 $types=get_resource_types();
 $wrap=0;
 ?><table><tr>
-<td valign=middle><input type=checkbox class="SearchTypeCheckbox" id="SearchGlobal" name="resourcetypeGlobal" value="yes" <?php if ($opensection=="Global") { ?>checked<?php }?>></td><td valign=middle><?php echo $lang["resources-all-types"]; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td valign=middle><input type=radio class="SearchTypeCheckbox" id="SearchGlobal" name="resourcetypeGlobal" value="yes" <?php if ($opensection=="Global") { ?>checked<?php }?>></td><td valign=middle><?php echo $lang["resources-all-types"]; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
 <?php
 $hiddentypes=Array();
 for ($n=0;$n<count($types);$n++)
 	{
 	$wrap++;if ($wrap>4) {$wrap=1;?></tr><tr><?php }
-	?><td valign=middle><input type=checkbox class="SearchTypeCheckbox" name="resourcetype<?php echo $types[$n]["ref"]?>" value="yes" <?php if ($opensection==$types[$n]["ref"]) { ?>checked<?php } else $hiddentypes[]=$types[$n]["ref"]; ?>></td><td valign=middle><?php echo htmlspecialchars($types[$n]["name"])?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><?php	
+	?><td valign=middle><input type=radio class="SearchTypeCheckbox" name="resourcetype<?php echo $types[$n]["ref"]?>" value="yes" <?php if ($opensection==$types[$n]["ref"]) { ?>checked<?php } else $hiddentypes[]=$types[$n]["ref"]; ?>></td><td valign=middle><?php echo htmlspecialchars($types[$n]["name"])?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td><?php	
 	}
 ?>
 <?php if ($search_includes_user_collections || $search_includes_public_collections ||$search_includes_themes)
     {
 ?>
-<td valign=middle><input type=checkbox class="SearchTypeCheckbox" name="resourcetypeCollections" value="yes" <?php if ($opensection=="Collections") { ?>checked<?php }?>></td><td valign=middle><?php print $lang["collections"]; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
+<td valign=middle><input type=radio class="SearchTypeCheckbox" name="resourcetypeCollections" value="yes" <?php if ($opensection=="Collections") { ?>checked<?php }?>></td><td valign=middle><?php print $lang["collections"]; ?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</td>
 <?php
     }
 ?>
