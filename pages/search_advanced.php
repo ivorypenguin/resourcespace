@@ -471,7 +471,7 @@ function resetTickAllColl(){
 $types=get_resource_types();
 $wrap=0;
 ?><table><tr>
-<td align="middle"><input type='checkbox' id='rttickallcoll' name='rttickallcoll' checked onclick='jQuery("#advancedform .tickboxcoll").each (function(index,Element) {jQuery(Element).attr("checked",(jQuery("#rttickallcoll").attr("checked")=="checked"));});  '/>&nbsp;<?php echo $lang['allcollectionssearchbar']?></td>
+<td align="middle"><input type='checkbox' id='rttickallcoll' name='rttickallcoll' checked onclick='jQuery("#advancedform .tickboxcoll").each (function(index,Element) {jQuery(Element).attr("checked",(jQuery("#rttickallcoll").attr("checked")=="checked"));}); UpdateResultCount(); ' />&nbsp;<?php echo $lang['allcollectionssearchbar']?></td>
 <?php }?>
 <?php
 
