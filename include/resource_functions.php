@@ -2506,7 +2506,7 @@ function reindex_resource($ref)
 			# Date field? These need indexing differently.
 			$is_date=($data[$m]["type"]==4 || $data[$m]["type"]==6);
 
-			$is_html=($fieldinfo["type"]==8);					
+			$is_html=($data[$m]["type"]==8);					
 			add_keyword_mappings($ref,i18n_get_indexable($value),$data[$m]["ref"],$data[$m]["partial_index"],$is_date,'','',$is_html);		
 			}
 		}
