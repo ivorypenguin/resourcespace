@@ -93,7 +93,6 @@ for ($n=0;$n<count($result);$n++)
 		}
 	}
 
-	
 #print_r($available_sizes);
 $used_resources=array();
 $subbed_original_resources = array();
@@ -169,12 +168,13 @@ if ($submitted != "")
 				# if the tmpfile is made, from here on we are working with that. 
 				
 				# If using original filenames when downloading, copy the file to new location so the name is included.
+				$filename = '';
 				if ($original_filenames_when_downloading)	
 					{
 					# Retrieve the original file name		
 					$filename=get_data_by_field($ref,$filename_field);	
 
-					if (strlen($filename)>0)
+					if (!empty($filename))
 						{
 						# Only perform the copy if an original filename is set.
 
@@ -194,7 +194,7 @@ if ($submitted != "")
 						$filename=$basename_minus_extension.$append.".".$pextension;
 
 						if ($prefix_resource_id_to_filename) {$filename=$prefix_filename_string . $ref . "_" . $filename;}
-						
+
 						$fs=explode("/",$filename);$filename=$fs[count($fs)-1];
 
                         # Convert $filename to the charset used on the server.
@@ -207,7 +207,6 @@ if ($submitted != "")
                         $filename = mb_convert_encoding($filename, $to_charset, 'UTF-8');
 						
 						// check if a file has already been processed with this name
-						$orig_filename=$filename;
 						if (in_array($filename,$filenames)){
 							// if so, append a dupe tag
 							$path_parts=pathinfo($filename);
@@ -217,10 +216,10 @@ if ($submitted != "")
 								$x=findDuplicates($filenames,$filename);
 								$filename=$filename_wo.$lang["_dupe"].$x.".".$filename_ext;
 							}
+						} else {
+							$filenames[]=filename;
 						}
-						//add original file name to array
-						$filenames[]=$orig_filename;
-						
+
                         # Copy to tmp (if exiftool failed) or rename this file
                         # this is for extra efficiency to reduce copying and disk usage
                         
@@ -237,11 +236,11 @@ if ($submitted != "")
 
 						}
 					}
-				else
+				if (empty($filename))
 					{
 					$filename=$prefix_filename_string . $ref . "_" . $size . "." . $pextension;
 					}
-				
+
 				#Add resource data/collection_resource data to text file
 				if (($zipped_collection_textfile==true)&&($includetext=="true")){ 
 					if ($size==""){$sizetext="";}else{$sizetext="-".$size;}
