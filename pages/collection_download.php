@@ -217,7 +217,7 @@ if ($submitted != "")
 								$filename=$filename_wo.$lang["_dupe"].$x.".".$filename_ext;
 							}
 						} else {
-							$filenames[]=filename;
+							$filenames[]=$filename;
 						}
 
                         # Copy to tmp (if exiftool failed) or rename this file
