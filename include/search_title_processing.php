@@ -84,7 +84,49 @@ if ($search_titles)
         }
     elseif ($search=="" && $archive==0)
         {
-        $search_title = '<h1 class="searchcrumbs"><a href="'.$baseurl_short.'pages/search.php?search=" onClick="return CentralSpaceLoad(this,true);">'.$lang["allresources"].'</a></h1> ';
+        $rt=explode(",",$restypes);
+        $types=get_resource_types();
+        $searchtitle=$lang["all"];
+        $count_types=0;
+        for ($n=0;$n<count($types);$n++) 
+            {
+            if (in_array($types[$n]["ref"], $rt)) 
+                {
+                $count_types++;
+                if ($searchtitle!=$lang["all"]) $searchtitle.=",";
+                    $searchtitle.=" ".htmlspecialchars($types[$n]["name"]);
+                }
+            }
+        if ($count_types==count($types)) $searchtitle=$lang["allresources"];
+        $count_types=0;
+        $searchtitle2="";
+        if (in_array("mycol", $rt)) 
+            {
+            $count_types++;
+            if (($searchtitle2!="")||($searchtitle!=$lang["all"])) $searchtitle2.=",";
+            $searchtitle2.=" ".$lang["mycollections"];
+            }
+        if (in_array("pubcol", $rt)) 
+            {
+            $count_types++;
+            if (($searchtitle2!="")||($searchtitle!=$lang["all"])) $searchtitle2.=",";
+            $searchtitle2.=" ".$lang["publiccollections"];
+            }
+
+        if (in_array("themes", $rt)) 
+            {
+            $count_types++;
+            if (($searchtitle2!="")||($searchtitle!=$lang["all"])) $searchtitle2.=",";
+            $searchtitle2.=" ".$lang["themes"];
+            }
+        if ($count_types==3) 
+            {
+            if ($searchtitle!=$lang["all"]) $searchtitle.=",";
+            $searchtitle.=" ".$lang["collections"];
+            }
+        else $searchtitle.=$searchtitle2;
+        if ($searchtitle==$lang["all"]) $searchtitle=$lang["allresources"];
+        $search_title = '<h1 class="searchcrumbs"><a href="'.$baseurl_short.'pages/search.php?search=" onClick="return CentralSpaceLoad(this,true);">'.$searchtitle.'</a></h1> ';
         }
     elseif (substr($search,0,6)=="!empty")
         {
