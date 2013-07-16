@@ -379,5 +379,5 @@ if ($use_theme_bar && (getval("k","")=="") && !in_array($pagename,array("themes"
 hook("afterheader");
 
 } // end if !ajax
-
+else hook("afterheaderajax");
 ?>
