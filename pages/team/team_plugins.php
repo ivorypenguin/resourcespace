@@ -324,7 +324,7 @@ ksort ($plugins_avail);
   }
 	?>
     </div>
-    <form id="anc-post" method="post" action="<?php echo $baseurl_short?>pages/team/team_plugins.php" onSubmit="return CentralSpacePost(this);">
+    <form id="anc-post" method="post" action="<?php echo $baseurl_short?>pages/team/team_plugins.php" >
     <input type="hidden" id="anc-input" name="" value="" />
     </form>
         
