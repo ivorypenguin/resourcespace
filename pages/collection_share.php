@@ -54,7 +54,7 @@ include "../include/header.php";
 <input type="hidden" name="deleteaccess" id="deleteaccess" value="">
 <input type="hidden" name="generateurl" id="generateurl" value="">
 
-<h1><?php echo htmlspecialchars(str_replace("%collectionname", i18n_get_collection_name($collection), $lang["sharecollection-name"]));?></h1>
+<h1><?php echo str_replace("%collectionname", i18n_get_collection_name($collection), $lang["sharecollection-name"]);?></h1>
 
 <?php if (isset($show_error)){?>
     <script type="text/javascript">

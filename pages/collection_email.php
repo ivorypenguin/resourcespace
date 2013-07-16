@@ -200,7 +200,7 @@ else
 
 
 					?>	
-				<option value="<?php echo $list[$n]["ref"]?>" <?php if ($ref==$list[$n]["ref"]) {?> 	selected<?php $found=true;} ?>><?php echo htmlspecialchars(i18n_get_collection_name($list[$n])) ?><?php if ($collection_dropdown_user_access_mode){echo htmlspecialchars("&nbsp;&nbsp;(". $colusername."/".$accessmode.")"); } ?></option>
+				<option value="<?php echo $list[$n]["ref"]?>" <?php if ($ref==$list[$n]["ref"]) {?> 	selected<?php $found=true;} ?>><?php echo i18n_get_collection_name($list[$n]) ?><?php if ($collection_dropdown_user_access_mode){echo htmlspecialchars("&nbsp;&nbsp;(". $colusername."/".$accessmode.")"); } ?></option>
 				<?php 
 				}
 			if ($found==false)

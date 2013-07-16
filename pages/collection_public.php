@@ -165,7 +165,7 @@ for ($n=$offset;(($n<count($collections)) && ($n<($offset+$per_page)));$n++)
 	<td><div class="ListTitle">
 			<a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $collections[$n]["ref"])?>" onClick="return CentralSpaceLoad(this,true);"><?php echo highlightkeywords(i18n_get_collection_name($collections[$n]),$find)?></a></div></td>
 
-	<?php if (!$collection_public_hide_owner) { ?><td><?php echo highlightkeywords($collections[$n]["fullname"],$find)?></td><?php } ?>
+	<?php if (!$collection_public_hide_owner) { ?><td><?php echo htmlspecialchars(highlightkeywords($collections[$n]["fullname"],$find))?></td><?php } ?>
 	<td><?php echo highlightkeywords($collections[$n]["ref"],$find)?></td>
 	<td><?php echo nicedate($collections[$n]["created"],true)?></td>
     <td><?php echo $collections[$n]["count"]?></td>
