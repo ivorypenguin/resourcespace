@@ -481,8 +481,8 @@ function save_resource_data_multi($collection)
 						# Date field? These need indexing differently.
 						$is_date=($fields[$n]["type"]==4 || $fields[$n]["type"]==6); 
 
-						$is_html=($fieldinfo["type"]==8);							
-						
+						$is_html=($fields[$n]["type"]==8);
+
 						remove_keyword_mappings($ref,i18n_get_indexable($oldval),$fields[$n]["ref"],$fields[$n]["partial_index"],$is_date,'','',$is_html);
 						add_keyword_mappings($ref,i18n_get_indexable($newval),$fields[$n]["ref"],$fields[$n]["partial_index"],$is_date,'','',$is_html);
 						}
