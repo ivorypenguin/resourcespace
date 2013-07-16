@@ -683,8 +683,10 @@ hook ("resourceactions") ?>
 		<?php } ?>
 		<li><a href="<?php echo $baseurl_short?>pages/resource_share.php?ref=<?php echo urlencode($ref) ?>" onClick="return CentralSpaceLoad(this,true);" >&gt; <?php echo $lang["share"]?></a></li>
 	<?php if ($edit_access) { ?>
-		<li><a href="<?php echo $baseurl_short?>pages/edit.php?ref=<?php echo urlencode($ref)?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>"    onClick="return CentralSpaceLoad(this,true);">&gt; 
-			<?php echo $lang["action-edit"]?></a></li>
+		<li><a href="<?php echo $baseurl_short?>pages/edit.php?ref=<?php echo urlencode($ref)?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>"    onClick="return CentralSpaceLoad(this,true);">&gt; <?php echo $lang["action-edit"]?></a></li>
+		<?php if ($metadata_download)	{ ?>
+		<li><a href="<?php echo $baseurl_short?>pages/metadata_download.php?ref=<?php echo urlencode($ref)?>" onClick="return CentralSpaceLoad(this,true);" >&gt; <?php echo $lang["downloadmetadata"]?></a></li>
+	<?php } ?>
 	<?php if (!checkperm("D") and !(isset($allow_resource_deletion) && !$allow_resource_deletion)){?><li><a href="<?php echo $baseurl_short?>pages/delete.php?ref=<?php echo urlencode($ref)?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>" onClick="return CentralSpaceLoad(this,true);">&gt; <?php if ($resource["archive"]==3){echo $lang["action-delete_permanently"];} else {echo $lang["action-delete"];}?></a><?php } ?></li>
 	<?php if (! $disable_alternative_files) { ?>
 	<li><a href="<?php echo $baseurl_short?>pages/alternative_files.php?ref=<?php echo urlencode($ref)?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["managealternativefiles"]?></a></li><?php } ?>

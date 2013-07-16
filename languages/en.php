@@ -1704,3 +1704,8 @@ $lang["matchingresults"]="matching results"; # e.g. 17 matching results=======
 $lang["resources"]="Resources";
 $lang["share-resource"]="Share Resource";
 $lang["scope"]="Scope";
+$lang["downloadmetadata"]="Download Metadata";
+$lang["downloadingmetadata"]="Downloading Metadata";
+$lang["file-contains-metadata"]="The file you are now downloading contains all of the Metadata for this resource.";
+$lang["metadata"]="Metadata";
+$lang["textfile"]="Text File";
