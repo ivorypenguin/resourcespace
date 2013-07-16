@@ -155,22 +155,9 @@ if ($noattach=="")
 # We assign a default mime-type, in case we can find the one associated to the file extension.
 $mime="application/octet-stream";
 
-
 if ($noattach=="")
 	{
-	# Get mime type via exiftool if possible
-	$exiftool_fullpath = get_utility_path("exiftool");
-	if ($exiftool_fullpath!=false)
-		{	
-		$command=$exiftool_fullpath . " -s -s -s -t -mimetype " . escapeshellarg($path);
-		$mime=run_command($command);
-		}	
-		
-	# Override or correct for lack of exiftool with config mappings	
-	if (isset($mime_type_by_extension[$ext]))
-		{
-		$mime = $mime_type_by_extension[$ext];
-		}
+	$mime = get_mime_type($path);
 	}
 	
 # We declare the downloaded content mime type.

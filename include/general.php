@@ -1317,6 +1317,26 @@ function filesize2bytes($str) {
     return sprintf("%010d",$bytes);
 } 
 
+function get_mime_type($path, $ext = null)
+	{
+	global $mime_type_by_extension;
+	if (empty($ext))
+		$ext = pathinfo($path, PATHINFO_EXTENSION);
+	if (isset($mime_type_by_extension[$ext]))
+		{
+		return $mime_type_by_extension[$ext];
+		}
+
+	# Get mime type via exiftool if possible
+	$exiftool_fullpath = get_utility_path("exiftool");
+	if ($exiftool_fullpath!=false)
+		{
+		$command=$exiftool_fullpath . " -s -s -s -t -mimetype " . escapeshellarg($path);
+		return run_command($command);
+		}
+
+	return "application/octet-stream";
+	}
 
 function change_password($password)
 	{
