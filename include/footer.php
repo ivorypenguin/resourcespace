@@ -131,7 +131,7 @@ $resource_title_pages=array("view","delete","log","alternative_file","alternativ
     }
     // place resource titles
     else if (in_array($pagename,$resource_title_pages) && !isset($_GET['collection']) && !isset($_GET['java'])) /* for edit page */{
-        $title =  htmlspecialchars(i18n_get_translated(get_data_by_field($ref,$view_title_field)));
+        $title =  str_replace('"',"''",i18n_get_translated(get_data_by_field($ref,$view_title_field)));
         echo "<script language='javascript'>\n";
         if ($pagename=="edit"){$title=$lang['action-edit']." - ".$title;}
         echo "document.title = \"$applicationname - $title\";\n";
@@ -141,16 +141,16 @@ $resource_title_pages=array("view","delete","log","alternative_file","alternativ
     // place collection titles
     else if (in_array($pagename,$search_title_pages)){
         if (isset($search_title)){
-            $title=$lang["searchresults"]." - ".html_entity_decode(strip_tags($search_title));
+            $title=str_replace('"',"''",$lang["searchresults"]." - ".html_entity_decode(strip_tags($search_title)));
         }
         else if (($pagename=="collection_download") || $pagename=="edit" && getval("collection","")!=""){
             $collectiondata=get_collection($collection);
-            $title = strip_tags(i18n_get_collection_name($collectiondata));
+            $title = strip_tags(str_replace('"',"''",i18n_get_collection_name($collectiondata)));
             }  
         else {
             $collection=getval("ref","");
             $collectiondata=get_collection($collection);
-            $title = strip_tags(i18n_get_collection_name($collectiondata));
+            $title = strip_tags(str_replace('"',"''",i18n_get_collection_name($collectiondata)));
             }
         // add a hyphen if title exists  
         if (strlen($title)!=0){$title="- $title";}    
