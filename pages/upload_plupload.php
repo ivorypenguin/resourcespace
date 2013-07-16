@@ -349,8 +349,8 @@ jQuery(document).ready(function () {
 
 	 if ($replace_resource > 0){?>
                 	uploader.bind('FilesAdded', function(up, files) {
-                        	if (uploader.files.length >= 1) {
-                                	jQuery('#pluploader_browse').hide("slow");
+                        	if (uploader.files.length > 1) {
+                                	uploader.removeFile(up.files[1]);
                         	}
                 	});
 	<?php }
