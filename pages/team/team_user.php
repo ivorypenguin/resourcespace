@@ -51,7 +51,6 @@ hook('modifyusersearch');
 # Fetch rows
 $users=get_users($group,$find,$order_by,true,$offset+$per_page);
 $groups=get_usergroups(true);
-
 $results=count($users);
 $totalpages=ceil($results/$per_page);
 $curpage=floor($offset/$per_page)+1;
@@ -115,7 +114,7 @@ for ($n=$offset;(($n<count($users)) && ($n<($offset+$per_page)));$n++)
 	<tr>
 	<td><div class="ListTitle"><a href="<?php echo $baseurl ?>/pages/team/team_user_edit.php?ref=<?php echo $users[$n]["ref"]?>&backurl=<?php echo urlencode($url . "&offset=" . $offset)?>" onClick="return CentralSpaceLoad(this,true);"><?php echo $users[$n]["username"]?></div></td>
 	<?php if (!hook("replacefullnamerow")){?>
-	<td><?php echo $users[$n]["fullname"]?></td>
+	<td><?php echo htmlspecialchars($users[$n]["fullname"])?></td>
 	<?php } ?>
 	<?php if (!hook("replacegroupnamerow")){?>
 	<td><?php echo $users[$n]["groupname"]?></td>
