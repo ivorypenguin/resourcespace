@@ -89,7 +89,7 @@ if (($user["login_tries"]>=$max_login_attempts_per_username) && (strtotime($user
 <?php } ?>
 
 <?php if (!hook("replacefullname")){?>
-<div class="Question"><label><?php echo $lang["fullname"]?></label><input name="fullname" type="text" class="stdwidth" value="<?php echo $user["fullname"]?>"><div class="clearerleft"> </div></div>
+<div class="Question"><label><?php echo $lang["fullname"]?></label><input name="fullname" type="text" class="stdwidth" value="<?php echo htmlspecialchars($user["fullname"])?>"><div class="clearerleft"> </div></div>
 <?php } ?>
 
 <div class="Question"><label><?php echo $lang["group"]?></label>
