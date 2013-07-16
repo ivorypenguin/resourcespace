@@ -18,10 +18,13 @@
 # Switch on output buffering.
 ob_start(null,4096);
 
-header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
-header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");  // always modified
-header("Cache-Control: no-store, no-cache, must-revalidate");
-header("Cache-Control: post-check=0, pre-check=0", false);
+if (!isset($suppress_headers) || !$suppress_headers)
+	{
+	header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
+	header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");  // always modified
+	header("Cache-Control: no-store, no-cache, must-revalidate");
+	header("Cache-Control: post-check=0, pre-check=0", false);
+	}
 
 # Error handling
 function errorhandler($errno, $errstr, $errfile, $errline)
