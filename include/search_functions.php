@@ -8,7 +8,7 @@
 if (!function_exists("do_search")) {
 function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchrows=-1,$sort="desc",$access_override=false,$starsearch=0,$ignore_filters=false,$return_disk_usage=false,$recent_search_daylimit="")
 	{	
-	debug("search=$search restypes=$restypes archive=$archive");
+	debug("search=$search restypes=$restypes archive=$archive daylimit=$recent_search_daylimit");
 	
 	# globals needed for hooks	 
 	global $sql,$order,$select,$sql_join,$sql_filter,$orig_order,$checkbox_and,$collections_omit_archived,$search_sql_double_pass_mode;

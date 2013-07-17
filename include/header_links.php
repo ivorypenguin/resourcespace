@@ -22,7 +22,7 @@
 		<?php if (checkperm("s") && ($public_collections_top_nav || $public_collections_header_only)) { ?><li><a href="<?php echo $baseurl?>/pages/collection_public.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["publiccollections"]?></a></li><?php } ?>
 		<?php if (checkperm("s") && $mycollections_link && !checkperm("b")) { ?><li><a href="<?php echo $baseurl?>/pages/collection_manage.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["mycollections"]?></a></li><?php } ?>
 		<?php if (!hook("replacerecentlink")) { ?>
-		<?php if (checkperm("s") && $recent_link) { ?><li><a href="<?php echo $baseurl?>/pages/search.php?search=<?php if ($recent_search_by_days) {echo "&daylimit=" . $recent_search_by_days_default . "&order_by=resourceid&sort=desc";} else {echo urlencode("!last".$recent_search_quantity);	}?>" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["recent"]?></a></li><?php } ?>
+		<?php if (checkperm("s") && $recent_link) { ?><li><a href="<?php echo $baseurl?>/pages/search.php?search=<?php if ($recent_search_by_days) {echo "&recentdaylimit=" . $recent_search_by_days_default . "&order_by=resourceid&sort=desc";} else {echo urlencode("!last".$recent_search_quantity);	}?>" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["recent"]?></a></li><?php } ?>
 		<?php } /* end hook replacerecentlink */?>
 		<?php if (checkperm("s") && $myrequests_link && checkperm("q")) { ?><li><a href="<?php echo $baseurl?>/pages/requests.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["myrequests"]?></a></li><?php } ?>
 		<?php if (!hook("replacemycontributionslink")) { ?>

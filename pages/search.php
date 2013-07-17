@@ -178,13 +178,17 @@ if ($order_by=="") {$order_by=$default_sort;}
 $per_page=getvalescaped("per_page",$default_perpage);setcookie("per_page",$per_page);
 $archive=getvalescaped("archive",0);if (strpos($search,"!")===false) {setcookie("saved_archive",$archive);}
 $jumpcount=0;
-//only set the cookie if config option is set, otherwise user cannot clear this 
-if($recent_search_period_select==true)
+
+if (getvalescaped("recentdaylimit","")!="") //set for recent search, don't set cookie
 	{
-	$daylimit=getvalescaped("daylimit",60);
-	setcookie("daylimit",$daylimit);
+	$daylimit=getvalescaped("recentdaylimit","");
 	}
-else {$daylimit=getvalescaped("daylimit","");setcookie("daylimit","");}
+else if($recent_search_period_select==true && strpos($search,"!")===false) //set cookie for paging
+	{
+	$daylimit=getvalescaped("daylimit",""); 
+	setcookie("daylimit",$daylimit); 
+	}
+else {$daylimit="";} // clear cookie for new search
 
 # Most sorts such as popularity, date, and ID should be descending by default,
 # but it seems custom display fields like title or country should be the opposite.
@@ -478,7 +482,7 @@ if (true) # Always show search header now.
 	</div>
 	<?php } 
 	
-	if ($display_selector_dropdowns && $recent_search_period_select && (strpos($search,"!")!==false)){?>
+	if ($display_selector_dropdowns && $recent_search_period_select && strpos($search,"!")===false && getvalescaped("recentdaylimit","")==""){?>
 	<div class="InpageNavLeftBlock"><?php echo $lang["period"]?>:<br />
 		<select class="medcomplementwidth ListDropdown" style="width:auto" id="resultsdisplay" name="resultsdisplay" onchange="CentralSpaceLoad(this.value,true);">
 		<?php for($n=0;$n<count($recent_search_period_array);$n++){
@@ -560,13 +564,13 @@ if (true) # Always show search header now.
 		</div>
 		<?php } 
 	
-		if (!$display_selector_dropdowns && $recent_search_period_select){?>
+		if (!$display_selector_dropdowns && $recent_search_period_select && strpos($search,"!")===false && getvalescaped("recentdaylimit","")==""){?>
 		<div class="InpageNavLeftBlock"><?php echo $lang["period"]?>:<br />
 		<?php 
 		for($n=0;$n<count($recent_search_period_array);$n++){
-			if ($daylimit==$recent_search_period_array[$n]){?><span class="Selected"><?php echo htmlspecialchars(str_replace("?",$recent_search_period_array[$n],$lang["lastndays"]))?> &nbsp;|&nbsp;</span><?php } else { ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=<?php echo urlencode($order_by)?>&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>&per_page=<?php echo urlencode($per_page)?>&sort=<?php echo urlencode($sort)?>&daylimit=<?php echo urlencode($recent_search_period_array[$n])?>" onClick="return CentralSpaceLoad(this);"><?php echo htmlspecialchars(str_replace("?",$recent_search_period_array[$n],$lang["lastndays"]))?></a>&nbsp;|&nbsp;<?php } 
+			if ($daylimit==$recent_search_period_array[$n]){?><span class="Selected"><?php echo htmlspecialchars(str_replace("?",$recent_search_period_array[$n],$lang["lastndays"]))?> </span>&nbsp;|&nbsp;<?php } else { ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=<?php echo urlencode($order_by)?>&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>&per_page=<?php echo urlencode($per_page)?>&sort=<?php echo urlencode($sort)?>&daylimit=<?php echo urlencode($recent_search_period_array[$n])?>" onClick="return CentralSpaceLoad(this);"><?php echo htmlspecialchars(str_replace("?",$recent_search_period_array[$n],$lang["lastndays"]))?></a>&nbsp;|&nbsp;<?php } 
 			}
-		if ($daylimit==""){?><span class="Selected"><?php echo $lang["anyday"] ?></span><?php } else { ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=<?php echo urlencode($order_by)?>&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>&per_page=<?php echo urlencode($per_page)?>&sort=<?php echo urlencode($sort)?>&daylimit=" onClick="return CentralSpaceLoad(this);"><?php echo $lang["anyday"]?></a><?php } 
+		if ($daylimit==""){?><span class="Selected"><?php echo $lang["all"] ?></span><?php } else { ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=<?php echo urlencode($order_by)?>&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>&per_page=<?php echo urlencode($per_page)?>&sort=<?php echo urlencode($sort)?>&daylimit=" onClick="return CentralSpaceLoad(this);"><?php echo $lang["all"]?></a><?php } 
 		?>				
 		</div>
 		<?php } ?>		
@@ -821,12 +825,12 @@ if (true) # Always show search header now.
 <div class="BottomInpageNav">
 
 	<?php if (!checkperm("b") && $k=="") { ?>
-	<?php if($allow_save_search) { ?><div class="InpageNavLeftBlock"><a onClick="return CollectionDivLoad(this);" href="<?php echo $baseurl_short?>pages/collections.php?addsearch=<?php echo urlencode($search)?>&restypes=<?php echo urlencode($restypes)?>&archive=<?php echo urlencode($archive) ?>">&gt;&nbsp;<?php echo $lang["savethissearchtocollection"]?></a></div><?php } ?>
+	<?php if($allow_save_search) { ?><div class="InpageNavLeftBlock"><a onClick="return CollectionDivLoad(this);" href="<?php echo $baseurl_short?>pages/collections.php?addsearch=<?php echo urlencode($search)?>&restypes=<?php echo urlencode($restypes)?>&archive=<?php echo urlencode($archive) ?>&daylimit=<?php echo urlencode($daylimit) ?>">&gt;&nbsp;<?php echo $lang["savethissearchtocollection"]?></a></div><?php } ?>
 	<?php if($allow_smart_collections && substr($search,0,11)!="!collection") { ?><div class="InpageNavLeftBlock"><a onClick="return CollectionDivLoad(this);" href="<?php echo $baseurl_short?>pages/collections.php?addsmartcollection=<?php echo urlencode($search)?>&restypes=<?php echo urlencode($restypes)?>&archive=<?php echo urlencode($archive) ?>&starsearch=<?php echo urlencode($starsearch) ?>">&gt;&nbsp;<?php echo $lang["savesearchassmartcollection"]?></a></div><?php } ?>
-	<?php global $smartsearch; if($allow_smart_collections && substr($search,0,11)=="!collection" && (is_array($smartsearch[0]) && !empty($smartsearch[0]))) { $smartsearch=$smartsearch[0];?><div class="InpageNavLeftBlock"><a onClick="return CentralSpaceLoad(this,true);" href="search.php?search=<?php echo urlencode($smartsearch['search'])?>&restypes=<?php echo urlencode($smartsearch['restypes'])?>&archive=<?php echo urlencode($smartsearch['archive']) ?>&starsearch=<?php echo urlencode($smartsearch['starsearch']) ?>">&gt;&nbsp;<?php echo $lang["dosavedsearch"]?></a></div><?php } ?>
-	<div class="InpageNavLeftBlock"><a onClick="return CollectionDivLoad(this);" href="<?php echo $baseurl_short?>pages/collections.php?addsearch=<?php echo urlencode($search)?>&restypes=<?php echo urlencode($restypes)?>&archive=<?php echo urlencode($archive) ?>&mode=resources">&gt;&nbsp;<?php echo $lang["savesearchitemstocollection"]?></a></div>
+	<?php global $smartsearch; if($allow_smart_collections && substr($search,0,11)=="!collection" && (is_array($smartsearch[0]) && !empty($smartsearch[0]))) { $smartsearch=$smartsearch[0];?><div class="InpageNavLeftBlock"><a onClick="return CentralSpaceLoad(this,true);" href="search.php?search=<?php echo urlencode($smartsearch['search'])?>&restypes=<?php echo urlencode($smartsearch['restypes'])?>&archive=<?php echo urlencode($smartsearch['archive']) ?>&starsearch=<?php echo urlencode($smartsearch['starsearch']) ?>&daylimit=<?php echo urlencode($daylimit) ?>">&gt;&nbsp;<?php echo $lang["dosavedsearch"]?></a></div><?php } ?>
+	<div class="InpageNavLeftBlock"><a onClick="return CollectionDivLoad(this);" href="<?php echo $baseurl_short?>pages/collections.php?addsearch=<?php echo urlencode($search)?>&restypes=<?php echo urlencode($restypes)?>&archive=<?php echo urlencode($archive) ?>&mode=resources&daylimit=<?php echo urlencode($daylimit) ?>">&gt;&nbsp;<?php echo $lang["savesearchitemstocollection"]?></a></div>
 	<?php if($show_searchitemsdiskusage) {?>
-	<div class="InpageNavLeftBlock"><a onClick="return CentralSpaceLoad(this);" href="<?php echo $baseurl_short?>pages/search_disk_usage.php?search=<?php echo urlencode($search)?>&restypes=<?php echo urlencode($restypes)?>&offset=<?php echo urlencode($offset) ?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>">&gt;&nbsp;<?php echo $lang["searchitemsdiskusage"]?></a></div>
+	<div class="InpageNavLeftBlock"><a onClick="return CentralSpaceLoad(this);" href="<?php echo $baseurl_short?>pages/search_disk_usage.php?search=<?php echo urlencode($search)?>&restypes=<?php echo urlencode($restypes)?>&offset=<?php echo urlencode($offset) ?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive) ?>&daylimit=<?php echo urlencode($daylimit) ?>&k=<?php echo urlencode($k) ?>">&gt;&nbsp;<?php echo $lang["searchitemsdiskusage"]?></a></div>
   <?php } ?>
 
 	<?php } ?>
@@ -834,7 +838,7 @@ if (true) # Always show search header now.
 	<?php hook("resultsbottomtoolbar"); ?>
 	
 	<?php 
-	$url=$baseurl_short."pages/search.php?search=" . urlencode($search) . "&order_by=" . urlencode($order_by) . "&sort=".$sort."&archive=" . $archive . "&k=" . $k;	
+	$url=$baseurl_short."pages/search.php?search=" . urlencode($search) . "&order_by=" . urlencode($order_by) . "&sort=".$sort."&archive=" . $archive . "&daylimit=" . urlencode($daylimit) . "&k=" . $k;	
 
 	if (isset($draw_pager)) {pager(false);} ?>
 </div>	
