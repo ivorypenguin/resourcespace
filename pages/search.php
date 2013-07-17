@@ -439,7 +439,7 @@ if (true) # Always show search header now.
 	<div class="TopInpageNav">
 	<div class="InpageNavLeftBlock"><?php echo $lang["youfound"]?>:<br /><span class="Selected"><?php
 	$resources_count=is_array($result)?count($result):0;
-	if (isset($collections)) 
+	if (isset($collections) && is_array($collections)) 
 	    {
 	    $results_count=count($collections)+$resources_count;
         echo number_format($results_count)?><?php echo ($results_count==$max_results)?"+":""?></span> <?php if ($results_count==1){echo $lang["youfoundresult"];} else {echo $lang["youfoundresults"];}
