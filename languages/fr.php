@@ -408,7 +408,8 @@ $lang["next"]="Suivant";
 $lang["previous"]="Précédent";
 $lang["page"]="Page";
 $lang["of"]="de"; # e.g. page 1 of 2
-$lang["items"]="items"; # e.g. 17 items
+$lang["items"]="éléments"; # e.g. 17 items
+$lang["item"]="élément"; # e.g. 17 items
 
 # Statistics
 $lang["stat-addpubliccollection"]="Ajouter une collection publique";
