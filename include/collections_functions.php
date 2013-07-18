@@ -349,7 +349,7 @@ function search_public_collections($search="", $order_by="name", $sort="ASC", $e
 function do_collections_search($search,$restypes,$archive=0)
     {
     global $search_includes_themes, $search_includes_public_collections, $search_includes_user_collections, $userref;
-    $result="";
+    $result=array();
     
     # Recognise a quoted search, which is a search for an exact string
     $quoted_string=false;
