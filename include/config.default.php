@@ -2011,7 +2011,8 @@ $email_errors=false;
 $email_errors_address="";
 
 # Use php-mysqli extension for interfacing with the mysql database
-$use_mysqli=false;
+# Only enable if the extension is present.
+$use_mysqli=function_exists("mysqli_connect");
 
 # Experimental performance enhancement - two pass mode for search results.
 # The first query returns only the necessary number of results for the current search results display
