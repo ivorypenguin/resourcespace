@@ -1654,6 +1654,9 @@ $unoconv_extensions=array("ods","xls","doc","docx","odt","odp","html","rtf","txt
 # Set this to true to separate related resource results into separate sections (ie. PDF, JPG)
 $sort_relations_by_filetype=false;
 
+# Set this to true to separate related resource results into separate sections by resource type (ie. Document, Photo)
+$sort_relations_by_restype=false;
+
 # Allow the addition of 'saved searches' to collections. 
 $allow_save_search=true;
 
