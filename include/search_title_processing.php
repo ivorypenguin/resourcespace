@@ -213,7 +213,9 @@ if ($search_titles)
             else 
             {
             $udata=get_user($cuser);
-            $search_title = '<h1 class="searchcrumbs"><a href='.$baseurl_short.'pages/search.php?search=!contributions'.$cuser.$parameters_string.' onClick="return CentralSpaceLoad(this,true);">'.$lang["contributedby"]." ".htmlspecialchars($udata["fullname"])." - ".$lang["status".intval($archive)].'</a>'.$searchcrumbs.'</h1> ';
+            $displayname=htmlspecialchars($udata["fullname"]);
+            if (trim($displayname)=="") $displayname=htmlspecialchars($udata["username"]);
+            $search_title = '<h1 class="searchcrumbs"><a href='.$baseurl_short.'pages/search.php?search=!contributions'.$cuser.$parameters_string.' onClick="return CentralSpaceLoad(this,true);">'.$lang["contributedby"]." ".$displayname." - ".$lang["status".intval($archive)].'</a>'.$searchcrumbs.'</h1> ';
             }
         }
     else if ($archive!=0)
