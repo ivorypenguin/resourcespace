@@ -563,7 +563,9 @@ if (isset($flv_download) && $flv_download)
 	}
 	
 # Alternative files listing
-if ($access==0) # open access only (not restricted)
+$alt_access=hook("altfilesaccess");
+if ($access==0) $alt_access=true; # open access (not restricted)
+if ($alt_access) 
 	{
 	$alt_order_by="";$alt_sort="";
 	if ($alt_types_organize){$alt_order_by="alt_type";$alt_sort="asc";} 
