@@ -12,7 +12,7 @@ function HookLightbox_previewViewRenderbeforerecorddownload()
 
 	$title = get_data_by_field($resource['ref'], $title_field);
 	setLink('#previewimagelink', $url, $title);
-	setLink('#previewlink', $url, $title, 'lightbox[other]');
+	setLink('#previewlink', $url, $title, 'lightbox-other');
 	}
 
 function HookLightbox_previewViewRenderaltthumb()
@@ -40,6 +40,7 @@ function HookLightbox_previewViewRenderaltthumb()
 function HookLightbox_previewViewRenderbeforeresourcedetails()
 	{
 	addLightBox('a[rel="lightbox"]');
+	addLightBox('a[rel="lightbox-other"]');
 	}
 
 ?>
