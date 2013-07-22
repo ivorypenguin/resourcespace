@@ -97,8 +97,33 @@ function i18n_get_collection_name($mixedcollection, $index="name")
     if ($translated==1) {return htmlspecialchars($name_translated);}
 
     # Check if it is a Upload YYMMDDHHMMSS
-    $name_translated = preg_replace('/(^Upload)(\s\d{12})$/', $lang["upload"] . '$2', $name_untranslated, -1, $translated);
-    if ($translated==1) {return htmlspecialchars($name_translated);}
+    $upload_date = preg_replace('/(^Upload)\s(\d{12})$/', '$2', $name_untranslated, -1, $translated);
+	if ($translated!=1)
+		$upload_date = preg_replace('/(^Upload)\s(\d{14})$/', '$2', $name_untranslated, -1, $translated);
+    if ($translated==1)
+		{
+		# Translate date into MySQL ISO format to be able to use nicedate()
+		if (strlen($upload_date)==14)
+			{
+			$year = substr($upload_date, 0, 4);
+			$upload_date=substr($upload_date, 2);
+			}
+		else
+			{
+			$year = substr($upload_date, 0, 2);
+			if ((int)$year > (int)date('y'))
+				$year = ((int)substr(date('Y'), 0, 2)-1) . $year;
+			else
+				$year = substr(date('Y'), 0, 2) . $year;
+			}
+		$month = substr($upload_date, 2, 2);
+		$day = substr($upload_date, 4, 2);
+		$hour = substr($upload_date, 6, 2);
+		$minute = substr($upload_date, 8, 2);
+		$second = substr($upload_date, 10, 2);
+		$date = nicedate("$year-$month-$day $hour:$minute:$second", true);
+		return htmlspecialchars($lang['upload'] . ' ' . $date);
+		}
 
     # Check if it is a Research: [..]
     $name_translated = preg_replace('/(^Research:)(\s.*)/e', "i18n_get_translated('$2')", $name_untranslated, -1, $translated);
