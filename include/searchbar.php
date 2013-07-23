@@ -158,6 +158,16 @@ if (!$basic_simple_search)
             });
 		if (checkcount==tickboxes.length){jQuery('#rttickallres').attr('checked',true);}	
 	}
+	function resetTickAllColl(){
+		var checkcount=0;
+		// set tickall to false, then check if it should be set to true.
+		jQuery('#rttickallcoll').attr('checked',false);
+		var tickboxes=jQuery('#form1 .tickboxcoll');
+			jQuery(tickboxes).each(function (elem) {
+				if( tickboxes[elem].checked){checkcount=checkcount+1;}
+			});
+		if (checkcount==tickboxes.length){jQuery('#rttickallcoll').attr('checked',true);}	
+	}
 	</script>
 	<div class="tick"><input type='checkbox' id='rttickallres' name='rttickallres' checked onclick='jQuery("#form1 .tickbox").each (function(index,Element) {jQuery(Element).attr("checked",(jQuery("#rttickallres").attr("checked")=="checked"));}); HideInapplicableSimpleSearchFields(true); '/>&nbsp;<?php echo $lang['allresourcessearchbar']?></div>
 	<?php }?>
@@ -172,18 +182,6 @@ if (!$basic_simple_search)
 		}
 		?><div class="spacer"></div>
 		<?php if ($searchbar_selectall && ($search_includes_user_collections || $search_includes_public_collections || $search_includes_themes)) { ?>
-		<script type="text/javascript">	
-		function resetTickAllColl(){
-			var checkcount=0;
-			// set tickall to false, then check if it should be set to true.
-			jQuery('#rttickallcoll').attr('checked',false);
-			var tickboxes=jQuery('#form1 .tickboxcoll');
-				jQuery(tickboxes).each(function (elem) {
-		            if( tickboxes[elem].checked){checkcount=checkcount+1;}
-		        });
-			if (checkcount==tickboxes.length){jQuery('#rttickallcoll').attr('checked',true);}	
-		}
-		</script>
 		<div class="tick"><input type='checkbox' id='rttickallcoll' name='rttickallcoll' checked onclick='jQuery("#form1 .tickboxcoll").each (function(index,Element) {jQuery(Element).attr("checked",(jQuery("#rttickallcoll").attr("checked")=="checked"));}); HideInapplicableSimpleSearchFields(true); '/>&nbsp;<?php echo $lang['allcollectionssearchbar']?></div>
 		<?php }?>
 		<?php
