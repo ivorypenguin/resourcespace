@@ -422,7 +422,7 @@ function CheckDBStruct($path)
 	{
 	# Check the database structure against the text files stored in $path.
 	# Add tables / columns / data / indices as necessary.
-	global $mysql_db;
+	global $mysql_db, $resource_field_column_limit;
 	
 	# Check for path
 	$path=dirname(__FILE__) . "/../" . $path; # Make sure this works when called from non-root files..
@@ -500,10 +500,9 @@ function CheckDBStruct($path)
 				
 				# Load existing table definition
 				$existing=sql_query("describe $table",false,-1,false);
-				
+
 				##########
-				## RS-specific mod:
-				# copy needed resource_data into resource for search displays
+				# Copy needed resource_data into resource for search displays
 				if ($table=="resource"){
 					$joins=get_resource_table_joins();
 					for ($m=0;$m<count($joins);$m++){
@@ -519,7 +518,7 @@ function CheckDBStruct($path)
 							{
 							# Add this column.
 							$sql="alter table $table add column ";
-							$sql.="field".$joins[$m] . " VARCHAR(200)";
+							$sql.="field".$joins[$m] . " VARCHAR(" . $resource_field_column_limit . ")";
 							sql_query($sql,false,-1,false);
 							$values=sql_query("select resource,value from resource_data where resource_type_field=$joins[$m]");
 	

@@ -741,7 +741,8 @@ function update_field($resource,$field,$value)
 	# If this is a 'joined' field we need to add it to the resource column
 	$joins=get_resource_table_joins();
 	if (in_array($field,$joins)){
-		sql_query("update resource set field".$field."=".$value." where ref='$resource'");
+		global $resource_field_column_limit;
+		sql_query("update resource set field ".$field."=" . trim($value,$resource_field_column_limit) . " where ref='$resource'");
 		}			
 		
 	}
