@@ -7,7 +7,7 @@
 #
 
 include "../../include/db.php";
-include "../../include/authenticate.php"; if (!checkperm("a")) {exit("Permission denied");}
+if (!(PHP_SAPI == 'cli')) {include "../../include/authenticate.php"; if (!checkperm("a")) {exit("Permission denied");}}
 include "../../include/general.php";
 include "../../include/resource_functions.php";
 include "../../include/image_processing.php";
@@ -15,7 +15,7 @@ include "../../include/image_processing.php";
 $sql="";
 if (getval("ref","")!="") {$sql="where r.ref='" . getvalescaped("ref","",true) . "'";}
 
-set_time_limit(60*60*5);
+set_time_limit(60*60*10);
 echo "<pre>";
 
 $start = getval('start','0');
