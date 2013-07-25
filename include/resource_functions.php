@@ -742,7 +742,7 @@ function update_field($resource,$field,$value)
 	$joins=get_resource_table_joins();
 	if (in_array($field,$joins)){
 		global $resource_field_column_limit;
-		sql_query("update resource set field ".$field."=" . trim($value,$resource_field_column_limit) . " where ref='$resource'");
+		sql_query("update resource set field".$field."=" . trim($value,$resource_field_column_limit) . " where ref='$resource'");
 		}			
 		
 	}
