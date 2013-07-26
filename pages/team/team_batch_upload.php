@@ -67,6 +67,7 @@ if ($use_local) // Test if we fetch files from local upload folder.
 	} // Test if we fetch files from local upload folder.
 
 $uploadfiles=$_POST["uploadfiles"];
+if (!hook("alternativebatchupload")) {
 $done=0;$failed=0;
 $refs=array();
 for ($n=0;$n<count($uploadfiles);$n++)
@@ -218,3 +219,4 @@ if ($collection!="")
 		?><script type="text/javascript">CollectionDivLoad('<?php echo $baseurl . "/pages/collections.php?add=" . $ref . "&nc=" . time() . "&search=" . urlencode($search)?>');</script><?php
 		}
 	}
+}
