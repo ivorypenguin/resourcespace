@@ -1297,17 +1297,17 @@ function filesize2bytes($str) {
     $bytes = 0;
 
     $bytes_array = array(
-        'B' => 1,
-        'kB' => 1024,
-        'MB' => 1024 * 1024,
-        'GB' => 1024 * 1024 * 1024,
-        'TB' => 1024 * 1024 * 1024 * 1024,
-        'PB' => 1024 * 1024 * 1024 * 1024 * 1024,
+        'b' => 1,
+        'kb' => 1024,
+        'mb' => 1024 * 1024,
+        'gb' => 1024 * 1024 * 1024,
+        'tb' => 1024 * 1024 * 1024 * 1024,
+        'pb' => 1024 * 1024 * 1024 * 1024 * 1024,
     );
 
     $bytes = floatval($str);
 
-    if (preg_match('#([KMGTP]?B)$#si', $str, $matches) && !empty($bytes_array[$matches[1]])) {
+    if (preg_match('#([KMGTP]?B)$#si', $str, $matches) && !empty($bytes_array[strtolower($matches[1])])) {
         $bytes *= $bytes_array[$matches[1]];
     }
 
