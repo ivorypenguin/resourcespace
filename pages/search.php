@@ -271,7 +271,7 @@ $search=refine_searchstring($search);
 if (strpos($search,"!")===false) {setcookie("search",$search);}
 hook('searchaftersearchcookie');
 $result=do_search($search,$restypes,$order_by,$archive,$per_page+$offset,$sort,false,$starsearch,false,false,$daylimit);
-$collections=do_collections_search($search,$restypes);
+if($k==""){$collections=do_collections_search($search,$restypes);} // don't do this for external shares
 
 # Allow results to be processed by a plugin
 $hook_result=hook("process_search_results","search",array("result"=>$result,"search"=>$search));
