@@ -525,9 +525,17 @@ else
 
 <h1><?php echo $titleh1 ?></h1>
 <h2><?php echo $titleh2 ?></h2>
-<div id="plupload_instructions"><p><?php echo $intro ?></p></div>
+<div id="plupload_instructions"><p><?php echo $intro?></p></div>
+<?php if (isset($plupload_max_file_size))
+	{
+	if (is_numeric($plupload_max_file_size))
+		$sizeText = formatfilesize($plupload_max_file_size);
+	else
+		$sizeText = formatfilesize(filesize2bytes($plupload_max_file_size));
+	echo ' '.sprintf($lang['plupload-maxfilesize'], $sizeText);
+	}
 
-<?php if ($allowed_extensions!=""){
+if ($allowed_extensions!=""){
     $allowed_extensions=str_replace(", ",",",$allowed_extensions);
     $list=explode(",",trim($allowed_extensions));
     sort($list);

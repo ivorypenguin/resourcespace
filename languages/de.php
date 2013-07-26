@@ -1568,6 +1568,7 @@ $lang["intro-plupload"] = "Klicken Sie auf <b>+ Dateien</b>, um eine oder mehrer
 $lang["intro-plupload_dragdrop"] = "Ziehen Sie oder Klicken Sie <b>+ Dateien</b>, um eine oder mehrere Dateien auszuwählen, und klicken Sie dann <b>Hochladen</b> an.";
 $lang["intro-plupload_upload-replace_resource"] = "Klicken Sie auf <b>+ Dateien</b>, um eine Datei auszuwählen, und klicken Sie dann <b>Hochladen</b> an.";
 $lang["intro-batch_edit"] = "Bitte wählen Sie die Standard-Uploadeinstellungen und die Standardwerte für die Metadaten der Ressourcen, die Sie hochladen wollen.";
+$lang["plupload-maxfilesize"] = "Die maximale erlaubte Upload-Dateigröße ist %s.";
 $lang["pluploader_warning"]="Ihr Browser unterstützt unter Umständen keine sehr großen Uploads. Wenn Sie damit Probleme haben, aktualisieren Sie bitte Ihren Browser oder versuchen Sie einen der untenstehenden Links.";
 $lang["getsilverlight"]="Um sicherzustellen, dass Sie die neueste Version von Silverlight installiert haben, besuchen Sie bitte die Microsoft Silverlight Website.";
 $lang["getbrowserplus"]="Um die neueste Version von BrowserPlus zu installieren, besuchen Sie bitte die Yahoo BrowserPlus Website.";

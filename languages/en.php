@@ -1575,6 +1575,7 @@ $lang["intro-plupload"] = "Click <b>Add Files</b> to locate one or more files an
 $lang["intro-plupload_dragdrop"] = "Drag and drop or click <b>Add Files</b> to locate one or more files and then click <b>Start upload</b>.";
 $lang["intro-plupload_upload-replace_resource"] = "Click <b>Add Files</b> to locate a file and then click <b>Start upload</b>.";
 $lang["intro-batch_edit"] = "Please specify the default upload settings and the default values for the metadata of the resources you are about to upload.";
+$lang["plupload-maxfilesize"] = "The maximum allowed upload file size is %s.";
 $lang["pluploader_warning"]="Your browser may not support very large file uploads. If you are having problems please try either upgrading your browser or using the links below.";
 $lang["getsilverlight"]="To ensure that you have the latest version of Silverlight on your system, visit the Microsoft Silverlight site.";
 $lang["getbrowserplus"]="To get the latest BrowserPlus software, visit the Yahoo BrowserPlus website.";
