@@ -809,5 +809,12 @@ $lang["global"]="Глобальный";
 $lang["action-viewmatchingresources"]="Посмотреть результаты";
 $lang["nomatchingresults"]="Нет результатов";
 $lang["matchingresults"]="результатов"; # e.g. 17 matching results
+$lang["resources"]="объекты";
+$lang["share-resource"]="Поделиться объектом";
 
+$lang["downloadmetadata"]="Загрузить метаданные";
+$lang["downloadingmetadata"]="Метаданные загружаются";
+$lang["file-contains-metadata"]="Файл, который вы загружаете, содержит все метаданные для этого объекта.";
+$lang["metadata"]="Матаданные";
+$lang["textfile"]="Текстовый файл";
 ?>
