@@ -2025,7 +2025,7 @@ function get_edit_access($resource,$status=-999,$metadata=false)
 	# Checks the edit permissions (e0, e-1 etc.) and also the group edit filter which filters edit access based on resource metadata.
 	
 	global $userref,$usereditfilter;
-	
+	if (hook("customediteaccess")) {return true;}
 	if ($status==-999)
 		{
 		# Status not provided. Calculate status
