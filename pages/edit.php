@@ -254,6 +254,7 @@ include "../include/header.php";
 
 jQuery(document).ready(function()
     {
+
     jQuery('.CollapsibleSectionHead').click(function() 
         {
         cur=jQuery(this).next();
@@ -286,6 +287,7 @@ jQuery(document).ready(function()
                 else jQuery(this).addClass('expanded');
 
             });
+            <?php  hook("editadditionaljs");  ?>
     });
 
 function ShowHelp(field)
@@ -380,7 +382,7 @@ echo text("multiple"); ?></p>
 
 <?php
 # Draw nav
-if (!$multiple) { EditNav(); }
+if (!$multiple&&!hook("dontshoweditnav")) { EditNav(); }
 ?>
 
 
@@ -506,7 +508,7 @@ $titleh2 = str_replace(array("%number","%subtitle"), array("1", $lang["specifyde
 <?php } ?>
 
 <?php hook("editbefresmetadata"); ?>
-
+<?php if (!hook("replaceedittype")) { ?>
 <?php if (!$multiple){?>
 <div class="Question" id="question_resourcetype">
 <label for="resourcetype"><?php echo $lang["resourcetype"]?></label>
@@ -539,6 +541,8 @@ for ($n=0;$n<count($types);$n++)
 <div class="clearerleft"> </div>
 </div>
 <?php } ?>
+<?php } # end hook("replaceedittype")
+?> 
 <?php
 $lastrt=-1;
 
@@ -632,7 +636,7 @@ if (isset($metadata_template_resource_type)&&(isset($metadata_template_title_fie
 ?>
 </div>
 <div id="CollapsibleSections">
-<h1  class="CollapsibleSectionHead"><?php echo $lang["resourcemetadata"]?></h1>
+<h1  class="CollapsibleSectionHead" id="ResourceMetadataSectionHead"><?php echo $lang["resourcemetadata"]?></h1>
 <div class="CollapsibleSection" id="ResourceMetadataSection<?php if ($ref==-1) echo "Upload"; ?>"><?php
 $required_fields_exempt=array(); # new array to contain required fields that have not met the display condition 
 for ($n=0;$n<count($fields);$n++)
@@ -1006,7 +1010,7 @@ else # Edit Resource(s).
     }
 
 # Status / Access / Related Resources
-if (!checkperm("F*")) # Only display Status / Access / Related Resources if full write access field access has been granted.
+if (!checkperm("F*")&&!hook("editstatushide")) # Only display Status / Access / Related Resources if full write access field access has been granted.
     {
     if(!hook("replacestatusandrelationshipsheader"))
         {
@@ -1014,7 +1018,7 @@ if (!checkperm("F*")) # Only display Status / Access / Related Resources if full
         	{
 	        if ($enable_related_resources && ($multiple || $ref>0)) # Showing relationships
 	        	{
-	        	?></div><h1 class="CollapsibleSectionHead"><?php echo $lang["statusandrelationships"]?></h1><div class="CollapsibleSection" id="StatusRelationshipsSection<?php if ($ref==-1) echo "Upload"; ?>"><?php
+	        	?></div><h1 class="CollapsibleSectionHead" id="StatusRelationshipsSectionHead"><?php echo $lang["statusandrelationships"]?></h1><div class="CollapsibleSection" id="StatusRelationshipsSection<?php if ($ref==-1) echo "Upload"; ?>"><?php
 		        }
 		    else
 		    	{
