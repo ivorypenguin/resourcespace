@@ -141,7 +141,7 @@ if ($noattach=="")
 		}
 
 	# Remove critical characters from filename
-	$filename = preg_replace('/:/', '_', $filename);
+	if(!($filename=hook("downloadfilenamealt"))) $filename = preg_replace('/:/', '_', $filename);
 
     	hook("downloadfilename");
 

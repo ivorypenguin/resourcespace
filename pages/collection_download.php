@@ -240,7 +240,7 @@ if ($submitted != "")
 					{
 					$filename=$prefix_filename_string . $ref . "_" . $size . "." . $pextension;
 					}
-
+                if (hook("downloadfilenamealt")) $filename=hook("downloadfilenamealt");
 				#Add resource data/collection_resource data to text file
 				if (($zipped_collection_textfile==true)&&($includetext=="true")){ 
 					if ($size==""){$sizetext="";}else{$sizetext="-".$size;}
