@@ -76,7 +76,7 @@ foreach ($display_fields as $display_field)
 		}
 	}
 $n=0;	
-
+$df_add=hook("displayfieldsadd");
 # create a sort_fields array with information for sort fields
 $n=0;
 $sf=array();

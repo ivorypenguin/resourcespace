@@ -41,6 +41,9 @@
 		<?php } //end hook replaceicons ?>
 
 		<?php
+		$df_alt=hook("displayfieldsalt");
+		$df_normal=$df;
+		if ($df_alt) $df=$df_alt;
 		# smallthumbs_display_fields
 		for ($x=0;$x<count($df);$x++)
 			{
@@ -67,15 +70,18 @@
 			<?php if ($x==0){ // add link if necessary ?><a href="<?php echo $url?>"  onClick="return CentralSpaceLoad(this,true);" <?php if (!$infobox) { ?>title="<?php echo str_replace(array("\"","'"),"",htmlspecialchars(i18n_get_translated($value)))?>"<?php } //end if infobox ?>><?php } //end link
 			echo format_display_field($value);			
 			if ($show_extension_in_search) { ?><?php echo " " . str_replace_formatted_placeholder("%extension", $result[$n]["file_extension"], $lang["fileextension-inside-brackets"])?><?php } ?><?php if ($x==0){ // add link if necessary ?></a><?php } //end link?>&nbsp;</div></div>
-			<?php } /* end hook replaceresourcepanelinfolarge */?>
+			<?php } /* end hook replaceresourcepanelinfosmall */?>
 			<?php 
 
 			// normal behavior
 			} else if  ( (isset($metadata_template_title_field)&&$df[$x]['ref']!=$metadata_template_title_field) || !isset($metadata_template_title_field) ) {?> 
+			<?php if (!hook("replaceresourcepanelinfosmallnormal")){?>
 			<div class="ResourcePanelInfo"><?php if ($x==0){ // add link if necessary ?><a href="<?php echo $url?>"  onClick="return CentralSpaceLoad(this,true);" <?php if (!$infobox) { ?>title="<?php echo str_replace(array("\"","'"),"",htmlspecialchars(i18n_get_translated($value)))?>"<?php } //end if infobox ?>><?php } //end link?><?php echo highlightkeywords(tidy_trim(TidyList(i18n_get_translated($value)),28),$search,$df[$x]['partial_index'],$df[$x]['name'],$df[$x]['indexed'])?><?php if ($x==0){ // add link if necessary ?></a><?php } //end link?>&nbsp;</div><div class="clearer"></div>
 			<?php } ?>
+			<?php } /* end hook replaceresourcepanelinfosmallnormal */?>
 			<?php
 			}
+			$df=$df_normal;
 		?>
 		
 		

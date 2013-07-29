@@ -45,7 +45,11 @@
 <?php } ?> <!-- END HOOK Rendertitlethumb -->			
 		
 		<?php
+		$df_alt=hook("displayfieldsalt");
+		$df_normal=$df;
+		if ($df_alt) $df=$df_alt;
 		# thumbs_display_fields
+
 		for ($x=0;$x<count($df);$x++)
 			{
 			#value filter plugin -tbd	
@@ -76,11 +80,14 @@
 
 			// normal behavior
 			} else if  ( (isset($metadata_template_title_field)&&$df[$x]['ref']!=$metadata_template_title_field) || !isset($metadata_template_title_field) ) {?> 
+			<?php if (!hook("replaceresourcepanelinfonormal")){?>
 			<div class="ResourcePanelInfo"><?php if ($x==0){ // add link if necessary ?><a href="<?php echo $url?>"  onClick="return CentralSpaceLoad(this,true);" <?php if (!$infobox) { ?>title="<?php echo str_replace(array("\"","'"),"",htmlspecialchars(i18n_get_translated($value)))?>"<?php } //end if infobox ?>><?php } //end link?><?php echo highlightkeywords(tidy_trim(TidyList(i18n_get_translated($value)),$search_results_title_trim),$search,$df[$x]['partial_index'],$df[$x]['name'],$df[$x]['indexed'])?><?php if ($x==0){ // add link if necessary ?></a><?php } //end link?>&nbsp;</div><div class="clearer"></div>
 			<?php } ?>
+			<?php } /* end hook replaceresourcepanelinfonormal */?>
 			<?php hook("processthumbsfields"); ?>
 			<?php
 			}
+			$df=$df_normal;
 		?>
 
 		<!-- Checkboxes -->

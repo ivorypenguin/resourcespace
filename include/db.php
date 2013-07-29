@@ -1103,7 +1103,8 @@ function get_resource_table_joins(){
 		$view_title_field,
 		$date_field)
 	);
-	
+	$additional_joins=hook("additionaljoints");
+	if ($additional_joins) $joins=array_merge($joins,$additional_joins);
 	$joins=array_unique($joins);
 	$n=0;
 	foreach ($joins as $join){
