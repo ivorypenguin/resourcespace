@@ -285,7 +285,7 @@ $lang["uselocalupload"]="OR: Use local 'upload' folder instead of remote FTP ser
 # User contributions
 $lang["contributenewresource"]="Contribute new resource";
 $lang["viewcontributedps"]="View my contributions - pending submission";
-$lang["viewcontributedpr"]="View my contributions - pending resource team review";
+$lang["viewcontributedpr"]="View my contributions - pending review";
 $lang["viewcontributedsubittedl"]="View my contributions - active";
 $lang["contributedps"]="My contributions - pending submission";
 $lang["contributedpr"]="My contributions - pending resource team review";
@@ -481,7 +481,7 @@ $lang["match"]="match";
 $lang["matches"]="matches";
 $lang["inthearchive"]="in the archive";
 $lang["nomatchesinthearchive"]="No matches in the archive";
-$lang["savethissearchtocollection"]="Save search query to collection";
+$lang["savethissearchtocollection"]="Save query to collection";
 $lang["mustspecifyonekeyword"]="You must specify at least one search keyword.";
 $lang["hasemailedyouaresource"]="has e-mailed you a resource."; # Suffixed to user name, e.g. Fred has e-mailed you a resource
 $lang["clicktoviewresource"]="Click the link below to view the resource.";
@@ -785,7 +785,7 @@ $lang["notapprovedresources"]="The following resources are not active and cannot
 
 
 # New for 1.3
-$lang["savesearchitemstocollection"]="Save search items to collection";
+$lang["savesearchitemstocollection"]="Save results to collection";
 $lang["removeallresourcesfromcollection"]="Remove all resources from this collection";
 $lang["deleteallresourcesfromcollection"]="Delete all resources in this collection";
 $lang["deleteallsure"]="Are you sure you wish to DELETE these resources? This will delete the resources themselves, not just remove them from this collection.";
@@ -1629,7 +1629,7 @@ $lang["requestassignedtoyou"]="Resource request assigned to you";
 $lang["requestassignedtoyoumail"]="A resource request has been assigned to you for approval. Please use the link below to approve or deny the resource request.";
 
 $lang["manageresources-overquota"]="Resource management disabled - you have exceeded your disk usage quota";
-$lang["searchitemsdiskusage"]="Calculate disk space used by results";
+$lang["searchitemsdiskusage"]="Disk space used by results";
 $lang["matchingresourceslabel"]="Matching resources";
 
 $lang["saving"]="Saving...";

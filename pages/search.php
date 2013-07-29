@@ -471,7 +471,7 @@ if (true) # Always show search header now.
 	</div>
 	
 	<?php if ($display_selector_dropdowns){?>
-	<div class="InpageNavLeftBlock"><?php echo $lang["resultsdisplay"]?>:<br />
+	<div class="InpageNavLeftBlock"><?php echo ucfirst($lang["perpage"]);?>:<br />
 		<select class="medcomplementwidth ListDropdown" style="width:auto" id="resultsdisplay" name="resultsdisplay" onchange="CentralSpaceLoad(this.value,true);">
 		<?php for($n=0;$n<count($results_display_array);$n++){
 			if ($display_selector_dropdowns){?>
@@ -556,7 +556,7 @@ if (true) # Always show search header now.
 		<?php
 		} 
 		if (!$display_selector_dropdowns){?>
-		<div class="InpageNavLeftBlock"><?php echo $lang["resultsdisplay"]?>:<br />
+		<div class="InpageNavLeftBlock"><?php echo ucfirst($lang["perpage"]);?>:<br />
 		<?php 
 		for($n=0;$n<count($results_display_array);$n++){?>
 		<?php if ($per_page==$results_display_array[$n]){?><span class="Selected"><?php echo urlencode($results_display_array[$n])?></span><?php } else { ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&order_by=<?php echo urlencode($order_by)?>&archive=<?php echo urlencode($archive) ?>&k=<?php echo urlencode($k) ?>&per_page=<?php echo urlencode($results_display_array[$n])?>&sort=<?php echo urlencode($sort)?>" onClick="return CentralSpaceLoad(this);"><?php echo urlencode($results_display_array[$n])?></a><?php } ?><?php if ($n>-1&&$n<count($results_display_array)-1){?>&nbsp;|<?php } ?>
