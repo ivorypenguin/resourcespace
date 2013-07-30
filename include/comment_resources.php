@@ -9,7 +9,7 @@
 				</div>							
 				<div id="CommentsPanelHeaderRowPolicyLink">					
 					<?php					
-						if (isset ($site_text['comments_policy']) || $userref==1)		// TODO: check $userref==1 always the Admin User?
+						if ((isset ($site_text['comments_policy']) && $site_text['comments_policy']!="") || $userref==1)		// TODO: check $userref==1 always the Admin User?
 							{
 							echo "<a href='javascript: void()' onclick='jQuery(\"#CommentsPolicyContainer\").toggle(\"fast\");'>&gt;&nbsp;${lang['comments_box-policy']}</a>";
 							}										
@@ -20,7 +20,7 @@
 		<div id="CommentsPolicyContainer">
 			<div id="CommentsPolicyContainerBody">
 			<?php
-				if (isset ($site_text['comments_policy'])) 
+				if (isset ($site_text['comments_policy']) && $site_text['comments_policy']!="") 
 				{
 					echo $site_text['comments_policy'];
 				} else {
