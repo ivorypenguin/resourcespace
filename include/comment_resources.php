@@ -9,7 +9,7 @@
 				</div>							
 				<div id="CommentsPanelHeaderRowPolicyLink">					
 					<?php					
-						if ((isset ($site_text['comments_policy']) && $site_text['comments_policy']!="") || $userref==1)		// TODO: check $userref==1 always the Admin User?
+						if ((isset ($site_text['comments_policy']) && $site_text['comments_policy']!="") || checkPerm("o"))		// allow somebody with site text update permission to view no matter what
 							{
 							echo "<a href='javascript: void()' onclick='jQuery(\"#CommentsPolicyContainer\").toggle(\"fast\");'>&gt;&nbsp;${lang['comments_box-policy']}</a>";
 							}										
@@ -24,7 +24,7 @@
 				{
 					echo $site_text['comments_policy'];
 				} else {
-					if ($userref==1) echo $lang['comments_box-policy-placeholder'];		// show placeholder only if Admin User	// TODO: check $userref==1 always the Admin User?
+					if (checkPerm("o")) echo $lang['comments_box-policy-placeholder'];		// show placeholder only if user has permission to change site text to sort it
 				}
 			?>
 			</div>
