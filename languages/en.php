@@ -1729,5 +1729,12 @@ $lang['comments_flag-this-comment']="Flag this comment";
 $lang['comments_flag-has-been-flagged']="This comment has been flagged";
 $lang['comments_flag-reason-placeholder']="Reason to flag comment";
 $lang['comments_validation-fields-failed']="Please ensure all mandatory fields are correctly completed";
+$lang['comments_block_comment_label']="block comment";
+$lang['comments_flag-email-default-subject']="Notification of flagged comment";
+$lang['comments_flag-email-default-body']="This comment has been flagged:";
+$lang['comments_flag-email-flagged-by']="Flagged by:";
+$lang['comments_flag-email-flagged-reason']="Reason for flagging:";
+
+
 
 
