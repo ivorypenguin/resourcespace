@@ -562,3 +562,8 @@ team_archive,introtext,"Om du vill redigera ett arkiverat material gör du det e
 collection_email,introtextthemeshare,"Complete the form below to e-mail the themes in this theme category. The recipients will receive an email containing links to each of the themes.",,en,,,
 all,comments_policy,"",393,en,,,
 all,comments_removal_message,"",394,en,,,
+all,comments_flag_notification_email_subject,"",395,en,,,
+all,comments_flag_notification_email_body,"",396,en,,,
+
+
+
