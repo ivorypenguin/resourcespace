@@ -1711,3 +1711,23 @@ $lang["downloadingmetadata"]="Downloading Metadata";
 $lang["file-contains-metadata"]="The file you are now downloading contains all of the Metadata for this resource.";
 $lang["metadata"]="Metadata";
 $lang["textfile"]="Text File";
+
+# Comments field titles, prompts and default placeholders
+$lang['comments_box-title']="Comments";
+$lang['comments_box-policy']="Comments Policy";
+$lang['comments_box-policy-placeholder']="Please add text to \"comments-policy\" entry in the site text";		# only shown if Admin User and no policy set
+$lang['comments_in-response-to']="in response to";
+$lang['comments_respond-to-this-comment']="respond to this comment";
+$lang['comments_in-response-to-on']="on";
+$lang['comments_anonymous-user']="Anonymous";
+$lang['comments_submit-button-label']="Submit";
+$lang['comments_body-placeholder']="Add a comment";
+$lang['comments_fullname-placeholder']="Your Name (required)";
+$lang['comments_email-placeholder']="Your E-mail (required)";
+$lang['comments_website-url-placeholder']="Website";
+$lang['comments_flag-this-comment']="Flag this comment";
+$lang['comments_flag-has-been-flagged']="This comment has been flagged";
+$lang['comments_flag-reason-placeholder']="Reason to flag comment";
+$lang['comments_validation-fields-failed']="Please ensure all mandatory fields are correctly completed";
+
+
