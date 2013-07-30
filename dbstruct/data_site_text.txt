@@ -560,10 +560,10 @@ team_batch_select,introtext,"",391,sv,,,0
 team_batch,introtext,"",392,sv,,,0
 team_archive,introtext,"Om du vill redigera ett arkiverat material gör du det enklast genom att söka efter det här och sedan klicka på <b>Redigera</b> på sidan som visar materialet. Alla material som väntar på arkivering kan enkelt nås från länken nedan. Lägg till eventuell relevant information innan du flyttar materialet till arkivet.",393,sv,,,0
 collection_email,introtextthemeshare,"Complete the form below to e-mail the themes in this theme category. The recipients will receive an email containing links to each of the themes.",,en,,,
-all,comments_policy,"",393,en,,,
-all,comments_removal_message,"",394,en,,,
-all,comments_flag_notification_email_subject,"",395,en,,,
-all,comments_flag_notification_email_body,"",396,en,,,
+all,comments_policy,"",394,en,,,
+all,comments_removal_message,"",395,en,,,
+all,comments_flag_notification_email_subject,"",396,en,,,
+all,comments_flag_notification_email_body,"",397,en,,,
 
 
 
