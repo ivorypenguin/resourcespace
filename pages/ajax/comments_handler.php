@@ -1,60 +1,94 @@
 <?php
 
-/*
-
-	********** THIS IS WORK IN PROGRESS - MEH, Matthew Hinton, Montala **********
-
-*/
-
 include "../../include/db.php";
 include "../../include/general.php";
 include "../../include/authenticate.php";
 
-$regex_email = "[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}";	// MEH: rudimentary regex to validate an email address - this is NOT a complete check
+$regex_email = "[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}";	// MEH: rudimentary regex to validate an email address - this is NOT a complete check
 
 function comments_submit() 
 	{		
-		global $username;
-		global $anonymous_login;
-		global $userref;
-		global $regex_email;
-
-		$comment_flag_ref = getvalescaped("comment_flag_ref","");
-		$comment_flag_reason = getvalescaped("comment_flag_reason","");
+	global $username, $anonymous_login, $userref, $regex_email, $comments_max_characters, $site_text, $lang, $email_notify, $comments_email_notification_address;
+	
+	if ($username == $anonymous_login && (getvalescaped("fullname","") == "" || preg_match ("/${regex_email}/", getvalescaped("email","")) === false)) exit;
+	
+	$comment_flag_ref = getvalescaped("comment_flag_ref","");	
+	
+	// --- process flag request
+	
+	if ($comment_flag_ref != "") 
+		{		
+		$comment_flag_reason = getvalescaped("comment_flag_reason","");		
+		$comment_flag_url = getvalescaped("comment_flag_url","");
 		
-		if ($comment_flag_ref != "" && $comment_flag_reason != "") {
+		if ($comment_flag_reason == "" || $comment_flag_url == "") exit;
+		
+		$comment_flag_url = (strstr ($comment_flag_url, "#", true)) ? strstr ($comment_flag_url, "#", true) : $comment_flag_url;		
+		$comment_flag_url .= "#comment${comment_flag_ref}";		// add comment anchor to end of URL
+		
+		$comment_body = sql_query("select body from comment where ref=${comment_flag_ref}");		
+		$comment_body = (isset ($comment_body[0]['body']) && $comment_body[0]['body']!="") ? $comment_body[0]['body'] : "";
+		
+		if ($comment_body == "") exit;
+		
+		$email_subject = (isset ($site_text['comments_flag_notification_email_subject']) && $site_text['comments_flag_notification_email_subject']!="") ?
+			$site_text['comments_flag_notification_email_subject'] : $lang['comments_flag-email-default-subject'];
 			
-			setcookie("comment${comment_flag_ref}flagged", "true");			
-			// TODO: send email here to - as specified in the globals
-			exit;
+		$email_body = (isset ($site_text['comments_flag_notification_email_body']) && $site_text['comments_flag_notification_email_body']!="") ?
+			$site_text['comments_flag_notification_email_body'] : $lang['comments_flag-email-default-body'];
+		
+		$email_body .=	"\r\n\r\n\"${comment_body}\"";
+		$email_body .= "\r\n\r\n${comment_flag_url}";		
+		$email_body .= "\r\n\r\n${lang['comments_flag-email-flagged-by']} ${username}";		
+		$email_body .= "\r\n\r\n${lang['comments_flag-email-flagged-reason']} \"${comment_flag_reason}\"";
+		
+		$email_to = (
+				(!isset ($comments_email_notification_address)) || 		
+				($comments_email_notification_address) == ""
+				
+				// (preg_match ("/${regex_email}/", $comments_email_notification_address) === false)		// TODO: possible bug - fix this regex?  // MEH
+			) ? $email_notify : $comments_email_notification_address;
+		
+		setcookie("comment${comment_flag_ref}flagged", "true");
+		
+		send_mail ($email_to, $email_subject, $email_body);
+		
+		// file_put_contents("debug.txt", "${email_to}, ${email_subject}, ${email_body}");		// TODO: remove this debug line // MEH
+		
+		exit;
+	}
+	
+	// --- process comment submission
+	
+	if (											// we don't want to insert an empty comment or an orphan
+		(getvalescaped("body","") == "") ||
+		((getvalescaped("collection_ref","") == "") && (getvalescaped("resource_ref","") == "") && (getvalescaped("ref_parent","") == ""))
+		)
+		exit;
+		
+	if ($username == $anonymous_login)	// anonymous user		
+		{				
+			$sql_fields = "fullname, email, website_url";				
+			$sql_values = "'" . getvalescaped("fullname", "") . "','" . getvalescaped("email", "") . "','" . getvalescaped("website_url", "") . "'";													
 		}
+	else
+		{
+			$sql_fields = "user_ref";
+			$sql_values = $userref;
+		}
+
+	$body = getvalescaped("body", "");		
+	if (strlen ($body) > $comments_max_characters) $body = substr ($body, 0, $comments_max_characters);		// just in case not caught in submit form
 		
-		if (											// we don't want to insert an empty comment or an orphan
-			(getvalescaped("body","") == "") ||
-			((getvalescaped("collection_ref","") == "") && (getvalescaped("resource_ref","") == "") && (getvalescaped("ref_parent","") == ""))
-			)
-			exit;
-			
-		if (!isset ($username) || (isset ($username) && $username == $anonymous_login))	// anonymous user		
-			{
-				if (getvalescaped("fullname","") == "" || getvalescaped("email","") == "") exit;			// must give fullname and email.  TODO: do a rudimentary email format check + chars > 200						
-				$sql_fields = "fullname, email, website_url";				
-				$sql_values = "'" . getvalescaped("fullname", "") . "','" . getvalescaped("email", "") . "','" . getvalescaped("website_url", "") . "'";													
-			}
-		else
-			{
-				$sql_fields = "user_ref";
-				$sql_values = $userref;
-			}		
-		$sql = "insert into comment (ref_parent, collection_ref, resource_ref, {$sql_fields}, body) values ("	.
-					getvalescaped("ref_parent", "NULL", true) . "," .
-					getvalescaped("collection_ref", "NULL", true) . "," .
-					getvalescaped("resource_ref", "NULL", true) . "," .					
-					$sql_values . "," .					
-					"'" . getvalescaped("body", "") ."'" .							
-				")";		
-		//file_put_contents("debug.txt", $sql);		// TODO: remove this debug line		
-		sql_query($sql);		
+	$sql = "insert into comment (ref_parent, collection_ref, resource_ref, {$sql_fields}, body) values ("	.
+				getvalescaped("ref_parent", "NULL", true) . "," .
+				getvalescaped("collection_ref", "NULL", true) . "," .
+				getvalescaped("resource_ref", "NULL", true) . "," .					
+				$sql_values . "," .					
+				"'${body}'" .							
+			")";		
+	//file_put_contents("debug.txt", $sql);		// TODO: remove this debug line		
+	sql_query($sql);
 	}
 
 function comments_show($ref, $bcollection_mode = false, $bRecursive = true, $level = 1) 
@@ -139,8 +173,8 @@ function comments_show($ref, $bcollection_mode = false, $bRecursive = true, $lev
 				);
 			}
 		</script>		
-
-		<div id="comments_container">		
+		
+		<div id="comments_container">				
 		<div id="comment_form">
 			<form class="comment_form" action="javascript:void();" method="">
 				<input id="comment_form_collection_ref" type="hidden" name="collection_ref" value="${collection_ref}"></input>
@@ -240,11 +274,19 @@ EOT;
 					
 					<div id="CommentFlagContainer${thisRef}" style="display: none;">
 						<form class="comment_form" action="javascript:void();" method="">
-							<input type="hidden" name="comment_flag_ref" value="${thisRef}"></input>
-							<textarea class="CommentFlagReason" name="comment_flag_reason" placeholder="${lang['comments_flag-reason-placeholder']}"></textarea><br />							
+							<input type="hidden" name="comment_flag_ref" value="${thisRef}"></input>														
+							<input type="hidden" name="comment_flag_url" value=""></input>														
+							<textarea class="CommentFlagReason" maxlength="${comments_max_characters}" name="comment_flag_reason" placeholder="${lang['comments_flag-reason-placeholder']}"></textarea><br />							
+EOT;
+				
+				if ($anonymous_mode) echo<<<EOT
+							
 							<input class="CommentFlagFullname" id="comment_flag_fullname" type="text" name="fullname" placeholder="${lang['comments_fullname-placeholder']}"></input>
 							<input class="CommentFlagEmail" id="comment_flag_email" type="text" name="email" placeholder="${lang['comments_email-placeholder']}"></input><br />							
-							<input class="CommentFlagSubmit" type="submit" value="${lang['comments_submit-button-label']}" onClick="${validateFunction} { submitForm(this); } else { alert ('${lang['comments_validation-fields-failed']}') }"></input>
+
+EOT;
+				echo<<<EOT
+							<input class="CommentFlagSubmit" type="submit" value="${lang['comments_submit-button-label']}" onClick="comment_flag_url.value=document.URL; ${validateFunction} { submitForm(this); } else { alert ('${lang['comments_validation-fields-failed']}') }"></input>
 						</form>
 					</div>				
 EOT;
