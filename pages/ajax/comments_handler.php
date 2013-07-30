@@ -59,8 +59,6 @@ function comments_submit()
 
 function comments_show($ref, $bcollection_mode = false, $bRecursive = true, $level = 1) 
 	{					
-
-	global $regex_email;
 	
 	# MEH, on behalf of Montala, 23-Jul-2013
 	
@@ -69,7 +67,7 @@ function comments_show($ref, $bcollection_mode = false, $bRecursive = true, $lev
 	# bRecursive		= flag to indicate whether to recursively show comments, defaults to true, will be set to false if depth limit reached
 	# level				= used for recursion for display indentation etc.	
 	
-	global $username, $anonymous_login, $lang, $comments_max_characters, $comments_flat_view;
+	global $username, $anonymous_login, $lang, $comments_max_characters, $comments_flat_view, $regex_email, $comments_show_anonymous_email_address;
 	
 	$anonymous_mode = ((!isset ($username)) || (isset ($username) && $username == $anonymous_login));		// show extra fields if commenting anonymously
 	
@@ -194,7 +192,7 @@ EOT;
 			echo "<div class='CommentEntryInfo'>";						
 			echo "<div class='CommentEntryInfoCommenter'>";			
 			echo "<div class='CommentEntryInfoCommenterName'>" . htmlspecialchars($comment['name']) . "</div>";		
-			if ($lang['comments_show-anonymous-email_address'] && $comment['email'] != "")
+			if ($comments_show_anonymous_email_address && $comment['email'] != "")
 				{
 				echo "<div class='CommentEntryInfoCommenterEmail'>" . htmlspecialchars ($comment['email']) . "</div>";
 				}
