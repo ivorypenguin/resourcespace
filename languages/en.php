@@ -1715,7 +1715,7 @@ $lang["textfile"]="Text File";
 # Comments field titles, prompts and default placeholders
 $lang['comments_box-title']="Comments";
 $lang['comments_box-policy']="Comments Policy";
-$lang['comments_box-policy-placeholder']="Please add text to \"comments-policy\" entry in the site text";		# only shown if Admin User and no policy set
+$lang['comments_box-policy-placeholder']="Please add text to \"comments_policy\" entry in the site text";		# only shown if Admin User and no policy set
 $lang['comments_in-response-to']="in response to";
 $lang['comments_respond-to-this-comment']="respond to this comment";
 $lang['comments_in-response-to-on']="on";
