@@ -116,7 +116,7 @@ if (getval("regenexif","")!="")
 # Establish if this is a metadata template resource, so we can switch off certain unnecessary features
 $is_template=(isset($metadata_template_resource_type) && $resource["resource_type"]==$metadata_template_resource_type);
 
-
+hook("editbeforeheader");
 
 # -----------------------------------
 # 			PERFORM SAVE
@@ -147,7 +147,7 @@ if ((getval("autosave","")!="") || (getval("tweak","")=="" && getval("submitted"
 				$save_errors['collectionname']=$lang["requiredfield"];
 			}
 		}		
-		
+
 		if (($save_errors===true || $is_template)&&(getval("tweak","")==""))
 			{
 			if ($ref>0 && getval("save","")!="")

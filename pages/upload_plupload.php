@@ -337,7 +337,7 @@ jQuery(document).ready(function () {
 
     var uploader = jQuery('#pluploader').pluploadQueue();
 
-
+	<?php hook('upload_uploader_defined'); ?>
 
 	//Show link to java if chunking not supported 
 	if(!uploader.features.chunks){jQuery('#plupload_support').slideDown();}
