@@ -4,7 +4,7 @@ include "../../include/db.php";
 include "../../include/general.php";
 include "../../include/authenticate.php";
 
-$regex_email = "[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,4}";	// MEH: rudimentary regex to validate an email address - this is NOT a complete check
+$regex_email = "[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}";	// MEH: rudimentary regex to validate an email address - this is NOT a complete check
 
 function comments_submit() 
 	{		
