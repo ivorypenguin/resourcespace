@@ -2139,3 +2139,13 @@ $default_advanced_search_mode="Global";
 
 #Option to turn off metadata download in view.php
 $metadata_download=true;
+
+# settings for commenting on resources - currently not enabled by default
+# MEH / Montala
+
+# $comments_collection_enable=false; 		# reserved for future use
+$comments_resource_enable=false;			# allow users to make comments on resources
+$comments_flat_view=false;					# by default, show in a threaded (indented view)
+$comments_responses_max_level=10 ;			# maximum number of nested comments / threads
+$comments_max_characters=200;				# maximum number of characters for a comment
+$comments_email_notification_address="";	# email address to use for flagged comment notifications
