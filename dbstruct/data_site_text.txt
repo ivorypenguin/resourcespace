@@ -564,6 +564,3 @@ all,comments_policy,"",394,en,,,
 all,comments_removal_message,"",395,en,,,
 all,comments_flag_notification_email_subject,"",396,en,,,
 all,comments_flag_notification_email_body,"",397,en,,,
-
-
-
