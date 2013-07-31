@@ -8,7 +8,7 @@ $regex_email = "[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}";	// MEH: rudimen
 
 function comments_submit() 
 	{		
-	global $username, $anonymous_login, $userref, $regex_email, $comments_max_characters, $site_text, $lang, $email_notify, $comments_email_notification_address;
+	global $username, $anonymous_login, $userref, $regex_email, $comments_max_characters, $lang, $email_notify, $comments_email_notification_address;
 	
 	if ($username == $anonymous_login && (getvalescaped("fullname","") == "" || preg_match ("/${regex_email}/", getvalescaped("email","")) === false)) exit;
 	
@@ -31,11 +31,11 @@ function comments_submit()
 		
 		if ($comment_body == "") exit;
 		
-		$email_subject = (isset ($site_text['comments_flag_notification_email_subject']) && $site_text['comments_flag_notification_email_subject']!="") ?
-			$site_text['comments_flag_notification_email_subject'] : $lang['comments_flag-email-default-subject'];
+		$email_subject = (text("comments_flag_notification_email_subject")!="") ?
+			text("comments_flag_notification_email_subject") : $lang['comments_flag-email-default-subject'];
 			
-		$email_body = (isset ($site_text['comments_flag_notification_email_body']) && $site_text['comments_flag_notification_email_body']!="") ?
-			$site_text['comments_flag_notification_email_body'] : $lang['comments_flag-email-default-body'];
+		$email_body = (text("comments_flag_notification_email_body")!="") ?
+			text("comments_flag_notification_email_body") : $lang['comments_flag-email-default-body'];
 		
 		$email_body .=	"\r\n\r\n\"${comment_body}\"";
 		$email_body .= "\r\n\r\n${comment_flag_url}";		
@@ -111,7 +111,7 @@ function comments_show($ref, $bcollection_mode = false, $bRecursive = true, $lev
 	
 	// set 'name' to either user.fullname, comment.fullname or default 'Anonymous'
 	
-	$sql = 	"select c.ref, c.ref_parent, c.created, c.body, c.website_url, c.email, parent.created 'responseToDateTime', " .			
+	$sql = 	"select c.ref, c.ref_parent, c.hide, c.created, c.body, c.website_url, c.email, parent.created 'responseToDateTime', " .			
 			"IFNULL(IFNULL(u.fullname, c.fullname), '" . $lang['comments_anonymous-user'] . "') 'name' ," .  			
 			"IFNULL(IFNULL(parent.fullname, parent.fullname), '" . $lang['comments_anonymous-user'] . "') 'responseToName' " .  			
 			"from comment c left join (user u) on (c.user_ref = u.ref) left join (comment parent) on (c.ref_parent = parent.ref) ";
@@ -261,7 +261,21 @@ EOT;
 			echo "</div>";	// end CommentEntryInfoContainer
 			
 			echo "<div class='CommentBody'>";			
-			echo htmlspecialchars ($comment['body']);
+			if ($comment['hide'])
+			{
+			if (text("comments_removal_message")!="")
+				{
+					echo text("comments_removal_message");
+				}
+			else
+				{
+					echo $lang["hidden"];
+				}
+			}
+			else
+				{
+				echo htmlspecialchars ($comment['body']);
+				}
 			echo "</div>";			
 			
 			# ----- Form area
