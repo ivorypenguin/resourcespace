@@ -26,7 +26,7 @@ $collectionid=getvalescaped("col", false);
 
 foreach ($fieldrefs as $fieldref){
 	$fieldref_info= sql_query("select exiftool_field,exiftool_filter,title,resource_type,name from resource_type_field where ref='$fieldref'");
-
+	if (!isset($fieldref_info[0])){die("field $fieldref doesn't exist");}
 	$title=$fieldref_info[0]["title"];
 	$name=$fieldref_info[0]["name"];
 	$exiftool_filter=$fieldref_info[0]["exiftool_filter"];
