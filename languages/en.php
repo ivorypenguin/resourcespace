@@ -1734,7 +1734,7 @@ $lang['comments_flag-email-default-subject']="Notification of flagged comment";
 $lang['comments_flag-email-default-body']="This comment has been flagged:";
 $lang['comments_flag-email-flagged-by']="Flagged by:";
 $lang['comments_flag-email-flagged-reason']="Reason for flagging:";
-
-
+$lang['comments_hide-comment-text-link']="Hide comment";
+$lang['comments_hide-comment-text-confirm']="Are you sure that you want to hide the text for this comment?";
 
 
