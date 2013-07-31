@@ -418,9 +418,7 @@ foreach ($refs as $ref){
 }
 }
 */
-
-
-
+imap_expunge($imap);
 imap_close($imap);
 clear_process_lock("checkmail");
 
