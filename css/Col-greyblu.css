@@ -179,5 +179,7 @@ input[readonly] {color: #FFFFFF;}
 	{
     -webkit-box-shadow: 4px 5px 5px rgba(0, 0, 0, .15);
     -moz-box-shadow: 4px 5px 5px rgba(0, 0, 0, .15);
-    box-shadow: 4px 5px 5px rgba(0, 0, 0, .15);	}
+    box-shadow: 4px 5px 5px rgba(0, 0, 0, .15);
     }
+
+.CommentFlag { background-image: url('../gfx/greyblu/interface/FlagOff.png'); }

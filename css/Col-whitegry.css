@@ -219,4 +219,5 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
     background: url(../gfx/whitegry/interface/HomeArrowDown.gif) no-repeat top left;    
      background-position:0px 6px; 
     }
-    
+	
+.CommentFlag { background-image: url('../gfx/whitegry/interface/FlagOff.png'); }

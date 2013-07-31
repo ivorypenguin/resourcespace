@@ -172,3 +172,5 @@ input[readonly] {color: #FFFFFF;}
     background: url(../gfx/black/interface/HomeArrowDown.gif) no-repeat top left;    
      background-position:0px 6px; 
     }
+	
+.CommentFlag { background-image: url('../gfx/black/interface/FlagOff.png'); }
