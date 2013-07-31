@@ -553,8 +553,8 @@ li.plupload_droptext
 .CommentEntryInfoCommenterWebsite{ font-size: 7pt;}
 .CommentEntryInfoDetails { display: table-cell; }
 .CommentEntryInfoFlag{display: table-cell; text-align: right;}
-.CommentFlag{display: inline; padding-left: 20px; background: url('../gfx/interface/CommentFlag.png'); background-repeat:no-repeat; background-position: left top; }
-.CommentFlagged{display: inline; padding-left: 20px; background: url('../gfx/interface/CommentFlagged.png'); background-repeat:no-repeat; background-position: left top; }
+.CommentFlag{display: inline; padding-left: 16px; background: url('../gfx/interface/Black+Whitegry-Flag-Off.png'); background-repeat:no-repeat; background-position: left top; }
+.CommentFlagged{display: inline; padding-left: 16px; background: url('../gfx/interface/Flag-On.png'); background-repeat:no-repeat; background-position: left top; }
 .CommentBody{width: 100%; margin-top: 5px; margin-bottom: 5px;}
 .CommentFlagReason{width: 100%; height: 60px;}
 .CommentFlagFullname {margin-top: 5px; width: 150px; font-size: 1em;}
