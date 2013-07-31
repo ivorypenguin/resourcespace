@@ -12,6 +12,14 @@ function comments_submit()
 	
 	if ($username == $anonymous_login && (getvalescaped("fullname","") == "" || preg_match ("/${regex_email}/", getvalescaped("email","")) === false)) exit;
 	
+	$comment_to_hide = getvalescaped("comment_to_hide","");
+	
+	if (($comment_to_hide != "") && (checkPerm("o"))) {	
+		$sql = "update comment set hide=1 where ref=$comment_to_hide";
+		sql_query ($sql);		
+		exit;
+	}
+	
 	$comment_flag_ref = getvalescaped("comment_flag_ref","");	
 	
 	// --- process flag request
@@ -156,10 +164,10 @@ function comments_show($ref, $bcollection_mode = false, $bRecursive = true, $lev
 				return (String(obj.comment_flag_reason.value).trim() != "");				
 			}
 		
-			function submitForm(obj) {			
+			function submitForm(obj) {				
 				jQuery.post(
 					'ajax/comments_handler.php',
-					jQuery(obj).parent().serialize(),
+					jQuery(obj).serialize(),
 					function()
 					{
 						jQuery.get(
@@ -197,7 +205,7 @@ EOT;
 			
 		echo<<<EOT
 				<br />				
-				<input class="CommentFormSubmit" type="submit" value="${lang['comments_submit-button-label']}" onClick="${validateFunction} { submitForm(this) } else { alert ('${lang['comments_validation-fields-failed']}'); } ;"></input>
+				<input class="CommentFormSubmit" type="submit" value="${lang['comments_submit-button-label']}" onClick="${validateFunction} { submitForm(this.parentNode) } else { alert ('${lang['comments_validation-fields-failed']}'); } ;"></input>
 			</form>			
 		</div>	<!-- end of comments_container -->
 EOT;
@@ -255,7 +263,20 @@ EOT;
 					</div>
 EOT;
 
-				}				
+				}							
+			
+			if (checkPerm("o")) {
+				echo <<<EOT
+				
+				<form class="comment_removal_form" action="javascript:void();" method="">
+					<input type="hidden" name="comment_to_hide" value="${thisRef}"></input>					
+					<a href="javascript:void()" onclick="if (confirm ('${lang['comments_hide-comment-text-confirm']}')) submitForm(this.parentNode);">${lang['comments_hide-comment-text-link']}</a>					
+				</form>
+				
+EOT;
+
+			}
+			
 			echo "</div>";		// end of CommentEntryInfoFlag
 			echo "</div>";	// end of CommentEntryInfoLine			
 			echo "</div>";	// end CommentEntryInfoContainer
@@ -300,7 +321,7 @@ EOT;
 
 EOT;
 				echo<<<EOT
-							<input class="CommentFlagSubmit" type="submit" value="${lang['comments_submit-button-label']}" onClick="comment_flag_url.value=document.URL; ${validateFunction} { submitForm(this); } else { alert ('${lang['comments_validation-fields-failed']}') }"></input>
+							<input class="CommentFlagSubmit" type="submit" value="${lang['comments_submit-button-label']}" onClick="comment_flag_url.value=document.URL; ${validateFunction} { submitForm(this.parentNode); } else { alert ('${lang['comments_validation-fields-failed']}') }"></input>
 						</form>
 					</div>				
 EOT;
