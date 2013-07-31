@@ -13,7 +13,7 @@
 	if (isset($result[$n]["thm_url"])) {$thm_url=$result[$n]["thm_url"];} # Option to override thumbnail image in results, e.g. by plugin using process_Search_results hook above
 	?>
 
-	<table border="0" class="ResourceAlign<?php if(!hook("replaceresourcetypeicon")){?><?php if (in_array($result[$n]["resource_type"],$videotypes)) { ?> IconVideo<?php } ?><?php } //end hook replaceresoucetypeicon?>">
+	<table border="0" class="ResourceAlign<?php if(!hook("replaceresourcetypeicon")){ if ($resource_type_icons) { ?> IconResourceType<?php echo $result[$n]["resource_type"]; } elseif (in_array($result[$n]["resource_type"],$videotypes)) { ?> IconVideo<?php } ?><?php } //end hook replaceresoucetypeicon?>">
 	<?php hook("resourcetop")?>
 	<tr><td>
 	<a href="<?php echo $url?>"  onClick="return CentralSpaceLoad(this,true);" <?php if (!$infobox) { ?>title="<?php echo str_replace(array("\"","'"),"",htmlspecialchars(i18n_get_translated($result[$n]["field".$view_title_field])))?>"<?php } ?>><?php if ($result[$n]["has_image"]==1) { ?><img <?php if ($result[$n]["thumb_width"]!="" && $result[$n]["thumb_width"]!=0 && $result[$n]["thumb_height"]!="") { ?> width="<?php echo $result[$n]["thumb_width"]?>" height="<?php echo $result[$n]["thumb_height"]?>" <?php } ?> src="<?php echo $thm_url ?>" class="ImageBorder"

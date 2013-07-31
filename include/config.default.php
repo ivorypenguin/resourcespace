@@ -559,6 +559,9 @@ $speedtaggingfield=1;
 
 # A list of types which get the extra video icon in the search results
 $videotypes=array(3);
+# add icons for resource types - add style IconResourceType<resourcetyperef> and 
+# IconResourceTypeLarge<resourcetyperef> similar to videotypes, this option overrides $videtypes option
+$resource_type_icons=false;
 
 # Sets the default colour theme (defaults to white)
 $defaulttheme="whitegry";
