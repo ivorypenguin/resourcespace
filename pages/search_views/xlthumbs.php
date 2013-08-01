@@ -3,11 +3,13 @@
 <!--Resource Panel-->
 <div class="ResourcePanelShellLarge" id="ResourceShell<?php echo htmlspecialchars($ref)?>">
 	<div class="ResourcePanelLarge">
-
+    <?php  if ($resource_type_icons) { ?>
+     <div class="ResourceTypeIcon IconResourceTypeLarge<?php echo $result[$n]["resource_type"];  ?>"></div>
+    <?php }  ?>
 <?php if (!hook("renderimagelargethumb")) {
 	$access=get_resource_access($result[$n]);
 	$use_watermark=check_use_watermark();?>
-	<table border="0" class="ResourceAlignLarge<?php if(!hook("replaceresourcetypeicon")){ if ($resource_type_icons) { ?> IconResourceTypeLarge<?php echo $result[$n]["resource_type"]; } elseif (in_array($result[$n]["resource_type"],$videotypes)) { ?> IconVideoLarge<?php } ?><?php } //end hook replaceresoucetypeicon?>">
+	<table border="0" class="ResourceAlignLarge<?php if(!hook("replaceresourcetypeicon")){  if (in_array($result[$n]["resource_type"],$videotypes)) { ?> IconVideoLarge<?php } ?><?php } //end hook replaceresoucetypeicon?>">
 	<?php hook("resourcetop")?>
 	<tr><td>
     <?php
