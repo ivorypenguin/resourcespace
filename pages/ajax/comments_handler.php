@@ -35,7 +35,7 @@ function comments_submit()
 		$comment_flag_url .= "#comment${comment_flag_ref}";		// add comment anchor to end of URL
 		
 		$comment_body = sql_query("select body from comment where ref=${comment_flag_ref}");		
-		$comment_body = (isset ($comment_body[0]['body']) && $comment_body[0]['body']!="") ? $comment_body[0]['body'] : "";
+		$comment_body = (!empty($comment_body[0]['body'])) ? $comment_body[0]['body'] : "";
 		
 		if ($comment_body == "") exit;
 		
@@ -51,8 +51,8 @@ function comments_submit()
 		$email_body .= "\r\n\r\n${lang['comments_flag-email-flagged-reason']} \"${comment_flag_reason}\"";
 		
 		$email_to = (
-				(!isset ($comments_email_notification_address)) || 		
-				($comments_email_notification_address) == ""				
+				empty ($comments_email_notification_address)
+				
 				// (preg_match ("/${regex_email}/", $comments_email_notification_address) === false)		// TODO: make this regex better
 			) ? $email_notify : $comments_email_notification_address;
 		
@@ -105,7 +105,7 @@ function comments_show($ref, $bcollection_mode = false, $bRecursive = true, $lev
 	
 	global $username, $anonymous_login, $lang, $comments_max_characters, $comments_flat_view, $regex_email, $comments_show_anonymous_email_address;
 	
-	$anonymous_mode = ((!isset ($username)) || (isset ($username) && $username == $anonymous_login));		// show extra fields if commenting anonymously
+	$anonymous_mode = (empty ($username) || $username == $anonymous_login);		// show extra fields if commenting anonymously
 	
 	if ($comments_flat_view) $bRecursive = false;	
 			
@@ -237,11 +237,15 @@ EOT;
 				echo "<div class='CommentEntryInfoCommenterWebsite'>" . htmlspecialchars ($comment['website_url']) . "</div>";
 				}								
 			echo "</div>";			
-			echo "<div class='CommentEntryInfoDetails'>" . nicedate($comment["created"],true). " ";			
+			
+			$createdDate = new DateTime($comment["created"]);
+			
+			echo "<div class='CommentEntryInfoDetails'>" . $createdDate->format('D') . " " . nicedate($comment["created"],true). " ";			
 			if ($comment['responseToDateTime']!="")
 				{
 				$responseToName = htmlspecialchars ($comment['responseToName']);
-				$responseToDateTime = nicedate($comment['responseToDateTime'], true);
+				$responseToDate = new DateTime($comment["responseToDateTime"]);				
+				$responseToDateTime =  $responseToDate->format('D') . " " . nicedate($comment['responseToDateTime'], true);						
 				$jumpAnchorID = "comment" . $comment['ref_parent'];								
 				echo $lang['comments_in-response-to'] . "<br /><a class='.smoothscroll' rel='' href='#${jumpAnchorID}'>${responseToName} " . $lang['comments_in-response-to-on'] . " ${responseToDateTime}</a>";				
 				}						
@@ -343,12 +347,12 @@ EOT;
 	
 if ($_SERVER['REQUEST_METHOD'] == "POST") 
 	{
-	if (isset ($username)) comments_submit();
+	if (!empty($username)) comments_submit();
 	} 
 else 
 	{
-	$ref = (isset ($_GET['ref'])) ? $_GET['ref'] : "";
-	$collection_mode = (isset ($_GET['collection_mode']) && $_GET['collection_mode']);				
+	$ref = (!empty ($_GET['ref'])) ? $_GET['ref'] : "";
+	$collection_mode = (!empty ($_GET['collection_mode']));				
 	comments_show($ref, $collection_mode);				
 	}
 	
