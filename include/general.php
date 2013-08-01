@@ -1308,7 +1308,7 @@ function filesize2bytes($str) {
     $bytes = floatval($str);
 
     if (preg_match('#([KMGTP]?B)$#si', $str, $matches) && !empty($bytes_array[strtolower($matches[1])])) {
-        $bytes *= $bytes_array[$matches[1]];
+        $bytes *= $bytes_array[strtolower($matches[1])];
     }
 
     $bytes = intval(round($bytes, 2));
