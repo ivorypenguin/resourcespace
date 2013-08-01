@@ -508,6 +508,8 @@ $default_perpage_list=15;
 
 # Group based upload folders? (separate local upload folders for each group)
 $groupuploadfolders=false;
+# Username based upload folders? (separate local upload folders for each user based on username)
+$useruploadfolders=false;
 
 # Enable order by rating? (require rating field updating to rating column)
 $orderbyrating=false;

@@ -41,7 +41,14 @@ if ($use_local)
 		{
 		$folder.= DIRECTORY_SEPARATOR . $usergroup;
 		}
-
+    if ($useruploadfolders) // Test if we are using sub folders assigned to groups.
+    	{
+    	$udata=get_user($userref);
+    	$folderadd=htmlspecialchars($udata["username"]);
+    	
+    	$folder.= DIRECTORY_SEPARATOR .  $folderadd;
+    	}
+    
 	if (!file_exists($folder)) // If the upload folder does not exists, we try to create it.
 		{
 		mkdir($folder,0777);
