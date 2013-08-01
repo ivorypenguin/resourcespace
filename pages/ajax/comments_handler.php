@@ -4,7 +4,7 @@ include "../../include/db.php";
 include "../../include/general.php";
 include "../../include/authenticate.php";
 
-$regex_email = "[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}";	// MEH: rudimentary regex to validate an email address - this is NOT a complete check
+$regex_email = "[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}";	// rudimentary regex to validate an email address - this is NOT a complete check
 
 function comments_submit() 
 	{		
@@ -52,17 +52,13 @@ function comments_submit()
 		
 		$email_to = (
 				(!isset ($comments_email_notification_address)) || 		
-				($comments_email_notification_address) == ""
-				
-				// (preg_match ("/${regex_email}/", $comments_email_notification_address) === false)		// TODO: possible bug - fix this regex?  // MEH
+				($comments_email_notification_address) == ""				
+				// (preg_match ("/${regex_email}/", $comments_email_notification_address) === false)		// TODO: make this regex better
 			) ? $email_notify : $comments_email_notification_address;
 		
 		setcookie("comment${comment_flag_ref}flagged", "true");
 		
 		send_mail ($email_to, $email_subject, $email_body);
-		
-		// file_put_contents("debug.txt", "${email_to}, ${email_subject}, ${email_body}");		// TODO: remove this debug line // MEH
-		
 		exit;
 	}
 	
@@ -101,8 +97,6 @@ function comments_submit()
 
 function comments_show($ref, $bcollection_mode = false, $bRecursive = true, $level = 1) 
 	{					
-	
-	# MEH, on behalf of Montala, 23-Jul-2013
 	
 	# ref 				= the reference of the resource, collection or the comment (if called from itself recursively) 
 	# bcollection_mode	= boolean flag, false(default) == show comments for resources, true == show comments for collection

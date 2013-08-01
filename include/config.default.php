@@ -2144,7 +2144,6 @@ $default_advanced_search_mode="Global";
 $metadata_download=true;
 
 # settings for commenting on resources - currently not enabled by default
-# MEH / Montala
 
 # $comments_collection_enable=false; 			# reserved for future use
 $comments_resource_enable=false;				# allow users to make comments on resources
