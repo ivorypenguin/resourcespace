@@ -307,8 +307,12 @@ jQuery(document).ready(function () {
 		// General settings
 		runtimes : '<?php echo $plupload_runtimes ?>',
 		url: '<?php echo $baseurl_short?>pages/upload_plupload.php?replace=<?php echo urlencode($replace) ?>&alternative=<?php echo urlencode($alternative) ?>&collection_add=<?php echo urlencode($collection_add)?>&resource_type=<?php echo urlencode($resource_type)?>&no_exif=<?php echo urlencode(getval("no_exif",""))?>&autorotate=<?php echo urlencode(getval("autorotate",""))?>&replace_resource=<?php echo urlencode($replace_resource)?>&archive=<?php echo urlencode($archive) ?>',
-		chunk_size : '5mb',
-		<?php if (isset($plupload_max_file_size)) echo "max_file_size: '$plupload_max_file_size',"; ?>
+		 <?php if ($plupload_chunk_size!="")
+                        {?>
+                        chunk_size: '<?php echo $plupload_chunk_size; ?>',
+                        <?php
+                        }
+		if (isset($plupload_max_file_size)) echo "max_file_size: '$plupload_max_file_size',"; ?>
 		multiple_queues: true,
 
 		<?php if ($replace_resource > 0){?>

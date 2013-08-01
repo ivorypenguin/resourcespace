@@ -1268,6 +1268,9 @@ $top_nav_upload_type="plupload"; # The upload type. Options are plupload, ftp, l
 # Configure the maximum upload file size; this directly translates into plupload's max_file_size if set
 # $plupload_max_file_size = '50M';
 
+# You can set the following line to ''  to disable chunking. May resolve issues with flash uploader.
+$plupload_chunk_size='5mb';
+
 # Allow users to delete resources?
 # (Can also be controlled on a more granular level with the "D" restrictive permission.)
 $allow_resource_deletion = true;
