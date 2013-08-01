@@ -113,8 +113,8 @@ function comments_show($ref, $bcollection_mode = false, $bRecursive = true, $lev
 	
 	// set 'name' to either user.fullname, comment.fullname or default 'Anonymous'
 	
-	$sql = 	"select c.ref, c.ref_parent, c.hide, c.created, c.body, c.website_url, c.email, parent.created 'responseToDateTime', " .			
-			"IFNULL(IFNULL(u.fullname, c.fullname), '" . $lang['comments_anonymous-user'] . "') 'name' ," .  			
+	$sql = 	"select c.ref, c.ref_parent, c.hide, c.created, c.body, c.website_url, c.email, u.username, parent.created 'responseToDateTime', " .			
+			"IFNULL(IFNULL(c.fullname, u.fullname), '" . $lang['comments_anonymous-user'] . "') 'name' ," .  			
 			"IFNULL(IFNULL(parent.fullname, parent.fullname), '" . $lang['comments_anonymous-user'] . "') 'responseToName' " .  			
 			"from comment c left join (user u) on (c.user_ref = u.ref) left join (comment parent) on (c.ref_parent = parent.ref) ";
 			
@@ -226,13 +226,17 @@ EOT;
 			
 			echo "<div class='CommentEntryInfoContainer'>";			
 			echo "<div class='CommentEntryInfo'>";						
-			echo "<div class='CommentEntryInfoCommenter'>";			
+			echo "<div class='CommentEntryInfoCommenter'>";						
+			
+			if (empty($comment['name'])) $comment['name'] = $comment['username'];
+			
 			echo "<div class='CommentEntryInfoCommenterName'>" . htmlspecialchars($comment['name']) . "</div>";		
-			if ($comments_show_anonymous_email_address && $comment['email'] != "")
+			
+			if ($comments_show_anonymous_email_address && !empty($comment['email']))
 				{
 				echo "<div class='CommentEntryInfoCommenterEmail'>" . htmlspecialchars ($comment['email']) . "</div>";
 				}
-			if  ($comment['website_url']!="")
+			if  (!empty ($comment['website_url']))
 				{
 				echo "<div class='CommentEntryInfoCommenterWebsite'>" . htmlspecialchars ($comment['website_url']) . "</div>";
 				}								
@@ -268,7 +272,7 @@ EOT;
 				
 				<form class="comment_removal_form" action="javascript:void();" method="">
 					<input type="hidden" name="comment_to_hide" value="${thisRef}"></input>					
-					<a href="javascript:void()" onclick="if (confirm ('${lang['comments_hide-comment-text-confirm']}')) submitForm(this.parentNode);">${lang['comments_hide-comment-text-link']}</a>					
+					<a href="javascript:void()" onclick="if (confirm ('${lang['comments_hide-comment-text-confirm']}')) submitForm(this.parentNode);">&gt; ${lang['comments_hide-comment-text-link']}</a>					
 				</form>
 				
 EOT;
