@@ -11,13 +11,13 @@
 					<?php
 						if (isset ($comments_policy_external_url) &&  $comments_policy_external_url!="") 
 							{
-							echo "<a href='$comments_policy_external_url'>&gt;&nbsp;${lang['comments_box-policy']}</a>";
+							echo "<a href='$comments_policy_external_url' target='_blank'>&gt;&nbsp;${lang['comments_box-policy']}</a>";
 							}
 						else
 							{
 							if (text("comments_policy")!="") 
 								{								
-								echo "<a href='content.php?content=comments_policy'>&gt;&nbsp;${lang['comments_box-policy']}</a>";
+								echo "<a href='content.php?content=comments_policy' target='_blank'>&gt;&nbsp;${lang['comments_box-policy']}</a>";
 								}
 							else
 								{
