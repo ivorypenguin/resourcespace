@@ -221,3 +221,6 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', end
     }
 	
 .CommentFlag { background-image: url('../gfx/whitegry/interface/FlagOff.png'); }
+
+.CommentEntryInfoCommenterName { color: #3070bf; }
+.CommentBody { color: #000000}

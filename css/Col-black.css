@@ -174,3 +174,6 @@ input[readonly] {color: #FFFFFF;}
     }
 	
 .CommentFlag { background-image: url('../gfx/black/interface/FlagOff.png'); }
+
+.CommentEntryInfoCommenterName { color: #000000; }
+.CommentBody { color: #ffffff}
