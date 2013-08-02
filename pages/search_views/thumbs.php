@@ -125,8 +125,10 @@
 		<?php } ?>
 
 		<!-- Email icon -->
+		<?php if(!hook("iconemail")) { ?>
 		<?php if ($allow_share && $k=="") { ?><span class="IconEmail"><a href="<?php echo $baseurl_short?>pages/resource_email.php?ref=<?php echo urlencode($ref)?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>&k=<?php echo urlencode($k)?>"  onClick="return CentralSpaceLoad(this,true);" title="<?php echo $lang["emailresource"]?>"><img src="<?php echo $baseurl_short?>gfx/interface/sp.gif" alt="" width="16" height="12" /></a></span>
 		<?php $showkeyemail = true; ?>
+		<?php } ?>
 		<?php } ?>
 
 		<!-- Star icon -->
