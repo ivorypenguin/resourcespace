@@ -110,8 +110,6 @@ foreach ($fields as $field)
 		}
 	}
 
-
-
 ?><tr><td colspan=3 class="permheader"><?php echo $lang["resourcetypes"] ?></td></tr><?php
 
 # ------------ View access to resource types
@@ -121,15 +119,17 @@ foreach ($rtypes as $rtype)
 	DrawOption("T" . $rtype["ref"], $lang["can_see_resource_type"] ." '" . lang_or_i18n_get_translated($rtype["name"], "resourcetype-") . "'", true);
 	}
 
-
 # ------------ Restricted access to resource types
-$rtypes=sql_query("select * from resource_type order by name");
 foreach ($rtypes as $rtype)
 	{
 	DrawOption("X" . $rtype["ref"], $lang["restricted_access_only_to_resource_type"] . " '" . lang_or_i18n_get_translated($rtype["name"], "resourcetype-") . "'", false);
 	}
 
-
+# ------------ Restricted upload for resource of type
+foreach ($rtypes as $rtype)
+	{
+	DrawOption("XU" . $rtype["ref"], $lang["restricted_upload_for_resource_of_type"] . " '" . lang_or_i18n_get_translated($rtype["name"], "resourcetype-") . "'", false);
+	}
 
 ?><tr><td colspan=3 class="permheader"><?php echo $lang["resource_creation_and_management"] ?></td></tr><?php
 
