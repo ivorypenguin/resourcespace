@@ -65,7 +65,14 @@ if ($use_local) // Test if we fetch files from local upload folder.
 		$folder.= DIRECTORY_SEPARATOR . $usergroup;
 		}
 	} // Test if we fetch files from local upload folder.
-
+    if ($useruploadfolders) // Test if we are using sub folders assigned to groups.
+    	{
+    	$udata=get_user($userref);
+    	$folderadd=htmlspecialchars($udata["username"]);
+    	
+    	$folder.=   $folderadd;
+    	}
+    
 $uploadfiles=$_POST["uploadfiles"];
 if (!hook("alternativebatchupload")) {
 $done=0;$failed=0;
