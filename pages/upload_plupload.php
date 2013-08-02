@@ -560,7 +560,7 @@ if (getvalescaped("upload_a_file","")!="" || getvalescaped("replace_resource",""
 <?php if ($status!="") { ?><?php echo $status?><?php } ?>
 
 <form class="pluploadform" action="<?php echo $baseurl_short?>pages/upload_plupload.php">
-	<div id="pluploader" style="height: 330px;">
+	<div id="pluploader">
 	</div>
 </form>
 
