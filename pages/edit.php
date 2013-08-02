@@ -131,7 +131,7 @@ if ((getval("autosave","")!="") || (getval("tweak","")=="" && getval("submitted"
 
 		# Upload template: Change resource type
 		$resource_type=getvalescaped("resource_type","");
-		if ($resource_type!="")
+		if ($resource_type!="" && !checkperm("XU{$resource_type}"))		// only if resource specified and user has permission for that resource type
 			{
 			update_resource_type($ref,$resource_type);
 			$resource=get_resource_data($ref,false); # Reload resource data.
@@ -518,6 +518,7 @@ onChange="<?php if ($ref>0) { ?>if (confirm('<?php echo $lang["editresourcetypew
 $types=get_resource_types();
 for ($n=0;$n<count($types);$n++)
 	{
+	if (checkperm("XU{$types[$n]["ref"]}") && $resource["resource_type"]!=$types[$n]["ref"]) continue;	// skip showing a resource type that we do not to have permission to change to (unless it is currently set to that)
 	?><option value="<?php echo $types[$n]["ref"]?>" <?php if ($resource["resource_type"]==$types[$n]["ref"]) {?>selected<?php } ?>><?php echo htmlspecialchars($types[$n]["name"])?></option><?php
 	}
 ?></select>
