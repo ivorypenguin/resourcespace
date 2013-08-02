@@ -929,9 +929,14 @@ function get_usergroup($ref)
 if (!function_exists("get_user")){
 function get_user($ref)
 	{
+	global $udata_cache;
+        if (isset($udata_cache[$ref])){
+          $return=$udata_cache[$ref];
+        } else {
+	$udata_cache[$ref]=sql_query("select * from user where ref='$ref'");
+	}
 	# Return a user's credentials.
-	$return=sql_query("select * from user where ref='$ref'");
-	if (count($return)>0) {return $return[0];} else {return false;}
+	if (count($udata_cache[$ref])>0) {return $udata_cache[$ref][0];} else {return false;}
 	}
 }
 	
