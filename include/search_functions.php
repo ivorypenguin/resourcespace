@@ -646,7 +646,7 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 			
 			# Find keyword(s)
 			$ks=explode("|",strtolower(escape_check($s[1])));
-			for($n=0;$n<count($ks);$n++){$ks[$n]=cleanse_string($ks[$n],true);} # Cleanse the string as keywords are stored without special characters
+			for($x=0;$x<count($ks);$x++){$ks[$x]=cleanse_string($ks[$x],true);} # Cleanse the string as keywords are stored without special characters
 			
 			$modifiedsearchfilter=hook("modifysearchfilter");
 			if ($modifiedsearchfilter){$ks=$modifiedsearchfilter;} 
