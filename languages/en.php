@@ -1479,6 +1479,7 @@ $lang["can_edit_all_fields"]="Can edit all fields<br>(for editable resources)";
 $lang["can_edit_field"]="Can edit field";
 $lang["can_see_resource_type"]="Can see resource type";
 $lang["restricted_access_only_to_resource_type"]="Restricted access only to resource type";
+$lang["restricted_upload_for_resource_of_type"]="Restricted upload for resource of type";
 $lang["edit_access_to_workflow_state"]="Edit access to workflow state";
 $lang["can_create_resources_and_upload_files-admins"]="Can create resources / upload files<br>(admin users; resources go to 'Active' state)";
 $lang["can_create_resources_and_upload_files-general_users"]="Can create resources / upload files<br>(normal users; resources go to 'Pending Submission' state via My Contributions)";
@@ -1736,5 +1737,4 @@ $lang['comments_flag-email-flagged-by']="Flagged by:";
 $lang['comments_flag-email-flagged-reason']="Reason for flagging:";
 $lang['comments_hide-comment-text-link']="Remove Comment";
 $lang['comments_hide-comment-text-confirm']="Are you sure that you want to remove the text for this comment?";
-
 
