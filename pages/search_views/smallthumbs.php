@@ -12,7 +12,7 @@
 		if (isset($result[$n]["col_url"])) {$col_url=$result[$n]["col_url"];} # If col_url set in data, use instead, e.g. by manipulation of data via process_search_results hook
 
 		?>
-		<table border="0" class="ResourceAlignSmall">
+		<table border="0" class="ResourceAlignSmall<?php hook('searchdecorateresourcetableclass'); ?>">
 		<?php hook("resourcetop")?>
 		<tr><td>
 		<a href="<?php echo $url?>"  onClick="return CentralSpaceLoad(this,true);" <?php if (!$infobox) { ?>title="<?php echo str_replace(array("\"","'"),"",htmlspecialchars(i18n_get_translated($result[$n]["field".$view_title_field])))?>"<?php } ?>><?php if ($result[$n]["has_image"]==1) { ?><img  src="<?php echo $col_url ?>" class="ImageBorder"

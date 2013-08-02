@@ -9,7 +9,7 @@
 <?php if (!hook("renderimagelargethumb")) {
 	$access=get_resource_access($result[$n]);
 	$use_watermark=check_use_watermark();?>
-	<table border="0" class="ResourceAlignLarge<?php if(!hook("replaceresourcetypeicon")){  if (in_array($result[$n]["resource_type"],$videotypes)) { ?> IconVideoLarge<?php } ?><?php } //end hook replaceresoucetypeicon?>">
+	<table border="0" class="ResourceAlignLarge<?php if(!hook("replaceresourcetypeicon")){  if (in_array($result[$n]["resource_type"],$videotypes)) { ?> IconVideoLarge<?php } ?><?php } hook('searchdecorateresourcetableclass'); ?>">
 	<?php hook("resourcetop")?>
 	<tr><td>
     <?php
