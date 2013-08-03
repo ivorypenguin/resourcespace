@@ -1,6 +1,6 @@
 <?php /* -------- Dynamic Keywords List ----------- */ 
 
-global $baseurl,$pagename,$edit_autosave,$n,$fields;
+global $baseurl,$pagename,$edit_autosave;
 $readonly=($pagename=="search_advanced");
 ?>
 
@@ -88,7 +88,7 @@ $readonly=($pagename=="search_advanced");
 			{
 			UpdateResultCount();
 			}
-		<?php if ($edit_autosave) {?>if (user_action) {AutoSave('<?php echo $fields[$n]["ref"] ?>');}<?php } ?>
+		<?php if ($edit_autosave) {?>if (user_action) {AutoSave('<?php echo $field["ref"] ?>');}<?php } ?>
 		}
 		
 	function resolveTranslated_<?php echo $name ?>(keyword)

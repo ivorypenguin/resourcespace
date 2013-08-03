@@ -613,8 +613,6 @@ if (getval("metadatatemplate","")!="")
 # Load resource data
 $fields=get_resource_field_data($use,$multiple,true,$originalref);
 
-
-
 # if this is a metadata template, set the metadata template title field at the top
 if (isset($metadata_template_resource_type)&&(isset($metadata_template_title_field)) && $resource["resource_type"]==$metadata_template_resource_type){
 	# recreate fields array, first with metadata template field
@@ -634,240 +632,275 @@ if (isset($metadata_template_resource_type)&&(isset($metadata_template_title_fie
 	}
 	$fields=$newfields;
 }
-?>
-</div>
-<div id="CollapsibleSections">
-<h1  class="CollapsibleSectionHead" id="ResourceMetadataSectionHead"><?php echo $lang["resourcemetadata"]?></h1>
-<div class="CollapsibleSection" id="ResourceMetadataSection<?php if ($ref==-1) echo "Upload"; ?>"><?php
-$required_fields_exempt=array(); # new array to contain required fields that have not met the display condition 
-for ($n=0;$n<count($fields);$n++)
-	{
-	# Should this field be displayed?
-	if (!
-		(
-			# Field is an archive only field
-			(($resource["archive"]==0) && ($fields[$n]["resource_type"]==999))
-		||
-			# Field has write access denied
-			(checkperm("F*") && !checkperm("F-" . $fields[$n]["ref"])
-			&& !($ref<0 && checkperm("P" . $fields[$n]["ref"])) # Upload only field
-			)
-		||			
-			checkperm("F" . $fields[$n]["ref"])
-		||
-			($ref<0 && $fields[$n]["hide_when_uploading"] && $fields[$n]["required"]==0)		))
-		
-		{
 
-	$name="field_" . $fields[$n]["ref"];
-	$value=$fields[$n]["value"];
+$required_fields_exempt=array(); # new array to contain required fields that have not met the display condition
+
+function is_field_displayed($field)
+	{
+	global $ref, $resource;
+
+	# Field is an archive only field
+	return !(($resource["archive"]==0 && $field["resource_type"]==999)
+	# Field has write access denied
+		|| (checkperm("F*") && !checkperm("F-" . $field["ref"])
+				&& !($ref < 0 && checkperm("P" . $field["ref"])))
+		|| checkperm("F" . $field["ref"])
+	# Upload only field
+		|| ($ref < 0 && $field["hide_when_uploading"] && $field["required"]==0)
+		|| hook('edithidefield', '', array('field' => $field)));
+	}
+
+function check_display_condition($n, $field)
+	{
+	global $fields, $scriptconditions, $required_fields_exempt;
+
+	$displaycondition=true;
+	$s=explode(";",$field["display_condition"]);
+	$condref=0;
+	foreach ($s as $condition) # Check each condition
+		{
+		$displayconditioncheck=false;
+		$s=explode("=",$condition);
+		for ($cf=0;$cf<count($fields);$cf++) # Check each field to see if needs to be checked
+			{
+			if ($s[0]==$fields[$cf]["name"]) # this field needs to be checked
+				{
+				$scriptconditions[$condref]["field"] = $fields[$cf]["ref"];  # add new jQuery code to check value
+
+				$checkvalues=$s[1];
+				$validvalues=explode("|",strtoupper($checkvalues));
+				$scriptconditions[$condref]["valid"]= "\"";
+				$scriptconditions[$condref]["valid"].= implode("\",\"",$validvalues);
+				$scriptconditions[$condref]["valid"].= "\"";
+				$v=trim_array(explode(",",strtoupper($fields[$cf]["value"])));
+				foreach ($validvalues as $validvalue)
+					{
+					if (in_array($validvalue,$v)) {$displayconditioncheck=true;} # this is  a valid value
+					}
+				if (!$displayconditioncheck) {$displaycondition=false;$required_fields_exempt[]=$field["ref"];}
+				#add jQuery code to update on changes
+					if ($fields[$cf]["type"]==2) # add onchange event to each checkbox field
+						{
+						# construct the value from the ticked boxes
+						# Note: it seems wrong to start with a comma, but this ensures it is treated as a comma separated list by split_keywords(), so if just one item is selected it still does individual word adding, so 'South Asia' is split to 'South Asia','South','Asia'.
+						$options=trim_array(explode(",",$fields[$cf]["options"]));
+						?><script type="text/javascript">
+						jQuery(document).ready(function() {<?php
+							for ($m=0;$m<count($options);$m++)
+								{
+								$checkname=$fields[$cf]["ref"] . "_" . md5($options[$m]);
+								echo "
+								jQuery('input[name=\"" . $checkname . "\"]').change(function (){
+									checkDisplayCondition" . $field["ref"] . "();
+									});";
+								}
+								?>
+							});
+						</script><?php
+						}
+					else
+						{
+						?>
+						<script type="text/javascript">
+						jQuery(document).ready(function() {
+							jQuery('#field_<?php echo $fields[$cf]["ref"];?>').change(function (){
+
+							checkDisplayCondition<?php echo $field["ref"];?>();
+
+							});
+						});
+						</script>
+					<?php
+						}
+				}
+
+			} # see if next field needs to be checked
+
+		$condref++;
+		} # check next condition
+
+	?>
+	<script type="text/javascript">
+	function checkDisplayCondition<?php echo $field["ref"];?>()
+		{
+		<?php echo "field" . $field["ref"] . "status=jQuery('#question_" . $n . "').css('display');
+		";
+		echo "newfield" . $field["ref"] . "status='none';
+		";
+		echo "newfield" . $field["ref"] . "provisional=true;
+		";
+
+		foreach ($scriptconditions as $scriptcondition)
+			{
+			echo "newfield" . $field["ref"] . "provisionaltest=false;
+			";
+			echo "if (jQuery('#field_" . $scriptcondition["field"] . "').length!=0)
+				{";
+				echo "
+				fieldcheck" . $scriptcondition["field"] . "=jQuery('#field_" . $scriptcondition["field"] . "').val().toUpperCase();
+				";
+				echo "fieldvalues" . $scriptcondition["field"] . "=fieldcheck" . $scriptcondition["field"] . ".split(',');
+				//alert(fieldvalues" . $scriptcondition["field"] . ");
+				}";
+
+			echo "
+			else
+				{
+				";
+				echo "fieldvalues" . $scriptcondition["field"] . "=new Array();
+				";
+				echo "checkedvals" . $scriptcondition["field"] . "=jQuery('input[name^=" . $scriptcondition["field"] . "_]')
+				";
+				echo "jQuery.each(checkedvals" . $scriptcondition["field"] . ",function(){
+					if (jQuery(this).is(':checked'))
+						{
+						checktext" . $scriptcondition["field"] . "=jQuery(this).parent().next().text().toUpperCase();
+						checktext" . $scriptcondition["field"] . " = jQuery.trim(checktext" . $scriptcondition["field"] . ");
+						fieldvalues" . $scriptcondition["field"] . ".push(checktext" . $scriptcondition["field"] . ");
+						//alert(fieldvalues" . $scriptcondition["field"] . ");
+						}
+					})
+				}";
+
+			echo "fieldokvalues" . $scriptcondition["field"] . "=new Array();
+			";
+			echo "fieldokvalues" . $scriptcondition["field"] . "=[" . $scriptcondition["valid"] . "];
+			";
+			echo "jQuery.each(fieldvalues" . $scriptcondition["field"] . ",function(f,v){
+					//alert(\"checking value \" + fieldvalues" . $scriptcondition["field"] . " + \" against \" + fieldokvalues" . $scriptcondition["field"] . ");
+					//alert(jQuery.inArray(fieldvalues" . $scriptcondition["field"] . ",fieldokvalues" . $scriptcondition["field"] . "));
+					if ((jQuery.inArray(v,fieldokvalues" . $scriptcondition["field"] . "))>-1 || (fieldvalues" . $scriptcondition["field"] . " ==fieldokvalues" . $scriptcondition["field"] ." ))
+						{
+						newfield" . $field["ref"] . "provisionaltest=true;
+						}
+					});
+
+				if (newfield" . $field["ref"] . "provisionaltest==false)
+					{newfield" . $field["ref"] . "provisional=false;}
+				";
+			}
+
+		echo "
+			exemptfieldsval=jQuery('#exemptfields').val();
+			exemptfieldsarr=exemptfieldsval.split(',');
+			if (newfield" . $field["ref"] . "provisional==true)
+				{
+				if (jQuery.inArray(" . $field["ref"] . ",exemptfieldsarr))
+					{
+					exemptfieldsarr.splice(jQuery.inArray(" . $field["ref"] . ", exemptfieldsarr), 1 );
+					}
+				newfield" . $field["ref"] . "status='block'
+				}
+			else
+				{
+
+
+				if ((jQuery.inArray(" . $field["ref"] . ",exemptfieldsarr))==-1)
+					{
+					exemptfieldsarr.push(" . $field["ref"] . ")
+					}
+				}
+			jQuery('#exemptfields').val(exemptfieldsarr.join(","));
+
+
+			";
+
+		echo "if (newfield" . $field["ref"] . "status!=field" . $field["ref"] . "status)
+				{
+				jQuery('#question_" . $n . "').slideToggle();
+				if (jQuery('#question_" . $n . "').css('display')=='block')
+					{jQuery('#question_" . $n . "').css('border-top','');}
+				else
+					{jQuery('#question_" . $n . "').css('border-top','none');}
+				}
+
+				";
+		?>}
+	</script>
+	<?php
+	return $displaycondition;
+	}
+
+# Allows language alternatives to be entered for free text metadata fields.
+function display_multilingual_text_field($field)
+	{
+	global $language, $languages, $translations;
+	?>
+	<p><a href="#" class="OptionToggle" onClick="l=document.getElementById('LanguageEntry_<?php echo $n?>');if (l.style.display=='block') {l.style.display='none';this.innerHTML='<?php echo $lang["showtranslations"]?>';} else {l.style.display='block';this.innerHTML='<?php echo $lang["hidetranslations"]?>';} return false;"><?php echo $lang["showtranslations"]?></a></p>
+	<table class="OptionTable" style="display:none;" id="LanguageEntry_<?php echo $n?>">
+	<?php
+	reset($languages);
+	foreach ($languages as $langkey => $langname)
+		{
+		if ($language!=$langkey)
+			{
+			if (array_key_exists($langkey,$translations)) {$transval=$translations[$langkey];} else {$transval="";}
+			?>
+			<tr>
+			<td nowrap valign="top"><?php echo htmlspecialchars($langname)?>&nbsp;&nbsp;</td>
+
+			<?php
+			if ($field["type"]==0)
+				{
+				?>
+				<td><input type="text" class="stdwidth" name="multilingual_<?php echo $n?>_<?php echo $langkey?>" value="<?php echo htmlspecialchars($transval)?>"></td>
+				<?php
+				}
+			else
+				{
+				?>
+				<td><textarea rows=6 cols=50 name="multilingual_<?php echo $n?>_<?php echo $langkey?>"><?php echo htmlspecialchars($transval)?></textarea></td>
+				<?php
+				}
+			?>
+			</tr>
+			<?php
+			}
+		}
+	?></table><?php
+	}
+
+function display_field($n, $field)
+	{
+	global $use, $ref, $original_fields, $multilingual_text_fields, $multiple, $lastrt,
+			$is_template, $language, $lang, $blank_edit_template, $edit_autosave, $errors;
+
+	$name="field_" . $field["ref"];
+	$value=$field["value"];
 	$value=trim($value);
-	
-	if ($fields[$n]["omit_when_copying"] && $use!=$ref)
+
+	if ($field["omit_when_copying"] && $use!=$ref)
 		{
 		# Omit when copying - return this field back to the value it was originally, instead of using the current value which has been fetched from the new resource.
 		reset($original_fields);
 		foreach ($original_fields as $original_field)
 			{
-			if ($original_field["ref"]==$fields[$n]["ref"]) {$value=$original_field["value"];}
+			if ($original_field["ref"]==$field["ref"]) {$value=$original_field["value"];}
 			}
 		}
-		
-	#Check if field has a display condition set
+
 	$displaycondition=true;
-	if ($fields[$n]["display_condition"]!="")
+	if ($field["display_condition"]!="")
 		{
-		$s=explode(";",$fields[$n]["display_condition"]);
-		$condref=0;
-		foreach ($s as $condition) # Check each condition
-			{
-			$displayconditioncheck=false;
-			$s=explode("=",$condition);
-			for ($cf=0;$cf<count($fields);$cf++) # Check each field to see if needs to be checked
-				{
-				if ($s[0]==$fields[$cf]["name"]) # this field needs to be checked
-					{
-					$scriptconditions[$condref]["field"] = $fields[$cf]["ref"];  # add new jQuery code to check value
-					
-					$checkvalues=$s[1];
-					$validvalues=explode("|",strtoupper($checkvalues));
-					$scriptconditions[$condref]["valid"]= "\"";
-					$scriptconditions[$condref]["valid"].= implode("\",\"",$validvalues);
-					$scriptconditions[$condref]["valid"].= "\"";
-					$v=trim_array(explode(",",strtoupper($fields[$cf]["value"])));
-					foreach ($validvalues as $validvalue)
-						{
-						if (in_array($validvalue,$v)) {$displayconditioncheck=true;} # this is  a valid value						
-						}
-					if (!$displayconditioncheck) {$displaycondition=false;$required_fields_exempt[]=$fields[$n]["ref"];}
-					#add jQuery code to update on changes
-						if ($fields[$cf]["type"]==2) # add onchange event to each checkbox field
-							{
-							# construct the value from the ticked boxes
-							$val=","; # Note: it seems wrong to start with a comma, but this ensures it is treated as a comma separated list by split_keywords(), so if just one item is selected it still does individual word adding, so 'South Asia' is split to 'South Asia','South','Asia'.
-							$options=trim_array(explode(",",$fields[$cf]["options"]));
-							?><script type="text/javascript">
-							jQuery(document).ready(function() {<?php
-							
-							
-							
-								for ($m=0;$m<count($options);$m++)
-									{
-									$checkname=$fields[$cf]["ref"] . "_" . md5($options[$m]);
-									echo "
-									jQuery('input[name=\"" . $checkname . "\"]').change(function (){
-										checkDisplayCondition" . $fields[$n]["ref"] . "();
-										});";
-									}
-									
-									
-									
-									
-									?>
-								}); 
-							</script><?php							
-							}	
-						else
-							{
-							?>
-							<script type="text/javascript">
-							jQuery(document).ready(function() {
-								jQuery('#field_<?php echo $fields[$cf]["ref"];?>').change(function (){
-								
-								checkDisplayCondition<?php echo $fields[$n]["ref"];?>();
-									
-								});
-							}); 
-							</script>
-						<?php	
-							}
-					}
-					
-				} # see if next field needs to be checked
-							
-			$condref++;
-			} # check next condition
-		
-		?>
-		<script type="text/javascript">
-		function checkDisplayCondition<?php echo $fields[$n]["ref"];?>() 
-			{
-			<?php echo "field" . $fields[$n]["ref"] . "status=jQuery('#question_" . $n . "').css('display');
-			"; 
-			echo "newfield" . $fields[$n]["ref"] . "status='none';
-			"; 
-			echo "newfield" . $fields[$n]["ref"] . "provisional=true;
-			"; 
-			
-			foreach ($scriptconditions as $scriptcondition)
-				{
-				echo "newfield" . $fields[$n]["ref"] . "provisionaltest=false;
-				";
-				echo "if (jQuery('#field_" . $scriptcondition["field"] . "').length!=0)
-					{";
-					echo "
-					fieldcheck" . $scriptcondition["field"] . "=jQuery('#field_" . $scriptcondition["field"] . "').val().toUpperCase();
-					";
-					echo "fieldvalues" . $scriptcondition["field"] . "=fieldcheck" . $scriptcondition["field"] . ".split(',');
-					//alert(fieldvalues" . $scriptcondition["field"] . ");
-					}";
-					
-				echo "
-				else
-					{
-					";
-					echo "fieldvalues" . $scriptcondition["field"] . "=new Array();
-					";
-					echo "checkedvals" . $scriptcondition["field"] . "=jQuery('input[name^=" . $scriptcondition["field"] . "_]')
-					";
-					echo "jQuery.each(checkedvals" . $scriptcondition["field"] . ",function(){
-						if (jQuery(this).is(':checked'))
-							{
-							checktext" . $scriptcondition["field"] . "=jQuery(this).parent().next().text().toUpperCase();
-							checktext" . $scriptcondition["field"] . " = jQuery.trim(checktext" . $scriptcondition["field"] . ");
-							fieldvalues" . $scriptcondition["field"] . ".push(checktext" . $scriptcondition["field"] . ");
-							//alert(fieldvalues" . $scriptcondition["field"] . ");
-							}
-						
-						
-						})
-					}";
-					
-				echo "fieldokvalues" . $scriptcondition["field"] . "=new Array();
-				";
-				echo "fieldokvalues" . $scriptcondition["field"] . "=[" . $scriptcondition["valid"] . "];
-				";
-				echo "jQuery.each(fieldvalues" . $scriptcondition["field"] . ",function(f,v){
-						//alert(\"checking value \" + fieldvalues" . $scriptcondition["field"] . " + \" against \" + fieldokvalues" . $scriptcondition["field"] . ");
-						//alert(jQuery.inArray(fieldvalues" . $scriptcondition["field"] . ",fieldokvalues" . $scriptcondition["field"] . "));
-						if ((jQuery.inArray(v,fieldokvalues" . $scriptcondition["field"] . "))>-1 || (fieldvalues" . $scriptcondition["field"] . " ==fieldokvalues" . $scriptcondition["field"] ." ))
-							{
-							newfield" . $fields[$n]["ref"] . "provisionaltest=true;
-							}
-						});
-					
-					if (newfield" . $fields[$n]["ref"] . "provisionaltest==false)
-						{newfield" . $fields[$n]["ref"] . "provisional=false;}
-					";
-				}
-				
-			echo "
-				exemptfieldsval=jQuery('#exemptfields').val();
-				exemptfieldsarr=exemptfieldsval.split(',');
-				if (newfield" . $fields[$n]["ref"] . "provisional==true)
-					{
-					if (jQuery.inArray(" . $fields[$n]["ref"] . ",exemptfieldsarr))
-						{
-						exemptfieldsarr.splice(jQuery.inArray(" . $fields[$n]["ref"] . ", exemptfieldsarr), 1 );
-						}
-					newfield" . $fields[$n]["ref"] . "status='block'
-					}
-				else
-					{
-					
-				
-					if ((jQuery.inArray(" . $fields[$n]["ref"] . ",exemptfieldsarr))==-1)
-						{
-						exemptfieldsarr.push(" . $fields[$n]["ref"] . ")
-						}
-					}
-				jQuery('#exemptfields').val(exemptfieldsarr.join(","));
-				
-				
-				";
-			
-			echo "if (newfield" . $fields[$n]["ref"] . "status!=field" . $fields[$n]["ref"] . "status)
-					{
-					jQuery('#question_" . $n . "').slideToggle();
-					if (jQuery('#question_" . $n . "').css('display')=='block')
-						{jQuery('#question_" . $n . "').css('border-top','');}
-					else
-						{jQuery('#question_" . $n . "').css('border-top','none');}
-					}				
-					
-					";
-			?>}
-		</script>
-	<?php		
-		
+		#Check if field has a display condition set
+		$displaycondition=check_display_condition($field);
 		}
-	
-		
+
 	if ($multilingual_text_fields)
 		{
 		# Multilingual text fields - find all translations and display the translation for the current language.
 		$translations=i18n_get_translations($value);
 		if (array_key_exists($language,$translations)) {$value=$translations[$language];} else {$value="";}
 		}
-	
+
 	if ($multiple) {$value="";} # Blank the value for multi-edits.
-	
-	if (($fields[$n]["resource_type"]!=$lastrt)&& ($lastrt!=-1))
+
+	if ($field["resource_type"]!=$lastrt && $lastrt!=-1)
 		{
-		?></div><h1  class="CollapsibleSectionHead" id="resource_type_properties"><?php echo htmlspecialchars(get_resource_type_name($fields[$n]["resource_type"]))?> <?php echo $lang["properties"]?></h1><div class="CollapsibleSection" id="ResourceProperties<?php if ($ref==-1) echo "Upload"; ?><?php echo $fields[$n]["resource_type"]; ?>Section"><?php
+		?></div><h1  class="CollapsibleSectionHead" id="resource_type_properties"><?php echo htmlspecialchars(get_resource_type_name($field["resource_type"]))?> <?php echo $lang["properties"]?></h1><div class="CollapsibleSection" id="ResourceProperties<?php if ($ref==-1) echo "Upload"; ?><?php echo $field["resource_type"]; ?>Section"><?php
 		}
-	$lastrt=$fields[$n]["resource_type"];
-	
+	$lastrt=$field["resource_type"];
+
 	# Blank form if 'reset form' has been clicked.
 	if (getval("resetform","")!="") {$value="";}
 
@@ -875,105 +908,122 @@ for ($n=0;$n<count($fields);$n++)
 	if ($ref<0 && $blank_edit_template && getval("submitted","")=="") {$value="";}
 
 	?>
-	<?php if ($multiple && !hook("replace_edit_all_checkbox","",array($fields[$n]["ref"]))) { # Multiple items, a toggle checkbox appears which activates the question
-	?><div><input name="editthis_<?php echo htmlspecialchars($name)?>" id="editthis_<?php echo $n?>" type="checkbox" value="yes" onClick="var q=document.getElementById('question_<?php echo $n?>');var m=document.getElementById('modeselect_<?php echo $n?>');var f=document.getElementById('findreplace_<?php echo $n?>');if (this.checked) {q.style.display='block';m.style.display='block';} else {q.style.display='none';m.style.display='none';f.style.display='none';document.getElementById('modeselectinput_<?php echo $n?>').selectedIndex=0;}">&nbsp;<label for="editthis<?php echo $n?>"><?php echo htmlspecialchars($fields[$n]["title"])?></label></div><?php } ?>
+	<?php if ($multiple && !hook("replace_edit_all_checkbox","",array($field["ref"]))) { # Multiple items, a toggle checkbox appears which activates the question
+	?><div><input name="editthis_<?php echo htmlspecialchars($name)?>" id="editthis_<?php echo $n?>" type="checkbox" value="yes" onClick="var q=document.getElementById('question_<?php echo $n?>');var m=document.getElementById('modeselect_<?php echo $n?>');var f=document.getElementById('findreplace_<?php echo $n?>');if (this.checked) {q.style.display='block';m.style.display='block';} else {q.style.display='none';m.style.display='none';f.style.display='none';document.getElementById('modeselectinput_<?php echo $n?>').selectedIndex=0;}">&nbsp;<label for="editthis<?php echo $n?>"><?php echo htmlspecialchars($field["title"])?></label></div><?php } ?>
 
 	<?php
-	if ($multiple && !hook("replace_edit_all_mode_select","",array($fields[$n]["ref"])))
+	if ($multiple && !hook("replace_edit_all_mode_select","",array($field["ref"])))
 		{
 		# When editing multiple, give option to select Replace All Text or Find and Replace
 		?>
 		<div class="Question" id="modeselect_<?php echo $n?>" style="display:none;padding-bottom:0;margin-bottom:0;">
 		<label for="modeselectinput"><?php echo $lang["editmode"]?></label>
-		<select id="modeselectinput_<?php echo $n?>" name="modeselect_<?php echo $fields[$n]["ref"]?>" class="stdwidth" onChange="var fr=document.getElementById('findreplace_<?php echo $n?>');var q=document.getElementById('question_<?php echo $n?>');if (this.value=='FR') {fr.style.display='block';q.style.display='none';} else {fr.style.display='none';q.style.display='block';}">
+		<select id="modeselectinput_<?php echo $n?>" name="modeselect_<?php echo $field["ref"]?>" class="stdwidth" onChange="var fr=document.getElementById('findreplace_<?php echo $n?>');var q=document.getElementById('question_<?php echo $n?>');if (this.value=='FR') {fr.style.display='block';q.style.display='none';} else {fr.style.display='none';q.style.display='block';}">
 		<option value="RT"><?php echo $lang["replacealltext"]?></option>
-		<?php if (in_array($fields[$n]["type"], array("0","1","5","8"))) {
+		<?php if (in_array($field["type"], array("0","1","5","8"))) {
 		# Find and replace appies to text boxes only.
 		?>
 		<option value="FR"><?php echo $lang["findandreplace"]?></option>
 		<?php } ?>
-		<?php 
-		if ($fields[$n]["type"]==0 || $fields[$n]["type"]==1 || $fields[$n]["type"]==5) { 
+		<?php
+		if ($field["type"]==0 || $field["type"]==1 || $field["type"]==5) {
 		# Prepend applies to text boxes only.
 		?>
 		<option value="PP"><?php echo $lang["prependtext"]?></option>
-		<?php } 
-		if (in_array($fields[$n]["type"], array("0","1","2","3","5","7","8","9"))) { 
+		<?php }
+		if (in_array($field["type"], array("0","1","2","3","5","7","8","9"))) {
 		# Append applies to text boxes, checkboxes ,category tree and dropdowns only.
 		?>
 		<option value="AP"><?php echo $lang["appendtext"]?></option>
-		<?php } 
-		if ($fields[$n]["type"]==0 || $fields[$n]["type"]==1 || $fields[$n]["type"]==5 || $fields[$n]["type"]==2 || $fields[$n]["type"]==3) { ?>
+		<?php }
+		if ($field["type"]==0 || $field["type"]==1 || $field["type"]==5 || $field["type"]==2 || $field["type"]==3) { ?>
 		<!--- Remove applies to text boxes, checkboxes and dropdowns only. -->
 		<option value="RM"><?php echo $lang["removetext"]?></option>
 		<?php } ?>
 		</select>
 		</div>
-		
+
 		<div class="Question" id="findreplace_<?php echo $n?>" style="display:none;border-top:none;">
 		<label>&nbsp;</label>
-		<?php echo $lang["find"]?> <input type="text" name="find_<?php echo $fields[$n]["ref"]?>" class="shrtwidth">
-		<?php echo $lang["andreplacewith"]?> <input type="text" name="replace_<?php echo $fields[$n]["ref"]?>" class="shrtwidth">
+		<?php echo $lang["find"]?> <input type="text" name="find_<?php echo $field["ref"]?>" class="shrtwidth">
+		<?php echo $lang["andreplacewith"]?> <input type="text" name="replace_<?php echo $field["ref"]?>" class="shrtwidth">
 		</div>
 		<?php
 		}
 	?>
 
 	<div class="Question" id="question_<?php echo $n?>" <?php if ($multiple || !$displaycondition) {?>style="display:none;border-top:none;"<?php } ?>>
-	<label for="<?php echo htmlspecialchars($name)?>"><?php if (!$multiple) {?><?php echo htmlspecialchars($fields[$n]["title"])?> <?php if (!$is_template && $fields[$n]["required"]==1) { ?><sup>*</sup><?php } ?><?php } ?></label>
+	<label for="<?php echo htmlspecialchars($name)?>"><?php if (!$multiple) {?><?php echo htmlspecialchars($field["title"])?> <?php if (!$is_template && $field["required"]==1) { ?><sup>*</sup><?php } ?><?php } ?></label>
 
 	<?php
 	# Autosave display
 	if ($edit_autosave) { ?>
-	<div class="AutoSaveStatus" id="AutoSaveStatus<?php echo $fields[$n]["ref"] ?>" style="display:none;"></div>
+	<div class="AutoSaveStatus" id="AutoSaveStatus<?php echo $field["ref"] ?>" style="display:none;"></div>
 	<?php } ?>
 
 
 	<?php
 	# Define some Javascript for help actions (applies to all fields)
-	$help_js="onBlur=\"HideHelp(" . $fields[$n]["ref"] . ");return false;\" onFocus=\"ShowHelp(" . $fields[$n]["ref"] . ");return false;\"";
-	
+	$help_js="onBlur=\"HideHelp(" . $field["ref"] . ");return false;\" onFocus=\"ShowHelp(" . $field["ref"] . ");return false;\"";
+
 	#hook to modify field type in special case. Returning zero (to get a standard text box) doesn't work, so return 1 for type 0, 2 for type 1, etc.
 	$modified_field_type="";
 	$modified_field_type=(hook("modifyfieldtype"));
-	if ($modified_field_type){$fields[$n]["type"]=$modified_field_type-1;}
+	if ($modified_field_type){$field["type"]=$modified_field_type-1;}
 
 	hook("addfieldextras");
 	# ----------------------------  Show field -----------------------------------
-	$type=$fields[$n]["type"];
+	$type=$field["type"];
 	if ($type=="") {$type=0;} # Default to text type.
-	$field=$fields[$n];
-	if (!hook("replacefield","",array($fields[$n]["type"],$fields[$n]["ref"],$n))) {include "edit_fields/" . $type . ".php";}
+	if (!hook("replacefield","",array($field["type"],$field["ref"],$n)))
+		{
+		global $auto_order_checkbox;
+		include "edit_fields/" . $type . ".php";
+		}
 	# ----------------------------------------------------------------------------
 
 	# Display any error messages from previous save
-	if (array_key_exists($fields[$n]["ref"],$errors))
+	if (array_key_exists($field["ref"],$errors))
 		{
 		?>
-		<div class="FormError">!! <?php echo $errors[$fields[$n]["ref"]]?> !!</div>
+		<div class="FormError">!! <?php echo $errors[$field["ref"]]?> !!</div>
 		<?php
 		}
 
-	if (trim($fields[$n]["help_text"]!=""))
+	if (trim($field["help_text"]!=""))
 		{
 		# Show inline help for this field.
 		# For certain field types that have no obvious focus, the help always appears.
 		?>
-		<div class="FormHelp" style="padding:0;<?php if (!in_array($fields[$n]["type"],array(2,4,6,7,10))) { ?> display:none;<?php } else { ?> clear:left;<?php } ?>" id="help_<?php echo $fields[$n]["ref"]?>"><div class="FormHelpInner"><?php echo nl2br(trim(htmlspecialchars(i18n_get_translated($fields[$n]["help_text"]))))?></div></div>
+		<div class="FormHelp" style="padding:0;<?php if (!in_array($field["type"],array(2,4,6,7,10))) { ?> display:none;<?php } else { ?> clear:left;<?php } ?>" id="help_<?php echo $field["ref"]?>"><div class="FormHelpInner"><?php echo nl2br(trim(htmlspecialchars(i18n_get_translated($field["help_text"]))))?></div></div>
 		<?php
 		}
 
 	# If enabled, include code to produce extra fields to allow multilingual free text to be entered.
-	if ($multilingual_text_fields && ($fields[$n]["type"]==0 || $fields[$n]["type"]==1 || $fields[$n]["type"]==5))
+	if ($multilingual_text_fields && ($field["type"]==0 || $field["type"]==1 || $field["type"]==5))
 		{
-		include "../include/multilingual_fields.php";
+		display_multilingual_text_field($field);
 		}
-	?>			
+	?>
 	<div class="clearerleft"> </div>
 	</div>
 	<?php
 	}
-}
+
+?>
+</div>
+<div id="CollapsibleSections">
+<?php hook('editbeforesectionhead'); ?>
+<h1  class="CollapsibleSectionHead" id="ResourceMetadataSectionHead"><?php echo $lang["resourcemetadata"]?></h1>
+<div class="CollapsibleSection" id="ResourceMetadataSection<?php if ($ref==-1) echo "Upload"; ?>"><?php
+for ($n=0;$n<count($fields);$n++)
+	{
+	# Should this field be displayed?
+	if (is_field_displayed($fields[$n]))
+		{
+		display_field($n, $fields[$n]);
+		}
+	}
 
 # Add required_fields_exempt so it is submitted with POST
 echo " <input type=hidden name=\"exemptfields\" id=\"exemptfields\" value=\"" . implode(",",$required_fields_exempt) . "\">";	

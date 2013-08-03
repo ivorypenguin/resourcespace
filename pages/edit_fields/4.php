@@ -4,7 +4,7 @@
 $dy="";
 $dm=$dd=$dh=$di=-1;
 
-if (($ref<0 || $value=="") && $reset_date_upload_template && $reset_date_field==$fields[$n]["ref"])
+if (($ref<0 || $value=="") && $reset_date_upload_template && $reset_date_field==$field["ref"])
 	{
 	# Upload template: always reset to today's date (if configured).
 	$dy=date("Y");$dm=intval(date("m"));$dd=intval(date("d"));
@@ -32,31 +32,31 @@ elseif ($value!="")
     }    
 ?>
 <select name="<?php echo $name?>-d"
-<?php if ($edit_autosave) {?>onChange="AutoSave('<?php echo $fields[$n]["ref"]?>');"<?php } ?>
+<?php if ($edit_autosave) {?>onChange="AutoSave('<?php echo $field["ref"]?>');"<?php } ?>
 ><option value=""><?php echo $lang["day"]?></option>
 <?php for ($m=1;$m<=31;$m++) {?><option <?php if($m==$dd){echo " selected";}?>><?php echo sprintf("%02d",$m)?></option><?php } ?>
 </select>
     
 <select name="<?php echo $name?>-m"
-<?php if ($edit_autosave) {?>onChange="AutoSave('<?php echo $fields[$n]["ref"]?>');"<?php } ?>
+<?php if ($edit_autosave) {?>onChange="AutoSave('<?php echo $field["ref"]?>');"<?php } ?>
 ><option value=""><?php echo $lang["month"]?></option>
 <?php for ($m=1;$m<=12;$m++) {?><option <?php if($m==$dm){echo " selected";}?> value="<?php echo sprintf("%02d",$m)?>"><?php echo $lang["months"][$m-1]?></option><?php } ?>
 </select>
    
-<input type=text size=5 name="<?php echo $name?>-y" value="<?php echo $dy?>" <?php if ($edit_autosave) {?>onChange="AutoSave('<?php echo $fields[$n]["ref"]?>');"<?php } ?>>
+<input type=text size=5 name="<?php echo $name?>-y" value="<?php echo $dy?>" <?php if ($edit_autosave) {?>onChange="AutoSave('<?php echo $field["ref"]?>');"<?php } ?>>
 
-<?php if ($fields[$n]["type"]!=10) { ?>
+<?php if ($field["type"]!=10) { ?>
 <!-- Time (optional) -->
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 <select name="<?php echo $name?>-h"
-<?php if ($edit_autosave) {?>onChange="AutoSave('<?php echo $fields[$n]["ref"]?>');"<?php } ?>
+<?php if ($edit_autosave) {?>onChange="AutoSave('<?php echo $field["ref"]?>');"<?php } ?>
 ><option value=""><?php echo $lang["hour-abbreviated"]?></option>
 <?php for ($m=0;$m<=23;$m++) {?><option <?php if($m==$dh){echo " selected";}?>><?php echo sprintf("%02d",$m)?></option><?php } ?>
 </select>
 
 <select name="<?php echo $name?>-i"
-<?php if ($edit_autosave) {?>onChange="AutoSave('<?php echo $fields[$n]["ref"]?>');"<?php } ?>
+<?php if ($edit_autosave) {?>onChange="AutoSave('<?php echo $field["ref"]?>');"<?php } ?>
 ><option value=""><?php echo $lang["minute-abbreviated"]?></option>
 <?php for ($m=0;$m<=59;$m++) {?><option <?php if($m==$di){echo " selected";}?>><?php echo sprintf("%02d",$m)?></option><?php } ?>
 </select>

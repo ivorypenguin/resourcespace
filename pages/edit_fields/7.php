@@ -1,7 +1,7 @@
 <?php /* -------- Category Tree ------------------- */ 
 
-if (isset($n) && isset($fields)){
-	$options=$fields[$n]["options"];
+if (isset($field)){
+	$options=$field["options"];
 }
 
 global $lang,$baseurl,$css_reload_key,$category_tree_show_status_window,$is_search;

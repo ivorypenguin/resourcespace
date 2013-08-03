@@ -47,7 +47,7 @@ editor.on('blur',function(e)
 	if(editor.checkDirty())
 		{
 		editor.updateElement();
-		AutoSave('<?php echo $fields[$n]["ref"]?>');
+		AutoSave('<?php echo $field["ref"]?>');
 		}
 	});
 <?php } ?>

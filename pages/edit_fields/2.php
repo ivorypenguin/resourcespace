@@ -3,7 +3,7 @@
 if(!hook("customchkboxes")):
 
 # Translate all options
-$options=trim_array(explode(",",$fields[$n]["options"]));
+$options=trim_array(explode(",",$field["options"]));
 $option_trans=array();
 $option_trans_simple=array();
 for ($m=0;$m<count($options);$m++)
@@ -44,12 +44,12 @@ if ($checkbox_ordered_vertically)
 				$option=$options[$o];
 				$trans=$option_trans[$option];
 
-				$name=$fields[$n]["ref"] . "_" . md5($option);
+				$name=$field["ref"] . "_" . md5($option);
 				if ($option!="")
 					{
 					?>
 					<td width="1"><input type="checkbox" name="<?php echo $name?>" value="yes" <?php if (in_array($option,$set)) {?>checked<?php } ?> 
-					<?php if ($edit_autosave) {?>onChange="AutoSave('<?php echo $fields[$n]["ref"] ?>');"<?php } ?>
+					<?php if ($edit_autosave) {?>onChange="AutoSave('<?php echo $field["ref"] ?>');"<?php } ?>
 					/></td><td><?php echo htmlspecialchars($trans)?>&nbsp;</td>
 					<?php
 					}
@@ -69,11 +69,11 @@ else
 
 	foreach ($option_trans as $option=>$trans)
 		{
-		$name=$fields[$n]["ref"] . "_" . md5($option);
+		$name=$field["ref"] . "_" . md5($option);
 		$wrap++;if ($wrap>$cols) {$wrap=1;?></tr><tr><?php }
 		?>
 		<td width="1"><input type="checkbox" name="<?php echo $name?>" value="yes" <?php if (in_array($option,$set)) {?>checked<?php } ?>
-		<?php if ($edit_autosave) {?>onChange="AutoSave('<?php echo $fields[$n]["ref"] ?>');"<?php } ?>
+		<?php if ($edit_autosave) {?>onChange="AutoSave('<?php echo $field["ref"] ?>');"<?php } ?>
 		 /></td><td><?php echo htmlspecialchars($trans)?>&nbsp;</td>
 		<?php
 		}

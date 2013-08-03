@@ -1,7 +1,7 @@
 <?php /* -------- Category tree ---------------- */ 
 
-if (isset($n) && isset($fields)){
-	$options=$fields[$n]["options"];
+if (isset($field)){
+	$options=$field["options"];
 }
 
 global $lang,$baseurl,$css_reload_key,$category_tree_show_status_window;
@@ -59,7 +59,7 @@ for ($t=0;$t<count($class);$t++)
 		}
 	}
 */
-$tree=sql_query("select * from dynamic_tree_node where resource_type_field='" . $fields[$n]["ref"] . "'");
+$tree=sql_query("select * from dynamic_tree_node where resource_type_field='" . $field["ref"] . "'");
 
 foreach ($tree as $node)
 	{
