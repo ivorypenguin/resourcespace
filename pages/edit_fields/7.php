@@ -4,7 +4,7 @@ if (isset($field)){
 	$options=$field["options"];
 }
 
-global $lang,$baseurl,$css_reload_key,$category_tree_show_status_window,$is_search;
+global $lang,$baseurl,$css_reload_key,$category_tree_show_status_window,$is_search,$category_tree_open;
 if (!isset($is_search)) {$is_search = false;}
 
 ?><div class="Fixed">
