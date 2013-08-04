@@ -154,7 +154,10 @@ if ((getval("autosave","")!="") || (getval("tweak","")=="" && getval("submitted"
 				{
 				# Log this
 				daily_stat("Resource edit",$ref);
-				redirect($baseurl_short."pages/view.php?ref=" . $ref . "&search=" . urlencode($search) . "&offset=" . $offset . "&order_by=" . $order_by . "&sort=".$sort."&archive=" . $archive . "&refreshcollectionframe=true");
+				if (!hook('redirectaftersave'))
+					{
+					redirect($baseurl_short."pages/view.php?ref=" . $ref . "&search=" . urlencode($search) . "&offset=" . $offset . "&order_by=" . $order_by . "&sort=".$sort."&archive=" . $archive . "&refreshcollectionframe=true");
+					}
 				}
 			else
 				{
