@@ -724,7 +724,7 @@ if ($user_rating && $k=="") { include "../include/user_rating.php"; }
 
 <?php hook("renderbeforeresourcedetails"); ?>
 
-<div class="Title"><?php echo $lang["resourcedetails"]?></div>
+<div class="Title"><?php if (!hook("customdetailstitle")) echo $lang["resourcedetails"]?></div>
 
 <?php
 $extra="";
