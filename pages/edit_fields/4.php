@@ -1,5 +1,7 @@
 <?php /* -------- Date ---------------------------- */ 
 
+global $reset_date_upload_template, $reset_date_field;
+
 # Start with a null date
 $dy="";
 $dm=$dd=$dh=$di=-1;
