@@ -1272,7 +1272,7 @@ if (false && !$disable_geocoding)
 	
 <?php 
 # Duplicate navigation
-if (!$multiple && $ref>0) {EditNav();}
+if (!$multiple && $ref>0 &&!hook("dontshoweditnav")) {EditNav();}
 ?>
 
 
