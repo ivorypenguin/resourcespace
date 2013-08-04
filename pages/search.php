@@ -592,6 +592,7 @@ if (true) # Always show search header now.
 	<?php
 	if ($display_search_titles)
 		{
+		hook("beforesearchtitle");
 		if (!$collections_compact_style){
 	        echo $search_title;hook("aftersearchtitle");
 	        }
