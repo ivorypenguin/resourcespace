@@ -113,7 +113,7 @@ function comments_show($ref, $bcollection_mode = false, $bRecursive = true, $lev
 	
 	// set 'name' to either user.fullname, comment.fullname or default 'Anonymous'
 	
-	$sql = 	"select c.ref, c.ref_parent, c.hide, c.created, c.body, c.website_url, c.email, u.username, parent.created 'responseToDateTime', " .			
+	$sql = 	"select c.ref, c.ref_parent, c.hide, c.created, c.body, c.website_url, c.email, u.username, u.ref, parent.created 'responseToDateTime', " .			
 			"IFNULL(IFNULL(c.fullname, u.fullname), '" . $lang['comments_anonymous-user'] . "') 'name' ," .  			
 			"IFNULL(IFNULL(parent.fullname, parent.fullname), '" . $lang['comments_anonymous-user'] . "') 'responseToName' " .  			
 			"from comment c left join (user u) on (c.user_ref = u.ref) left join (comment parent) on (c.ref_parent = parent.ref) ";
@@ -179,6 +179,9 @@ function comments_show($ref, $bcollection_mode = false, $bRecursive = true, $lev
 		<div id="comments_container">				
 		<div id="comment_form">
 			<form class="comment_form" action="javascript:void();" method="">
+EOT;
+        hook("beforecommentbody");
+        echo <<<EOT
 				<input id="comment_form_collection_ref" type="hidden" name="collection_ref" value="${collection_ref}"></input>
 				<input id="comment_form_resource_ref" type="hidden" name="resource_ref" value="${resource_ref}"></input>				
 				<textarea class="CommentFormBody" id="comment_form_body" name="body" maxlength="${comments_max_characters}" placeholder="${lang['comments_body-placeholder']}"></textarea>
@@ -223,9 +226,10 @@ EOT;
 			echo "<div class='CommentEntry' id='comment${thisRef}' style='margin-left: " . ($level-1)*50 . "px;'>";	// indent for levels - this will always be zero if config $comments_flat_view=true						
 			
 			# ----- Information line
-			
+			hook("beforecommentinfo", "all",array("ref"=>$thisRef));
+   
 			echo "<div class='CommentEntryInfoContainer'>";			
-			echo "<div class='CommentEntryInfo'>";						
+			echo "<div class='CommentEntryInfo'>";
 			echo "<div class='CommentEntryInfoCommenter'>";						
 			
 			if (empty($comment['name'])) $comment['name'] = $comment['username'];
@@ -313,9 +317,13 @@ EOT;
 						<form class="comment_form" action="javascript:void();" method="">
 							<input type="hidden" name="comment_flag_ref" value="${thisRef}"></input>														
 							<input type="hidden" name="comment_flag_url" value=""></input>														
-							<textarea class="CommentFlagReason" maxlength="${comments_max_characters}" name="comment_flag_reason" placeholder="${lang['comments_flag-reason-placeholder']}"></textarea><br />							
+													
 EOT;
-				
+                hook("beforecommentflagreason");
+                echo <<<EOT
+				    <textarea class="CommentFlagReason" maxlength="${comments_max_characters}" name="comment_flag_reason" placeholder="${lang['comments_flag-reason-placeholder']}"></textarea><br />	
+EOT;
+
 				if ($anonymous_mode) echo<<<EOT
 							
 							<input class="CommentFlagFullname" id="comment_flag_fullname" type="text" name="fullname" placeholder="${lang['comments_fullname-placeholder']}"></input>
