@@ -1280,7 +1280,7 @@ if (!$multiple && $ref>0) {EditNav();}
 
 <?php if (!$is_template) { ?><p><sup>*</sup> <?php echo $lang["requiredfield"]?></p><?php } ?>
 
-<?php if (isset($show_error) && isset($save_errors)){
+<?php if (isset($show_error) && isset($save_errors) && !hook('replacesaveerror')) {
 	foreach ($save_errors as $save_error_field=>$save_error_message)
 		{	
 		?>
