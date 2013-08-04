@@ -197,6 +197,8 @@ if ($deleteempty!="") {
 	refresh_collection_frame($usercollection);
 }
 
+hook('customcollectionmanage');
+
 $removeall=getvalescaped("removeall","");
 if ($removeall!=""){
 	remove_all_resources_from_collection($removeall);
