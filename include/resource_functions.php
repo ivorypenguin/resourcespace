@@ -163,7 +163,17 @@ function save_resource_data($ref,$multi)
 					continue;
 					}
 				}
-			
+			$error=hook("additionalvalcheck", "all", array($fields, $fields[$n]));
+			if ($error) 
+			    {
+			    global $lang;
+			    if (getval("autosave","")!="")
+			    	{
+			    	exit($error);
+			    	}
+			    $errors[$fields[$n]["ref"]]=$error;
+			    continue;
+			    }
 			if (str_replace("\r\n","\n",$fields[$n]["value"])!== str_replace("\r\n","\n",unescape($val)))
 				{
 				//$testvalue=$fields[$n]["value"];var_dump($testvalue);$val=unescape($val);var_dump($val);
