@@ -113,7 +113,7 @@ function comments_show($ref, $bcollection_mode = false, $bRecursive = true, $lev
 	
 	// set 'name' to either user.fullname, comment.fullname or default 'Anonymous'
 	
-	$sql = 	"select c.ref, c.ref_parent, c.hide, c.created, c.body, c.website_url, c.email, u.username, u.ref, parent.created 'responseToDateTime', " .			
+	$sql = 	"select c.ref thisref, c.ref_parent, c.hide, c.created, c.body, c.website_url, c.email, u.username, u.ref, parent.created 'responseToDateTime', " .			
 			"IFNULL(IFNULL(c.fullname, u.fullname), '" . $lang['comments_anonymous-user'] . "') 'name' ," .  			
 			"IFNULL(IFNULL(parent.fullname, parent.fullname), '" . $lang['comments_anonymous-user'] . "') 'responseToName' " .  			
 			"from comment c left join (user u) on (c.user_ref = u.ref) left join (comment parent) on (c.ref_parent = parent.ref) ";
@@ -221,7 +221,7 @@ EOT;
 	foreach ($found_comments as $comment) 			
 		{						
 			
-			$thisRef = $comment['ref'];
+			$thisRef = $comment['thisref'];
 			
 			echo "<div class='CommentEntry' id='comment${thisRef}' style='margin-left: " . ($level-1)*50 . "px;'>";	// indent for levels - this will always be zero if config $comments_flat_view=true						
 			
@@ -338,19 +338,18 @@ EOT;
 
 				}			
 			
-			$respond_div_id = "comment_respond_" . $comment['ref'];
-			$ref_parent = $comment['ref'];
+			$respond_div_id = "comment_respond_" . $thisRef;
 			
 			echo "<div id='${respond_div_id}'>";		// start respond div
 			echo "<a href='javascript:void(0)' onClick='
 				jQuery(\"#{$respond_div_id}\").replaceWith(jQuery(\"#comment_form\").clone().attr(\"id\",\"${respond_div_id}\")); 
-				jQuery(\"<input>\").attr({type: \"hidden\", name: \"ref_parent\", value: \"${ref_parent}\"}).appendTo(\"#${respond_div_id} .comment_form\");				
+				jQuery(\"<input>\").attr({type: \"hidden\", name: \"ref_parent\", value: \"$thisRef\"}).appendTo(\"#${respond_div_id} .comment_form\");				
 			'>&gt; " . $lang['comments_respond-to-this-comment'] . "</a>";			
 			echo "</div>";		// end respond
 							
 			echo "</div>";		// end of CommentEntry
 			
-			if ($bRecursive) comments_show($comment['ref'], $bcollection_mode, true, $level+1, $comment['name'], $comment['created']);				
+			if ($bRecursive) comments_show($thisRef, $bcollection_mode, true, $level+1);				
 
 			
 		}			
