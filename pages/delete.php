@@ -4,13 +4,13 @@ include "../include/authenticate.php";
 include "../include/general.php";
 include "../include/resource_functions.php";
 
-if ((isset($allow_resource_deletion) and !$allow_resource_deletion) or checkperm('D')){
+$ref=getvalescaped("ref","",true);
+
+if ((isset($allow_resource_deletion) and !$allow_resource_deletion) or (checkperm('D') and !hook('check_single_delete'))){
 	include "../include/header.php";
 	echo "Error: Resource deletion is disabled.";
 	exit;
 } else {
-
-$ref=getvalescaped("ref","",true);
 $resource=get_resource_data($ref);
 
 # fetch the current search 
