@@ -395,7 +395,7 @@ if (!$multiple&&!hook("dontshoweditnav")) { EditNav(); }
 <div class="clearerleft"> </div>
 </div>
 
-<?php if (!$is_template && !checkperm("F*")) { ?>
+<?php if ((!$is_template && !checkperm("F*"))||hook("custompermshowfile")) { ?>
 <div class="Question" id="question_file">
 <label><?php echo $lang["file"]?></label>
 <div class="Fixed">
