@@ -1002,7 +1002,7 @@ if (!$disable_geocoding) {
       }?>
 
 <?php 
-	if ($comments_resource_enable) include_once ("../include/comment_resources.php");
+	if ($comments_resource_enable && $k=="") include_once ("../include/comment_resources.php");
 ?>
 	  	  
 <?php hook("w2pspawn");?>
