@@ -288,7 +288,7 @@ $lang["viewcontributedps"]="View my contributions - pending submission";
 $lang["viewcontributedpr"]="View my contributions - pending review";
 $lang["viewcontributedsubittedl"]="View my contributions - active";
 $lang["contributedps"]="My contributions - pending submission";
-$lang["contributedpr"]="My contributions - pending resource team review";
+$lang["contributedpr"]="My contributions - pending review";
 $lang["contributedsubittedl"]="My contributions - active";
 
 # Collections
