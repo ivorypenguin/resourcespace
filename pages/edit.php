@@ -887,7 +887,7 @@ function display_field($n, $field)
 	if ($field["display_condition"]!="")
 		{
 		#Check if field has a display condition set
-		$displaycondition=check_display_condition($field);
+		$displaycondition=check_display_condition($n,$field);
 		}
 
 	if ($multilingual_text_fields)
