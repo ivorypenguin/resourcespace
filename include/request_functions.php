@@ -64,6 +64,7 @@ function save_request($request)
 		{
 		# --------------- APPROVED -------------
 		# Send approval e-mail
+		$reasonapproved=str_replace(array("\\r","\\n"),"\n",$reasonapproved);$reasonapproved=str_replace("\n\n","\n",$reasonapproved); # Fix line breaks.
 		$message=$lang["requestapprovedmail"] . "\n\n" . $lang["approvalreason"]. ": " . $reasonapproved . "\n\n" ;
 		$message.="$baseurl/?c=" . $currentrequest["collection"] . "\n";
 		if ($expires!="")
@@ -71,7 +72,6 @@ function save_request($request)
 			# Add expiry time to message.
 			$message.=$lang["requestapprovedexpires"] . " " . nicedate($expires) . "\n\n";
 			}
-		$reasonapproved=str_replace(array("\\r","\\n"),"\n",$reasonapproved);$reasonapproved=str_replace("\n\n","\n",$reasonapproved); # Fix line breaks.
 		send_mail($currentrequest["email"],$applicationname . ": " . $lang["requestcollection"] . " - " . $lang["resourcerequeststatus1"],$message);
 		
 		# Mark resources as full access for this user
