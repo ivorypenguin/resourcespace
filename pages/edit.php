@@ -651,7 +651,8 @@ function is_field_displayed($field)
 		|| checkperm("F" . $field["ref"])
 	# Upload only field
 		|| ($ref < 0 && $field["hide_when_uploading"] && $field["required"]==0)
-		|| hook('edithidefield', '', array('field' => $field)));
+		|| hook('edithidefield', '', array('field' => $field))
+		|| hook('edithidefield2', '', array('field' => $field)));
 	}
 
 function check_display_condition($n, $field)
