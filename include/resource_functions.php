@@ -267,26 +267,26 @@ function save_resource_data($ref,$multi)
 	$expirysql="";
 	if ($expiry_field_edited) {$expirysql=",expiry_notification_sent=0";}
 
-	# Also update archive status and access level
-	$oldaccess=sql_value("select access value from resource where ref='$ref'",0);
-	$access=getvalescaped("access",$oldaccess,true);
-	if (getvalescaped("archive","")!="") # Only if archive has been sent
+	if (!hook('forbidsavearchive', '', array($errors)))
 		{
-		sql_query("update resource set archive='" . $archive . "',access='" . $access . "' $expirysql where ref='$ref'");
-		
-		if ($archive!=$oldarchive)
+		# Also update archive status and access level
+		$oldaccess=sql_value("select access value from resource where ref='$ref'",0);
+		$access=getvalescaped("access",$oldaccess,true);
+		if (getvalescaped("archive","")!="") # Only if archive has been sent
 			{
-			resource_log($ref,"s",0,"",$oldarchive,$archive);
-			}
+			sql_query("update resource set archive='" . $archive . "',access='" . $access . "' $expirysql where ref='$ref'");
 
-		if ($access!=$oldaccess)
-			{
-			resource_log($ref,"a",0,"",$oldaccess,$access);
-			}
+			if ($archive!=$oldarchive)
+				{
+				resource_log($ref,"s",0,"",$oldarchive,$archive);
+				}
 
-		
+			if ($access!=$oldaccess)
+				{
+				resource_log($ref,"a",0,"",$oldaccess,$access);
+				}
+			}
 		}
-		
 	# For access level 3 (custom) - also save custom permissions
 	if (getvalescaped("access",0)==3) {save_resource_custom_access($ref);}
 
