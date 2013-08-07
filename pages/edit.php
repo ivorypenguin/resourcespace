@@ -380,7 +380,7 @@ echo text("multiple"); ?></p>
 
 <?php } elseif ($ref>0) { ?>
 <p><a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo urlencode($ref) ?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset) ?>&order_by=<?php echo urlencode($order_by) ?>&sort=<?php echo urlencode($sort) ?>&archive=<?php echo urlencode($archive) ?>" onClick="return CentralSpaceLoad(this,true);">&lt; <?php echo $lang["backtoresourceview"]?></a></p>
-
+<?php if (!hook("replaceeditheader")) { ?>
 <h1 id="editresource"><?php echo $lang["editresource"]?></h1>
 
 <?php
@@ -394,7 +394,7 @@ if (!$multiple&&!hook("dontshoweditnav")) { EditNav(); }
 <div class="Fixed"><?php echo urlencode($ref) ?></div>
 <div class="clearerleft"> </div>
 </div>
-
+<?php } ?>
 <?php if ((!$is_template && !checkperm("F*"))||hook("custompermshowfile")) { ?>
 <div class="Question" id="question_file">
 <label><?php echo $lang["file"]?></label>
