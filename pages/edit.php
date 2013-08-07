@@ -32,7 +32,7 @@ $go=getval("go","");
 if ($go!="")
 	{
 	# Re-run the search and locate the next and previous records.
-	$result=do_search($search,$restypes,$order_by,$archive,240+$offset+1);
+	$result=do_search($search,$restypes,$order_by,$archive,240+$offset+1,$sort);
 	if (is_array($result))
 		{
 		# Locate this resource
