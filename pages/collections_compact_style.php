@@ -42,7 +42,9 @@ else {
 	if (($pagename=="search" || $pagename=="preview_all") && isset($search) && substr($search,0,11)=="!collection"){
 		$collection=explode(",",substr($search,11));
 		$collection=$collection[0]; 
-		$colresult=do_search("!collection" . $collection);
+		global $result;
+		$colresult=$result;
+		//$colresult=do_search("!collection" . $collection);
 		}
 	else if ($pagename=="collection_manage" || $pagename=="collection_public" || $pagename=="view"){
 		$collection=$collections[$n]['ref'];
