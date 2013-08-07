@@ -1490,6 +1490,10 @@ $lang["enable_bottom_collection_bar"]="Enable bottom collection bar ('Lightbox')
 $lang["can_publish_collections_as_themes"]="Can publish collections as themes";
 $lang["can_see_all_theme_categories"]="Can see all theme categories";
 $lang["can_see_theme_category"]="Can see theme category";
+
+$lang["can_see_theme_sub_category"]="Can see theme subcategory";
+
+
 $lang["display_only_resources_within_accessible_themes"]="When searching, display only resources that exist within themes to which the user has access";
 $lang["can_access_team_centre"]="Can access the Team Centre area";
 $lang["can_manage_research_requests"]="Can manage research requests";
