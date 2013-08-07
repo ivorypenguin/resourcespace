@@ -30,6 +30,7 @@ if (getval("newuser","")!="")
 		}
 	else
 		{
+		hook("afterusercreated");
 		redirect($baseurl_short."pages/team/team_user_edit.php?ref=" . $new);
 		}
 	}
