@@ -1018,9 +1018,21 @@ function display_field($n, $field)
 ?>
 </div>
 <div id="CollapsibleSections">
-<?php hook('editbeforesectionhead'); ?>
-<h1  class="CollapsibleSectionHead" id="ResourceMetadataSectionHead"><?php echo $lang["resourcemetadata"]?></h1>
-<div class="CollapsibleSection" id="ResourceMetadataSection<?php if ($ref==-1) echo "Upload"; ?>"><?php
+<?php hook('editbeforesectionhead');
+$display_any_fields=false;
+for ($n=0;$n<count($fields);$n++)
+	{
+	if (is_field_displayed($fields[$n]))
+		{
+		$display_any_fields=true;
+		break;
+		}
+	}
+if ($display_any_fields)
+	{
+	?><h1  class="CollapsibleSectionHead" id="ResourceMetadataSectionHead"><?php echo $lang["resourcemetadata"]?></h1><?php
+	}
+?><div class="CollapsibleSection" id="ResourceMetadataSection<?php if ($ref==-1) echo "Upload"; ?>"><?php
 for ($n=0;$n<count($fields);$n++)
 	{
 	# Should this field be displayed?
@@ -1262,15 +1274,14 @@ if (false && !$disable_geocoding)
 		
 	
 	</div>
-	
-	
+
+	<?php if (!hook('replacesubmitbuttons')) { ?>
 	<div class="QuestionSubmit">
 	<input name="resetform" type="submit" value="<?php echo $lang["clearbutton"]?>" />&nbsp;
 	<input <?php if ($multiple) { ?>onclick="return confirm('<?php echo $lang["confirmeditall"]?>');"<?php } ?> name="save" type="submit" value="&nbsp;&nbsp;<?php echo ($ref>0)?$lang["save"]:$lang["next"]?>&nbsp;&nbsp;" /><br><br>
 	<div class="clearerleft"> </div>
 	</div>
-
-
+	<?php } ?>
 	
 <?php 
 # Duplicate navigation
