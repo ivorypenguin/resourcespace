@@ -1,7 +1,10 @@
 <?php
+
 include "../../include/db.php";
 include "../../include/general.php";
 include "../../include/authenticate.php";if (!checkperm("a")) {exit ("Permission denied.");}
+
+$b_callback = (getval("ajax","")!="");
 
 $ref=getvalescaped("ref","");
 
@@ -25,8 +28,7 @@ if (getval("saveform","")!="")
 	if (getval("other","")!="") {$perms[]=getvalescaped("other","");}
 	sql_query("update usergroup set permissions='" . join(",",$perms) . "' where ref='$ref'");
 	}
-
-
+		
 function DrawOption($permission,$description,$reverse=false,$reload=false)
 	{
 	global $permissions,$permissions_done;
@@ -37,28 +39,45 @@ function DrawOption($permission,$description,$reverse=false,$reload=false)
 	<tr>
 	<td nowrap width="3%"><?php if ($reverse) {?><i><?php } ?><?php echo $permission?><?php if ($reverse) {?></i><?php } ?></td>
 	<td><?php echo $description?></td>
-	<td width="20%"><input type="checkbox" name="checked_<?php echo urlencode($permission) ?>" <?php if ($checked) { ?> checked <?php } ?><?php if ($reload) { ?> onChange="document.forms['permform'].submit();" <?php } ?>></td>
+	<td width="20%"><input type="checkbox" name="checked_<?php echo urlencode($permission) ?>" <?php if ($checked) { ?> checked <?php } ?><?php if ($reload) { ?> onChange="submitForm();" <?php } ?>></td>
 	</tr>
 	<?php
 
 	$permissions_done[]=$permission;
 	}
 
-
-
 # Load group data / permissions
 $group=get_usergroup($ref);
 $permissions=trim_array(explode(",",$group["permissions"]));
 $permissions_done=array();
 
+if (!$b_callback) {
+
 include "include/header.php";
+
 ?>
+
+<body style="background-position:0px -85px;margin:0;padding:10px;">
+<script type="text/javascript">	
+		function submitForm() {			
+			var obj = document.forms['permform'];		
+			jQuery.post(
+				"permissions.php?ajax=true&ref=<?php echo $ref; ?>",
+				jQuery(obj).serialize(),
+				function(data)
+				{				
+				jQuery(".permissionstable").html(data);
+				}
+			);
+		}	
+	</script>
+	
 <style>
 .permissionstable {border-collapse: collapse;}
 .permissionstable td {border:1px solid #999;padding:4px;}
 .permheader, .permheader td {background-color:#ddd;font-weight:bold;}
 </style>
-<body style="background-position:0px -85px;margin:0;padding:10px;">
+
 <div class="proptitle"><?php echo $lang["permissionsmanager"] . ": " . $group["name"] ?></div>
 
 <div class="propbox" id="propbox">
@@ -66,6 +85,10 @@ include "include/header.php";
 
 <form method="post" id="permform">
 <input type="hidden" name="saveform" value="true">
+
+
+<?php } // end of callback check ?>	
+
 <table width="100%" class="permissionstable">
 
 <tr><td colspan=3 class="permheader"><?php echo $lang["searching_and_access"] ?></td></tr>
@@ -154,24 +177,42 @@ DrawOption("b", $lang["enable_bottom_collection_bar"], true);
 DrawOption("h", $lang["can_publish_collections_as_themes"]);
 
 # ------------ Access to theme categories
+
+include_once "../../include/theme_permission_functions.php";
+
+$theme_paths = getThemePathPerms();
+
 DrawOption("j*", $lang["can_see_all_theme_categories"], false, true);
-$themes=sql_array("select distinct theme value from collection where length(theme)>0 order by theme");
-foreach ($themes as $theme)
-	{
-	if (!in_array("j*",$permissions))
-		{
-		DrawOption("j" . $theme, "&nbsp;&nbsp; - " . $lang["can_see_theme_category"] . " '" . i18n_get_translated($theme) . "'", false);
+if (!in_array("j*",$permissions))	// by default is checked	
+	{	
+	$skip = false;	
+	foreach ($theme_paths as $path=>$bPerm)
+		{	
+		$level = substr_count ($path,"|");				
+		if ($level == 0)
+			{
+			DrawOption("j${path}",  "${lang['can_see_theme_category']} '${path}'", false, true);			
+			$skip = !$bPerm;			
+			}						
+		else
+			{						
+			$permission = "j-" . $path;			
+			if ($skip)
+				{
+					$permissions_done[] = $permission;		// stop any hidden perms appearing in the "custom permissions"
+				}
+				else
+				{													
+					$nicename = substr ($path, strrpos ($path,"|") + 1);					
+					DrawOption($permission, str_pad("", $level*7, "&mdash;") . " " . $lang["can_see_theme_sub_category"] . " '" . i18n_get_translated($nicename) . "'", true, true);					
+					$skip = !$bPerm;					
+				}				
+			}
 		}
-	else
-		{
-		# Add it to the 'done' list so it is discarded.
-		$permissions_done[]="j" . $theme;
-		}
-	}
-	
+	}	
 DrawOption("J", $lang["display_only_resources_within_accessible_themes"]);
 
-
+# ---------- end of theme categories
 
 ?><tr><td colspan=3 class="permheader"><?php echo $lang["administration"] ?></td></tr><?php
 
@@ -213,6 +254,8 @@ hook("additionalperms");
 ?>
 </table>
 
+<?php if (!$b_callback) { ?>
+
 <p><?php echo $lang["custompermissions"] . ":" ?></p>
 <?php $not_handled=array_diff($permissions,$permissions_done); ?>
 <textarea name="other" style="width:100%;"><?php echo join(",",$not_handled) ?></textarea>
@@ -222,4 +265,8 @@ hook("additionalperms");
 
 </div>
 </div>
+
 </body>
+</html>
+
+<?php }  // end of callback check ?>
