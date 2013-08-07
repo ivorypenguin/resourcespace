@@ -356,7 +356,7 @@ function EditNav() # Create a function so this can be repeated at the end of the
 	<div class="TopInpageNav">
 	<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/edit.php?ref=<?php echo urlencode($ref) ?>&amp;search=<?php echo urlencode($search)?>&amp;offset=<?php echo urlencode($offset) ?>&amp;order_by=<?php echo urlencode($order_by) ?>&amp;sort=<?php echo urlencode($sort) ?>&amp;archive=<?php echo urlencode($archive) ?>&amp;go=previous">&lt;&nbsp;<?php echo $lang["previousresult"]?></a>
 	|
-	<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php<?php if (strpos($search,"!")!==false) {?>?search=<?php echo urlencode($search)?>&amp;offset=<?php echo urlencode($offset) ?>&amp;order_by=<?php echo urlencode($order_by) ?>&amp;sort=<?php echo urlencode($sort) ?><?php } ?>"><?php echo $lang["viewallresults"]?></a>
+	<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php<?php if (strpos($search,"!")!==false) {?>?search=<?php echo urlencode($search)?>&amp;offset=<?php echo urlencode($offset) ?>&amp;order_by=<?php echo urlencode($order_by) ?>&amp;archive=<?php echo urlencode($archive) ?>&amp;sort=<?php echo urlencode($sort) ?><?php } ?>"><?php echo $lang["viewallresults"]?></a>
 	|
 	<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/edit.php?ref=<?php echo urlencode($ref) ?>&amp;search=<?php echo urlencode($search)?>&amp;offset=<?php echo urlencode($offset) ?>&amp;order_by=<?php echo urlencode($order_by) ?>&amp;sort=<?php echo urlencode($sort) ?>&amp;archive=<?php echo urlencode($archive) ?>&amp;go=next"><?php echo 		$lang["nextresult"]?>&nbsp;&gt;</a>
 	</div>
