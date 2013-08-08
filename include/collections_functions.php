@@ -596,30 +596,38 @@ function get_theme_headers($themes=array())
 	# Work out which theme category level we are selecting based on the higher selected levels provided.
 	$selecting="theme";
 
-	$sql="";
-	for ($x=0;$x<count($themes);$x++){
+	$theme_path = "";	
+	$sql="";	
+	for ($x=0;$x<count($themes);$x++){		
+		if ($x>0) $theme_path .= "|";		
+		$theme_path .= $themes[$x];		
 		if (isset($themes[$x])){
 			$selecting="theme".($x+2);
-		}
-		
+		}		
 		if (isset($themes[$x]) && $themes[$x]!="" && $x==0) {
 			$sql.=" and theme='" . escape_check($themes[$x]) . "'";
 		}
 		else if (isset($themes[$x])&& $themes[$x]!=""&& $x!=0) {
 			$sql.=" and theme".($x+1)."='" . escape_check($themes[$x]) . "'";
 		}
-	}
-	
+	}	
 	$return=array();
 	$themes=sql_query("select * from collection where public=1 and $selecting is not null and length($selecting)>0 $sql");
 	for ($n=0;$n<count($themes);$n++)
-		{
-		if ((!in_array($themes[$n][$selecting],$return)) && (checkperm("j*") || checkperm("j" . $themes[$n]["theme"]))) {$return[]=$themes[$n][$selecting];}
+		{		
+		if (
+				(!in_array($themes[$n][$selecting],$return)) &&					# de-duplicate as there are multiple collections per theme category				
+				(checkperm("j*") || checkperm("j" . $themes[$n]["theme"])) &&	# and we have permission to access then add to array							
+				(!checkperm ("j-${theme_path}|" . $themes[$n][$selecting]))		# path must not be in j-<path> exclusion				
+			) 
+			{											
+				$return[]=$themes[$n][$selecting];
+			}
 		}
 	usort($return,"themes_comparator");	
 	return $return;
 	}
-
+	
 function themes_comparator($a, $b)
 	{
 	return strnatcasecmp(i18n_get_collection_name($a), i18n_get_collection_name($b));
