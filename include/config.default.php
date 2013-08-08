@@ -2158,3 +2158,5 @@ $comments_max_characters=200;					# maximum number of characters for a comment
 $comments_email_notification_address="";		# email address to use for flagged comment notifications
 $comments_show_anonymous_email_address=false;	# by default keep anonymous commenter's email address private
 $comments_policy_external_url="";				# if specified, will popup a new window fulfilled by URL (when clicking on "comment policy" link)
+
++$do_not_add_to_new_collection_default=false;  # will set "do not add to a collection" as the default option for upload option
