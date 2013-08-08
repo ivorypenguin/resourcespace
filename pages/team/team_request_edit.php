@@ -117,14 +117,14 @@ onClick="
 <div class="Question" id="Expires" <?php if ($request["status"]!=1) { ?>style="display:none;"<?php } ?>>
 <label><?php echo $lang["expires"]?></label>
 <select name="expires" class="stdwidth">
-<option value=""><?php echo $lang["never"]?></option>
++<?php if (!$removenever){ ?> <option value=""><?php echo $lang["never"]?></option> <?php }?>
 <?php
 $sel=false;
  for ($n=1;$n<=150;$n++)
 	{
 	$date=time()+(60*60*24*$n);
 	$dateval=date("Y-m-d",$date);
-	?><option <?php $d=date("D",$date);if (($d=="Sun") || ($d=="Sat")) { ?>style="background-color:#cccccc"<?php } ?> value="<?php echo $dateval ?>" <?php if ($dateval==$request["expires"]) { $sel=true;?>selected<?php } ?>><?php echo nicedate(date("Y-m-d",$date),false,true)?></option>
+?><option <?php $d=date("D",$date);if (($d=="Sun") || ($d=="Sat")) { ?>style="background-color:#cccccc"<?php } ?> value="<?php echo $dateval ?>" <?php if ($dateval==$request["expires"] || ($request["expires"]=="" && $removenever && $n==7) ) { $sel=true;?>selected<?php } ?>><?php echo nicedate(date("Y-m-d",$date),false,true)?></option>
 	<?php
 	}
 if ($request["expires"]!="" && $sel==false)

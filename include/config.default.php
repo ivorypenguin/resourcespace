@@ -2161,3 +2161,4 @@ $comments_policy_external_url="";				# if specified, will popup a new window ful
 
 $do_not_add_to_new_collection_default=false;  # will set "do not add to a collection" as the default option for upload option
 $no_metadata_read_default=false; // If set to true and $metadata_read is false then metadata will be imported by default
+$removenever=false; # Remove 'never' option for resource access expiration and sets default expiry date to 7 days
