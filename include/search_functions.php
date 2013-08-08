@@ -40,6 +40,10 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 	$keywords=split_keywords($search);
 	$search=trim($search);
 
+	$modified_keywords=hook('dosearchmodifykeywords', '', array($keywords));
+	if ($modified_keywords)
+		$keywords=$modified_keywords;
+
 	# -- Build up filter SQL that will be used for all queries
 
 	$sql_filter="";
