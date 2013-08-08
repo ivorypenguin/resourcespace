@@ -20,10 +20,19 @@ function HookFilterboxAllPreheaderoutput()
 	<?php
 	}
 
-function HookFilterboxAllSearchbarbeforeboxpanel()
+function HookFilterboxAllAddsearchbarpanel()
 	{
-	global $lang, $search, $archive, $baseurl, $autocomplete_search, $baseurl_short, $k, $quicksearch, $pagename;
+	global $lang, $search, $archive, $autocomplete_search, $baseurl_short, $k, $quicksearch, $pagename, $filter_keywords, $filter_pos;
 	include_once(dirname(__FILE__)."/../../../include/search_functions.php");
+
+	if (empty($filter_keywords) && !empty($_COOKIE['filter']))
+		$filter_keywords = $_COOKIE['filter'];
+	if (empty($filter_pos) && !empty($_COOKIE['filter_pos']))
+		$filter_pos = intval($_COOKIE['filter_pos']);
+	if (isset($_COOKIE['original_search']))
+		$original_search = $_COOKIE['original_search'];
+	else
+		$original_search = $search;
 	?>
 
 	<div class="FilterBox" id="SearchBoxPanel" style="display: <?php echo $pagename == 'search' ? 'block' : 'none' ?>">
@@ -31,23 +40,26 @@ function HookFilterboxAllSearchbarbeforeboxpanel()
 	<h2><?php echo $lang["filtertitle"]?></h2>
 	<p><?php echo $lang["filtertext"]?></p>
 
-	<form method="post" action="<?php echo $baseurl_short?>pages/search.php?k=<?php echo $k ?>" onSubmit="return CentralSpacePost (this,true);">
+	<form id="FilterForm" method="post" action="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($original_search); ?>" onSubmit="return CentralSpacePost(this,true);">
 	<div class="Question" id="question_related" style="border-top:none;">
-	<input class="SearchWidth" type=text id="refine_keywords" name="refine_keywords" autofocus />
+		<input class="SearchWidth" type=text id="filter_keywords" name="filter_keywords" value="<?php echo htmlspecialchars(stripslashes($filter_keywords)); ?>" autofocus />
 	<?php if ($autocomplete_search)
 		{
 		# Auto-complete search functionality
 		?>
 		<script type="text/javascript">
 		jQuery(document).ready(function () {
-		jQuery("#refine_keywords").autocomplete( { source: "<?php echo $baseurl?>/plugins/filterbox/ajax/autocomplete_filter.php" } );
-			})
+			jQuery("#filter_keywords").autocomplete({
+				source: "<?php echo $baseurl_short?>/plugins/filterbox/ajax/autocomplete_filter.php"
+			});
+		});
 		</script>
 	<?php
 		}
 	?>
-	<input type=hidden name="archive" value="<?php echo $archive?>" />
-	<input type=hidden name="search" value="<?php echo htmlspecialchars(stripslashes(@$quicksearch))?>" />
+	<input type="hidden" name="archive" value="<?php echo $archive?>" />
+	<input type="hidden" name="cursorpos" />
+	<input type="hidden" name="search" value="<?php echo htmlspecialchars(stripslashes($original_search))?>" />
 	</div>
 
 	<div class="QuestionSubmit"
@@ -56,43 +68,12 @@ function HookFilterboxAllSearchbarbeforeboxpanel()
 			echo $lang["filterbutton"]?>&nbsp;&nbsp;" />
 	</div>
 	</form>
-
-	</div>
-	</div>
 	<br />
+	<p><a onClick="document.getElementById('filter_keywords').value=''; CentralSpacePost(document.getElementById('FilterForm'), true);">&gt; <?php echo $lang['clearbutton']?></a></p>
+
+	</div>
+	</div>
 	<?php
-	}
-
-global $basic_simple_search;
-if ($basic_simple_search)
-	{
-	function HookFilterboxAllSearchbarbeforebottomlinks()
-		{
-		global $lang;
-		?>
-		<p><a onClick="document.getElementById('ssearchbox').value=''; document.getElementById('basicyear').value='';document.getElementById('basicmonth').value='';">&gt; <?php echo $lang['clearbutton']?></a></p>
-		<?php
-		}
-	}
-
-function HookFilterboxAllSearchstringprocessing()
-	{
-	global $search,$k;
-	$refine=trim(getvalescaped("refine_keywords",""));
-	if ($refine!="")
-		{
-		if ($k!="")
-			{
-			# Slightly different behaviour when searching within external shares. There is no search bar, so the provided string is the entirity of the search.
-			$s=explode(" ",$search);
-			$search=$s[0] . " " . $refine;
-			}
-		else
-			{
-			$search.=", " . $refine;
-			}
-		}
-	$search=refine_searchstring($search);
 	}
 
 ?>
