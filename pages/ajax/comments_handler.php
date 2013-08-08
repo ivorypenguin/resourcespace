@@ -6,18 +6,20 @@ include "../../include/authenticate.php";
 
 $regex_email = "[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}";	// rudimentary regex to validate an email address - this is NOT a complete check
 
+$flagged_comment = "";		// stores the id of a flagged cookie if set in cookie and page has not reloaded
+
 function comments_submit() 
 	{		
 	global $username, $anonymous_login, $userref, $regex_email, $comments_max_characters, $lang, $email_notify, $comments_email_notification_address;
 	
-	if ($username == $anonymous_login && (getvalescaped("fullname","") == "" || preg_match ("/${regex_email}/", getvalescaped("email","")) === false)) exit;
+	if ($username == $anonymous_login && (getvalescaped("fullname","") == "" || preg_match ("/${regex_email}/", getvalescaped("email","")) === false)) return;
 	
 	$comment_to_hide = getvalescaped("comment_to_hide","");
 	
 	if (($comment_to_hide != "") && (checkPerm("o"))) {	
 		$sql = "update comment set hide=1 where ref=$comment_to_hide";
 		sql_query ($sql);		
-		exit;
+		return;
 	}
 	
 	$comment_flag_ref = getvalescaped("comment_flag_ref","");	
@@ -29,7 +31,7 @@ function comments_submit()
 		$comment_flag_reason = getvalescaped("comment_flag_reason","");		
 		$comment_flag_url = getvalescaped("comment_flag_url","");
 		
-		if ($comment_flag_reason == "" || $comment_flag_url == "") exit;
+		if ($comment_flag_reason == "" || $comment_flag_url == "") return;
 		
 		$comment_flag_url = (strstr ($comment_flag_url, "#", true)) ? strstr ($comment_flag_url, "#", true) : $comment_flag_url;		
 		$comment_flag_url .= "#comment${comment_flag_ref}";		// add comment anchor to end of URL
@@ -37,7 +39,7 @@ function comments_submit()
 		$comment_body = sql_query("select body from comment where ref=${comment_flag_ref}");		
 		$comment_body = (!empty($comment_body[0]['body'])) ? $comment_body[0]['body'] : "";
 		
-		if ($comment_body == "") exit;
+		if ($comment_body == "") return;
 		
 		$email_subject = (text("comments_flag_notification_email_subject")!="") ?
 			text("comments_flag_notification_email_subject") : $lang['comments_flag-email-default-subject'];
@@ -58,8 +60,10 @@ function comments_submit()
 		
 		setcookie("comment${comment_flag_ref}flagged", "true");
 		
+		$flagged_comment = $comment_flag_ref;		
+		
 		send_mail ($email_to, $email_subject, $email_body);
-		exit;
+		return;
 	}
 	
 	// --- process comment submission
@@ -68,7 +72,7 @@ function comments_submit()
 		(getvalescaped("body","") == "") ||
 		((getvalescaped("collection_ref","") == "") && (getvalescaped("resource_ref","") == "") && (getvalescaped("ref_parent","") == ""))
 		)
-		exit;
+		return;
 		
 	if ($username == $anonymous_login)	// anonymous user		
 		{				
@@ -103,7 +107,7 @@ function comments_show($ref, $bcollection_mode = false, $bRecursive = true, $lev
 	# bRecursive		= flag to indicate whether to recursively show comments, defaults to true, will be set to false if depth limit reached
 	# level				= used for recursion for display indentation etc.	
 	
-	global $username, $anonymous_login, $lang, $comments_max_characters, $comments_flat_view, $regex_email, $comments_show_anonymous_email_address;
+	global $flagged_comment, $username, $anonymous_login, $lang, $comments_max_characters, $comments_flat_view, $regex_email, $comments_show_anonymous_email_address;
 	
 	$anonymous_mode = (empty ($username) || $username == $anonymous_login);		// show extra fields if commenting anonymously
 	
@@ -160,17 +164,11 @@ function comments_show($ref, $bcollection_mode = false, $bRecursive = true, $lev
 		
 			function submitForm(obj) {				
 				jQuery.post(
-					'ajax/comments_handler.php',
+					'ajax/comments_handler.php?ref={$ref}&collection_mode={$collection_mode}',
 					jQuery(obj).serialize(),
-					function()
+					function(data)
 					{
-						jQuery.get(
-							'ajax/comments_handler.php?ref={$ref}{$collection_mode}',
-							function(data) 
-							{
-								jQuery('#comments_container').replaceWith(data);
-							}
-						)
+					jQuery('#comments_container').replaceWith(data);
 					}
 				);
 			}
@@ -259,7 +257,7 @@ EOT;
 				}						
 			echo "</div>";	// end of CommentEntryInfoDetails		
 			echo "<div class='CommentEntryInfoFlag'>";		
-			if (getval("comment${thisRef}flagged",""))
+			if (getval("comment${thisRef}flagged","") || $flagged_comment == $thisRef)
 				{
 					echo "<div class='CommentFlagged'>${lang['comments_flag-has-been-flagged']}</div>";			
 				} else {				
@@ -356,16 +354,13 @@ EOT;
 	}
 	echo "</div>";  // end of comments_container
 	
-if ($_SERVER['REQUEST_METHOD'] == "POST") 
-	{
-	if (!empty($username)) comments_submit();
-	} 
-else 
-	{
-	$ref = (!empty ($_GET['ref'])) ? $_GET['ref'] : "";
+	if ($_SERVER['REQUEST_METHOD'] == "POST") if (!empty($username)) comments_submit();	
+	
+	
+	$ref = (!empty ($_GET['ref'])) ? $_GET['ref'] : "";	
 	$collection_mode = (!empty ($_GET['collection_mode']));				
 	comments_show($ref, $collection_mode);				
-	}
+	
 	
 		
 ?>
