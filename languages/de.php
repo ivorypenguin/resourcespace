@@ -1478,6 +1478,7 @@ $lang["can_create_resources_and_upload_files-admins"]="Kann Ressourcen erstellen
 $lang["can_create_resources_and_upload_files-general_users"]="Kann Ressourcen erstellen / Dateien hochladen<br>(Normale Benutzer; Ressourcen erhalten den Status 'Benutzer-Beiträge: Freischaltung noch nicht erledigt')";
 $lang["can_delete_resources"]="Kann Ressourcen löschen<br>(die der Benutzer bearbeiten kann)";
 $lang["can_manage_archive_resources"]="Kann archivierte Ressourcen verwalten";
+$lang["can_manage_alternative_files"]="Kann alternative Dateien verwalten";
 $lang["can_tag_resources_using_speed_tagging"]="Kann Ressourcen via 'Speed Tagging' taggen<br>(falls konfiguriert)";
 $lang["enable_bottom_collection_bar"]="Kollektionen erlauben ('Leuchtkasten')";
 $lang["can_publish_collections_as_themes"]="Kann Kollektionen als Themen veröffentlichen";
