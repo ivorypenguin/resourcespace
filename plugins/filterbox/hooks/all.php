@@ -22,7 +22,7 @@ function HookFilterboxAllPreheaderoutput()
 
 function HookFilterboxAllAddsearchbarpanel()
 	{
-	global $lang, $search, $archive, $autocomplete_search, $baseurl_short, $k, $quicksearch, $pagename, $filter_keywords, $filter_pos;
+	global $lang, $search, $archive, $autocomplete_search, $baseurl_short, $k, $quicksearch, $pagename, $filter_keywords, $filter_pos, $filterbox_instant_update;
 	include_once(dirname(__FILE__)."/../../../include/search_functions.php");
 
 	if (empty($filter_keywords) && !empty($_COOKIE['filter']))
@@ -56,7 +56,82 @@ function HookFilterboxAllAddsearchbarpanel()
 		</script>
 	<?php
 		}
+		if (!empty($filterbox_instant_update)) {
 	?>
+	<script type="text/javascript">
+		// Update filter with a delay after each change
+		var filterUpdateInterval;
+		var oldFilterValue = jQuery('#filter_keywords').val();
+		var previousFilterValue = oldFilterValue;
+		var lastFilterChange;
+
+		function getCursor(node) {
+	        if ('selectionStart' in node) {
+	            // Standard-compliant browsers
+	            return node.selectionStart;
+			} else if (document.selection) {
+				// IE
+				node.focus();
+	            var sel = document.selection.createRange();
+		        var selLen = document.selection.createRange().text.length;
+			    sel.moveStart('character', -node.value.length);
+				return sel.text.length - selLen;
+			}
+		}
+
+		function setCursor(node, pos) {
+			if (node.createTextRange) {
+				var textRange = node.createTextRange();
+				textRange.collapse(true);
+				textRange.moveEnd(pos);
+				textRange.moveStart(pos);
+				textRange.select();
+				return true;
+			}
+			if (node.setSelectionRange) {
+				node.setSelectionRange(pos, pos);
+				return true;
+			}
+
+			return false;
+		}
+		<?php if (!empty($filter_pos)) { ?>
+			setCursor(jQuery('#filter_keywords').get(0), <?php echo $filter_pos; ?>);
+		<?php } ?>
+
+		function updateFilter() {
+			var newValue = jQuery('#filter_keywords').val();
+			jQuery('input[name="cursorpos"]').val(getCursor(jQuery('#filter_keywords').get(0)));
+			if (oldFilterValue != newValue) {
+				if (previousFilterValue != newValue)
+					SetCookie('filter', newValue);
+
+				var now = Date.now();
+				if (!lastFilterChange)
+					lastFilterChange = now;
+				if (now > lastFilterChange + 500) {
+					oldFilterValue = newValue;
+					CentralSpacePost(document.getElementById('FilterForm'), true);
+				}
+				if (previousFilterValue != newValue) {
+					previousFilterValue = newValue;
+					lastFilterChange = now;
+				}
+			}
+		}
+
+		jQuery('#filter_keywords')
+			.keyup(updateFilter)
+			.change(updateFilter)
+			.focus(function() {
+				filterUpdateInterval = setInterval(updateFilter, 50);
+			})
+			.blur(function() {
+				clearInterval(filterUpdateInterval);
+				updateFilter();
+			});
+	</script>
+	<?php } ?>
 	<input type="hidden" name="archive" value="<?php echo $archive?>" />
 	<input type="hidden" name="cursorpos" />
 	<input type="hidden" name="search" value="<?php echo htmlspecialchars(stripslashes($original_search))?>" />
