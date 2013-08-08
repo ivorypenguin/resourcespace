@@ -2159,4 +2159,5 @@ $comments_email_notification_address="";		# email address to use for flagged com
 $comments_show_anonymous_email_address=false;	# by default keep anonymous commenter's email address private
 $comments_policy_external_url="";				# if specified, will popup a new window fulfilled by URL (when clicking on "comment policy" link)
 
-+$do_not_add_to_new_collection_default=false;  # will set "do not add to a collection" as the default option for upload option
+$do_not_add_to_new_collection_default=false;  # will set "do not add to a collection" as the default option for upload option
+$no_metadata_read_default=false; // If set to true and $metadata_read is false then metadata will be imported by default
