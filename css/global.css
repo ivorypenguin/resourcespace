@@ -542,7 +542,7 @@ li.plupload_droptext
 #CommentsPanelHeader { display: table; width: 100%; margin-bottom: 10px; }
 #CommentsPanelHeaderRow { display: table-row; }
 #CommentsPanelHeaderRowTitle { display: table-cell; }
-#CommentsPanelHeaderRowPolicyLink { display: table-cell; text-align: right; }
+#CommentsPanelHeaderRowPolicyLink { display: table-cell; text-align: right; padding-right: 5px; }
 #CommentsContainer { width: 100%;}
 .CommentEntry { margin-top: 10px; width: 600px; border: 1px solid lightgray; border-radius: 10px; padding: 5px; }
 .CommentEntryInfoContainer {display: table; width: 100%;}
