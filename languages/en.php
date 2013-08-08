@@ -1485,6 +1485,7 @@ $lang["can_create_resources_and_upload_files-admins"]="Can create resources / up
 $lang["can_create_resources_and_upload_files-general_users"]="Can create resources / upload files<br>(normal users; resources go to 'Pending Submission' state via My Contributions)";
 $lang["can_delete_resources"]="Can delete resources<br>(to which the user has write access)";
 $lang["can_manage_archive_resources"]="Can manage archive resources";
+$lang["can_manage_alternative_files"]="Can manage alternative files";
 $lang["can_tag_resources_using_speed_tagging"]="Can tag resources using 'Speed Tagging'<br>(if enabled in the configuration)";
 $lang["enable_bottom_collection_bar"]="Enable bottom collection bar ('Lightbox')";
 $lang["can_publish_collections_as_themes"]="Can publish collections as themes";

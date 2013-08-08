@@ -168,6 +168,7 @@ DrawOption("d", $lang["can_create_resources_and_upload_files-general_users"]);
 DrawOption("D", $lang["can_delete_resources"], true);
 
 DrawOption("i", $lang["can_manage_archive_resources"]);
+DrawOption('A', $lang["can_manage_alternative_files"], true);
 DrawOption("n", $lang["can_tag_resources_using_speed_tagging"]);
 
 
