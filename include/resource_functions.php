@@ -32,6 +32,9 @@ function create_resource($resource_type,$archive=999,$user=-1)
 
 	# set defaults for resource here (in case there are edit filters that depend on them)
 	set_resource_defaults($insert);	
+	
+	# Autocomplete any blank fields.
+	autocomplete_blank_fields($insert);
 
 	# Always index the resource ID as a keyword
 	remove_keyword_mappings($insert, $insert, -1);
@@ -1005,6 +1008,9 @@ function copy_resource($from,$resource_type=-1)
 
 	# Set any resource defaults
 	set_resource_defaults($to);
+	
+	# Autocomplete any blank fields.
+	autocomplete_blank_fields($to);
 
 	# Reindex the resource so the resource_keyword entries are created
 	reindex_resource($to);
