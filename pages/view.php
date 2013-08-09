@@ -570,6 +570,7 @@ if ($alt_access)
 	$alt_order_by="";$alt_sort="";
 	if ($alt_types_organize){$alt_order_by="alt_type";$alt_sort="asc";} 
 	$altfiles=get_alternative_files($ref,$alt_order_by,$alt_sort);
+	hook("processaltfiles");
 	$last_alt_type="-";
 	for ($n=0;$n<count($altfiles);$n++)
 		{
