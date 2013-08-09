@@ -571,7 +571,7 @@ if ($header=="" && !isset($themes[0]))
 				<?php hook("beforecollectiontoolscolumn");?>
 				<td><div class="ListTools">
 				<a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($s)?>&resetrestypes=true" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $themes_category_split_pages?$lang["action-viewmatchingresources"]:$lang["viewall"]?></a>
-				<?php if ($themes_category_split_pages) { ?>
+				<?php if ($themes_category_split_pages && $headers[$n]['type']==7) { ?>
 				<a href="<?php echo $baseurl_short?>pages/themes.php?smart_theme=<?php echo $headers[$n]["ref"] ?>&node=<?php echo $themes[$m]["node"] ?>&parentnode=<?php echo urlencode($node) ?>&parentnodename=<?php echo urlencode(getval("nodename","")) ?>&nodename=<?php echo urlencode($themes[$m]["name"]) ?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["action-expand"]?></a>
 				<?php }
                 hook("additionalsmartthemetool");?>
