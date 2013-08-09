@@ -10,7 +10,7 @@ $flagged_comment = "";		// stores the id of a flagged cookie if set in cookie an
 
 function comments_submit() 
 	{		
-	global $username, $anonymous_login, $userref, $regex_email, $comments_max_characters, $lang, $email_notify, $comments_email_notification_address;
+	global $username, $anonymous_login, $userref, $regex_email, $comments_max_characters, $lang, $email_notify, $comments_email_notification_address, $flagged_comment;
 	
 	if ($username == $anonymous_login && (getvalescaped("fullname","") == "" || preg_match ("/${regex_email}/", getvalescaped("email","")) === false)) return;
 	
@@ -32,8 +32,9 @@ function comments_submit()
 		$comment_flag_url = getvalescaped("comment_flag_url","");
 		
 		if ($comment_flag_reason == "" || $comment_flag_url == "") return;
-		
-		$comment_flag_url = (strstr ($comment_flag_url, "#", true)) ? strstr ($comment_flag_url, "#", true) : $comment_flag_url;		
+
+		# the following line can be simplified using strstr (with before_needle boolean) but not supported < PHP 5.3.0
+		$coment_flag_url = (strpos ($comment_flag_url, "#") === false) ? $comment_flag_url : substr ($comment_flag_url, 0, strpos ($comment_flag_url, "#")-1);		
 		$comment_flag_url .= "#comment${comment_flag_ref}";		// add comment anchor to end of URL
 		
 		$comment_body = sql_query("select body from comment where ref=${comment_flag_ref}");		
