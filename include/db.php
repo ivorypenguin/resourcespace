@@ -822,9 +822,9 @@ function pagename()
 	$name=getvalescaped('pagename', '');
 	if (!empty($name))
 		return $name;
-
-	$urlparts=explode("/",$_SERVER["PHP_SELF"]);
-    $url=$urlparts[count($urlparts)-1];
+	$url=str_replace("\\","/", $_SERVER["PHP_SELF"]); // To work with Windows command line scripts
+	$urlparts=explode("/",$url);
+   $url=$urlparts[count($urlparts)-1];
     return escape_check($url);
     }
     
