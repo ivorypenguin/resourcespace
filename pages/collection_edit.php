@@ -231,7 +231,7 @@ if (checkperm("h") && $collection['public']==1)
 	<div class="clearerleft"> </div>
 	</div>
 	<?php
-	if ($collection["home_page_publish"])
+	if ($collection["home_page_publish"]&&!hook("hidehomepagepublishoptions"))
 		{
 		# Option ticked - collect extra data
 		?>
