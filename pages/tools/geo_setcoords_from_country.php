@@ -1,7 +1,13 @@
 <?php
 # A script to set the geo coordinates based on a country field (if available) for resources with no geolocation information set.
 
+# Find country field
+$country_field=sql_value("select ref value from resource_type_field where name='country'","");
+if ($country_field=="") {echo "Country field not found. Must have a field with shorthand name set to 'country'.";} 
 
+else
+	{
+	
 $coords=explode("\n","AD,42.5000,1.5000
 AE,24.0000,54.0000
 AF,33.0000,65.0000
@@ -527,10 +533,6 @@ YEMEN,YE
 ZAMBIA,ZM
 ZIMBABWE,ZW");
 
-# Find country field
-$country_field=sql_value("select ref value from resource_type_field where name='country'","");
-if ($country_field=="") {exit("Country field not found. Must have a field with shorthand name set to 'country'.");}
-
 # Find selected countries
 $countries_all=sql_query("select distinct k.ref,k.keyword from keyword k join resource_keyword rk on k.ref=rk.keyword where rk.resource_type_field='$country_field'");
 $countries=array();
@@ -566,7 +568,7 @@ foreach ($countries as $country)
 				{
 				echo "Coords found: " . $s[1] . "/" . $s[2] . " for keyref " . $countries_keyrefs[$country] . "<br />";
 				$refs=sql_array("select resource value from resource_keyword where resource_type_field='$country_field' and keyword='" . $countries_keyrefs[$country] . "'");
-			    sql_query("update resource set geo_lat='" . $s[1] . "',geo_long='" . $s[2] . "' where geo_lat is null and ref in ('" . join("','",$refs) . "')");
+				sql_query("update resource set geo_lat='" . $s[1] . "',geo_long='" . $s[2] . "' where geo_lat is null and ref in ('" . join("','",$refs) . "')");
 				}
 			}
 		echo "</li>";
@@ -580,7 +582,7 @@ foreach ($countries as $country)
 	
 	}
 echo "</ul>";
-
+}
 
 
 
