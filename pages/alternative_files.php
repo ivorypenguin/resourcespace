@@ -76,6 +76,7 @@ include "../include/header.php";
 $alt_order_by="";$alt_sort="";
 if ($alt_types_organize){$alt_order_by="alt_type";$alt_sort="asc";} 
 $files=get_alternative_files($ref,$alt_order_by,$alt_sort);
+    hook("alt_files_before_list");
 for ($n=0;$n<count($files);$n++)
 	{
 	?>
