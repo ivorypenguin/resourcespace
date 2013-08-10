@@ -225,7 +225,7 @@ EOT;
 			echo "<div class='CommentEntry' id='comment${thisRef}' style='margin-left: " . ($level-1)*50 . "px;'>";	// indent for levels - this will always be zero if config $comments_flat_view=true						
 			
 			# ----- Information line
-			hook("beforecommentinfo", "all",array("ref"=>$thisRef));
+			hook("beforecommentinfo", "all",array("ref"=>$comment["ref"]));
    
 			echo "<div class='CommentEntryInfoContainer'>";			
 			echo "<div class='CommentEntryInfo'>";
