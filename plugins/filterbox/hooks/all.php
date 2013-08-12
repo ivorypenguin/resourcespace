@@ -1,21 +1,27 @@
 <?php
 
+function HookFilterboxAllAdditionalheaderjs()
+	{
+	?><script type="text/javascript">
+		function showHideFilterboxPanel() {
+			// We check for the existance of this panel, as that seems to be the only reliable way
+			if (jQuery('.TopInpageNav').get(0))
+				jQuery('.FilterBox#SearchBoxPanel').fadeIn(150);
+			else
+				jQuery('.FilterBox#SearchBoxPanel').fadeOut(150);
+		}
+		jQuery(window).bind('popstate', showHideFilterboxPanel);
+	</script><?php
+	}
+
 function HookFilterboxAllPreheaderoutput()
 	{
-	global $pagename;
-
 	if (getval('ajax', '') == '')
 		return;
 
 	?>
 	<script type="text/javascript">
-	var pagename="<?php echo $pagename?>";
-	jQuery(document).ready(function() {
-		if (pagename == 'search')
-			jQuery('.FilterBox#SearchBoxPanel').fadeIn(150);
-		else
-			jQuery('.FilterBox#SearchBoxPanel').fadeOut(150);
-	});
+		jQuery(document).ready(showHideFilterboxPanel);
 	</script>
 	<?php
 	}
