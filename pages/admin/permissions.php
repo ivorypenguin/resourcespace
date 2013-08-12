@@ -179,35 +179,32 @@ DrawOption("h", $lang["can_publish_collections_as_themes"]);
 
 # ------------ Access to theme categories
 
-include_once "../../include/theme_permission_functions.php";
-
-$theme_paths = getThemePathPerms();
-
 DrawOption("j*", $lang["can_see_all_theme_categories"], false, true);
 if (!in_array("j*",$permissions))	// by default is checked	
-	{	
-	$skip = false;	
+	{
+	include_once "../../include/theme_permission_functions.php";
+	$theme_paths = getThemePathPerms();	
 	foreach ($theme_paths as $path=>$bPerm)
 		{	
 		$level = substr_count ($path,"|");				
 		if ($level == 0)
 			{
-			DrawOption("j${path}",  "${lang['can_see_theme_category']} '${path}'", false, true);			
-			$skip = !$bPerm;			
-			}						
+			DrawOption("j${path}",  "${lang['can_see_theme_category']} '${path}'", false, true);	// always show the top level theme
+			}
 		else
-			{						
-			$permission = "j-" . $path;			
+			{
+			$parent = substr ($path, 0, strrpos($path,"|"));
+			$skip =(!$theme_paths[$parent]);		// check if parent theme permission has been set
+			$permission = "j-" . $path;
 			if ($skip)
 				{
-					$permissions_done[] = $permission;		// stop any hidden perms appearing in the "custom permissions"
+				$permissions_done[] = $permission;		// stop any hidden perms appearing in the "custom permissions" if not showing (because parent is not set)
 				}
-				else
-				{													
-					$nicename = substr ($path, strrpos ($path,"|") + 1);					
-					DrawOption($permission, str_pad("", $level*7, "&mdash;") . " " . $lang["can_see_theme_sub_category"] . " '" . i18n_get_translated($nicename) . "'", true, true);					
-					$skip = !$bPerm;					
-				}				
+			else
+				{
+				$nicename = substr ($path, strrpos ($path,"|") + 1);
+				DrawOption($permission, str_pad("", $level*7, "&mdash;") . " " . $lang["can_see_theme_sub_category"] . " '" . i18n_get_translated($nicename) . "'", true, true);
+				}
 			}
 		}
 	}	
