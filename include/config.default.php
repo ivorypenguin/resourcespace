@@ -1754,6 +1754,16 @@ $view_mapheight=200;
 # Cache openstreetmap tiles on your server. This is slower when loading, but eliminates non-ssl content warnings if your site is SSL (requires curl)
 $geo_tile_caching=false;
 
+# A list of upper/lower long/lat bounds, defining areas that will be excluded from search results.
+# Areas are defined using values in the following sequence: southwest lat, southwest long, northeast lat, northeast long
+$geo_search_restrict=array
+	(	
+	# array(50,-3,54,3) # Example omission zone
+	# ,array(-10,-20,-8,-18) # Example omission zone 2
+	# ,array(1,1,2,2) # Example omission zone 3
+	);
+
+
 # QuickLook previews (Mac Only)
 # If configured, attempt to produce a preview for files using Mac OS-X's built in QuickLook preview system which support multiple files.
 # This requires AT LEAST VERSION 0.2 of 'qlpreview', available from http://www.hamsoftengineering.com/codeSharing/qlpreview/qlpreview.html

@@ -68,6 +68,20 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 			$sql_filter.= "creation_date > (curdate() - interval " . $recent_search_daylimit . " DAY)";
 			}
 
+	# Geo zone exclusion
+	# A list of upper/lower long/lat bounds, defining areas that will be excluded from search results.
+	# Areas are defined as southwest lat, southwest long, northeast lat, northeast long
+	global $geo_search_restrict;	
+	if (count($geo_search_restrict)>0)
+		{
+		foreach ($geo_search_restrict	as $zone)
+			{
+			if ($sql_filter!="") {$sql_filter.=" and ";}
+			$sql_filter.= "(geo_lat is null or geo_long is null or not(geo_lat >= '" . $zone[0] . "' and geo_lat<= '" . $zone[2] . "'";
+			$sql_filter.= "and geo_long >= '" . $zone[1] . "' and geo_long<= '" . $zone[3] . "'))";
+			}
+		}
+
 	# If returning disk used by the resources in the search results ($return_disk_usage=true) then wrap the returned SQL in an outer query that sums disk usage.
 	$sql_prefix="";$sql_suffix="";
 	if ($return_disk_usage) {$sql_prefix="select sum(disk_usage) total_disk_usage,count(*) total_resources from (";$sql_suffix=") resourcelist";}
