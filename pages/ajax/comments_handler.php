@@ -120,9 +120,8 @@ function comments_show($ref, $bcollection_mode = false, $bRecursive = true, $lev
 	
 	$sql = 	"select c.ref thisref, c.ref_parent, c.hide, c.created, c.body, c.website_url, c.email, u.username, u.ref, parent.created 'responseToDateTime', " .			
 			"IFNULL(IFNULL(c.fullname, u.fullname), '" . $lang['comments_anonymous-user'] . "') 'name' ," .  			
-			"IFNULL(IFNULL(parent.fullname, parent.fullname), '" . $lang['comments_anonymous-user'] . "') 'responseToName' " .  			
-			"from comment c left join (user u) on (c.user_ref = u.ref) left join (comment parent) on (c.ref_parent = parent.ref) ";
-			
+			"IFNULL(IFNULL(parent.fullname, uparent.fullname), '" . $lang['comments_anonymous-user'] . "') 'responseToName' " .  			
+			"from comment c left join (user u) on (c.user_ref = u.ref) left join (comment parent) on (c.ref_parent = parent.ref) left join (user uparent) on (parent.user_ref = uparent.ref) ";		
 	$collection_ref = ($bcollection_mode) ? $ref : "";
 	$resource_ref = ($bcollection_mode) ? "" : $ref;
 	
