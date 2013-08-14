@@ -11,4 +11,19 @@ $lang["basecall"]="Base Call";
 $lang["mcryptenabled"]="This Installation uses Mcrypt, which is especially secure.";
 $lang["mcryptdisabled"]="This Installation uses a simple encryption function. Ask your administrator to install mcrypt and hash extensions for expert security.";
 $lang["sslrecommended"]="We recommend that you secure this http server with SSL. Please contact your administrator";
+
+
+$lang["apicore_apiwhitelisting"]="API Whitelisting";
+$lang["apicore_apiwhitelistingdesc"]="Use this interface to whitelist addresses, associating them with a valid account for specific APIS";
+$lang["apicore_ip"]="IP";
+$lang["apicore_account"]="User Account";
+$lang["apicore_apis"]="Allowed APIs";
+$lang["apicore_deletesure"]="Are you sure you want to delete this Whitelist item?";
+$lang["apicore_delete"]="Delete";
+$lang["apicore_newentry"]="Create a new Whitelist entry";
+$lang["apicore_whitelistnew"]="New Whitelist";
+$lang["apicore_associateaccount"]="Associate a user account";
+$lang["apicore_selectaccount"]="Select a user account...";
+$lang["apicore_selectapis"]="Select Allowed APIs";
+
 ?>

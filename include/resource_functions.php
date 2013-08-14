@@ -5,7 +5,7 @@
 function create_resource($resource_type,$archive=999,$user=-1)
 	{
 	# Create a new resource.
-	global $always_record_resource_creator;
+	global $always_record_resource_creator,$index_contributed_by;
 
 	if ($archive==999)
 		{
@@ -43,6 +43,14 @@ function create_resource($resource_type,$archive=999,$user=-1)
 	# Log this			
 	daily_stat("Create resource",$insert);
 	resource_log($insert,'c',0);
+	
+	# Also index contributed by field, unless disabled
+	if ($index_contributed_by)
+		{
+		$resource=get_resource_data($insert);
+		$userinfo=get_user($resource["created_by"]);
+		add_keyword_mappings($insert,$userinfo["username"] . " " . $userinfo["fullname"],-1);
+		}
 
 	return $insert;
 	}

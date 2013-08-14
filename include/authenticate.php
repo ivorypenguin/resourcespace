@@ -5,44 +5,6 @@ $valid=true;
 $autologgedout=false;
 $nocookies=false;
 
-if (!isset($api)){$api=false;} // $api is set above inclusion of authenticate.php in remotely accessible scripts.
-
-if ($api && $enable_remote_apis ){
-	include_once "login_functions.php";
-
-	# if using API (RSS or API), send credentials to login.php, as if normally posting, to establish login
-	if (getval("key","")==""){header("HTTP/1.0 403 Access Denied");exit("Access denied.");}
-	if (getval("key","") || (getval("username","")&& getval("password",""))){ // key is provided within the website when logged in (encrypted username and password)
-
-        if (getval("username","")&& getval("password","")){
-            $u_p_array[0]=getval("username","");$u_p_array[1]=getval("password","");
-        }
-        else {
-            $u_p_array=decrypt_api_key(getval("key",""));
-        }
-
-        if (count($u_p_array)!=2)
-			{
-			unset($_COOKIE['user']);
-			} 
-		else
-			{
-			$username=$u_p_array[0];
-			$password=$u_p_array[1];
-
-			$result=perform_login();
-			if ($result['valid'])
-				{
-				$_COOKIE['user']=$result['session_hash'];
-				}
-	        else
-				{
-				unset($_COOKIE['user']);
-				}
-			}
-	}
-}
-
 if (!function_exists("ip_matches")){
 function ip_matches($ip, $ip_restrict)
 	{
@@ -76,6 +38,68 @@ function ip_matches($ip, $ip_restrict)
 	return false;
 	}
 }
+
+if (!isset($api)){$api=false;} // $api is set above inclusion of authenticate.php in remotely accessible scripts.
+
+if ($api && $enable_remote_apis ){
+	include_once "login_functions.php";
+	if (getval("key","")==""){
+	$ip=get_ip();
+	$current_whitelists=sql_query("select u.username,u.fullname,w.* from api_whitelist w join user u on w.userref=u.ref order by u.username");
+	foreach ($current_whitelists as $whitelist){
+		if (ip_matches($ip,$whitelist['ip_domain'])){
+			// IP matches. Log in as specified user
+			$api_whitelisted_user=sql_query("select * from user where ref='".$whitelist['ref']."'");
+			$_GET['key']=make_api_key($api_whitelisted_user[0]['username'],$api_whitelisted_user[0]['password']);
+			$allowed_apis=explode(",",$whitelist['apis']);
+			
+			$allowed=false;
+			$api_plugin=explode("/",$_SERVER['REQUEST_URI']);
+			$api_plugin=$api_plugin[count($api_plugin)-2];
+			//echo $api_plugin;
+			if (in_array("all",$allowed_apis)){$allowed=true;}
+			if (in_array($api_plugin,$allowed_apis)){$allowed=true;}
+			if ($allowed==false){
+				 header("HTTP/1.0 403 Access Denied");exit("Access denied.");
+			}
+				
+			
+		}
+	}
+	}
+	# if using API (RSS or API), send credentials to login.php, as if normally posting, to establish login
+	if (getval("key","")==""){header("HTTP/1.0 403 Access Denied");exit("Access denied.");}
+	if (getval("key","") || (getval("username","")&& getval("password",""))){ // key is provided within the website when logged in (encrypted username and password)
+
+        if (getval("username","")&& getval("password","")){
+            $u_p_array[0]=getval("username","");$u_p_array[1]=getval("password","");
+        }
+        else {
+            $u_p_array=decrypt_api_key(getval("key",""));
+        }
+
+        if (count($u_p_array)!=2)
+			{
+			unset($_COOKIE['user']);
+			} 
+		else
+			{
+			$username=$u_p_array[0];
+			$password=$u_p_array[1];
+
+			$result=perform_login();
+			if ($result['valid'])
+				{
+				$_COOKIE['user']=$result['session_hash'];
+				}
+	        else
+				{
+				unset($_COOKIE['user']);
+				}
+			}
+	}
+}
+
 
 if (array_key_exists("user",$_COOKIE) || array_key_exists("user",$_GET) || isset($anonymous_login) || hook('provideusercredentials'))
     {

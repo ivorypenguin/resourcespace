@@ -4,10 +4,11 @@ include "../../include/authenticate.php";
 include "../../include/general.php";
 if (!in_array("api_core",$plugins)){die("no access");}
 include "../../include/header.php";
+
 ?>
 <div class="BasicsBox">
 <p><a  onClick="return CentralSpaceLoad(this,true);" href="<?php if (getvalescaped("back","")!=""){echo $baseurl_short.getvalescaped("back","");}else{ echo $baseurl_short."pages/user_preferences.php";}?>">&lt; <?php echo $lang["back"]?></a></p><h1><?php echo $lang["apiaccess"]?></h1>
-</div>
+
 
 <?php if (!$enable_remote_apis || $api_scramble_key=="abcdef123"){echo $lang["remoteapisnotavailable"]; exit();}?>
 
@@ -43,8 +44,18 @@ echo $lang['mcryptenabled'];
 
 <?php
 // find available api plugins
+$ip=get_ip();
+$current_whitelists=sql_query("select * from api_whitelist w join user u on w.userref=u.ref where u.ref=$userref order by u.username");
+foreach ($current_whitelists as $whitelist){
+		if (ip_matches($ip,$whitelist['ip_domain'])){
+			$allowed_apis=explode(",",$whitelist['apis']);
+		}
+	}
+
+
 foreach($plugins as $plugin){
-    if (substr($plugin,0,4)=="api_" && $plugin!=="api_core") {?>
+    if (substr($plugin,0,4)=="api_" && $plugin!=="api_core") {
+		?>
        <tr class="ListviewTitleStyle">
        <td width="10%"><?php echo $plugin?></td>
        <td width="10%"><a href="#" onClick="jQuery.ajax('<?php echo $baseurl?>/plugins/<?php echo $plugin?>/readme.txt',{complete:function(data) {jQuery('#CentralSpace').html('<a onClick=\'return CentralSpaceLoad(this,true);\' href=\'<?php echo $baseurl_short?>plugins/api_core/index.php\'>&lt; <?php echo $lang['back']?></a><pre>'+ jQuery('<span>').text(data.responseText).html() +'</pre>');}});">readme.txt</a></td>
@@ -53,7 +64,7 @@ foreach($plugins as $plugin){
            ?><a target="_blank" href="<?php echo $baseurl_short?>plugins/<?php echo $plugin?>/?key=<?php echo $apikey;?>&skey=<?php echo md5($hashkey.'key='.$apikey)?>" target="_blank"><?php echo $baseurl_short?>plugins/<?php echo $plugin?>/?key=<?php echo $apikey;?>&skey=<?php echo md5($hashkey.'key='.$apikey)?></a>
            <?php }
            else { ?>
-            <a target="_blank" href="<?php echo $baseurl_short?>plugins/<?php echo $plugin?>/?key=<?php echo $apikey;?>" target="_blank"><?php echo $baseurl?>/plugins/<?php echo $plugin?>/?key=<?php echo $apikey;?></a>
+            <a target="_blank" href="<?php echo $baseurl_short?>plugins/<?php echo $plugin?>/?key=<?php echo $apikey;?>" target="_blank"><?php echo $baseurl?>/plugins/<?php echo $plugin?><?php if (in_array("all",$allowed_apis) || in_array($plugin,$allowed_apis)){?><?php } else { ?>/?key=<?php echo $apikey;?><?php } ?></a>
            <?php } ?> 
            </td>
        </tr>
