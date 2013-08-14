@@ -378,9 +378,11 @@ echo ($qty==1 ? $lang["resources_selected-1"] : str_replace("%number", $qty, $la
 # The script doesn't allow editing of empty collections, no need to handle that case here.
 echo text("multiple"); ?></p>
 
-<?php } elseif ($ref>0) { ?>
-<p><a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo urlencode($ref) ?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset) ?>&order_by=<?php echo urlencode($order_by) ?>&sort=<?php echo urlencode($sort) ?>&archive=<?php echo urlencode($archive) ?>" onClick="return CentralSpaceLoad(this,true);">&lt; <?php echo $lang["backtoresourceview"]?></a></p>
-<?php if (!hook("replaceeditheader")) { ?>
+<?php } elseif ($ref>0) { 
+	if (!hook('replacebacklink')) {
+		?><p><a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo urlencode($ref) ?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset) ?>&order_by=<?php echo urlencode($order_by) ?>&sort=<?php echo urlencode($sort) ?>&archive=<?php echo urlencode($archive) ?>" onClick="return CentralSpaceLoad(this,true);">&lt; <?php echo $lang["backtoresourceview"]?></a></p><?php
+	}
+	if (!hook("replaceeditheader")) { ?>
 <h1 id="editresource"><?php echo $lang["editresource"]?></h1>
 
 <?php
