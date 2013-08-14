@@ -46,7 +46,7 @@ function HookFilterboxAllAddsearchbarpanel()
 	<h2><?php echo $lang["filtertitle"]?></h2>
 	<p><?php echo $lang["filtertext"]?></p>
 
-	<form id="FilterForm" method="post" action="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($original_search); ?>" onSubmit="return CentralSpacePost(this,true);">
+	<form id="FilterForm" method="post" action="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($original_search); ?>&noreload=true" onSubmit="return CentralSpacePost(this,true);">
 	<div class="Question" id="question_related" style="border-top:none;">
 		<input class="SearchWidth" type=text id="filter_keywords" name="filter_keywords" value="<?php echo htmlspecialchars(stripslashes($filter_keywords)); ?>" autofocus />
 	<?php if ($autocomplete_search)

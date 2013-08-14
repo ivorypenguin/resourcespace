@@ -325,7 +325,9 @@ if($k=="")
 	{
 	 ?>
 	<script type="text/javascript">
-	ReloadSearchBar();
+	var dontReloadSearchBar=<?php echo getval('noreload', null)!=null ? 'true' : 'false' ?>;
+	if (dontReloadSearchBar !== true)
+		ReloadSearchBar();
 	ReloadLinks();
 	</script>
  	<?php
