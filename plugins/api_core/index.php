@@ -46,6 +46,7 @@ echo $lang['mcryptenabled'];
 // find available api plugins
 $ip=get_ip();
 $current_whitelists=sql_query("select * from api_whitelist w join user u on w.userref=u.ref where u.ref=$userref order by u.username");
+$allowed_apis=array();
 foreach ($current_whitelists as $whitelist){
 		if (ip_matches($ip,$whitelist['ip_domain'])){
 			$allowed_apis=explode(",",$whitelist['apis']);
