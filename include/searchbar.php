@@ -502,7 +502,7 @@ if (!$basic_simple_search)
 	
 	        <?php if ($searchbyday) { ?><br /><?php } ?>
 	
-	        <select id="basicmonth" name="month" class="SearchWidth" style="width:80px;">
+	        <select id="basicmonth" name="month" class="SearchWidth" style="width:80px;font-size: 10px;">
 	          <option selected="selected" value=""><?php echo $lang["anymonth"]?></option>
 	          <?php
 	          for ($n=1;$n<=12;$n++)
@@ -515,7 +515,7 @@ if (!$basic_simple_search)
 	        </select> 
 	
 	        <?php if ($searchbyday) { ?>
-	        <select id="basicday" name="day" class="SearchWidth" style="width:73px;">
+	        <select id="basicday" name="day" class="SearchWidth" style="width:73px;font-size: 10px;">
 	          <option selected="selected" value=""><?php echo $lang["anyday"]?></option>
 	          <?php
 	          for ($n=1;$n<=31;$n++)
