@@ -27,7 +27,7 @@
 									echo "<a href=\"javascript: void(0)\" onclick=\"alert ('${lang['comments_box-policy-placeholder']}');\">&gt;&nbsp;${lang['comments_box-policy']}</a>";									
 									}							
 								}
-					}
+						}
 					?>				
 				</div>
 			</div>
@@ -40,8 +40,13 @@
 
 <script type="text/javascript">
 	jQuery(document).ready(function () {		
-		jQuery("#CommentsContainer").load("../pages/ajax/comments_handler.php?ref=<?php echo $ref;?>", null);	
-	});	
+		jQuery("#CommentsContainer").load(
+			"../pages/ajax/comments_handler.php?ref=<?php echo $ref;?>", 
+			function() {				
+				jQuery(window.location.hash)[0].scrollIntoView();
+			}						
+		);	
+	});			
 </script>	
 
 <!-- End Resource Comments -->
