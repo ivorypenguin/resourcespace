@@ -45,9 +45,15 @@ if ($api && $enable_remote_apis ){
 	include_once "login_functions.php";
 	if (getval("key","")==""){
 	$ip=get_ip();
+	$referer=$_SERVER['HTTP_REFERER'];
+
 	$current_whitelists=sql_query("select u.username,u.fullname,w.* from api_whitelist w join user u on w.userref=u.ref order by u.username");
+	$allowed_by_domain=false;
 	foreach ($current_whitelists as $whitelist){
-		if (ip_matches($ip,$whitelist['ip_domain'])){
+		if ($referer!="" && strpos($whitelist['ip_domain'],$referer)!==false){
+		$allowed_by_domain=true;	
+		}
+		if ($allowed_by_domain || ip_matches($ip,$whitelist['ip_domain'])){
 			// IP matches. Log in as specified user
 			$api_whitelisted_user=sql_query("select * from user where ref='".$whitelist['ref']."'");
 			$_GET['key']=make_api_key($api_whitelisted_user[0]['username'],$api_whitelisted_user[0]['password']);
