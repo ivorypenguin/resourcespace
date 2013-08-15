@@ -1754,7 +1754,7 @@ $view_mapheight=200;
 # Cache openstreetmap tiles on your server. This is slower when loading, but eliminates non-ssl content warnings if your site is SSL (requires curl)
 $geo_tile_caching=false;
 
-# A list of upper/lower long/lat bounds, defining areas that will be excluded from search results.
+# A list of upper/lower long/lat bounds, defining areas that will be excluded from geographical search results.
 # Areas are defined using values in the following sequence: southwest lat, southwest long, northeast lat, northeast long
 $geo_search_restrict=array
 	(	

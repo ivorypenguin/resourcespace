@@ -69,10 +69,10 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 			}
 
 	# Geo zone exclusion
-	# A list of upper/lower long/lat bounds, defining areas that will be excluded from search results.
+	# A list of upper/lower long/lat bounds, defining areas that will be excluded from geo search results.
 	# Areas are defined as southwest lat, southwest long, northeast lat, northeast long
 	global $geo_search_restrict;	
-	if (count($geo_search_restrict)>0)
+	if (count($geo_search_restrict)>0 && substr($search,0,4)=="!geo")
 		{
 		foreach ($geo_search_restrict	as $zone)
 			{
