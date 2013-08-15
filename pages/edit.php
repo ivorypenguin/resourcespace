@@ -1019,6 +1019,7 @@ function display_field($n, $field)
 	<div class="clearerleft"> </div>
 	</div>
 	<?php
+	hook('afterfielddisplay', '', array($n, $field));
 	}
 
 ?>
