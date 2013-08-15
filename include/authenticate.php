@@ -45,7 +45,7 @@ if ($api && $enable_remote_apis ){
 	include_once "login_functions.php";
 	if (getval("key","")==""){
 	$ip=get_ip();
-	$referer=$_SERVER['HTTP_REFERER'];
+	if (isset($_SERVER['HTTP_REFERER'])){$referer=$_SERVER['HTTP_REFERER'];}else { $referer="";}
 
 	$current_whitelists=sql_query("select u.username,u.fullname,w.* from api_whitelist w join user u on w.userref=u.ref order by u.username");
 	$allowed_by_domain=false;
