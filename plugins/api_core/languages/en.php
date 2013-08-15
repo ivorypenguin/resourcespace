@@ -14,14 +14,14 @@ $lang["sslrecommended"]="We recommend that you secure this http server with SSL.
 
 
 $lang["apicore_apiwhitelisting"]="API Whitelisting";
-$lang["apicore_apiwhitelistingdesc"]="Use this interface to whitelist addresses, associating them with a valid account for specific APIS";
-$lang["apicore_ip"]="IP";
+$lang["apicore_apiwhitelistingdesc"]="Use this interface to whitelist IP addresses or domains, associating them with a valid account for specific APIS";
+$lang["apicore_ip"]="IP (or domain)";
 $lang["apicore_account"]="User Account";
 $lang["apicore_apis"]="Allowed APIs";
 $lang["apicore_deletesure"]="Are you sure you want to delete this Whitelist item?";
 $lang["apicore_delete"]="Delete";
 $lang["apicore_newentry"]="Create a new Whitelist entry";
-$lang["apicore_whitelistnew"]="New Whitelist";
+$lang["apicore_whitelistnew"]="New Whitelist (IP or Domain)";
 $lang["apicore_associateaccount"]="Associate a user account";
 $lang["apicore_selectaccount"]="Select a user account...";
 $lang["apicore_selectapis"]="Select Allowed APIs";
