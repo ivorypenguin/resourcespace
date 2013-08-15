@@ -33,8 +33,9 @@ function comments_submit()
 		
 		if ($comment_flag_reason == "" || $comment_flag_url == "") return;
 
-		# the following line can be simplified using strstr (with before_needle boolean) but not supported < PHP 5.3.0
-		$coment_flag_url = (strpos ($comment_flag_url, "#") === false) ? $comment_flag_url : substr ($comment_flag_url, 0, strpos ($comment_flag_url, "#")-1);		
+		# the following line can be simplified using strstr (with before_needle boolean) but not supported < PHP 5.3.0		
+		if (!strpos ($comment_flag_url, "#") === false) $comment_flag_url = substr ($comment_flag_url, 0, strpos ($comment_flag_url, "#")-1);
+		
 		$comment_flag_url .= "#comment${comment_flag_ref}";		// add comment anchor to end of URL
 		
 		$comment_body = sql_query("select body from comment where ref=${comment_flag_ref}");		
