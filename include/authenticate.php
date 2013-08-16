@@ -55,7 +55,7 @@ if ($api && $enable_remote_apis ){
 		}
 		if ($allowed_by_domain || ip_matches($ip,$whitelist['ip_domain'])){
 			// IP matches. Log in as specified user
-			$api_whitelisted_user=sql_query("select * from user where ref='".$whitelist['ref']."'");
+			$api_whitelisted_user=sql_query("select * from user where ref='".$whitelist['userref']."'");
 			$_GET['key']=make_api_key($api_whitelisted_user[0]['username'],$api_whitelisted_user[0]['password']);
 			$allowed_apis=explode(",",$whitelist['apis']);
 			
