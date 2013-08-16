@@ -502,7 +502,7 @@ if (!$basic_simple_search)
 	
 	        <?php if ($searchbyday) { ?><br /><?php } ?>
 	
-	        <select id="basicmonth" name="month" class="SearchWidth" style="width:80px;font-size: 10px;">
+	        <select id="basicmonth" name="month" class="SearchWidth" style="width:81px;font-size: 10px;">
 	          <option selected="selected" value=""><?php echo $lang["anymonth"]?></option>
 	          <?php
 	          for ($n=1;$n<=12;$n++)
