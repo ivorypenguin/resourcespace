@@ -153,7 +153,7 @@ hook("collectiontoolcompact2","",array("collection"=>$collection,"count_result"=
 <!-- end share -->
 
 <!-- collection download -->
-    <?php if ((isset($zipcommand) || isset($collection_download)) && $count_result>0) { ?>
+    <?php if ((isset($zipcommand) || $collection_download) && $count_result>0) { ?>
     <option value="<?php echo htmlspecialchars($collection) ?>|0|0|<?php echo $baseurl_short?>pages/terms.php?url=<?php echo urlencode("pages/collection_download.php?collection=" .  $collection )?>|main">&gt;&nbsp;<?php echo $lang["zipall"]?>...</option>
     <?php } ?>
 <!-- end collection download -->

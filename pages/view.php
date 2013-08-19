@@ -334,12 +334,8 @@ else
 	?>
 <table cellpadding="0" cellspacing="0">
 <tr>
-<td><?php echo $lang["fileinformation"]?></td>
-<td><?php echo $lang["filesize"]?></td>
-<?php if ($userrequestmode==2 || $userrequestmode==3) { ?><td><?php echo $lang["price"] ?></td><?php } ?>
-<td class="textcenter"><?php echo $lang["options"]?></td>
-</tr>
 <?php
+$table_headers_drawn=false;
 $nodownloads=false;$counter=0;$fulldownload=false;
 if ($resource["has_image"]==1 && $download_multisize)
 	{
@@ -400,7 +396,14 @@ if ($resource["has_image"]==1 && $download_multisize)
 		if ($hide_restricted_download_sizes && !$downloadthissize && !checkperm("q"))
 			continue;
 
-		?>
+		if ($table_headers_drawn==false) { ?>
+			<td><?php echo $lang["fileinformation"]?></td>
+			<td><?php echo $lang["filesize"]?></td>
+			<?php if ($userrequestmode==2 || $userrequestmode==3) { ?><td><?php echo $lang["price"] ?></td><?php } ?>
+			<td class="textcenter"><?php echo $lang["options"]?></td>
+			</tr>
+ 			<?php
+			$table_headers_drawn=true;} ?>
 		<tr class="DownloadDBlend" id="DownloadBox<?php echo $n?>">
 		<td><h2><?php echo $headline?></h2>
 		<?php  if (is_numeric($sizes[$n]["width"])) { ?>
