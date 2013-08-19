@@ -50,20 +50,20 @@ include "../../include/header.php";
 		<li><a href="<?php echo $baseurl_short?>pages/team/team_copy.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["copyresource"]?></a></li>
 		
 		<?php if (checkperm("e-2")) { ?>
-		<li><a href="<?php echo $baseurl_short?>pages/search.php?search=&archive=-2" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["viewuserpendingsubmission"]?></a></li>
+		<li><a href="<?php echo $baseurl_short?>pages/search.php?search=&archive=-2&resetrestypes=true" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["viewuserpendingsubmission"]?></a></li>
 		<?php } ?>
 
 		<?php if (checkperm("e-1")) { ?>
-		<li><a href="<?php echo $baseurl_short?>pages/search.php?search=&archive=-1" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["viewuserpending"]?></a></li>
+		<li><a href="<?php echo $baseurl_short?>pages/search.php?search=&archive=-1&resetrestypes=true" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["viewuserpending"]?></a></li>
 	<?php } ?>
 		
 		<?php if (checkperm("e-2")) { ?>
-		<li><a href="<?php echo $baseurl_short?>pages/search.php?search=!contributions<?php echo $userref?>&archive=-2" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["viewcontributedps"]?></a></li>
+		<li><a href="<?php echo $baseurl_short?>pages/search.php?search=!contributions<?php echo $userref?>&archive=-2&resetrestypes=true" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["viewcontributedps"]?></a></li>
 		<?php } ?>
 		
 		<?php
 		# If deleting resources is configured AND the deletion state is '3' (deleted) AND the user has permission to edit resources in this state, then show a link to list deleted resources.
-		if (isset($resource_deletion_state) && $resource_deletion_state==3 && checkperm("e3")) { ?><li><a href="<?php echo $baseurl_short?>pages/search.php?search=&archive=3" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["viewdeletedresources"]?></a></li>
+		if (isset($resource_deletion_state) && $resource_deletion_state==3 && checkperm("e3")) { ?><li><a href="<?php echo $baseurl_short?>pages/search.php?search=&archive=3&resetrestypes=true" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["viewdeletedresources"]?></a></li>
 		<?php } ?>
 
 		<?php
