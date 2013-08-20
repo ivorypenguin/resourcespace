@@ -99,7 +99,7 @@ if (getval("regenexif","")!="")
 
 # Load access level
 $access=get_resource_access($ref);
-
+hook("beforepermissionscheck");
 # check permissions (error message is not pretty but they shouldn't ever arrive at this page unless entering a URL manually)
 if ($access==2) 
 		{
