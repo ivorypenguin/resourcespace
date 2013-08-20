@@ -329,7 +329,7 @@ EOT;
 			
 			$respond_div_id = "comment_respond_" . $thisRef;
 			
-			echo "<div id='${respond_div_id}'>";		// start respond div
+			echo "<div id='${respond_div_id}' class='CommentRespond'>";		// start respond div
 			echo "<a href='javascript:void(0)' onClick='
 				jQuery(\"#{$respond_div_id}\").replaceWith(jQuery(\"#comment_form\").clone().attr(\"id\",\"${respond_div_id}\")); 
 				jQuery(\"<input>\").attr({type: \"hidden\", name: \"ref_parent\", value: \"$thisRef\"}).appendTo(\"#${respond_div_id} .comment_form\");				
