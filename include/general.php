@@ -217,7 +217,9 @@ function get_resource_field_data($ref,$multi=false,$use_permissions=true,$origin
     	 $fields = sql_query("select d.value,d.resource_type_field,f.exiftool_field,f.value_filter,f.name,f.display_template,f.display_field,f.tab_name,f.options,f.keywords_index,f.resource_column,f.required,f.type,f.title,f.resource_type,f.required frequired,f.ref,f.ref fref, f.help_text,f.partial_index,f.external_user_access,f.hide_when_uploading,f.hide_when_restricted,f.omit_when_copying,f.regexp_filter,f.display_condition from resource_type_field f left join resource_data d on d.resource_type_field=f.ref and d.resource='$ref' where ( " . (($multi)?"1=1":"f.resource_type=0 or f.resource_type=999 or f.resource_type='$rtype'") . ") order by f.order_by,f.resource_type,f.ref");
     } else {
     $fields = sql_query("select d.value,d.resource_type_field,f.exiftool_field,f.value_filter,f.name,f.display_template,f.display_field,f.tab_name,f.options,f.keywords_index,f.resource_column,f.required,f.type,f.title,f.resource_type,f.required frequired,f.ref, f.ref fref, f.help_text,f.partial_index,f.external_user_access,f.hide_when_uploading,f.hide_when_restricted,f.omit_when_copying,f.regexp_filter,f.display_condition from resource_type_field f left join resource_data d on d.resource_type_field=f.ref and d.resource='$ref' where ( " . (($multi)?"1=1":"f.resource_type=0 or f.resource_type=999 or f.resource_type='$rtype'") . ") order by f.resource_type,f.order_by,f.ref");
+    debug("altert use perms: ".!$use_permissions);
     }
+  
     # Build an array of valid types and only return fields of this type. Translate field titles. 
     $validtypes = sql_array("select ref value from resource_type");
     $validtypes[] = 0; $validtypes[] = 999; # Support archive and global.
@@ -246,7 +248,8 @@ function get_resource_field_data($ref,$multi=false,$use_permissions=true,$origin
 			$external_access && !$fields[$n]["external_user_access"]
 			)
 		)
-	) {
+	) {    
+	debug("altert field".$fields[$n]["title"]."=".$fields[$n]["value"]);
             $fields[$n]["title"] = lang_or_i18n_get_translated($fields[$n]["title"], "fieldtitle-"); 
             $return[] = $fields[$n];
         }
@@ -2494,7 +2497,7 @@ function auto_create_user_account()
 	# Create the user
 	sql_query("insert into user (username,password,fullname,email,usergroup,comments,approved) values ('" . $username . "','" . $password . "','" . getvalescaped("name","") . "','" . $email . "','" . $usergroup . "','" . escape_check($c) . "'," . (($approve)?1:0) . ")");
 	$new=sql_insert_id();
-
+    hook("afteruserautocreated", "all",array("new"=>$new));
 	if ($approve)
 		{
 		# Auto approving, send mail direct to user
