@@ -108,9 +108,9 @@ function showprogress(){
 <div id="test"></div>
 <div class="BasicsBox">
 <?php
-
+if ($ref!="") $resource=get_resource_data($ref);
 # Define the titles:
-if ($ref!="")
+if (($ref!="")&&($resource["file_path"]!=""))
 	{ # Replace file
 	$titleh1 = $lang["replacefile"];
 	$titleh2="";
@@ -134,8 +134,8 @@ else
 <?php } ?>
 <h1><?php echo $titleh1 ?></h1>
 <h2><?php echo $titleh2 ?></h2>
-<?php if ($ref!=""){
-	$resource=get_resource_data($ref);?>
+<?php if (($ref!="")&&($resource["file_path"]!="")){
+	?>
 	<?php if ($replace_file_resource_preview){ 
 		$imgpath=get_resource_path($resource['ref'],true,"col",false);
 		if (file_exists($imgpath)){ ?><img src="<?php echo get_resource_path($resource['ref'],false,"col",false);?>"/><?php } 
