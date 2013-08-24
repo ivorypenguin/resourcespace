@@ -287,7 +287,7 @@ if (substr($search,0,11)=="!collection")
 	if ($k!="") {$usercollection=$collection;} # External access - set current collection.
 	
 	if (!$collectiondata){?>
-		<script>alert('<?php echo $lang["error-collectionnotfound"];?>');document.location='<?php echo $baseurl_short?>pages/home.php'</script>
+		<script>alert('<?php echo $lang["error-collectionnotfound"];?>');document.location='<?php echo $baseurl_short."/pages/" . $default_home_page;?>'</script>
 	<?php } 
 	# Check to see if this user can edit (and therefore reorder) this resource
 	if (($userref==$collectiondata["user"]) || ($collectiondata["allow_changes"]==1) || (checkperm("h")))
