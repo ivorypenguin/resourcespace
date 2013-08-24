@@ -621,7 +621,7 @@ if (getval("metadatatemplate","")!="")
 	}
 
 # Load resource data
-$fields=get_resource_field_data($use,$multiple,!hook("dontusepermsforedit"),$originalref);
+$fields=get_resource_field_data($use,$multiple,!hook("customgetresourceperms"),$originalref);
 
 # if this is a metadata template, set the metadata template title field at the top
 if (isset($metadata_template_resource_type)&&(isset($metadata_template_title_field)) && $resource["resource_type"]==$metadata_template_resource_type){

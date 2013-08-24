@@ -70,7 +70,7 @@ function save_resource_data($ref,$multi)
 
 	# Loop through the field data and save (if necessary)
 	$errors=array();
-	$fields=get_resource_field_data($ref,$multi);
+	$fields=get_resource_field_data($ref,$multi, !hook("customgetresourceperms"));
 	$expiry_field_edited=false;
 	$resource_data=get_resource_data($ref);
 		

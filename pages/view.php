@@ -169,7 +169,7 @@ if ($direct_download && !$save_as){
 hook("pageevaluation");
 
 # Load resource field data
-$fields=get_resource_field_data($ref,false,true,-1,$k!="",$use_order_by_tab_view);
+$fields=get_resource_field_data($ref,false,!hook("customgetresourceperms"),-1,$k!="",$use_order_by_tab_view);
 
 # Load edit access level (checking edit permissions - e0,e-1 etc. and also the group 'edit filter')
 $edit_access=get_edit_access($ref,$resource["archive"],$fields);
