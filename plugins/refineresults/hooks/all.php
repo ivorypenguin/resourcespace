@@ -12,7 +12,8 @@ function HookRefineresultsSearchBeforesearchresults()
 	# External sharing search support. Clear search drops back to the collection only search.
 	$default_search="";
 	if ($k!="") {$s=explode(" ",$search);$default_search=$s[0];}
-	
+	if (($archive==-2)&&(substr($search,0,1)=="!")) {$s=explode(" ",$search);$default_search=$s[0];}
+
 	#if (substr($search,0,1)=="!") {return false;} # Only work for normal (non 'special') searches
 	?>
 	<div class="SearchOptionNav"><a href="#" onClick="
