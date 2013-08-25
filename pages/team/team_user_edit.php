@@ -40,7 +40,7 @@ elseif ((getval("save","")!="") || (getval("suggest","")!=""))
 
 # Fetch user data
 $user=get_user($ref);
-if (($user["usergroup"]==3) && ($usergroup!=3)) {redirect($baseurl_short ."login.php?error=error-permissiondenied");}
+if (($user["usergroup"]==3) && ($usergroup!=3)) {redirect($baseurl_short ."login.php?error=error-permissiondenied&url=".urlencode($url));}
 
 include "../../include/header.php";
 
