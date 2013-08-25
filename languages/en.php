@@ -1565,6 +1565,7 @@ $lang["emptycollectionareyousure"]="Are you sure you want to remove all resource
 
 $lang["error-cannoteditemptycollection"]="You cannot edit an empty collection.";
 $lang["error-permissiondenied"]="Permission denied.";
+$lang["error-permissions-login"]="Please log in to access this page";
 $lang["error-oldphp"] = "Requires PHP version %version or higher."; # %version will be replaced with, e.g., "5.2"
 $lang["error-collectionnotfound"]="Collection not found.";
 
