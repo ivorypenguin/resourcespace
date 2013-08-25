@@ -9,7 +9,8 @@ $url=getval("url","index.php");
 $api=getval("api","");
 
 # process log in
-$error="";
+$error=getval("error","");
+if ($error!="") $error=$lang[$error];
 
 # Auto logged out? Set error message.
 if (getval("auto","")!="") {$error=str_replace("30",$session_length,$lang["sessionexpired"]);}
