@@ -42,7 +42,8 @@
 	jQuery(document).ready(function () {		
 		jQuery("#CommentsContainer").load(
 			"../pages/ajax/comments_handler.php?ref=<?php echo $ref;?>", 
-			function() {				
+			function() {
+			if (jQuery.type(jQuery(window.location.hash)[0])!=="undefined")				
 				jQuery(window.location.hash)[0].scrollIntoView();
 			}						
 		);	
