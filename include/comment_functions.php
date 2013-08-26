@@ -167,7 +167,7 @@ function comments_show($ref, $bcollection_mode = false, $bRecursive = true, $lev
 		
 		<div id="comments_container">				
 		<div id="comment_form">
-			<form class="comment_form" action="javascript:void();" method="">
+			<form class="comment_form" action="javascript:void(0);" method="">
 EOT;
         hook("beforecommentbody");
         echo <<<EOT
@@ -263,9 +263,9 @@ EOT;
 			if (checkPerm("o")) {
 				echo <<<EOT
 				
-				<form class="comment_removal_form" action="javascript:void();" method="">
+				<form class="comment_removal_form" action="javascript:void(0);" method="">
 					<input type="hidden" name="comment_to_hide" value="${thisRef}"></input>					
-					<a href="javascript:void()" onclick="if (confirm ('${lang['comments_hide-comment-text-confirm']}')) submitForm(this.parentNode);">&gt; ${lang['comments_hide-comment-text-link']}</a>					
+					<a href="javascript:void(0)" onclick="if (confirm ('${lang['comments_hide-comment-text-confirm']}')) submitForm(this.parentNode);">&gt; ${lang['comments_hide-comment-text-link']}</a>					
 				</form>
 				
 EOT;
@@ -303,7 +303,7 @@ EOT;
 				echo<<<EOT
 					
 					<div id="CommentFlagContainer${thisRef}" style="display: none;">
-						<form class="comment_form" action="javascript:void();" method="">
+						<form class="comment_form" action="javascript:void(0);" method="">
 							<input type="hidden" name="comment_flag_ref" value="${thisRef}"></input>														
 							<input type="hidden" name="comment_flag_url" value=""></input>														
 													
