@@ -415,7 +415,7 @@ else
 	{
 	# Show the no-preview icon
 	?>
-	<img src="../gfx/<?php echo get_nopreview_icon($resource["resource_type"],$resource["file_extension"],true)?>" />
+	<img src="<?php echo $baseurl_short ?>gfx/<?php echo get_nopreview_icon($resource["resource_type"],$resource["file_extension"],true)?>" />
 	<br />
 	<?php
 	}
