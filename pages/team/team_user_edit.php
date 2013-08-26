@@ -124,9 +124,9 @@ if (($user["login_tries"]>=$max_login_attempts_per_username) && (strtotime($user
 <div class="Question"><label><?php echo $lang["ipaddressrestriction"]?><br/><?php echo $lang["wildcardpermittedeg"]?> 194.128.*</label><input name="ip_restrict" type="text" class="stdwidth" value="<?php echo $user["ip_restrict"]?>"><div class="clearerleft"> </div></div>
 
 <?php hook("additionaluserfields");?>
-
+<?php if (!hook("replacecomments")) { ?>
 <div class="Question"><label><?php echo $lang["comments"]?></label><textarea name="comments" class="stdwidth" rows=5 cols=50><?php echo htmlspecialchars($user["comments"])?></textarea><div class="clearerleft"> </div></div>
-
+<?php } ?>
 <div class="Question"><label><?php echo $lang["created"]?></label>
 <div class="Fixed"><?php echo nicedate($user["created"],true) ?></div>
 <div class="clearerleft"> </div></div>
@@ -163,7 +163,7 @@ if (!hook("ticktoemailpassword")) {
 <div class="clearerleft"> </div></div>
 
 <div class="Question"><label><?php echo $lang["ticktodelete"]?></label><input name="deleteme" type="checkbox"  value="yes"><div class="clearerleft"> </div></div>
-
+<?php hook("additionaluserlinks");?>
 <?php if ($user["approved"]==1 && !hook("loginasuser")) { ?>
 <div class="Question"><label><?php echo $lang["login"]?></label>
 <div class="Fixed"><a href="<?php echo $baseurl_short?>pages/team/team_user_edit.php?ref=<?php echo $ref?>&loginas=true">&gt;&nbsp;<?php echo $lang["clicktologinasthisuser"]?></a></div>
