@@ -44,33 +44,29 @@ if (!isset($api)){$api=false;} // $api is set above inclusion of authenticate.ph
 if ($api && $enable_remote_apis ){
 	include_once "login_functions.php";
 	if (getval("key","")==""){
-	$ip=get_ip();
-	if (isset($_SERVER['HTTP_REFERER'])){$referer=$_SERVER['HTTP_REFERER'];}else { $referer="";}
-	$current_whitelists=sql_query("select u.username,u.fullname,w.* from api_whitelist w join user u on w.userref=u.ref order by u.username");
-	$allowed_by_domain=false;
-	foreach ($current_whitelists as $whitelist){
-		if ($referer!="" && strpos($referer,$whitelist['ip_domain'])!==false){
-		$allowed_by_domain=true;
-		}
-		if ($allowed_by_domain || ip_matches($ip,$whitelist['ip_domain'])){
-			// IP matches. Log in as specified user
-			$api_whitelisted_user=sql_query("select * from user where ref='".$whitelist['userref']."'");
-			$_POST['key']=$_GET['key']=make_api_key($api_whitelisted_user[0]['username'],$api_whitelisted_user[0]['password']);
-			$allowed_apis=explode(",",$whitelist['apis']);
-			
-			$allowed=false;
-			$api_plugin=explode("/",$_SERVER['REQUEST_URI']);
-			$api_plugin=$api_plugin[count($api_plugin)-2];
-			//echo $api_plugin;
-			if (in_array("all",$allowed_apis)){break;}
-			else if (in_array($api_plugin,$allowed_apis)){break;}
-			else{
-				header("HTTP/1.0 403 Access Denied");exit("Access denied for $api_plugin.");
+		$ip=get_ip();
+		if (isset($_SERVER['HTTP_REFERER'])){$referer=$_SERVER['HTTP_REFERER'];}else { $referer="";}
+		$current_whitelists=sql_query("select u.username,u.fullname,w.* from api_whitelist w join user u on w.userref=u.ref order by u.username");
+		$allowed_by_domain=false;
+		foreach ($current_whitelists as $whitelist){
+			if ($referer!="" && strpos($referer,$whitelist['ip_domain'])!==false){
+				$allowed_by_domain=true;
 			}
-				
-			
+			if ($allowed_by_domain || ip_matches($ip,$whitelist['ip_domain'])){
+				// IP matches. Log in as specified user
+				$api_whitelisted_user=sql_query("select * from user where ref='".$whitelist['userref']."'");
+				$_POST['key']=$_GET['key']=make_api_key($api_whitelisted_user[0]['username'],$api_whitelisted_user[0]['password']);
+				$allowed_apis=explode(",",$whitelist['apis']);
+				$api_plugin=explode("/",$_SERVER['REQUEST_URI']);
+				$api_plugin=$api_plugin[count($api_plugin)-2];
+				//echo $api_plugin;
+				if (in_array("all",$allowed_apis)){break;}
+				else if (in_array($api_plugin,$allowed_apis)){break;}
+				else{
+					header("HTTP/1.0 403 Access Denied");exit("Access denied for $api_plugin.");
+				}
+			}
 		}
-	}
 	}
 	# if using API (RSS or API), send credentials to login.php, as if normally posting, to establish login
 	if (getval("key","")==""){header("HTTP/1.0 403 Access Denied");exit("Access denied - no key.");}
