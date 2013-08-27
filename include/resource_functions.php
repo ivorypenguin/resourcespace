@@ -1249,7 +1249,8 @@ function write_metadata($path, $ref, $uniqid="")
                     # Other types
                     $writevalue = get_data_by_field($ref, $write_to[$i]['ref']);
                 }
-
+            $filtervalue=hook("additionalmetadatafilter", "", Array($write_to[$i]["exiftool_field"], $writevalue));
+            if ($filtervalue) $writevalue=$filtervalue;
             # Add the tag name(s) and the value to the command string.
             $group_tags = explode(",", $write_to[$i]['exiftool_field']); # Each 'exiftool field' may contain more than one tag.
             foreach ($group_tags as $group_tag)
