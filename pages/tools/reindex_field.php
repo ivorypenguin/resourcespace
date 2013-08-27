@@ -18,6 +18,9 @@ set_time_limit(0);
 $field=getvalescaped("field","");
 if ($field=="") {exit("Specify field with ?field=");}
 
+# Reindex only resources in specified collection
+$collectionid=getvalescaped("col", "");
+
 # Fetch field info
 $fieldinfo=sql_query("select * from resource_type_field where ref='$field'");$fieldinfo=$fieldinfo[0];
 if (!$fieldinfo["keywords_index"]) {exit("Field is not set to be indexed.");}
@@ -26,11 +29,24 @@ if (getval("submit","")!="")
 	{
 	echo "<pre>";
 	
+	$joinkeyword="";
+	$joindata="";
+	$condition = "";
+	$conditionand = "";
+	if ($collectionid != "")
+			{
+			$joinkeyword=" inner join collection_resource on collection_resource.resource=resource_keyword.resource "; 
+			$joindata=" inner join collection_resource on collection_resource.resource=resource_data.resource "; 
+			$condition = "where collection_resource.collection = '$collectionid' ";
+			$conditionand = "and collection_resource.collection = '$collectionid' ";
+			}
+	
+	
 	# Delete existing keywords index for this field
-	sql_query("delete from resource_keyword where resource_type_field='$field'");
+	sql_query("delete resource_keyword.* from resource_keyword $joinkeyword where resource_type_field='$field' $conditionand");
 	
 	# Index fields
-	$data=sql_query("select * from resource_data where resource_type_field='$field' and length(value)>0 and value is not null");
+	$data=sql_query("select * from resource_data $joindata where resource_type_field='$field' and length(value)>0 $conditionand and value is not null");
 	$n=0;
 	$total=count($data);
 	foreach ($data as $row)
@@ -65,10 +81,17 @@ if (getval("submit","")!="")
 	}
 else
 	{
+	$extratext="";
+	if ($collectionid != "")
+		{
+		$collectionname=sql_value("select name as value from collection where ref='$collectionid'",'');
+		$extratext=" for collection '" . $collectionname .  "'";
+		}
 	?>
 	<form method="post" action="reindex_field.php">
 	<input type="hidden" name="field" value="<?php echo $field ?>">
-	<input type="submit" name="submit" value="Reindex field '<?php echo $fieldinfo["title"] ?>'">
+	<input type="hidden" name="col" value="<?php echo $collectionid ?>">
+	<input type="submit" name="submit" value="Reindex field '<?php echo $fieldinfo["title"] . "'" . $extratext ?>">
 	</form>
 	<?php
 	}	
