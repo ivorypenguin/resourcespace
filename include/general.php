@@ -1014,7 +1014,7 @@ function email_user_welcome($email,$username,$password,$usergroup)
 	send_mail($email,$applicationname . ": " . $lang["youraccountdetails"],$message,"","","emaillogindetails",$templatevars);
 	}
 
-
+if (!function_exists("email_reminder")){
 function email_reminder($email)
 	{
 	# Send a password reminder.
@@ -1039,6 +1039,7 @@ function email_reminder($email)
 	send_mail($email,$applicationname . ": " . $lang["newpassword"],$message,"","","emailreminder",$templatevars);
 	return true;
 	}
+}
 
 function new_user($newuser)
 	{
@@ -1346,6 +1347,7 @@ function get_mime_type($path, $ext = null)
 	return "application/octet-stream";
 	}
 
+if (!function_exists("change_password")){
 function change_password($password)
 	{
 	# Sets a new password for the current user.
@@ -1364,6 +1366,7 @@ function change_password($password)
 	sql_query("update user set password='$password_hash',password_last_change=now() where ref='$userref' limit 1");
 	return true;
 	}
+}
 	
 function make_password()
 	{
