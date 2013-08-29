@@ -864,7 +864,10 @@ for ($n=0;$n<count($fields);$n++)
 				//if ($fields[$n]["type"]==4 || $fields[$n]["type"]==6) {$value=NiceDate($value,false,true);}
 
 				# Value formatting
-				$value=i18n_get_translated($value);
+				if (($fields[$n]["type"]==2) || ($fields[$n]["type"]==7) || ($fields[$n]["type"]==9))
+					{$i18n_split_keywords =true;}
+				else 	{$i18n_split_keywords =false;}
+				$value=i18n_get_translated($value,$i18n_split_keywords );
 				if (($fields[$n]["type"]==2) || ($fields[$n]["type"]==3) || ($fields[$n]["type"]==7) || ($fields[$n]["type"]==9)) {$value=TidyList($value);}
 				$value_unformatted=$value; # store unformatted value for replacement also
 

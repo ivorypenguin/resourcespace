@@ -29,14 +29,14 @@ function lang_or_i18n_get_translated($text, $mixedprefix)
 }
 
 if (!function_exists("i18n_get_translated")) {
-function i18n_get_translated($text)
+function i18n_get_translated($text,$i18n_split_keywords=true)
     {
     # For field names / values using the i18n syntax, return the version in the current user's language
     # Format is ~en:Somename~es:Someothername
     $text=trim($text);
     
     # For multiple keywords, parse each keyword.
-    if ((strpos($text,",")!==false) && (strpos($text,"~")!==false)) {$s=explode(",",$text);$out="";for ($n=0;$n<count($s);$n++) {if ($n>0) {$out.=",";}; $out.=i18n_get_translated(trim($s[$n]));};return $out;}
+    if ($i18n_split_keywords && (strpos($text,",")!==false) && (strpos($text,"~")!==false)) {$s=explode(",",$text);$out="";for ($n=0;$n<count($s);$n++) {if ($n>0) {$out.=",";}; $out.=i18n_get_translated(trim($s[$n]));};return $out;}
     
     global $language,$defaultlanguage;
 	$asdefaultlanguage=$defaultlanguage;
