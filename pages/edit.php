@@ -161,12 +161,12 @@ if ((getval("autosave","")!="") || (getval("tweak","")=="" && getval("submitted"
 				}
 			else
 				{
-				if ((getval("uploader","")!=""))
+				if ((getval("uploader","")!="")&&(getval("uploader","")!="local"))
 					{
 					# Save button pressed? Move to next step.
 					if (getval("save","")!="") {redirect($baseurl_short."pages/upload_" . getval("uploader","") . ".php?collection_add=" . getval("collection_add","")."&entercolname=".urlencode(getvalescaped("entercolname",""))."&resource_type=".$resource_type . "&no_exif=" . $no_exif . "&autorotate=" . $autorotate . "&themestring=" . urlencode(getval('themestring','')) . "&public=" . getval('public','') . " &archive=" . $archive);}
 					}
-				elseif (getval("local","")!="") // Test if fetching resource from local upload folder.
+				elseif ((getval("local","")!="")||(getval("uploader","")=="local")) // Test if fetching resource from local upload folder.
 					{
 					# Save button pressed? Move to next step.
 					if (getval("save","")!="") {redirect($baseurl_short."pages/team/team_batch_select.php?use_local=yes&collection_add=" . getval("collection_add","")."&entercolname=".urlencode(getvalescaped("entercolname",""))."&resource_type=".$resource_type . "&no_exif=" . $no_exif . "&autorotate=" . $autorotate);}
@@ -495,7 +495,7 @@ elseif (getval("single","")!="")
 		$titleh1 = $lang["addresource"]; # Add Single Resource
 		}
 	}
-elseif (getval("local","")!="") {$titleh1 = $lang["addresourcebatchlocalfolder"];} # Add Resource Batch - Fetch from local upload folder
+elseif ((getval("local","")!="")||(getval("uploader","")=="local")) {$titleh1 = $lang["addresourcebatchlocalfolder"];} # Add Resource Batch - Fetch from local upload folder
 else $titleh1 = $lang["addresourcebatchftp"]; # Add Resource Batch - Fetch from FTP server
 
 # Define the subtitle h2:
