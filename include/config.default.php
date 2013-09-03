@@ -2175,6 +2175,7 @@ $do_not_add_to_new_collection_default=false;  # will set "do not add to a collec
 $no_metadata_read_default=false; // If set to true and $metadata_read is false then metadata will be imported by default
 $metadata_read=true; // Hides the "Do not import embedded EXIF/IPTC/XMP metadata for this upload" option from upload options. 
 $removenever=false; # Remove 'never' option for resource access expiration and sets default expiry date to 7 days
+$hide_resource_share_link=false; // Configurable option to hide the "Share" link on the resource view page.
 
 
 
