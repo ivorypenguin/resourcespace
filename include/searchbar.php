@@ -304,15 +304,17 @@ if (!$basic_simple_search)
 			break;
 			
 			case 4:
+			case 10:
 			case 6:
 			// Date types
 			$d_year='';$d_month='';$d_day='';
-			$s=explode(" ",$value);
+			$s=explode("|",$value);
+	
 			if (count($s)>=1) {$d_year=$s[0];}
 			if (count($s)>=2) {$d_month=$s[1];}
 			if (count($s)>=3) {$d_day=$s[2];}
 			?>
-			<select id="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>_year" name="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>_year" <?php if (!$searchbyday) { ?>style="width:60px;"<?php } ?>>
+			<select id="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>_year" class="SearchWidth" name="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>_year" <?php if (!$searchbyday) { ?>style="width:73px;font-size: 10px;"<?php } ?> else>
 			  <option selected="selected" value=""><?php echo $lang["anyyear"]?></option>
 			  <?php
 			  $y=date("Y");
@@ -322,8 +324,8 @@ if (!$basic_simple_search)
 				}
 			  ?>
 			</select>
-				
-			<select id="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>_month" name="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>_month" class="SearchWidth" style="width:45px;">
+			<?php if ($searchbyday) { ?><br /><?php } ?>	
+			<select id="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>_month" name="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>_month" class="SearchWidth" style="width:81px;font-size: 10px;">
 			  <option selected="selected" value=""><?php echo $lang["anymonth"]?></option>
 			  <?php
 			  for ($d=1;$d<=12;$d++)
@@ -333,8 +335,8 @@ if (!$basic_simple_search)
 				}
 			  ?>		
 			</select>
-		
-			<select id="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>_day" name="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>_day" class="SearchWidth" style="width:45px;">
+		    <?php if ($searchbyday) { ?>
+			<select id="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>_day" name="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>_day" class="SearchWidth" style="width:73px;font-size: 10px;">
 			  <option selected="selected" value=""><?php echo $lang["anyday"]?></option>
 			  <?php
 			  for ($d=1;$d<=31;$d++)
@@ -344,6 +346,7 @@ if (!$basic_simple_search)
 				}
 			  ?>
 			</select>
+			<?php } ?>
 			<?php
 			# Add to the clear function so clicking 'clear' clears this box.
 			$clear_function.="
@@ -487,7 +490,7 @@ if (!$basic_simple_search)
 				?>	
 	
 				 <?php  echo $lang["bydate"]?><br />
-	<select id="basicyear" name="year" class="SearchWidth" <?php if (!$searchbyday) { ?>style="width:70px;"<?php } ?>>
+	<select id="basicyear" name="year" class="SearchWidth" <?php if (!$searchbyday) { ?>style="width:73px;font-size: 10px;"<?php } ?>>
 	          <option selected="selected" value=""><?php echo $lang["anyyear"]?></option>
 	          <?php
 	          

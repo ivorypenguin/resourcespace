@@ -110,18 +110,32 @@ if (!$config_search_for_number || !is_numeric($search)) # Don't do this when the
 		  }
 		if ($value!="" && substr($key,0,6)=="field_")
 			{
-			if (strpos($key,"_year")!==false)
+			if ((strpos($key,"_year")!==false)||(strpos($key,"_month")!==false)||(strpos($key,"_day")!==false))
 				{
 				# Date field
 				
 				# Construct the date from the supplied dropdown values
-				$key_month=str_replace("_year","_month",$key);
-				if (getvalescaped($key_month,"")!="") {$value.="-" . getvalescaped($key_month,"");}
+				$key_part=substr($key,0, strrpos($key, "_"));
+				$field=substr($key_part,6);
+                $value="";
+				if (strpos($search, $field.":")===false) 
+				    {
+    				$key_year=$key_part."_year";
+    				if (getvalescaped($key_year,"")!="") $value=getvalescaped($key_year,"");
+    				else $value="nnnn";
+    				
+    				$key_month=$key_part."_month";
+    				if (getvalescaped($key_month,"")!="") $value.="|" . getvalescaped($key_month,"");
+    				else $value.="|nn";
+    
+    				$key_day=$key_part."_day";
+    				if (getvalescaped($key_day,"")!="") $value.="|" . getvalescaped($key_day,"");
+    				else $value.="|nn";
+    
+    				$search=(($search=="")?"":join(", ",split_keywords($search)) . ", ") . $field . ":" . $value;
 
-				$key_day=str_replace("_year","_day",$key);
-				if (getvalescaped($key_day,"")!="") {$value.="-" . getvalescaped($key_day,"");}
-				
-				$search=(($search=="")?"":join(", ",split_keywords($search)) . ", ") . str_replace("_year","",substr($key,6)) . ":" . $value;
+				    }
+	            				
 				}
 			elseif (strpos($key,"_drop_")!==false)
 				{
@@ -139,7 +153,7 @@ if (!$config_search_for_number || !is_numeric($search)) # Don't do this when the
 				$search=(($search=="")?"":join(", ",split_keywords($search)) . ", ") . substr($key,10) . ":" . $value;
 				}		
 
-			elseif (strpos($key,"_month")===false && strpos($key,"_day")===false)
+			else
 				{
 				# Standard field
 				$values=explode(" ",$value);

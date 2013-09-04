@@ -212,7 +212,21 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 				if (strpos($keyword,":")!==false && !$ignore_filters)
 					{
 					$kw=explode(":",$keyword,2);
-					if ($kw[0]=="day")
+					$datefieldinfo=sql_query("select ref from resource_type_field where name='" . escape_check($kw[0]) . "'",0);
+				
+					if (count($datefieldinfo))
+						{
+						$c++;
+						$datefieldinfo=$datefieldinfo[0];
+						$datefield=$datefieldinfo["ref"];
+						if ($sql_filter!="") {$sql_filter.=" and ";}
+						$val=str_replace("n","_", $kw[1]);
+						$val=str_replace("|","-", $val);
+						$sql_filter.="rd" . $c . ".value like '". $val . "%' "; 
+						$sql_join.=" join resource_data rd" . $c . " on rd" . $c . ".resource=r.ref and rd" . $c . ".resource_type_field='" . $datefield . "'";
+						}
+
+					elseif ($kw[0]=="day")
 						{
 						if ($sql_filter!="") {$sql_filter.=" and ";}
 						$sql_filter.="r.field$date_field like '____-__-" . $kw[1] . "%' ";
@@ -1561,7 +1575,7 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
 			<?php }
 		else
 			{
-			$s=explode("-",$value);
+			$s=explode("|",$value);
 			if (count($s)>=3)
 			{
 			$found_year=$s[0];
@@ -1828,18 +1842,40 @@ function search_form_to_search_query($fields,$fromsearchbar=false)
 			case 10: #--------  Date
 			$name="field_" . $fields[$n]["ref"];
 			$datepart="";
-			if (getval($name . "_year","")!="")
-				{
-				$datepart.=getval($name . "_year","");
-				if (getval($name . "_month","")!="")
-					{
-					$datepart.="-" . getval($name . "_month","");
-					if (getval($name . "_day","")!="")
-						{
-						$datepart.="-" . getval($name . "_day","");
-						}
-					}
-				}			
+            $value="";
+			if (strpos($search, $name.":")===false) 
+			    {
+				$key_year=$name."_year";
+				if (getvalescaped($key_year,"")!="") $value=getvalescaped($key_year,"");
+				else $value="nnnn";
+				
+				$key_month=$name."_month";
+				if (getvalescaped($key_month,"")!="") $value.="|" . getvalescaped($key_month,"");
+				else $value.="|nn";
+
+				$key_day=$name."_day";
+				if (getvalescaped($key_day,"")!="") $value.="|" . getvalescaped($key_day,"");
+				else $value.="|nn";
+				if ($value!=="nnnn|nn|nn") 
+				    {
+                    if ($search!="") {$search.=", ";}
+    				$search.=$fields[$n]["name"] . ":" . $value;
+				    }
+				
+
+			    }
+//			if (getval($name . "_year","")!="")
+//				{
+//				$datepart.=getval($name . "_year","");
+//				if (getval($name . "_month","")!="")
+//					{
+//					$datepart.="-" . getval($name . "_month","");
+//					if (getval($name . "_day","")!="")
+//						{
+//						$datepart.="-" . getval($name . "_day","");
+//						}
+//					}
+//				}			
 				
 			#Date range search -  start date
 			if (getval($name . "_startyear","")!="")

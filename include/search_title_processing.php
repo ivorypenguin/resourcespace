@@ -23,6 +23,13 @@ if ($refinements[0]!=""){
 		if (!$search_titles_shortnames){
 			$search_title_element=explode(":",$refinements[$n]);
 			if (isset($search_title_element[1])){
+			
+			$datefieldinfo=sql_query("select ref from resource_type_field where name='" . escape_check($search_title_element[0]) . "'",0);
+			if (count($datefieldinfo)) 
+			    {
+			    $search_title_element[1]=str_replace("|", "-", $search_title_element[1]);
+			    $search_title_element[1]=str_replace("nn", "??", $search_title_element[1]);
+			    }
 				if (!isset($cattreefields)){$cattreefields=array();}
 				if (in_array($search_title_element[0],$cattreefields)){$search_title_element=$lang['fieldtype-category_tree'];}
 				else {$search_title_element=str_replace(";"," OR ",$search_title_element[1]);}
