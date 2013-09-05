@@ -212,8 +212,7 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 				if (strpos($keyword,":")!==false && !$ignore_filters)
 					{
 					$kw=explode(":",$keyword,2);
-					$datefieldinfo=sql_query("select ref from resource_type_field where name='" . escape_check($kw[0]) . "'",0);
-				
+					$datefieldinfo=sql_query("select ref from resource_type_field where name='" . escape_check($kw[0]) . "' and type IN (4,6,10)",0);
 					if (count($datefieldinfo))
 						{
 						$c++;
