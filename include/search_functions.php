@@ -819,10 +819,12 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 					$counter=0;
 					if (!empty($results)&&is_array($results)){
 						foreach($results as $results_item){ 
-							$results_contents[]=$results_item['ref'];
-							$counter++;
-							if ($counter>=$result_limit && $result_limit!=-1) {	
-								break;
+							if (isset($results_item['ref'])){
+								$results_contents[]=$results_item['ref'];
+								$counter++;
+								if ($counter>=$result_limit && $result_limit!=-1) {	
+									break;
+								}
 							}
 						}
 					}
