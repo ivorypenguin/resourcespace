@@ -102,7 +102,6 @@ if ($subject!="")
 	{
 	$subject=imap_mime_header_decode($subject);
 	$flattenedsubject="";
-	echo "SUBJECT: " . $subject . "\r\n";
 	foreach ($subject as $key=>$part){
 		$charset=$part->charset;
 		$flattenedsubject.=$part->text;
@@ -112,6 +111,8 @@ if ($subject!="")
 		$subject=iconv($charset, "UTF-8",$flattenedsubject);
 		}
 	else { $subject=$flattenedsubject;}
+	
+	echo "SUBJECT: " . $subject . "\r\n";
 	}
 
 
