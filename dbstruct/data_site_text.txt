@@ -564,3 +564,24 @@ all,comments_policy,"",394,en,,,
 all,comments_removal_message,"",395,en,,,
 all,comments_flag_notification_email_subject,"",396,en,,,
 all,comments_flag_notification_email_body,"",397,en,,,
+team_home,introtext,"Welcome to the team center. Use the links below to administer resources, respond to resource requests, manage themes and alter system settings.",398,en-US,,,
+themes,manage,"Organize and edit the themes available online. Themes are specially promoted collections. <br><br> <strong>1 To create a new entry under a Theme -  build a collection</strong><br> Choose <strong>My Collections</strong> from the main top menu and set up a brand new <strong>public</strong> collection. Remember to include a theme name during the setup. Use an existing theme name to group the collection under a current theme (make sure you type it exactly the same), or choose a new title to create a brand new theme. Never allow users to add/remove resources from themed collections. <br> <br><strong>2 To edit the content of an existing entry under a theme </strong><br> Choose <strong>edit collection</strong>. The items in that collection will appear in the <strong>My Collections</strong> panel at the bottom of the screen. Use the standard tools to edit, remove or add resources. <br> <br><strong>3 To alter a theme name or move a collection to appear under a different theme</strong><br> Choose <strong>edit properties</strong> and edit theme category or collection name. Use an existing theme name to group the collection under an current theme (make sure you type it exactly the same), or choose a new title to create a brand new theme. <br> <br><strong>4 To remove a collection from a theme </strong><br> Choose <strong>edit properties</strong> and delete the words in the theme category box. ",399,en-US,,,
+collection_manage,introtext,"Organize and manage your work by grouping resources together. Create ‘Collections’ to suit your way of working. You may want to group resources under projects that you are working on independently, share resources amongst a project team or simply keep your favourite resources together in one place. All the collections in your list appear in the ‘My Collections’ panel at the bottom of the screen.",400,en-US,,,
+team_research,introtext,"Organize and manage ‘Research Requests’. <br><br>Choose ‘edit research’ to review the request details and assign the research to a team member. It is possible to base a research request on a previous collection by entering the collection ID in the ‘edit’ screen. <br><br>Once the research request is assigned, choose ‘edit collection’ to add the research request to ‘My collection’ panel. Using the standard tools, it is then possible to add resources to the research. <br><br>Once the research is complete, choose ‘edit research’,  change the status to complete and an email is automatically  sent to the user who requested the research. The email contains a link to the research and it is also automatically added to their ‘My Collection’ panel.",401,en-US,,,
+collection_edit,introtext,"Organize and manage your work by grouping resources together. Create ‘Collections’ to suit your way of working.
+
+<br>
+
+All the collections in your list appear in the ‘My Collections’ panel at the bottom of the screen
+
+<br><br>
+
+<strong>Private Access</strong> allows only you and and selected users to see the collection. Ideal for grouping resources under projects that you are working on independently and share resources amongst a project team.
+
+<br><br>
+
+<strong>Public Access</strong> allows all users of the system to search and see the collection. Useful if you wish to share collections of resources that you think others would benefit from using.
+
+<br><br>
+
+You can choose whether you allow other users (public or users you have added to your private collection) to add and remove resources or simply view them for reference.",402,en-US,,,
