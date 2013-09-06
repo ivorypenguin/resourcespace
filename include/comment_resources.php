@@ -5,7 +5,7 @@
 		<div id="CommentsPanelHeader">
 			<div id="CommentsPanelHeaderRow">
 				<div id="CommentsPanelHeaderRowTitle">
-					<h1><?php echo $lang['comments_box-title']; ?></h1>
+					<div class="Title"><?php echo $lang['comments_box-title']; ?></div>
 				</div>							
 				<div id="CommentsPanelHeaderRowPolicyLink">				
 					<?php
