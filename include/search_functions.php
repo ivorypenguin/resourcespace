@@ -8,7 +8,7 @@
 if (!function_exists("do_search")) {
 function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchrows=-1,$sort="desc",$access_override=false,$starsearch=0,$ignore_filters=false,$return_disk_usage=false,$recent_search_daylimit="")
 	{	
-	debug("search=$search restypes=$restypes archive=$archive daylimit=$recent_search_daylimit");
+	debug("altert search=$search restypes=$restypes archive=$archive daylimit=$recent_search_daylimit");
 	
 	# globals needed for hooks	 
 	global $sql,$order,$select,$sql_join,$sql_filter,$orig_order,$checkbox_and,$collections_omit_archived,$search_sql_double_pass_mode;
@@ -1051,7 +1051,7 @@ $results_contents_flip=array_flip($results_contents);
 	$results_sql=$sql_prefix . "select distinct $score score, $select from resource r" . $t . "  where $t2 $sql group by r.ref order by $order_by limit $max_results" . $sql_suffix;
 
 	# Debug
-	debug("\n" . $results_sql);
+	debug("altert " . $results_sql);
 
 	# Execute query
 	$result=sql_query($results_sql,false,$fetchrows);
@@ -1847,16 +1847,19 @@ function search_form_to_search_query($fields,$fromsearchbar=false)
 			if (strpos($search, $name.":")===false) 
 			    {
 				$key_year=$name."_year";
-				if (getvalescaped($key_year,"")!="") $value=getvalescaped($key_year,"");
+				$value_year=getvalescaped($key_year,"");
+				if ($value_year!="") $value=$value_year;
 				else $value="nnnn";
 				
 				$key_month=$name."_month";
-				if (getvalescaped($key_month,"")!="") $value.="|" . getvalescaped($key_month,"");
-				else $value.="|nn";
-
+				$value_month=getvalescaped($key_month,"");
+				if ($value_month=="") $value_month.="nn";
+				
 				$key_day=$name."_day";
-				if (getvalescaped($key_day,"")!="") $value.="|" . getvalescaped($key_day,"");
-				else $value.="|nn";
+				$value_day=getvalescaped($key_day,"");
+				if ($value_day!="") $value.="|" . $value_month . "|" . $value_day;
+				elseif ($value_month!="nn") $value.="|" . $value_month;
+				
 				if ($value!=="nnnn|nn|nn") 
 				    {
                     if ($search!="") {$search.=", ";}
