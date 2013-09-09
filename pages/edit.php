@@ -618,6 +618,7 @@ if (getval("copyfrom","")!="")
 if (getval("metadatatemplate","")!="")
 	{
 	$use=getvalescaped("metadatatemplate","");
+	$original_fields=get_resource_field_data($ref,$multiple,true);
 	}
 
 # Load resource data
