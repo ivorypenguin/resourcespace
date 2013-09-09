@@ -335,7 +335,7 @@ function AutoSave(field)
 	
 	function(data)
 	  	{
-	  	if (data=="SAVED")
+	  	if (data.trim()=="SAVED")
 	  		{
 		  		jQuery('#AutoSaveStatus' + field).html('<?php echo $lang["saved"] ?>');
 		  		jQuery('#AutoSaveStatus' + field).fadeOut('slow');
