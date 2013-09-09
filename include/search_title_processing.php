@@ -9,7 +9,7 @@ global $baseurl_short;
 $searchcrumbs="";
 if ($search_titles_searchcrumbs && $use_refine_searchstring){
 $refinements=str_replace(" -",",-",urldecode($search));
-$refinements=explode(",",$search);	
+$refinements=explode(",",$search);
 if (substr($search,0,1)=="!"){$startsearchcrumbs=1;} else {$startsearchcrumbs=0;}
 if ($refinements[0]!=""){
 	for ($n=$startsearchcrumbs;$n<count($refinements);$n++){
@@ -23,8 +23,7 @@ if ($refinements[0]!=""){
 		if (!$search_titles_shortnames){
 			$search_title_element=explode(":",$refinements[$n]);
 			if (isset($search_title_element[1])){
-			
-			$datefieldinfo=sql_query("select ref from resource_type_field where name='" . escape_check($search_title_element[0]) . "'",0);
+			$datefieldinfo=sql_query("select ref from resource_type_field where name='" . trim(escape_check($search_title_element[0])) . "' and type IN (4,6,10)",0);
 			if (count($datefieldinfo)) 
 			    {
 			    $search_title_element[1]=str_replace("|", "-", $search_title_element[1]);
