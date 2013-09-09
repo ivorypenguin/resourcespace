@@ -120,17 +120,20 @@ if (!$config_search_for_number || !is_numeric($search)) # Don't do this when the
                 $value="";
 				if (strpos($search, $field.":")===false) 
 				    {
-    				$key_year=$key_part."_year";
-    				if (getvalescaped($key_year,"")!="") $value=getvalescaped($key_year,"");
-    				else $value="nnnn";
+                $key_year=$key_part."_year";
+				$value_year=getvalescaped($key_year,"");
+				if ($value_year!="") $value=$value_year;
+				else $value="nnnn";
+				
+				$key_month=$key_part."_month";
+				$value_month=getvalescaped($key_month,"");
+				if ($value_month=="") $value_month.="nn";
+				
+				$key_day=$key_part."_day";
+				$value_day=getvalescaped($key_day,"");
+				if ($value_day!="") $value.="|" . $value_month . "|" . $value_day;
+				elseif ($value_month!="nn") $value.="|" . $value_month;
     				
-    				$key_month=$key_part."_month";
-    				if (getvalescaped($key_month,"")!="") $value.="|" . getvalescaped($key_month,"");
-    				else $value.="|nn";
-    
-    				$key_day=$key_part."_day";
-    				if (getvalescaped($key_day,"")!="") $value.="|" . getvalescaped($key_day,"");
-    				else $value.="|nn";
     
     				$search=(($search=="")?"":join(", ",split_keywords($search)) . ", ") . $field . ":" . $value;
 
