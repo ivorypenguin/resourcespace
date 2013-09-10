@@ -60,7 +60,7 @@ function save_resource_data($ref,$multi)
 	# Save all submitted data for resource $ref.
 	# Also re-index all keywords from indexable fields.
 		
-	global $auto_order_checkbox,$userresourcedefaults,$multilingual_text_fields,$languages,$language;
+	global $auto_order_checkbox,$userresourcedefaults,$multilingual_text_fields,$languages,$language,$user_resources_approved_email;
 
 	hook("befsaveresourcedata", "", array($ref));
 
@@ -266,13 +266,21 @@ function save_resource_data($ref,$multi)
 	$archive=getvalescaped("archive",0,true);
 	$oldarchive=sql_value("select archive value from resource where ref='$ref'",0);
 	if ($oldarchive==-2 && $archive==-1 && $ref>0)
-		{
+		{	
 		notify_user_contributed_submitted(array($ref));
 		}
 	if ($oldarchive==-1 && $archive==-2 && $ref>0)
 		{
 		notify_user_contributed_unsubmitted(array($ref));
 		}	
+
+	if($user_resources_approved_email)
+		{	
+		if (($oldarchive==-2 || $oldarchive==-1) && $ref>0)
+			{
+			notify_user_resources_approved(array($ref));
+			}	
+		}
 
 	# Expiry field(s) edited? Reset the notification flag so that warnings are sent again when the date is reached.
 	$expirysql="";
@@ -526,11 +534,13 @@ function save_resource_data_multi($collection)
 			if (count($ok)>0) {sql_query("insert into resource_related(resource,related) values ($ref," . join("),(" . $ref . ",",$ok) . ")");}
 			}
 		}
-
+	
 	# Also update archive status
+	global $user_resources_approved_email;	
 	if (getval("editthis_status","")!="")
 		{
 		$notifyrefs=array();
+		$usernotifyrefs=array();
 		for ($m=0;$m<count($list);$m++)
 			{
 			$ref=$list[$m];
@@ -549,12 +559,26 @@ function save_resource_data_multi($collection)
 					# Notify the admin users of this change.
 					$notifyrefs[]=$ref;
 					}
+				if ($user_resources_approved_email && ($oldarchive==-2 || $oldarchive==-1) && $archive==0)
+					{
+					# Notify the  users of this change.
+					$usernotifyrefs[]=$ref;
+					}
 				}
 			}
 		if (count($notifyrefs)>0)
 			{
 			# Notify the admin users of any submitted resources.
 			notify_user_contributed_submitted($notifyrefs);
+			}
+		if($user_resources_approved_email)
+			{
+			if (count($usernotifyrefs)>0)
+				{
+				# Notify the admin users of any submitted resources.
+				debug("Emailing approval notification for submitted resources to users");
+				notify_user_resources_approved($usernotifyrefs);
+				}
 			}
 		}
 	
@@ -967,7 +991,7 @@ function copy_resource($from,$resource_type=-1)
 	
 	$add="";
 
-	# Work out the archive status
+	# Determine if the user has access to the template archive status
 	$archive=sql_value("select archive value from resource where ref='$from'",0);
 	if (!checkperm("e" . $archive))
 		{
@@ -2678,4 +2702,53 @@ function overquota()
 		}
 	return false;
 	}
+
+function notify_user_resources_approved($refs)
+	{
+	// Send a notification mail to the user when resources have been approved
+	global $applicationname,$baseurl,$lang;	
+	debug("Emailing user notifications of resource approvals");	
+	$htmlbreak="";
+	global $use_phpmailer,$userref,$templatevars;
+	if ($use_phpmailer){$htmlbreak="<br><br>";}
+	$notifyusers=array();
+	
+	for ($n=0;$n<count($refs);$n++)
+		{
+		$ref=$refs[$n];
+		$contributed=sql_value("select created_by value from resource where ref='$ref'",0);
+		if($contributed!=0 && $contributed!=$userref)
+			{
+			if(!isset($notifyusers[$contributed])) // Add new array entry if not already present
+				{
+				$notifyusers[$contributed]=array();
+				$notifyusers[$contributed]["list"]="";
+				$notifyusers[$contributed]["resources"]=array();
+				$notifyusers[$contributed]["url"]=$baseurl . "/pages/search.php?search=!contributions" . $contributed . "&archive=0";
+				}		
+			$notifyusers[$contributed]["resources"][]=$ref;
+			$url=$baseurl . "/?r=" . $refs[$n];		
+			if ($use_phpmailer){$url="<a href=\"$url\">$url</a>";}
+			$notifyusers[$contributed]["list"].=$htmlbreak . $url . "\n\n";
+			}		
+		}
+	
+	foreach($notifyusers as $key=>$notifyuser)	
+		{
+		$notifyuser["list"].=$htmlbreak;
+		$templatevars['list']=$notifyuser["list"];
+		$templatevars['url']=$notifyuser["url"];			
+		$message=$lang["userresourcesapproved"] . "\n\n". $templatevars['list'] . "\n\n" . $lang["viewcontributedsubittedl"] . "\n\n" . $notifyuser["url"];
+		
+		$notify_user=sql_value("select email value from user where ref='$key'","");
+		if($notify_user!='')
+			{
+			send_mail($notify_user,$applicationname . ": " . $lang["approved"],$message,"","","emailnotifyresourcesapproved",$templatevars);
+			}
+		}
+	
+	
+	}
+	
+		
 

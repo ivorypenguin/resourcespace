@@ -585,3 +585,10 @@ All the collections in your list appear in the ‘My Collections’ panel at the
 <br><br>
 
 You can choose whether you allow other users (public or users you have added to your private collection) to add and remove resources or simply view them for reference.",402,en-US,,,
+all,emailnotifyresourcesapproved,"[img_gfx/whitegry/titles/title.gif]<br>
+[lang_userresourcesapproved]
+[list] <br>
+[lang_viewcontributedsubittedl] <br><br> 
+<a href=""[url]"">[url]</a><br><br>
+[text_footer]
+",403,en,,,1

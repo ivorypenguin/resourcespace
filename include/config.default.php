@@ -2177,6 +2177,8 @@ $metadata_read=true; // Hides the "Do not import embedded EXIF/IPTC/XMP metadata
 $removenever=false; # Remove 'never' option for resource access expiration and sets default expiry date to 7 days
 $hide_resource_share_link=false; // Configurable option to hide the "Share" link on the resource view page.
 
+# Option to email the contributor when their resources have been approved (moved from pending submission to active)
+$user_resources_approved_email=false; 
 
 
 
