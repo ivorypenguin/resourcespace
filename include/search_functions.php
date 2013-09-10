@@ -1860,7 +1860,7 @@ function search_form_to_search_query($fields,$fromsearchbar=false)
 				if ($value_day!="") $value.="|" . $value_month . "|" . $value_day;
 				elseif ($value_month!="nn") $value.="|" . $value_month;
 				
-				if ($value!=="nnnn|nn|nn") 
+				if (($value!=="nnnn|nn|nn")&&($value!=="nnnn")) 
 				    {
                     if ($search!="") {$search.=", ";}
     				$search.=$fields[$n]["name"] . ":" . $value;
