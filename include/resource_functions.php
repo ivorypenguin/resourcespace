@@ -2735,7 +2735,6 @@ function notify_user_resources_approved($refs)
 	
 	foreach($notifyusers as $key=>$notifyuser)	
 		{
-		$notifyuser["list"].=$htmlbreak;
 		$templatevars['list']=$notifyuser["list"];
 		$templatevars['url']=$notifyuser["url"];			
 		$message=$lang["userresourcesapproved"] . "\n\n". $templatevars['list'] . "\n\n" . $lang["viewcontributedsubittedl"] . "\n\n" . $notifyuser["url"];
