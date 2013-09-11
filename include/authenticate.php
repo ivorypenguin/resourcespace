@@ -294,9 +294,12 @@ if ($ip_restrict!="")
 global $pagename;
 $terms="";if (($pagename!="login") && ($pagename!="terms")) {$terms=",accepted_terms=1";} # Accepted terms
 if (!$api){
+	if (isset($_SERVER["HTTP_USER_AGENT"])){
 	$last_browser=escape_check(substr($_SERVER["HTTP_USER_AGENT"],0,250));
+	} else { 
+	$last_browser="unknown";
 	}
-else {
+} else {
 	$last_browser="API Client";
 }
 
