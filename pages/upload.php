@@ -63,6 +63,7 @@ if (array_key_exists("userfile",$_FILES))
 		resource_log($ref,"u",0);
 
 		$status=upload_file($ref,(getval("no_exif","")!=""),false,(getval("autorotate","")!=""));
+		if (!hook("redirectafterupload"))
 		redirect($baseurl_short."pages/edit.php?refreshcollectionframe=true&ref=" . urlencode($ref)."&search=".urlencode($search)."&offset=".urlencode($offset)."&order_by=".urlencode($order_by)."&sort=".urlencode($sort)."&archive=".urlencode($archive));
 		}	
 	}
