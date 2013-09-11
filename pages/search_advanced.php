@@ -551,9 +551,9 @@ for ($n=0;$n<count($fields);$n++)
 <?php }?>
 <div class="QuestionSubmit">
 <label for="buttons"> </label>
-<input name="dosearch" id="dosearch" type="submit" value="<?php echo $lang["action-viewmatchingresults"]?>" />
-&nbsp;
 <input name="resetform" id="resetform" type="submit" value="<?php echo $lang["clearbutton"]?>" />
+&nbsp;
+<input name="dosearch" id="dosearch" type="submit" value="<?php echo $lang["action-viewmatchingresults"]?>" />
 </div>
 </form>
 </div>
