@@ -108,9 +108,9 @@ for ($n=0;$n<count($keywords);$n++)
 	$keyword=$keywords[$n];
 	if (strpos($keyword,":")!==false)
 		{
-		$k=explode(":",$keyword);
-		$name=trim($k[0]);
-		$keyword=trim($k[1]);
+		$nk=explode(":",$keyword);
+		$name=trim($nk[0]);
+		$keyword=trim($nk[1]);
 		if ($name=="day") {$found_day=$keyword;}
 		if ($name=="month") {$found_month=$keyword;}
 		if ($name=="year") {$found_year=$keyword;}
