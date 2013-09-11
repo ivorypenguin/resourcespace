@@ -18,5 +18,3 @@ $lang["fieldtype-expiry_date"]="Expiration date";
 $lang["externalselectresourceexpires"]="If you are e-mailing external users, please select an expiration date for the generated URL.";
 $lang["warningexpiredtext"]="Warning! This resource has exceeded the expiration date. You must click the link below to enable the download functionality.";
 $lang["resourceexpiry"]="Resource expiration";
-?>
-

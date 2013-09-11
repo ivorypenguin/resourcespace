@@ -68,6 +68,19 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 			$sql_filter.= "creation_date > (curdate() - interval " . $recent_search_daylimit . " DAY)";
 			}
 
+	# The ability to restrict access by the user that created the resource.
+	global $resource_created_by_filter;
+	if (isset($resource_created_by_filter) && count($resource_created_by_filter)>0)
+	 		{
+	 		foreach ($resource_created_by_filter as $filter_user)
+	 			{
+	 			if ($filter_user==-1) {global $userref;$filter_user=$userref;} # '-1' can be used as an alias to the current user. I.e. they can only see their own resources in search results.
+	 			if ($sql_filter!="") {$sql_filter.=" and ";}
+				$sql_filter.= "created_by = '" . $filter_user . "'";
+	 			}	 			
+	 		}
+
+
 	# Geo zone exclusion
 	# A list of upper/lower long/lat bounds, defining areas that will be excluded from geo search results.
 	# Areas are defined as southwest lat, southwest long, northeast lat, northeast long

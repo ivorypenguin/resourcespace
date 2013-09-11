@@ -1490,6 +1490,13 @@ $image_preview_zoom=false;
 # The value can be increased if titles (etc.) are being truncated in search results, but the field column lengths must be altered also.
 $resource_field_column_limit=200;
 
+# Resource access filter
+# If set, filter searches to resources uploaded by users with the specified user IDs only. '-1' is an alias to the current user.
+# For example, to filter search results to only include resources uploaded by the current user themselves and the admin user (by default user ID 1) set:
+# $resource_created_by_filter=array(-1,1);
+# This is used for the ResourceSpace demo installation.
+#
+# $resource_created_by_filter=array();
 
 
 
