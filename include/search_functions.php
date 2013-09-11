@@ -72,12 +72,18 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 	global $resource_created_by_filter;
 	if (isset($resource_created_by_filter) && count($resource_created_by_filter)>0)
 	 		{
+	 		$created_filter="";
 	 		foreach ($resource_created_by_filter as $filter_user)
 	 			{
 	 			if ($filter_user==-1) {global $userref;$filter_user=$userref;} # '-1' can be used as an alias to the current user. I.e. they can only see their own resources in search results.
-	 			if ($sql_filter!="") {$sql_filter.=" and ";}
-				$sql_filter.= "created_by = '" . $filter_user . "'";
-	 			}	 			
+				if ($created_filter!="") {$created_filter.=" or ";}	
+				$created_filter.= "created_by = '" . $filter_user . "'";
+	 			}	 
+	 		if ($created_filter!="")
+	 				{
+	 				if ($sql_filter!="") {$sql_filter.=" and ";}			
+	 				$sql_filter.="(" . $created_filter . ")";
+	 				}
 	 		}
 
 
