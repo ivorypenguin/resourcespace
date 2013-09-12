@@ -1410,6 +1410,10 @@ $themes_category_split_pages_parents=false;
 $themes_category_split_pages_parents_root_node=true;
 # Navigate to deeper levels in theme category trees? Set to false to link to matching resources directly.
 $themes_category_navigate_levels=false;
+# If a theme header contains a single collection, allow the title to be a direct link to the collection.
+# Drilling down is still possible via the >Expand tool, which replaces >Select when a deeper level exists
+$themes_single_collection_shortcut=false;
+
 
 # optional columns in themes collection lists
 $themes_column_sorting=false; // only works with themes_category_split_pages
