@@ -74,7 +74,7 @@ if ($search_titles)
                 $display_user_and_access = true;
                 }
             }
-
+	if ($colusername!=""){$colaccessmode="/".$colaccessmode;}
         // add a tooltip to Smart Collection titles (which provides a more detailed view of the searchstring.    
         $alt_text = '';
         if ($pagename=="search" && isset($collectiondata['savedsearch']) && $collectiondata['savedsearch']!='')
@@ -86,7 +86,7 @@ if ($search_titles)
                 }
             } 
         hook("collectionsearchtitlemod");
-        $search_title.= '<div align="left"><h1><div class="searchcrumbs"><span id="coltitle'.$collection.'"><a '.$alt_text.' href='.$baseurl_short.'pages/search.php?search=!collection'.$collection.$parameters_string.' onClick="return CentralSpaceLoad(this,true);">'.i18n_get_collection_name($collectiondata).($display_user_and_access?" (".$colusername."/".$colaccessmode.")":"").'</a></span>'.$searchcrumbs.'</div></h1> ';
+        $search_title.= '<div align="left"><h1><div class="searchcrumbs"><span id="coltitle'.$collection.'"><a '.$alt_text.' href='.$baseurl_short.'pages/search.php?search=!collection'.$collection.$parameters_string.' onClick="return CentralSpaceLoad(this,true);">'.i18n_get_collection_name($collectiondata).($display_user_and_access?" (".$colusername.$colaccessmode.")":"").'</a></span>'.$searchcrumbs.'</div></h1> ';
         }
     elseif ($search=="" && $archive==0)
         {
