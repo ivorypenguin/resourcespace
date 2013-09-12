@@ -221,7 +221,7 @@ if (array_key_exists("user",$_COOKIE) || array_key_exists("user",$_GET) || isset
 					if (isset($anonymous_login))
 						{
 						# If the system is set up with anonymous access, redirect to the home page after logging out.
-						redirect("pages/home.php");
+						redirect($baseurl."/pages/" . $default_home_page);
 						}
 					else
 						{
