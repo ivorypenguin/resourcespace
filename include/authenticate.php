@@ -259,10 +259,24 @@ if (!$valid && !$api)
     $path=str_replace("ajax","ajax_disabled",$path);# Disable forwarding of the AJAX parameter if this was an AJAX load, otherwise the redirected page will be missing the header/footer.
 	?>
 	<script type="text/javascript">
-	top.location.href="<?php echo $baseurl?>/login.php?url=<?php echo urlencode($path)?><?php if ($autologgedout) { ?>&auto=true<?php } ?><?php if ($nocookies) { ?>&nocookies=true<?php } ?>";
-	</script>
-	<?php
-    exit();
+	<?php 
+	if (isset($anonymous_login)) 
+	    {
+	    ?>    
+	    document.cookie = "user=; expires=-1; path=/";
+	    top.location.href="<?php echo $baseurl?>/pages/<?php echo $default_home_page ?>";
+	    </script>
+	    <?php
+        exit();
+        }
+    else 
+        {
+        ?>    
+        top.location.href="<?php echo $baseurl?>/login.php?url=<?php echo urlencode($path)?><?php if ($autologgedout) { ?>&auto=true<?php } ?><?php if ($nocookies) { ?>&nocookies=true<?php } ?>";
+        </script>
+        <?php
+        exit();
+        }
     }
 if (!$valid && $api){echo "invalid login";exit();}    
 
