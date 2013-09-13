@@ -7,7 +7,7 @@ function HookRefineresultsSearchBeforesearchresults()
 	if (is_array($result)) $results=count($result);
 	if (is_array($collections)) $results+=count($collections);
 	#if ($k!="" || $results==0) {return false;}
-	#if ($results==0) {return false;}
+	#if ($results==0||$results==1) {return false;}
 	
 	# External sharing search support. Clear search drops back to the collection only search.
 	$default_search="";
@@ -16,7 +16,7 @@ function HookRefineresultsSearchBeforesearchresults()
 
 	#if (substr($search,0,1)=="!") {return false;} # Only work for normal (non 'special') searches
 	?>
-	<div class="SearchOptionNav"><a href="#" onClick="
+	<div class="SearchOptionNav"><?php if ($results!=0 && $results!=1){?><a href="#" onClick="
 	if (jQuery('#RefinePlus').html()=='+')
 		{
 		jQuery('#RefineResults').slideToggle();
@@ -28,7 +28,7 @@ function HookRefineresultsSearchBeforesearchresults()
 		jQuery('#RefineResults').slideToggle();
 		jQuery('#RefinePlus').html('+');
 		}
-	"><span id='RefinePlus'>+</span> <?php echo $lang["refineresults"]?></a><?php if ($search!=""){?>&nbsp;&nbsp;<a href='<?php echo $baseurl_short?>pages/search.php?search=<?php echo $default_search ?><?php echo $parameters_string?>'>&gt;&nbsp;<?php echo $lang["clearsearch"]?></a><?php } ?></div>
+	"><span id='RefinePlus'>+</span> <?php echo $lang["refineresults"]?></a>&nbsp;&nbsp;<?php } ?><?php if ($search!=""){?><a href='<?php echo $baseurl_short?>pages/search.php?search=<?php echo $default_search ?><?php echo $parameters_string?>'>&gt;&nbsp;<?php echo $lang["clearsearch"]?></a><?php } ?></div>
 	<?php
 	return true;
 	}
