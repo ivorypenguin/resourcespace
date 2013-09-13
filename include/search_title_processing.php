@@ -76,7 +76,7 @@ if ($search_titles)
             {
             $colaccessmode = $lang["themes"];
             $is_theme=true;
-            $theme_link="<a href='".$baseurl_short."pages/themes.php'>".$lang['themes']."</a>";
+            $theme_link="<a onClick='return CentralSpaceLoad(this,true);' href='".$baseurl_short."pages/themes.php'>".$lang['themes']."</a>";
             }
 			
         // add a tooltip to Smart Collection titles (which provides a more detailed view of the searchstring.    
