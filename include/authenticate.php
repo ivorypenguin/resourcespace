@@ -263,8 +263,7 @@ if (!$valid && !$api)
 	if (isset($anonymous_login)) 
 	    {
 	    ?>    
-	    document.cookie = "user=; expires=-1; path=/";
-	    top.location.href="<?php echo $baseurl?>/pages/<?php echo $default_home_page ?>";
+	    top.location.href="<?php echo $baseurl?>/login.php?logout=true<?php if ($autologgedout) { ?>&auto=true<?php } ?><?php if ($nocookies) { ?>&nocookies=true<?php } ?>";
 	    </script>
 	    <?php
         exit();
