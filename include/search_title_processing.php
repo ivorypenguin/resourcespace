@@ -65,6 +65,7 @@ if ($search_titles)
                     if (strlen($collectiondata["theme"])>0)
                         {
                         $colaccessmode = $lang["theme"];
+                        $colusername=""; // hide username for themes display
                         }
                     else
                         {
@@ -72,9 +73,10 @@ if ($search_titles)
                         }
                     }
                 $display_user_and_access = true;
+                if ($colusername!=""){$colaccessmode="/".$colaccessmode;}
                 }
             }
-	if ($colusername!=""){$colaccessmode="/".$colaccessmode;}
+
         // add a tooltip to Smart Collection titles (which provides a more detailed view of the searchstring.    
         $alt_text = '';
         if ($pagename=="search" && isset($collectiondata['savedsearch']) && $collectiondata['savedsearch']!='')
