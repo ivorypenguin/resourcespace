@@ -4,6 +4,7 @@
 $search_title = "";
 $search_title_links = "";
 $display_user_and_access=false;
+$is_theme=false;
 global $baseurl_short;
 # Display a title of the search (if there is a title)
 $searchcrumbs="";
@@ -59,24 +60,25 @@ if ($search_titles)
                 if ($collectiondata["public"]==0)
                     {
                     $colaccessmode = $lang["private"];
+                    $display_user_and_access = true;
+                    if ($colusername!=""){$colaccessmode="/".$colaccessmode;}
                     }
-                else
+                else if (strlen($collectiondata["theme"])==0)
                     {
-                    if (strlen($collectiondata["theme"])>0)
-                        {
-                        $colaccessmode = $lang["theme"];
-                        $colusername=""; // hide username for themes display
-                        }
-                    else
-                        {
-                        $colaccessmode = $lang["public"];
-                        }
+                    $colaccessmode = $lang["public"];
+                    $display_user_and_access = true;
+					if ($colusername!=""){$colaccessmode="/".$colaccessmode;}
                     }
-                $display_user_and_access = true;
-                if ($colusername!=""){$colaccessmode="/".$colaccessmode;}
+                
                 }
             }
-
+       if (strlen($collectiondata["theme"])>0)
+            {
+            $colaccessmode = $lang["themes"];
+            $is_theme=true;
+            $theme_link="<a href='".$baseurl_short."/pages/themes.php'>".$lang['themes']."</a>";
+            }
+			
         // add a tooltip to Smart Collection titles (which provides a more detailed view of the searchstring.    
         $alt_text = '';
         if ($pagename=="search" && isset($collectiondata['savedsearch']) && $collectiondata['savedsearch']!='')
@@ -88,7 +90,7 @@ if ($search_titles)
                 }
             } 
         hook("collectionsearchtitlemod");
-        $search_title.= '<div align="left"><h1><div class="searchcrumbs"><span id="coltitle'.$collection.'"><a '.$alt_text.' href='.$baseurl_short.'pages/search.php?search=!collection'.$collection.$parameters_string.' onClick="return CentralSpaceLoad(this,true);">'.i18n_get_collection_name($collectiondata).($display_user_and_access?" (".$colusername.$colaccessmode.")":"").'</a></span>'.$searchcrumbs.'</div></h1> ';
+        $search_title.= '<div align="left"><h1><div class="searchcrumbs">'.($is_theme?$theme_link." > ":"").'<span id="coltitle'.$collection.'"><a '.$alt_text.' href='.$baseurl_short.'pages/search.php?search=!collection'.$collection.$parameters_string.' onClick="return CentralSpaceLoad(this,true);">'.i18n_get_collection_name($collectiondata).'</a>'.($display_user_and_access?" (".$colusername.$colaccessmode.")":"").'</span>'.$searchcrumbs.'</div></h1> ';
         }
     elseif ($search=="" && $archive==0)
         {
