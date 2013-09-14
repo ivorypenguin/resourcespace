@@ -240,6 +240,9 @@ function UpdateResultCount()
 	jQuery("#advancedform").submit();
 	document.getElementById("advancedform").target="";
 	document.getElementById("countonly").value="";
+	<?php if ($swap_clear_and_search_buttons){?>
+	jQuery("#resetform").before(jQuery("#dosearch"));
+	<?php } ?>
 	}
 	
 jQuery(document).ready(function(){
@@ -268,9 +271,7 @@ jQuery(document).ready(function(){
 			cssclass: "ListviewStyle"
 			});
 		});
-<?php if ($swap_clear_and_search_buttons){?>
-jQuery("#resetform").before(jQuery("#dosearch"));
-<?php } ?>
+
 </script>
 
 
