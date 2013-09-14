@@ -12,7 +12,16 @@ function HookRefineresultsSearchBeforesearchresults()
 	# External sharing search support. Clear search drops back to the collection only search.
 	$default_search="";
 	if ($k!="") {$s=explode(" ",$search);$default_search=$s[0];}
-	if (($archive==-2)&&(substr($search,0,1)=="!")) {$s=explode(" ",$search);$default_search=$s[0];}
+	
+	# dropping back to a special search seems like appropriate behavior in general.
+	if ($k=="" && substr($search,0,1)=="!") {
+		$s=explode(" ",$search);
+		# Should a second Clear be allowed to blank out the special search? 
+		# if (count($s)>1){  
+			$default_search=$s[0];
+		#}
+	}
+	
 
 	#if (substr($search,0,1)=="!") {return false;} # Only work for normal (non 'special') searches
 	?>
