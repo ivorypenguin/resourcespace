@@ -978,6 +978,10 @@ $extracted_text_field=72;
 # The resources will not be downloadable, except to the contributer and those with edit capability to the resource.
 $pending_review_visible_to_all=false;
 
+# Should the resources that are in the archive state "User Contributed - Pending submission" (-2) be
+# searchable (otherwise users can search only for their own resources pending submission
+$pending_submission_searchable_to_all=false;
+
 # Enable user rating of resources
 # Users can rate resources using a star ratings system on the resource view page.
 # Average ratings are automatically calculated and used for the 'popularity' search ordering.
