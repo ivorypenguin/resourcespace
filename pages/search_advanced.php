@@ -240,9 +240,6 @@ function UpdateResultCount()
 	jQuery("#advancedform").submit();
 	document.getElementById("advancedform").target="";
 	document.getElementById("countonly").value="";
-	<?php if ($swap_clear_and_search_buttons){?>
-	jQuery("#resetform").before(jQuery("#dosearch"));
-	<?php } ?>
 	}
 	
 jQuery(document).ready(function(){
@@ -561,8 +558,12 @@ for ($n=0;$n<count($fields);$n++)
 </form>
 </div>
 <?php // show result count as it stands ?>
-<script type="text/javascript">UpdateResultCount();</script>
-
+<script type="text/javascript">UpdateResultCount();</script>	
+<?php if ($swap_clear_and_search_buttons){?>
+<script type="text/javascript">
+	jQuery("#resetform").before(jQuery("#dosearch"));
+</script>
+<?php } ?>
 <?php
 include "../include/footer.php";
 ?>
