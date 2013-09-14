@@ -244,7 +244,7 @@ $resource_title_pages=array("view","delete","log","alternative_file","alternativ
     }  
 }
    
-
+?><script src="<?php echo $baseurl?>/lib/js/Placeholders.min.js?css_reload_key=<?php echo $css_reload_key?>" type="text/javascript"></script><?php
 
 
 if (getval("ajax","")=="") { 
