@@ -1627,11 +1627,11 @@ function draw_compact_style_selector($collection,$onhover=true){
 	$cinfo,
 	$feedback,
 	$colresult,
-	$m,$getthemes,$search;	
+	$m,$getthemes;	
 	if(preg_match('/(Android|iPhone|iPad)/', $_SERVER['HTTP_USER_AGENT'])) { 
 		$collections_compact_style_ajax=false; // omit this optimization for mobile as the hover events it relies on sometimes cause the selector to not be loaded prior to clicking.
 	}
-	if (!$onhover || !$collections_compact_style_ajax|| $pagename=="collections" || (substr($search,0,11)=="!collection" && $pagename=="search")){
+	if (!$onhover || !$collections_compact_style_ajax|| $pagename=="collections" || (substr(getvalescaped("search",""),0,11)=="!collection" && $pagename=="search")){
 		include(dirname(__FILE__)."/../pages/collections_compact_style.php");
 		return;
 	}
@@ -1644,23 +1644,6 @@ function draw_compact_style_selector($collection,$onhover=true){
 	
 	?>	<select readonly="readonly" onmouseover="jQuery('#tempoption<?php echo urlencode($tag) ?>').html('<?php echo $lang['loading']?>');if (this.id=='temp<?php echo urlencode($tag) ?>'){jQuery.ajax({type: 'GET',url:  '<?php echo $baseurl_short?>pages/collections_compact_style.php?collection=<?php echo urlencode($collection) ?>&pagename=<?php echo urlencode($pagename) ?>&colselectload=true',success: function(msg){if(msg != 0) {jQuery('#temp<?php echo urlencode($tag) ?>').replaceWith(msg);} }});}" <?php if ($pagename=="collections"){if ($collection_dropdown_user_access_mode){?>class="SearchWidthExp" style="margin:0;"<?php } else { ?> class="SearchWidth" style="margin:0;"<?php } } ?> class="ListDropdown" <?php if ($pagename=="search" && $display=="xlthumbs"){?>style="margin:-5px 0px 0px 5px"<?php } ?> <?php if ($pagename=="search" && ( $display=="thumbs" || $display=="smallthumbs")){?>style="margin:-5px 0px 0px 4px "<?php } ?> id="temp<?php echo urlencode($tag) ?>"><option id="tempoption<?php echo urlencode($tag) ?>"><?php echo $lang['select'];?></option></select><?php
 	
-	// onhover indicates whether this should be immediately loaded or loaded on page hover (to preload these after page load)
-	// NOTE: I've removed this in an attempt to load these only on mouseover select on Desktop in an attempt to eliminate unneeded ajax calls
-	/*?>
-      <script type="text/javascript">
-			jQuery('<?php echo $hovertag?>').hover(function(e){
-				jQuery.ajax({
-				type: 'GET',
-				url:  '<?php echo $baseurl_short?>pages/collections_compact_style.php?collection=<?php echo $collection?>&pagename=<?php echo $pagename?>&colselectload=true',
-				success: function(msg){
-					if(msg == 0) {
-				} else {
-					jQuery('#temp<?php echo $tag?>').replaceWith(msg);
-				}   jQuery('<?php echo $hovertag?>').unbind('mouseenter mouseleave');
-			}
-			});});
-	</script>
-	<?php */
 }
 
 function is_collection_approved($collection)
