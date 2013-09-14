@@ -268,7 +268,9 @@ jQuery(document).ready(function(){
 			cssclass: "ListviewStyle"
 			});
 		});
-
+<?php if ($swap_clear_and_search_buttons){?>
+jQuery("#resetform").before(jQuery("#dosearch"));
+<?php } ?>
 </script>
 
 
@@ -559,6 +561,7 @@ for ($n=0;$n<count($fields);$n++)
 </div>
 <?php // show result count as it stands ?>
 <script type="text/javascript">UpdateResultCount();</script>
+
 <?php
 include "../include/footer.php";
 ?>

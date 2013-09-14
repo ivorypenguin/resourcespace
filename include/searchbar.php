@@ -221,10 +221,10 @@ if (!$basic_simple_search)
 	if ($simple_search_date){$cleardate.=" document.getElementById('basicyear').value='';document.getElementById('basicmonth').value='';" ;}
         if ($searchbyday && $simple_search_date) { $cleardate.="document.getElementById('basicday').value='';"; }
 
-	if (!$basic_simple_search) { $searchbuttons.="<input name=\"Clear\" class=\"searchbutton\" type=\"button\" value=\"&nbsp;&nbsp;".$lang['clearbutton']."&nbsp;&nbsp;\" onClick=\"document.getElementById('ssearchbox').value='';$cleardate";
+	if (!$basic_simple_search) { $searchbuttons.="<input name=\"Clear\" id=\"clearbutton\" class=\"searchbutton\" type=\"button\" value=\"&nbsp;&nbsp;".$lang['clearbutton']."&nbsp;&nbsp;\" onClick=\"document.getElementById('ssearchbox').value='';$cleardate";
 	if ($display_user_rating_stars && $star_search) { $searchbuttons.="StarSearchRatingDisplay(0,'StarCurrent');document.getElementById('starsearch').value='';window['StarSearchRatingDone']=true;"; } 
 	$searchbuttons.="ResetTicks();\"/>"; } 
-	$searchbuttons.="<input name=\"Submit\" class=\"searchbutton\" type=\"submit\" value=\"&nbsp;&nbsp;". $lang['searchbutton']."&nbsp;&nbsp;\" /></div>";?>
+	$searchbuttons.="<input name=\"Submit\" id=\"searchbutton\" class=\"searchbutton\" type=\"submit\" value=\"&nbsp;&nbsp;". $lang['searchbutton']."&nbsp;&nbsp;\" /></div>";?>
 	
 	<?php if (!$searchbar_buttons_at_bottom){ echo $searchbuttons."<br/>"; } ?>
 
@@ -655,7 +655,11 @@ if (!$basic_simple_search)
 	<?php } ?>
 
 <?php hook("searchbarbottomtoolbar"); ?>
-	
+
+<?php if ($swap_clear_and_search_buttons){?>
+<script type="text/javascript">jQuery("#clearbutton").before(jQuery("#searchbutton"));</script>
+<?php } ?>
+
 </div>
 
 <?php hook("searchbarbottom"); ?>
