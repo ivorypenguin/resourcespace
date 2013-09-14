@@ -147,7 +147,7 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 			if ($sql_filter!="") {$sql_filter.=" and ";}
 			$sql_filter.="archive='$archive'";
 			global $userref;
-			if (($archive=="-2")&&!(checkperm("e-2")&&checkperm("c"))) $sql_filter.=" and created_by='" . $userref . "'";
+			if (($archive=="-2")&&!(checkperm("e-2")&&checkperm("t"))) $sql_filter.=" and created_by='" . $userref . "'";
 			}
 		}
 	
