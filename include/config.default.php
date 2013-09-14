@@ -1839,6 +1839,9 @@ $collections_delete_empty=false;
 
 # Allow saving searches as 'smart collections' which self-update based on a saved search. 
 $allow_smart_collections=false;
+# Run Smart collections asynchronously (faster smart collection searches, with the tradeoff that they are updated AFTER the search.
+# This may not be appropriate for usergroups that depend on live updates in workflows based on smart collections.
+$smart_collections_async=false;
 
 # Allow a Preview page for entire collections (for more side to side comparison ability, works with collection_reorder_caption)
 $preview_all=false;

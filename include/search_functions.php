@@ -817,62 +817,18 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 		$collection=escape_check($collection[0]);
 
 		# smart collections update
-		global $allow_smart_collections;
+		global $allow_smart_collections,$smart_collections_async;
 		if ($allow_smart_collections){
 			$smartsearch_ref=sql_value("select savedsearch value from collection where ref='$collection'","");
-
+			global $php_path;
 			if ($smartsearch_ref!=""){
-				$smartsearch=sql_query("select search,restypes,starsearch,archive,created,result_limit from collection_savedsearch where ref='$smartsearch_ref'");
-				if (isset($smartsearch[0]['search'])){
-					$smartsearch=$smartsearch[0];
-					
-					# Option to limit results;
-					$result_limit=$smartsearch["result_limit"]; if ($result_limit=="" || $result_limit==0) {$result_limit=-1;}
-	//$startTime = microtime(true);  	
-					$results=do_search($smartsearch['search'], $smartsearch['restypes'], "relevance", $smartsearch['archive'],$result_limit,"desc",true,$smartsearch['starsearch']);
-			
-		# results is a list of the current search without any restrictions
-					# we need to compare against the current collection contents to minimize inserts and deletions
-					$current_contents=sql_array("select resource value from collection_resource where collection='$collection'");
-		
-					$results_contents=array();
-					$counter=0;
-					if (!empty($results)&&is_array($results)){
-						foreach($results as $results_item){ 
-							if (isset($results_item['ref'])){
-								$results_contents[]=$results_item['ref'];
-								$counter++;
-								if ($counter>=$result_limit && $result_limit!=-1) {	
-									break;
-								}
-							}
-						}
-					}
-$count_results=count($results_contents);
-
-$current_contents_flip=array_flip($current_contents);
-
-					# Add any new resources
-						for ($n=0;$n<$count_results;$n++)
-							{
-							if (!isset($current_contents_flip[$results_contents[$n]])){ add_resource_to_collection($results_contents[$n],$collection,true);}
-							}
-					
-$count_contents=count($current_contents);
-	
-$results_contents_flip=array_flip($results_contents);
-			    # Remove any resources no longer present.
-						for ($n=0;$n<$count_contents;$n++)
-							{
-							if (!isset($results_contents_flip[$current_contents[$n]])){ remove_resource_from_collection($current_contents[$n],$collection,true);}
-							}	
-    //$endTime = microtime(true);  
-    //$elapsed = $endTime - $startTime;
-    //echo "Smart Col process : $elapsed seconds";
-			
-					}
-				} 
-			}		
+				if ($smart_collections_async && isset($php_path) && file_exists($php_path . "/php")){
+	                exec($php_path . "/php " . dirname(__FILE__)."/../pages/ajax/update_smart_collection.php " . escapeshellarg($collection) . " " . "> /dev/null 2>&1 &");
+	            } else {
+	                include (dirname(__FILE__)."/../pages/ajax/update_smart_collection.php");
+	            }
+			}	
+		}	
 
 		return sql_query($sql_prefix . "select distinct c.date_added,c.comment,c.purchase_size,c.purchase_complete,r.hit_count score,length(c.comment) commentset, $select from resource r  join collection_resource c on r.ref=c.resource $colcustperm  where c.collection='" . $collection . "' and $colcustfilter group by r.ref order by $order_by" . $sql_suffix,false,$fetchrows);
 		}
