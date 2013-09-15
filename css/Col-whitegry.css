@@ -138,7 +138,8 @@ input[readonly] {color: #000000;}
 
 /* Mouseover effect on list views */
 .ListviewStyle tr:hover td {background-color: #ddd;} 
-.ListviewStyle tr.ListviewTitleStyle:hover td, .ListviewStyle tr.ListviewBoxedTitleStyle:hover td {background:none;background-color:#fff;} 
+.ListviewStyle tr.ListviewTitleStyle:hover td {background:none;background-color:#F3F3F3;} 
+.ListviewStyle tr.ListviewBoxedTitleStyle:hover td {background:none;background-color:#fff;} 
 
 /* single file upload progress bar */
 .meter-value {background-color: #BBBBBB;}
