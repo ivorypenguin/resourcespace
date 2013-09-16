@@ -354,19 +354,27 @@ elseif ($themes_category_split_pages && !$theme_direct_jump)
 		for ($n=0;$n<count($headers);$n++)
 			{
 			$link=$baseurl_short."pages/themes.php?theme1=" . urlencode((!isset($themes[0]))? $headers[$n]:$themes[0]);
-		    $headerlink=$link;	
-		    $use_expand=false;
+		    $linklang=$lang['action-select'];
+		    
+		    $headerlink=$link;
 		    
 			if ($themes_single_collection_shortcut){
-				$use_expand=false;
+				// go ahead and get the collections for this theme header
 				$getthemes=get_themes(array_merge($themes,array($headers[$n])));
 
-				// if there is only one collection, make the title link a direct jump to the collection
+				// if there is only one collection, make the header link directly to the collection
 				if (count($getthemes)==1){$headerlink=$baseurl_short."pages/search.php?search=!collection".$getthemes[0]['ref']."&bc_from=themes";}
 
-				// check if there are any subthemes, and if not, make the >Select tool a direct jump as well. Otherwise, let it drill down
+				// check if there are any subthemes under this header, and if not, make the >Select tool a direct jump as well. 
+				// Otherwise, use the Expand lang.
 				$headercheck=get_theme_headers(array_merge($themes,array($headers[$n])));
-				if (count($headercheck)==0){$link=$headerlink;}else {$use_expand=true;}
+				if (count($headercheck)==0)
+					{
+					// no headers on the next level,
+					} else {
+					// there are further headers, use Expand instead of Select
+					$linklang=$lang['action-expand'];
+				}
 			}
 
 
@@ -382,8 +390,8 @@ elseif ($themes_category_split_pages && !$theme_direct_jump)
 			}?>
 			<tr>
 			<td><div class="ListTitle"><a href="<?php echo $headerlink ?>" onClick="return CentralSpaceLoad(this,true);"><?php echo htmlspecialchars(i18n_get_translated(str_replace("*","",$headers[$n])))?></a></div></td>
-			<td><div class="ListTools"><a href="<?php echo $link ?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php if (!$use_expand){echo $lang["action-select"];} else {echo $lang['action-expand'];}?></a><?php
-			 if (checkperm("h") && $enable_theme_category_sharing) {?>&nbsp;&nbsp;<a href="<?php echo $sharelink ?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["share"]?></a><?php }
+			<td><div class="ListTools"><?php hook('addthemeheadertool')?><?php if (!hook("replacethemeselectlink")){?><a href="<?php echo $link ?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $linklang;?></a><?php } 
+			if (checkperm("h") && $enable_theme_category_sharing) {?>&nbsp;&nbsp;<a href="<?php echo $sharelink ?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["share"]?></a><?php }
 			if ($enable_theme_category_edit && checkperm("t")) {?>&nbsp;&nbsp;<a href="<?php echo $editlink ?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["action-edit"]?></a><?php }
 			?>
 			</div></td>
