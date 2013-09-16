@@ -13,7 +13,7 @@ if (RUNNING_ASYNC){
 
 	if (empty($_SERVER['argv'][1])) {exit();}
 	$collection=$_SERVER['argv'][1];
-
+	
 	$smartsearch_ref=sql_value("select savedsearch value from collection where ref='$collection'","");
 }
 
@@ -25,9 +25,9 @@ if (isset($smartsearch[0]['search'])){
 	# Option to limit results;
 	$result_limit=$smartsearch["result_limit"]; if ($result_limit=="" || $result_limit==0) {$result_limit=-1;}
 	 	
-	
+	$startTime = microtime(true);	
 	$results=do_search($smartsearch['search'], $smartsearch['restypes'], "relevance", $smartsearch['archive'],$result_limit,"desc",true,$smartsearch['starsearch']);
-	$startTime = microtime(true); 
+	//$startTime = microtime(true); 
 	# results is a list of the current search without any restrictions
 	# we need to compare against the current collection contents to minimize inserts and deletions
 	$current_contents=sql_array("select resource value from collection_resource where collection='$collection'");
@@ -53,7 +53,7 @@ if (isset($smartsearch[0]['search'])){
 	$count_results=count($results_contents_add);
 	if ($count_results>0)	{
 		# Add any new resources
-		//echo "Adding $count_results resources to collection...";
+		debug( "smart_collections_async : Adding $count_results resources to collection...");
 		for ($n=0;$n<$count_results;$n++){
 			add_resource_to_collection($results_contents_add[$n],$collection,true);}
 		}
@@ -62,12 +62,14 @@ if (isset($smartsearch[0]['search'])){
 		if ($count_contents>0)	{	
 		
 		# Remove any resources no longer present.
-		//echo "Removing $count_contents resources...";	
+		debug( "smart_collections_async : Removing $count_contents resources...");	
 		for ($n=0;$n<$count_contents;$n++){				
 			remove_resource_from_collection($current_contents_remove[$n],$collection,true);}
 		}	
 		$endTime = microtime(true);  
 		$elapsed = $endTime - $startTime;
-		//echo "Smart Col process : $elapsed seconds";
+		if (RUNNING_ASYNC){
+			debug ("smart_collections_async : $elapsed seconds for ".$smartsearch['search']);
+		}
 
 }		
