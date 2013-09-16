@@ -539,6 +539,8 @@ else
 	echo ' '.sprintf($lang['plupload-maxfilesize'], $sizeText);
 	}
 
+hook("additionaluploadtext");
+
 if ($allowed_extensions!=""){
     $allowed_extensions=str_replace(", ",",",$allowed_extensions);
     $list=explode(",",trim($allowed_extensions));
