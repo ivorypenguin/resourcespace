@@ -358,4 +358,14 @@ function php_is_64bit() {
 
 }
 
-?>
+
+// install phpmailer templates that can't be installed by dbstruct
+if ($use_phpmailer){
+	// install template manually to support phpmailer if necessary
+	$check=sql_value("select ref value from site_text where page='all' and name='comments_flag_notification_email_body'","");
+	if ($check==""){
+		global $defaultlanguage;
+		sql_query("insert into site_text (page,name,text,language) values ('all','comments_flag_notification_email_body','[img_gfx/whitegry/titles/title.gif] <br />[lang_comments_flag-has-been-flagged]<br /><br />\"[comment]\"<br />[url]<br /><br />[lang_comments_flag-email-flagged-by] [username]<br />[lang_comments_flag-email-flagged-reason]: [reason]<br /><br />[text_emailfooter]','$defaultlanguage')");
+	}	
+
+}
