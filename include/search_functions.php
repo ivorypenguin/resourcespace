@@ -838,7 +838,7 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 		}	
         
 		$result=sql_query($sql_prefix . "select distinct c.date_added,c.comment,c.purchase_size,c.purchase_complete,r.hit_count score,length(c.comment) commentset, $select from resource r  join collection_resource c on r.ref=c.resource $colcustperm  where c.collection='" . $collection . "' and $colcustfilter group by r.ref order by $order_by" . $sql_suffix,false,$fetchrows);
-		 hook("beforereturnresults","",array($result)); 
+		 hook("beforereturnresults","",array($result, $archive)); 
     	
 		return $result;
 		}
@@ -1054,7 +1054,7 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 	debug("Search found " . count($result) . " results");
 	if (count($result)>0) 
 	    {
-        hook("beforereturnresults","",array($result));   
+        hook("beforereturnresults","",array($result, $archive));   
 	    return $result;
 	    }
 	
