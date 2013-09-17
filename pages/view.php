@@ -39,7 +39,7 @@ if ($go!="")
 	$origref=$ref; # Store the reference of the resource before we move, in case we need to revert this.
 	
 	# Re-run the search and locate the next and previous records.
-	$result=do_search($search,$restypes,$order_by,$archive,-1,$sort,false,$starsearch);
+	$result=do_search($search,$restypes,$order_by,$archive,-1,$sort,false,$starsearch,false,false,"", getvalescaped("go",""));
 	if (is_array($result))
 		{
 		# Locate this resource
@@ -193,7 +193,7 @@ if (isset($_GET["search"]) && !($config_search_for_number && is_numeric($usearch
 if (!hook("viewallresults")) {
 ?>
 |
-<a class="upLink" href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>&k=<?php echo urlencode($k)?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["viewallresults"]?></a>
+<a class="upLink" href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>&go=up&k=<?php echo urlencode($k)?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["viewallresults"]?></a>
 <?php } ?>
 |
 <a class="nextLink" href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo urlencode($ref)?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>&k=<?php echo urlencode($k)?>&go=next&<?php echo hook("nextpreviousextraurl") ?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["nextresult"]?>&nbsp;&gt;</a>

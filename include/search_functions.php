@@ -6,13 +6,20 @@
 
         
 if (!function_exists("do_search")) {
-function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchrows=-1,$sort="desc",$access_override=false,$starsearch=0,$ignore_filters=false,$return_disk_usage=false,$recent_search_daylimit="")
+function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchrows=-1,$sort="desc",$access_override=false,$starsearch=0,$ignore_filters=false,$return_disk_usage=false,$recent_search_daylimit="", $go=false)
 	{	
-	debug("altert search=$search restypes=$restypes archive=$archive daylimit=$recent_search_daylimit");
+	debug("search=$search $go $fetchrows restypes=$restypes archive=$archive daylimit=$recent_search_daylimit");
 	
 	# globals needed for hooks	 
-	global $sql,$order,$select,$sql_join,$sql_filter,$orig_order,$checkbox_and,$collections_omit_archived,$search_sql_double_pass_mode;
+	global $sql,$order,$select,$sql_join,$sql_filter,$orig_order,$checkbox_and,$collections_omit_archived,$search_sql_double_pass_mode, $usergroup;
 
+	$alternativeresults = hook("alternativeresults", "", array($go));
+	if ($alternativeresults) {return $alternativeresults; }
+	
+	$modifyfetchrows = hook("modifyfetchrows", "", array($fetchrows));
+	if ($modifyfetchrows) {$fetchrows=$modifyfetchrows; }
+	
+    
 	# Takes a search string $search, as provided by the user, and returns a results set
 	# of matching resources.
 	# If there are no matches, instead returns an array of suggested searches.
@@ -829,8 +836,11 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 	            }
 			}	
 		}	
-
-		return sql_query($sql_prefix . "select distinct c.date_added,c.comment,c.purchase_size,c.purchase_complete,r.hit_count score,length(c.comment) commentset, $select from resource r  join collection_resource c on r.ref=c.resource $colcustperm  where c.collection='" . $collection . "' and $colcustfilter group by r.ref order by $order_by" . $sql_suffix,false,$fetchrows);
+        
+		$result=sql_query($sql_prefix . "select distinct c.date_added,c.comment,c.purchase_size,c.purchase_complete,r.hit_count score,length(c.comment) commentset, $select from resource r  join collection_resource c on r.ref=c.resource $colcustperm  where c.collection='" . $collection . "' and $colcustfilter group by r.ref order by $order_by" . $sql_suffix,false,$fetchrows);
+		 hook("beforereturnresults","",array($result)); 
+    	
+		return $result;
 		}
 	
 	# View Related
@@ -1042,7 +1052,11 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 		}
 
 	debug("Search found " . count($result) . " results");
-	if (count($result)>0) {return $result;}
+	if (count($result)>0) 
+	    {
+        hook("beforereturnresults","",array($result));   
+	    return $result;
+	    }
 	
 	# (temp) - no suggestion for field-specific searching for now - TO DO: modify function below to support this
 	if (strpos($search,":")!==false) {return "";}

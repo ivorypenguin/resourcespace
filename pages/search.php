@@ -287,7 +287,7 @@ if (strpos($search,"!")!==false) {$restypes="";}
 $search=refine_searchstring($search);
 if (strpos($search,"!")===false) {setcookie("search",$search);}
 hook('searchaftersearchcookie');
-$result=do_search($search,$restypes,$order_by,$archive,$per_page+$offset,$sort,false,$starsearch,false,false,$daylimit);
+$result=do_search($search,$restypes,$order_by,$archive,$per_page+$offset,$sort,false,$starsearch,false,false,$daylimit, getvalescaped("go",""));
 if($k=="" && strpos($search,"!")===false && $archive==0){$collections=do_collections_search($search,$restypes);} // don't do this for external shares
 
 # Allow results to be processed by a plugin
