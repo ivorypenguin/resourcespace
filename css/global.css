@@ -26,7 +26,7 @@ a:hover {text-decoration:underline;}
 a:active {text-decoration:underline;}
 input[readonly] {border: none; background: none;}
 input,textarea {box-sizing: border-box;-moz-box-sizing: border-box;-webkit-box-sizing: border-box;}
-option {font-size:11px;}
+option {font-size:10px;}
 input.defaultbutton {position: absolute; left: -100%; width: 0; height: 0;}
 #clearbutton 
     {
@@ -337,11 +337,11 @@ behavior: url('../css/iepngfix.htc');
 .NewFlag {display:inline;font-size:9px;margin-left:5px;padding:1px 3px 1px 3px;}
 .Breadcrumbs {float:left;margin-top:4px;}
 
-.CategoryBox {border:1px solid black;background-color:#ffffff;overflow:auto;width:550px;height:80px;padding:2px;font-size:12px;color: black;font-weight: normal;}
-.MiniCategoryBox {border:1px solid black;background-color:#ffffff;overflow:auto;width:152px;height:80px;padding:2px;font-size:12px;color: black;font-weight: normal;}
-
-.CategoryTree {border-top:1px solid black;border-left:1px solid black;border-bottom:2px solid black;border-right:2px solid black;background-color:white;overflow:auto;width:550px;height:400px;display:none;color: black;font-weight: normal;}
-
+.CategoryBox {border:1px solid #999999;background-color:#ffffff;overflow:auto;width:360px;height:80px;padding:2px;font-size:12px;color: black;font-weight: normal;}
+.MiniCategoryBox {border:1px solid #999999;background-color:#ffffff;overflow:auto;width:152px;height:80px;padding:2px;font-size:12px;color: black;font-weight: normal;}
+ 
+.CategoryTree {border-top:1px solid #737373;border-left:1px solid #999999;border-bottom:1px solid #999999;border-right:1px solid #999999;background-color:white;overflow:auto;width:360px;height:400px;display:none;color: black;font-weight: normal;}
+ 
 
 .URLDisplay {width: 100%;font: 11px Tahoma, Arial, Helvetica, sans-serif;}
 
