@@ -923,6 +923,8 @@ function create_previews_using_im($ref,$thumbonly=false,$extension="jpg",$previe
 				# echo $runcommand."<br>\n";
 				# Add a watermarked image too?
 				global $watermark;
+				
+				if (!hook("replacewatermarkcreation","",array($ref,$ps,$n,$alternative))){
 				if ($alternative==-1 && isset($watermark) && ($ps[$n]["internal"]==1 || $ps[$n]["allow_preview"]==1))
 					{
 					$path=get_resource_path($ref,true,$ps[$n]["id"],false,"",-1,1,true);
@@ -937,6 +939,7 @@ function create_previews_using_im($ref,$thumbonly=false,$extension="jpg",$previe
 					
 					}
 				}
+				} // end hook replacewatermarkcreation
 			}
 		# For the thumbnail image, call extract_mean_colour() to save the colour/size information
 		$target=@imagecreatefromjpeg(get_resource_path($ref,true,"thm",false,"jpg",-1,1,false,"",$alternative));
