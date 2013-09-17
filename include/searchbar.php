@@ -612,7 +612,7 @@ if (!$basic_simple_search)
 	<div class="PanelShadow"></div>
 <?php } ?>	
 	
-	<?php if (isset($anonymous_login) && (isset($username)) && ($username==$anonymous_login))
+	<?php if ($show_anonymous_login_panel && isset($anonymous_login) && (isset($username)) && ($username==$anonymous_login))
 	{
 	# For anonymous access, display the login panel
 	?>

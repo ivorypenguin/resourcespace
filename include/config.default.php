@@ -1418,7 +1418,6 @@ $themes_category_navigate_levels=false;
 # Drilling down is still possible via the >Expand tool, which replaces >Select when a deeper level exists
 $themes_single_collection_shortcut=false;
 
-
 # optional columns in themes collection lists
 $themes_column_sorting=false; // only works with themes_category_split_pages
 $themes_date_column=false;
@@ -2186,6 +2185,12 @@ $comments_max_characters=200;					# maximum number of characters for a comment
 $comments_email_notification_address="";		# email address to use for flagged comment notifications
 $comments_show_anonymous_email_address=false;	# by default keep anonymous commenter's email address private
 $comments_policy_external_url="";				# if specified, will popup a new window fulfilled by URL (when clicking on "comment policy" link)
+
+# show the login panel for anonymous users
+$show_anonymous_login_panel=true;
+
+# force single branch selection in category tree selection 
+$cat_tree_singlebranch=false;
 
 $regex_email = "[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}";	# currently exclusively used for comments functionality - checking of valid (anonymous) email addresses entered in JS and in back-end PHP
 
