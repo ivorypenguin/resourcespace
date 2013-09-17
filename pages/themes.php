@@ -346,7 +346,7 @@ elseif ($themes_category_split_pages && !$theme_direct_jump)
 		<table  id="themeheaders" border="0" cellspacing="0" cellpadding="0" class="ListviewStyle">
 		<tr class="ListviewBoxedTitleStyle">
 		<td><?php echo $lang["name"]?></td>
-		<td><div class="ListTools"><?php echo $lang["tools"]?></div></td>
+		<td><div class="ListTools"><?php if (!hook("replacethemetoolsheader")){?><?php echo $lang["tools"]?><?php } ?></div></td>
 		</tr>
 		<?php
 
