@@ -2,7 +2,7 @@
 
 function comments_submit() 
 	{		
-	global $applicationname,$use_phpmailer,$username, $anonymous_login, $userref, $regex_email, $comments_max_characters, $lang, $email_notify, $comments_email_notification_address;
+	global $username, $anonymous_login, $userref, $regex_email, $comments_max_characters, $lang, $email_notify, $comments_email_notification_address;
 	
 	if ($username == $anonymous_login && (getvalescaped("fullname","") == "" || preg_match ("/${regex_email}/", getvalescaped("email","")) === false)) return;
 	
@@ -15,12 +15,12 @@ function comments_submit()
 	}
 	
 	$comment_flag_ref = getvalescaped("comment_flag_ref","");	
-
+	
 	// --- process flag request
 	
 	if ($comment_flag_ref != "") 
 		{		
-		$comment_flag_reason = htmlspecialchars(getval("comment_flag_reason",""));		
+		$comment_flag_reason = getvalescaped("comment_flag_reason","");		
 		$comment_flag_url = getvalescaped("comment_flag_url","");
 		
 		if ($comment_flag_reason == "" || $comment_flag_url == "") return;
@@ -37,9 +37,9 @@ function comments_submit()
 		
 		$email_subject = (text("comments_flag_notification_email_subject")!="") ?
 			text("comments_flag_notification_email_subject") : $lang['comments_flag-email-default-subject'];
-		$email_subject=str_replace("[applicationname]",$applicationname,$email_subject);
 			
-		$email_body =$lang['comments_flag-email-default-body'];
+		$email_body = (text("comments_flag_notification_email_body")!="") ?
+			text("comments_flag_notification_email_body") : $lang['comments_flag-email-default-body'];
 		
 		$email_body .=	"\r\n\r\n\"${comment_body}\"";
 		$email_body .= "\r\n\r\n${comment_flag_url}";		
@@ -55,19 +55,7 @@ function comments_submit()
 		setcookie("comment${comment_flag_ref}flagged", "true");				
 		$_POST["comment${comment_flag_ref}flagged"] = "true";		// we set this so that the subsequent getval() function will pick up this comment flagged in the show comments function (headers have already been sent before cookie set)
 		
-		if ($use_phpmailer){
-			$templatevars['url']=$comment_flag_url;
-			$templatevars['username']=$username;
-			$templatevars['comment']=$comment_body;
-			$templatevars['reason']=$comment_flag_reason;
-				send_mail ($email_to, $email_subject, $email_body,$username,"","comments_flag_notification_email_body",$templatevars);
-		} else {
-				send_mail ($email_to, $email_subject, $email_body);
-		}
-		
-		
-		
-		
+		send_mail ($email_to, $email_subject, $email_body);
 		return;
 	}
 	
