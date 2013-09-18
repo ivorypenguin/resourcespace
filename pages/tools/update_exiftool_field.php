@@ -53,7 +53,7 @@ foreach ($fieldrefs as $fieldref){
 	} else {
 		$rd=sql_query("select ref,file_extension from resource $join where resource_type=$field_resource_type $conditionand order by ref");
 	}	
-
+    $exiftool_tags=explode(",",$exiftool_tag);
 	for ($n=0;$n<count($rd);$n++)
 		{		
 		
@@ -63,27 +63,30 @@ foreach ($fieldrefs as $fieldref){
 		$image=get_resource_path($ref,true,"",false,$extension);
 		if (file_exists($image)) {
 		
+		
 		$resource=get_resource_data($ref);
-			
-		$command = $exiftool_fullpath . " -s -s -s -" . $exiftool_tag . " " . escapeshellarg($image);
-	
-		$value = iptc_return_utf8(trim(run_command($command)));
-	
-		$plugin="../../plugins/exiftool_filter_" . $name . ".php";
-		if ($exiftool_filter!=""){
-			eval($exiftool_filter);
-			}
-		if (file_exists($plugin)) {include $plugin;}
-	
-		if ($blanks=="true"){
-			update_field($ref,$fieldref,$value);
-			echo ("<br>Updated Resource $ref <br> -Exiftool found \"$value\" embedded in the -$exiftool_tag tag and applied it to ResourceSpace Field $fieldref<br><br>");
-			}
-		else {
-			if ($value!=""){
-				update_field($ref,$fieldref,$value);
-				echo ("<br>Updated Resource $ref <br> -Exiftool found \"$value\" embedded in the -$exiftool_tag tag and applied it to ResourceSpace Field $fieldref<br><br>");	
-			}
+		foreach ($exiftool_tags as  $exiftool_tag) 
+    		{	
+    		$command = $exiftool_fullpath . " -s -s -s -" . $exiftool_tag . " " . escapeshellarg($image);
+    	    echo $command;
+    		$value = iptc_return_utf8(trim(run_command($command)));
+    	
+    		$plugin="../../plugins/exiftool_filter_" . $name . ".php";
+    		if ($exiftool_filter!=""){
+    			eval($exiftool_filter);
+    			}
+    		if (file_exists($plugin)) {include $plugin;}
+    	
+    		if ($blanks=="true"){
+    			update_field($ref,$fieldref,$value);
+    			echo ("<br>Updated Resource $ref <br> -Exiftool found \"$value\" embedded in the -$exiftool_tag tag and applied it to ResourceSpace Field $fieldref<br><br>");
+    			}
+    		else {
+    			if ($value!=""){
+    				update_field($ref,$fieldref,$value);
+    				echo ("<br>Updated Resource $ref <br> -Exiftool found \"$value\" embedded in the -$exiftool_tag tag and applied it to ResourceSpace Field $fieldref<br><br>");	
+    			}
+    		}
 		}
 	}		
 }
