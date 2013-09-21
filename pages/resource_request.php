@@ -7,6 +7,7 @@ include "../include/collections_functions.php";
 
 $ref=getvalescaped("ref","",true);
 $error=false;
+hook("addcustomrequestfields");
 
 if (isset($anonymous_login) && $username == $anonymous_login){
 	$user_is_anon = true;
