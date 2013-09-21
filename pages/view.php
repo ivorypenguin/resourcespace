@@ -337,6 +337,7 @@ else
 <?php
 $table_headers_drawn=false;
 $nodownloads=false;$counter=0;$fulldownload=false;
+hook("additionalresourcetools");
 if ($resource["has_image"]==1 && $download_multisize)
 	{
 	# Restricted access? Show the request link.
