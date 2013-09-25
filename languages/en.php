@@ -1745,3 +1745,6 @@ $lang['comments_flag-email-flagged-reason']="Reason for flagging:";
 $lang['comments_hide-comment-text-link']="Remove Comment";
 $lang['comments_hide-comment-text-confirm']="Are you sure that you want to remove the text for this comment?";
 
+# testing updated request emails
+$lang["request_id"]="Request ID:";
+$lang["user_made_request"]="The following user has made a request:";

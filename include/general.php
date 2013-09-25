@@ -1451,7 +1451,7 @@ function bulk_mail($userlist,$subject,$text,$html=false)
     return "";
     }
 
-function send_mail($email,$subject,$message,$from="",$reply_to="",$html_template="",$templatevars=null,$from_name="",$cc="",$html=false)
+function send_mail($email,$subject,$message,$from="",$reply_to="",$html_template="",$templatevars=null,$from_name="",$cc="")
 	{
 	# Send a mail - but correctly encode the message/subject in quoted-printable UTF-8.
 	
@@ -1482,7 +1482,7 @@ function send_mail($email,$subject,$message,$from="",$reply_to="",$html_template
 	# Send a mail - but correctly encode the message/subject in quoted-printable UTF-8.
 	global $use_phpmailer;
 	if ($use_phpmailer){
-		send_mail_phpmailer($email,$subject,$message,$from,$reply_to,$html_template,$templatevars,$from_name,$cc,$html); 
+		send_mail_phpmailer($email,$subject,$message,$from,$reply_to,$html_template,$templatevars,$from_name,$cc); 
 		return true;
 		}
 	
@@ -1557,7 +1557,7 @@ function send_mail($email,$subject,$message,$from="",$reply_to="",$html_template
    	//$headers .= "Delivered-to: $email" . $eol;
    	$headers .= "MIME-Version: 1.0" . $eol;
    	$headers .= "X-Mailer: PHP Mail Function" . $eol;
-   	if (!$html)
+   	if (!is_html($message))
    		{
 		$headers .= "Content-Type: text/plain; charset=\"UTF-8\"" . $eol;
 		}
@@ -1570,7 +1570,7 @@ function send_mail($email,$subject,$message,$from="",$reply_to="",$html_template
 	}
 
 if (!function_exists("send_mail_phpmailer")){
-function send_mail_phpmailer($email,$subject,$message="",$from="",$reply_to="",$html_template="",$templatevars=null,$from_name="",$cc="",$html=false)
+function send_mail_phpmailer($email,$subject,$message="",$from="",$reply_to="",$html_template="",$templatevars=null,$from_name="",$cc="")
 	{
 	
 	# if ($use_phpmailer==true) this function is used instead.

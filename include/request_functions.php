@@ -134,10 +134,15 @@ function email_collection_request($ref,$details)
 	{
 	# Request mode 0
 	# E-mails a collection request (posted) to the team
-	global $applicationname,$email_from,$baseurl,$email_notify,$username,$useremail,$lang,$request_senduserupdates;
+	global $applicationname,$email_from,$baseurl,$email_notify,$username,$useremail,$lang,$request_senduserupdates,$userref;
 	
 	$message="";
-	if (isset($username) && trim($username)!="") {$message.=$lang["username"] . ": " . $username . "\n\n";}
+	#if (isset($username) && trim($username)!="") {$message.=$lang["username"] . ": " . $username . "\n";}
+	
+	$templatevars['url']=$baseurl."/?c=".$ref;
+	$collectiondata=get_collection($ref);
+	if (isset($collectiondata["name"])){
+	$templatevars["title"]=$collectiondata["name"];}
 	
 	# Create a copy of the collection which is the one sent to the team. This is so that the admin
 	# user can e-mail back an external URL to the collection if necessary, to 'unlock' full (open) access.
@@ -147,6 +152,12 @@ function email_collection_request($ref,$details)
 	$copied=create_collection(-1,$lang["requestcollection"]);
 	copy_collection($ref,$copied);
 	$ref=$copied;
+	
+	$templatevars["requesturl"]=$baseurl."/?c=".$ref;
+	
+	$templatevars['username']=$username . " (" . $useremail . ")";
+	$userdata=get_user($userref);
+	$templatevars["fullname"]=$userdata["fullname"];
 	
 	reset ($_POST);
 	foreach ($_POST as $key=>$value)
@@ -184,10 +195,13 @@ function email_collection_request($ref,$details)
 			}
 		}
 	
-	$userconfirmmessage = $lang["requestsenttext"];
+	$templatevars["requestreason"]=$message;
+	
+	$userconfirmmessage = $lang["requestsenttext"] . "\n\n$message" . $lang["viewcollection"] . ":\n$baseurl/?c=$ref";
+	$message=$lang["user_made_request"] . "\n\n" . $lang["username"] . ": " . $username . "\n$message";
 	$message.=$lang["viewcollection"] . ":\n$baseurl/?c=$ref";
-	send_mail($email_notify,$applicationname . ": " . $lang["requestcollection"] . " - $ref",$message,$useremail);
-	if ($request_senduserupdates){send_mail($useremail,$applicationname . ": " . $lang["requestsent"] . " - $ref",$userconfirmmessage,$email_from);}
+	send_mail($email_notify,$applicationname . ": " . $lang["requestcollection"] . " - $ref",$message,$useremail,$useremail,"emailcollectionrequest",$templatevars);
+	if ($request_senduserupdates){send_mail($useremail,$applicationname . ": " . $lang["requestsent"] . " - $ref",$userconfirmmessage,$email_from,$email_notify,"emailusercollectionrequest",$templatevars);}
 	
 	# Increment the request counter
 	sql_query("update resource set request_count=request_count+1 where ref='$ref'");
@@ -201,18 +215,49 @@ function managed_collection_request($ref,$details,$ref_is_resource=false)
 	# Managed via the administrative interface
 	
 	# An e-mail is still sent.
-	global $applicationname,$email_from,$baseurl,$email_notify,$username,$useremail,$userref,$lang,$request_senduserupdates;
+	global $applicationname,$email_from,$baseurl,$email_notify,$username,$useremail,$userref,$lang,$request_senduserupdates,$watermark,$filename_field,$view_title_field;
 
 	# Has a resource reference (instead of a collection reference) been passed?
 	# Manage requests only work with collections. Create a collection containing only this resource.
 	if ($ref_is_resource)
 		{
+		
+		$admin_mail_template="emailresourcerequest";
+		$user_mail_template="emailuserresourcerequest";
+		
+		$resourcedata=get_resource_data($ref);
+		$templatevars['thumbnail']=get_resource_path($ref,true,"thm",false,"jpg",$scramble=-1,$page=1,($watermark)?(($access==1)?true:false):false);
+		
+		if (!file_exists($templatevars['thumbnail'])){
+		$templatevars['thumbnail']="../gfx/".get_nopreview_icon($resourcedata["resource_type"],$resourcedata["file_extension"],false);
+		}
+		$templatevars['url']=$baseurl."/?r=".$ref;
+		if (isset($filename_field)){
+		$templatevars["filename"]=$lang["fieldtitle-original_filename"] . ": " . get_data_by_field($ref,$filename_field);}
+		if (isset($resourcedata["field" . $view_title_field])){
+		$templatevars["title"]=$resourcedata["field" . $view_title_field];}
+		
 		$c=create_collection($userref,$lang["request"] . " " . date("ymdHis"));
 		add_resource_to_collection($ref,$c);
 		$ref=$c; # Proceed as normal
 		}
+	else {
+	
+		$admin_mail_template="emailcollectionrequest";
+		$user_mail_template="emailusercollectionrequest";
+	
+		$collectiondata=get_collection($ref);
+		$templatevars['url']=$baseurl."/?c=".$ref;
+		if (isset($collectiondata["name"])){
+		$templatevars["title"]=$collectiondata["name"];}
+		}
 
 	# Fomulate e-mail text
+	$templatevars['username']=$username;
+	$templatevars["useremail"]=$useremail;
+	$userdata=get_user($userref);
+	$templatevars["fullname"]=$userdata["fullname"];
+	
 	$message="";
 	reset ($_POST);
 	foreach ($_POST as $key=>$value)
@@ -253,15 +298,17 @@ function managed_collection_request($ref,$details,$ref_is_resource=false)
 	# Create the request
 	sql_query("insert into request(user,collection,created,request_mode,status,comments) values ('$userref','$ref',now(),1,0,'" . escape_check($message) . "')");
 	$request=sql_insert_id();
-
+	$templatevars["request_id"]=$request;
+	$templatevars["requesturl"]=$baseurl."/?q=".$request;
+	$templatevars["requestreason"]=$message;
 	hook("afterrequestcreate", "", array($request));
 	
-	# Send the e-mail		
-	$userconfirmmessage = $lang["requestsenttext"];
-	$message=$lang["username"] . ": " . $username . "\n" . $message;
-	$message.=$lang["viewrequesturl"] . ":\n$baseurl/?q=$request";
-	send_mail($email_notify,$applicationname . ": " . $lang["requestcollection"] . " - $ref",$message,$useremail);
-	if ($request_senduserupdates){send_mail($useremail,$applicationname . ": " . $lang["requestsent"] . " - $ref",$userconfirmmessage,$email_from);}	
+	# Send the e-mail	
+	$userconfirmmessage = $lang["requestsenttext"] . "<br /><br />$message<br /><br />" . $lang["clicktoviewresource"] . "<br />$baseurl/?r=$ref";
+	$message=$lang["user_made_request"]. "<br /><br />" . $lang["username"] . ": " . $username . "<br />$message<br /><br />";
+	$message.=$lang["clicktoviewresource"] . "<br />$baseurl/?q=$request";
+	send_mail($email_notify,$applicationname . ": " . $lang["requestcollection"] . " - $ref",$message,$useremail,$useremail,$admin_mail_template,$templatevars);
+	if ($request_senduserupdates){send_mail($useremail,$applicationname . ": " . $lang["requestsent"] . " - $ref",$userconfirmmessage,$email_from,$email_notify,$user_mail_template,$templatevars);}	
 	
 	# Increment the request counter
 	sql_query("update resource set request_count=request_count+1 where ref='$ref'");
@@ -275,10 +322,25 @@ function email_resource_request($ref,$details)
 	# E-mails a basic resource request for a single resource (posted) to the team
 	# (not a managed request)
 	
-	global $applicationname,$email_from,$baseurl,$email_notify,$username,$useremail,$lang,$request_senduserupdates;
+	global $applicationname,$email_from,$baseurl,$email_notify,$username,$useremail,$userref,$lang,$request_senduserupdates,$watermark,$filename_field,$view_title_field;
+	
+	$resourcedata=get_resource_data($ref);
+	$templatevars['thumbnail']=get_resource_path($ref,true,"thm",false,"jpg",$scramble=-1,$page=1,($watermark)?(($access==1)?true:false):false);
+	if (!file_exists($templatevars['thumbnail'])){
+		$templatevars['thumbnail']="../gfx/".get_nopreview_icon($resourcedata["resource_type"],$resourcedata["file_extension"],false);
+	}
+
+	if (isset($filename_field)){
+	$templatevars["filename"]=$lang["fieldtitle-original_filename"] . ": " . get_data_by_field($ref,$filename_field);}
+	if (isset($resourcedata["field" . $view_title_field])){
+	$templatevars["title"]=$resourcedata["field" . $view_title_field];}
 	
 	$templatevars['username']=$username . " (" . $useremail . ")";
 	$templatevars['url']=$baseurl."/?r=".$ref;
+	$templatevars["requesturl"]=$templatevars['url'];
+	
+	$userdata=get_user($userref);
+	$templatevars["fullname"]=$userdata["fullname"];
 	
 	$htmlbreak="";
 	global $use_phpmailer;
@@ -322,12 +384,13 @@ function email_resource_request($ref,$details)
 			$c.=i18n_get_translated($custom[$n]) . ": " . getval("custom" . $n,"") . "\n\n";
 			}
 		}
+	$templatevars["requestreason"]=$lang["requestreason"] . ": " . $templatevars['details']. $c ."";
 	
-	$message=$lang["username"] . ": " . $username . " (" . $useremail . ")\n".$templatevars['list']."\n".$adddetails. $c . $lang["clicktoviewresource"] . "\n\n". $templatevars['url'];
+	$message=$lang["user_made_request"] . "<br /><br />" . $lang["username"] . ": " . $username . " (" . $useremail . ")<br />".$adddetails. $c . "<br /><br />" . $lang["clicktoviewresource"] . "<br />". $templatevars['url'];
 
-	$userconfirmmessage = $lang["requestsenttext"];
+	$userconfirmmessage = $lang["requestsenttext"] . "<br /><br />" . $lang["requestreason"] . ": " . $templatevars['details'] . $c . "<br /><br />" . $lang["clicktoviewresource"] . "\n$baseurl/?r=$ref";
 	send_mail($email_notify,$applicationname . ": " . $lang["requestresource"] . " - $ref",$message,$useremail,$useremail,"emailresourcerequest",$templatevars);
-	if ($request_senduserupdates){send_mail($useremail,$applicationname . ": " . $lang["requestsent"] . " - $ref",$userconfirmmessage,$email_from);}	
+	if ($request_senduserupdates){send_mail($useremail,$applicationname . ": " . $lang["requestsent"] . " - $ref",$userconfirmmessage,$email_from,$email_notify,"emailuserresourcerequest",$templatevars);}	
 	
 	# Increment the request counter
 	sql_query("update resource set request_count=request_count+1 where ref='$ref'");
