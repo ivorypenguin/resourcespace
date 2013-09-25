@@ -578,3 +578,15 @@ li.plupload_droptext
 .CommentFormBody {font-size: 8pt; width: 600px; height: 60px;}
 
 .collectionscompactstylespacer {height:25px;}
+
+.Terms
+    {
+    color:#000;
+    width: 70%;
+    max-height: 300px;
+    border: 1px solid #ccc;
+    background: #fff;
+    padding: 6px;
+    overflow: auto;
+    clear:none;
+    }

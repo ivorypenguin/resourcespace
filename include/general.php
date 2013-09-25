@@ -1737,7 +1737,7 @@ function send_mail_phpmailer($email,$subject,$message="",$from="",$reply_to="",$
 					}
 				}
 			$body=$template;	
-			}
+			} 
 		}		
 
 	if (!isset($body)){$body=$message;}
@@ -1811,7 +1811,7 @@ function send_mail_phpmailer($email,$subject,$message="",$from="",$reply_to="",$
 	}
 	$mail->CharSet = "utf-8"; 
 	
-	if ($html_template!="" || $html) {$mail->IsHTML(true);}  	
+	if (is_html($body)) {$mail->IsHTML(true);}  	
 	else {$mail->IsHTML(false);}
 	
 	$mail->Subject = $subject;
@@ -1828,7 +1828,7 @@ function send_mail_phpmailer($email,$subject,$message="",$from="",$reply_to="",$
 		foreach ($attachments as $attachment){
 		$mail->AddAttachment($attachment,basename($attachment));}
 	}	
-	if ($html_template!=""){
+	if (is_html($body)){
 		$h2t = new html2text($body); 
 		$text = $h2t->get_text(); 
 		$mail->AltBody = $text; 
@@ -3619,3 +3619,63 @@ function truncate_cache_arrays(){
     }
 }
 
+
+function txt2html($txt) {
+// Transforms txt in html
+// based on http://blog.matrixresources.com/blog/using-php-html-ize-plain-text
+  $txt = htmlentities($txt,ENT_COMPAT,"UTF-8");
+  // keep whitespacing
+  while( !( strpos($txt,'  ') === FALSE ) ) $txt = str_replace('  ','&nbsp; ',$txt);
+
+  //Basic formatting
+  $eol = ( strpos($txt,"\r") === FALSE ) ? "\n" : "\r\n";
+  $html = str_replace("$eol"," <br/> ",$txt);
+
+
+/* General rules for replacing images */ 
+$imgReplacement = 
+	"<img align=left width=180 src=../..$5$6$7$8 /><br/>";
+
+/* Rules per supported file type */ 
+$extArray = array (
+//	".html" => "<" . "a href=../..$5$6$7$8>$4$5$6$7$8"."</a>",
+//	".php" => "<" . "a href=../..$5$6$7$8>$4$5$6$7$8"."</a>",
+	".jpg" => $imgReplacement,
+	".png" => $imgReplacement,
+	".gif" => $imgReplacement,
+	"" => "<" . "a href=http://$4$5$6$7$8>$4$5$6$7$8"."</a>");
+/* $1 = http:
+ * $2 = http
+ * $3 = //www.eilertech.com
+ * $4 = www.eilertech.com
+ * $5 = /stories/powernaut/ 
+ * $6 = 1941
+ * $7 = .htm
+ * $8 = #1
+ * $9 = 1
+ * Excluded:  ?fn=britannia_beach.txt */ 
+ 
+// For each supported file type, up to and including Blank 
+foreach ($extArray as $ext => $replacement) {
+
+  // Define the search pattern here 
+  $pattern = 
+  "|((http):)(//([^/?# ]*))([^?# ,\.\)]*/)([^\.]*)?(" . $ext
+  //12       3  4          5               6        7  
+  . "[^# ,\)]*)(#([^ ,\.]*))?|i";
+  //           8 9  
+  
+  /* We have the pattern, the replacement, and the HTML being built;
+   * do the replacement. */ 
+  $html = preg_replace ($pattern, $replacement, $html);
+}
+
+$html=preg_replace('/\*(\w.*?)\*/','<b>$1</b>',$html);
+
+  return $html;
+}
+
+function is_html($string)
+{
+  return preg_match("/<[^<]+>/",$string,$m) != 0;
+}

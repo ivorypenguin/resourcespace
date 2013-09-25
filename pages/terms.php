@@ -34,7 +34,13 @@ include "../include/header.php";
   
  	<div class="Question">
 	<label><?php echo $lang["termsandconditions"]?></label>
-	<textarea readonly class="stdwidth" style="width:70%" rows=20 cols=50><?php echo text("terms")?></textarea>	
+	<div class="Terms"><?php 
+		$termstext=text("terms"); 
+		if (is_html($termstext)){
+			echo $termstext;
+		} else {
+			echo txt2html($termstext);
+	}?></div>
 	<div class="clearerleft"> </div>
 	</div>
 	
