@@ -628,10 +628,12 @@ if (!$basic_simple_search)
   <div class="SearchItem"><?php echo $lang["password"]?><br/><input type="password" name="password" id="name" class="SearchWidth" /></div>
   <div class="SearchItem"><input name="Submit" type="submit" value="&nbsp;&nbsp;<?php echo $lang["login"]?>&nbsp;&nbsp;" /></div>
   </form>
-    <p><br/><?php if ($allow_account_request) { ?><a href="<?php echo $baseurl_short?>pages/user_request.php">&gt; <?php echo $lang["nopassword"]?> </a></p><p><?php } ?>
-  <a href="<?php echo $baseurl_short?>pages/user_password.php">&gt; <?php echo $lang["forgottenpassword"]?></a></p>
+    <p><br/><?php
+	if ($allow_account_request) { ?><a href="<?php echo $baseurl_short?>pages/user_request.php">&gt; <?php echo $lang["nopassword"]?> </a></p><?php }
+	if ($allow_password_reset){?><p><a href="<?php echo $baseurl_short?>pages/user_password.php">&gt; <?php echo $lang["forgottenpassword"]?></a><?php }?>
+	</p>
 	</div>
-  
+ 
 	</div>
 	<div class="PanelShadow"></div>
 	<?php
