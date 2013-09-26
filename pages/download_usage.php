@@ -30,8 +30,8 @@ include "../include/header.php";
 <input type="hidden" name="size" value="<?php echo htmlspecialchars($size) ?>" />
 <input type="hidden" name="ext" value="<?php echo htmlspecialchars($ext) ?>" />
 <input type="hidden" name="alternative" value="<?php echo htmlspecialchars($alternative) ?>" />
+<input type="hidden" name="k" value="<?php echo htmlspecialchars($k) ?>" />
 <input type="hidden" name="save" value="true" />
-
 <h1><?php echo $lang["usage"]?></h1>
 <p><?php echo $lang["indicateusage"]?></p>
 
