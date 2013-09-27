@@ -76,7 +76,7 @@ All the collections in your list appear in the ‘My Collections’ panel at the
 
 You can choose whether you allow other users (public or users you have added to your private collection) to add and remove resources or simply view them for reference.",49,en,,,
 team_stats,introtext,"Charts are generated on demand based on live data. Tick the box to print all charts for your selected year.",50,en,,,
-resource_request,introtext,"The resource you requested is not available online. The resource information is automatically included in the email but you can add additional comments if you wish.",51,en,,,
+resource_request,introtext,"Your request is almost complete. Please include the reason for your request so we can respond efficiently.",51,en,,,
 team_batch,introtext,"",52,en,,,
 team_batch_upload,introtext,"",53,en,,,
 team_batch_select,introtext,"",54,en,,,
