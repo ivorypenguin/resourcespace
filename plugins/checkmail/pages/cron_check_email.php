@@ -12,7 +12,7 @@ include '../include/checkmail_functions.php';
 // required: check that this plugin is activated
 $activated=sql_value("select inst_version value from plugins where name='checkmail'","");
 if ($activated==""){die("checkmail plugin deactivated\r\n");}
-
+$process_locks_max_seconds=600;
 
 
 
@@ -43,7 +43,9 @@ if ($argc == 2)
 # This script checks one e-mail at a time.
 if (is_process_lock("checkmail")) {
 	if ($email_errors){
-		send_mail($email_errors_address,$applicationname."- Checkmail blocked by process lock","Your IMAP account will not be checked until you clear this. An error may have caused this. Run the process manually with the -c switch to clear the lock and check for any errors.",$email_from);
+		$time=trim(file_get_contents(get_temp_dir() . "/process_locks/checkmail"));
+		$time_remaining=$process_locks_max_seconds-(time()-$time);
+		send_mail($email_errors_address,$applicationname."- Checkmail blocked by process lock","Your IMAP account will not be checked until this is cleared (which automatically happens in ".(round($time_remaining/60))." minutes). An error may have caused this. Run the process manually with the -c switch to clear the lock and check for any errors.",$email_from);
 	}
 	exit("Process lock is in place. Deferring\r\n");
 }
@@ -67,7 +69,7 @@ $collection="";
 
 
 // get the first unseen message, one email is processed in this script
-$imap=imap_open("{".$checkmail_imap_server. "}INBOX", $checkmail_email, $checkmail_password ) or die("can't connect: " . imap_last_error() );
+$imap=imap_open("{".$checkmail_imap_server. "}INBOX", $checkmail_email, $checkmail_password ) or die("can't connect: " . imap_last_error());
 
 sql_query("delete from sysvars where name='last_checkmail'");
 sql_query("insert into sysvars (value,name) values (now(),'last_checkmail')");

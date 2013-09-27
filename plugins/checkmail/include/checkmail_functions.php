@@ -33,7 +33,7 @@ function skip_mail($imap,$current_message,$note,$mail=false){
 	}
 
 	if ($mail && $email_errors){
-		send_mail($email_errors_address,$applicationname."-".$lang["checkmail_mail_skipped"],$note,$email_from);
+		send_mail($email_errors_address,$applicationname." - ".$lang["checkmail_mail_skipped"],$note,$email_from);
 	}
 	
 	clear_process_lock("checkmail");
