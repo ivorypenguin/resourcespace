@@ -496,6 +496,9 @@ function config_gen_setup_post($page_def,$plugin_name)
             $omit = false;
             switch ($def[0])
                 {
+                case 'html':
+                    $omit = true;
+                    break;	
                 case 'section_header':
                     $omit = true;
                     break;
@@ -555,6 +558,9 @@ function config_gen_setup_html($page_def,$plugin_name,$upload_status,$plugin_pag
             case 'section_header':
                  config_section_header($def[1], $def[2]);
                  break;
+            case 'html':
+                 config_html($def[1]);
+                 break;     
             case 'text_input':
                 config_text_input($def[1], $def[2], $GLOBALS[$def[1]], $def[3], $def[4]);
                 break;
@@ -634,6 +640,17 @@ function config_section_header($title, $description)
     }
 
 /**
+ * Generate arbitrary html
+ *
+ * @param string $content arbitrary HTML 
+ */
+function config_html($content)
+    {
+	echo $content;
+    }
+
+
+/**
  * Return a data structure that will instruct the configuration page generator functions to add
  * a section header.
  *
@@ -644,6 +661,17 @@ function config_add_section_header($title, $description='')
     {
     return array('section_header',$title,$description);
     }
+    
+/**
+ * Return a data structure that will instruct the configuration page generator functions to add
+ * arbitrary HTML
+ *
+ * @param string $content
+ */
+function config_add_html($content)
+    {
+    return array('html',$content);
+    }    
 
  /**
  * Generate an html text entry or password block
