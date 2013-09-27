@@ -215,7 +215,7 @@ function managed_collection_request($ref,$details,$ref_is_resource=false)
 	# Managed via the administrative interface
 	
 	# An e-mail is still sent.
-	global $applicationname,$email_from,$baseurl,$email_notify,$username,$useremail,$userref,$lang,$request_senduserupdates,$watermark,$filename_field,$view_title_field;
+	global $applicationname,$email_from,$baseurl,$email_notify,$username,$useremail,$userref,$lang,$request_senduserupdates,$watermark,$filename_field,$view_title_field,$access;
 
 	# Has a resource reference (instead of a collection reference) been passed?
 	# Manage requests only work with collections. Create a collection containing only this resource.
@@ -322,7 +322,7 @@ function email_resource_request($ref,$details)
 	# E-mails a basic resource request for a single resource (posted) to the team
 	# (not a managed request)
 	
-	global $applicationname,$email_from,$baseurl,$email_notify,$username,$useremail,$userref,$lang,$request_senduserupdates,$watermark,$filename_field,$view_title_field;
+	global $applicationname,$email_from,$baseurl,$email_notify,$username,$useremail,$userref,$lang,$request_senduserupdates,$watermark,$filename_field,$view_title_field,$access;
 	
 	$resourcedata=get_resource_data($ref);
 	$templatevars['thumbnail']=get_resource_path($ref,true,"thm",false,"jpg",$scramble=-1,$page=1,($watermark)?(($access==1)?true:false):false);
