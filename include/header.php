@@ -245,7 +245,7 @@ if ($infobox)
 <?php endif; # !hook("customhtmlheader") ?>
 </head>
 
-<body <?php if (isset($bodyattribs)) { ?><?php echo $bodyattribs?><?php } if($infobox) {?> onmousemove="InfoBoxMM(event);"<?php } ?>>
+<body lang="<?php echo $language ?>" <?php if (isset($bodyattribs)) { ?><?php echo $bodyattribs?><?php } if($infobox) {?> onmousemove="InfoBoxMM(event);"<?php } ?>>
 
 <?php hook("bodystart"); ?>
 
