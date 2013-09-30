@@ -53,6 +53,10 @@ function rrmdir($dir) {
 	 echo "    would be removing $dir\n";
     } else {
 	 echo "    removing $dir\n";
+		if (file_exists($dir."/.DS_Store")){
+			echo "    unlinking ".$dir."/.DS_Store\n";
+			unlink($dir."/.DS_Store");
+		}
 	    rmdir($dir);
     }
 }
