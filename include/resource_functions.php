@@ -1530,12 +1530,13 @@ function save_alternative_file($resource,$ref)
 				}
 			
 			# Preview creation for alternative files (enabled via config)
-			global $alternative_file_previews;
+			global $alternative_file_previews,$lang;
 			if ($alternative_file_previews)
 				{
 				create_previews($resource,false,$extension,false,false,$ref);
-				}
-				
+				}			
+			# Log this
+			resource_log($resource,"b","",$ref . ": " . getvalescaped("name","") . ", " . getvalescaped("description","") . ", " . escape_check($filename));
 			}
 		}
 	# Save data back to the database.
