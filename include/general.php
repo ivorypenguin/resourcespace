@@ -1939,22 +1939,24 @@ function str_highlight($text, $needle, $options = null, $highlight = null)
     usort($needle, "sorthighlights");
 
     foreach ($needle as $needle_s) {
-        $needle_s = preg_quote($needle_s);
-        $needle_s = str_replace("#","\\#",$needle_s);
- 
-        // Escape needle with optional whole word check
-        if ($options & STR_HIGHLIGHT_WHOLEWD) {
-            $needle_s = '\b' . $needle_s . '\b';
-        }
- 
-        // Strip links
-        if ($options & STR_HIGHLIGHT_STRIPLINKS) {
-            $sl_regex = sprintf($sl_pattern, $needle_s);
-            $text = preg_replace($sl_regex, '\1', $text);
-        }
- 
-        $regex = sprintf($pattern, $needle_s);
-        $text = preg_replace($regex, $highlight, $text);
+    	if (strlen($needle_s) > 0) {
+	        $needle_s = preg_quote($needle_s);
+	        $needle_s = str_replace("#","\\#",$needle_s);
+	 
+	        // Escape needle with optional whole word check
+	        if ($options & STR_HIGHLIGHT_WHOLEWD) {
+	            $needle_s = '\b' . $needle_s . '\b';
+	        }
+	 
+	        // Strip links
+	        if ($options & STR_HIGHLIGHT_STRIPLINKS) {
+	            $sl_regex = sprintf($sl_pattern, $needle_s);
+	            $text = preg_replace($sl_regex, '\1', $text);
+	        }
+	 
+	        $regex = sprintf($pattern, $needle_s);
+	        $text = preg_replace($regex, $highlight, $text);
+	    }
     }
 	$text=str_replace(".{us}.","_",$text);
 	$text=str_replace(".{zw}.","#zwspace;",$text);
