@@ -242,7 +242,10 @@ function upload_file($ref,$no_exif=false,$revert=false,$autorotate=false)
 			sql_query("update resource set has_image=0 where ref='$ref'");
 			}
 		}
-		
+	
+	# Update file dimensions
+	get_original_imagesize($ref,$filepath,$extension);
+	
 	hook("Uploadfilesuccess", "", array( "resourceId" => $ref ) );
 	
 	# Update disk usage

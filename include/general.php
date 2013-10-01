@@ -595,52 +595,10 @@ function get_image_sizes($ref,$internal=false,$extension="jpg",$onlyifexists=tru
 			}
 		else
 			{
-			global $imagemagick_path;
-			$file=$path2;
-			$filesize=filesize_unlimited($file);
-			
-			# imagemagick_calculate_sizes is normally turned off 
-			if (isset($imagemagick_path) && $imagemagick_calculate_sizes)
-				{
-				# Use ImageMagick to calculate the size
-				
-				$prefix = '';
-				# Camera RAW images need prefix
-				if (preg_match('/^(dng|nef|x3f|cr2|crw|mrw|orf|raf|dcr)$/i', $extension, $rawext)) { $prefix = $rawext[0] .':'; }
-
-				# Locate imagemagick.
-                $identify_fullpath = get_utility_path("im-identify");
-                if ($identify_fullpath==false) {exit("Could not find ImageMagick 'identify' utility at location '$imagemagick_path'.");}	
-				# Get image's dimensions.
-                $identcommand = $identify_fullpath . ' -format %wx%h '. escapeshellarg($prefix . $file) .'[0]';
-				$identoutput=run_command($identcommand);
-				preg_match('/^([0-9]+)x([0-9]+)$/ims',$identoutput,$smatches);
-				@list(,$sw,$sh) = $smatches;
-				if (($sw!='') && ($sh!=''))
-				  {
-					sql_query("insert into resource_dimensions (resource, width, height, file_size) values('". $ref ."', '". $sw ."', '". $sh ."', '" . $filesize . "')");
-					}
-				}	
-			else 
-				{
-				# check if this is a raw file.	
-				$rawfile = false;
-				if (preg_match('/^(dng|nef|x3f|cr2|crw|mrw|orf|raf|dcr)$/i', $extension, $rawext)){$rawfile=true;}
-					
-				# Use GD to calculate the size
-				if (!((@list($sw,$sh) = @getimagesize($file))===false)&& !$rawfile)
-				 	{		
-					sql_query("insert into resource_dimensions (resource, width, height, file_size) values('". $ref ."', '". $sw ."', '". $sh ."', '" . $filesize . "')");
-					}
-				else
-					{
-					# Size cannot be calculated.
-					$sw="?";$sh="?";
-					
-					# Insert a dummy row to prevent recalculation on every view.
-					sql_query("insert into resource_dimensions (resource, width, height, file_size) values('". $ref ."','0', '0', '" . $filesize . "')");
-					}
-				}
+			$fileinfo=get_original_imagesize($ref,$path2,$extension);
+			$filesize = $fileinfo[0];
+			$sw = $fileinfo[1];
+			$sh = $fileinfo[2];
 			}
 		if (!is_numeric($filesize)) {$returnline["filesize"]="?";$returnline["filedown"]="?";}
 		else {$returnline["filedown"]=ceil($filesize/50000) . " seconds @ broadband";$returnline["filesize"]=formatfilesize($filesize);}
