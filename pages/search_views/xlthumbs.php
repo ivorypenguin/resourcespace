@@ -4,7 +4,7 @@
 <div class="ResourcePanelShellLarge" id="ResourceShell<?php echo htmlspecialchars($ref)?>">
 	<div class="ResourcePanelLarge">
     <?php  if ($resource_type_icons) { ?>
-     <div class="ResourceTypeIcon IconResourceTypeLarge<?php echo $result[$n]["resource_type"];  ?>"></div>
+     <div class="ResourceTypeIcon IconResourceType<?php echo $result[$n]["resource_type"];  ?>"></div>
     <?php }  ?>
 <?php if (!hook("renderimagelargethumb")) {
 	$access=get_resource_access($result[$n]);

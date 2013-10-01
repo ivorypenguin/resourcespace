@@ -142,15 +142,11 @@ input.defaultbutton {position: absolute; left: -100%; width: 0; height: 0;}
 /*.ResourcePanelIcon {margin-right: 3px;margin-left: 5px;display: block;float: right;}
 .ResourcePanelIcon img {margin-left: 2px;border-style: none;}*/
 .ResourceAlign {width:162px;height:167px;text-align: center;vertical-align: middle;}
-.ResourceTypeIcon { height: 22px; }
-.IconResourceType1  {background: url(../gfx/interface/IcPhoto.png) no-repeat 140px 5px; }
-.IconResourceTypeLarge1  {background: url(../gfx/interface/IcPhoto.png) no-repeat 340px 5px;}
-.IconResourceType2  {background: url(../gfx/interface/IcDocument.png) no-repeat 140px 5px;}
-.IconResourceTypeLarge2  {background: url(../gfx/interface/IcDocument.png) no-repeat 340px 5px;}
-.IconResourceType3  {background: url(../gfx/interface/IcVideo.png) no-repeat 140px 5px;}
-.IconResourceTypeLarge3  {background: url(../gfx/interface/IcVideo.png) no-repeat 340px 5px;}
-.IconResourceType4  {background: url(../gfx/interface/IcAudio.png) no-repeat 140px 5px;}
-.IconResourceTypeLarge4  {background: url(../gfx/interface/IcAudio.png) no-repeat 340px 5px;}
+.ResourceTypeIcon { height: 16px;width:16px;float:right;margin-right:5px;margin-top:6px; }
+.IconResourceType1  {background: url(../gfx/interface/IcPhoto.png); }
+.IconResourceType2  {background: url(../gfx/interface/IcDocument.png);}
+.IconResourceType3  {background: url(../gfx/interface/IcVideo.png);}
+.IconResourceType4  {background: url(../gfx/interface/IcAudio.png);}
 .ResourcePanelShell a:link, .ResourcePanelShell a:visited {text-decoration:none;}
 .ResourcePanelShell a:hover, .ResourcePanelShell a:active {text-decoration:underline;}
 
