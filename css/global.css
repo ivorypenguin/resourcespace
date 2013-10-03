@@ -46,7 +46,7 @@ input.defaultbutton {position: absolute; left: -100%; width: 0; height: 0;}
 .Hidden {visibility: hidden;height: 0;width: 0;overflow: hidden;}
 .nowrap {white-space:nowrap;}
 .textcenter {text-align:center;}
-
+.breakall {word-break:break-all;}
 /*General layout*/
 #Header {margin:20px 25px;padding:0;text-align:left;}
 #TextHeader{font-size:25px;float:left;}

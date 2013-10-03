@@ -621,7 +621,7 @@ if ($alt_access)
 		<?php if(!hook("renderaltthumb")): ?>
 		<?php if ($alt_thm!="") { ?><a href="<?php echo $baseurl_short?>pages/preview.php?ref=<?php echo urlencode($ref)?>&alternative=<?php echo $altfiles[$n]["ref"]?>&k=<?php echo urlencode($k)?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>&<?php echo hook("previewextraurl") ?>"><img src="<?php echo $alt_thm?>" class="AltThumb"></a><?php } ?>
 		<?php endif; ?>
-		<h2><?php echo htmlspecialchars($altfiles[$n]["name"])?></h2>
+		<h2 class="breakall"><?php echo htmlspecialchars($altfiles[$n]["name"])?></h2>
 		<p><?php echo htmlspecialchars($altfiles[$n]["description"])?></p>
 		</td>
 		<td><?php echo formatfilesize($altfiles[$n]["file_size"])?></td>
