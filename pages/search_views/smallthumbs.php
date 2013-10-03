@@ -94,9 +94,11 @@
 		<?php if (!hook("replaceresourcetoolssmall")){?>
 
 		<!-- Preview icon -->
+		<?php if (!hook("replacefullscreenpreviewicon")){?>
 		<span class="IconPreview">
 		<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/preview.php?from=search&ref=<?php echo urlencode($ref)?>&ext=<?php echo $result[$n]["preview_extension"]?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>&k=<?php echo urlencode($k)?>"  title="<?php echo $lang["fullscreenpreview"]?>"><img src="<?php echo $baseurl_short?>gfx/interface/sp.gif" alt="<?php echo $lang["fullscreenpreview"]?>" width="22" height="12" /></a></span>
 		<?php $showkeypreview = true; ?>
+		<?php } /* end hook replacefullscreenpreviewicon */?>
 
 		<!-- Add to collection icon -->
 		<?php if (!checkperm("b") && $k=="") { ?>
