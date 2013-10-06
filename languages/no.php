@@ -490,7 +490,6 @@ $lang["passwordnotmatch"]="Passordene du oppga er ikke like";
 $lang["wrongpassword"]="Uriktig passord, vennligst prøv igjen";
 $lang["action-view"]="Vis";
 $lang["action-preview"]="Forhåndsvisning";
-$lang["action-viewmatchingresources"]="Vis lignende filer";
 $lang["action-expand"]="Utvid";
 $lang["action-select"]="Velg";
 $lang["action-download"]="Last ned";

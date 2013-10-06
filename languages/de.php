@@ -650,7 +650,6 @@ $lang["passwordnotmatch"]="Die eingebenen Passwörter stimmen nicht überein";
 $lang["wrongpassword"]="Passwort nicht korrekt, bitte versuchen Sie es erneut";
 $lang["action-view"]="Anzeigen";
 $lang["action-preview"]="Vorschau";
-$lang["action-viewmatchingresources"]="Passende Ressourcen anzeigen";
 $lang["action-expand"]="Ausklappen";
 $lang["action-select"]="Auswählen";
 $lang["action-download"]="Download";

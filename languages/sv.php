@@ -26,7 +26,7 @@
 # En första version av översättningen skapades av Henrik Frizén (förnamn.efternamn utan accenttecken i e-postboxen.Sveriges landskod) 20110124 för version 2295
 #
 # Senast uppdaterad av [Namn] [Datum] för version [svn-version], [kommentar]
-# Senast uppdaterad av Henrik Frizén 20131006 för version 4947
+# Senast uppdaterad av Henrik Frizén 20131006 för version 4949
 
 #
 #
@@ -677,7 +677,6 @@ $lang["passwordnotmatch"]="Det upprepade lösenordet matchar inte lösenordet";
 $lang["wrongpassword"]="Lösenordet är fel, försök igen";
 $lang["action-view"]="Visa";
 $lang["action-preview"]="Förhandsgranska";
-$lang["action-viewmatchingresources"]="Visa matchande material";
 $lang["action-expand"]="Expandera";
 $lang["action-select"]="Välj";
 $lang["action-download"]="Hämta";
@@ -1731,7 +1730,6 @@ $lang["untaggedresources"]="Material utan data i fältet ’%field’";
 $lang["secureyouradminaccount"]="Välkommen! Du måste nu byta det förinställda lösenordet för att säkra servern.";
 $lang["resources-all-types"]="Alla materialtyper";
 $lang["search-mode"]="Sök efter …";
-#$lang["global"]="Global";
 $lang["action-viewmatchingresults"]="Visa matchande resultat";
 $lang["nomatchingresults"]="Inga matchande resultat";
 $lang["matchingresults"]="matchande resultat"; # e.g. 17 matching results=======

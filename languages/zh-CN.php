@@ -411,7 +411,6 @@ $lang["passwordnotvalid"]="这不是一个有效的密码";
 $lang["passwordnotmatch"]="输入的密码不正确";
 $lang["wrongpassword"]="输入的密码不正确，请重新输入";
 $lang["action-view"]="查看";
-$lang["action-viewmatchingresources"]="查看匹配的资源";
 $lang["action-expand"]="扩展";
 $lang["action-select"]="选泽";
 $lang["action-download"]="下载";

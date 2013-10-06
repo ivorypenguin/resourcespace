@@ -651,7 +651,6 @@ $lang["passwordnotmatch"]="The entered passwords did not match";
 $lang["wrongpassword"]="Incorrect password, please try again";
 $lang["action-view"]="View";
 $lang["action-preview"]="Preview";
-$lang["action-viewmatchingresources"]="View matching resources";
 $lang["action-expand"]="Expand";
 $lang["action-select"]="Select";
 $lang["action-download"]="Download";
@@ -1705,7 +1704,6 @@ $lang["untaggedresources"]="Resources with no %field data";
 $lang["secureyouradminaccount"]="Welcome! To secure your server, you are required to change the default password now.";
 $lang["resources-all-types"]="Resources of all types";
 $lang["search-mode"]="Search for...";
-$lang["global"]="Global";
 $lang["action-viewmatchingresults"]="View matching results";
 $lang["nomatchingresults"]="No matching results";
 $lang["matchingresults"]="matching results"; # e.g. 17 matching results=======
