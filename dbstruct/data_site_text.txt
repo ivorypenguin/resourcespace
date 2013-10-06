@@ -505,7 +505,7 @@ help,introtext,"Få ut det mesta möjliga av ResourceSpace. Instruktionerna neda
 <p><a target=""_blank"" href=""http://www.montala.net/downloads/resourcespace-GettingStarted.pdf"">Hämta den engelska användarhandboken (pdf-fil)</a>
 
 <p><a target=""_blank"" href=""http://wiki.resourcespace.org/index.php/Main_Page"">Dokumentation på webben (engelskspråkig wiki)</a>",355,sv,,,0
-collection_email,introtext,"Dela snabbt och enkelt materialet i denna samling med andra. Ett e-postmeddelande innehållande en webblänk till materialet skapas och skickas automatiskt. Du kan även lägga till ett eget meddelande.",356,sv,,,0
+collection_email,introtext,"Dela snabbt och enkelt materialet i denna samling med andra. Ett e-postmeddelande innehållande en webblänk till samlingarna skapas och skickas automatiskt. Du kan även lägga till ett eget meddelande.",356,sv,,,0
 collection_edit,introtext,"Organisera och hantera dina material genom att dela upp dem i samlingar.
 
 <br>
@@ -542,7 +542,7 @@ team_resource,introtext,"Lägg till material ett och ett eller i grupp. Om du vi
 login,welcomelogin,"Välkommen till ResourceSpace",374,sv,,,0
 user_request,introtext,"Fyll i formuläret nedan om du vill ansöka om ett användarkonto.",375,sv,,,0
 research_request,introtext,"Researchteamet hjälper dig att finna de bästa materialen till dina projekt. Fyll i formuläret nedan så noggrant som möjligt så att vi kan ge dig ett relevant svar. <br><br>En medlem av teamet kommer att få i uppdrag att besvara din researchförfrågan. Vi kommer att hålla kontakt genom e-post under arbetets gång. När vi har slutfört arbetet kommer du att få ett e-postmeddelande med en webblänk till alla material vi rekommenderar.",376,sv,,,0
-resource_request,introtext,"Materialet du begärde finns inte tillgängligt. Information om materialet infogas automatiskt i e-postmeddelandet, och du kan även lägga till en egen kommentar om du vill.",377,sv,,,0
+resource_request,introtext,"Din begäran är nästan slutförd. Ange anledningen till din begäran så att vi kan besvara den snabbt och effektivt.",377,sv,,,0
 search_advanced,introtext,"<strong>Söktips</strong><br>Ett avsnitt som du lämnar tomt eller omarkerat medför att <i>allt</i> inkluderas i sökningen. Om du till exempel lämnar alla länders kryssrutor omarkerade, begränsas sökningen inte med avseende på land. Om du däremot sedan markerar kryssrutan ’Sverige’ ger sökningen endast material från just Sverige.",378,sv,,,0
 tag,introtext,"Hjälp till att förbättra framtida sökresultat genom att förse materialen med relevant metadata. Ange till exempel nyckelord som beskrivning av vad du ser på en bild: kanin, hus, boll, födelsedagstårta. Separera nyckelorden med kommatecken eller mellanslag. Ange fullständiga namn på alla personer som förekommer på ett fotografi. Ange platsen för ett fotografi om den är känd.",379,sv,,,0
 user_password,introtext,"Fyll i din e-postadress och ditt användarnamn så kommer ett nytt lösenord att skickas till dig.",380,sv,,,0
@@ -592,3 +592,4 @@ all,emailnotifyresourcesapproved,"[img_gfx/whitegry/titles/title.gif]<br>
 <a href=""[url]"">[url]</a><br><br>
 [text_footer]
 ",403,en,,,1
+collection_email,introtextthemeshare,"Dela snabbt och enkelt alla teman i denna temakategori med andra. Ett e-postmeddelande innehållande en webblänk till respektive tema skapas och skickas automatiskt. Du kan även lägga till ett eget meddelande.",404,sv,,,

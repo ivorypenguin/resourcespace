@@ -65,6 +65,7 @@ $lang["fieldtitle-file_size"]=$lang["filesize"]="File size";
 $lang["fieldtitle-category"]="Category";
 $lang["fieldtitle-subject"]="Subject";
 $lang["fieldtitle-author"]="Author";
+$lang["fieldtitle-owner"]="Owner";
 
 # Field types
 $lang["fieldtype-text_box_single_line"]="Text box (single line)";
@@ -144,6 +145,7 @@ $lang["property-hide_when_restricted"]="Hide when restricted";
 $lang["property-omit_when_copying"]="Omit when copying";
 $lang["property-sync_with_field"]="Sync with field";
 $lang["information-copy_field"]="<a href=field_copy.php?ref=%ref>Copy field</a>";
+$lang["property-display_condition"]="Display condition";
 $lang["information-display_condition"]="Display condition: this field will only display if the following conditions are met. Uses same format as group search filter i.e. shortname=value1|value2, shortnamea=validoptiona;shortnameb=validoptionb1|validoptionb2";
 
 $lang["property-query"]="Query";
@@ -1492,10 +1494,7 @@ $lang["enable_bottom_collection_bar"]="Enable bottom collection bar ('Lightbox')
 $lang["can_publish_collections_as_themes"]="Can publish collections as themes";
 $lang["can_see_all_theme_categories"]="Can see all theme categories";
 $lang["can_see_theme_category"]="Can see theme category";
-
 $lang["can_see_theme_sub_category"]="Can see theme subcategory";
-
-
 $lang["display_only_resources_within_accessible_themes"]="When searching, display only resources that exist within themes to which the user has access";
 $lang["can_access_team_centre"]="Can access the Team Centre area";
 $lang["can_manage_research_requests"]="Can manage research requests";
@@ -1698,7 +1697,6 @@ $lang["findcollectionthemes"]="Collections in themes";
 $lang["upload-options"]="Upload options";
 $lang["user-preferences"]="User preferences";
 $lang["allresources"]="All Resources";
-
 
 $lang["smart_collection_result_limit"]="Smart collection: result count limit";
 

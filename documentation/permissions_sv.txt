@@ -26,7 +26,8 @@ F*   NEKAS skrivåtkomst till alla fält.
 F-?  TILLÅTS skrivåtkomst till fältet med referensen ?. Används tillsammans med F* för att tillåta skrivåtkomst till enbart utvalda fält.
 T?   NEKAS åtkomst till material med materialtypnr ?. (Material av denna typ döljs också vid redigering och sökning.)
 T?_$ NEKAS åtkomst till material med materialtypnr ? OCH hämtnings-/förhandsgranskningsstorlek $, t.ex. T1_scr nekar åtkomst till hämtning av fotografier i skärmbildsstorlek. Använd ’T1_’ (det vill säga utan hämtnings-/förhandsgranskningsstorlek) för att neka åtkomst till materialens originalfiler.
-X?   TILLÅTS ENDAST åtkomst till material med materialtypnr ?.
+X?   BEGRÄNSAD åtkomst till material med materialtypnr ?.
+XU?  TILLÅTS INTE överföra material med materialtypnr ?.
 X?_$ TILLÅTS ENDAST åtkomst till material med materialtypnr ? OCH hämtnings-/förhandsgranskningsstorlek $, t.ex. X1_scr tillåter endast åtkomst till fotografier i skärmbildsstorlek.
 P?   TILLÅTS åtkomst till att redigera ett specifikt fält endast i överföringsformuläret. Tillåter användare att vid överföring förse materialet med information i ett fält som annars är dolt för dem.
 

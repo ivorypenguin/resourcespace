@@ -26,7 +26,7 @@
 # En första version av översättningen skapades av Henrik Frizén (förnamn.efternamn utan accenttecken i e-postboxen.Sveriges landskod) 20110124 för version 2295
 #
 # Senast uppdaterad av [Namn] [Datum] för version [svn-version], [kommentar]
-# Senast uppdaterad av Henrik Frizén 20130312 för version 4340
+# Senast uppdaterad av Henrik Frizén 20131006 för version 4947
 
 #
 #
@@ -91,6 +91,7 @@ $lang["fieldtitle-file_size"]=$lang["filesize"]="Filstorlek";
 $lang["fieldtitle-category"]="Kategori";
 $lang["fieldtitle-subject"]="Ämne";
 $lang["fieldtitle-author"]="Författare";
+$lang["fieldtitle-owner"]="Ägare";
 
 # Field types
 $lang["fieldtype-text_box_single_line"]="Textfält (enradigt)";
@@ -170,6 +171,8 @@ $lang["property-hide_when_restricted"]="Dölj för användare med begränsad åt
 $lang["property-omit_when_copying"]="Utelämna vid kopiering";
 $lang["property-sync_with_field"]="Synkronisera med fält";
 $lang["information-copy_field"]="<a href=field_copy.php?ref=%ref>Kopiera fält</a>";
+$lang["property-display_condition"]="Visningsvillkor";
+$lang["information-display_condition"]="Visningsvillkor: Det här fältet visas endast om angivna villkor är uppfyllda. Samma format som för sökfilter för grupper används, det vill säga shortname=value1|value2, shortnamea=validoptiona;shortnameb=validoptionb1|validoptionb2";
 
 $lang["property-query"]="Fråga";
 
@@ -391,6 +394,10 @@ $lang["selectcollection"]="Välj samling";
 $lang["total"]="Totalt";
 $lang["ownedbyyou"]="ägda av dig";
 $lang["edit_theme_category"]="Redigera temakategori";
+$lang["emailthemecollectionmessageexternal"]="har skickat samlingar med material från $applicationname till dig per e-post.";
+$lang["emailthememessage"]="har skickat ett urval av teman från $applicationname till dig per e-post. Dessa teman har lagts till i Mina samlingar.";
+$lang["clicklinkviewthemes"]="Klicka på länken nedan om du vill visa temana.";
+$lang["clicklinkviewcollections"]="Klicka på länkarna nedan om du vill visa samlingarna.";
 
 # Lightbox
 $lang["lightbox-image"] = "Bild";
@@ -430,6 +437,7 @@ $lang["properties"]="– typspecifika egenskaper";
 $lang["relatedresources"]="Relaterade material";
 $lang["relatedresources-filename_extension"]="Relaterade material – %extension"; # Use %EXTENSION, %extension or %Extension as a placeholder. The placeholder will be replaced with the filename extension, using the same case. E.g. "Related Resources - %EXTENSION" -> "Related Resources - JPG"
 $lang["relatedresources-id"]="Relaterade material – nr %id%"; # %id% will be replaced, e.g. Related Resources - ID57
+$lang["relatedresources-restype"]="Relaterade material – %RESTYPE";  # %RESTYPE will be replaced, e.g. Related Resources - Photo
 $lang["indexedsearchable"]="Indexerade, sökbara fält";
 $lang["clearform"]="Rensa formulär";
 $lang["similarresources"]="liknande material"; # e.g. 17 similar resources
@@ -442,7 +450,7 @@ $lang["action-viewmatchingresources"]="Visa matchande material";
 $lang["nomatchingresources"]="Inget matchande material";
 $lang["matchingresources"]="matchande material"; # e.g. 17 matching resources
 $lang["advancedsearch"]="Avancerad sökning";
-$lang["archiveonlysearch"]="Sökning begränsad till arkiverat material";
+$lang["archiveonlysearch"]="Arkiverat material";
 $lang["allfields"]="Alla fält";
 $lang["typespecific"]="Typspecifika";
 $lang["youfound"]="Du hittade"; # e.g. you found 17 resources
@@ -771,8 +779,12 @@ $lang["share"]="Dela";
 $lang["sharecollection"]="Dela samling";
 $lang["sharecollection-name"]="Dela samling – %collectionname"; # %collectionname will be replaced, e.g. Share Collection - Cars
 $lang["share_theme_category"]="Dela temakategori";
+$lang["share_theme_category_subcategories"]="Inkludera teman i subkategorier för externa användare?";
+$lang["email_theme_category"]="E-posta temakategori";
 $lang["generateurl"]="Generera webbadress";
+$lang["generateurls"]="Generera webbadresser";
 $lang["generateexternalurl"]="Generera extern webbadress";
+$lang["generateexternalurls"]="Generera externa webbadresser";
 $lang["generateurlinternal"]="Nedanstående webbadress fungerar bara för inloggade användare.";
 $lang["generateurlexternal"]="Nedanstående webbadress fungerar för alla och kräver inte inloggning.";
 $lang["generatethemeurlsexternal"]="Nedanstående webbadresser fungerar för alla och kräver inte inloggning.";
@@ -791,6 +803,7 @@ $lang["noexternalsharing"]="Ingen extern delning.";
 $lang["sharedcollectionaddwarning"]="Varning! Denna samling delas med externa användare. Det material som du har lagt till har därmed gjorts tillgängligt för dessa användare. Klicka på Dela samling om du vill hantera den externa åtkomsten för denna samling.";
 $lang["restrictedsharecollection"]="Delning är inte tillåten eftersom du har begränsad åtkomst till minst ett material i den här samlingen.";
 $lang["selectgenerateurlexternal"]="Om du vill skapa en extern webbadress som fungerar för användare utan användarkonto, anger du först den åtkomstnivå som du finner lämplig.";
+$lang["selectgenerateurlexternalthemecat"]="Om du vill skapa externa webbadresser som fungerar för användare utan användarkonto, anger du först den åtkomstnivå som du finner lämplig.";
 $lang["externalselectresourceaccess"]="Om du delar material med en användare utan användarkonto väljer du en åtkomstnivå som du finner lämplig";
 $lang["externalselectresourceexpires"]="Om du delar material med en användare utan användarkonto väljer du ett utgångsdatum för den genererade webbadressen";
 $lang["externalshareexpired"]="Delningens utgångsdatum har passerats och därför är delningen inte längre tillgänglig.";
@@ -800,7 +813,7 @@ $lang["notapprovedresources"]="Följande material är inte aktiva och kan därf�
 
 
 # New for 1.3
-$lang["savesearchitemstocollection"]="Lägg till hittade poster i aktuell samling";
+$lang["savesearchitemstocollection"]="Lägg till sökresultatet i aktuell samling";
 $lang["removeallresourcesfromcollection"]="Om du vill avlägsna alla material från denna samling markerar du kryssrutan och klickar på <b>Spara</b>";
 $lang["deleteallresourcesfromcollection"]="Om du vill ta bort själva materialen som ingår i denna samling markerar du kryssrutan och klickar på <b>Spara</b>";
 $lang["deleteallsure"]="Vill du ta bort de här materialen? Om du väljer att fortsätta tas själva materialen bort, de  avlägsnas inte bara från denna samling.";
@@ -810,7 +823,7 @@ $lang["recent"]="Nyaste";
 $lang["n_recent"]="%qty nyaste";
 $lang["batchcopyfrom"]="Kopiera metadata från material med nummer";
 $lang["copy"]="Kopiera";
-$lang["zipall"]="Zippa alla";
+$lang["zipall"]="Hämta samling";
 $lang["downloadzip"]="Hämta samlingen som ett arkiv";
 $lang["downloadsize"]="Hämtningsstorlek";
 $lang["tagging"]="Taggning";
@@ -952,6 +965,7 @@ $lang["userrequestnotification1"]="Användarformuläret har fyllts i med följan
 $lang["userrequestnotification2"]="Om du godtar denna ansökan, kan du gå till webbadressen nedan och skapa ett användarkonto för denna användaren.";
 $lang["ipaddress"]="Ip-adress";
 $lang["userresourcessubmitted"]="Följande användarbidrag har lagts fram för granskning:";
+$lang["userresourcesapproved"]="Dina inskickade material har godkänts:";
 $lang["userresourcesunsubmitted"]="Följande användarbidrag har dragits tillbaka och kräver inte längre granskning:";
 $lang["viewalluserpending"]="Visa alla användarbidrag som väntar på granskning:";
 
@@ -1094,8 +1108,6 @@ $lang["idecline"]="Jag accepterar inte"; # For terms and conditions
 $lang["mycollection_notpublic"]="Samlingen ’Min samling’ kan inte göras till en gemensam samling eller ett tema. Skapa en ny samling för dessa ändamål.";
 
 $lang["resourcemetadata"]="Metadata för material";
-
-
 $lang["columnheader-expires"]=$lang["expires"]="Utgår";
 $lang["expires-date"]="Utgår: %date%"; # %date will be replaced, e.g. Expires: Never
 $lang["never"]="Aldrig";
@@ -1171,6 +1183,7 @@ $lang["no_exif"]="Extrahera inte exif-, IPTC- eller xmp-metadata vid denna över
 $lang["difference"]="Skillnad";
 $lang["viewdeletedresources"]="Visa borttagna material";
 $lang["finaldeletion"]="Detta material är redan markerat som borttaget. Om du fortsätter tas material bort permanent.";
+$lang["diskerror"]="Lagringskvoten överskriden";
 
 $lang["nocookies"]="En kaka kunde inte sparas korrekt. Kontrollera att webbläsaren tillåter kakor.";
 
@@ -1206,6 +1219,7 @@ $lang['plugins-upload-title'] = 'Överför inställningar från fil';
 $lang['plugins-upload'] = 'Överför inställningar';
 $lang['plugins-getrsc'] = 'Fil att använda:';
 $lang['plugins-saveconfig'] = 'Spara inställningar';
+$lang['plugins-saveandexit'] = 'Spara och avsluta';
 $lang['plugins-didnotwork'] = 'Ett problem uppstod. Välj en giltig rsc-fil för det här tillägget och klicka på <b>Överför&nbsp;inställningar</b>.';
 $lang['plugins-goodrsc'] = 'Inställningarna överförda. Klicka på <b>Spara&nbsp;inställningar</b> om du vill spara inställningarna.';
 $lang['plugins-badrsc'] = 'Detta var inte en giltig rsc-fil.';
@@ -1289,6 +1303,8 @@ $lang["uploadertryplupload"]="<strong>NY!</strong> – Prova nya överföraren."
 $lang["getjava"]="Besök Javas webbplats om du vill säkerställa att du har den senaste Java-versionen installerad";
 
 $lang["all"]="Alla";
+$lang["allresourcessearchbar"]="Alla material";
+$lang["allcollectionssearchbar"]="Alla samlingar";
 $lang["backtoresults"]="Tillbaka: Sökresultat";
 
 $lang["preview_all"]="Förhandsgranska alla";
@@ -1491,17 +1507,20 @@ $lang["can_see_field"]="Kan se fältet";
 $lang["can_edit_all_fields"]="Kan redigera alla fält<br>(för redigeringsbara material)";
 $lang["can_edit_field"]="Kan redigera fältet";
 $lang["can_see_resource_type"]="Kan se material av typen";
-$lang["restricted_access_only_to_resource_type"]="Tillåts åtkomst endast till material av typen";
+$lang["restricted_access_only_to_resource_type"]="Begränsad åtkomst till material av typen";
+$lang["restricted_upload_for_resource_of_type"]="Tillåts inte överföra material av typen";
 $lang["edit_access_to_workflow_state"]="Kan redigera material med statusen";
 $lang["can_create_resources_and_upload_files-admins"]="Kan skapa material och överföra filer<br>(administratörer; materialen får statusen ’Aktivt’)";
 $lang["can_create_resources_and_upload_files-general_users"]="Kan skapa material och överföra filer<br>(vanliga användare; materialen får statusen ’Väntande på granskning’";
 $lang["can_delete_resources"]="Kan ta bort material<br>(till vilka användaren har skrivrättighet)";
 $lang["can_manage_archive_resources"]="Kan hantera arkivmaterial";
+$lang["can_manage_alternative_files"]="Kan hantera alternativa filer";
 $lang["can_tag_resources_using_speed_tagging"]="Kan tagga material med Snabbtaggning<br>(måste vara aktiverat i ’config.php’)";
 $lang["enable_bottom_collection_bar"]="Aktivera panelen <b>Mina&nbsp;samlingar</b> i nederkant av skärmen";
 $lang["can_publish_collections_as_themes"]="Kan publicera samlingar som teman";
 $lang["can_see_all_theme_categories"]="Kan se alla temakategorier";
 $lang["can_see_theme_category"]="Kan se temakategori";
+$lang["can_see_theme_sub_category"]="Kan se underkategori till tema";
 $lang["display_only_resources_within_accessible_themes"]="Kan endast söka efter material som hör till teman som användaren har åtkomst till";
 $lang["can_access_team_centre"]="Kan nå sidan Administration";
 $lang["can_manage_research_requests"]="Kan hantera researchförfrågningar";
@@ -1572,6 +1591,7 @@ $lang["emptycollectionareyousure"]="Vill du avlägsna alla material från den h�
 
 $lang["error-cannoteditemptycollection"]="Du kan inte redigera en tom samling.";
 $lang["error-permissiondenied"]="Tillåtelse nekades.";
+$lang["error-permissions-login"]="Du måste logga in för att se sidan.";
 $lang["error-oldphp"] = "Kräver php-version %version eller senare."; # %version will be replaced with, e.g., "5.2"
 $lang["error-collectionnotfound"]="Samlingen hittades inte.";
 
@@ -1588,6 +1608,7 @@ $lang["intro-plupload"] = "Klicka på <b>Lägg till filer</b> för att välja en
 $lang["intro-plupload_dragdrop"] = "Dra och släpp eller klicka på <b>Lägg till filer</b> för att välja en eller flera filer och klicka sedan på <b>Starta överföring</b>.";
 $lang["intro-plupload_upload-replace_resource"] = "Klicka på <b>Lägg till filer</b> för att välja en fil och klicka sedan på <b>Starta överföring</b>.";
 $lang["intro-batch_edit"] = "Ange förvalda inställningar för överföring och förvald metadata för materialen du kommer att överföra.";
+$lang["plupload-maxfilesize"] = "Den största tillåtna filstorleken vid överföringar är %s.";
 $lang["pluploader_warning"]="Webbläsaren kanske inte stöder överföring av mycket stora filer. Om problem uppstår kan du uppgradera webbläsaren eller använda länkarna nedan.";
 $lang["getsilverlight"]="Besök webbplatsen för Microsoft Silverlight om du vill säkerställa att du har den senaste versionen av Silverlight installerad.";
 $lang["getbrowserplus"]="Besök webbplatsen för Yahoo BrowserPlus om du vill säkerställa att du har den senaste versionen av BrowserPlus installerad.";
@@ -1630,7 +1651,6 @@ $lang["createnewentryfor"]="Skapa nytt nyckelord: ";
 $lang["confirmcreatenewentryfor"]="Vill du skapa en ny post i nyckelordslistan för ’%%’?";
  
 $lang["editresourcepreviews"]="Redigera materialens förhandsgranskningar";
- 
 $lang["can_assign_resource_requests"]="Kan tilldela andra användare begäranden av material";
 $lang["can_be_assigned_resource_requests"]="Kan bli tilldelad begäranden av material (kan även se tilldelade begäranden på sidan Hantera begäranden/beställningar)";
  
@@ -1642,7 +1662,7 @@ $lang["requestassignedtoyou"]="Materialbegäran tilldelad dig";
 $lang["requestassignedtoyoumail"]="En materialbegäran har tilldelats dig. Klicka på länken nedan om du vill bifalla eller avslå den.";
  
 $lang["manageresources-overquota"]="Materialhantering inaktiverad – du har överskridit din diskutrymmestilldelning";
-$lang["searchitemsdiskusage"]="Beräkna diskutrymmet som används av resultatet";
+$lang["searchitemsdiskusage"]="Diskutrymme som används av resultatet";
 $lang["matchingresourceslabel"]="Matchande material";
  
 $lang["saving"]="Sparar …";
@@ -1702,3 +1722,53 @@ $lang["collectionnames"]="Samlingsnamn";
 $lang["findcollectionthemes"]="Samlingar i teman";
 $lang["upload-options"]="Överföringsinställningar";
 $lang["user-preferences"]="Användarinställningar";
+$lang["allresources"]="Alla material";
+
+$lang["smart_collection_result_limit"]="Smart samling – begränsning av antalet resultat";
+
+$lang["untaggedresources"]="Material utan data i fältet ’%field’";
+
+$lang["secureyouradminaccount"]="Välkommen! Du måste nu byta det förinställda lösenordet för att säkra servern.";
+$lang["resources-all-types"]="Alla materialtyper";
+$lang["search-mode"]="Sök efter …";
+#$lang["global"]="Global";
+$lang["action-viewmatchingresults"]="Visa matchande resultat";
+$lang["nomatchingresults"]="Inga matchande resultat";
+$lang["matchingresults"]="matchande resultat"; # e.g. 17 matching results=======
+$lang["resources"]="Material";
+$lang["share-resource"]="Dela material";
+$lang["scope"]="Omfång";
+$lang["downloadmetadata"]="Hämta metadata";
+$lang["downloadingmetadata"]="Hämta metadata";
+$lang["file-contains-metadata"]="Klicka på länken nedan om du vill hämta en textfil innehållande materialets metadata.";
+$lang["metadata"]="Metadata";
+$lang["textfile"]="Textfil";
+
+# Comments field titles, prompts and default placeholders
+$lang['comments_box-title']="Kommentarer";
+$lang['comments_box-policy']="Kommentarspolicy";
+$lang['comments_box-policy-placeholder']="Lägg till en text för sidan comments_policy i webbplatsens innehåll.";		# only shown if Admin User and no policy set
+$lang['comments_in-response-to']="som svar på";
+$lang['comments_respond-to-this-comment']="Svara";
+$lang['comments_in-response-to-on']="";
+$lang['comments_anonymous-user']="Anonym";
+$lang['comments_submit-button-label']="Skicka";
+$lang['comments_body-placeholder']="Lägg till en kommentar";
+$lang['comments_fullname-placeholder']="Ditt namn (obligatoriskt)";
+$lang['comments_email-placeholder']="Din e-postadress (obligatorisk)";
+$lang['comments_website-url-placeholder']="Webbplats";
+$lang['comments_flag-this-comment']="Flagga denna kommentar";
+$lang['comments_flag-has-been-flagged']="Denna kommentar har blivit flaggad";
+$lang['comments_flag-reason-placeholder']="Skäl till att flagga denna kommentar";
+$lang['comments_validation-fields-failed']="Du måste fylla i alla obligatoriska fält!";
+#$lang['comments_block_comment_label']="block comment";
+$lang['comments_flag-email-default-subject']="Avisering av flaggad kommentar";
+$lang['comments_flag-email-default-body']="Den här kommentaren har blivit flaggad:";
+$lang['comments_flag-email-flagged-by']="Flaggad av:";
+$lang['comments_flag-email-flagged-reason']="Skäl för flaggning:";
+$lang['comments_hide-comment-text-link']="Ta bort kommentar";
+$lang['comments_hide-comment-text-confirm']="Vill du ta bort texten för denna kommentar?";
+
+# testing updated request emails
+$lang["request_id"]="Begäransnr:";
+$lang["user_made_request"]="Följande användare har gjort en begäran:";
