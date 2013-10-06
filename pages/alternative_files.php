@@ -22,7 +22,7 @@ $sort=getval("sort",$default_sort);
 $resource=get_resource_data($ref);
 
 # Not allowed to edit this resource?
-if ((!checkperm("e" . $resource["archive"]) || checkperm('A')) && $ref>0) {exit ("Permission denied.");}
+if ((!get_edit_access($ref, $resource["archive"]) || checkperm('A')) && $ref>0) {exit ("Permission denied.");}
 
 hook("pageevaluation");
 

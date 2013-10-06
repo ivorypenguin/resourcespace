@@ -24,7 +24,7 @@ $resource=getvalescaped("resource","",true);
 $resourcedata=get_resource_data($resource);
 
 # Not allowed to edit this resource?
-if ((!checkperm("e" . $resourcedata["archive"]) || checkperm('A')) && $resource>0) {exit ("Permission denied.");}
+if ((!get_edit_access($resource, $resourcedata["archive"]) || checkperm('A')) && $resource>0) {exit ("Permission denied.");}
 
 hook("pageevaluation");
 
