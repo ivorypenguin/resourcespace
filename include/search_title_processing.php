@@ -154,7 +154,7 @@ if ($search_titles)
 		}
 		if ($ftitle==""){exit ("invalid !empty search");}
 		
-        $search_title = '<h1 class="searchcrumbs"><a href='.$baseurl_short.'pages/search.php?search=!empty'.$fref.$parameters_string.' onClick="return CentralSpaceLoad(this,true);">'.str_replace("%field",i18n_get_translated($ftitle),$lang["untaggedresources"]).'</a>'.$searchcrumbs.'</h1> ';
+        $search_title = '<h1 class="searchcrumbs"><a href='.$baseurl_short.'pages/search.php?search=!empty'.$fref.$parameters_string.' onClick="return CentralSpaceLoad(this,true);">'.str_replace("%field",lang_or_i18n_get_translated($ftitle, "fieldtitle-"),$lang["untaggedresources"]).'</a>'.$searchcrumbs.'</h1> ';
         }    
     elseif (substr($search,0,5)=="!last")
         {
