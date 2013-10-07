@@ -1150,7 +1150,7 @@ $auto_approve_accounts=false;
 $auto_approve_domains=array();
 
 # Display a larger preview image on the edit page?
-$edit_large_preview=false;
+$edit_large_preview=true;
 
 # Allow sorting by resource ID
 $order_by_resource_id=false;
