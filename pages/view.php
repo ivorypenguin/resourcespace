@@ -565,6 +565,8 @@ if (isset($flv_download) && $flv_download)
 	</tr>
 	<?php
 	}
+
+hook("additionalresourcetools2");
 	
 # Alternative files listing
 $alt_access=hook("altfilesaccess");
