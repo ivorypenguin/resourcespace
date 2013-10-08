@@ -248,14 +248,14 @@ input[readonly] {color: #E0E0E0;} /* Read-only form fields */
 
 
 /* Basic page ************************************************************** */
-.BasicsBox {color: #E0E0E0; background: none;} /* Texts */
-.BasicsBox h1 {color: #E0E0E0; background: none;} /* Page titles */
-.BasicsBox h2 {color: #E0E0E0; background: none;} /* Sub titles (not much used) */
-.BasicsBox p {color: #E0E0E0; background: none;} /* Introtexts */
-.BasicsBox p a:link {color: #F0F0F0; background: none;} /* Links inside p */
-.BasicsBox p a:visited {color: #F0F0F0; background: none;}
-.BasicsBox p a:hover {color: #FFFFFF; background: none;}
-.BasicsBox p a:active {color: #FFFFFF; background: none;}
+.BasicsBox {color: #E0E0E0;} /* Texts */
+.BasicsBox h1 {color: #E0E0E0;} /* Page titles */
+.BasicsBox h2 {color: #E0E0E0;} /* Sub titles (not much used) */
+.BasicsBox p {color: #E0E0E0;} /* Introtexts */
+.BasicsBox p a:link {color: #F0F0F0;} /* Links inside p */
+.BasicsBox p a:visited {color: #F0F0F0;}
+.BasicsBox p a:hover {color: #FFFFFF;}
+.BasicsBox p a:active {color: #FFFFFF;}
 .BasicsBox a:link {color: #F0F0F0;} /* Links */
 .BasicsBox a:visited {color: #F0F0F0;}
 .BasicsBox a:hover {color: #FFFFFF;}
@@ -701,6 +701,12 @@ input[readonly] {color: #E0E0E0;} /* Read-only form fields */
 .StarCurrent {background: transparent url(../gfx/interface/RatingStarWhite.gif) no-repeat;}
 .StarWhite {background: transparent url(../gfx/interface/RatingStarWhite.gif) no-repeat;;}
 .StarGrey {background: transparent url(../gfx/interface/RatingStarGrey.gif) no-repeat;;}
+.IconResourceType1  {background: url(../gfx/interface/IcPhoto.png); }
+.IconResourceType2  {background: url(../gfx/interface/IcDocument.png);}
+.IconResourceType3  {background: url(../gfx/interface/IcVideo.png);}
+.IconResourceType4  {background: url(../gfx/interface/IcAudio.png);}
+.collapsed {background: url(../gfx/interface/HomeArrow.png) no-repeat top left; background-position:3px 3px;}
+.expanded {background: url(../gfx/interface/HomeArrowDown.png) no-repeat top left; background-position:0px 6px;}
 
 
 /* Plupload **************************************************************** */
@@ -790,6 +796,23 @@ li.plupload_failed a {background: url('../gfx/interface/error.png');} /* Icon: U
 	background: #C0C0C0;
 	}
 .plupload_progress_bar {background: #000080;}
+
+
+/* Comments **************************************************************** */
+.CommentEntry
+	{
+	border-radius: 3px;	-moz-border-radius: 3px; -webkit-border-radius: 3px;
+	border-top: 1px solid #C0C0C0;
+	border-right: 1px solid #252525;
+	border-bottom: 1px solid #252525;
+	border-left: 1px solid #C0C0C0;
+	padding: 5px;
+	}
+.CommentEntryInfoDetails {color: #A0A0A0;}
+.CommentFlag {background-image: url('../gfx/interface/FlagOff.png');}
+.CommentFlagged {background-image: url('../gfx/interface/FlagOn.png');}
+.CommentFlagReason {padding: 5px;}
+.CommentFormBody {padding: 5px;}
 
 
 /* Plugins ***************************************************************** */
