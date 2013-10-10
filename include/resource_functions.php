@@ -473,7 +473,7 @@ function save_resource_data_multi($collection)
 					
 				$val=strip_leading_comma($val);		
 				#echo "<li>existing=$existing, new=$val";
-				if ($existing!=str_replace("\\","",$val))
+				if ($existing!==str_replace("\\","",$val))
 					{
 					# This value is different from the value we have on record.
 					
