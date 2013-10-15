@@ -467,6 +467,7 @@ function save_collection($ref)
 	if (!hook('modifysavecollection')) {
 	$sql="update collection set
 				name='" . getvalescaped("name","") . "',
+				".hook('savecollectionadditionalfields')."
 				keywords='" . getvalescaped("keywords","") . "',
 				public='" . getvalescaped("public","",true) . "',";
 		
@@ -495,7 +496,7 @@ function save_collection($ref)
 		}
 		
 	    $sql.=" where ref='$ref'";
-	
+
 	sql_query($sql);
 	} # end replace hook - modifysavecollection
 	
