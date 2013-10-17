@@ -191,6 +191,7 @@ else
 			<input type="hidden" name="notify_url" value="<?php echo $baseurl?>/pages/purchase_callback.php">
 			<input type="hidden" name="return" value="<?php echo $baseurl?>/pages/purchase_download.php?collection=<?php echo urlencode($usercollection) ?>">
 			<input type="hidden" name="custom" value="<?php echo urlencode($usercollection) ?>">
+			<input type="hidden" name="charset" value="utf-8">
 			<?php echo $paypal?>
 			<p><input type="submit" name="submit" value="&nbsp;&nbsp;&nbsp;<?php echo $lang["proceedtocheckout"]?>&nbsp;&nbsp;&nbsp;"></p>
 			</form>
