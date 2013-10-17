@@ -223,7 +223,6 @@ function get_resource_field_data($ref,$multi=false,$use_permissions=true,$origin
     # Build an array of valid types and only return fields of this type. Translate field titles. 
     $validtypes = sql_array("select ref value from resource_type");
     $validtypes[] = 0; $validtypes[] = 999; # Support archive and global.
-
     for ($n = 0;$n<count($fields);$n++) {
         if
 	(
@@ -2196,11 +2195,18 @@ function get_related_keywords($keyref)
 	# Also reverses the process, returning keywords for matching related words
 	# and for matching related words, also returns other words related to the same keyword.
 	global $keyword_relationships_one_way;
-	if ($keyword_relationships_one_way){
-		return sql_array(" select related value from keyword_related where keyword='$keyref'");
-		}
-	else {
-		return sql_array(" select keyword value from keyword_related where related='$keyref' union select related value from keyword_related where (keyword='$keyref' or keyword in (select keyword value from keyword_related where related='$keyref')) and related<>'$keyref'");
+	global $related_keywords_cache;
+	if (isset($related_keywords_cache[$keyref])){
+		return $related_keywords_cache[$keyref];
+	} else {
+		if ($keyword_relationships_one_way){
+			$related_keywords_cache[$keyref]=sql_array(" select related value from keyword_related where keyword='$keyref'");
+			return $related_keywords_cache[$keyref];
+			}
+		else {
+			$related_keywords_cache[$keyref]=sql_array(" select keyword value from keyword_related where related='$keyref' union select related value from keyword_related where (keyword='$keyref' or keyword in (select keyword value from keyword_related where related='$keyref')) and related<>'$keyref'");
+			return $related_keywords_cache[$keyref];
+			}
 		}
 	}
 	
@@ -2360,7 +2366,6 @@ function check_access_key_collection($collection,$key)
 	{
 	if ($collection=="" || !is_numeric($collection)) {return false;}
 	$r=get_collection_resources($collection);
-	
 	if (count($r)==0){return false;}
 	
 	for ($n=0;$n<count($r);$n++)
@@ -2555,48 +2560,62 @@ function get_hidden_indexed_fields()
 	# Return an array of indexed fields to which the current user does not have access
 	# Used by do_search to ommit fields when searching.
 	$hidden=array();
-	
-	$fields=sql_query("select ref from resource_type_field where keywords_index=1 and length(name)>0");
-
-	# Apply field permissions
-	for ($n=0;$n<count($fields);$n++)
-		{
-		if ((checkperm("f*") || checkperm("f" . $fields[$n]["ref"]))
-		&& !checkperm("f-" . $fields[$n]["ref"]))
+	global $hidden_fields_cache;
+	if (is_array($hidden_fields_cache)){
+		return $hidden_fields_cache;
+	} else { 
+		$fields=sql_query("select ref from resource_type_field where keywords_index=1 and length(name)>0");
+		# Apply field permissions
+		for ($n=0;$n<count($fields);$n++)
 			{
-			# Visible field
+			if ((checkperm("f*") || checkperm("f" . $fields[$n]["ref"]))
+			&& !checkperm("f-" . $fields[$n]["ref"]))
+				{
+				# Visible field
+				}
+			else
+				{
+				# Hidden field
+				$hidden[]=$fields[$n]["ref"];
+				}
 			}
-		else
-			{
-			# Hidden field
-			$hidden[]=$fields[$n]["ref"];
-			}
+		$hidden_fields_cache=$hidden;
+		return $hidden;
 		}
-	return $hidden;
 	}
 	
 function get_category_tree_fields()
 	{
 	# Returns a list of fields with refs matching the supplied field refs.
-
-	$fields=sql_query("select name from resource_type_field where type=7 and length(name)>0 order by order_by");
-	$cattreefields=array();
-	foreach ($fields as $field){
-		$cattreefields[]=$field['name'];
-	}
-	return $cattreefields;
+	global $cattreefields_cache;
+	if (is_array($cattreefields_cache)){
+		return $cattreefields_cache;
+	} else {
+		$fields=sql_query("select name from resource_type_field where type=7 and length(name)>0 order by order_by");
+		$cattreefields=array();
+		foreach ($fields as $field){
+			$cattreefields[]=$field['name'];
+		}
+		$cattreefields_cache=$cattreefields;
+		return $cattreefields;
+		}
 	}	
 
 function get_OR_fields()
 	{
 	# Returns a list of fields that should retain semicolon separation of keywords in a search string
-
-	$fields=sql_query("select name from resource_type_field where type=7 or type=2 or type=3 and length(name)>0 order by order_by");
-	$orfields=array();
-	foreach ($fields as $field){
-		$orfields[]=$field['name'];
-	}
-	return $orfields;
+	global $orfields_cache;
+	if (is_array($orfields_cache)){
+		return $orfields_cache;
+	} else {
+		$fields=sql_query("select name from resource_type_field where type=7 or type=2 or type=3 and length(name)>0 order by order_by");
+		$orfields=array();
+		foreach ($fields as $field){
+			$orfields[]=$field['name'];
+		}
+		$orfields_cache=$orfields;
+		return $orfields;
+		}
 	}		
 	
 function get_fields_for_search_display($field_refs)
@@ -3417,6 +3436,7 @@ function draw_performance_footer(){
 				<?php echo $explainitem?><br /></td><?php 
 				}
 			?></tr><?php
+
 			for($n=0;$n<count($explain);$n++){
 				?><tr><?php
 				foreach ($explain[$n] as $explainitem=>$value){?>

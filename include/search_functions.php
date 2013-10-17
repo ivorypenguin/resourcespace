@@ -240,7 +240,13 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 				if (strpos($keyword,":")!==false && !$ignore_filters)
 					{
 					$kw=explode(":",$keyword,2);
-					$datefieldinfo=sql_query("select ref from resource_type_field where name='" . escape_check($kw[0]) . "' and type IN (4,6,10)",0);
+					global $datefieldinfo_cache;
+					if (isset($datefieldinfo_cache[$kw[0]])){
+						$datefieldinfo=$datefieldinfo_cache[$kw[0]];
+					} else {
+						$datefieldinfo=sql_query("select ref from resource_type_field where name='" . escape_check($kw[0]) . "' and type IN (4,6,10)",0);
+						$datefieldinfo_cache[$kw[0]]=$datefieldinfo;
+					}
 					if (count($datefieldinfo))
 						{
 						$c++;
@@ -303,7 +309,13 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 						$ckeywords=explode(";",$kw[1]);
 
 						# Fetch field info
-						$fieldinfo=sql_query("select ref,type from resource_type_field where name='" . escape_check($kw[0]) . "'",0);
+						global $fieldinfo_cache;
+						if (isset($fieldinfo_cache[$kw[0]])){
+							$fieldinfo=$fieldinfo_cache[$kw[0]];
+						} else {
+							$fieldinfo=sql_query("select ref,type from resource_type_field where name='" . escape_check($kw[0]) . "'",0);
+							$fieldinfo_cache[$kw[0]]=$fieldinfo;
+						}
 						if (count($fieldinfo)==0)
 							{
 							debug("Field short name not found.");return false;
@@ -826,7 +838,13 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 		# smart collections update
 		global $allow_smart_collections,$smart_collections_async;
 		if ($allow_smart_collections){
-			$smartsearch_ref=sql_value("select savedsearch value from collection where ref='$collection'","");
+			global $smartsearch_ref_cache;
+			if (isset($smartsearch_ref_cache[$collection])){
+				$smartsearch_ref=$smartsearch_ref_cache[$collection]; // this value is pretty much constant
+			} else {
+				$smartsearch_ref=sql_value("select savedsearch value from collection where ref='$collection'","");
+				$smartsearch_ref_cache[$collection]=$smartsearch_ref;
+			}
 			global $php_path;
 			if ($smartsearch_ref!=""){
 				if ($smart_collections_async && isset($php_path) && file_exists($php_path . "/php")){
@@ -1002,6 +1020,7 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 	# will always be the correct one (unless two plugins use the same !<type> value).
 	$sql="";
 	hook("addspecialsearch", "", array($search));
+	
 	if($sql != "")
 	{
 		debug("Addspecialsearch hook returned useful results.");
