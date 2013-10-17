@@ -18,6 +18,11 @@
 # Switch on output buffering.
 ob_start(null,4096);
 
+$pagetime_start = microtime();
+$pagetime_start = explode(' ', $pagetime_start);
+$pagetime_start = $pagetime_start[1] + $pagetime_start[0];
+
+
 if (!isset($suppress_headers) || !$suppress_headers)
 	{
 	header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
@@ -346,29 +351,29 @@ function sql_query($sql,$cache=false,$fetchrows=-1,$dbstruct=true)
         {
         $row=array();
         if ($use_mysqli){
-        while (($rs=mysqli_fetch_array($result)) && (($counter<$fetchrows) || ($fetchrows==-1)))
+        while (($rs=mysqli_fetch_assoc($result)) && (($counter<$fetchrows) || ($fetchrows==-1)))
             {
             while (list($name,$value)=each($rs))
                 {
-                if (!is_integer($name)) # do not run for integer values (MSSQL returns two keys for each returned column, a numeric and a text)
-                    {
+                //if (!is_integer($name)) # do not run for integer values (MSSQL returns two keys for each returned column, a numeric and a text)
+                //    {
 					$row[$counter][$name]=$mysql_verbatim_queries
 							? $value : str_replace("\\","",stripslashes($value));
-                    }
+                //    }
                 }
             $counter++;
             }
 		}
 		else {
-        while (($rs=mysql_fetch_array($result)) && (($counter<$fetchrows) || ($fetchrows==-1)))
+        while (($rs=mysql_fetch_assoc($result)) && (($counter<$fetchrows) || ($fetchrows==-1)))
             {
             while (list($name,$value)=each($rs))
                 {
-                if (!is_integer($name)) # do not run for integer values (MSSQL returns two keys for each returned column, a numeric and a text)
-                    {
+                //if (!is_integer($name)) # do not run for integer values (MSSQL returns two keys for each returned column, a numeric and a text)
+                //    {
                     $row[$counter][$name]=$mysql_verbatim_queries
 							? $value : str_replace("\\","",stripslashes($value));
-                    }
+                //    }
                 }
             $counter++;
             }		
@@ -945,6 +950,7 @@ function safe_file_name($name)
 if (!function_exists("daily_stat")){
 function daily_stat($activity_type,$object_ref)
 	{
+	global $disable_daily_stat;if($disable_daily_stat===true){return;}  //can be used to speed up heavy scripts	when stats are less important
 	# Update the daily statistics after a loggable event.
 	# the daily_stat table contains a counter for each 'activity type' (i.e. download) for each object (i.e. resource)
 	# per day.
@@ -1179,4 +1185,13 @@ function get_debug_log_dir()
     }
     // return the result.
     return $result;
+}
+
+function show_pagetime(){
+	global $pagetime_start;
+	$time = microtime();
+	$time = explode(' ', $time);
+	$time = $time[1] + $time[0];
+	$total_time = round(($time - $pagetime_start), 4);
+	echo $total_time." sec";
 }
