@@ -127,7 +127,7 @@ function i18n_get_collection_name($mixedcollection, $index="name")
 
     # Check if it is a Research: [..]
     if (substr($name_untranslated,0,9)=="Research:"){
-	return $lang["research"].":".i18n_get_translated(substr($name_untranslated,9));
+	return $lang["research"].": ".i18n_get_translated(substr($name_untranslated,9));
     }
     //$name_translated = preg_replace_callback('/(^Research:)(\s.*)/', function ($matches){return i18n_get_translated($matches[2]);}, $name_untranslated, -1, $translated);
     //if ($translated==1) {return htmlspecialchars($lang["research"] . ": " . $name_translated);}
