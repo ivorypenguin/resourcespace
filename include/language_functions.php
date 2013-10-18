@@ -126,7 +126,7 @@ function i18n_get_collection_name($mixedcollection, $index="name")
 		}
 
     # Check if it is a Research: [..]
-    $name_translated = preg_replace('/(^Research:)(\s.*)/e', "i18n_get_translated('$2')", $name_untranslated, -1, $translated);
+    $name_translated = preg_replace_callback('/(^Research:)(\s.*)/', function ($matches){return i18n_get_translated($matches[2]);}, $name_untranslated, -1, $translated);
     if ($translated==1) {return htmlspecialchars($lang["research"] . ": " . $name_translated);}
 
     # Ordinary collection - translate with i18n_get_translated
