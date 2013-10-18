@@ -255,6 +255,9 @@ function ucfirstletter($string)
     # Search for the first letter ([a-zA-Z]), which may or may not be followed by other characters (.*).
     # Replaces the found substring ('$0') with the same substring but now with the first character capitalized, using ucfirst().
     # Note the /e modifier: If this modifier is set, preg_replace() does normal substitution of backreferences in the replacement string, evaluates it as PHP code, and uses the result for replacing the search string.  
-    return preg_replace("/[a-zA-Z].*/e", "ucfirst('$0')", $string);
+    return preg_replace_callback("/[a-zA-Z].*/", "ucfirstletter_callback", $string);
 
     }
+function ucfirstletter_callback($matches){
+	return ucfirst($matches[0]);
+}
