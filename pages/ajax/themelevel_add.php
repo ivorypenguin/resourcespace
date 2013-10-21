@@ -64,7 +64,7 @@ if ($i==0){$themeindex="";}else{$themeindex=$i+1;}
 <div class='themelevelinstance' id="themelevel<?php echo $i ?>">
 	<div class="Question">
 		<label for="theme<?php echo $i ?>"><?php echo $lang["themecategory"] . " ".$themeindex ?></label>
-		<select class="stdwidth" name="theme<?php echo $i ?>" id="theme<?php echo $i ?>" onchange="updateThemeLevels(<?php echo $i ?>);"><option value="">Select...</option>
+		<select class="stdwidth" name="theme<?php echo $i ?>" id="theme<?php echo $i ?>" onchange="updateThemeLevels(<?php echo $i ?>);"><option value=""><?php echo $lang["select"]?></option>
 			<?php
 				if ($thisval == ''){	
 					$printedval = true;
@@ -90,7 +90,7 @@ if ($i==0){$themeindex="";}else{$themeindex=$i+1;}
 		<div class="clearerleft"> </div>
 		<label><?php echo $lang["newcategoryname"]?></label>
 		<input type=text class="medwidth" name="newtheme<?php echo $i ?>" id="newtheme<?php echo $i ?>" value="">
-		<input type=button class="medcomplementwidth" value="Save" onclick="updateThemeLevels(<?php echo $i ?>);"/>
+		<input type=button class="medcomplementwidth" value="<?php echo $lang["save"]?>" onclick="updateThemeLevels(<?php echo $i ?>);"/>
 		<div class="clearerleft"> </div>
 	</div>
 </div>
