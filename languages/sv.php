@@ -26,7 +26,7 @@
 # En första version av översättningen skapades av Henrik Frizén (förnamn.efternamn utan accenttecken i e-postboxen.Sveriges landskod) 20110124 för version 2295
 #
 # Senast uppdaterad av [Namn] [Datum] för version [svn-version], [kommentar]
-# Senast uppdaterad av Henrik Frizén 20131006 för version 4949
+# Senast uppdaterad av Henrik Frizén 20131021 för version 4972
 
 #
 #
@@ -815,7 +815,7 @@ $lang["notapprovedresources"]="Följande material är inte aktiva och kan därf�
 $lang["savesearchitemstocollection"]="Lägg till sökresultatet i aktuell samling";
 $lang["removeallresourcesfromcollection"]="Om du vill avlägsna alla material från denna samling markerar du kryssrutan och klickar på <b>Spara</b>";
 $lang["deleteallresourcesfromcollection"]="Om du vill ta bort själva materialen som ingår i denna samling markerar du kryssrutan och klickar på <b>Spara</b>";
-$lang["deleteallsure"]="Vill du ta bort de här materialen? Om du väljer att fortsätta tas själva materialen bort, de  avlägsnas inte bara från denna samling.";
+$lang["deleteallsure"]="Vill du ta bort de här materialen? Om du väljer att fortsätta tas själva materialen bort, de avlägsnas inte bara från denna samling.";
 $lang["batchdonotaddcollection"]="(Lägg inte till i någon samling)";
 $lang["collectionsthemes"]="Relaterade teman och gemensamma samlingar";
 $lang["recent"]="Nyaste";
@@ -1427,7 +1427,7 @@ $lang["phpinivalue"]="Värde i php.ini för ’?’"; # E.g. "PHP.INI value for 
 $lang["writeaccesstofilestore"]="Skrivrättighet till katalogen ’" . $storagedir ."’ finns?";
 $lang["nowriteaccesstofilestore"]="Skrivrättighet till katalogen ’" . $storagedir ."’ saknas.";
 $lang["writeaccesstohomeanim"]="Skrivrättighet till katalogen ’" . $homeanim_folder ."’ finns?";
-$lang["nowriteaccesstohomeanim"]="Skrivrättighet till katalogen ’" . $homeanim_folder ."’  saknas. Skrivrättighet måste finnas för att tillägget <b>transform</b> ska kunna infoga bilder i startsidans bildspel.";
+$lang["nowriteaccesstohomeanim"]="Skrivrättighet till katalogen ’" . $homeanim_folder ."’ saknas. Skrivrättighet måste finnas för att tillägget <b>transform</b> ska kunna infoga bilder i startsidans bildspel.";
 $lang["blockedbrowsingoffilestore"]="Åtkomsten till katalogen ’filestore’ är blockerad för webbläsare?";
 $lang["noblockedbrowsingoffilestore"]="Mappen ’filestore’ är inte blockerad för webbläsare. Avlägsna ’Indexes’ från ’Options’ i Apache.";
 $lang["execution_failed"]="Ett oväntat svar gavs när %command exekverades. Svaret var: '%output'.";  # %command and %output will be replaced, e.g. Execution failed; unexpected output when executing convert command. Output was '[stdout]'.
@@ -1638,7 +1638,7 @@ $lang["backtomanagecontent"]="Tillbaka: Hantera webbplatsens innehåll";
 $lang["editcontent"]="Redigera innehåll";
  
 $lang["confirmcollectiondownload"]="Vänta medan arkivet skapas. Detta kan ta en stund och tiden är beroende av den totala storleken av de ingående materialen.";
-$lang["collectiondownloadinprogress"]='Vänta medan arkivet skapas. Detta kan ta en stund och tiden är beroende av den totala storleken av de ingående materialen.<br /><br />Om du vill fortsätta arbeta kan du  <a href=\"home.php\" target=\"_blank\">&gt; Öppna ett nytt webbläsarfönster</a><br /><br />';
+$lang["collectiondownloadinprogress"]='Vänta medan arkivet skapas. Detta kan ta en stund och tiden är beroende av den totala storleken av de ingående materialen.<br /><br />Om du vill fortsätta arbeta kan du <a href=\"home.php\" target=\"_blank\">&gt; Öppna ett nytt webbläsarfönster</a><br /><br />';
 $lang["preparingzip"]="Förbereder …";
 $lang["filesaddedtozip"]="filer kopierade";
 $lang["fileaddedtozip"]="fil kopierad";
