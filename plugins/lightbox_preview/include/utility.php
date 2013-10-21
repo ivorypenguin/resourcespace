@@ -39,6 +39,8 @@ function addLightBox($selector)
 					.lightBox({
 						imageLoading: '<?php echo $baseurl_short?>gfx/lightbox/loading.gif',
 						imageBtnClose: '<?php echo $baseurl_short?>gfx/lightbox/close.gif',
+						imageBtnPrev: '<?php echo $baseurl_short?>gfx/lightbox/previous.png',
+						imageBtnNext: '<?php echo $baseurl_short?>gfx/lightbox/next.png',
 						containerResizeSpeed: 250,
 						txtImage: '<?php echo $lang["lightbox-image"]?>',
 						txtOf: '<?php echo $lang["lightbox-of"]?>'
