@@ -152,6 +152,7 @@ $languages["da"]="Dansk"; # Danish
 $languages["de"]="Deutsch"; # German
 $languages["el"]="Ελληνικά"; # Greek
 $languages["es"]="Español"; # Spanish
+$languages["es-AR"]="Español (Argentina)";
 $languages["fr"]="Français"; # French
 $languages["hr"]="Hrvatski Jezik"; # Croatian
 $languages["it"]="Italiano"; # Italian

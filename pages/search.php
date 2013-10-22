@@ -724,7 +724,7 @@ if (true) # Always show search header now.
 		<?php
 		}
 		# Include public collections and themes in the main search, if configured.		
-		if (isset($collections)&& strpos($search,"!")===false && $archive==0)
+		if ($offset==0 && isset($collections)&& strpos($search,"!")===false && $archive==0)
 			{
 			include "../include/search_public.php";
 			}
