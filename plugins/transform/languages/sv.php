@@ -1,7 +1,7 @@
 <?php
 # Swedish
 # Language File for the Transform Plugin
-# Updated by Henrik Frizén 20130118 for svn r4212
+# Updated by Henrik Frizén 20131022 for svn r4975
 # -------
 #
 #
@@ -64,3 +64,5 @@ $lang['allow_rotation']="Tillåt rotation";
 $lang['allow_transform_original']="Tillåt transformation av original";
 $lang['use_repage']="Använd argumentet ’repage’";
 $lang['enable_batch_transform']="Aktivera verktyget <b>Transformera i grupp</b>";
+$lang['cropper_enable_alternative_files']='Aktivera funktionen <b>Spara som alternativ fil</b>';
+$lang['enable_replace_slideshow']='Aktivera funktionen <b>Ersätt bild i bildspel</b>';
