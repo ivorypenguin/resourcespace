@@ -63,3 +63,5 @@ $lang['allow_rotation']="Rotation";
 $lang['allow_transform_original']="Original bearbeiten";
 $lang['use_repage']="Benutze 'repage'";
 $lang['enable_batch_transform']="Stapelverarbeitung";
+$lang['cropper_enable_alternative_files']='Speichern als alternative Dateien erlauben';
+$lang['enable_replace_slideshow']='Ersetzen der Dia-Show erlauben';

@@ -85,7 +85,7 @@ $width = $_REQUEST['width'];
 $height = $_REQUEST['height'];
 $xcoord = $_REQUEST['xcoord'];
 $ycoord = $_REQUEST['ycoord'];
-$description = $_REQUEST['description'];
+$description = @$_REQUEST['description'];
 $cropsize = $_REQUEST['cropsize'];
 $new_width = $_REQUEST['new_width'];
 $new_height = $_REQUEST['new_height'];
@@ -620,7 +620,9 @@ include "../../../include/header.php";
     <input type='hidden' name='origwidth' id='origwidth'  value='<?php echo $origwidth ?>' />
     <input type='hidden' name='origheight' id='origheight'  value='<?php echo $origheight ?>' />
     <?php if ($original){ ?> <input type='hidden' name='mode' id='mode'  value='original' /> <?php } ?>
-	<?php if (substr(sprintf('%o', fileperms(dirname(__FILE__)."/../../../".$homeanim_folder)), -4)=="0777"){ echo $lang['replaceslideshowimage']; ?>
+	<?php if ($cropper_enable_replace_slideshow && checkperm('t')
+			&& substr(sprintf('%o', fileperms(dirname(__FILE__)."/../../../".$homeanim_folder)), -4)=="0777") {
+		echo $lang['replaceslideshowimage']; ?>
 	<input type="checkbox" name='slideshow' id='slideshow' value="1" onClick="if (this.checked) {document.getElementById('new_width').value='<?php
 	if (isset($home_slideshow_width)){echo $home_slideshow_width;}else{echo "517";}
 		?>';document.getElementById('new_height').value='<?php
@@ -672,13 +674,15 @@ include "../../../include/header.php";
         <td style='text-align:right'><?php echo $lang["name"]; ?>: </td>
         <td colspan='3'><input type='text' name='filename' value='' size='30'/></td>
       </tr>
-      <?php } ?>
+      <?php }
+		if ($cropper_enable_alternative_files && $edit_access) { ?>
       <tr>
         <td style='text-align:right'><?php echo $lang["description_for_alternative_file"]; ?>: </td>
         <td colspan='3'><input type='text' name='description' value='' size='30'/></td>
       </tr>
-      <?php }
-      else { ?>
+      <?php
+		}
+	  } else { ?>
       <input type='hidden' name='filename' value=''/>
       <input type='hidden' name='description' value=''/>
       <?php }
@@ -730,7 +734,7 @@ if ($cropper_debug){
              <input type='submit' name='replace' value="<?php echo $lang['transform_original']; ?>" />
       <?php } else { ?>
         <input type='submit' name='download' value="<?php echo $lang["action-download"]; ?>" />
-        <?php if ($edit_access) { ?><input type='submit' name='submit' value="<?php echo $lang['savealternative']; ?>" /><?php } ?>
+        <?php if ($edit_access && $cropper_enable_alternative_files) { ?><input type='submit' name='submit' value="<?php echo $lang['savealternative']; ?>" /><?php } ?>
       <?php } // end of if $original ?>
     </p>
   </form>
