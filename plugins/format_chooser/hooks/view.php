@@ -15,13 +15,12 @@ function HookFormat_chooserViewReplacedownloadoptions()
 	{
 	global $resource, $ref, $counter, $headline, $lang, $download_multisize, $showprice, $save_as,
 			$direct_link_previews, $hide_restricted_download_sizes, $format_chooser_output_formats,
-			$format_chooser_input_formats, $baseurl_short, $search, $offset, $k, $order_by, $sort,
-			$archive;
+			$baseurl_short, $search, $offset, $k, $order_by, $sort, $archive;
 
-	$inputFormat = strtoupper($resource['file_extension']);
+	$inputFormat = $resource['file_extension'];
 
 	if ($resource["has_image"] != 1 || !$download_multisize || $save_as
-			|| !in_array($inputFormat, $format_chooser_input_formats))
+			|| !supportsInputFormat($inputFormat))
 		return false;
 
 	$defaultFormat = getDefaultOutputFormat($inputFormat);

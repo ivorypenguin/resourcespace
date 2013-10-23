@@ -23,6 +23,12 @@ function HookFormat_chooserCollection_downloadReplaceuseoriginal()
 
 function HookFormat_chooserCollection_downloadSize_is_available($resource, $path, $size)
 	{
+	if (!supportsInputFormat($resource['file_extension']))
+		{
+		# Let the caller decide whether the file is available
+		return false;
+		}
+
 	$sizes = get_all_image_sizes();
 
 	# Filter out the largest one

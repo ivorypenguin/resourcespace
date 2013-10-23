@@ -23,6 +23,14 @@ function getDefaultOutputFormat($inputFormat = null)
 	return $inputFormat;
 	}
 
+function supportsInputFormat($inputFormat)
+	{
+	global $format_chooser_input_formats;
+	$inputFormat = strtoupper($inputFormat);
+
+	return in_array($inputFormat, $format_chooser_input_formats);
+	}
+
 /**
  * Returns the filename to be used for a specific file.
  * @param type $ref The resource for which the name should be built.
