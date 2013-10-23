@@ -930,7 +930,7 @@ function display_field($n, $field, $newtab=false)
 
 	?>
 	<?php if ($multiple && !hook("replace_edit_all_checkbox","",array($field["ref"]))) { # Multiple items, a toggle checkbox appears which activates the question
-	?><div><input name="editthis_<?php echo htmlspecialchars($name)?>" id="editthis_<?php echo $n?>" type="checkbox" value="yes" onClick="var q=document.getElementById('question_<?php echo $n?>');var m=document.getElementById('modeselect_<?php echo $n?>');var f=document.getElementById('findreplace_<?php echo $n?>');if (this.checked) {q.style.display='block';m.style.display='block';} else {q.style.display='none';m.style.display='none';f.style.display='none';document.getElementById('modeselectinput_<?php echo $n?>').selectedIndex=0;}">&nbsp;<label for="editthis<?php echo $n?>"><?php echo htmlspecialchars($field["title"])?></label></div><?php } ?>
+	?><div class="edit_multi_checkbox"><input name="editthis_<?php echo htmlspecialchars($name)?>" id="editthis_<?php echo $n?>" type="checkbox" value="yes" onClick="var q=document.getElementById('question_<?php echo $n?>');var m=document.getElementById('modeselect_<?php echo $n?>');var f=document.getElementById('findreplace_<?php echo $n?>');if (this.checked) {q.style.display='block';m.style.display='block';} else {q.style.display='none';m.style.display='none';f.style.display='none';document.getElementById('modeselectinput_<?php echo $n?>').selectedIndex=0;}">&nbsp;<label for="editthis<?php echo $n?>"><?php echo htmlspecialchars($field["title"])?></label></div><!-- End of edit_multi_checkbox --><?php } ?>
 
 	<?php
 	if ($multiple && !hook("replace_edit_all_mode_select","",array($field["ref"])))
@@ -962,18 +962,27 @@ function display_field($n, $field, $newtab=false)
 		<option value="RM"><?php echo $lang["removetext"]?></option>
 		<?php } ?>
 		</select>
-		</div>
+		</div><!-- End of modeselect_<?php echo $n?> -->
 
-		<div class="Question" <?php if($newtab){?> style="border-top:none;"<?php } ?>  id="findreplace_<?php echo $n?>">
+		<div class="Question" id="findreplace_<?php echo $n?>" style="display:none;border-top:none;">
 		<label>&nbsp;</label>
 		<?php echo $lang["find"]?> <input type="text" name="find_<?php echo $field["ref"]?>" class="shrtwidth">
 		<?php echo $lang["andreplacewith"]?> <input type="text" name="replace_<?php echo $field["ref"]?>" class="shrtwidth">
-		</div>
+		</div><!-- End of findreplace_<?php echo $n?> -->
 		<?php
 		}
 	?>
 
-	<div class="Question"<?php if($newtab){?> style="border-top:none;"<?php } ?> id="question_<?php echo $n?>" <?php if ($multiple || !$displaycondition) {?>style="display:none;border-top:none;"<?php } ?>>
+	<div class="Question" id="question_<?php echo $n?>" <?php
+	if ($multiple || !$displaycondition || $newtab)
+		{?>style="border-top:none;<?php 
+		if ($multiple || !$displaycondition) # Hide this
+			{?>
+			display:none;
+			<?php }
+		}
+		echo "\""; # close the style attribute
+		?>>
 	<label for="<?php echo htmlspecialchars($name)?>"><?php if (!$multiple) {?><?php echo htmlspecialchars($field["title"])?> <?php if (!$is_template && $field["required"]==1) { ?><sup>*</sup><?php } ?><?php } ?></label>
 
 	<?php
@@ -1411,8 +1420,14 @@ if (false && !$disable_geocoding)
 <?php 
 # Duplicate navigation
 if (!$multiple && $ref>0 &&!hook("dontshoweditnav")) {EditNav();}
-?>
 
+
+if($collapsible_sections)
+	{
+	?>
+	</div><!-- end of collapsible section -->
+	<?php
+	}?>
 
 </form>
 
@@ -1429,5 +1444,6 @@ if (!$multiple && $ref>0 &&!hook("dontshoweditnav")) {EditNav();}
     }
 
 hook("autolivejs");
+
 include "../include/footer.php";
 ?>
