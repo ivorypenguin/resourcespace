@@ -119,3 +119,9 @@ for ($n=$offset;(($n<count($news)) && ($n<($offset+$per_page)));$n++)
 </div>
 
 
+<?php
+
+include dirname(__FILE__)."/../../../include/footer.php";
+
+?>
+

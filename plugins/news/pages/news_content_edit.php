@@ -44,13 +44,13 @@ include dirname(__FILE__)."/../../../include/header.php";
 <input type=hidden name=name value="<?php echo $ref?>">
 
 <div class="Question"><label><?php echo $lang["date"]?></label><input name="date" class="stdwidth" value="<?php If ($createnews){echo date("Y-m-d H:i:s");}else{echo $news[0]["date"];}?>"></div>
-<div class="clearerleft"> </div></div>
+<div class="clearerleft"> </div>
 
 <div class="Question"><label><?php echo $lang["news_headline"];?></label><input name="title" class="stdwidth" value="<?php If ($createnews){echo $lang["news_addtitle"];}else{echo $news[0]["title"];}?>">
-<div class="clearerleft"> </div></div>
+<div class="clearerleft"> </div>
 
 <div class="Question"><label><?php echo $lang["news_body"]?></label><textarea name="body" class="stdwidth" rows=15 cols=50 ><?php If (!$createnews){echo htmlspecialchars($news[0]["body"]);}?></textarea></div>
-<div class="clearerleft"> </div></div>
+<div class="clearerleft"> </div>
 
 
 <div class="QuestionSubmit">

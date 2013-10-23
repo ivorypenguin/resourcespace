@@ -103,5 +103,9 @@ if (checkperm("o"))
 
 
 
+<?php
 
+include dirname(__FILE__)."/../../../include/footer.php";
+
+?>
 
