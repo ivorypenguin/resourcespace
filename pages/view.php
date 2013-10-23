@@ -322,6 +322,140 @@ if ($download_summary) {include "../include/download_summary.php";}
 
 <?php 
 
+# DPI calculations
+function compute_dpi($size, &$dpi, &$dpi_unit, &$dpi_w, &$dpi_h)
+	{
+	global $lang;
+	if (isset($size['resolution'])&& $size['resolution']!=0) { $dpi=$size['resolution']; }
+	else if (!isset($dpi) || $dpi==0) { $dpi=300; }
+
+	if (isset($size['unit']) && trim(strtolower($size['unit']))=="inches")
+		{
+		# Imperial measurements
+		$dpi_unit=$lang["inch-short"];
+		$dpi_w=round(($size["width"]/$dpi),1);
+		$dpi_h=round(($size["height"]/$dpi),1);
+		}
+	else
+		{
+		$dpi_unit=$lang["centimetre-short"];
+		$dpi_w=round(($size["width"]/$dpi)*2.54,1);
+		$dpi_h=round(($size["height"]/$dpi)*2.54,1);
+		}
+	}
+
+# MP calculation
+function compute_megapixel($size)
+	{
+	return round(($size["width"]*$size["height"])/1000000,1);
+	}
+
+function get_size_info($size)
+{
+	global $lang;
+	$output='<p>' . $size["width"] . " x " . $size["height"] . " " . $lang["pixels"];
+
+	$mp=compute_megapixel($size);
+	if ($mp>=1)
+		{
+		$output.=" (" . $mp . " " . $lang["megapixel-short"] . ")";
+		}
+
+	compute_dpi($size, $dpi, $dpi_unit, $dpi_w, $dpi_h);
+
+	$output.='</p><p>';
+	$output.=$dpi_w . " " . $dpi_unit . " x " . $dpi_h . " " . $dpi_unit . " " . $lang["at-resolution"]
+			. " " . $dpi ." " . $lang["ppi"] . '</p>';
+	return $output;
+}
+
+# Get display price for basket request modes
+function get_display_price($ref, $size)
+{
+	global $pricing, $currency_symbol;
+
+	$price_id=$size["id"];
+	if ($price_id=="") { $price_id="hpr"; }
+
+	$price=999; # If price cannot be found
+	if (array_key_exists($price_id,$pricing)) { $price=$pricing[$price_id]; }
+
+	# Pricing adjustment hook (for discounts or other price adjustments plugin).
+	$priceadjust=hook("adjust_item_price","",array($price,$ref,$size["id"]));
+	if ($priceadjust!==false) { $price=$priceadjust; }
+
+	return $currency_symbol . " " . number_format($price,2);
+}
+
+function make_download_preview_link($ref, $size, $label)
+	{
+	global $direct_link_previews_filestore, $baseurl_short;
+
+	if ($direct_link_previews_filestore)
+		$direct_link="" . get_resource_path($ref,false,$size['id'],false,$size['extension']);
+	else
+		$direct_link=$baseurl_short."pages/download.php?direct=1&ref=$ref&size=" . $size['id'] . "&ext=" . $size['extension'];
+
+	return "<a href='$direct_link' target='dl_window_$ref'>$label</a>";
+	}
+
+function add_download_column($ref, $size, $downloadthissize)
+	{
+	global $save_as, $direct_download, $order_by, $lang, $baseurl_short, $baseurl, $k, $search,
+			$request_adds_to_collection, $offset, $archive, $sort;
+	if ($downloadthissize)
+		{
+		?><td class="DownloadButton"><?php
+		if (!$direct_download || $save_as)
+			{
+			if(!hook("downloadbuttonreplace"))
+				{
+				?><a id="downloadlink" <?php
+				if (!hook("downloadlink","",array("ref=" . $ref . "&k=" . $k . "&size=" . $size["id"]
+						. "&ext=" . $size["extension"])))
+					{
+					?>href="<?php echo $baseurl ?>/pages/terms.php?ref=<?php echo urlencode($ref)?>&search=<?php
+							echo urlencode($search) ?>&k=<?php echo urlencode($k)?>&url=<?php
+							echo urlencode("pages/download_progress.php?ref=" . $ref . "&size=" . $size["id"]
+									. "&ext=" . $size["extension"] . "&k=" . $k . "&search=" . urlencode($search)
+									. "&offset=" . $offset . "&archive=" . $archive . "&sort=".$sort."&order_by="
+									. urlencode($order_by))?>"<?php
+					}
+					?> onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["action-download"]?></a><?php
+				}
+			}
+		else
+			{
+			?><a id="downloadlink" href="#" onclick="directDownload('<?php
+					echo $baseurl_short?>pages/download_progress.php?ref=<?php echo urlencode($ref) ?>&size=<?php
+					echo $size['id']?>&ext=<?php echo $size['extension']?>&k=<?php
+					echo urlencode($k)?>')"><?php echo $lang["action-download"]?></a><?php
+			}
+			?></td><?php
+		}
+	else if (checkperm("q"))
+		{
+		if (!hook("resourcerequest"))
+			{
+			?><td class="DownloadButton"><?php
+			if ($request_adds_to_collection)
+				{
+				echo add_to_collection_link($ref,$search,"alert('" . $lang["requestaddedtocollection"] . "');",$size["id"]);
+				}
+			else
+				{
+				?><a href="<?php echo $baseurl_short?>pages/resource_request.php?ref=<?php echo urlencode($ref)?>&k=<?php echo getval("k","")?>" onClick="return CentralSpaceLoad(this,true);"><?php
+				}
+			echo $lang["action-request"]?></a></td><?php
+			}
+		}
+	else
+		{
+		# No access to this size, and the request functionality has been disabled. Show just 'restricted'.
+		?><td class="DownloadButton DownloadDisabled"><?php echo $lang["access1"]?></td><?php
+		}
+	}
+
 # Look for a viewer to handle the right hand panel. If not, display the standard photo download / file download boxes.
 if (file_exists("../viewers/type" . $resource["resource_type"] . ".php"))
 	{
@@ -342,142 +476,57 @@ else
 <?php
 $table_headers_drawn=false;
 $nodownloads=false;$counter=0;$fulldownload=false;
+$showprice=$userrequestmode==2 || $userrequestmode==3;
 hook("additionalresourcetools");
 if ($resource["has_image"]==1 && $download_multisize)
 	{
 	# Restricted access? Show the request link.
-		
-	
+
 	# List all sizes and allow the user to download them
 	$sizes=get_image_sizes($ref,false,$resource["file_extension"]);
 	for ($n=0;$n<count($sizes);$n++)
 		{
-		# DPI calculations 
-		if (isset($sizes[$n]['resolution'])&& $sizes[$n]['resolution']!=0){$dpi = $sizes[$n]['resolution'];}
-		elseif (isset($dpi)&& $dpi!=0){}
-		else { $dpi=300; }
-		if (isset($sizes[$n]['unit'])){
-			if (trim(strtolower($sizes[$n]['unit']))=="inches"){$imperial_measurements=true;}
-			if (trim($sizes[$n]['unit'])=="cm"){$imperial_measurements=false;}
-		}
-		
-		if ($imperial_measurements)
-			{	
-			$dpi_unit=$lang["inch-short"];
-			$dpi_w=round(($sizes[$n]["width"]/$dpi),1);
-			$dpi_h=round(($sizes[$n]["height"]/$dpi),1);
-			}
-		else
-			{
-			$dpi_unit=$lang["centimetre-short"];
-			$dpi_w=round(($sizes[$n]["width"]/$dpi)*2.54,1);
-			$dpi_h=round(($sizes[$n]["height"]/$dpi)*2.54,1);
-			}
-			
-		# MP calculation
-		$mp=round(($sizes[$n]["width"]*$sizes[$n]["height"])/1000000,1);
-		
 		# Is this the original file? Set that the user can download the original file
 		# so the request box does not appear.
 		$fulldownload=false;
 		if ($sizes[$n]["id"]=="") {$fulldownload=true;}
 		
 		$counter++;
-		$headline = ($sizes[$n]['id'] == '') ? str_replace_formatted_placeholder("%extension", $resource["file_extension"], $lang["originalfileoftype"]) : $sizes[$n]["name"];
 
 		# Should we allow this download?
 		# If the download is allowed, show a download button, otherwise show a request button.
 		$downloadthissize=resource_download_allowed($ref,$sizes[$n]["id"],$resource["resource_type"]);
 
-
-		if ($direct_link_previews && $downloadthissize) {
-			if ($direct_link_previews_filestore){
-				$direct_link = "" . get_resource_path($ref,false,$sizes[$n]['id'],false,$sizes[$n]['extension']);
-				$headline = "<a href='$direct_link' target='dl_window_$ref'>$headline</a>";
-			} else {
-				$direct_link = $baseurl_short."pages/download.php?direct=1&ref=$ref&size=" . $sizes[$n]['id'] . "&ext=" . $sizes[$n]['extension'];
-				$headline = "<a href='$direct_link' target='dl_window_$ref'>$headline</a>";
-			}
-		}
+		$headline=$sizes[$n]['id']=='' ? str_replace_formatted_placeholder("%extension", $resource["file_extension"], $lang["originalfileoftype"])
+				: $sizes[$n]["name"];
+		if ($direct_link_previews && $downloadthissize)
+			$headline=make_download_preview_link($ref, $sizes[$n]);
 		if ($hide_restricted_download_sizes && !$downloadthissize && !checkperm("q"))
 			continue;
 
 		if ($table_headers_drawn==false) { ?>
 			<td><?php echo $lang["fileinformation"]?></td>
 			<td><?php echo $lang["filesize"]?></td>
-			<?php if ($userrequestmode==2 || $userrequestmode==3) { ?><td><?php echo $lang["price"] ?></td><?php } ?>
+			<?php if ($showprice) { ?><td><?php echo $lang["price"] ?></td><?php } ?>
 			<td class="textcenter"><?php echo $lang["options"]?></td>
 			</tr>
  			<?php
 			$table_headers_drawn=true;} ?>
 		<tr class="DownloadDBlend" id="DownloadBox<?php echo $n?>">
-		<td><h2><?php echo $headline?></h2>
-		<?php  if (is_numeric($sizes[$n]["width"])) { ?>
-		<p><?php echo $sizes[$n]["width"] . " x " . $sizes[$n]["height"] . " " . $lang["pixels"] . " "; if ($mp>=1) {echo "(" . $mp . " " . $lang["megapixel-short"] . ")"; } ?></p>
-		<p><?php echo $dpi_w . " " . $dpi_unit . " x " . $dpi_h . " " . $dpi_unit . " " . $lang["at-resolution"] . " " . $dpi ." " . $lang["ppi"]; ?></p></td>
-		<?php } ?>
-		
-		
-		<td><?php echo $sizes[$n]["filesize"]?></td>
-
-		<?php if ($userrequestmode==2 || $userrequestmode==3) {
-		# Display price for basket request modes
-		$price_id=$sizes[$n]["id"];if ($price_id=="") {$price_id="hpr";}
-		$price=999; # If price cannot be found
-		if (array_key_exists($price_id,$pricing)) {$price=$pricing[$price_id];}
-		
-		# Pricing adjustment hook (for discounts or other price adjustments plugin).
-		$priceadjust=hook("adjust_item_price","",array($price,$ref,$sizes[$n]["id"]));
-		if ($priceadjust!==false)
+		<td><h2><?php echo $headline?></h2><?php
+		if (is_numeric($sizes[$n]["width"]))
 			{
-			$price=$priceadjust;
+			echo get_size_info($sizes[$n]);
 			}
-		
-		 ?>
-		<td><?php echo $currency_symbol . " " . number_format($price,2) ?></td>
+		?></td><td><?php echo $sizes[$n]["filesize"]?></td>
+
+		<?php if ($showprice) {
+			?><td><?php echo get_display_price($ref, $sizes[$n]) ?></td>
 		<?php } ?>
 
 		<?php
 
-		if ($downloadthissize)
-			{
-			?>
-			<td class="DownloadButton">
-			<?php if (!$direct_download || $save_as)
-				{
-				if(!hook("downloadbuttonreplace"))
-					{
-					?><a id="downloadlink" <?php if (!hook("downloadlink","",array("ref=" . $ref . "&k=" . $k . "&size=" . $sizes[$n]["id"] . "&ext=" . $sizes[$n]["extension"]))) { ?>href="<?php echo $baseurl ?>/pages/terms.php?ref=<?php echo urlencode($ref)?>&search=<?php echo urlencode($search) ?>&k=<?php echo urlencode($k)?>&url=<?php echo urlencode("pages/download_progress.php?ref=" . $ref . "&size=" . $sizes[$n]["id"] . "&ext=" . $sizes[$n]["extension"] . "&k=" . $k . "&search=" . urlencode($search) . "&offset=" . $offset . "&archive=" . $archive . "&sort=".$sort."&order_by=" . urlencode($order_by))?>"<?php } ?> onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["action-download"]?></a>
-					<?php 
-					}
-				} 
-			else { ?>
-				<a id="downloadlink" href="#" onclick="directDownload('<?php echo $baseurl_short?>pages/download_progress.php?ref=<?php echo urlencode($ref) ?>&size=<?php echo $sizes[$n]['id']?>&ext=<?php echo $sizes[$n]['extension']?>&k=<?php echo urlencode($k)?>')"><?php echo $lang["action-download"]?></a>
-			<?php } // end if direct_download ?>
-			</td>
-			<?php
-			}
-		elseif (checkperm("q"))
-			{
-			?>
-			<?php if(!hook("resourcerequest")){?>
-			<td class="DownloadButton">
-			<?php if ($request_adds_to_collection) { ?>
-				<?php echo add_to_collection_link($ref,$search,"alert('" . $lang["requestaddedtocollection"] . "');",$sizes[$n]["id"]) ?>
-			<?php } else { ?>
-				<a href="<?php echo $baseurl_short?>pages/resource_request.php?ref=<?php echo urlencode($ref)?>&k=<?php echo getval("k","")?>" onClick="return CentralSpaceLoad(this,true);">
-			<?php } ?>
-			<?php echo $lang["action-request"]?></a></td>
-			<?php } ?>
-			<?php
-			}
-		else
-			{
-			# No access to this size, and the request functionality has been disabled. Show just 'restricted'.
-			?>
-			<td class="DownloadButton DownloadDisabled"><?php echo $lang["access1"]?></td>
-			<?php
-			}
+		add_download_column($ref, $sizes[$n], $downloadthissize);
 		?>
 		</tr>
 		<?php
