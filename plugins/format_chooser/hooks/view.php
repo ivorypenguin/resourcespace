@@ -69,7 +69,7 @@ function HookFormat_chooserViewReplacedownloadoptions()
 		if (is_numeric($sizes[$n]["width"]))
 			echo preg_replace('/^<p>/', ', ', get_size_info($sizes[$n]), 1);
 
-		?></p><td><?php echo strtoupper($resource["file_extension"]) ?></td><?php
+		?></p><td><?php echo str_replace_formatted_placeholder("%extension", $resource["file_extension"], $lang["field-fileextension"]) ?></td><?php
 
 		if ($showprice)
 			{
@@ -123,7 +123,7 @@ function HookFormat_chooserViewReplacedownloadoptions()
 		foreach ($format_chooser_output_formats as $format)
 			{
 			?><option value="<?php echo $format ?>" <?php if ($format == $defaultFormat) {
-				?>selected="selected"<?php } ?>><?php echo strtoupper($format) ?></option><?php
+				?>selected="selected"<?php } ?>><?php echo str_replace_formatted_placeholder("%extension", $format, $lang["field-fileextension"]) ?></option><?php
 			}
 
 		?></select></td>

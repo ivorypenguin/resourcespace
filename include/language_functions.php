@@ -221,7 +221,7 @@ function str_replace_formatted_placeholder($mixedplaceholder, $mixedreplace, $su
     else {$replace = array($mixedreplace);}
     for ($n = 0;$n<count($replace);$n++)
         {
-        $array_replace[$n] = array(strtoupper($replace[$n]), strtolower($replace[$n]), ucfirst($replace[$n]));
+        $array_replace[$n] = array(strtoupper($replace[$n]), strtolower($replace[$n]), ucfirst(strtolower($replace[$n])));
         }
 
     # Adds "?" to the arrays if required.

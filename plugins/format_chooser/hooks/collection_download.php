@@ -13,7 +13,7 @@ function HookFormat_chooserCollection_downloadReplaceuseoriginal()
 	<?php
 	foreach ($format_chooser_output_formats as $format)
 		{
-		?><option value="<?php echo $format ?>" <?php if ($format == $defaultFormat) { ?>selected="selected"<?php } ?>><?php echo strtoupper($format) ?></option><?php
+		?><option value="<?php echo $format ?>" <?php if ($format == $defaultFormat) { ?>selected="selected"<?php } ?>><?php echo str_replace_formatted_placeholder("%extension", $format, $lang["field-fileextension"]) ?></option><?php
 		}
 	?></select>
 	<div class="clearerleft"> </div></div><?php

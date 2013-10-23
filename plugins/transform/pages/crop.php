@@ -716,7 +716,7 @@ include "../../../include/header.php";
 					if (strtolower($theformat) == strtolower($orig_ext)) {
 						echo " selected";
 					}
-					echo ">" . str_replace_formatted_placeholder("%extension", $theformat, $lang["fileextension"]) . "&nbsp;</option>\n";
+					echo ">" . str_replace_formatted_placeholder("%extension", $theformat, $lang["field-fileextension"]) . "&nbsp;</option>\n";
 				}
 				?>
           </select>
