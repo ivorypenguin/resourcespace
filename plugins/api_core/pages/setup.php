@@ -57,8 +57,8 @@ $current_whitelists=sql_query("select u.username,u.fullname,ug.name groupname,w.
 <?php foreach ($current_whitelists as $whitelist){?>
 <tr>
 <td><?php echo $whitelist['ip_domain']?></td>
-<td><?php echo $whitelist['fullname']." (".$whitelist['groupname'].")"?></td>
-<td><?php echo $whitelist['apis']?></td>
+<td><?php echo $whitelist['fullname'] . " (" . lang_or_i18n_get_translated($whitelist['groupname'], "usergroup-") . ")";?></td>
+<td><?php echo ($whitelist['apis']=="all"?$lang['all']:$whitelist['apis'])?></td>
 <td><div class="ListTools"><a onclick="return confirm('<?php echo $lang['apicore_deletesure']?>')" href="<?php echo $baseurl_short?>plugins/api_core/pages/setup.php?delete=true&ref=<?php echo $whitelist['ref']?>">> <?php echo $lang['apicore_delete']?></a></div></td>
 </tr>
 <?php } ?>
