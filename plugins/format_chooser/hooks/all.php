@@ -11,7 +11,7 @@ function HookFormat_chooserAllGetdownloadurl($ref, $size, $ext, $page = 1, $alte
 	if (file_exists($path))
 		return false;
 
-	return $baseurl_short . '/plugins/format_chooser/pages/convert.php?ref=' . $ref . '&size='
+	return $baseurl_short . 'plugins/format_chooser/pages/convert.php?ref=' . $ref . '&size='
 			. $size . '&ext=' . $ext . '&page=' . $page . '&alt=' . $alternative;
 	}
 
