@@ -35,19 +35,29 @@ function HookLicensemanagerViewCustompanels()
 		<?php
 		foreach ($licenses as $license)
 			{
+			$license_usage_mediums = trim_array(explode(", ", $license["license_usage"]));
+			$translated_mediums = "";
 			?>
 			<tr>
 			<td><?php echo $license["ref"] ?></td>
 			<td><?php echo ($license["outbound"]?$lang["outbound"]:$lang["inbound"]) ?></td>
 			<td><?php echo $license["holder"] ?></td>
-			<td><?php echo $license["license_usage"] ?></td>
+			<td><?php
+				foreach ($license_usage_mediums as $medium)
+					{
+					$translated_mediums = $translated_mediums . lang_or_i18n_get_translated($medium, "license_usage-") . ", ";
+					}
+				$translated_mediums = substr($translated_mediums, 0, -2); # Remove the last ", "
+				echo $translated_mediums;
+				?>
+			</td>
 			<td><?php echo $license["description"] ?></td>
 			<td><?php echo nicedate($license["expires"]) ?></td>
 		
 			<?php if ($edit_access) { ?>
 			<td><div class="ListTools">
-			<a href="<?php echo $baseurl_short ?>plugins/licensemanager/pages/edit.php?ref=<?php echo $license["ref"] ?>&resource=<?php echo $ref ?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;Edit</a>
-			<a href="<?php echo $baseurl_short ?>plugins/licensemanager/pages/delete.php?ref=<?php echo $license["ref"] ?>&resource=<?php echo $ref ?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;Delete</a>
+			<a href="<?php echo $baseurl_short ?>plugins/licensemanager/pages/edit.php?ref=<?php echo $license["ref"] ?>&resource=<?php echo $ref ?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["action-edit"]?></a>
+			<a href="<?php echo $baseurl_short ?>plugins/licensemanager/pages/delete.php?ref=<?php echo $license["ref"] ?>&resource=<?php echo $ref ?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["action-delete"]?></a>
 			</div></td>
 			<?php } ?>
 						

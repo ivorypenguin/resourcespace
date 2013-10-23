@@ -77,7 +77,7 @@ include "../../../include/header.php";
 <div class="Question"><label><?php echo $lang["resourceid"]?></label><div class="Fixed"><?php echo htmlspecialchars($license["resource"])?></div>
 <div class="clearerleft"> </div></div>
 
-<div class="Question"><label><?php echo $lang["license_id"]?></label><div class="Fixed"><?php echo htmlspecialchars($ref)?></div>
+<div class="Question"><label><?php echo $lang["license_id"]?></label><div class="Fixed"><?php echo ($ref=="new"?$lang["licensemanager_new"]:htmlspecialchars($ref))?></div>
 <div class="clearerleft"> </div></div>
 
 <div class="Question"><label><?php echo $lang["type"]?></label>
@@ -98,7 +98,7 @@ $s=trim_array(explode(",",$license["license_usage"]));
 foreach ($license_usage_mediums as $medium)
 	{
 	?>
-	<input type="checkbox" name="license_usage[]" value="<?php echo $medium ?>" <?php if (in_array($medium, $s)) { ?>checked<?php } ?>>&nbsp;<?php echo $medium ?>
+	<input type="checkbox" name="license_usage[]" value="<?php echo $medium ?>" <?php if (in_array($medium, $s)) { ?>checked<?php } ?>>&nbsp;<?php echo lang_or_i18n_get_translated($medium, "license_usage-") ?>
 	&nbsp;
 	&nbsp;
 	&nbsp;
