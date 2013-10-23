@@ -153,7 +153,7 @@ function HookFormat_chooserViewReplacedownloadoptions()
 			var index = jQuery('select#size').find(":selected").val();
 			var selectedFormat = jQuery('select#format').find(":selected").val();
 			jQuery('a#convertDownload').attr('href', '<?php echo $baseurl_short
-					?>/pages/download_progress.php?ref=<?php echo $ref
+					?>pages/download_progress.php?ref=<?php echo $ref
 					?>&ext=' + selectedFormat.toLowerCase() + '&size=' + sizeInfo[index]['id']
 							+ '&search=<?php echo urlencode($search) ?>&offset=<?php echo $offset ?>'
 							+ '&k=<?php echo $k ?>&archive=<?php echo $archive ?>&sort='
