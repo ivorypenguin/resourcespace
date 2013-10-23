@@ -68,7 +68,7 @@ $available_sizes=array();
 function get_extension($resource, $size)
 	{
 	$pextension = $size == 'original' ? $resource["file_extension"] : 'jpg';
-	$replace_extension = hook('replacedownloadextension', '', array($pextension));
+	$replace_extension = hook('replacedownloadextension', '', array($resource, $pextension));
 	if (!empty($replace_extension))
 		return $replace_extension;
 

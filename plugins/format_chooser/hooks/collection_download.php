@@ -45,11 +45,19 @@ function HookFormat_chooserCollection_downloadSize_is_available($resource, $path
 	return $size!=$maxSize;
 	}
 
-function HookFormat_chooserCollection_downloadReplacedownloadextension($extension)
+function HookFormat_chooserCollection_downloadReplacedownloadextension($resource, $extension)
 	{
 	global $format_chooser_output_formats;
 
-	$ext = strtoupper(getvalescaped('ext', 'png'));
+	$inputFormat = $resource['file_extension'];
+
+	if (!supportsInputFormat($inputFormat))
+		{
+		# Do not replace the extension for this resource
+		return false;
+		}
+
+	$ext = strtoupper(getvalescaped('ext', getDefaultOutputFormat($inputFormat)));
 	if (!in_array($ext, $format_chooser_output_formats))
 		return false;
 
@@ -58,6 +66,12 @@ function HookFormat_chooserCollection_downloadReplacedownloadextension($extensio
 
 function HookFormat_chooserCollection_downloadReplacedownloadfile($resource, $size, $ext)
 	{
+	if (!supportsInputFormat($resource['file_extension']))
+		{
+		# Do not replace files we do not support
+		return false;
+		}
+
 	$baseDirectory = get_temp_dir() . '/format_chooser';
 	@mkdir($baseDirectory);
 
