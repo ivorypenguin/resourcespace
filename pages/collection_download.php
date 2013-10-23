@@ -64,6 +64,17 @@ if (is_array($modified_result)){$result=$modified_result;}
 #this array will store all the available downloads.
 $available_sizes=array();
 
+# get file extension from database or use jpg.
+function get_extension($resource, $size)
+	{
+	$pextension = $size == 'original' ? $resource["file_extension"] : 'jpg';
+	$replace_extension = hook('replacedownloadextension', '', array($pextension));
+	if (!empty($replace_extension))
+		return $replace_extension;
+
+	return $pextension;
+	}
+
 #build the available sizes array
 for ($n=0;$n<count($result);$n++)
 	{
@@ -79,17 +90,21 @@ for ($n=0;$n<count($result);$n++)
 	if (file_exists($p) && (($access==0) || ($access==1 && $restricted_full_download)) && resource_download_allowed($ref,'',$result[$n]['resource_type']))
 		{
 		$available_sizes['original'][]=$ref;
-		} 
-	
+		}
+
+	$pextension = get_extension($result[$n], $size);
+
 	# check for the availability of each size and load it to the available_sizes array
 	foreach ($sizes as $sizeinfo)
 		{
 		$size_id=$sizeinfo['id'];
-		# get file extension from database or use jpg.
-		$pextension = $size == 'original' ? $result[$n]["file_extension"] : 'jpg';
 		$p=get_resource_path($ref,true,$size_id,false,$pextension);
-		if (file_exists($p) && resource_download_allowed($ref,$size_id,$result[$n]['resource_type'])) $available_sizes[$size_id][]=$ref;
-		
+
+		if (resource_download_allowed($ref,$size_id,$result[$n]['resource_type']))
+			{
+			if (hook('size_is_available', '', array($result[$n], $p, $size_id)) || file_exists($p))
+				$available_sizes[$size_id][]=$ref;
+			}
 		}
 	}
 
@@ -132,39 +147,49 @@ if ($submitted != "")
 		# Only download resources with proper access level
 		if ($access==0 || $access=1)
 			{
-			$usesize=$size;
-			$pextension = ($size == 'original') ? $result[$n]["file_extension"] : 'jpg';
-			($size == 'original') ? $usesize="" : $usesize=$usesize;
+			$pextension = get_extension($result[$n], $size);
+			$usesize = ($size == 'original') ? "" : $usesize=$size;
 			$p=get_resource_path($ref,true,$usesize,false,$pextension,-1,1,$use_watermark);
 
-			if ((!file_exists($p)) && $useoriginal == 'yes' && resource_download_allowed($ref,'',$result[$n]['resource_type'])){
-				// this size doesn't exist, so we'll try using the original instead
-				$p=get_resource_path($ref,true,'',false,$result[$n]['file_extension'],-1,1,$use_watermark);
-				$pextension = $result[$n]['file_extension'];
-				$subbed_original_resources[] = $ref;
-				$subbed_original = true;
-			} else {
-				$subbed_original = false;
-			}
+			$subbed_original = false;
+			$target_exists = file_exists($p);
+			$replaced_file = false;
+
+			if (!$target_exists)
+				{
+				$new_file = hook('replacedownloadfile', '', array($result[$n], $usesize, $pextension));
+				if (!empty($new_file) && $p != $new_file)
+					{
+					$p = $new_file;
+					$deletion_array[] = $p;
+					$replaced_file = true;
+					}
+				else if ($useoriginal == 'yes' && resource_download_allowed($ref,'',$result[$n]['resource_type']))
+					{
+					// this size doesn't exist, so we'll try using the original instead
+					$p=get_resource_path($ref,true,'',false,$result[$n]['file_extension'],-1,1,$use_watermark);
+					$pextension = $result[$n]['file_extension'];
+					$subbed_original_resources[] = $ref;
+					$subbed_original = true;
+					}
+				$target_exists = file_exists($p);
+				}
 
 			# Check file exists and, if restricted access, that the user has access to the requested size.
-			if (((file_exists($p) && $access==0) || 
-				(file_exists($p) && $access==1 && 
+			if ((($target_exists && $access==0) ||
+				($target_exists && $access==1 &&
 					(image_size_restricted_access($size) || ($usesize='' && $restricted_full_download))) 
-					
 					) && resource_download_allowed($ref,$usesize,$result[$n]['resource_type']))
 				{
-				
 				$used_resources[]=$ref;
 				# when writing metadata, we take an extra security measure by copying the files to tmp
 				$tmpfile=write_metadata($p,$ref,$id); // copies file
 				if($tmpfile!==false && file_exists($tmpfile)){
 					$p=$tmpfile; // file already in tmp, just rename it
-				}	
-				else {
+				} else if (!$replaced_file) {
 					$copy=true; // copy the file from filestore rather than renaming
 				}
-	
+
 				# if the tmpfile is made, from here on we are working with that. 
 				
 				# If using original filenames when downloading, copy the file to new location so the name is included.
@@ -187,7 +212,7 @@ if ($submitted != "")
 						# also, set extension to "" if the original filename didn't have an extension (exiftool identification of filetypes)
 						$pathparts=pathinfo($filename);
 						if (isset($pathparts['extension'])){
-						if (strtolower($pathparts['extension'])==$pextension){$pextension=$pathparts['extension'];}	
+							if (strtolower($pathparts['extension'])==$pextension){$pextension=$pathparts['extension'];}
 						} else {$pextension="jpg";}	
 						if ($usesize!=""&&!$subbed_original){$append="-".$usesize;}else {$append="";}
 						$basename_minus_extension=remove_extension($pathparts['basename']);
@@ -431,24 +456,22 @@ if ($submitted != "")
 
 	// Now we need to loop through the file and echo out chunks of file data
 	while($sent < $filesize)
-        {
-	        echo fread($handle, $blocksize);
-       		$sent += $blocksize;
-        }
-	
+		{
+		echo fread($handle, $blocksize);
+		$sent += $blocksize;
+		}
 
     # Remove archive.
 	unlink($zipfile);
-	
-	if ($use_zip_extension){
-				
-				unlink($progress_file);
-				rmdir(get_temp_dir(false,$id));
-				collection_log($collection,"Z","","-".$size);
-	}
-	
-	
-	exit();	
+
+	if ($use_zip_extension)
+		{
+		unlink($progress_file);
+		rmdir(get_temp_dir(false,$id));
+		collection_log($collection,"Z","","-".$size);
+		}
+
+	exit();
 	}
 include "../include/header.php";
 
@@ -526,68 +549,72 @@ function ajax_download()
 
 <?php 
 hook("collectiondownloadmessage");
-?>
 
+if (!hook('replacesizeoptions'))
+	{
+?>
 <div class="Question">
 <label for="downloadsize"><?php echo $lang["downloadsize"]?></label>
 <div class="tickset">
 <?php
 
-$maxaccess=collection_max_access($collection);
-$sizes=get_all_image_sizes(false,$maxaccess>=1);
+	$maxaccess=collection_max_access($collection);
+	$sizes=get_all_image_sizes(false,$maxaccess>=1);
 
-$available_sizes=array_reverse($available_sizes,true);
+	$available_sizes=array_reverse($available_sizes,true);
 
-# analyze available sizes and present options
+	# analyze available sizes and present options
 ?><select name="size" class="stdwidth" id="downloadsize"><?php
 
-if (array_key_exists('original',$available_sizes)) {
-    ?><option value="original"><?php
-    $qty_originals = count($available_sizes['original']);
-    echo $lang['original'] . " (" . $qty_originals . " " . $lang["of"] . " " . count($result) . " ";
-    switch ($qty_originals) {
-    case 0:
-        echo $lang["are_available-0"];
-        break;
-    case 1:
-        echo $lang["are_available-1"];
-        break;
-    default:
-        echo $lang["are_available-2"];
-        break;
-    }
-    echo ")";
+function display_size_option($sizeID, $sizeName)
+	{
+	global $available_sizes, $lang, $result;
+    ?><option value="<?php echo htmlspecialchars($sizeID) ?>"><?php
+	echo $sizeName;
+    $availableCount = count($available_sizes[$sizeID]);
+	$resultCount = count($result);
+	if ($availableCount != $resultCount)
+		{
+		echo " (" . $availableCount . " " . $lang["of"] . " " . $resultCount . " ";
+		switch ($availableCount)
+			{
+			case 0:
+				echo $lang["are_available-0"];
+				break;
+			case 1:
+				echo $lang["are_available-1"];
+				break;
+			default:
+				echo $lang["are_available-2"];
+				break;
+			}
+		echo ")";
+		}
     ?></option><?php
-} ?>
+	}
 
-<?php
+if (array_key_exists('original',$available_sizes))
+	display_size_option('original', $lang['original']);
 
-foreach ($available_sizes as $key=>$value) {
-    foreach($sizes as $size){if ($size['id']==$key) {$sizename=$size['name'];}}
-	if ($key!='original') {
-	    ?><option value="<?php echo htmlspecialchars($key) ?>"><?php
-	    $qty_values = count($value);
-        echo $sizename . " (" . $qty_values . " " . $lang["of"] . " " . count($result) . " ";
-        switch ($qty_values) {
-        case 0:
-            echo $lang["are_available-0"];
-            break;
-        case 1:
-            echo $lang["are_available-1"];
-            break;
-        default:
-            echo $lang["are_available-2"];
-            break;
-        }
-        echo ")";
-        ?></option><?php
+foreach ($available_sizes as $key=>$value)
+	{
+    foreach($sizes as $size)
+		{
+		if ($size['id']==$key)
+			{
+			display_size_option($key, $size['name']);
+			break;
+			}
+		}
     }
-} ?></select>
+?></select>
 
 <div class="clearerleft"> </div></div>
-<div class="clearerleft"> </div></div>
-
-<div class="Question">
+<div class="clearerleft"> </div></div><?php
+	}
+if (!hook('replaceuseoriginal'))
+	{
+?><div class="Question">
 <label for="use_original"><?php echo $lang['use_original_if_size']; ?> <br /><?php
         if (isset($qty_originals))
             {
@@ -607,8 +634,8 @@ foreach ($available_sizes as $key=>$value) {
             }
         ?></label><input type=checkbox id="use_original" name="use_original" value="yes" >
 <div class="clearerleft"> </div></div>
-
-<?php 
+<?php
+	}
 
 if ($zipped_collection_textfile=="true") { ?>
 <div class="Question">
