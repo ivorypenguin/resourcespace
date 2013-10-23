@@ -1,5 +1,7 @@
 <?php
 
+include_once dirname(__FILE__) . "/../include/utility.php";
+
 function HookFormat_chooserAllGetdownloadurl($ref, $size, $ext, $page = 1, $alternative = -1)
 	{
 	global $baseurl_short;

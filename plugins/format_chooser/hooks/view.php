@@ -1,7 +1,5 @@
 <?php
 
-include_once dirname(__FILE__) . "/../include/utility.php";
-
 function show_table_headers($showprice)
 	{
 	global $lang;
@@ -120,7 +118,8 @@ function HookFormat_chooserViewReplacedownloadoptions()
 
 		foreach ($format_chooser_output_formats as $format)
 			{
-			?><option value="<?php echo $format ?>" <?php if ($format==$defaultFormat) { ?>selected="selected"<?php } ?>><?php echo strtoupper($format) ?></option><?php
+			?><option value="<?php echo $format ?>" <?php if ($format == $defaultFormat) {
+				?>selected="selected"<?php } ?>><?php echo strtoupper($format) ?></option><?php
 			}
 
 		?></select></td>

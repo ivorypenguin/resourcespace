@@ -1,35 +1,69 @@
 <?php
 
-include dirname(__FILE__) . "/../include/utility.php";
+include_once dirname(__FILE__) . "/../include/utility.php";
 
-function HookLightbox_previewSearchReplacefullscreenpreviewicon()
+function HookFormat_chooserCollection_downloadReplaceuseoriginal()
 	{
-	global $baseurl_short, $ref, $result, $n, $k, $search, $offset, $sort, $order_by, $archive,
-			$lang, $showkeypreview, $value;
+	global $format_chooser_output_formats, $lang;
+	$defaultFormat = getDefaultOutputFormat();
 
-	$url = getPreviewURL($result[$n]);
-	if ($url === false)
-		return false;
-
-	$showkeypreview = true;
-
-	# Replace the link to add the 'previewlink' ID
-	?>
-		<span class="IconPreview"><a id="previewlink<?php echo $ref ?>" href="<?php
-			echo $baseurl_short?>pages/preview.php?from=search&ref=<?php
-			echo urlencode($ref)?>&ext=<?php echo $result[$n]["preview_extension"]?>&search=<?php
-			echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php
-			echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php
-			echo urlencode($archive)?>&k=<?php echo urlencode($k)?>" title="<?php
-			echo $lang["fullscreenpreview"]?>"><img src="<?php echo $baseurl_short?>gfx/interface/sp.gif" alt="<?php echo $lang["fullscreenpreview"]?>" width="22" height="12" /></a></span>
+	?><div class="Question">
+	<label for="downloadformat"><?php echo $lang["downloadformat"]?></label>
+	<select name="ext" class="stdwidth" id="downloadformat">
 	<?php
-	setLink('#previewlink' . $ref, $url, $value);
+	foreach ($format_chooser_output_formats as $format)
+		{
+		?><option value="<?php echo $format ?>" <?php if ($format == $defaultFormat) { ?>selected="selected"<?php } ?>><?php echo strtoupper($format) ?></option><?php
+		}
+	?></select>
+	<div class="clearerleft"> </div></div><?php
+
 	return true;
 	}
 
-function HookLightbox_previewSearchEndofsearchpage()
+function HookFormat_chooserCollection_downloadSize_is_available($resource, $path, $size)
 	{
-	addLightBox('.IconPreview a');
+	$sizes = get_all_image_sizes();
+
+	# Filter out the largest one
+	$maxSize = null;
+	$maxWidth = 0;
+	for ($n = 0; $n < count($sizes); $n++)
+		{
+		if ($maxWidth < (int)$sizes[$n]['width'])
+			{
+			$maxWidth = (int)$sizes[$n]['width'];
+			$maxSize = $sizes[$n]['id'];
+			}
+		}
+	return $size!=$maxSize;
+	}
+
+function HookFormat_chooserCollection_downloadReplacedownloadextension($extension)
+	{
+	global $format_chooser_output_formats;
+
+	$ext = strtoupper(getvalescaped('ext', 'png'));
+	if (!in_array($ext, $format_chooser_output_formats))
+		return false;
+
+	return strtolower($ext);
+	}
+
+function HookFormat_chooserCollection_downloadReplacedownloadfile($resource, $size, $ext)
+	{
+	$baseDirectory = get_temp_dir() . '/format_chooser';
+	@mkdir($baseDirectory);
+
+	$target = $baseDirectory . '/' . getTargetFilename($resource['ref'], $ext, $size);
+
+	$format = getImageFormat($size);
+	$width = (int)$format['width'];
+	$height = (int)$format['height'];
+
+	set_time_limit(0);
+	convertImage($resource, 1, -1, $target, $width, $height);
+	return $target;
 	}
 
 ?>

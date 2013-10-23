@@ -14,7 +14,11 @@ function getDefaultOutputFormat($inputFormat = null)
 
 	# Use resource format by default if none given
 	if (empty($inputFormat) || !in_array($inputFormat, $format_chooser_output_formats))
+		{
+		if (in_array('JPG', $format_chooser_output_formats))
+			return 'JPG';
 		return $format_chooser_output_formats[0];
+		}
 
 	return $inputFormat;
 	}
@@ -49,6 +53,17 @@ function getTargetFilename($ref, $ext, $size)
 
 	return $filename . (empty($size) ? '' : '-' . strtolower($size)) . '.'
 			. strtolower($ext);
+	}
+
+/**
+ * Returns the size record from the database specified by its ID.
+ */
+function getImageFormat($size)
+	{
+	$results = sql_query("select * from preview_size where id='" . escape_check($size) . "'");
+	if (empty($results))
+		die('Unknown size');
+	return $results[0];
 	}
 
 /**

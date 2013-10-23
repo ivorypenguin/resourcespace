@@ -9,8 +9,8 @@ include_once dirname(__FILE__) . "/../include/utility.php";
 
 $ref = getvalescaped('ref', 0, true);
 $size = getvalescaped('size', '');
-$page = getvalescaped('page', 0, true);
-$alternative = getvalescaped('alt', 0, true);
+$page = getvalescaped('page', 1, true);
+$alternative = getvalescaped('alt', -1, true);
 
 $resource = get_resource_data($ref);
 
@@ -25,11 +25,9 @@ $height = getvalescaped('height', 0, true);
 
 if ($width == 0 && $height == 0)
 	{
-	$results = sql_query("select width, height from preview_size where id='" . escape_check($size) . "'");
-	if (empty($results))
-		die('Unknown size');
-	$width = (int)$results[0]['width'];
-	$height = (int)$results[0]['height'];
+	$format = getImageFormat($size);
+	$width = (int)$format['width'];
+	$height = (int)$format['height'];
 	}
 
 $ext = getvalescaped('ext', getDefaultOutputFormat());
