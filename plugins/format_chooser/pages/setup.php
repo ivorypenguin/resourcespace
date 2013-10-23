@@ -12,8 +12,8 @@ $plugin_name = 'format_chooser';
 $page_heading = $lang['format_chooser_configuration'];
 
 // Build the config page
-$page_def[] = config_add_text_list_input('format_chooser_input_formats', $lang['input_formats']);
-$page_def[] = config_add_text_list_input('format_chooser_output_formats', $lang['output_formats']);
+$page_def[] = config_add_text_list_input('format_chooser_input_formats', $lang['format_chooser_input_formats']);
+$page_def[] = config_add_text_list_input('format_chooser_output_formats', $lang['format_chooser_output_formats']);
 
 $upload_status = config_gen_setup_post($page_def, $plugin_name);
 include '../../../include/header.php';
