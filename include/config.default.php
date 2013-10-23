@@ -1619,6 +1619,10 @@ $staticsync_alternatives_suffix="_alternatives";
 $staticsync_prefer_embedded_title = true;
 
 # End of StaticSync settings
+
+
+# Show tabs on the edit/upload page. Disables collapsible sections
+$tabs_on_edit=false;
 # ------------------------------------------------------------------------------------------------------------------
 
 

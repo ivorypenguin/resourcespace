@@ -21,6 +21,9 @@ if (substr($order_by,0,5)=="field"){$default_sort="ASC";}
 $sort=getval("sort",$default_sort);
 
 $archive=getvalescaped("archive",0,true);
+global $tabs_on_edit;
+$collapsible_sections=true;
+if($tabs_on_edit){$collapsible_sections=false;}
 
 $errors=array(); # The results of the save operation (e.g. required field messages)
 
@@ -544,8 +547,8 @@ for ($n=0;$n<count($types);$n++)
 <?php } else {
 # Multiple method of changing resource type.
  ?>
-<h1 class="CollapsibleSectionHead"><?php echo $lang["resourcetype"] ?></h1>
-<div class="CollapsibleSection" id="ResourceTypeSection<?php if ($ref==-1) echo "Upload"; ?>"><input name="editresourcetype" id="editresourcetype" type="checkbox" value="yes" onClick="var q=document.getElementById('editresourcetype_question');if (this.checked) {q.style.display='block';alert('<?php echo $lang["editallresourcetypewarning"] ?>');} else {q.style.display='none';}">&nbsp;<label for="editresourcetype"><?php echo $lang["resourcetype"] ?></label>
+<h1 <?php ($collapsible_sections)?"class=\"CollapsibleSectionHead\"":""?>><?php echo $lang["resourcetype"] ?></h1>
+<div <?php ($collapsible_sections)?"class=\"CollapsibleSection\"":""?> id="ResourceTypeSection<?php if ($ref==-1) echo "Upload"; ?>"><input name="editresourcetype" id="editresourcetype" type="checkbox" value="yes" onClick="var q=document.getElementById('editresourcetype_question');if (this.checked) {q.style.display='block';alert('<?php echo $lang["editallresourcetypewarning"] ?>');} else {q.style.display='none';}">&nbsp;<label for="editresourcetype"><?php echo $lang["resourcetype"] ?></label>
 <div class="Question" style="display:none;" id="editresourcetype_question">
 <label for="resourcetype"><?php echo $lang["resourcetype"]?></label>
 <select name="resource_type" id="resourcetype" class="stdwidth">
@@ -572,7 +575,7 @@ if ($enable_copy_data_from && !$multiple && !checkperm("F*"))
 	<label for="copyfrom"><?php echo $lang["batchcopyfrom"]?></label>
 	<input class="stdwidth" type="text" name="copyfrom" id="copyfrom" value="" style="width:80px;">
 	<input type="submit" name="copyfromsubmit" value="<?php echo $lang["copy"]?>">
-	</div>
+	</div><!-- end of question_copyfrom -->
 	<?php
 	}
 
@@ -595,7 +598,7 @@ if (isset($metadata_template_resource_type) && !$multiple && !checkperm("F*"))
 	?>
 	</select>
 	<input type="submit" class="medcomplementwidth" name="copyfromsubmit" value="<?php echo $lang["action-select"]?>">
-	</div>
+	</div><!-- end of question_metadatatemplate --> 
 	<?php
 	}
 
@@ -618,18 +621,18 @@ if (getval("copyfrom","")!="")
 	if ($copyfrom_access!=2) # Do not allow confidential resources (or at least, confidential to that user) to be copied from
 		{
 		$use=$copyfrom;
-		$original_fields=get_resource_field_data($ref,$multiple,true);
+		$original_fields=get_resource_field_data($ref,$multiple,true,-1,"",$tabs_on_edit);
 		}
 	}
 
 if (getval("metadatatemplate","")!="")
 	{
 	$use=getvalescaped("metadatatemplate","");
-	$original_fields=get_resource_field_data($ref,$multiple,true);
+	$original_fields=get_resource_field_data($ref,$multiple,true,-1,"",$tabs_on_edit);
 	}
 
 # Load resource data
-$fields=get_resource_field_data($use,$multiple,!hook("customgetresourceperms"),$originalref);
+$fields=get_resource_field_data($use,$multiple,!hook("customgetresourceperms"),$originalref,"",$tabs_on_edit);
 
 # if this is a metadata template, set the metadata template title field at the top
 if (isset($metadata_template_resource_type)&&(isset($metadata_template_title_field)) && $resource["resource_type"]==$metadata_template_resource_type){
@@ -879,10 +882,9 @@ function display_multilingual_text_field($field)
 	?></table><?php
 	}
 
-function display_field($n, $field)
+function display_field($n, $field, $newtab=false)
 	{
-	global $use, $ref, $original_fields, $multilingual_text_fields, $multiple, $lastrt,
-			$is_template, $language, $lang, $blank_edit_template, $edit_autosave, $errors;
+	global $use, $ref, $original_fields, $multilingual_text_fields, $multiple, $lastrt,$is_template, $language, $lang, $blank_edit_template, $edit_autosave, $errors, $tabs_on_edit,$collapsible_sections;
 
 	$name="field_" . $field["ref"];
 	$value=$field["value"];
@@ -914,7 +916,7 @@ function display_field($n, $field)
 
 	if ($multiple) {$value="";} # Blank the value for multi-edits.
 
-	if ($field["resource_type"]!=$lastrt && $lastrt!=-1)
+	if ($field["resource_type"]!=$lastrt && $lastrt!=-1 && $collapsible_sections)
 		{
 		?></div><h1  class="CollapsibleSectionHead" id="resource_type_properties"><?php echo htmlspecialchars(get_resource_type_name($field["resource_type"]))?> <?php echo $lang["properties"]?></h1><div class="CollapsibleSection" id="ResourceProperties<?php if ($ref==-1) echo "Upload"; ?><?php echo $field["resource_type"]; ?>Section"><?php
 		}
@@ -962,7 +964,7 @@ function display_field($n, $field)
 		</select>
 		</div>
 
-		<div class="Question" id="findreplace_<?php echo $n?>" style="display:none;border-top:none;">
+		<div class="Question" <?php if($newtab){?> style="border-top:none;"<?php } ?>  id="findreplace_<?php echo $n?>">
 		<label>&nbsp;</label>
 		<?php echo $lang["find"]?> <input type="text" name="find_<?php echo $field["ref"]?>" class="shrtwidth">
 		<?php echo $lang["andreplacewith"]?> <input type="text" name="replace_<?php echo $field["ref"]?>" class="shrtwidth">
@@ -971,7 +973,7 @@ function display_field($n, $field)
 		}
 	?>
 
-	<div class="Question" id="question_<?php echo $n?>" <?php if ($multiple || !$displaycondition) {?>style="display:none;border-top:none;"<?php } ?>>
+	<div class="Question"<?php if($newtab){?> style="border-top:none;"<?php } ?> id="question_<?php echo $n?>" <?php if ($multiple || !$displaycondition) {?>style="display:none;border-top:none;"<?php } ?>>
 	<label for="<?php echo htmlspecialchars($name)?>"><?php if (!$multiple) {?><?php echo htmlspecialchars($field["title"])?> <?php if (!$is_template && $field["required"]==1) { ?><sup>*</sup><?php } ?><?php } ?></label>
 
 	<?php
@@ -1025,16 +1027,27 @@ function display_field($n, $field)
 		}
 	?>
 	<div class="clearerleft"> </div>
-	</div>
+	</div><!-- end of question_<?php echo $n?> div -->
 	<?php
 	hook('afterfielddisplay', '', array($n, $field));
 	}
 
 ?>
 </div>
-<div id="CollapsibleSections">
 <?php hook('editbeforesectionhead');
+
+global $collapsible_sections;
+if($collapsible_sections)
+	{
+	?>
+	<div id="CollapsibleSections">
+	<?php
+	}
+
 $display_any_fields=false;
+$fieldcount=0;
+$tabname="";
+$tabcount=0;
 for ($n=0;$n<count($fields);$n++)
 	{
 	if (is_field_displayed($fields[$n]))
@@ -1045,18 +1058,115 @@ for ($n=0;$n<count($fields);$n++)
 	}
 if ($display_any_fields)
 	{
-	?><h1  class="CollapsibleSectionHead" id="ResourceMetadataSectionHead"><?php echo $lang["resourcemetadata"]?></h1><?php
+	?><h1  <?php if($collapsible_sections){echo'class="CollapsibleSectionHead"';}?> id="ResourceMetadataSectionHead"><?php echo $lang["resourcemetadata"]?></h1><?php
+	?><div <?php if($collapsible_sections){echo'class="CollapsibleSection"';}?> id="ResourceMetadataSection<?php if ($ref<0) echo "Upload"; ?>"><?php
 	}
-?><div class="CollapsibleSection" id="ResourceMetadataSection<?php if ($ref==-1) echo "Upload"; ?>"><?php
+
+if($tabs_on_edit)
+	{
+	#  -----------------------------  Draw tabs ---------------------------
+	$tabname="";
+	$tabcount=0;
+	if (count($fields)>0 && $fields[0]["tab_name"]!="")
+		{ 
+		?>
+		
+		<?php
+		$extra="";
+		$tabname="";
+		$tabcount=0;
+		$tabtophtml="";
+		for ($n=0;$n<count($fields);$n++)
+			{	
+			$value=$fields[$n]["value"];
+
+			# draw new tab?
+			if ($tabname!=$fields[$n]["tab_name"] && is_field_displayed($fields[$n]))
+				{
+				if($tabcount==0){$tabtophtml.="<div class=\"BasicsBox\" id=\"BasicsBoxTabs\"><div class=\"TabBar\">";}
+				$tabtophtml.="<div id=\"tabswitch" . $tabcount . "\" class=\"Tab";
+				if($tabcount==0){$tabtophtml.=" TabSelected ";}
+				$tabtophtml.="\"><a href=\"#\" onclick=\"SelectTab(" . $tabcount . ");return false;\">" .  i18n_get_translated($fields[$n]["tab_name"]) . "</a></div>";
+				$tabcount++;
+				$tabname=$fields[$n]["tab_name"];
+				}
+			}
+			
+		if ($tabcount>1)
+			{
+			echo $tabtophtml;
+			echo "</div><!-- end of TabBar -->";
+			}
+		
+		if ($tabcount>1)
+			{?>
+			<script type="text/javascript">
+			function SelectTab(tab)
+				{
+				// Deselect all tabs
+				<?php for ($n=0;$n<$tabcount;$n++) { ?>
+				document.getElementById("tab<?php echo $n?>").style.display="none";
+				document.getElementById("tabswitch<?php echo $n?>").className="Tab";
+				<?php } ?>
+				document.getElementById("tab" + tab).style.display="block";
+				document.getElementById("tabswitch" + tab).className="Tab TabSelected";
+				}
+			</script>
+			<?php
+			}
+		}
+
+	
+	if ($tabcount>1)
+		{
+		?>
+		<div id="tab0" class="TabbedPanel<?php if ($tabcount>0) { ?> StyledTabbedPanel<?php } ?>">
+		<div class="clearerleft"> </div>
+		<div class="TabPanelInner">
+			
+		<?php
+		}
+	}
+
+
+$tabname="";
+$tabcount=0;	
+
 for ($n=0;$n<count($fields);$n++)
 	{
 	# Should this field be displayed?
 	if (is_field_displayed($fields[$n]))
 		{
-		display_field($n, $fields[$n]);
+		$newtab=false;	
+		if($n==0 && $tabs_on_edit){$newtab=true;}
+		# draw new tab panel?
+		if ($tabs_on_edit && ($tabname!=$fields[$n]["tab_name"]) && ($fieldcount>0))
+			{
+			$tabcount++;
+			# Also display the custom formatted data $extra at the bottom of this tab panel.
+			?><div class="clearerleft"> </div><?php echo $extra?></div><!-- end of TabPanelInner --></div><!-- end of TabbedPanel --><div class="TabbedPanel StyledTabbedPanel" style="display:none;" id="tab<?php echo $tabcount?>"><div class="TabPanelInner"><?php	
+			$extra="";
+			$newtab=true;
+			}
+		$tabname=$fields[$n]["tab_name"];
+		$fieldcount++;
+		display_field($n, $fields[$n], $newtab);
 		}
 	}
 
+	
+
+if ($tabs_on_edit && $tabcount>0)
+	{
+	?>
+	<div class="clearerleft"> </div>
+	</div><!-- end of TabPanelInner -->
+	</div><!-- end of TabbedPanel -->
+	</div><!-- end of Tabs BasicsBox -->
+	<?php
+	}
+	
+	
 # Add required_fields_exempt so it is submitted with POST
 echo " <input type=hidden name=\"exemptfields\" id=\"exemptfields\" value=\"" . implode(",",$required_fields_exempt) . "\">";	
 
@@ -1101,11 +1211,11 @@ if (!checkperm("F*")&&!hook("editstatushide")) # Only display Status / Access / 
         	{
 	        if ($enable_related_resources && ($multiple || $ref>0)) # Showing relationships
 	        	{
-	        	?></div><h1 class="CollapsibleSectionHead" id="StatusRelationshipsSectionHead"><?php echo $lang["statusandrelationships"]?></h1><div class="CollapsibleSection" id="StatusRelationshipsSection<?php if ($ref==-1) echo "Upload"; ?>"><?php
+	        	?></div><!-- end of ResourceMetadataSection --><h1 <?php ($collapsible_sections)?"class=\"CollapsibleSectionHead\"":""?> id="StatusRelationshipsSectionHead"><?php echo $lang["statusandrelationships"]?></h1><div <?php ($collapsible_sections)?"class=\"CollapsibleSection\"":""?> id="StatusRelationshipsSection<?php if ($ref==-1) echo "Upload"; ?>"><?php
 		        }
 		    else
 		    	{
-	        	?></div><h1 class="CollapsibleSectionHead"><?php echo $lang["status"]?></h1><div class="CollapsibleSection" id="StatusSection<?php if ($ref==-1) echo "Upload"; ?>"><?php # Not showing relationships
+	        	?></div><!-- end of ResourceMetadataSection --><h1 <?php ($collapsible_sections)?"class=\"CollapsibleSectionHead\"":""?>><?php echo $lang["status"]?></h1><div <?php ($collapsible_sections)?"class=\"CollapsibleSection\"":""?> id="StatusSection<?php if ($ref==-1) echo "Upload"; ?>"><?php # Not showing relationships
 		    	}
 		    }
 		    
@@ -1242,7 +1352,7 @@ if (false && !$disable_geocoding)
 	{
 	# Multiple method of changing location.
 	 ?>
-	</div><h1  class="CollapsibleSectionHead" id="location_title"><?php echo $lang["location-title"] ?></h1><div class="CollapsibleSection" id="LocationSection<?php if ($ref==-1) echo "Upload"; ?>">
+	</div><h1 <?php ($collapsible_sections)?"class=\"CollapsibleSectionHead\"":""?> id="location_title"><?php echo $lang["location-title"] ?></h1><div <?php ($collapsible_sections)?"class=\"CollapsibleSection\"":""?> id="LocationSection<?php if ($ref==-1) echo "Upload"; ?>">
 	<div><input name="editlocation" id="editlocation" type="checkbox" value="yes" onClick="var q=document.getElementById('editlocation_question');if (this.checked) {q.style.display='block';} else {q.style.display='none';}">&nbsp;<label for="editlocation"><?php echo $lang["location"] ?></label></div>
 	<div class="Question" style="display:none;" id="editlocation_question">
 	<label for="location"><?php echo $lang["latlong"]?></label>
@@ -1319,8 +1429,5 @@ if (!$multiple && $ref>0 &&!hook("dontshoweditnav")) {EditNav();}
     }
 
 hook("autolivejs");
-?>
-</div>
-<?php
 include "../include/footer.php";
 ?>
