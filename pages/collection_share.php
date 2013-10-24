@@ -16,37 +16,55 @@ if ($bypass_share_screen)
 
 $collection=get_collection($ref);
 
-# Process deletion of access keys
-if (getval("deleteaccess","")!="")
-	{
-	delete_collection_access_key($ref,getvalescaped("deleteaccess",""));
-	}
+#Check if sharing allowed
+if (!$allow_share) {
+        $show_error=true;
+        $error=$lang["error-permissiondenied"];
+        }
+
 
 #Check if any resources are not approved
 if (!$collection_allow_not_approved_share && !is_collection_approved($ref)) {
-	$show_error=true;
-	$error=$lang["notapprovedsharecollection"];
-	}
+        $show_error=true;
+        $error=$lang["notapprovedsharecollection"];
+        }
+
 
 # Get min access to this collection
 $minaccess=collection_min_access($ref);
 
 if ($minaccess>=1 && !$restricted_share) # Minimum access is restricted or lower and sharing of restricted resources is not allowed. The user cannot share this collection.
-	{
-	$show_error=true;
+        {
+        $show_error=true;
     $error=$lang["restrictedsharecollection"];
-	}
+        }
 
 if (!$collection_allow_empty_share && count(get_collection_resources($ref))==0) # Sharing an empty collection?
-	{
-	$show_error=true;
+        {
+        $show_error=true;
     $error=$lang["cannotshareemptycollection"];
-	}
+        }
+
+
+
+# Process deletion of access keys
+if (getval("deleteaccess","")!="" && !$show_error)
+        {
+        delete_collection_access_key($ref,getvalescaped("deleteaccess",""));
+        }
 
 
 include "../include/header.php";
 ?>
 
+
+<?php if (isset($show_error)){?>
+    <script type="text/javascript">
+    alert('<?php echo $error;?>');
+        history.go(-1);
+    </script><?php
+    exit();}
+?>
 
 <div class="BasicsBox"> 
 <form method=post id="collectionform" action="<?php echo $baseurl_short?>pages/collection_share.php">
@@ -55,16 +73,6 @@ include "../include/header.php";
 <input type="hidden" name="generateurl" id="generateurl" value="">
 
 <h1><?php echo str_replace("%collectionname", i18n_get_collection_name($collection), $lang["sharecollection-name"]);?></h1>
-
-<?php if (isset($show_error)){?>
-    <script type="text/javascript">
-    alert('<?php echo $error;?>');
-    	history.go(-1);
-    </script><?php
-    exit();}
-?>
-
-
 
 <div class="VerticalNav">
 <ul>

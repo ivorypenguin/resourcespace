@@ -53,7 +53,36 @@ else
 	$collection=get_collection($ref);if ($collection===false) {exit("Collection not found.");}
 		}
 	}
+	
+#Check if sharing allowed
+if (!$allow_share) {
+        $show_error=true;
+        $error=$lang["error-permissiondenied"];
+        }
+	
+#Check if any resources are not approved
+if (!$collection_allow_not_approved_share && !is_collection_approved($ref))
+	{	
+	$show_error=true;
+    $error=$lang["notapprovedsharecollection"];
+	}
+	
+# Get min access to this collection
+$minaccess=collection_min_access($ref);
 
+if ($minaccess>=1 && !$restricted_share) # Minimum access is restricted or lower and sharing of restricted resources is not allowed. The user cannot share this collection.
+	{
+	$show_error=true;
+    $error=$lang["restrictedsharecollection"];
+	}
+	
+if (isset($show_error)){?>
+    <script type="text/javascript">
+    alert('<?php echo $error;?>');
+        history.go(-1);
+    </script><?php
+    exit();}
+	
 $errors="";
 if (getval("save","")!="")
 	{
@@ -86,32 +115,6 @@ if (getval("save","")!="")
 		}
 	}
 
-
-#Check if any resources are not approved
-if (!$collection_allow_not_approved_share && !is_collection_approved($ref))
-	{
-	?>
-	<script type="text/javascript">
-	alert("<?php echo $lang["notapprovedsharecollection"]?>");
-	history.go(-1);
-	</script>
-	<?php
-	exit();
-	}
-
-# Get min access to this collection
-$minaccess=collection_min_access($ref);
-
-if ($minaccess>=1 && !$restricted_share) # Minimum access is restricted or lower and sharing of restricted resources is not allowed. The user cannot share this collection.
-	{
-	?>
-	<script type="text/javascript">
-	alert("<?php echo $lang["restrictedsharecollection"]?>");
-	history.go(-1);
-	</script>
-	<?php
-	exit();
-	}
 
 if ($collection_dropdown_user_access_mode){
 $users=get_users();
