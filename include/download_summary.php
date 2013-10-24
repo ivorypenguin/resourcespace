@@ -14,7 +14,7 @@ foreach ($download_summary as $usage)
 
 ?>
 
-<div class="RecordDownload" id="RecordDownload" style="margin-right:10px;">
+<div class="RecordDownload" id="RecordDownloadSummary" style="margin-right:10px;">
 <div class="RecordDownloadSpace">
 
 <h2><?php echo $lang["usagehistory"] ?></h2>
