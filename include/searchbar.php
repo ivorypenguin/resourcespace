@@ -223,7 +223,8 @@ if (!$basic_simple_search)
 
 	if (!$basic_simple_search) { $searchbuttons.="<input name=\"Clear\" id=\"clearbutton\" class=\"searchbutton\" type=\"button\" value=\"&nbsp;&nbsp;".$lang['clearbutton']."&nbsp;&nbsp;\" onClick=\"document.getElementById('ssearchbox').value='';$cleardate";
 	if ($display_user_rating_stars && $star_search) { $searchbuttons.="StarSearchRatingDisplay(0,'StarCurrent');document.getElementById('starsearch').value='';window['StarSearchRatingDone']=true;"; } 
-	$searchbuttons.="ResetTicks();\"/>"; } 
+	if ($resourceid_simple_search) {$searchbuttons.=" document.getElementById('searchresourceid').value='';"; }
+	$searchbuttons.="ResetTicks();\"/>"; }
 	$searchbuttons.="<input name=\"Submit\" id=\"searchbutton\" class=\"searchbutton\" type=\"submit\" value=\"&nbsp;&nbsp;". $lang['searchbutton']."&nbsp;&nbsp;\" /></div>";?>
 	
 	<?php if (!$searchbar_buttons_at_bottom){ echo $searchbuttons."<br/>"; } ?>
