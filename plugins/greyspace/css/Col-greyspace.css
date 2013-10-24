@@ -36,7 +36,7 @@ a:hover {color: #FFFFFF;}
 a:active {color: #FFFFFF;}
 input[readonly] {color: #E0E0E0;} /* Read-only form fields */
 
-.PanelShadow {background: none} /* Panel shadows */
+.PanelShadow {background: none;} /* Panel shadows */
 .Selected, .Selected a {color: #FFFFFF;} /* Misc selections */
 .highlight {color: #252525; background: #FFFF00;} /* Highlight, e.g. of search results */
 .NewFlag {color: #00FF00;} /* Flag for new items e.g. for new themes */
@@ -279,7 +279,22 @@ input[readonly] {color: #E0E0E0;} /* Read-only form fields */
 .BasicsBox .VerticalNav a:hover {color: #FFFFFF; background: none;}
 .BasicsBox .VerticalNav a:active {color: #FFFFFF; background: none;}
 
-    
+#BasicsBoxTabs /* Tabbed panels, e.g. in upload/edit resource pages (if tabs are used) */
+    {
+    padding-top: 10px;
+    padding-right: 5px;
+    padding-bottom: 15px;
+    padding-left: 5px;
+    -moz-border-radius: 5px; -webkit-border-radius: 5px; border-radius: 5px;
+    border-top: 1px solid #E0E0E0;
+    border-right: 1px solid #252525;
+    border-bottom: 1px solid #252525;
+    border-left: 1px solid #E0E0E0;
+    -moz-box-shadow: 4px 5px 5px rgba(0, 0, 0, .18); -webkit-box-shadow: 4px 5px 5px rgba(0, 0, 0, .18); box-shadow: 4px 5px 5px rgba(0, 0, 0, .18);
+    background: #505050 url('../gfx/interface/recordpanel.gif') repeat-x;
+    }
+
+
 /* Collection layout ******************************************************* */
 #CollectionMenu
     {
@@ -559,7 +574,7 @@ input[readonly] {color: #E0E0E0;} /* Read-only form fields */
     border-right: 1px solid #252525;
     border-bottom: 1px solid #252525; 
     border-left: 1px solid #C0C0C0;
-    background: #505050
+    background: #505050;
     }
 .TabBar .Tab a /* Tab */
     {
@@ -641,7 +656,7 @@ input[readonly] {color: #E0E0E0;} /* Read-only form fields */
 .propbox /* Properties box*/
     {
     color: #E0E0E0;
-    background: #505050
+    background: #505050;
     }
 .propbox a:link {color: #F0F0F0; background: none;} /* Links in the properties box*/
 .propbox a:visited {color: #F0F0F0; background: none;}
@@ -650,7 +665,7 @@ input[readonly] {color: #E0E0E0;} /* Read-only form fields */
 
 .permissionstable tr td.permheader /* Permission manager: Header */
     {
-    color: #252525; background: #C0C0C0
+    color: #252525; background: #C0C0C0;
     }
 .permissionstable tbody /* Permission manager: Body */
     {
