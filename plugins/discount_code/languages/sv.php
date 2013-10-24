@@ -1,11 +1,11 @@
 <?php
 # Swedish
 # Language File for the Discount Code Plugin
-# Updated by Henrik Frizén 20111127 for svn r3074
+# Updated by Henrik Frizén 20131024 for svn r4998
 # -------
 #
 #
-$lang["discount_code_configuration"]="Rabattkod &ndash; inställningar";
+$lang["discount_code_configuration"]="Rabattkod – inställningar";
 $lang["code"]="Kod";
 $lang["discount-percentage"]="Rabatt (%)";
 $lang["discount"]="Rabatt";

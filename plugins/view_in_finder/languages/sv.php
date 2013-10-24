@@ -1,7 +1,7 @@
 <?php
 #
 # Swedish Language File for the View In Finder Plugin
-# Updated by Henrik Frizén 20130118 for svn r4214
+# Updated by Henrik Frizén 20131024 for svn r4998
 # -------
 #
 #
@@ -14,4 +14,3 @@ $lang['viewinfinder_default_path'] = "Ange en standardsökväg för äldre stati
 $lang['viewinfinder_use_perms'] = "Ta hänsyn till behörighet";
 $lang['viewinfinder_info-afp_server_path'] = "Ange serversökvägen till roten av statiska synkkatalogen, antingen afp://example.com/share_name eller smb://example.com/share_name. Delning via nfs fungerar inte korrekt.";
 $lang['viewinfinder_info-use_perms'] = "Markera kryssrutan <b>Ta hänsyn till behörighet</b> om du vill att tillägget ska respektera inställda begränsade behörigheter för t.ex. olika materialtyper.";
-?>

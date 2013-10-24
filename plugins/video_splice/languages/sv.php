@@ -1,7 +1,7 @@
 <?php
 # Swedish
 # Language File for the Video Splice Plugin
-# Updated by Henrik Frizén 20111127 for svn r3074
+# Updated by Henrik Frizén 20131024 for svn r4998
 # -------
 #
 #
@@ -13,7 +13,7 @@ $lang["hh"]="TT";
 $lang["mm"]="MM";
 $lang["ss"]="SS";
 
-$lang["videospliceconfiguration"]="Videoskarvning &ndash; inställningar";
+$lang["videospliceconfiguration"]="Videoskarvning – inställningar";
 $lang["specify_resource_type"]="Ange för vilken materialtyp som funktionerna klippa och skarva ska visas för.";
 $lang["video_resource_type"]="Materialtyp för video";
 $lang["specify_parent_field"]="Ange vilket fält som ska användas för information om överordnat material vid klippning/skarvning.";

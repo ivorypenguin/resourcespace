@@ -1,7 +1,7 @@
 <?php
 # Swedish
 # Language File for the Annotate Plugin
-# Updated by Henrik Frizén 20121027 for svn r3869
+# Updated by Henrik Frizén 20131024 for svn r4998
 # -------
 #
 #
@@ -20,7 +20,7 @@ $lang["action-toggle-off"]="Dölj alla";
 $lang["note-1"]="1 notering";
 $lang["note-2"]="%number noteringar"; # %number will be replaced, e.g. 3 notes
 
-$lang["annotate_configuration"]="Notera &ndash; inställningar";
+$lang["annotate_configuration"]="Notera – inställningar";
 $lang["extensions_to_exclude"]="Filnamnsändelser att exkludera<br />(kommaseparerade):";
 $lang["resource_types_to_exclude"]="Materialtyper att exkludera<br />(markera dem som ska exkluderas):";
 $lang["annotatedebug"]="Felsökningsläge:";

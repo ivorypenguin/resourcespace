@@ -1,9 +1,9 @@
 <?php
 #
 # Swedish Language File for the ResourceConnect Plugin
-# Updated by Henrik Frizén 20121130 for svn r4052
+# Updated by Henrik Frizén 20131024 for svn r4998
 #
-$lang["resourceconnect_plugin_heading"] = "ResourceConnect &ndash; inställningar";
+$lang["resourceconnect_plugin_heading"] = "ResourceConnect – inställningar";
 $lang["resourceconnect_you_must_give_permission"] = "Du måste ge användargrupperna behörigheten ’resourceconnect’ för att aktivera sökning i systerdatabaser.";
 $lang["resourceconnect_access_key_for_installation"] = "Åtkomstnyckeln för den här installationen är: <strong>%key</strong>. Denna nyckel måste anges i konfigurationsfilen för systemen som ska anslutas till detta system.";  # %key will be replaced
 

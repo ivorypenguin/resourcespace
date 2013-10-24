@@ -1,7 +1,7 @@
 <?php
 # Swedish
 # Language File for the Feedback Plugin
-# Updated by Henrik Frizén 20121113 for svn r4001
+# Updated by Henrik Frizén 20131024 for svn r4998
 # -------
 #
 #
@@ -10,7 +10,7 @@ $lang["feedback_thank_you"] = "Tack för din medverkan!";
 $lang["feedback_your_full_name"] = "Ditt fullständiga namn";
 $lang["feedback_remind_me_later"] = "Påminn mig senare";
 
-$lang["feedback_user feedback_configuration"] = "Användarundersökning &ndash; inställningar";
+$lang["feedback_user feedback_configuration"] = "Användarundersökning – inställningar";
 $lang["feedback_pop-up_prompt_box_text"] = "Text i poppuppfönster:";
 $lang["feedback_questions"] = "Frågor";
 $lang["feedback_type"] = "Typ:";
@@ -28,4 +28,3 @@ $lang["feedback_options-comma_separated"] = "Alternativ (kommaseparerade):";
 
 $lang["feedback_add_new_field"] = "Lägg till nytt fält";
 $lang["feedback_back_to_plugin_manager"] = "Tillbaka: Tilläggshanteraren";
-?>

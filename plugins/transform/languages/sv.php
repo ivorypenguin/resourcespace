@@ -1,7 +1,7 @@
 <?php
 # Swedish
 # Language File for the Transform Plugin
-# Updated by Henrik Frizén 20131022 for svn r4975
+# Updated by Henrik Frizén 20131024 for svn r4998
 # -------
 #
 #
@@ -55,7 +55,7 @@ $lang['resources_transformed_successfully-2']="%qty material transformerade."; #
 $lang['errors-1']="1 fel.";
 $lang['errors-2']="%qty fel."; # %qty will be replaced with the quantity of errors
 
-$lang['transform_configuration']="Transformera &ndash; inställningar";
+$lang['transform_configuration']="Transformera – inställningar";
 $lang['cropper_debug']="Felsökningsläge";
 $lang['output_formats']="Utdataformat";
 $lang['input_formats']="Indataformat";

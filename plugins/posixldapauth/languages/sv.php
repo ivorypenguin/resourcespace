@@ -1,11 +1,11 @@
 <?php
 #
 # Swedish Language File for the PosixLDAPAuth Plugin
-# Updated by Henrik Frizén 20121212 for svn r4101
+# Updated by Henrik Frizén 20131024 for svn r4998
 # -------
 #
 #
-$lang['posixldapauth_plugin_heading'] = 'Posixldapauth &ndash; inställningar';
+$lang['posixldapauth_plugin_heading'] = 'Posixldapauth – inställningar';
 $lang['posixldapauth_enabled'] = 'Aktiverat:';
 $lang['posixldapauth_ldap_server'] = 'Ldap-server:';
 $lang['posixldapauth_ldap_information'] = 'Ldap-information';
@@ -54,4 +54,3 @@ $lang['posixldapauth_could_not_connect_to_ldap_server'] = 'Kunde inte ansluta ti
 $lang['posixldapauth_unable_to_search_ldap_server'] = 'Kan inte söka på ldap-servern.';
 $lang['posixldapauth_ldap_call_failed_please_check_settings'] = '%call% misslyckades, kontrollera inställningarna.'; # %call% will be replaced, e.g. ldap_search([used parameters]) failed, please check settings.
 $lang['posixldapauth_ldap_search_successfull_but_no_groups_found'] = 'Ldap-sökningen lyckades, men inga grupper hittades.';
-?>

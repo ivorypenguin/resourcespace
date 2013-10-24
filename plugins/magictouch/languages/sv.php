@@ -1,11 +1,11 @@
 <?php
 # Swedish
 # Language File for the MagicTouch Plugin
-# Updated by Henrik Frizén 20120219 for svn r3216
+# Updated by Henrik Frizén 20131024 for svn r4998
 # -------
 #
 #
-$lang["magictouch_configuration"]="MagicTouch &ndash; inställningar";
+$lang["magictouch_configuration"]="MagicTouch – inställningar";
 $lang["get-magictouch"]="Du måste göra ett par inställningar innan du kan använda detta tillägg.<br /><br /><a target='_blank' href='http://www.magictoolbox.com/magictouch/signup/'>&gt;&nbsp;Klicka här för att ansöka om ett konto hos Magic Touch</a>";
 $lang["configure-account-id-and-register-domain"]="Logga därefter in på ditt nya konto och registrera webbadressen till det här programmet. Avslutningsvis konfigurerar du MagicTouch med hjälp av formuläret nedan.";
 $lang["magic_touch_key"]="Nyckel till Magic Touch<br />(visas på ditt konto ovan):";
