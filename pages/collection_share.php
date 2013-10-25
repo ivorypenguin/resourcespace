@@ -48,7 +48,7 @@ if (!$collection_allow_empty_share && count(get_collection_resources($ref))==0) 
 
 
 # Process deletion of access keys
-if (getval("deleteaccess","")!="" && !$show_error)
+if (getval("deleteaccess","")!="" && !isset($show_error))
         {
         delete_collection_access_key($ref,getvalescaped("deleteaccess",""));
         }
