@@ -179,7 +179,6 @@ else
 		}
 	}
 	
-
+ob_clean();
 header("Content-type: image/png");
 imagepng($graph);
-?>
