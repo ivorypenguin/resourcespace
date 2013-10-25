@@ -1745,3 +1745,5 @@ $lang['comments_hide-comment-text-confirm']="Are you sure that you want to remov
 # testing updated request emails
 $lang["request_id"]="Request ID:";
 $lang["user_made_request"]="The following user has made a request:";
+
+$lang["download_collection"]="Download Collection";

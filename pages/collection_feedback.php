@@ -50,6 +50,7 @@ include "../include/header.php";
 <input type="hidden" name="k" value="<?php echo htmlspecialchars($k) ?>">
 <input type="hidden" name="collection" value="<?php echo htmlspecialchars($collection) ?>">
 
+<p><a class="downloadcollection" href="<?php echo $baseurl_short?>pages/collection_download.php?collection=<?php echo urlencode($collection)?>&k=<?php echo urlencode($k)?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["download_collection"]?></a></p>
 <?php if ($feedback_resource_select)
 	{
 	?><h2><?php echo $lang["selectedresources"]?>:</h2><?php
@@ -66,7 +67,7 @@ include "../include/header.php";
 			$displaytitle=htmlspecialchars(get_data_by_field($ref,$collection_feedback_display_field));
 			}
 		else {$displaytitle=$title;}
-		?>	
+		?>
 		<!--Resource Panel-->
 		<div class="ResourcePanelShell" id="ResourceShell<?php echo urlencode($ref)?>">
 		<div class="ResourcePanel">
