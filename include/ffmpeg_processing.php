@@ -57,6 +57,9 @@ if ($ffmpeg_get_par) {
   # Find out the Pixel Aspect Ratio
   $shell_exec_cmd = $ffmpeg_fullpath . " -i " . escapeshellarg($file) . " 2>&1";
 
+  if (isset($ffmpeg_command_prefix))
+    {$shell_exec_cmd = $ffmpeg_command_prefix . " " . $shell_exec_cmd;}
+  
   if ($config_windows)
   	{
   	# Windows systems have a hard time with the long paths used for video generation. This work-around creates a batch file containing the command, then executes that.
@@ -111,6 +114,9 @@ $tmp = hook("ffmpegbeforeexec", "", array($ffmpeg_fullpath, $file));
 if (is_array($tmp) and $tmp) {list($width, $height) = $tmp;}
 
 $shell_exec_cmd = $ffmpeg_fullpath . " $ffmpeg_global_options -y -t $ffmpeg_preview_seconds -i " . escapeshellarg($file) . " $ffmpeg_preview_options -s {$width}x{$height} " . escapeshellarg($targetfile);
+
+if (isset($ffmpeg_command_prefix))
+    {$shell_exec_cmd = $ffmpeg_command_prefix . " " . $shell_exec_cmd;}
 
 $tmp = hook("ffmpegmodpreparams", "", array($shell_exec_cmd, $ffmpeg_fullpath, $file));
 if ($tmp) {$shell_exec_cmd = $tmp;}
