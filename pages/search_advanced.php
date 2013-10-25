@@ -129,6 +129,20 @@ for ($n=0;$n<count($keywords);$n++)
 $allwords=str_replace(", ","",$allwords);
 
 if (getval("resetform","")!="") {$found_year="";$found_month="";$found_day="";$found_start_date="";$found_end_date="";$allwords="";$starsearch="";}
+
+function render_advanced_search_buttons() {
+ global $lang;
+ ?><div class="QuestionSubmit">
+ <label for="buttons"> </label>
+ <input name="resetform" id="resetform" type="submit" value="<?php echo $lang["clearbutton"]?>" />
+ &nbsp;
+ <input name="dosearch" id="dosearch" type="submit" value="<?php echo $lang["action-viewmatchingresults"]?>" />
+ </div>
+
+ <?php 
+ }
+
+
 include "../include/header.php";
 ?>
 <script type="text/javascript">
@@ -271,12 +285,13 @@ jQuery(document).ready(function(){
 
 </script>
 
+<?php
+if($advanced_search_buttons_top)
+ {
+ render_advanced_search_buttons();
+ }
 
-
-
-
-
-<?php if(!hook("advsearchrestypes")): ?>
+if(!hook("advsearchrestypes")): ?>
 <div class="Question">
 <label><?php echo $lang["search-mode"]?></label><?php
 $rt=explode(",",getvalescaped("restypes",""));
@@ -548,16 +563,12 @@ for ($n=0;$n<count($fields);$n++)
 
 ?>
 </div>
-<?php }?>
-<div class="QuestionSubmit">
-<label for="buttons"> </label>
-<input name="resetform" id="resetform" type="submit" value="<?php echo $lang["clearbutton"]?>" />
-&nbsp;
-<input name="dosearch" id="dosearch" type="submit" value="<?php echo $lang["action-viewmatchingresults"]?>" />
-</div>
-</form>
-</div>
-<?php // show result count as it stands ?>
+<?php
+}
+
+render_advanced_search_buttons();
+
+// show result count as it stands ?>
 <script type="text/javascript">UpdateResultCount();</script>	
 <?php if ($swap_clear_and_search_buttons){?>
 <script type="text/javascript">

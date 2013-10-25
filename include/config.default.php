@@ -1633,6 +1633,10 @@ $staticsync_prefer_embedded_title = true;
 
 # Show tabs on the edit/upload page. Disables collapsible sections
 $tabs_on_edit=false;
+
+# Show additional clear and 'show results' buttons at top of advanced search page
+$advanced_search_buttons_top=false;
+
 # ------------------------------------------------------------------------------------------------------------------
 
 
