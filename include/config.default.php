@@ -541,6 +541,16 @@ $collection_download = false;
 # $collection_download_settings[1]["arguments"] = 'a -t7z';
 # $collection_download_settings[1]["mime"] = 'application/x-7z-compressed';
 
+# Example given for Linux with tar (saves time if large compressed resources):
+# $collection_download_settings[0]["name"] = 'tar file';
+# $collection_download_settings[0]["extension"] = 'tar';
+# $collection_download_settings[0]["arguments"] = '-cf ';
+# $collection_download_settings[0]["mime"] = 'application/tar';
+# $archiver_path = '/bin';
+# $archiver_executable = 'tar';
+# $archiver_listfile_argument = " -T ";
+
+
 # Example given for Windows with the 7z utility:
 # $collection_download_settings[0]["name"] = 'ZIP';
 # $collection_download_settings[0]["extension"] = 'zip';

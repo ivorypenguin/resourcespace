@@ -369,6 +369,9 @@ if ($submitted != "")
 	if (!$use_zip_extension){
 		$cmdfile = get_temp_dir(false,$id) . "/zipcmd" . $collection . "-" . $size . ".txt";
 		$fh = fopen($cmdfile, 'w') or die("can't open file");
+		# Remove Windows line endings - fixes an issue with using tar command - somehow the file has got Windows line breaks
+		if(!$config_windows) 
+			{$path=preg_replace('/\r\n/', "\n", $path);}
 		fwrite($fh, $path);
 		fclose($fh);
 	}
