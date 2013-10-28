@@ -1,14 +1,14 @@
 /*Create Base font for relative sizing*/
 html {height:100%;}
-body {width:100%;height:100%; margin:0;padding:0;font-family:Tahoma, Arial, Helvetica, sans-serif;font-size:11px;text-align: center;}
-td, textarea {font-family:Tahoma, Arial, Helvetica, sans-serif;font-size:11px;}
+body {width:100%;height:100%; margin:0;padding:0;font-family: Ubuntu, Tahoma, Arial, Helvetica, sans-serif;font-size:13px;text-align: center;}
+td, textarea {font-family: UbuntuRegular, Ubuntu, Tahoma, Arial, Helvetica, sans-serif;font-size:13px;}
 
 /*Basic tag setup for creating standards across platforms and browsers*/
 p, h1, h2, h3, h4, h5 {padding:0; margin:0; vertical-align:top;}
 p {padding:0 0 1.75em; margin:0; font-size:1em; line-height:1.25em;}
 p.tight {padding:0 0 0.75em;}
-h1 {padding:0.1em 0 0.5em;margin:0;font: normal 1.5em Arial, Helvetica, sans-serif;}
-h2 {padding:0.1em 0;margin:0;font: normal 1.5em Arial, Helvetica, sans-serif;}
+h1 {padding:0.1em 0 0.5em;margin:0;font: normal 1.5em Ubuntu, Arial, Helvetica, sans-serif;}
+h2 {padding:0.1em 0;margin:0;font: normal 1.5em Ubuntu, Arial, Helvetica, sans-serif;}
 h3 {font-size:1.25em; padding:0.5em 0 0.5em 0; margin:0;font-weight:normal;}
 h4 {font-size:1em; padding:0.5em 0 0.5em; margin:0;font-weight:normal;}
 h5 {font-size:0.75em; padding:0.5em 0 0.5em 0; margin:0;font-weight:normal;}
@@ -101,13 +101,13 @@ input.defaultbutton {position: absolute; left: -100%; width: 0; height: 0;}
 .CollectBack a:hover, .CollectBack a:active {text-decoration:underline;}
 
 .CollectBack form {padding:0; margin:0;}
-.CollectBack .SearchWidth {width: 150px;font: 10px Tahoma, Arial, Helvetica, sans-serif;margin: 0px 0px;padding: 0px;}
-.CollectBack .SearchWidthExp {width: 200px;font: 10px Tahoma, Arial, Helvetica, sans-serif;margin: 0px 0px;padding: 0px;}
+.CollectBack .SearchWidth {width: 150px;font: 11px Ubuntu, Tahoma, Arial, Helvetica, sans-serif;margin: 0px 0px;padding: 0px;}
+.CollectBack .SearchWidthExp {width: 200px;font: 11px Ubuntu, Tahoma, Arial, Helvetica, sans-serif;margin: 0px 0px;padding: 0px;}
 .CollectBack .SearchItem {margin: 0 0 10px;padding: 0;}
 .CollectBack .MinSearchItem {margin: 0;padding: 0;}
 
-#CentralSpace .SearchWidth {width: 550px;font: 10px Tahoma, Arial, Helvetica, sans-serif;margin: 0px 0px;padding: 0px;}
-#CentraSpace .SearchWidthExp {width:200px;font: 10px Tahoma, Arial, Helvetica, sans-serif;margin: 0px 0px;padding: 0px;}
+#CentralSpace .SearchWidth {width: 550px;font: 10px Ubuntu, Tahoma, Arial, Helvetica, sans-serif;margin: 0px 0px;padding: 0px;}
+#CentraSpace .SearchWidthExp {width:200px;font: 10px Ubuntu, Tahoma, Arial, Helvetica, sans-serif;margin: 0px 0px;padding: 0px;}
 
 .CollectionPanelShell{padding:0;float: left;margin: 0px 15px 5px 0px;width: 77px;height: 110px;}
 .CollectionPanelInfo{}
@@ -120,8 +120,8 @@ input.defaultbutton {position: absolute; left: -100%; width: 0; height: 0;}
 #CollectionMinitems{float: left;margin: 5px 10px 0px;padding:0.2em 0em}
 #CollectionMinRightNav{float: right;margin: 5px 25px 0px 0px;padding:0.25em 0em}
 
-#CollectionMinDrop .SearchWidth {width: 150px;font: 10px Tahoma, Arial, Helvetica, sans-serif;margin:0;padding: 0;}
-#CollectionMinDrop .SearchWidthExp {width: 200px;font: 10px Tahoma, Arial, Helvetica, sans-serif;margin:0;padding: 0;}
+#CollectionMinDrop .SearchWidth {width: 150px;font: 10px Ubuntu, Tahoma, Arial, Helvetica, sans-serif;margin:0;padding: 0;}
+#CollectionMinDrop .SearchWidthExp {width: 200px;font: 10px Ubuntu, Tahoma, Arial, Helvetica, sans-serif;margin:0;padding: 0;}
 #CollectionMinRightNav ul {padding:0em 0;margin:0;list-style:none;}
 #CollectionMinRightNav li {display:inline;padding:0 0.35em 0 0.5em;margin:0px;}
 
@@ -192,13 +192,13 @@ input.defaultbutton {position: absolute; left: -100%; width: 0; height: 0;}
 .SearchSpace {padding: 6px;width: 160px;}
 .SearchSpace p {padding:0 0 0.5em; margin:0; font-size:1em; line-height:1.1em;}
 .SearchSpace form {padding:0; margin:0;}
-.SearchSpace .SearchWidth {width: 156px;font: 11px Tahoma, Arial, Helvetica, sans-serif;margin: 3px 0px;padding: 0px;}
+.SearchSpace .SearchWidth {width: 156px;font: 13px Ubuntu, Tahoma, Arial, Helvetica, sans-serif;margin: 3px 0px;padding: 0px;}
 .SearchSpace .tick {}
 .SearchSpace .SearchItem {margin: 10px 0 0;padding: 0;font-weight: bold;}
 .SearchSpace a:link, .SearchSpace a:visited {text-decoration:none;}
 .SearchSpace a:hover, .SearchSpace a:active {text-decoration:underline;}
 
-.ListDropdown {width: 115px;font: 10px Tahoma, Arial, Helvetica, sans-serif;margin:0px;padding: 0px;height:18px;}
+.ListDropdown {width: 115px;font: 10px Ubuntu, Tahoma, Arial, Helvetica, sans-serif;margin:0px;padding: 0px;height:18px;}
 
 /*Forms*/
 #CentralSpaceLogin form {margin:0;padding:0;}
@@ -207,11 +207,11 @@ input.defaultbutton {position: absolute; left: -100%; width: 0; height: 0;}
 .Question label, .QuestionSubmit label{	width: 190px;float: left;margin-top: 0.4em;}
 .Question #capswarning { margin-left: 190px; display: none; color: red;font-weight: bold;}
 .Question .Lineup {margin: 3px 0px;}
-.Question .stdwidth,.stdwidth{width: 360px;font: 11px Tahoma, Arial, Helvetica, sans-serif;margin: 3px 0px;}
-.Question .medwidth,.medwidth{width: 250px;font: 11px Tahoma, Arial, Helvetica, sans-serif;margin: 3px 0px;}
-.Question .shrtwidth,.shrtwidth{width: 145px;font: 11px Tahoma, Arial, Helvetica, sans-serif;margin: 3px 0px;}
-.Question .vshrtwidth{width: 93px;font: 11px Tahoma, Arial, Helvetica, sans-serif;margin: 3px 0px;}
-.Question .medcomplementwidth{width: 105px;font: 11px Tahoma, Arial, Helvetica, sans-serif;margin: 3px 0px 0px 2px;}
+.Question .stdwidth,.stdwidth{width: 360px;font: 13px Ubuntu, Tahoma, Arial, Helvetica, sans-serif;margin: 3px 0px;}
+.Question .medwidth,.medwidth{width: 250px;font: 13px Ubuntu, Tahoma, Arial, Helvetica, sans-serif;margin: 3px 0px;}
+.Question .shrtwidth,.shrtwidth{width: 145px;font: 13px Ubuntu, Tahoma, Arial, Helvetica, sans-serif;margin: 3px 0px;}
+.Question .vshrtwidth{width: 93px;font: 13px Ubuntu, Tahoma, Arial, Helvetica, sans-serif;margin: 3px 0px;}
+.Question .medcomplementwidth{width: 105px;font: 13px Ubuntu, Tahoma, Arial, Helvetica, sans-serif;margin: 3px 0px 0px 2px;}
 .Question .Inline {float: left;margin: 3px 10px 0px 0px;}
 .Question .tickset {float: left;}
 .Question .OptionTable, .Question .OptionToggle {margin: 0 0 0 190px;padding:0;}
@@ -240,7 +240,7 @@ input.defaultbutton {position: absolute; left: -100%; width: 0; height: 0;}
 .RecordPanel .Detail {float: left;}
 
 .RecordPanel form { margin:0; padding:0;}
-.RecordPanel .Title {padding:0.1em 0 0.5em;margin:0 0 10px;font: normal 1.5em Arial, Helvetica, sans-serif;clear: left;}
+.RecordPanel .Title {padding:0.1em 0 0.5em;margin:0 0 10px;font: normal 1.5em Ubuntu, Arial, Helvetica, sans-serif;clear: left;}
 
 .NoFind {font-size: 1.1em;margin: 50px 0px 25px;text-align: center;padding: 15px 3px 16px;}
 
@@ -339,7 +339,7 @@ behavior: url('../css/iepngfix.htc');
 .CategoryTree {border-top:1px solid #737373;border-left:1px solid #999999;border-bottom:1px solid #999999;border-right:1px solid #999999;background-color:white;overflow:auto;width:360px;height:400px;display:none;color: black;font-weight: normal;}
  
 
-.URLDisplay {width: 100%;font: 11px Tahoma, Arial, Helvetica, sans-serif;}
+.URLDisplay {width: 100%;font: 13px Ubuntu, Tahoma, Arial, Helvetica, sans-serif;}
 
 
 /* Autocomplete dropdown CSS - colours can be overridden in the colour CSS files */
