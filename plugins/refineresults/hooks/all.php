@@ -60,20 +60,17 @@ function HookRefineresultsSearchBeforesearchresultsexpandspace()
 	?>
 	
 	<div class="RecordBox clearerleft" id="RefineResults" style="display:none;">
-	<div class="RecordPanel">  
+	<div class="RecordPanel" id="refine_panel">  
 	
 	<form method="post" action="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search) ?>&k=<?php echo $k ?>" onSubmit="return CentralSpacePost (this,true);">
-	<div class="Question" id="question_related" style="border-top:none;">
-	<label for="related"><?php echo $lang["additionalkeywords"]?></label>
-	<input class="stdwidth" type=text id="refine_keywords" name="refine_keywords" value="<?php echo $value ?>">
+	<div class="Question Inline" id="question_refine" style="border-top:none;">
+	<label id="label_refine" for="label_refine"><?php echo $lang["additionalkeywords"]?></label>
+	<input class="medwidth Inline" type=text id="refine_keywords" name="refine_keywords" value="<?php echo $value ?>">
 	<input type=hidden name="archive" value="<?php echo $archive?>">
+	<input class="vshrtwidth Inline" name="save" type="submit" id="refine_submit" value="&nbsp;&nbsp;<?php echo $lang["refine"]?>&nbsp;&nbsp;" />
 	<div class="clearerleft"> </div>
 	</div>
 
-	<div class="QuestionSubmit" style="padding-top:0;margin-top:0;margin-bottom:0;padding-bottom:0;">
-	<label for="buttons"> </label>
-	<input  name="save" type="submit" value="&nbsp;&nbsp;<?php echo $lang["refine"]?>&nbsp;&nbsp;" />
-	</div>
 	</form>
 	
 	</div>
