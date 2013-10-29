@@ -1520,7 +1520,10 @@ $resource_field_column_limit=200;
 #
 # $resource_created_by_filter=array();
 
-
+# Tell the browser to load the Ubuntu font from Google, used by the new styling.
+# This can be set to 'false' to improve loading times if you are using custom styling
+# that does not use this font.
+$load_ubuntu_font=true;
 
 
 

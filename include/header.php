@@ -54,6 +54,11 @@ http://www.resourcespace.org/
 <?php if ($image_preview_zoom) { ?><script src="<?php echo $baseurl?>/lib/js/jquery.zoom.js"></script><?php } ?>
 
 <?php if ($use_zip_extension){?><script type="text/javascript" src="<?php echo $baseurl?>/lib/js/jquery-periodical-updater.js"></script><?php } ?>
+
+<?php if ($load_ubuntu_font) { ?>
+<link href='http://fonts.googleapis.com/css?family=Ubuntu:400,700' rel='stylesheet' type='text/css'>
+<?php } ?>
+
 <?php if ($contact_sheet){?>
 <script type="text/javascript" src="<?php echo $baseurl?>/lib/js/contactsheet.js"></script>
 <script>
