@@ -43,10 +43,10 @@ input[readonly] {color: #FFFFFF;}
 #CollectionMenu {border-right: 1px solid #79899C;}
 #CollectionMenuExp {border-right: 1px solid #79899C;}
 
-#ThemeBoxPanel, #SearchBoxPanel, #ResearchBoxPanel, .ResourcePanel, .ResourcePanelSmall, .ResourcePanelLarge, .HomePanelIN, .HomePicturePanelIN {border-top: 1px solid #FFFFFF;border-right: 1px solid #AAA;border-bottom: 1px solid #AAA;border-left: 1px solid #AAA;}
+#ThemeBoxPanel, #SearchBoxPanel, #ResearchBoxPanel, .ResourcePanel, .ResourcePanelSmall, .ResourcePanelLarge, .HomePanelIN, .HomePicturePanelIN {border: 1px solid #AAA;}
 
-#ThemeBoxPanel, #SearchBoxPanel {background: #5B5B5B url(../gfx/black/interface/SearchBox.gif) repeat-x;}
-#ResearchBoxPanel, .HomePanelIN {background: #5B5B5B url(../gfx/black/interface/researchpanel.jpg) repeat-x;}
+#ThemeBoxPanel, #SearchBoxPanel {background: #555;}
+#ResearchBoxPanel, .HomePanelIN {background: #555;}
 .ResourcePanel {background: #595959 url(../gfx/black/interface/resourcepanel.gif) repeat-x;}
 .ResourcePanelSmall {background: #595959 url(../gfx/black/interface/resourcepanel.gif) repeat-x;}
 .ResourcePanelLarge {background: #5B5B5B url(../gfx/black/interface/SearchBox.gif) repeat-x;}

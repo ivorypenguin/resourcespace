@@ -376,7 +376,7 @@ if (!$basic_simple_search)
 			
 			<?php
 			# Add floating frame HTML. This must go in the footer otherwise it appears in the wrong place in IE due to it existing within a floated parent (the search bar).
-			$extrafooterhtml.="
+			@$extrafooterhtml.="
 			<div class=\"RecordPanel\" style=\"display:none;position:fixed;top:100px;left:200px;text-align:left;\" id=\"cattree_" . $fields[$n]["name"] . "\">" . $lang["pleasewait"] . "</div>
 			<script type=\"text/javascript\">
 			// Load Category Tree

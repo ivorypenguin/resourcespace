@@ -188,22 +188,7 @@ input[readonly] {color: #000000;}
 #ThemeBoxPanel, #SearchBoxPanel, #ResearchBoxPanel, .HomePanelIN,  .RecordPanel, .ResourcePanel, .ResourcePanelSmall, .ResourcePanelLarge
 	{
 	border: 1px solid #d0d0d0;
-	border-radius:10px;	-moz-border-radius: 10px; -webkit-border-radius: 10px;	
-	xbackground: #e9e9e9 url(../gfx/whitegry/interface/shadeback.png) repeat-x 0 0;
-
-    -webkit-box-shadow: 3px 3px 3px rgba(0, 0, 0, .1);
-    -moz-box-shadow: 3px 3px 3px rgba(0, 0, 0, .1);
-    box-shadow: 3px 3px 3px rgba(0, 0, 0, .1);
-
-background: #fefefe; /* Old browsers */
-background: -moz-linear-gradient(top, #fff 0%, #eee 100%); /* FF3.6+ */
-background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#fff), color-stop(100%,#eee)); /* Chrome,Safari4+ */
-background: -webkit-linear-gradient(top, #fff 0%,#eee 100%); /* Chrome10+,Safari5.1+ */
-background: -o-linear-gradient(top, #fff 0%,#eee 100%); /* Opera 11.10+ */
-background: -ms-linear-gradient(top, #fff 0%,#eee 100%); /* IE10+ */
-background: linear-gradient(to bottom, #fff 0%,#eee 100%); /* W3C */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#eeeeee',GradientType=0 ); /* IE6-9 */
-	
+	background: #eee;
 	}
 	
 .PanelShadow

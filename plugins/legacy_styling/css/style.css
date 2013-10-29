@@ -18,3 +18,20 @@ h1, h2, .RecordPanel .Title {font: normal 1.5em Arial, Helvetica, sans-serif;}
  
 .HomePanel {width: 166px;} 
 
+#CentralSpaceContainer {padding-right: 174px;}
+#SearchBoxPanel, #ResearchBoxPanel {width: 172px;}
+#SearchBox {width: 174px;}
+
+.SearchSpace {padding: 6px;width: 160px;}
+.SearchSpace .SearchWidth {width: 156px;}
+
+.Listview td {padding: 3px 4px 4px 2px;}
+.RecordPanel {padding: 6px 6px 16px;}
+.RecordPanel .RecordDownload {width: 352px;}
+.RecordPanel .RecordDownload table {width: 340px;}
+.HomePanelIN {padding: 6px;min-height:90px;}
+
+#ThemeBoxPanel, #SearchBoxPanel, #ResearchBoxPanel, .HomePanelIN, .RecordPanel .RecordDownload, .RecordPanel, .ResourcePanel, .ResourcePanelSmall, .ResourcePanelLarge
+        {
+        border-radius:10px;     -moz-border-radius: 10px; -webkit-border-radius: 10px;
+        } 
