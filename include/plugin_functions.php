@@ -1384,14 +1384,14 @@ function config_custom_select($name, $label, $available, $value)
     }
 
 function get_plugin_css($theme){
-	global $plugins,$baseurl,$language;
+	global $plugins,$baseurl,$language,$css_reload_key;
 	$plugincss="";
 	for ($n=0;$n<count($plugins);$n++)
 	{
 	$csspath=dirname(__FILE__)."/../plugins/" . $plugins[$n] . "/css/style.css";
 	if (file_exists($csspath))
 		{
-		$plugincss.='<link href="'.$baseurl.'/plugins/'.$plugins[$n].'/css/style.css" rel="stylesheet" type="text/css" media="screen,projection,print" class="plugincss" />
+		$plugincss.='<link href="'.$baseurl.'/plugins/'.$plugins[$n].'/css/style.css?css_reload_key='.$css_reload_key.'" rel="stylesheet" type="text/css" media="screen,projection,print" class="plugincss" />
 		';
 		}	
 
@@ -1399,7 +1399,7 @@ function get_plugin_css($theme){
 	$csspath=dirname(__FILE__)."/../plugins/" . $plugins[$n] . "/css/style-" . $language . ".css";
 	if (file_exists($csspath))
 		{
-		$plugincss.='<link href="'.$baseurl.'/plugins/'.$plugins[$n].'/css/style-' . $language . '.css" rel="stylesheet" type="text/css" media="screen,projection,print" class="plugincss" />
+		$plugincss.='<link href="'.$baseurl.'/plugins/'.$plugins[$n].'/css/style-' . $language . '.css?css_reload_key='.$css_reload_key.'" rel="stylesheet" type="text/css" media="screen,projection,print" class="plugincss" />
 		';
 		}	
 
@@ -1408,7 +1408,7 @@ function get_plugin_css($theme){
 	$csspath=dirname(__FILE__)."/../plugins/" . $plugins[$n] . "/css/Col-".$theme.".css";	
 	if (file_exists($csspath))
 		{
-		$plugincss.='<link href="'.$baseurl.'/plugins/'.$plugins[$n].'/css/Col-'.$theme.'.css" rel="stylesheet" type="text/css" media="screen,projection,print" class="plugincss" />
+		$plugincss.='<link href="'.$baseurl.'/plugins/'.$plugins[$n].'/css/Col-'.$theme.'.css?css_reload_key='.$css_reload_key.'" rel="stylesheet" type="text/css" media="screen,projection,print" class="plugincss" />
 		';
 		}	
 	}
