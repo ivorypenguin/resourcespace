@@ -1451,7 +1451,7 @@ $download_summary=false;
 
 # Ability to alter collection frame height/width
 $collection_frame_divider_height=3;
-$collection_frame_height=138;
+$collection_frame_height=153;
 
 # Ability to hide error messages
 $show_error_messages=true;
