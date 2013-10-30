@@ -35,3 +35,9 @@ h1, h2, .RecordPanel .Title {font: normal 1.5em Arial, Helvetica, sans-serif;}
         {
         border-radius:10px;     -moz-border-radius: 10px; -webkit-border-radius: 10px;
         } 
+
+#clearbutton, #searchbutton
+    {
+    width: 75px;
+    }
+
