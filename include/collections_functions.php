@@ -727,13 +727,12 @@ function get_smart_themes($field,$node=0,$themebar=false)
 			{
 			# Prepare a 'tidied' local language version of the name to use for the comparison
 			# Only return items that are in use.
-			$tidy=escape_check(cleanse_string(trim(strtolower(str_replace("-"," ",i18n_get_collection_name($return[$n])))),false));
-			
+			$tidy=escape_check(cleanse_string(trim(strtolower(str_replace("-"," ",htmlspecialchars_decode(i18n_get_collection_name($return[$n]))))),false));
 			if (in_array($tidy,$inuse))
 				{
 				$c=count($out);
 				$out[$c]["indent"]=$return[$n]["indent"];
-				$out[$c]["name"]=trim(i18n_get_collection_name($return[$n]));
+				$out[$c]["name"]=trim(htmlspecialchars_decode(i18n_get_collection_name($return[$n])));
 				$out[$c]["node"]=$return[$n]["node"];
 				$out[$c]["children"]=$return[$n]["children"];
 				}
