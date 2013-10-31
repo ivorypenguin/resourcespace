@@ -544,9 +544,13 @@ elseif ($k!="")
   <?php if ($collections_compact_style){
 	 hook("beforecollectiontoolscolumn");?>
 	 <?php if (!hook("modifycompacttoolslabel")){ echo "<div style='height:5px;'></div>".$lang['tools'].":";} 
-     draw_compact_style_selector($cinfo['ref']);?>
-     <?php if ($thumbs=="show") { ?>
+     draw_compact_style_selector($cinfo['ref']);?>	
+     
+     <?php hook("aftercollectionscompacttools");?>
+     <?php if ($thumbs=="show") { ?> 
+		 
      <div class="collectionscompactstylespacer"></div>
+     
      <a onClick="ToggleThumbs();return CollectionDivLoad(this,true);" href="<?php echo $baseurl_short?>pages/collections.php?thumbs=hide">&gt;&nbsp;<?php echo $lang["hidethumbnails"]?></a><?php } ?><?php if ($thumbs=="hide") { ?>&nbsp;&nbsp;&nbsp;<a href="<?php echo $baseurl_short?>pages/collections.php?thumbs=show" onClick="ToggleThumbs();return CollectionDivLoad(this,true);">&gt;&nbsp;<?php echo $lang["showthumbnails"]?></a><?php } ?><?php
     }
     else { ?><ul>
