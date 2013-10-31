@@ -202,7 +202,9 @@ if (!array_key_exists($language,$languages))
 include dirname(__FILE__)."/../languages/en.php";
 if ($language!="en")
 	{
-	include dirname(__FILE__)."/../languages/" . safe_file_name($language) . ".php";
+	if (substr($language, 2, 1)=='-' && substr($language, 0, 2)!='en')
+		@include dirname(__FILE__)."/../languages/" . safe_file_name(substr($language, 0, 2)) . ".php";
+	@include dirname(__FILE__)."/../languages/" . safe_file_name($language) . ".php";
 	}
 
 # Register all plugins
@@ -1032,7 +1034,9 @@ function register_plugin($plugin)
 	if (file_exists($langpath . "en.php")) {include $langpath . "en.php";}
 	if ($language!="en")
 		{
-		if (file_exists($langpath . $language . ".php")) {include $langpath . $language . ".php";}
+		if (substr($language, 2, 1)=='-' && substr($language, 0, 2)!='en')
+			@include $langpath . safe_file_name(substr($language, 0, 2)) . ".php";
+		@include $langpath . safe_file_name($language) . ".php";
 		}
 
 	# Also include plugin hook file for this page.
