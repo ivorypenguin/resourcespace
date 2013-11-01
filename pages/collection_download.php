@@ -569,12 +569,15 @@ if (!hook('replacesizeoptions'))
 	# analyze available sizes and present options
 ?><select name="size" class="stdwidth" id="downloadsize"><?php
 
-function display_size_option($sizeID, $sizeName)
+function display_size_option($sizeID, $sizeName, $fordropdown=true)
 	{
 	global $available_sizes, $lang, $result;
-    ?><option value="<?php echo htmlspecialchars($sizeID) ?>"><?php
-	echo $sizeName;
-    $availableCount = count($available_sizes[$sizeID]);
+    	if ($fordropdown)
+		{
+		?><option value="<?php echo htmlspecialchars($sizeID) ?>"><?php
+		echo $sizeName;
+		}
+    	$availableCount = count($available_sizes[$sizeID]);
 	$resultCount = count($result);
 	if ($availableCount != $resultCount)
 		{
@@ -593,11 +596,14 @@ function display_size_option($sizeID, $sizeName)
 			}
 		echo ")";
 		}
-    ?></option><?php
+    	 if ($fordropdown)
+        	{
+		?></option><?php
+		}
 	}
 
 if (array_key_exists('original',$available_sizes))
-	display_size_option('original', $lang['original']);
+	display_size_option('original', $lang['original'], true);
 
 foreach ($available_sizes as $key=>$value)
 	{
@@ -605,7 +611,7 @@ foreach ($available_sizes as $key=>$value)
 		{
 		if ($size['id']==$key)
 			{
-			display_size_option($key, $size['name']);
+			display_size_option($key, $size['name'], true);
 			break;
 			}
 		}
@@ -619,23 +625,9 @@ if (!hook('replaceuseoriginal'))
 	{
 ?><div class="Question">
 <label for="use_original"><?php echo $lang['use_original_if_size']; ?> <br /><?php
-        if (isset($qty_originals))
-            {
-            switch ($qty_originals)
-                {
-                case 1:
-                    echo "(" . $qty_originals . " " . $lang["originals-available-1"] . ")";
-                    break;
-                default:
-                    echo "(" . $qty_originals . " " . $lang["originals-available-2"] . ")";
-                    break;
-                }
-            }
-        else
-            {
-            echo "(0 " . $lang["originals-available-0"] . ")";
-            }
-        ?></label><input type=checkbox id="use_original" name="use_original" value="yes" >
+
+display_size_option('original', $lang['original'], false);
+?></label><input type=checkbox id="use_original" name="use_original" value="yes" >
 <div class="clearerleft"> </div></div>
 <?php
 	}
