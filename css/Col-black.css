@@ -97,7 +97,7 @@ input[readonly] {color: #FFFFFF;}
 .BasicsBox .VerticalNav li, .ThemeBox li {list-style: url(../gfx/black/interface/bullet.gif) none inside;}
 .ThemeBox {border-bottom: 1px solid #5A7599;}
 
-.HomePanel h2 {background: url(../gfx/black/interface/HomeArrow.gif) no-repeat 1px 5px;}
+.HomePanel h2 {background: url(../gfx/black/interface/HomeArrow.gif) no-repeat 1px 10px;}
 
 .BasicsBox ul, .BasicsBox ol {color:#FFFFFF;}
 

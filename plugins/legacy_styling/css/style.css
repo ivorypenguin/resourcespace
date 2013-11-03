@@ -41,3 +41,5 @@ h1, h2, .RecordPanel .Title {font: normal 1.5em Arial, Helvetica, sans-serif;}
     width: 75px;
     }
 
+.HomePanel h2 {background-position: 1px 5px;}
+
