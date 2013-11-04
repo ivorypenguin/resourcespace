@@ -5,7 +5,8 @@ $theme=((isset($userfixedtheme) && $userfixedtheme!=""))?$userfixedtheme:getval(
 hook ("preheaderoutput");
  
 # Do not display header / footer when dynamically loading CentralSpace contents.
-if (getval("ajax","")=="") { 
+$ajax=getval("ajax","");
+if ($ajax=="") { 
 
 // blank starsearch cookie in case $star_search was turned off
 setcookie("starsearch","");
@@ -371,21 +372,27 @@ else {$div="CentralSpace";}
 
 
 <?php
-# Include theme bar?
-if ($use_theme_bar && (getval("k","")=="") && !in_array($pagename,array("themes","preview_all","done","search_advanced","login","preview","admin_header","user_password","user_request")) && ($loginterms==false))
-	{
-	# Tables seem to be the only solution to having a left AND right side bar, due to the way the clear CSS attribute works.
-	?>
-	<table width="100%" style="margin:0;padding:0;"><tr><td width="185" valign="top" align="left" style="margin:0;padding:0;">
-	<?php
-	include "themebar.php";
-	?>
-	</td><td valign="top" style="margin:0;padding:0;">
-	<?php
-	}
-	
+
 hook("afterheader");
 
 } // end if !ajax
-else hook("afterheaderajax");
+
+
+# Include theme bar?
+if ($use_theme_bar && (getval("k","")=="") && !in_array($pagename,array("themes","preview_all","done","search_advanced","login","preview","admin_header","user_password","user_request")) && ($pagename!="terms") && (getval("url","")!="index.php"))
+    {
+    # Tables seem to be the only solution to having a left AND right side bar, due to the way the clear CSS attribute works.
+    ?>
+    <table width="100%" style="margin:0;padding:0;"><tr><td width="185" valign="top" align="left" style="margin:0;padding:0;">
+    <?php
+    include "themebar.php";
+    ?>
+    </td><td valign="top" style="margin:0;padding:0;">
+    <?php
+    }
+	
+
+
+// Ajax specific hook
+if ($ajax) {hook("afterheaderajax");}
 ?>
