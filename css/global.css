@@ -177,7 +177,7 @@ input.defaultbutton {position: absolute; left: -100%; width: 0; height: 0;}
 .DESC {display: inline;padding-right: 10px;}
 
 /*Resource Panel layout*/
-.Listview {	margin: 25px 15px 25px 0px;}
+.Listview {	margin: 25px 0 25px 0;}
 .Listview table{ width:100%;}
 .Listview td {padding: 5px 5px 5px 5px;}
 .ListTools {text-align: right;}
@@ -228,7 +228,7 @@ input.defaultbutton {position: absolute; left: -100%; width: 0; height: 0;}
 
 /*Record Panel layout*/
 .RecordBox {margin: 20px 15px 15px 0px;}
-.RecordPanel {padding: 10px 10px 20px;}
+.RecordPanel {padding: 15px 20px 15px 20px;}
 .RecordPanel .RecordHeader {}
 .RecordPanel h1 {}
 .backtoresults {float: right;margin: 0.4em 0 0 0.25em;} 
@@ -288,7 +288,7 @@ input.defaultbutton {position: absolute; left: -100%; width: 0; height: 0;}
 
 /*Home styling */
 .HomePanel {margin:0px 15px 15px 0px;width: 220px;float: left;} 
-.HomePanelIN {padding: 10px;min-height: 120px;}
+.HomePanelIN {padding: 15px;min-height: 120px;}
 .HomePanel h2 {font-size: 1.75em;padding-left: 14px;display:block;margin: 5px 0px;}
 .HomePanel p {margin: 0; padding: 5px 0 4px 0;}
 .HomePicturePanel {    margin:0px 15px 10px 0px;float: left;width: 519px;}

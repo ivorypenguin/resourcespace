@@ -228,6 +228,10 @@ input[readonly] {color: #000000;}
 .CommentEntryInfoCommenterName { color: #3070bf; }
 .CommentBody { color: #000000}
 
+.HomePanelThemes h2, .HomePanelMyCollections h2, .HomePanelHelp h2 {padding-left: 43px;margin: 5px 0px;}
 
+.HomePanelThemes h2 {background: url(../gfx/interface/themes.png) no-repeat 0 0;}
+.HomePanelMyCollections h2 {background: url(../gfx/interface/my_collections.png) no-repeat -2px 0;padding-left:36px;}
+.HomePanelHelp h2 {background: url(../gfx/interface/help.png) no-repeat 0 0;}
 
 

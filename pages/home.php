@@ -163,7 +163,7 @@ jQuery(document).ready( function ()
 ?>
 
 <?php if ($home_themeheaders && $enable_themes) { ?>
-	<div class="HomePanel"><div class="HomePanelIN">
+	<div class="HomePanel"><div class="HomePanelIN HomePanelThemes">
 	<h2><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/themes.php"><?php echo $lang["themes"]?></a></h2>
 	<span><?php echo text("themes")?></span>
 	<br />	<br />
@@ -187,7 +187,7 @@ jQuery(document).ready( function ()
 
 
 <?php if ($home_themes && $enable_themes) { ?>
-	<div class="HomePanel"><div class="HomePanelIN">
+	<div class="HomePanel"><div class="HomePanelIN HomePanelThemes">
 	<h2><a href="<?php echo $baseurl_short?>pages/themes.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["themes"]?></a></h2>
 	<span><?php echo text("themes")?></span>
 	</div>
@@ -196,7 +196,7 @@ jQuery(document).ready( function ()
 <?php } ?>
 	
 <?php if ($home_mycollections && !checkperm("b") && $userrequestmode!=2 && $userrequestmode!=3) { ?>
-	<div class="HomePanel"><div class="HomePanelIN">
+	<div class="HomePanel"><div class="HomePanelIN HomePanelMyCollections">
 	<h2><a href="<?php echo $baseurl_short?>pages/collection_manage.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["mycollections"]?></a></h2>
 	<span><?php echo text("mycollections")?></span>
 	</div>
@@ -206,7 +206,7 @@ jQuery(document).ready( function ()
 <?php } ?>
 
 <?php if ($home_advancedsearch) { ?>
-	<div class="HomePanel"><div class="HomePanelIN">
+	<div class="HomePanel"><div class="HomePanelIN HomePanelAdvancedSearch">
 	<h2><a href="<?php echo $baseurl_short?>pages/search_advanced.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["advancedsearch"]?></a></h2>
 	<span><?php echo text("advancedsearch")?></span>
 	</div>
@@ -215,7 +215,7 @@ jQuery(document).ready( function ()
 <?php } ?>
 
 <?php if ($home_mycontributions && (checkperm("d") || (checkperm("c") && checkperm("e0")))) { ?>
-	<div class="HomePanel"><div class="HomePanelIN">
+	<div class="HomePanel"><div class="HomePanelIN HomePanelMyContributions">
 	<h2><a href="<?php echo $baseurl_short?>pages/contribute.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["mycontributions"]?></a></h2>
 	<span><?php echo text("mycontributions")?></span>
 	</div>
@@ -224,7 +224,7 @@ jQuery(document).ready( function ()
 <?php } ?>
 
 <?php if ($home_helpadvice) { ?>
-	<div class="HomePanel"><div class="HomePanelIN">
+	<div class="HomePanel"><div class="HomePanelIN HomePanelHelp">
 	<h2><a href="<?php echo $baseurl_short?>pages/help.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["helpandadvice"]?></a></h2>
 	<span><?php echo text("help")?></span>
 	</div>
