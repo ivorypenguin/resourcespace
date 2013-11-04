@@ -85,7 +85,7 @@ input[readonly] {color: #FFFFFF;}
 .RecordPanel .Title {	border-bottom: 1px solid #94A7C0;}
 .RecordPanel .RecordDownload {border: 1px solid #94A7C0;background: #537097 url(../gfx/greyblu/interface/Download.gif) repeat-x;}
 .RecordPanel .RecordDownload .DownloadDBlend td {border: 1px solid #6280a7;	color: #FFFFFF;}
-.RecordPanel .RecordDownloadSpace .DownloadDBlend .DownloadButton {background: #7DA56E url(../gfx/greyblu/interface/DownloadButton.gif?nc=1) repeat-x;}
+.RecordPanel .RecordDownloadSpace .DownloadDBlend .DownloadButton {background: #000 url(../gfx/greyblu/interface/DownloadButton.gif?nc=1) repeat-x;}
 .RecordPanel .RecordDownloadSpace .DownloadDBlend p {color: #758FB1;text-align: left;}
 .RecordPanel .RecordDownloadSpace .DownloadDBlend a {color: #FFFFFF;text-align: left;}
 .RecordPanel .RecordDownloadSpace .DownloadDBlend {background: #1A447C url(../gfx/greyblu/interface/DownloadCell.gif) repeat-x;}
