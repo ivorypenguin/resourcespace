@@ -48,6 +48,9 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 	$keywords=split_keywords($search);
 	$search=trim($search);
 
+        # Dedupe keywords (not for quoted strings as the user may be looking for the same word multiple times together in this instance)
+        if (!$quoted_string) {$keywords=array_unique($keywords);}
+        
 	$modified_keywords=hook('dosearchmodifykeywords', '', array($keywords));
 	if ($modified_keywords)
 		$keywords=$modified_keywords;
