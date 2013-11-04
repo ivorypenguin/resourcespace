@@ -559,7 +559,7 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
                                                                                 $last_key_offset=1;
                                                                                 if (isset($skipped_last) && $skipped_last) {$last_key_offset=2;} # Support skipped keywords - if the last keyword was skipped (listed in $noadd), increase the allowed position from the previous keyword. Useful for quoted searches that contain $noadd words, e.g. "black and white" where "and" is a skipped keyword.
                                                                                 # Also check these occurances are within the same field.
-                                                                                $sql_join.=" and qrk_" . $c . ".position>1 and qrk_" . $c . ".position=qrk_" . ($c-1) . ".position+" . $last_key_offset . " and qrk_" . $c . ".resource_type_field=qrk_" . ($c-1) . ".resource_type_field";
+                                                                                $sql_join.=" and qrk_" . $c . ".position>0 and qrk_" . $c . ".position=qrk_" . ($c-1) . ".position+" . $last_key_offset . " and qrk_" . $c . ".resource_type_field=qrk_" . ($c-1) . ".resource_type_field";
                                                                                 }		
                                                                         }
                                                                 
