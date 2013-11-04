@@ -234,4 +234,6 @@ input[readonly] {color: #000000;}
 .HomePanelMyCollections h2 {background: url(../gfx/interface/my_collections.png) no-repeat -2px 0;padding-left:36px;}
 .HomePanelHelp h2 {background: url(../gfx/interface/help.png) no-repeat 0 0;}
 
+.HomePicturePanel {width:517px;} /* Outer slideshow panel narrower by 2 pixels, as no border. */
+
 
