@@ -168,12 +168,12 @@ input[readonly] {color: #FFFFFF;}
 .collapsed
     {
     background: url(../gfx/greyblu/interface/HomeArrow.gif) no-repeat top left;
-    background-position:3px 3px;  
+    background-position:3px 8px;  
     }
 .expanded
     {
     background: url(../gfx/greyblu/interface/HomeArrowDown.gif) no-repeat top left;    
-     background-position:0px 6px; 
+     background-position:0px 12px; 
     }
 
 .CommentFlag { background-image: url('../gfx/greyblu/interface/FlagOff.png'); }

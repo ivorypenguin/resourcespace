@@ -46,3 +46,14 @@ h1, h2, .RecordPanel .Title {font: normal 1.5em Arial, Helvetica, sans-serif;}
 
 .HomePanel h2 {background-position: 1px 5px;}
 
+.ResourcePanelShell {width: 164px;}
+.ResourcePanel {width: 162px;}
+.ResourceAlign {width:162px;}
+.Question label, .QuestionSubmit label{	width: 190px;}
+#CentralSpaceLogin {width: 550px;}
+.FormHelp{margin: 0px 0px 10px 190px;}
+#searchbarrt
+    {
+    margin-top:0;    
+    }
+

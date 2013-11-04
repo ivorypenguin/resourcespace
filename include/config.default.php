@@ -581,7 +581,7 @@ $videotypes=array(3);
 $resource_type_icons=false;
 
 # Sets the default colour theme (defaults to white)
-$defaulttheme="whitegry";
+$defaulttheme="multi";
 
 # Theme chips available. This makes it possible to add new themes and chips using the same structure.
 # To create a new theme, you need a chip in gfx/interface, a graphics folder called gfx/<themename>,
@@ -589,7 +589,7 @@ $defaulttheme="whitegry";
 # this is a basic way of adding general custom themes that do not affect SVN checkouts, 
 # though css can also be added in plugins as usual.
  
-$available_themes=array("whitegry","greyblu","black");
+$available_themes=array("multi", "whitegry","greyblu","black");
 
 # Uncomment and set the next line to lock to one specific colour scheme (e.g. greyblu/whitegry).
 # $userfixedtheme="whitegry";

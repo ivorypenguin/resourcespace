@@ -198,12 +198,12 @@ input[readonly] {color: #000000;}
 .collapsed
     {
     background: url(../gfx/whitegry/interface/HomeArrow.gif) no-repeat top left;
-    background-position:3px 3px;  
+    background-position:3px 8px;  
     }
 .expanded
     {
     background: url(../gfx/whitegry/interface/HomeArrowDown.gif) no-repeat top left;    
-     background-position:0px 6px; 
+     background-position:0px 12px; 
     }
 	
 .CommentFlag { background-image: url('../gfx/whitegry/interface/FlagOff.png'); }
