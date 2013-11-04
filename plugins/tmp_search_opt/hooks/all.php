@@ -222,7 +222,8 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 	$suggested=$keywords; # a suggested search
 	$fullmatch=true;
 	$c=0;$t="";$t2="";$score="";
-	
+	$skipped_last=false;
+        
 	$keysearch=true;
 	
 	 # Do not process if a numeric search is provided (resource ID)
@@ -489,73 +490,88 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
                                                         # Key match, add to query.
                                                         $c++;
 
-                                                        # Add related keywords
-                                                        $related=get_related_keywords($keyref);
-                                                        
-                                                        # Merge wildcard expansion with related keywords
-                                                        $related=array_merge($related,$wildcards);
                                                         $relatedsql="";
-                                                        if (count($related)>0)
+                                                        if (!$quoted_string) # Do not use related fields or wildcard for quoted string search - the keywords are treated as literal in this case.
                                                             {
-                                                            $relatedsql=" or k" . $c . ".keyword IN ('" . join ("','",$related) . "')";
+                                                            # Add related keywords
+                                                            $related=get_related_keywords($keyref);
+                                                            
+                                                            # Merge wildcard expansion with related keywords
+                                                            $related=array_merge($related,$wildcards);
+                                                            if (count($related)>0)
+                                                                {
+                                                                $relatedsql=" or k" . $c . ".keyword IN ('" . join ("','",$related) . "')";
+                                                                }
                                                             }
-
                                                                 
+                                                            
                                                         # Form join
                                                         $sql_exclude_fields = hook("excludefieldsfromkeywordsearch");
                                                         
                                                         
-                                                                # Quoted string support
-                                                                # TO DO - rewrite to use additional joins
-                                                                $positionsql="";
+                                                        if (!$omit)
+                                                                {
+                                                                # Include in query
+                                                                
+                                                                $union="select resource,";
+                                                                for ($p=1;$p<=count($keywords);$p++)
+                                                                    {
+                                                                    if ($p==$c) {$union.="true";} else {$union.="false";}
+                                                                    $union.=" as keyword_" . $p . "_found,";
+                                                                    }
+                                                                $union.="hit_count as score from resource_keyword k" . $c . " where (k" . $c . ".keyword='$keyref' $relatedsql)";
+                                                                
+                                                                 if (!empty($sql_exclude_fields)) 
+                                                                    {
+                                                                    $union.=" and k" . $c . ".resource_type_field not in (". $sql_exclude_fields .")";
+                                                                    }
+
+                                                                                                                                                                                                                                                    if (count($hidden_indexed_fields)>0)
+                                                                    {
+                                                                    $union.=" and k" . $c . ".resource_type_field not in ('". join("','",$hidden_indexed_fields) ."')";                                                                    }
+                                                        
+                                                                $sql_keyword_union_aggregation[]="bit_or(keyword_" . $c . "_found) as keyword_" . $c . "_found";
+                                                                $sql_keyword_union_criteria[]="h.keyword_" . $c . "_found";
+                                                                
+                                                                $sql_keyword_union[]=$union;
+                                                                
+                                                                
+                                                                # Quoted search? Also add a specific join to check that the positions add up.
+                                                                # The UNION / bit_or() approach doesn't support position checking hence the need for additional joins to do this.
                                                                 if ($quoted_string)
                                                                         {
+                                                                        $sql_join.=" join resource_keyword qrk_$c on qrk_$c.resource=r.ref and qrk_$c.keyword='$keyref' ";
+
+                                                                        # Exclude fields from the quoted search join also                        
+                                                                        if (!empty($sql_exclude_fields)) 
+                                                                            {
+                                                                            $sql_join.=" and qrk_" . $c . ".resource_type_field not in (". $sql_exclude_fields .")";
+                                                                            }
+
+                                                                        if (count($hidden_indexed_fields)>0)
+                                                                            {
+                                                                            $sql_join.=" and qrk_" . $c . ".resource_type_field not in ('". join("','",$hidden_indexed_fields) ."')";
+                                                                            }
+                                                                        
+                                                                        # For keywords other than the first one, check the position is next to the previous keyword.
                                                                         if ($c>1)
                                                                                 {
                                                                                 $last_key_offset=1;
                                                                                 if (isset($skipped_last) && $skipped_last) {$last_key_offset=2;} # Support skipped keywords - if the last keyword was skipped (listed in $noadd), increase the allowed position from the previous keyword. Useful for quoted searches that contain $noadd words, e.g. "black and white" where "and" is a skipped keyword.
-                                                                                $positionsql="and k" . $c . ".position=k" . ($c-1) . ".position+" . $last_key_offset;
-                                                                                }								
+                                                                                # Also check these occurances are within the same field.
+                                                                                $sql_join.=" and qrk_" . $c . ".position>1 and qrk_" . $c . ".position=qrk_" . ($c-1) . ".position+" . $last_key_offset . " and qrk_" . $c . ".resource_type_field=qrk_" . ($c-1) . ".resource_type_field";
+                                                                                }		
                                                                         }
-
-
-
-                                                                if (!$omit)
-                                                                        {
-                                                                        # Include in query
-                                                                        
-                                                                        $union="select resource,";
-                                                                        for ($p=1;$p<=count($keywords);$p++)
-                                                                            {
-                                                                            if ($p==$c) {$union.="true";} else {$union.="false";}
-                                                                            $union.=" as keyword_" . $p . "_found,";
-                                                                            }
-                                                                        $union.="hit_count as score from resource_keyword k" . $c . " where (k" . $c . ".keyword='$keyref' $relatedsql)";
-                                                                        
-                                                                         if (!empty($sql_exclude_fields)) 
-                                                                {
-                                                                $union.=" and k" . $c . ".resource_type_field not in (". $sql_exclude_fields .")";
+                                                                
+                                                                
+                                                                
                                                                 }
-
-                                                                                                                                                                                        if (count($hidden_indexed_fields)>0)
-                                                                                                                {
-                                                                                                                $union.=" and k" . $c . ".resource_type_field not in ('". join("','",$hidden_indexed_fields) ."')";	                        
-                                                                                                                }
-
-                                                                
-                                                                $sql_keyword_union_aggregation[]="bit_or(keyword_" . $c . "_found) as keyword_" . $c . "_found";
-                                                                $sql_keyword_union_criteria[]="h.keyword_" . $c . "_found";
-                                                                        
-                                                                        $sql_keyword_union[]=$union;                                                                                
-                                                                        }
-                                                                else
-                                                                        {
-                                                                        # Exclude matching resources from query (omit feature)
-                                                                        if ($sql_filter!="") {$sql_filter.=" and ";}
-                                                                        $sql_filter .= "r.ref not in (select resource from resource_keyword where keyword='$keyref')"; # Filter out resources that do contain the keyword.
-                                                                        }						                
-                                                        
-                                                                
+                                                        else
+                                                                {
+                                                                # Exclude matching resources from query (omit feature)
+                                                                if ($sql_filter!="") {$sql_filter.=" and ";}
+                                                                $sql_filter .= "r.ref not in (select resource from resource_keyword where keyword='$keyref')"; # Filter out resources that do contain the keyword.
+                                                                }						                
                                                         
                                                         # Log this
                                                         daily_stat("Keyword usage",$keyref);
@@ -972,7 +988,7 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 	# Debug
 	debug("altert " . $results_sql);
 
-#echo $results_sql;
+        #echo $results_sql;
 
 	# Execute query
 	$result=sql_query($results_sql,false,$fetchrows);
