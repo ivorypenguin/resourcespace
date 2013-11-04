@@ -315,7 +315,7 @@ if (!$basic_simple_search)
 			if (count($s)>=2) {$d_month=$s[1];}
 			if (count($s)>=3) {$d_day=$s[2];}
 			?>
-			<select id="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>_year" class="SearchWidth" name="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>_year" <?php if (!$searchbyday) { ?>style="width:73px;font-size: 10px;"<?php } ?> else>
+			<select id="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>_year" class="SearchWidth" name="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>_year">
 			  <option selected="selected" value=""><?php echo $lang["anyyear"]?></option>
 			  <?php
 			  $y=date("Y");
@@ -326,7 +326,7 @@ if (!$basic_simple_search)
 			  ?>
 			</select>
 			<?php if ($searchbyday) { ?><br /><?php } ?>	
-			<select id="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>_month" name="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>_month" class="SearchWidth" style="width:81px;font-size: 10px;">
+			<select id="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>_month" name="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>_month" class="SearchWidth">
 			  <option selected="selected" value=""><?php echo $lang["anymonth"]?></option>
 			  <?php
 			  for ($d=1;$d<=12;$d++)
@@ -337,7 +337,7 @@ if (!$basic_simple_search)
 			  ?>		
 			</select>
 		    <?php if ($searchbyday) { ?>
-			<select id="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>_day" name="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>_day" class="SearchWidth" style="width:73px;font-size: 10px;">
+			<select id="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>_day" name="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>_day" class="SearchWidth">
 			  <option selected="selected" value=""><?php echo $lang["anyday"]?></option>
 			  <?php
 			  for ($d=1;$d<=31;$d++)
@@ -491,7 +491,7 @@ if (!$basic_simple_search)
 				?>	
 	
 				 <?php  echo $lang["bydate"]?><br />
-	<select id="basicyear" name="year" class="SearchWidth" <?php if (!$searchbyday) { ?>style="width:73px;font-size: 10px;"<?php } ?>>
+	<select id="basicyear" name="year" class="SearchWidthHalf">
 	          <option selected="selected" value=""><?php echo $lang["anyyear"]?></option>
 	          <?php
 	          
@@ -506,7 +506,7 @@ if (!$basic_simple_search)
 	
 	        <?php if ($searchbyday) { ?><br /><?php } ?>
 	
-	        <select id="basicmonth" name="month" class="SearchWidth" style="width:81px;font-size: 10px;">
+	        <select id="basicmonth" name="month" class="SearchWidthHalf SearchWidthRight">
 	          <option selected="selected" value=""><?php echo $lang["anymonth"]?></option>
 	          <?php
 	          for ($n=1;$n<=12;$n++)
@@ -519,7 +519,7 @@ if (!$basic_simple_search)
 	        </select> 
 	
 	        <?php if ($searchbyday) { ?>
-	        <select id="basicday" name="day" class="SearchWidth" style="width:73px;font-size: 10px;">
+	        <select id="basicday" name="day" class="SearchWidth">
 	          <option selected="selected" value=""><?php echo $lang["anyday"]?></option>
 	          <?php
 	          for ($n=1;$n<=31;$n++)
