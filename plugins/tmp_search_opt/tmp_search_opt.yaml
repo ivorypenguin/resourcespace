@@ -1,4 +1,0 @@
-name: tmp_search_opt
-desc: Replaces do_search() with an experimental optimised / rewritten version.
-author: Montala Limited
-version: 1.0
