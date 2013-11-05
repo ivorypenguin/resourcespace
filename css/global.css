@@ -600,3 +600,9 @@ input
     {
     margin-top:10px;    
     }
+
+#themeselect {
+width: 150px;
+font-family:inherit;
+margin-bottom:10px;
+}

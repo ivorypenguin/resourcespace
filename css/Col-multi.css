@@ -236,4 +236,8 @@ input[readonly] {color: #000000;}
 
 .HomePicturePanel {width:517px;} /* Outer slideshow panel narrower by 2 pixels, as no border. */
 
+#themeselect {color: white; background-color: #F45D18;}
+#themeselect:active {background-color: #db5315;}
 
+#basicyear { background-color: #0DA4CF; color: white;}
+#basicmonth { background-color: #0DA4CF; color: white;}

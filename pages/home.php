@@ -170,7 +170,7 @@ jQuery(document).ready( function ()
 	<h2><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/themes.php"><?php echo $lang["themes"]?></a></h2>
 	<span><?php echo text("themes")?></span>
 	<br />	<br />
-	<select style="width:140px;" onChange="CentralSpaceLoad(this.value,true);">
+	<select id="themeselect" onChange="CentralSpaceLoad(this.value,true);">
 	<option value=""><?php echo $lang["select"] ?></option>
 	<?php
 	$headers=get_theme_headers();
