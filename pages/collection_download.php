@@ -109,6 +109,17 @@ for ($n=0;$n<count($result);$n++)
 	}
 
 #print_r($available_sizes);
+if(count($available_sizes)==0)
+	{
+	?>
+	<script type="text/javascript">
+    	alert('<?php echo $lang["nodownloadcollection"];?>');
+        history.go(-1);
+    	</script>
+	<?php
+    	exit();
+	}
+
 $used_resources=array();
 $subbed_original_resources = array();
 if ($submitted != "")
@@ -577,7 +588,14 @@ function display_size_option($sizeID, $sizeName, $fordropdown=true)
 		?><option value="<?php echo htmlspecialchars($sizeID) ?>"><?php
 		echo $sizeName;
 		}
-    	$availableCount = count($available_sizes[$sizeID]);
+    	if(isset($available_sizes[$sizeID]))
+		{
+		$availableCount = count($available_sizes[$sizeID]);
+		}
+	else
+		{
+		$availableCount=0;
+		}
 	$resultCount = count($result);
 	if ($availableCount != $resultCount)
 		{
