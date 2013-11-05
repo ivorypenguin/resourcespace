@@ -52,7 +52,7 @@ for ($n=0;$n<count($results);$n++)
 	else
 		{
 		# Monthly graph. X axis is day of month.
-		$day=$date["mday"]-1;
+		$day=$date["mday"];
 		}
 
 	if (($day<$minx) || ($minx==-1)) {$minx=$day;}
