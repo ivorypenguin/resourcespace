@@ -10,7 +10,10 @@ function ip_matches($ip, $ip_restrict)
 	{
 	global $system_login;
 	if ($system_login){return true;}	
-		
+
+	if (substr($ip_restrict, 0, 1)=='!')
+		return @preg_match('/'.substr($ip_restrict, 1).'/su', $ip);
+
 	# Allow multiple IP addresses to be entered, comma separated.
 	$i=explode(",",$ip_restrict);
 

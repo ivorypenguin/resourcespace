@@ -1,13 +1,5 @@
 <?php
 
-function ip_matches_regexp($ip, $ip_restrict)
-	{
-	if (substr($ip_restrict, 0, 1)!='!')
-		return ip_matches($ip, $ip_restrict);
-
-	return @preg_match('/'.substr($ip_restrict, 1).'/su', $ip);
-	}
-
 function HookAuto_loginAllProvideusercredentials()
 	{
 	global $username, $hashsql, $session_hash, $user_select_sql;
@@ -19,7 +11,7 @@ function HookAuto_loginAllProvideusercredentials()
 	$ip=get_ip();
 	foreach ($results as $result)
 		{
-		if (ip_matches_regexp($ip, $result['auto_login_ip']))
+		if (ip_matches($ip, $result['auto_login_ip']))
 			{
 			$username=$result['username'];
 			$hashsql='';
@@ -38,7 +30,7 @@ function HookAuto_loginAllIprestrict()
 	if (substr($ip_restrict, 0, 1)!='!')
 		return false;
 
-	$allow=ip_matches_regexp($ip, $ip_restrict);
+	$allow=ip_matches($ip, $ip_restrict);
 	return true;
 	}
 
