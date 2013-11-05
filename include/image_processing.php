@@ -770,7 +770,7 @@ function create_previews($ref,$thumbonly=false,$extension="jpg",$previewonly=fal
 
 function create_previews_using_im($ref,$thumbonly=false,$extension="jpg",$previewonly=false,$previewbased=false,$alternative=-1)
 	{
-	global $keep_for_hpr,$imagemagick_path,$imagemagick_preserve_profiles,$imagemagick_quality,$imagemagick_colorspace;
+	global $keep_for_hpr,$imagemagick_path,$imagemagick_preserve_profiles,$imagemagick_quality,$imagemagick_colorspace,$default_icc_file;
 
 	$icc_transform_complete=false;
 	debug("create_previews_using_im(ref=$ref,thumbonly=$thumbonly,extension=$extension,previewonly=$previewonly,previewbased=$previewbased,alternative=$alternative)");
@@ -912,11 +912,17 @@ function create_previews_using_im($ref,$thumbonly=false,$extension="jpg",$previe
 					$icc_transform_complete=true;
 				} else {
 					// use existing strategy for color profiles
-					# Preserve colour profiles? (omit for smaller sizes)   
-					$profile="+profile \"*\" -colorspace ".$imagemagick_colorspace; # By default, strip the colour profiles ('+' is remove the profile, confusingly)
-					if ($imagemagick_preserve_profiles && $id!="thm" && $id!="col" && $id!="pre" && $id!="scr") {$profile="";}
+					# Preserve colour profiles? (omit for smaller sizes)
+					if ($imagemagick_preserve_profiles && $id!="thm" && $id!="col" && $id!="pre" && $id!="scr")
+						$profile="";
+					else if (!empty($default_icc_file))
+						$profile="-profile $default_icc_file ";
+					else
+						{
+						# By default, strip the colour profiles ('+' is remove the profile, confusingly)
+						$profile="+profile \"*\" -colorspace ".$imagemagick_colorspace;
+						}
 				}
-
 
 				$runcommand = $command ." +matte $profile -resize " . $tw . "x" . $th . "\">\" ".escapeshellarg($path);
                                 if(!hook("imagepskipthumb")):

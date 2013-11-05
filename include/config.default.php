@@ -278,6 +278,10 @@ $imagemagick_quality=90; # JPEG quality (0=worst quality/lowest filesize, 100=be
 # Use "sRGB" for ImageMagick version 6.7.6-4 and newer
 $imagemagick_colorspace="RGB";
 
+# Default color profile
+# This is going to be used for all rendered files (or just thumbnails if $imagemagick_preserve_profiles
+# is set
+#$default_icc_file='my-profile.icc';
 
 # To use the Ghostscript command -dUseCIEColor or not (generally true but added in some cases where scripts might want to turn it off).
 $dUseCIEColor=true;
