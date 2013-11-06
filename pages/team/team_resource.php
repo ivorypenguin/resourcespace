@@ -67,8 +67,8 @@ include "../../include/header.php";
 		<?php } ?>
 
 		<?php
-			if ($use_temp_tables && $file_checksums){
-				// MySQL temporary tables and file checksums must both be enabled for duplicate searching to work
+			if ($file_checksums){
+				// File checksums must be enabled for duplicate searching to work
 				// also, rememember that it only works for resources that have a checksum
 				// so if you're using offline generation of checksum hashes, make sure they have been updated
 				// before running this search.

@@ -748,7 +748,7 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 	# Duplicate Resources (based on file_checksum)
 	if (substr($search,0,11)=="!duplicates") 
 		{
-		return sql_query("select distinct r.hit_count score, $select from resource r $sql_join  where $sql_filter and file_checksum in (select file_checksum from (select file_checksum,count(*) dupecount from resource group by file_checksum) r2 where r2.dupecount>1) order by file_checksum",false,$fetchrows);
+		return sql_query("select distinct r.hit_count score, $select from resource r $sql_join  where $sql_filter and file_checksum in (select file_checksum from (select file_checksum from resource where file_checksum <> '' and file_checksum is not null group by file_checksum having count(file_checksum)>1)r2) order by file_checksum",false,$fetchrows);
 		}
 	
 	# View Collection
