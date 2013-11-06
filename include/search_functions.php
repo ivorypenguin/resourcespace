@@ -714,7 +714,7 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 	# Can only search for resources that belong to themes
 	if (checkperm("J"))
 		{
-		$sql_join.=" join collection_resource jcr on jcr.resource=r.ref join collection jc on jcr.collection=jc.ref and length(jc.theme)>0 ";
+		$sql_join=" join collection_resource jcr on jcr.resource=r.ref join collection jc on jcr.collection=jc.ref and length(jc.theme)>0 " . $sql_join;
 		}
 		
 	# ------ Special searches ------
