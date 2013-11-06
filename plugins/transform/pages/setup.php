@@ -29,6 +29,7 @@ $page_def[] = config_add_boolean_select('cropper_use_repage', $lang['use_repage'
 $page_def[] = config_add_boolean_select('cropper_enable_batch', $lang['enable_batch_transform']);
 $page_def[] = config_add_boolean_select('cropper_enable_alternative_files', $lang['cropper_enable_alternative_files']);
 $page_def[] = config_add_boolean_select('cropper_enable_replace_slideshow', $lang['enable_replace_slideshow']);
+$page_def[]= config_add_multi_group_select("cropper_restricteduse_groups",$lang["cropper_restricteduse_groups"]);
 // Commented out lines above that either don't seem to work or I'm unsure how to test
 
 // Do the page generation ritual

@@ -65,3 +65,5 @@ $lang['use_repage']="Use 'repage'";
 $lang['enable_batch_transform']="Enable Batch Transform";
 $lang['cropper_enable_alternative_files']='Enable storing alternative files';
 $lang['enable_replace_slideshow']='Enable replacing the slideshow';
+$lang['cropper_restricteduse_groups']='Restrict to rescale only (no rotate or crop options) for the selected groups';
+$lang['transformblurbrestricted']="Choose a width and/or height to rescale the cropped image. When you are done, choose a name and format for the new file and click download.<br/><br/>";
