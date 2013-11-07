@@ -158,21 +158,10 @@ else if (!$lazyload) { ?>
 			jQuery('.CollectionPanelShell').enableSelection();			
 		});	
 	</script>
-	<?php } ?>
+	<?php } 
 
 
-
-<?php if(!hook("clearmaincheckboxesfromcollectionframe")){ ?>
-<?php if ($use_checkboxes_for_selection && !$lazyload){ ?>
-<script type="text/javascript">
-<!--clear checkboxes-->
-jQuery(".checkselect").each(function(index, Element)
-{jQuery(Element).attr('checked',false);});
-<?php } ?>
-</script>
-<?php } #end hook clearmaincheckboxesfromcollectionframe?>
-
-<?php if (!$lazyload){?>
+if (!$lazyload){?>
 	<style>
 	#CollectionMenuExp
 		{
@@ -355,7 +344,17 @@ if (($userrequestmode==2 || $userrequestmode==3) && $basket_stores_size)
 
 
 if(!hook("updatemaincheckboxesfromcollectionframe")){
-	if ($use_checkboxes_for_selection &&!$lazyload){	?><script type="text/javascript"><?php
+	if ($use_checkboxes_for_selection &&!$lazyload){	?><script type="text/javascript">
+		
+			var checkboxes=jQuery('input.checkselect');
+	//console.log(checkboxes);
+	checkboxes.each(function(box){
+		jQuery(checkboxes[box]).attr('checked',false);
+		jQuery(checkboxes[box]).change();
+	});
+		
+		
+		<?php
 		# update checkboxes in main window
 		for ($n=0;$n<count($result);$n++)			
 			{
@@ -389,7 +388,7 @@ if ($count_result>$max_collection_thumbs && $k=="")
 	*/
 
 if (!$lazyload){?>
-<script>// hack for collection load	// this needs fixing
+<script>
 
 
 function ToggleThumbs()
