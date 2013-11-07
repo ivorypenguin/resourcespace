@@ -291,11 +291,9 @@ function setContent() {
 		south__onclose_start: function(pane){
 			if (pane=="south"){
 			if(jQuery('.ui-layout-south').height()>=<?php echo $collection_frame_height?> && thumbs!="hide"){
-				CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=hide&collection='+usercollection+'<?php echo (isset($k) ? "&k=".urlencode($k) : ""); ?>');
-				document.cookie = "thumbs=hide";
+				ToggleThumbs();
 			} else if(jQuery('.ui-layout-south').height()==40 && thumbs=="hide"){
-				CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=show&collection='+usercollection+'<?php echo (isset($k) ? "&k=".urlencode($k) : ""); ?>');
-				document.cookie = "thumbs=show";
+				ToggleThumbs();
 			}
 			return false;
 			}
@@ -303,11 +301,15 @@ function setContent() {
 		south__onresize: function(pane){
 			if (pane=="south"){
 			if(jQuery('.ui-layout-south').height()<<?php echo $collection_frame_height?> && thumbs!="hide"){
-				document.cookie = "thumbs=hide";
-				CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=hide&collection='+usercollection+'<?php echo (isset($k) ? "&k=".urlencode($k) : ""); ?>');
+				ToggleThumbs();
+			} else if(jQuery('.ui-layout-south').height()>40 && jQuery('.ui-layout-south').height()<<?php echo $collection_frame_height?> && thumbs=="hide"){
+				myLayout.sizePane("south", <?php echo $collection_frame_height?>);
+				ToggleThumbs();
 			} else if(jQuery('.ui-layout-south').height()>40 && thumbs=="hide"){
+				thumbs="show";console.log('showthumbs');
 				document.cookie = "thumbs=show";
-				CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=show&collection='+usercollection+'<?php echo (isset($k) ? "&k=".urlencode($k) : ""); ?>');
+				jQuery('#CollectionMinDiv').hide();
+				jQuery('#CollectionMaxDiv').show();jQuery('.ui-layout-south').animate({scrollTop:0}, 'fast');
 			}return false;
 			}
 		}
