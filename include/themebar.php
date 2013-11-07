@@ -19,8 +19,7 @@ onclick="
 var theme_display=get_cookie('theme_<?php echo $n?>');
 if (theme_display=='off'){var toggle_theme_display='on';} else { var toggle_theme_display='off';}
 SetCookie('theme_<?php echo $n?>',toggle_theme_display,1000);
-jQuery('#themebar_<?php echo htmlspecialchars(str_replace(array("\""," "),"",$themename)) ?>').slideToggle(0.2);
-
+jQuery('#themebar_<?php echo htmlspecialchars(str_replace(array("\""," ","*"),array("","","\\\\\*"),$themename)) ?>').slideToggle(0.2);
 
 return false;">                
                
