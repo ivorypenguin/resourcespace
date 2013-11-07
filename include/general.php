@@ -1858,36 +1858,39 @@ if (!function_exists("highlightkeywords")){
 function highlightkeywords($text,$search,$partial_index=false,$field_name="",$keywords_index=1)
 	{
 	# do not hightlight if the field is not indexed, so it is clearer where results came from.	
-	if ($keywords_index!=1){return $text;}	
+	if ($keywords_index!=1){return $text;}
+        
 	# Highlight searched keywords in $text
 	# Optional - depends on $highlightkeywords being set in config.php.
 	global $highlightkeywords;
 	# Situations where we do not need to do this.
 	if (!isset($highlightkeywords) || ($highlightkeywords==false) || ($search=="") || ($text=="")) {return $text;}
 
-		# Generate the cache of search keywords (no longer global so it can test against particular fields.
-		# a search is a small array so I don't think there is much to lose by processing it.
-		$hlkeycache=array();
-		$s=split_keywords($search);
-		for ($n=0;$n<count($s);$n++)
-			{
-			if (strpos($s[$n],":")!==false) {
-				$c=explode(":",$s[$n]);
-				# only add field specific keywords
-				if($field_name!="" && $c[0]==$field_name){
-					$hlkeycache[]=$c[1];			
-				}	
-				
-			}
-			# else add general keywords
-			else {
-				$hlkeycache[]=$s[$n];	
-			}	
 
-		}
-		
+        # Generate the cache of search keywords (no longer global so it can test against particular fields.
+        # a search is a small array so I don't think there is much to lose by processing it.
+        $hlkeycache=array();
+        $wildcards_found=false;
+        $s=split_keywords($search);
+        for ($n=0;$n<count($s);$n++)
+                {
+                if (strpos($s[$n],":")!==false) {
+                        $c=explode(":",$s[$n]);
+                        # only add field specific keywords
+                        if($field_name!="" && $c[0]==$field_name){
+                                $hlkeycache[]=$c[1];			
+                        }	
+                }
+                # else add general keywords
+                else {
+                        $keyword=$s[$n];
+                        if (strpos($keyword,"*")!==false) {$wildcards_found=true;$keyword=str_replace("*","",$keyword);}
+                        $hlkeycache[]=$keyword;
+                }	
+             }
+        
 	# Parse and replace.
-	if ($partial_index)
+	if ($partial_index || $wildcards_found)
 		{
 		return str_highlight ($text,$hlkeycache,STR_HIGHLIGHT_SIMPLE);
 		}
