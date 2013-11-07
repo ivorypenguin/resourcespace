@@ -681,13 +681,12 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
         # ---------------------------------------------------------------
         if (count($sql_keyword_union)>0)
             {
-            $sql_join.=",(
+            $sql_join.=" join (
                 select resource,sum(score) as score,
                 " . join(", ",$sql_keyword_union_aggregation) . " from
-                (" . join(" union ",$sql_keyword_union) . ") as hits group by resource) as h";
+                (" . join(" union ",$sql_keyword_union) . ") as hits group by resource) as h on h.resource=r.ref ";
             
             if ($sql_filter!="") {$sql_filter.=" and ";}
-            $sql_filter.="r.ref=h.resource and ";
             $sql_filter.=join(" and ",$sql_keyword_union_criteria);
             
             # Use amalgamated resource_keyword hitcounts for scoring (relevance matching based on previous user activity)
