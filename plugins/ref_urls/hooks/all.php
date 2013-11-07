@@ -19,4 +19,11 @@ function HookRef_urlsAllGet_resource_path_override($ref, $getfilepath, $size, $g
 	return $url;
 	}
 
+function HookRef_urlsAllFancybox_preview_options($url)
+	{
+	if (preg_match('/ext=(jpg|png|tif.*|jpeg|bmp|gif)/', $url))
+		echo "type: 'image',\n";
+	return true;
+	}
+
 ?>
