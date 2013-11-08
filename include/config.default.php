@@ -502,7 +502,7 @@ $terms_login=false;
 $thumbs_default="show";
 #  Automatically show thumbs when you change collection (only if default is show)
 $autoshow_thumbs = false;
-# How many thumbnails to show in the collections frame until the frame automatically hides thumbnails.
+# How many thumbnails to show in the collections panel until a 'View All...' link appears, linking to a search in the main window.
 $max_collection_thumbs=150;
 
 # Options for number of results to display per page:

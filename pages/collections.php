@@ -679,7 +679,7 @@ if (isset($cinfo['savedsearch'])&&$cinfo['savedsearch']==null  && !$lazyload)
 if ($count_result>0) 
 	{
 	# loop and display the results
-	for ($n=($lazyload?20:0);$n<($lazyload?count($result):$before_lazyload);$n++)					
+	for ($n=($lazyload?20:0);$n<($lazyload?min($max_collection_thumbs,count($result)):$before_lazyload);$n++)					
 		{
 		$ref=$result[$n]["ref"];
 		?>
@@ -749,10 +749,22 @@ if ($count_result>0)
 	  } # End of loop through resources
 	} # End of results condition
 if (!$lazyload && $do_lazyload ){?>
-	<div id="lazycollection"><div class="CollectionPanelShell"><?php echo $lang['loading']?><div></div></div></div>
+	<div id="lazycollection"><div class="CollectionPanelShell"><table border="0" class="CollectionResourceAlign"><tr><td><img/></td>
+		</tr></table>
+		<div class="CollectionPanelInfo"><?php echo $lang['loading']?></div></div></div>
 	<script>
 	jQuery('#lazycollection').load('<?php echo $baseurl_short?>pages/collections.php?lazyload=true&thumbs=show&collection=<?php echo $usercollection?><?php echo (isset($k) ? "&k=".urlencode($k) : ""); ?>');
-	</script><?php }
+	</script><?php 
+}
+	
+if ($lazyload && $count_result>$max_collection_thumbs){
+	?><div class="CollectionPanelShell"><table border="0" class="CollectionResourceAlign"><tr><td><img/></td>
+		</tr></table>
+		<div class="CollectionPanelInfo"><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php?search=!collection<?php echo $usercollection?>&k=<?php echo urlencode($k) ?>"><?php echo $lang['viewall']?>...</a></div><?php
+	}
+	
+if (!$lazyload && $do_lazyload ){?></div><?php
+	}
 
 		
 # Plugin for additional collection listings	(deprecated)
