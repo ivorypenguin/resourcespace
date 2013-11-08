@@ -342,32 +342,37 @@ if (($userrequestmode==2 || $userrequestmode==3) && $basket_stores_size)
 		}
 	}
 
+if(!hook("clearmaincheckboxesfromcollectionframe")){
+	if ($use_checkboxes_for_selection &&!$lazyload){?>
+	<script type="text/javascript">
 
-if(!hook("updatemaincheckboxesfromcollectionframe")){
-	if ($use_checkboxes_for_selection &&!$lazyload){	?><script type="text/javascript">
-		
-			var checkboxes=jQuery('input.checkselect');
-	//console.log(checkboxes);
+	var checkboxes=jQuery('input.checkselect');
+	//clear all
 	checkboxes.each(function(box){
 		jQuery(checkboxes[box]).attr('checked',false);
 		jQuery(checkboxes[box]).change();
 	});
+	</script>
+<?php }
+} // end hook clearmaincheckboxesfromcollectionframe
+
+if(!hook("updatemaincheckboxesfromcollectionframe")){
 		
-		
-		<?php
-		# update checkboxes in main window
-		for ($n=0;$n<count($result);$n++)			
-			{
-			$ref=$result[$n]["ref"];
-			?>
+	if ($use_checkboxes_for_selection){?>
+	<script type="text/javascript"><?php
+	# update checkboxes in main window
+	for ($n=0;$n<count($result);$n++)			
+		{
+		$ref=$result[$n]["ref"];
+		?>
+		if (jQuery('#check<?php echo htmlspecialchars($ref) ?>')){
+		jQuery('#check<?php echo htmlspecialchars($ref) ?>').attr('checked',true);
+		}
 			
-			if (jQuery('#check<?php echo htmlspecialchars($ref) ?>')){
-				jQuery('#check<?php echo htmlspecialchars($ref) ?>').attr('checked',true);}
-			
-		<?php
-		} ?></script><?php
-	}
-} # end hook updatemaincheckboxesfromcollectionframe
+	<?php }
+	} ?></script><?php
+}# end hook updatemaincheckboxesfromcollectionframe
+
 
 /*
 if ($count_result>$max_collection_thumbs && $k=="")
