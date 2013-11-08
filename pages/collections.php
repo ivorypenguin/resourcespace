@@ -749,7 +749,7 @@ if ($count_result>0)
 	  } # End of loop through resources
 	} # End of results condition
 if (!$lazyload && $do_lazyload ){?>
-	<div id="lazycollection">Loading more...</div></div>
+	<div id="lazycollection"><div class="CollectionPanelShell" id="ResourceShell<?php echo urlencode($ref) ?>"><?php echo $lang['loading']?><div></div>
 	<script>
 		jQuery('#lazycollection').load('<?php echo $baseurl_short?>pages/collections.php?lazyload=true&thumbs=show&collection=<?php echo $usercollection?><?php echo (isset($k) ? "&k=".urlencode($k) : ""); ?>');
 		</script><?php }
