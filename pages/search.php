@@ -311,7 +311,18 @@ if (substr($search,0,11)=="!collection")
 		{
 		$allow_reorder=true;
 		}
-	}
+/*
+
+	if ($display_collection_title)
+		{
+        if (!isset($collectiondata['savedsearch'])||(isset($collectiondata['savedsearch'])&&$collectiondata['savedsearch']==null)){ $collection_tag='';} else {$collection_tag=$lang['smartcollection'].": ";}
+        $collection_title = '<div align="left"><h1><span id="coltitle'.$collection.'">'.$collection_tag.$collectiondata ["name"].'</span></h1> ';
+        if ($k==""){$collection_title_links='<a href="collections.php?collection='.$collectiondata["ref"].'" target="collections">'.$lang["selectcollection"].'</a>';}
+        if ($k==""&&$preview_all){$collection_title_links.='&nbsp;&nbsp;<a href="preview_all.php?ref='.$collectiondata["ref"].'&order_by='.$order_by.'&sort='.$sort.'&archive='.$archive.'&k='.$k.'">&gt;&nbsp;'.$lang['preview_all'].'</a>';}
+        $collection_title.='</div>';
+        if ($display!="list"){$collection_title_links.= '<br /><br />';}
+		}
+*/	}
 
 # Include function for reordering
 if ($allow_reorder && $display!="list")
@@ -367,7 +378,7 @@ if ($display_user_rating_stars && $k=="")
 			newOrder.push(this.substring(13));
 			});
 		jQuery.ajax({
-		  type: 'GET',
+		  type: 'POST',
 		  url: 'search.php?search=!collection<?php echo urlencode($collection) ?>&reorder=true',
 		  data: {order:JSON.stringify(newOrder)},
 		  success: function(){
@@ -377,7 +388,7 @@ if ($display_user_rating_stars && $k=="")
 			} 
 		});
 		}		
-		jQuery(document).ready(function() {
+
 			jQuery('#CentralSpace').sortable({
 				helper:"clone",
 				items: ".ResourcePanelShell, .ResourcePanelShellLarge, .ResourcePanelShellSmall",
@@ -399,18 +410,18 @@ if ($display_user_rating_stars && $k=="")
 			jQuery('.ResourcePanelShell').disableSelection();
 			jQuery('.ResourcePanelShellLarge').disableSelection();
 			jQuery('.ResourcePanelShellSmall').disableSelection();			
-		});			
+	
 	</script>
 <?php }
 	else { ?>
 	<script type="text/javascript">
-	jQuery(document).ready(function() {
+
 			jQuery('.ui-sortable').sortable('disable');
 			jQuery('.ResourcePanelShell').enableSelection();
 			jQuery('.ResourcePanelShellLarge').enableSelection();
 			jQuery('.ResourcePanelShellSmall').enableSelection();
 			
-		});	
+	
 	</script>
 	<?php }
 
