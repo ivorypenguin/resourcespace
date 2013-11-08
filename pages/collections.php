@@ -571,7 +571,7 @@ elseif ($k!="")
 	 hook("beforecollectiontoolscolumn");?>
 	 <?php if (!hook("modifycompacttoolslabel")){ echo "<div style='height:5px;'></div>".$lang['tools'].":";}
     draw_compact_style_selector($cinfo['ref']);?>	
-     
+
      <?php hook("aftercollectionscompacttools");?>
 
 		 
@@ -749,10 +749,10 @@ if ($count_result>0)
 	  } # End of loop through resources
 	} # End of results condition
 if (!$lazyload && $do_lazyload ){?>
-	<div id="lazycollection"><div class="CollectionPanelShell" id="ResourceShell<?php echo urlencode($ref) ?>"><?php echo $lang['loading']?><div></div>
+	<div id="lazycollection"><div class="CollectionPanelShell"><?php echo $lang['loading']?><div></div></div></div>
 	<script>
-		jQuery('#lazycollection').load('<?php echo $baseurl_short?>pages/collections.php?lazyload=true&thumbs=show&collection=<?php echo $usercollection?><?php echo (isset($k) ? "&k=".urlencode($k) : ""); ?>');
-		</script><?php }
+	jQuery('#lazycollection').load('<?php echo $baseurl_short?>pages/collections.php?lazyload=true&thumbs=show&collection=<?php echo $usercollection?><?php echo (isset($k) ? "&k=".urlencode($k) : ""); ?>');
+	</script><?php }
 
 		
 # Plugin for additional collection listings	(deprecated)
@@ -850,9 +850,6 @@ if (!$lazyload){
 	<!--Menu-->	
 	<div id="CollectionMinRightNav"><div id="MinSearchItem">
 	  <?php if ($collections_compact_style){
-		?><script>jQuery('#collections-coltools-<?php echo $cinfo['ref']?>_usercol').clone().attr("id",'#collections-coltools-<?php echo $cinfo['ref']?>_usercolmin').attr('onChange',"colAction(jQuery(this).val());jQuery(this).prop('selectedIndex',0);").prependTo("#MinSearchItem");
-		
-		</script><?php
 		 if (/*($count_result<=$max_collection_thumbs) && */!$disable_collection_toggle) { ?>&nbsp;&nbsp;<a href="#" onClick="ToggleThumbs();return false;">&gt;&nbsp;<?php echo $lang["showthumbnails"]?></a><?php } 
 		}
 		else { ?>
