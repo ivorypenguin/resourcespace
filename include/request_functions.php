@@ -304,7 +304,7 @@ function managed_collection_request($ref,$details,$ref_is_resource=false)
 	hook("afterrequestcreate", "", array($request));
 	
 	# Send the e-mail	
-	$userconfirmmessage = $lang["requestsenttext"] . "<br /><br />$message<br /><br />" . $lang["clicktoviewresource"] . "<br />$baseurl/?r=$ref";
+	$userconfirmmessage = $lang["requestsenttext"] . "<br /><br />$message<br /><br />" . $lang["clicktoviewresource"] . "<br />$baseurl/?c=$ref";
 	$message=$lang["user_made_request"]. "<br /><br />" . $lang["username"] . ": " . $username . "<br />$message<br /><br />";
 	$message.=$lang["clicktoviewresource"] . "<br />$baseurl/?q=$request";
 	send_mail($email_notify,$applicationname . ": " . $lang["requestcollection"] . " - $ref",$message,$useremail,$useremail,$admin_mail_template,$templatevars);
