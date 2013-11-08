@@ -306,7 +306,11 @@ $result=do_search("!collection" . $usercollection,"","relevance",0,$lazyload?-1:
 $count_result=count($result);
 $before_lazyload=$count_result;
 
-if ($count_result>20 || $thumbs=="hide"){$do_lazyload=true;$before_lazyload=min(count($result),20);}// allow less than 20 too
+if ($count_result>20 || $thumbs=="hide"){$do_lazyload=true;$before_lazyload=min(count($result),20);?>
+	<script type="text/javascript">jQuery('.ui-sortable').sortable('disable');
+			jQuery('.CollectionPanelShell').enableSelection();	
+	</script>
+<?php } // allow less than 20 too, and disable sorting if the result is going to be truncated
 
 $hook_count=hook("countresult","",array($usercollection,$count_result));if (is_numeric($hook_count)) {$count_result=$hook_count;} # Allow count display to be overridden by a plugin (e.g. that adds it's own resources from elsewhere e.g. ResourceConnect).
 $feedback=$cinfo["request_feedback"];
@@ -760,7 +764,9 @@ if (!$lazyload && $do_lazyload ){?>
 if ($lazyload && $count_result>$max_collection_thumbs){
 	?><div class="CollectionPanelShell"><table border="0" class="CollectionResourceAlign"><tr><td><img/></td>
 		</tr></table>
-		<div class="CollectionPanelInfo"><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php?search=!collection<?php echo $usercollection?>&k=<?php echo urlencode($k) ?>"><?php echo $lang['viewall']?>...</a></div><?php
+		<div class="CollectionPanelInfo"><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php?search=!collection<?php echo $usercollection?>&k=<?php echo urlencode($k) ?>"><?php echo $lang['viewall']?>...</a></div>
+		
+		<?php
 	}
 	
 if (!$lazyload && $do_lazyload ){?></div><?php
