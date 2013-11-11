@@ -22,6 +22,10 @@ if (!$allow_share) {
         $error=$lang["error-permissiondenied"];
         }
 
+# Check if editing existing external share
+$editaccess=getvalescaped("editaccess","");
+($editaccess=="")?$editing=false:$editing=true;
+	
 
 #Check if any resources are not approved
 if (!$collection_allow_not_approved_share && !is_collection_approved($ref)) {
@@ -65,87 +69,113 @@ include "../include/header.php";
     </script><?php
     exit();}
 ?>
+  
+	<div class="BasicsBox"> 
+	<form method=post id="collectionform" action="<?php echo $baseurl_short?>pages/collection_share.php">
+	<input type="hidden" name="ref" id="ref" value="<?php echo htmlspecialchars($ref) ?>">
+	<input type="hidden" name="deleteaccess" id="deleteaccess" value="">
+	<input type="hidden" name="editaccess" id="editaccess" value="<?php echo htmlspecialchars($editaccess)?>">
+	<input type="hidden" name="editexpiration" id="editexpiration" value="">
+	<input type="hidden" name="editaccesslevel" id="editaccesslevel" value="">
+	<input type="hidden" name="generateurl" id="generateurl" value="">
 
-<div class="BasicsBox"> 
-<form method=post id="collectionform" action="<?php echo $baseurl_short?>pages/collection_share.php">
-<input type="hidden" name="ref" id="ref" value="<?php echo htmlspecialchars($ref) ?>">
-<input type="hidden" name="deleteaccess" id="deleteaccess" value="">
-<input type="hidden" name="generateurl" id="generateurl" value="">
+	<h1><?php echo str_replace("%collectionname", i18n_get_collection_name($collection), $lang["sharecollection-name"]);?></h1>
 
-<h1><?php echo str_replace("%collectionname", i18n_get_collection_name($collection), $lang["sharecollection-name"]);?></h1>
-
-<div class="VerticalNav">
-<ul>
-
-<li><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_email.php?ref=<?php echo urlencode($ref) ?>"><?php echo $lang["emailcollection"]?></a></li>
-
-<li><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_share.php?ref=<?php echo urlencode($ref) ?>&generateurl=true"><?php echo $lang["generateurl"]?></a></li>
-
-<?php hook("extra_share_options") ?>
-
-<?php if (getval("generateurl","")!="")
-	{
-	if (!($hide_internal_sharing_url))
-		{
-		?>
-		<p><?php echo $lang["generateurlinternal"]?></p>
+	<div class="VerticalNav">
+	<ul>
+	<?php
+	
+	if(!$editing)
+		{?>
 		
-		<p><input class="URLDisplay" type="text" value="<?php echo $baseurl?>/?c=<?php echo urlencode($ref) ?>">
-		<?php
+		
+
+		<li><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_email.php?ref=<?php echo urlencode($ref) ?>"><?php echo $lang["emailcollection"]?></a></li>
+
+		<li><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_share.php?ref=<?php echo urlencode($ref) ?>&generateurl=true"><?php echo $lang["generateurl"]?></a></li>
+
+		<?php hook("extra_share_options");
 		}
-		
-	$access=getvalescaped("access","");
-	$expires=getvalescaped("expires","");
-	if ($access=="")
+	if (getval("generateurl","")!="" || $editing)
 		{
-		?>
-		<p><?php echo $lang["selectgenerateurlexternal"] ?></p>
-		
-		<?php if(!hook('replaceemailaccessselector')): ?>
-		<div class="Question" id="question_access">
-		<label for="archive"><?php echo $lang["access"]?></label>
-		<select class="stdwidth" name="access" id="access">
-		<?php
-		# List available access levels. The highest level must be the minimum user access level.
-		for ($n=$minaccess;$n<=1;$n++) { ?>
-		<option value="<?php echo $n?>"><?php echo $lang["access" . $n]?></option>
-		<?php } ?>
-		</select>
-		<div class="clearerleft"> </div>
-		</div>
-		<?php endif; #hook replaceemailaccessselector ?>
-		
-		<div class="Question">
-		<label><?php echo $lang["expires"]?></label>
-		<select name="expires" class="stdwidth">
-		<option value=""><?php echo $lang["never"]?></option>
-		<?php for ($n=1;$n<=150;$n++)
+		if (!($hide_internal_sharing_url) && !$editing)
 			{
-			$date=time()+(60*60*24*$n);
-			?><option <?php $d=date("D",$date);if (($d=="Sun") || ($d=="Sat")) { ?>style="background-color:#cccccc"<?php } ?> value="<?php echo date("Y-m-d",$date)?>"><?php echo nicedate(date("Y-m-d",$date),false,true)?></option>
+			?>
+			<p><?php echo $lang["generateurlinternal"]?></p>
+			
+			<p><input class="URLDisplay" type="text" value="<?php echo $baseurl?>/?c=<?php echo urlencode($ref) ?>">
 			<?php
 			}
-		?>
-		</select>
-		<div class="clearerleft"> </div>
-		</div>
+			
+		$access=getvalescaped("access","");
+		$expires=getvalescaped("expires","");
+		if ($access=="" || $editing)
+			{
+			?>
+			<p><?php if (!$editing){echo $lang["selectgenerateurlexternal"];} ?></p>
+			
+			<?php if(!hook('replaceemailaccessselector')): ?>
+			<div class="Question" id="question_access">
+			<label for="archive"><?php echo $lang["access"]?></label>
+			<select class="stdwidth" name="access" id="access">
+			<?php
+			# List available access levels. The highest level must be the minimum user access level.
+			for ($n=$minaccess;$n<=1;$n++) { ?>
+			<option value="<?php echo $n?>" <?php if(getvalescaped("editaccesslevel","")==$n){echo "selected";}?>><?php echo $lang["access" . $n]?></option>
+			<?php } ?>
+			</select>
+			<div class="clearerleft"> </div>
+			</div>
+			<?php endif; #hook replaceemailaccessselector ?>
+			
+			<div class="Question">
+			<label><?php echo $lang["expires"]?></label>
+			<select name="expires" class="stdwidth">
+			<option value=""><?php echo $lang["never"]?></option>
+			<?php for ($n=1;$n<=150;$n++)
+				{
+				$date=time()+(60*60*24*$n);
+				?><option <?php $d=date("D",$date);if (($d=="Sun") || ($d=="Sat")) { ?>style="background-color:#cccccc"<?php } ?> value="<?php echo date("Y-m-d",$date)?>" <?php if(substr(getvalescaped("editexpiration",""),0,10)==date("Y-m-d",$date)){echo "selected";}?>><?php echo nicedate(date("Y-m-d",$date),false,true)?></option>
+				<?php
+				}
+			?>
+			</select>
+			<div class="clearerleft"> </div>
+			</div>
+			
+			<div class="QuestionSubmit" style="padding-top:0;margin-top:0;">
+			<label for="buttons"> </label>
+			<?php 
+			if (!$editing)
+				{?>
+				<input name="generateurl" type="submit" value="&nbsp;&nbsp;<?php echo $lang["generateexternalurl"]?>&nbsp;&nbsp;" />
+				<?php 
+				}
+			else
+				{?>
+				<input name="editexternalurl" type="submit" value="&nbsp;&nbsp;<?php echo $lang["save"]?>&nbsp;&nbsp;" />
+				<?php
+				}?>
+			</div>
+			<?php
+			}
+		else if (getvalescaped("editaccess","")=="")
+			{
+			# Access has been selected. Generate a new URL.
+			?>
+			<p><?php echo $lang["generateurlexternal"]?></p>
 		
-		<div class="QuestionSubmit" style="padding-top:0;margin-top:0;">
-		<label for="buttons"> </label>
-		<input name="generateurl" type="submit" value="&nbsp;&nbsp;<?php echo $lang["generateexternalurl"]?>&nbsp;&nbsp;" />
-		</div>
-		<?php
+			<p><input class="URLDisplay" type="text" value="<?php echo $baseurl?>/?c=<?php echo urlencode($ref) ?>&k=<?php echo generate_collection_access_key($ref,0,"URL",$access,$expires)?>">
+			<?php
+			}
+		# Process editing of external share
+		if (getval("editexternalurl","")!="")
+			{
+			$editsuccess=edit_collection_external_access($editaccess,$access,$expires);
+			if($editsuccess){echo $lang['saved'];}
+			}
 		}
-	else
-		{
-		# Access has been selected. Generate a URL.
-		?>
-		<p><?php echo $lang["generateurlexternal"]?></p>
-	
-		<p><input class="URLDisplay" type="text" value="<?php echo $baseurl?>/?c=<?php echo urlencode($ref) ?>&k=<?php echo generate_collection_access_key($ref,0,"URL",$access,$expires)?>">
-		<?php
-		}
-	}
+
 ?>
 <?php hook("collectionshareoptions") ?>
 </ul>
@@ -154,7 +184,7 @@ include "../include/header.php";
 <?php if (collection_writeable($ref)||
 	(isset($collection['savedsearch']) && $collection['savedsearch']!=null && ($userref==$collection["user"] || checkperm("h"))))
 	{
-	if (!($hide_internal_sharing_url))
+	if (!($hide_internal_sharing_url) && !$editing)
 		{
 		?>
 		<h2><?php echo $lang["internalusersharing"]?></h2>
@@ -210,6 +240,7 @@ include "../include/header.php";
 			<td><?php echo htmlspecialchars(($keys[$n]["access"]==-1)?"":$lang["access" . $keys[$n]["access"]]); ?></td>
 			<td><div class="ListTools">
 			<a href="#" onClick="if (confirm('<?php echo $lang["confirmdeleteaccess"]?>')) {document.getElementById('deleteaccess').value='<?php echo htmlspecialchars($keys[$n]["access_key"]) ?>';document.getElementById('collectionform').submit(); }">&gt;&nbsp;<?php echo $lang["action-delete"]?></a>
+			<a href="#" onClick="document.getElementById('editaccess').value='<?php echo htmlspecialchars($keys[$n]["access_key"]) ?>';document.getElementById('editexpiration').value='<?php echo htmlspecialchars($keys[$n]["expires"]) ?>';document.getElementById('editaccesslevel').value='<?php echo htmlspecialchars($keys[$n]["access"]) ?>';CentralSpacePost(document.getElementById('collectionform'),true);">&gt;&nbsp;<?php echo $lang["action-edit"]?></a>
 			</div></td>
 			</tr>
 			<?php
@@ -225,9 +256,6 @@ include "../include/header.php";
 	<?php
 	}
 ?>
-
-
-
 
 </form>
 </div>

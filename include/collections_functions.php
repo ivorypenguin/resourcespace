@@ -1684,3 +1684,12 @@ function is_collection_approved($collection)
 		return true;
 		}
 
+function edit_collection_external_access($key,$access=-1,$expires="")
+	{
+	global $userref;
+	if ($key==""){return false;}
+	# Update the expiration and acccess
+	sql_query("update external_access_keys set access='$access', expires=" . (($expires=="")?"null":"'" . $expires . "'") . ",date=now() where access_key='$key'");	
+	return true;
+	}
+	
