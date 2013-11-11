@@ -309,12 +309,6 @@ $before_lazyload=$count_result;
 if ($count_result>20 || $thumbs=="hide"){$do_lazyload=true;$before_lazyload=min(count($result),20);?>
 <?php } // allow less than 20 too, and disable sorting if the result is going to be truncated
 
-if ($count_result>$max_collection_thumbs){?>	
-	<script type="text/javascript">jQuery('.ui-layout-pane-south .ui-sortable').sortable('disable');
-			jQuery('.CollectionPanelShell').enableSelection();	
-	</script><?php 
-	}
-
 $hook_count=hook("countresult","",array($usercollection,$count_result));if (is_numeric($hook_count)) {$count_result=$hook_count;} # Allow count display to be overridden by a plugin (e.g. that adds it's own resources from elsewhere e.g. ResourceConnect).
 $feedback=$cinfo["request_feedback"];
 
