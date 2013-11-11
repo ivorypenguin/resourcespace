@@ -1241,6 +1241,8 @@ function update_collection_order($neworder,$collection,$offset=0)
 	}
 	$updatesql.= "else sortorder END) WHERE collection='$collection'";
 	sql_query($updatesql);
+	$updatesql="update collection_resource set sortorder=99999 WHERE collection='$collection' and sortorder is NULL";
+	sql_query($updatesql);
 	}
 	
 function get_collection_resource_comment($resource,$collection)
