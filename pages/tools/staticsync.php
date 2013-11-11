@@ -38,6 +38,7 @@ $max=10000;
 $count=0;
 
 $done=sql_array("select file_path value from resource where length(file_path)>0 and file_path like '%/%'");
+$done=array_flip($done);
 
 # Load all modification times into an array for speed
 $modtimes=array();
@@ -147,7 +148,7 @@ function ProcessFolder($folder)
 		if (($filetype=="file") && (substr($file,0,1)!=".") && (strtolower($file)!="thumbs.db"))
 			{
 			# Already exists?
-			if (!in_array($shortpath,$done))
+			if (!isset($done[$shortpath]))
 				{
 				$count++;if ($count>$max) {return(true);}
 
