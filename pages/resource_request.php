@@ -56,7 +56,7 @@ include "../include/header.php";
   <h1><?php echo $lang["requestresource"]?></h1>
   <p><?php echo text("introtext")?></p>
   
-	<form method="post" action="resource_request.php">  
+	<form method="post" action="<?php echo $baseurl_short?>pages/resource_request.php">  
 	<input type=hidden name=ref value="<?php echo htmlspecialchars($ref)?>">
 	
 	<div class="Question">
