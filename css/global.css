@@ -107,7 +107,8 @@ input.defaultbutton {position: absolute; left: -100%; width: 0; height: 0;}
 #CentralSpace .SearchWidth {width: 550px;font: 10px Ubuntu, Tahoma, Arial, Helvetica, sans-serif;margin: 0px 0px;padding: 0px;}
 #CentraSpace .SearchWidthExp {width:200px;font: 10px Ubuntu, Tahoma, Arial, Helvetica, sans-serif;margin: 0px 0px;padding: 0px;}
 
-.CollectionPanelShell{padding:0;float: left;margin: 0px 15px 5px 0px;width: 77px;height: 110px;}
+
+.CollectionPanelShell {padding:0;float: left;margin: 0px 15px 5px 0px;width: 97px;height: 120px;}
 .CollectionPanelInfo{}
 .CollectionResourceAlign {width:77px;height:85px;text-align: center;vertical-align: middle;}
 
