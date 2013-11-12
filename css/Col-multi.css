@@ -239,5 +239,6 @@ input[readonly] {color: #000000;}
 #themeselect {color: white; background-color: #F45D18;}
 #themeselect:active {background-color: #db5315;}
 
-#basicyear { background-color: #0DA4CF; color: white;}
-#basicmonth { background-color: #0DA4CF; color: white;}
+#basicyear, #basicmonth { background-color: #0DA4CF; color: white;}
+
+#SearchBox select {background-color:#0DA4CF; color: white;}
