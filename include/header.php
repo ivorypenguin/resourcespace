@@ -56,11 +56,14 @@ http://www.resourcespace.org/
 
 <?php if ($use_zip_extension){?><script type="text/javascript" src="<?php echo $baseurl?>/lib/js/jquery-periodical-updater.js"></script><?php } ?>
 
-<?php if ($load_ubuntu_font) { ?>
-<link href='http://fonts.googleapis.com/css?family=Ubuntu:400,700' rel='stylesheet' type='text/css'>
-<?php } ?>
+<?php if ($load_ubuntu_font) { 
+	$urlprefix="http://";
+	if (strpos($baseurl,"https://")!==false) // Change prefix as mixed content prevents linking in Firefox
+		{$urlprefix="https://";}
+	echo "<link href='" . $urlprefix . "fonts.googleapis.com/css?family=Ubuntu:400,700' rel='stylesheet' type='text/css'>";
+	}
 
-<?php if ($contact_sheet){?>
+if ($contact_sheet){?>
 <script type="text/javascript" src="<?php echo $baseurl?>/lib/js/contactsheet.js"></script>
 <script>
 contactsheet_previewimage_prefix = '<?php echo addslashes($storageurl)?>';
