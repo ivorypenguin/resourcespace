@@ -615,7 +615,8 @@ function get_image_sizes($ref,$internal=false,$extension="jpg",$onlyifexists=tru
 		$path=get_resource_path($ref,true,$sizes[$n]["id"],false,"jpg");
 
 		$resource_type=sql_value("select resource_type value from resource where ref='$ref'","");
-		if ((file_exists($path) || (!$onlyifexists)) && !checkperm("T" . $resource_type . "_" . $sizes[$n]["id"]))
+		$file_exists = file_exists($path);
+		if (($file_exists || (!$onlyifexists)) && !checkperm("T" . $resource_type . "_" . $sizes[$n]["id"]))
 			{
 			if (($sizes[$n]["internal"]==0) || ($internal))
 				{
@@ -637,7 +638,11 @@ function get_image_sizes($ref,$internal=false,$extension="jpg",$onlyifexists=tru
 				$returnline["path"]=$path;
 				$returnline["id"]=$sizes[$n]["id"];
 				if ((list($sw,$sh) = @getimagesize($path))===false) {$sw=0;$sh=0;}
-				if (($filesize=@filesize_unlimited($path))===false) {$returnline["filesize"]="?";$returnline["filedown"]="?";}
+				if ($file_exists)
+					$filesize=@filesize_unlimited($path);
+				else
+					$filesize=0;
+				if ($filesize===false) {$returnline["filesize"]="?";$returnline["filedown"]="?";}
 				else {$returnline["filedown"]=ceil($filesize/50000) . " seconds @ broadband";$filesize=formatfilesize($filesize);}
 				$returnline["filesize"]=$filesize;			
 				$returnline["width"]=$sw;			
@@ -2932,27 +2937,30 @@ function filesize_unlimited($path)
 
     if (PHP_OS=='WINNT')
         {
-	if (class_exists("COM"))
-		{
-		$filesystem=new COM('Scripting.FileSystemObject');
-		$file=$filesystem->GetFile($path);
-		return $file->Size();
-		}
-	else
-		{
+		if (class_exists("COM"))
+			{
+			try
+				{
+				$filesystem=new COM('Scripting.FileSystemObject');
+				$file=$filesystem->GetFile($path);
+				return $file->Size();
+				}
+			catch (com_exception $e)
+				{
+				return false;
+				}
+			}
+
 		return exec('for %I in (' . escapeshellarg($path) . ') do @echo %~zI' );
-		}
         }
-    else
-        {
+
 	#Use stat
-        $bytesize = exec("stat -c '%s' " . escapeshellarg($path));
-        if(!is_int($bytesize))
+	$bytesize = exec("stat -c '%s' " . escapeshellarg($path));
+	if(!is_int($bytesize))
 		{
 		return @filesize($path); # Bomb out, the output wasn't as we expected. Return the filesize() output.
 		}
 	return $bytesize;
-        }
     }
 
 function strip_leading_comma($val)
