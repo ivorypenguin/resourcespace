@@ -777,7 +777,7 @@ function update_field($resource,$field,$value)
 		}
 		
 	# Delete the old value (if any) and add a new value.
-	sql_query("delete from resource_data where resource='$resource' and resource_type_field='$field' limit 1");
+	sql_query("delete from resource_data where resource='$resource' and resource_type_field='$field'");
 	$value=escape_check($value);
 	sql_query("insert into resource_data(resource,resource_type_field,value) values ('$resource','$field','$value')");
 	
