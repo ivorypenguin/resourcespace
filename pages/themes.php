@@ -296,7 +296,7 @@ if ($themes_category_split_pages && isset($themes[0]) && !$theme_direct_jump)
 		$link.="=". urlencode((!isset($themes[$x+1]))?"":$themes[$x]);
 	}
 	?>
-	<p><a href="<?php echo $link?>" onClick="return CentralSpaceLoad(this,true);">&lt;&lt; <?php echo $lang["back"]?></a></p>
+	<p><a href="<?php echo $link?>" onClick="return CentralSpaceLoad(this,true);">&lt;&nbsp;<?php echo $lang["back"]?></a></p>
 	<?php
 
 }

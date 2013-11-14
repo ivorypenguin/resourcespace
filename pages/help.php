@@ -34,7 +34,7 @@ include "../include/header.php";
   <h2>&nbsp;</h2>
   <h1><?php echo htmlspecialchars($section)?></h1>
   <p><?php echo text($section)?></p>
-  <p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/help.php">&gt; <?php echo $lang["backtohelphome"]?></a></p>
+  <p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/help.php">&lt;&nbsp;<?php echo $lang["backtohelphome"]?></a></p>
 <?php } ?>
 <?php } // end hook replacehelp?>
 

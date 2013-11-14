@@ -71,7 +71,7 @@ if (!checkperm("t")) {
 	} 
 
 ?>
-<p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl . "/pages/" . $link?>">&lt;&nbsp; <?php echo $lang["back"]?></a></p>
+<p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl . "/pages/" . $link?>">&lt;&nbsp;<?php echo $lang["backtothemes"]?></a></p>
 <?php
 
 ?>
