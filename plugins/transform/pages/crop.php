@@ -481,12 +481,14 @@ include "../../../include/header.php";
 
 <h1><?php echo ($original ? $lang['transform_original'] : $lang['transformimage']); ?></h1>
 <p><?php
-    if($cropperestricted)
-	{
-	echo $lang['transformblurbrestricted'];
-	}
-    else
-	{$original ? $lang['transformblurb-original'] : $lang['transformblurb'] ;}?>
+  if($cropperestricted)
+      {
+      echo $lang['transformblurbrestricted'];
+      }
+  else
+      {
+      echo ($original ? $lang['transformblurb-original'] : $lang['transformblurb']);
+      }?>
 </p>
 <?php
 

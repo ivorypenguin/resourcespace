@@ -1,7 +1,7 @@
 <?php
 # Swedish
 # Language File for the Transform Plugin
-# Updated by Henrik Frizén 20131024 for svn r4998
+# Updated by Henrik Frizén 20131114 for svn r5089
 # -------
 #
 #
@@ -66,3 +66,5 @@ $lang['use_repage']="Använd argumentet ’repage’";
 $lang['enable_batch_transform']="Aktivera verktyget <b>Transformera i grupp</b>";
 $lang['cropper_enable_alternative_files']='Aktivera funktionen <b>Spara som alternativ fil</b>';
 $lang['enable_replace_slideshow']='Aktivera funktionen <b>Ersätt bild i bildspel</b>';
+$lang['cropper_restricteduse_groups']='Begränsa till att endast tillåta omskalning (inte rotation eller beskärning) för de valda grupperna';
+$lang['transformblurbrestricted']="Välj en bredd och/eller höjd om du vill skala om bilden. När du är klar anger du ett filnamn för den nya bilden och klickar på <b>Hämta</b>.<br/><br/>";
