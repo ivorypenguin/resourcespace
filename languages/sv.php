@@ -26,7 +26,7 @@
 # En första version av översättningen skapades av Henrik Frizén (förnamn.efternamn utan accenttecken i e-postboxen.Sveriges landskod) 20110124 för version 2295
 #
 # Senast uppdaterad av [Namn] [Datum] för version [svn-version], [kommentar]
-# Senast uppdaterad av Henrik Frizén 20131114 för version 5089
+# Senast uppdaterad av Henrik Frizén 20131114 för version 5090
 
 #
 #
@@ -1430,7 +1430,7 @@ $lang["nowriteaccesstofilestore"]="Skrivrättighet till katalogen ’" . $storag
 $lang["writeaccesstohomeanim"]="Skrivrättighet till katalogen ’" . $homeanim_folder ."’ finns?";
 $lang["nowriteaccesstohomeanim"]="Skrivrättighet till katalogen ’" . $homeanim_folder ."’ saknas. Skrivrättighet måste finnas för att tillägget <b>transform</b> ska kunna infoga bilder i startsidans bildspel.";
 $lang["blockedbrowsingoffilestore"]="Åtkomsten till katalogen ’filestore’ är blockerad för webbläsare?";
-$lang["noblockedbrowsingoffilestore"]="Mappen ’filestore’ är inte blockerad för webbläsare. Avlägsna ’Indexes’ från ’Options’ i Apache.";
+$lang["noblockedbrowsingoffilestore"]="Katalogen ’filestore’ är inte blockerad för webbläsare. Avlägsna ’Indexes’ från ’Options’ i Apache.";
 $lang["execution_failed"]="Ett oväntat svar gavs när %command exekverades. Svaret var: '%output'.";  # %command and %output will be replaced, e.g. Execution failed; unexpected output when executing convert command. Output was '[stdout]'.
 $lang["exif_extension"]="Exif-utökning";
 $lang["archiver_utility"]="Arkiveringsverktyg";
