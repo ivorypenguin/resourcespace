@@ -297,6 +297,7 @@ input.defaultbutton {position: absolute; left: -100%; width: 0; height: 0;}
 .HomePicturePanelIN {height: 350px;}
 .HomePanelPromoted {min-height: 205px;}
 .HomePanelMatchPromotedHeight {min-height: 197px;}
+.HomePanelPromotedIN {min-height: 197px;}
 .HomePanelPromotedImageWrap {text-align:center;min-height:155px;vertical-align:middle;}
 
 .TabBar {padding:10px 0 0 0;}
