@@ -222,7 +222,7 @@ else
 <div class="Question">
 
 <p> 
-<?php echo $lang["youtube_publish_existingurl"] . " :- <p>";
+<?php echo $lang["youtube_publish_existingurl"] . "<p>";
 	if ($youtube_url!="")
 		{
 		echo $youtube_url;
@@ -246,7 +246,7 @@ if ($youtube_username != '')
 	{	
 	?>	
 	<div class="Question" >
-	<?php echo "<p>" . $lang["youtube_publishloggedinas"] . " : " . "<strong>" . $youtube_username . "</strong><br></p>";
+	<?php echo "<p>" . str_replace("%youtube_username%", "<strong>" . $youtube_username . "</strong>", $lang["youtube_publishloggedinas"]) . "</p>";
 	echo "<p><a href=\"" . $baseurl . "/plugins/youtube_publish/pages/youtube_upload.php?resource=" . $ref . "&deletetokens=true" . "\">&gt; " . $lang["youtube_publish_change_login"] . "</a></p>";?>
 	</div>
 	<?php ;}?>
