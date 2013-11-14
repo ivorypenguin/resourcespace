@@ -26,7 +26,7 @@
 # En första version av översättningen skapades av Henrik Frizén (förnamn.efternamn utan accenttecken i e-postboxen.Sveriges landskod) 20110124 för version 2295
 #
 # Senast uppdaterad av [Namn] [Datum] för version [svn-version], [kommentar]
-# Senast uppdaterad av Henrik Frizén 20131023 för version 4994
+# Senast uppdaterad av Henrik Frizén 20131114 för version 5089
 
 #
 #
@@ -1771,3 +1771,5 @@ $lang['comments_hide-comment-text-confirm']="Vill du ta bort texten för denna k
 # testing updated request emails
 $lang["request_id"]="Begäransnr:";
 $lang["user_made_request"]="Följande användare har gjort en begäran:";
+
+$lang["download_collection"]="Hämta samling";
