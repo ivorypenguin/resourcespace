@@ -863,7 +863,7 @@ if (true) # Always show search header now.
 	<?php if ($resources_count!=0){?>
 	<div class="InpageNavLeftBlock"><a onClick="return CollectionDivLoad(this);" href="<?php echo $baseurl_short?>pages/collections.php?addsearch=<?php echo urlencode($search)?>&restypes=<?php echo urlencode($restypes)?>&archive=<?php echo urlencode($archive) ?>&mode=resources&daylimit=<?php echo urlencode($daylimit) ?>">&gt;&nbsp;<?php echo $lang["savesearchitemstocollection"]?></a></div>
 	<?php if($show_searchitemsdiskusage) {?>
-	<div class="InpageNavLeftBlock"><a onClick="return CentralSpaceLoad(this);" href="<?php echo $baseurl_short?>pages/search_disk_usage.php?search=<?php echo urlencode($search)?>&restypes=<?php echo urlencode($restypes)?>&offset=<?php echo urlencode($offset) ?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive) ?>&daylimit=<?php echo urlencode($daylimit) ?>&k=<?php echo urlencode($k) ?>">&gt;&nbsp;<?php echo $lang["searchitemsdiskusage"]?></a></div>
+	<div class="InpageNavLeftBlock"><a onClick="return CentralSpaceLoad(this, true);" href="<?php echo $baseurl_short?>pages/search_disk_usage.php?search=<?php echo urlencode($search)?>&restypes=<?php echo urlencode($restypes)?>&offset=<?php echo urlencode($offset) ?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive) ?>&daylimit=<?php echo urlencode($daylimit) ?>&k=<?php echo urlencode($k) ?>">&gt;&nbsp;<?php echo $lang["searchitemsdiskusage"]?></a></div>
 	<?php } ?>
 	<?php } ?>
 
