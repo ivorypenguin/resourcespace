@@ -61,6 +61,7 @@ h1, h2, .RecordPanel .Title {font: normal 1.5em Arial, Helvetica, sans-serif;}
 #CollectionMenu{width: 166px;}
 .CollectionSpace{left: 199px;}
 .CollectionPanelShell {width: 77px;height: 110px;}
+.CollectionResourceAlign {width: 77px}
 
 .HomePanelPromotedIN {min-height: 130px;}
 
