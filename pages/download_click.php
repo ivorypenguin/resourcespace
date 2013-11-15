@@ -18,8 +18,8 @@ include "../include/header.php";
     <p>&nbsp;</p>
     <p>&nbsp;</p>
     
-    <p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php">&gt;&nbsp;<?php echo $lang["backtosearch"]?></a></p>
-    <p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/home.php">&gt;&nbsp;<?php echo $lang["backtohome"]?></a></p>
+    <p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php">&lt;&nbsp;<?php echo $lang["backtosearch"]?></a></p>
+    <p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/home.php">&lt;&nbsp;<?php echo $lang["backtohome"]?></a></p>
 </div>
 
 <?php

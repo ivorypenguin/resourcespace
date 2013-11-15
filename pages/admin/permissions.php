@@ -81,7 +81,7 @@ include "include/header.php";
 <div class="proptitle"><?php echo $lang["permissionsmanager"] . ": " . $group["name"] ?></div>
 
 <div class="propbox" id="propbox">
-<p><a href="<?php echo $baseurl?>/pages/admin/properties.php?id=-1-4:<?php echo $ref?>&parent=8&gparent=1&name=<?php echo urlencode($group["name"])?>">&lt; <?php echo $lang["backtogroupmanagement"] ?></a></p>
+<p><a href="<?php echo $baseurl?>/pages/admin/properties.php?id=-1-4:<?php echo $ref?>&parent=8&gparent=1&name=<?php echo urlencode($group["name"])?>">&lt;&nbsp;<?php echo $lang["backtogroupmanagement"] ?></a></p>
 
 <form method="post" id="permform">
 <input type="hidden" name="saveform" value="true">

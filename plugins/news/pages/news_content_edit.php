@@ -35,7 +35,7 @@ $news=get_news($ref,"","");
 include dirname(__FILE__)."/../../../include/header.php";
 ?>
 
-<p><a href="news_edit.php?offset=<?php echo $offset?>&findtext=<?php echo $findtext?>">&lt; <?php echo $lang["news_manage"]?></a></p>
+<p><a href="news_edit.php?offset=<?php echo $offset?>&findtext=<?php echo $findtext?>">&lt;&nbsp;<?php echo $lang["news_manage"]?></a></p>
 
 <div class="BasicsBox">
 <h1><?php echo $lang["news_edit"]?></h1>
