@@ -325,11 +325,11 @@ if ($download_summary) {include "../include/download_summary.php";}
 # DPI calculations
 function compute_dpi($size, &$dpi, &$dpi_unit, &$dpi_w, &$dpi_h)
 	{
-	global $lang;
+	global $lang, $imperial_measurements;
 	if (isset($size['resolution'])&& $size['resolution']!=0) { $dpi=$size['resolution']; }
 	else if (!isset($dpi) || $dpi==0) { $dpi=300; }
 
-	if (isset($size['unit']) && trim(strtolower($size['unit']))=="inches")
+	if ((isset($size['unit']) && trim(strtolower($size['unit']))=="inches") || $imperial_measurements)
 		{
 		# Imperial measurements
 		$dpi_unit=$lang["inch-short"];
