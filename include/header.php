@@ -24,6 +24,8 @@ if ($display_user_rating_stars && $star_search){
 		setcookie("starsearch",$starsearch);
 	    }
 	}
+	
+if (getval("thumbs","")==""){setcookie("thumbs",$thumbs_default); }	
 ?><!DOCTYPE html>
 <html>	<?php if ($include_rs_header_info){?>
 <!--<?php hook("copyrightinsert");?>
