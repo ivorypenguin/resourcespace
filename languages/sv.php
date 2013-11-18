@@ -26,7 +26,7 @@
 # En första version av översättningen skapades av Henrik Frizén (förnamn.efternamn utan accenttecken i e-postboxen.Sveriges landskod) 20110124 för version 2295
 #
 # Senast uppdaterad av [Namn] [Datum] för version [svn-version], [kommentar]
-# Senast uppdaterad av Henrik Frizén 20131118 för version 5103
+# Senast uppdaterad av Henrik Frizén 20131118 för version 5104
 
 #
 #
@@ -439,9 +439,9 @@ $lang["retrypreviews"]="Försök skapa förhandsgranskningar igen";
 $lang["specifydefaultcontent"]="Ange den metadata som ska vara förvald för nya material";
 $lang["properties"]="– typspecifika egenskaper";
 $lang["relatedresources"]="Relaterade material";
-$lang["relatedresources-filename_extension"]="Relaterade material – %extension"; # Use %EXTENSION, %extension or %Extension as a placeholder. The placeholder will be replaced with the filename extension, using the same case. E.g. "Related Resources - %EXTENSION" -> "Related Resources - JPG"
+$lang["relatedresources-filename_extension"]="Relaterade material – %extension"; # Use %EXTENSION, %extension or %Extension as a placeholder. The placeholder will be replaced with the filename extension, using the same case. E.g. "Related resources - %EXTENSION" -> "Related resources - JPG"
 $lang["relatedresources-id"]="Relaterade material – nr %id%"; # %id% will be replaced, e.g. Related Resources - ID57
-$lang["relatedresources-restype"]="Relaterade material – %RESTYPE";  # %RESTYPE will be replaced, e.g. Related Resources - Photo
+$lang["relatedresources-restype"]="Relaterade material – %restype%"; # Use %RESTYPE%, %restype% or %Restype% as a placeholder. The placeholder will be replaced with the resource type in plural, using the same case. E.g. "Related resources - %restype%" -> "Related resources - photos"
 $lang["indexedsearchable"]="Indexerade, sökbara fält";
 $lang["clearform"]="Rensa formulär";
 $lang["similarresources"]="liknande material"; # e.g. 17 similar resources

@@ -1120,12 +1120,13 @@ if (count($result)>0)
 		$count_restypes=0;
 		foreach($related_restypes as $rtype){
 		$restypename=sql_value("select name as value from resource_type where ref = '$rtype'","");
+        $restypename = lang_or_i18n_get_translated($restypename, "resourcetype-", "-2");
 		?><!--Panel for related resources-->
 		<div class="RecordBox">
 		<div class="RecordPanel">  
 
 		<div class="RecordResouce">
-		<div class="Title"><?php echo str_replace("%RESTYPE", $restypename, $lang["relatedresources-restype"]); ?></div>
+		<div class="Title"><?php echo str_replace_formatted_placeholder("%restype%", $restypename, $lang["relatedresources-restype"]); ?></div>
 		<?php
 		# loop and display the results by file extension
 		for ($n=0;$n<count($result);$n++)			
