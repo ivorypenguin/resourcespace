@@ -513,6 +513,7 @@ $lang["log-b"]="Created alternate";
 $lang["log-missinglang"]="[type] (missing lang)"; # [type] will be replaced.
 
 $lang["backtoresourceview"]="Back to resource view";
+$lang["continuetoresourceview"]="Continue to resource view";
 
 # Resource status
 $lang["status"]="Status";
@@ -668,11 +669,13 @@ $lang["confirm-revertmetadata"]="Are you sure you want to re-extract the origina
 $lang["action-remove"]="Remove";
 $lang["complete"]="Complete";
 $lang["backtohome"]="Back to the home page";
+$lang["continuetohome"]="Continue to the home page";
 $lang["backtohelphome"]="Back to help home";
 $lang["backtosearch"]="Back to my search results";
 $lang["backtoview"]="Resource View";
 $lang["backtoeditresource"]="Back to edit resource";
 $lang["backtouser"]="Back to user login";
+$lang["continuetouser"]="Continue to user login";
 $lang["termsandconditions"]="Terms and conditions";
 $lang["iaccept"]="I Accept";
 $lang["contributedby"]="Contributed by";
@@ -1284,6 +1287,7 @@ $lang["all"]="All";
 $lang["allresourcessearchbar"]="All resources";
 $lang["allcollectionssearchbar"]="All collections";
 $lang["backtoresults"]="Back to results";
+$lang["continuetoresults"]="Continue to results";
 
 $lang["preview_all"]="Preview all";
 

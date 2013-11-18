@@ -26,7 +26,7 @@
 # En första version av översättningen skapades av Henrik Frizén (förnamn.efternamn utan accenttecken i e-postboxen.Sveriges landskod) 20110124 för version 2295
 #
 # Senast uppdaterad av [Namn] [Datum] för version [svn-version], [kommentar]
-# Senast uppdaterad av Henrik Frizén 20131118 för version 5102
+# Senast uppdaterad av Henrik Frizén 20131118 för version 5103
 
 #
 #
@@ -539,6 +539,7 @@ $lang["log-b"]="Skapade alternativ fil";
 $lang["log-missinglang"]="[type] (lang saknas)"; # [type] will be replaced.
 
 $lang["backtoresourceview"]="Tillbaka: Visa material";
+$lang["continuetoresourceview"]="Fortsätt: Visa material";
 
 # Resource status
 $lang["status"]="Status"; # Ska kunna inleda med "Materialet är" direkt följt av statusen.
@@ -694,11 +695,13 @@ $lang["confirm-revertmetadata"]="Vill du återextrahera den ursprungliga metadat
 $lang["action-remove"]="Avlägsna";
 $lang["complete"]="Slutförd";
 $lang["backtohome"]="Tillbaka: Startsida";
+$lang["continuetohome"]="Fortsätt: Startsida";
 $lang["backtohelphome"]="Tillbaka: Hjälp och tips, första sidan";
 $lang["backtosearch"]="Tillbaka: Sökresultat";
 $lang["backtoview"]="Tillbaka: Visa material";
 $lang["backtoeditresource"]="Tillbaka: Redigera material";
 $lang["backtouser"]="Tillbaka: Välkommen till ResourceSpace";
+$lang["continuetouser"]="Fortsätt: Välkommen till ResourceSpace";
 $lang["termsandconditions"]="Användningsvillkor";
 $lang["iaccept"]="Jag accepterar";
 $lang["contributedby"]="Tillagt av";
@@ -1310,6 +1313,7 @@ $lang["all"]="Alla";
 $lang["allresourcessearchbar"]="Alla material";
 $lang["allcollectionssearchbar"]="Alla samlingar";
 $lang["backtoresults"]="Tillbaka: Sökresultat";
+$lang["continuetoresults"]="Fortsätt: Sökresultat";
 
 $lang["preview_all"]="Förhandsgranska alla";
 
