@@ -26,7 +26,7 @@
 # En första version av översättningen skapades av Henrik Frizén (förnamn.efternamn utan accenttecken i e-postboxen.Sveriges landskod) 20110124 för version 2295
 #
 # Senast uppdaterad av [Namn] [Datum] för version [svn-version], [kommentar]
-# Senast uppdaterad av Henrik Frizén 20131114 för version 5090
+# Senast uppdaterad av Henrik Frizén 20131118 för version 5102
 
 #
 #
@@ -47,6 +47,10 @@ $lang["resourcetype-video"]="Video";
 $lang["resourcetype-audio"]="Audio";
 $lang["resourcetype-global_fields"]="Globala fält";
 $lang["resourcetype-archive_only"]="Arkiverat material";
+$lang["resourcetype-photo-2"]="Fotografier";
+$lang["resourcetype-document-2"]="Dokument";
+$lang["resourcetype-video-2"]="Videor";
+$lang["resourcetype-audio-2"]="Audior";
 
 # Image size names (for the default image sizes)
 $lang["imagesize-thumbnail"]="Miniatyrbild";
@@ -1773,3 +1777,11 @@ $lang["request_id"]="Begäransnr:";
 $lang["user_made_request"]="Följande användare har gjort en begäran:";
 
 $lang["download_collection"]="Hämta samling";
+
+$lang["all-resourcetypes"] = "material"; # Will be used as %resourcetypes% if all resourcetypes are searched.
+$lang["all-collectiontypes"] = "samlingar"; # Will be used as %collectiontypes% if all collection types are searched.
+$lang["resourcetypes-no_collections"] = "Alla %resourcetypes%"; # Use %RESOURCETYPES%, %resourcetypes% or %Resourcetypes% as a placeholder. The placeholder will be replaced with the resourcetype in plural (or $lang["all-resourcetypes"]), using the same case. E.g. "All %resourcetypes%" -> "All photos"
+$lang["no_resourcetypes-collections"] = "Alla %collectiontypes%"; # Use %COLLECTIONTYPES%, %collectiontypes% or %Collectiontypes% as a placeholder. The placeholder will be replaced with the collectiontype (or $lang["all-collectiontypes"]), using the same case. E.g. "All %collectiontypes%" -> "All my collections"
+$lang["resourcetypes-collections"] = "Alla %resourcetypes% och alla %collectiontypes%"; # Please find the comments for $lang["resourcetypes-no_collections"] and $lang["no_resourcetypes-collections"]!
+$lang["resourcetypes_separator"] = ", "; # The separator to be used when converting the array of searched resourcetype to a string. E.g. ", " -> "photos, documents"
+$lang["collectiontypes_separator"] = ", "; # The separator to be used when converting the array of searched collections to a string. E.g. ", " -> "public collections, themes"

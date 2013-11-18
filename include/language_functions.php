@@ -3,10 +3,10 @@
 # Functions for the translation of the application
 
 if (!function_exists("lang_or_i18n_get_translated")) {
-function lang_or_i18n_get_translated($text, $mixedprefix)
+function lang_or_i18n_get_translated($text, $mixedprefix, $suffix = "")
     {
     # Translates field names / values using two methods:
-    # First it checks if $text exists in the current $lang (after $text is sanitized and $mixedprefix - one by one if an array - is added).
+    # First it checks if $text exists in the current $lang (after $text is sanitized and $mixedprefix - one by one if an array - and $suffix are added).
     # If not found in the $lang, it tries to translate $text using the i18n_get_translated function.
 
     $text=trim($text);
@@ -15,7 +15,7 @@ function lang_or_i18n_get_translated($text, $mixedprefix)
     if (is_array($mixedprefix)) {$prefix = $mixedprefix;}
     else {$prefix = array($mixedprefix);}
     for ($n = 0;$n<count($prefix);$n++) {
-        $langindex = $prefix[$n] . strip_tags(strtolower(str_replace(array(", ", " ", "\t", "/", "(", ")"), array("-", "_", "_", "and", "", ""), $text)));
+        $langindex = $prefix[$n] . strip_tags(strtolower(str_replace(array(", ", " ", "\t", "/", "(", ")"), array("-", "_", "_", "and", "", ""), $text))) . $suffix;
 
         # Checks if there is a $lang (should be defined for all standard field names / values).
         if (isset($lang[$langindex])) {
@@ -192,23 +192,31 @@ function i18n_get_translations($value)
     }
 }
 
-function str_replace_formatted_placeholder($mixedplaceholder, $mixedreplace, $subject, $question_mark = false)
+function str_replace_formatted_placeholder($mixedplaceholder, $mixedreplace, $subject, $question_mark = false, $separator = ", ")
     {
-    # Returns a string with all occurrences of the placeholders (array) in subject replaced with the given replace values (array). The replace values are formatted according to the formatting of the placeholders.
+    # Returns a string with all occurrences of the $mixedplaceholder in $subject replaced with the $mixedreplace. If $mixedplaceholder is a string but $mixedreplace is an array, the $mixedreplace is imploded to a string using $separator.
+    # The replace values are formatted according to the formatting of the placeholders.
     # The placeholders may be written in UPPERCASE, lowercase or Uppercasefirst.
     # Each placeholder will be replaced by the replace value,
     # written with the same case as the placeholder.
     # It's possible to also include "?" as a placeholder for legacy reasons.
 
-    # E.g.
+    # Example #1:
     # str_replace_formatted_placeholder("%extension", $resource["file_extension"], $lang["originalfileoftype"], true)
     # will search for the three words "%EXTENSION", "%extension" and "%Extension" and also the char "?"
     # in the string $lang["originalfileoftype"]. If the found placeholder is %extension
     # it will be replaced by the value of $resource["file_extension"],
     # written in lowercase. If the found placeholder instead would have been "?" the value
     # would have been written in UPPERCASE.
+    #
+    # Example #2:
+    # str_replace_formatted_placeholder("%resourcetypes%", $searched_resource_types_names_array, $lang["resourcetypes-collections"], false, $lang["resourcetypes_separator"])
+    # will search for the three words "%RESOURCETYPES%", "%resourcetypes%" and "%Resourcetypes%"
+    # in the string $lang["resourcetypes-collections"]. If the found placeholder is %resourcetypes%
+    # all elements in $searched_resource_types_names_array will be written in lowercase and separated by $lang["resourcetypes_separator"] before the resulting string will replace the placeholder.
 
     # Creates a multi-dimensional array of the placeholders written in different case styles.
+    $array_placeholder = array();
     if (is_array($mixedplaceholder)) {$placeholder = $mixedplaceholder;}
     else {$placeholder = array($mixedplaceholder);}
     for ($n = 0;$n<count($placeholder);$n++)
@@ -232,14 +240,22 @@ function str_replace_formatted_placeholder($mixedplaceholder, $mixedreplace, $su
         }
 
     # Replaces the placeholders with the replace values and returns the new string.
-
     $result = $subject;
-    for ($n = 0;$n<count($placeholder);$n++)
+    if (count($placeholder)==1 && count($replace)>1)
         {
-        if (!isset($array_replace[$n][0])) {break;}
-        else
+        # The placeholder shall be replaced by an imploded array.
+        $array_replace_strings = array(implode($separator, array_map(function($column){return $column[0];}, $array_replace)), implode($separator, array_map(function($column){return $column[1];}, $array_replace)), implode($separator, array_map(function($column){return $column[2];}, $array_replace)));
+        $result = str_replace($array_placeholder[0], $array_replace_strings, $result);
+        }
+    else
+        {
+        for ($n=0;$n<count($placeholder);$n++)
             {
-            $result = str_replace($array_placeholder[$n], $array_replace[$n], $result);
+            if (!isset($array_replace[$n][0])) {break;}
+            else
+                {
+                $result = str_replace($array_placeholder[$n], $array_replace[$n], $result);
+                }
             }
         }
     return $result;

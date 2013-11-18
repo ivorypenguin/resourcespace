@@ -283,7 +283,7 @@ function get_resource_field_data_batch($refs)
 	return $return;
 	}
 	
-function get_resource_types($types="")
+function get_resource_types($types = "", $translate = true)
 	{
 	# Returns a list of resource types. The standard resource types are translated using $lang. Custom resource types are i18n translated.
 	
@@ -307,12 +307,12 @@ function get_resource_types($types="")
 	
 	$r=sql_query("select * from resource_type $sql order by order_by,ref");
 	$return=array();
-	# Translate names and check permissions
+	# Translate names (if $translate==true) and check permissions
 	for ($n=0;$n<count($r);$n++)
 		{
 		if (!checkperm('T' . $r[$n]['ref']))
 			{
-			$r[$n]["name"]=lang_or_i18n_get_translated($r[$n]["name"], "resourcetype-");	# Translate name
+			if ($translate==true) {$r[$n]["name"]=lang_or_i18n_get_translated($r[$n]["name"], "resourcetype-");} # Translate name
 			$return[]=$r[$n]; # Add to return array
 			}
 		}

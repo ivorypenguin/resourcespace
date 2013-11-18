@@ -21,6 +21,10 @@ $lang["resourcetype-video"]="Video";
 $lang["resourcetype-audio"]="Audio";
 $lang["resourcetype-global_fields"]="Global Fields";
 $lang["resourcetype-archive_only"]="Archive Only";
+$lang["resourcetype-photo-2"]="Photos";
+$lang["resourcetype-document-2"]="Documents";
+$lang["resourcetype-video-2"]="Videos";
+$lang["resourcetype-audio-2"]="Audios";
 
 # Image size names (for the default image sizes)
 $lang["imagesize-thumbnail"]="Thumbnail";
@@ -1747,3 +1751,11 @@ $lang["request_id"]="Request ID:";
 $lang["user_made_request"]="The following user has made a request:";
 
 $lang["download_collection"]="Download Collection";
+
+$lang["all-resourcetypes"] = "resources"; # Will be used as %resourcetypes% if all resourcetypes are searched.
+$lang["all-collectiontypes"] = "collections"; # Will be used as %collectiontypes% if all collection types are searched.
+$lang["resourcetypes-no_collections"] = "All %resourcetypes%"; # Use %RESOURCETYPES%, %resourcetypes% or %Resourcetypes% as a placeholder. The placeholder will be replaced with the resourcetype in plural (or $lang["all-resourcetypes"]), using the same case. E.g. "All %resourcetypes%" -> "All photos"
+$lang["no_resourcetypes-collections"] = "All %collectiontypes%"; # Use %COLLECTIONTYPES%, %collectiontypes% or %Collectiontypes% as a placeholder. The placeholder will be replaced with the collectiontype (or $lang["all-collectiontypes"]), using the same case. E.g. "All %collectiontypes%" -> "All my collections"
+$lang["resourcetypes-collections"] = "All %resourcetypes% and all %collectiontypes%"; # Please find the comments for $lang["resourcetypes-no_collections"] and $lang["no_resourcetypes-collections"]!
+$lang["resourcetypes_separator"] = ", "; # The separator to be used when converting the array of searched resourcetype to a string. E.g. ", " -> "photos, documents"
+$lang["collectiontypes_separator"] = ", "; # The separator to be used when converting the array of searched collections to a string. E.g. ", " -> "public collections, themes"

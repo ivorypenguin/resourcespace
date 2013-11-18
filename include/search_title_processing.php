@@ -94,48 +94,72 @@ if ($search_titles)
         }
     elseif ($search=="" && $archive==0)
         {
-        $rt=explode(",",$restypes);
-        $types=get_resource_types();
-        $searchtitle=$lang["all"];
-        $count_types=0;
-        for ($n=0;$n<count($types);$n++) 
+        # Which resource types (if any) are selected?
+        $searched_types_refs_array = explode(",", $restypes); # Searched resource types and collection types
+        $resource_types_array = get_resource_types("", false); # Get all resource types, untranslated
+        $searched_resource_types_names_array = array();
+        for ($n = 0; $n < count($resource_types_array); $n++) 
             {
-            if (in_array($types[$n]["ref"], $rt)) 
+            if (in_array($resource_types_array[$n]["ref"], $searched_types_refs_array)) 
                 {
-                $count_types++;
-                if ($searchtitle!=$lang["all"]) $searchtitle.=",";
-                    $searchtitle.=" ".htmlspecialchars($types[$n]["name"]);
+                $searched_resource_types_names_array[] = htmlspecialchars(lang_or_i18n_get_translated($resource_types_array[$n]["name"], "resourcetype-", "-2"));
                 }
             }
-        if ($count_types==count($types)) $searchtitle=$lang["allresources"];
-        $count_types=0;
-        $searchtitle2="";
-        if (in_array("mycol", $rt)) 
+        if (count($searched_resource_types_names_array)==count($resource_types_array))
             {
-            $count_types++;
-            if (($searchtitle2!="")||($searchtitle!=$lang["all"])) $searchtitle2.=",";
-            $searchtitle2.=" ".$lang["mycollections"];
-            }
-        if (in_array("pubcol", $rt)) 
-            {
-            $count_types++;
-            if (($searchtitle2!="")||($searchtitle!=$lang["all"])) $searchtitle2.=",";
-            $searchtitle2.=" ".$lang["publiccollections"];
+            # All resource types are selected, don't list all of them
+            unset($searched_resource_types_names_array);
+            $searched_resource_types_names_array[0] = $lang["all-resourcetypes"];
             }
 
-        if (in_array("themes", $rt)) 
+        # Which collection types (if any) are selected?
+        $searched_collection_types_names_array = array();
+        if (in_array("mycol", $searched_types_refs_array)) 
             {
-            $count_types++;
-            if (($searchtitle2!="")||($searchtitle!=$lang["all"])) $searchtitle2.=",";
-            $searchtitle2.=" ".$lang["themes"];
+            $searched_collection_types_names_array[] = $lang["mycollections"];
             }
-        if ($count_types==3) 
+        if (in_array("pubcol", $searched_types_refs_array)) 
             {
-            if ($searchtitle!=$lang["all"]) $searchtitle.=",";
-            $searchtitle.=" ".$lang["collections"];
+            $searched_collection_types_names_array[] = $lang["publiccollections"];
             }
-        else $searchtitle.=$searchtitle2;
-        if ($searchtitle==$lang["all"]) $searchtitle=$lang["allresources"];
+        if (in_array("themes", $searched_types_refs_array)) 
+            {
+            $searched_collection_types_names_array[] = $lang["themes"];
+            }
+        if (count($searched_collection_types_names_array)==3)
+            {
+            # All collection types are selected, don't list all of them
+            unset($searched_collection_types_names_array);
+            $searched_collection_types_names_array[0] = $lang["all-collectiontypes"];
+            }
+
+        if (count($searched_resource_types_names_array)>0 && count($searched_collection_types_names_array)==0)
+            {
+            # Only (one or more) resource types are selected
+            $searchtitle = str_replace_formatted_placeholder("%resourcetypes%", $searched_resource_types_names_array, $lang["resourcetypes-no_collections"], false, $lang["resourcetypes_separator"]);
+            }
+        elseif (count($searched_resource_types_names_array)==0 && count($searched_collection_types_names_array)>0)
+            {
+            # Only (one or more) collection types are selected
+            $searchtitle = str_replace_formatted_placeholder("%collectiontypes%", $searched_collection_types_names_array, $lang["no_resourcetypes-collections"], false, $lang["collectiontypes_separator"]);
+            }
+        elseif (count($searched_resource_types_names_array)>0 && count($searched_collection_types_names_array)>0)
+            {
+            # Both resource types and collection types are selected
+            # Step 1: Replace %resourcetypes%
+            $searchtitle = str_replace_formatted_placeholder("%resourcetypes%", $searched_resource_types_names_array, $lang["resourcetypes-collections"], false, $lang["resourcetypes_separator"]);
+            # Step 2: Replace %collectiontypes%
+            $searchtitle = str_replace_formatted_placeholder("%collectiontypes%", $searched_collection_types_names_array, $searchtitle, false, $lang["collectiontypes_separator"]);
+            }
+        else
+            {
+            # No resource types and no collection types are selected – show all resource types and all collection types
+            # Step 1: Replace %resourcetypes%
+            $searchtitle = str_replace_formatted_placeholder("%resourcetypes%", $lang["all-resourcetypes"], $lang["resourcetypes-collections"], false, $lang["resourcetypes_separator"]);
+            # Step 2: Replace %collectiontypes%
+            $searchtitle = str_replace_formatted_placeholder("%collectiontypes%", $lang["all-collectiontypes"], $searchtitle, false, $lang["collectiontypes_separator"]);
+            }
+
         $search_title = '<h1 class="searchcrumbs"><a href="'.$baseurl_short.'pages/search.php?search=" onClick="return CentralSpaceLoad(this,true);">'.$searchtitle.'</a></h1> ';
         }
     elseif (substr($search,0,6)=="!empty")
