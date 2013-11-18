@@ -1,10 +1,13 @@
 <?php /* -------- Date ---------------------------- */ 
 
-global $reset_date_upload_template, $reset_date_field;
+global $reset_date_upload_template, $reset_date_field, $blank_date_upload_template;
 
 # Start with a null date
 $dy="";
 $dm=$dd=$dh=$di=-1;
+
+if(!$blank_date_upload_template) {
+	
 
 if (($ref<0 || $value=="") && $reset_date_upload_template && $reset_date_field==$field["ref"])
 	{
@@ -31,7 +34,9 @@ elseif ($value!="")
 	if (count($sd)>=1) $dy=$sd[0];
 	if (count($sd)>=2) $dm=intval($sd[1]);
     if (count($sd)>=3) $dd=intval($sd[2]);
-    }    
+    }  
+    
+}  
 ?>
 <select name="<?php echo $name?>-d"
 <?php if ($edit_autosave) {?>onChange="AutoSave('<?php echo $field["ref"]?>');"<?php } ?>
