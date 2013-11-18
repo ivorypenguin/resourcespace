@@ -186,9 +186,7 @@ function flattenParts($messageParts, $flattenedParts = array(), $prefix = '', $i
 		}
 		$index++;
 	}
-
 	return $flattenedParts;
-			
 }
 
 $parts = flattenParts($structure->parts); 
@@ -201,14 +199,17 @@ foreach ($parts as $key=>$part){
 	echo "Part $key: ";
 	echo $part->subtype." ";
 	$charset="";
+	$filename="";
 	if ($part->ifparameters){
-		foreach ($part->parameters as $parameter){
+		foreach ($part->parameters as $parameter)
+			{
 			echo $parameter->attribute."=".$parameter->value;
-			if (strtoupper($parameter->attribute)=="CHARSET"){
-				$charset=$parameter->value;
-			}	
+			if (strtoupper($parameter->attribute)=="CHARSET")
+				{$charset=$parameter->value;}
+			if (strtoupper($parameter->attribute)=="NAME") // Added as some emails appearing in Gmail did not have name as dparameter. 
+				{$filename=$parameter->value;}
+			}
 		}
-	}
 
  	if ($part->ifdisposition){echo " ".$part->disposition;}
 
@@ -249,13 +250,20 @@ foreach ($parts as $key=>$part){
 		}
 	
 		if (strtoupper($part->disposition)=="ATTACHMENT"){
-			$file['key']=$key;			
-			$file['filename']=$part->dparameters[0]->value;
+			$file['key']=$key;
+			if(strlen($filename)>0)
+				{
+				$file['filename']=$filename;
+				}
+			else
+				{
+				$file['filename']=$part->dparameters[0]->value;
+				}
 			$file['extension']=strtolower(pathinfo($file['filename'],PATHINFO_EXTENSION));
 			$file['encoding']=$part->encoding;
 			$files[]=$file;
-			$att_count++;	
-		}
+			$att_count++;
+			}
 	}
 	
 	echo "\r\n";
