@@ -244,7 +244,7 @@ function str_replace_formatted_placeholder($mixedplaceholder, $mixedreplace, $su
     if (count($placeholder)==1 && count($replace)>1)
         {
         # The placeholder shall be replaced by an imploded array.
-        $array_replace_strings = array(implode($separator, array_map(function($column){return $column[0];}, $array_replace)), implode($separator, array_map(function($column){return $column[1];}, $array_replace)), implode($separator, array_map(function($column){return $column[2];}, $array_replace)));
+        $array_replace_strings = array(implode($separator, array_map(create_function('$column','return $column[0]'), $array_replace)), implode($separator, array_map(create_function('$column','return $column[1]'), $array_replace)), implode($separator, array_map(create_function('$column','return $column[2]'), $array_replace)));
         $result = str_replace($array_placeholder[0], $array_replace_strings, $result);
         }
     else
