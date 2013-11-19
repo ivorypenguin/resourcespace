@@ -24,7 +24,7 @@ $lang["resourcetype-archive_only"]="Archive Only";
 $lang["resourcetype-photo-2"]="Photos";
 $lang["resourcetype-document-2"]="Documents";
 $lang["resourcetype-video-2"]="Videos";
-$lang["resourcetype-audio-2"]="Audios";
+$lang["resourcetype-audio-2"]="Audio";
 
 # Image size names (for the default image sizes)
 $lang["imagesize-thumbnail"]="Thumbnail";
