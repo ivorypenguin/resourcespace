@@ -1,7 +1,7 @@
 <?php
 # Swedish
 # Language File for the Transform Plugin
-# Updated by Henrik Frizén 20131114 for svn r5089
+# Updated by Henrik Frizén 20131119 for svn r5107
 # -------
 #
 #
@@ -68,3 +68,5 @@ $lang['cropper_enable_alternative_files']='Aktivera funktionen <b>Spara som alte
 $lang['enable_replace_slideshow']='Aktivera funktionen <b>Ersätt bild i bildspel</b>';
 $lang['cropper_restricteduse_groups']='Begränsa till att endast tillåta omskalning (inte rotation eller beskärning) för de valda grupperna';
 $lang['transformblurbrestricted']="Välj en bredd och/eller höjd om du vill skala om bilden. När du är klar anger du ett filnamn för den nya bilden och klickar på <b>Hämta</b>.<br/><br/>";
+$lang['cropper_resolutions']="Valbara upplösningar, t.ex. 72,300. Angivna värden kommer att vara tillgängliga att välja, om så önskas, som ny upplösning att bädda in i filen";
+$lang['cropper_resolution_select']="Välj från förvalda upplösningar (ppi).<br>Lämna fältet tomt om du vill lämna upplösningen oförändrad";
