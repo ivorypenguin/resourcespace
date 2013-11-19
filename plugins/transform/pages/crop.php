@@ -305,6 +305,20 @@ if ($cropper_debug){
 	error_log("SHELL RESULT: $shell_result");
 }
 
+if ($resolution!="")
+        {
+        // See if we have got exiftool, in which case we can target the Photoshop specific PPI data
+        $exiftool_fullpath = get_utility_path("exiftool");
+        global $exiftool_no_process;
+        if (($exiftool_fullpath!=false) && !in_array($new_ext,$exiftool_no_process))
+                {
+                $command = $exiftool_fullpath . " -m -overwrite_original -E ";
+                $command.= "-Photoshop:XResolution=$resolution -Photoshop:YResolution=$resolution";
+                $command.= " " . escapeshellarg($newpath);
+                $output = run_command($command);
+                }
+        }
+
 
 // get final pixel dimensions of resulting file
 $newfilesize = filesize_unlimited($newpath);
