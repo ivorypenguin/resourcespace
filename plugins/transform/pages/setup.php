@@ -21,7 +21,7 @@ $page_def[] = config_add_text_list_input('cropper_allowed_extensions', $lang['in
 #$page_def[] = config_add_boolean_select('cropper_cropsize', 'cropper_cropsize');
 $page_def[] = config_add_boolean_select('cropper_custom_filename', $lang['custom_filename']);
 #$page_def[] = config_add_boolean_select('cropper_use_filename_as_title', 'Use Filename as Title');
-#$page_def[] = config_add_boolean_select('cropper_allow_scale_up', 'cropper_allow_scale_up');
+$page_def[] = config_add_boolean_select('cropper_allow_scale_up', 'cropper_allow_scale_up');
 $page_def[] = config_add_boolean_select('cropper_rotation', $lang['allow_rotation']);
 $page_def[] = config_add_boolean_select('cropper_transform_original', $lang['allow_transform_original']);
 $page_def[] = config_add_boolean_select('cropper_use_repage', $lang['use_repage']);
@@ -30,6 +30,8 @@ $page_def[] = config_add_boolean_select('cropper_enable_batch', $lang['enable_ba
 $page_def[] = config_add_boolean_select('cropper_enable_alternative_files', $lang['cropper_enable_alternative_files']);
 $page_def[] = config_add_boolean_select('cropper_enable_replace_slideshow', $lang['enable_replace_slideshow']);
 $page_def[]= config_add_multi_group_select("cropper_restricteduse_groups",$lang["cropper_restricteduse_groups"]);
+$page_def[] = config_add_text_list_input('cropper_resolutions', $lang['cropper_resolutions']);
+
 // Commented out lines above that either don't seem to work or I'm unsure how to test
 
 // Do the page generation ritual

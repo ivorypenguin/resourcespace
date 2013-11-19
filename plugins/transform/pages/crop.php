@@ -190,9 +190,17 @@ if (strtoupper($new_ext) == 'JPG' && $cropper_jpeg_rgb){
 	$colorspace1 = '';
 	$colorspace2 = '';
 }
-	
+
 $command .= " \"$originalpath\" ";
 
+
+$resolution=getval("resolution","",TRUE);
+if ($resolution!="")
+	{
+	$command .= " -density " .  $resolution . " ";
+	}
+	
+	
 // below is a hack to make this work with multilayer images
 // the result will always be a flattened single-layer image
 // update: add -delete 1--1 to only use the first layer. This 
@@ -735,6 +743,31 @@ if(!$cropperestricted)
           </select>
           <?php } // end of if force_original_format ?></td>
       </tr>
+	  
+	  
+	  <?php
+	  if (count($cropper_resolutions)>0)
+			{?>
+		    <tr>
+			<td style='text-align:right'><?php echo $lang['cropper_resolution_select']; ?>: </td>
+			<td colspan='3'>
+			  <select name='resolution'>
+				<option value='' selected></option>
+					<?php 
+					foreach ($cropper_resolutions as $cropper_resolution)
+						{
+						echo "<option value='$cropper_resolution'>" . $cropper_resolution . "&nbsp;</option>\n";
+						}
+						?>
+			  </select>
+			</td>
+		    </tr>
+			<?php
+			}
+			?>
+	  
+	  
+	  
     </table>
     <?php
 if ($cropper_debug){

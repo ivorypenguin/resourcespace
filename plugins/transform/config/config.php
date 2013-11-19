@@ -16,4 +16,5 @@ $cropper_enable_batch = false; // enable batch transform of collections
 $cropper_enable_alternative_files = true;
 $cropper_enable_replace_slideshow = true;
 $cropper_restricteduse_groups=array();
+$cropper_resolutions=array();
 ?>

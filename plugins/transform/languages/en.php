@@ -67,3 +67,5 @@ $lang['cropper_enable_alternative_files']='Enable storing alternative files';
 $lang['enable_replace_slideshow']='Enable replacing the slideshow';
 $lang['cropper_restricteduse_groups']='Restrict to rescale only (no rotate or crop options) for the selected groups';
 $lang['transformblurbrestricted']="Choose a width and/or height to rescale the image. When you are done, choose a name and format for the new file and click download.<br/><br/>";
+$lang['cropper_resolutions']="Preset resolution changes e.g 72,300. If set the values here will be available for users to select as the embedded file resolution";
+$lang['cropper_resolution_select']="Select from the preset resolution (PPI).<br>Leave blank to use the original resolution value";
