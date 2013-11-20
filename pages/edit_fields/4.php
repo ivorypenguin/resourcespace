@@ -6,10 +6,10 @@ global $reset_date_upload_template, $reset_date_field, $blank_date_upload_templa
 $dy="";
 $dm=$dd=$dh=$di=-1;
 
-if(!$blank_date_upload_template) {
+if(!$blank_date_upload_template || $ref>0) {
 	
 
-if (($ref<0 || $value=="") && $reset_date_upload_template && $reset_date_field==$field["ref"])
+if (($ref<0) && $reset_date_upload_template && $reset_date_field==$field["ref"])
 	{
 	# Upload template: always reset to today's date (if configured).
 	$dy=date("Y");$dm=intval(date("m"));$dd=intval(date("d"));
