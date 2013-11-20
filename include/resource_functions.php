@@ -304,7 +304,7 @@ function save_resource_data($ref,$multi)
                             }
                     if($user_resources_approved_email)
                         {	
-                        if (($oldarchive==-2 || $oldarchive==-1) && $ref>0)
+                        if (($oldarchive==-2 || $oldarchive==-1) && $ref>0 && $archive==0)
                                 {
                                 notify_user_resources_approved(array($ref));
                                 }	
