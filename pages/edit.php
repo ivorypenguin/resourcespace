@@ -1250,7 +1250,7 @@ if (!checkperm("F*")&&!hook("editstatushide")) # Only display Status / Access / 
                 <div class="AutoSaveStatus" id="AutoSaveStatusStatus" style="display:none;"></div><?php
                 } ?>
 
-            <select class="stdwidth" name="archive" id="archive" <?php if ($edit_autosave) {?>onChange="AutoSave('Status');"<?php } ?>><?php
+            <select class="stdwidth" name="status" id="archive" <?php if ($edit_autosave) {?>onChange="AutoSave('Status');"<?php } ?>><?php
             for ($n=-2;$n<=3;$n++)
                 {
                 if (checkperm("e" . $n)) { ?><option value="<?php echo $n?>" <?php if ($status==$n) { ?>selected<?php } ?>><?php echo $lang["status" . $n]?></option><?php }

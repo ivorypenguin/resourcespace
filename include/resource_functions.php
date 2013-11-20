@@ -262,26 +262,6 @@ function save_resource_data($ref,$multi)
 	$ok=array();for ($n=0;$n<count($related);$n++) {if (is_numeric(trim($related[$n]))) {$ok[]=trim($related[$n]);}}
 	if (count($ok)>0) {sql_query("insert into resource_related(resource,related) values ($ref," . join("),(" . $ref . ",",$ok) . ")");}
 					
-	// Notify the resources team ($email_notify) if moving from pending review->submission.
-	$archive=getvalescaped("archive",0,true);
-	$oldarchive=sql_value("select archive value from resource where ref='$ref'",0);
-	if ($oldarchive==-2 && $archive==-1 && $ref>0)
-		{	
-		notify_user_contributed_submitted(array($ref));
-		}
-	if ($oldarchive==-1 && $archive==-2 && $ref>0)
-		{
-		notify_user_contributed_unsubmitted(array($ref));
-		}	
-
-	if($user_resources_approved_email)
-		{	
-		if (($oldarchive==-2 || $oldarchive==-1) && $ref>0)
-			{
-			notify_user_resources_approved(array($ref));
-			}	
-		}
-
 	# Expiry field(s) edited? Reset the notification flag so that warnings are sent again when the date is reached.
 	$expirysql="";
 	if ($expiry_field_edited) {$expirysql=",expiry_notification_sent=0";}
@@ -289,22 +269,47 @@ function save_resource_data($ref,$multi)
 	if (!hook('forbidsavearchive', '', array($errors)))
 		{
 		# Also update archive status and access level
-		$oldaccess=sql_value("select access value from resource where ref='$ref'",0);
-		$access=getvalescaped("access",$oldaccess,true);
-		if (getvalescaped("archive","")!="") # Only if archive has been sent
-			{
-			sql_query("update resource set archive='" . $archive . "',access='" . $access . "' $expirysql where ref='$ref'");
-
-			if ($archive!=$oldarchive)
-				{
-				resource_log($ref,"s",0,"",$oldarchive,$archive);
-				}
-
-			if ($access!=$oldaccess)
-				{
-				resource_log($ref,"a",0,"",$oldaccess,$access);
-				}
-			}
+		$oldaccess=$resource_data['access'];
+                $access=getvalescaped("access",$oldaccess,true);
+		
+                #$oldarchive=sql_value("select archive value from resource where ref='$ref'","");
+                $oldarchive=$resource_data['archive'];
+                $archive=getvalescaped("status",$oldarchive,true);
+                
+                if($archive!=$oldarchive && !checkperm("e" . $archive)) // don't allow change if user has no permission to change archive state
+                    {
+                    $archive=$oldarchive;
+                    }
+                    
+                if ($access!=$oldaccess || $archive!=$oldarchive) // Only if changed
+                    {
+                    sql_query("update resource set archive='" . $archive . "',access='" . $access . "' $expirysql where ref='$ref'");  
+                    if ($archive!=$oldarchive && $ref>0)
+                        {
+                        resource_log($ref,"s",0,"",$oldarchive,$archive);
+                        }
+                    if ($access!=$oldaccess && $ref>0)
+                        {
+                        resource_log($ref,"a",0,"",$oldaccess,$access);
+                        }
+                    
+                    // Notify the resources team ($email_notify) if moving from pending review->submission.
+                    if ($oldarchive==-2 && $archive==-1 && $ref>0)
+                            {	
+                            notify_user_contributed_submitted(array($ref));
+                            }
+                    if ($oldarchive==-1 && $archive==-2 && $ref>0)
+                            {
+                            notify_user_contributed_unsubmitted(array($ref));
+                            }
+                    if($user_resources_approved_email)
+                        {	
+                        if (($oldarchive==-2 || $oldarchive==-1) && $ref>0)
+                                {
+                                notify_user_resources_approved(array($ref));
+                                }	
+                        }
+                    }
 		}
 	# For access level 3 (custom) - also save custom permissions
 	if (getvalescaped("access",0)==3) {save_resource_custom_access($ref);}
@@ -346,7 +351,7 @@ function save_resource_data_multi($collection)
 	# Save all submitted data for collection $collection, this is for the 'edit multiple resources' feature
 	# Loop through the field data and save (if necessary)
 	$list=get_collection_resources($collection);
-
+        $errors=array();
 	$tmp = hook("altercollist", "", array("save_resource_data_multi", $list)); if(is_array($tmp)) { if(count($tmp)>0) $list = $tmp; else return true; } // alter the collection list to spare some when saving multiple, if you need
 
 	$ref=$list[0];
@@ -543,29 +548,43 @@ function save_resource_data_multi($collection)
 		$usernotifyrefs=array();
 		for ($m=0;$m<count($list);$m++)
 			{
-			$ref=$list[$m];
-			$archive=getvalescaped("archive",0);
-			$oldarchive=sql_value("select archive value from resource where ref='$ref'",0);
-			
-			if ($oldarchive!=$archive)
-				{
-				sql_query("update resource set archive='" . $archive . "' where ref='$ref'");
-
-				# Log
-				resource_log($ref,"s",0,"",$oldarchive,$archive);
-
-				if ($oldarchive==-2 && $archive==-1)
-					{
-					# Notify the admin users of this change.
+			$ref=$list[$m];                        
+                        
+                        if (!hook('forbidsavearchive', '', array($errors)))
+                            {
+                            # Also update archive status                            
+                            
+                            $oldarchive=sql_value("select archive value from resource where ref='$ref'","");
+                            $archive=getvalescaped("status",$oldarchive,true);
+                                
+                            if($archive!=$oldarchive && !checkperm("e" . $archive)) // don't allow change if user has no permission to change archive state
+                                {
+                                $archive=$oldarchive;
+                                }
+                                
+                            if ($archive!=$oldarchive) // Only if changed
+                                {
+                                sql_query("update resource set archive='" . $archive . "' where ref='$ref'");  
+                                if ($archive!=$oldarchive && $ref>0)
+                                    {
+                                    resource_log($ref,"s",0,"",$oldarchive,$archive);
+                                    }
+                                                                
+                                // Notify the resources team ($email_notify) if moving from pending review->submission.
+                                if ($oldarchive==-2 && $archive==-1)
+                                        {	
+                                        # Notify the admin users of this change.
 					$notifyrefs[]=$ref;
-					}
-				if ($user_resources_approved_email && ($oldarchive==-2 || $oldarchive==-1) && $archive==0)
+                                        }                               
+                                if ($user_resources_approved_email && ($oldarchive==-2 || $oldarchive==-1) && $archive==0)
 					{
 					# Notify the  users of this change.
 					$usernotifyrefs[]=$ref;
 					}
-				}
+                                }
+                            }                                                			
 			}
+                        
 		if (count($notifyrefs)>0)
 			{
 			# Notify the admin users of any submitted resources.
@@ -599,7 +618,6 @@ function save_resource_data_multi($collection)
 			$ref=$list[$m];
 			$access=getvalescaped("access",0);
 			$oldaccess=sql_value("select access value from resource where ref='$ref'","");
-			
 			if ($access!=$oldaccess)
 				{
 				sql_query("update resource set access='$access' where ref='$ref'");
