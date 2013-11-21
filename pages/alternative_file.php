@@ -60,7 +60,7 @@ include "../include/header.php";
 <h1><?php echo $lang["editalternativefile"]?></h1>
 
 
-<form method="post" class="form" id="fileform" enctype="multipart/form-data" action="<?php echo $baseurl_short?>pages/alternative_file.php">
+<form method="post" class="form" id="fileform" enctype="multipart/form-data" action="<?php echo $baseurl_short?>pages/alternative_file.php?search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>">
 <input type="hidden" name="MAX_FILE_SIZE" value="500000000">
 <input type=hidden name=ref value="<?php echo htmlspecialchars($ref) ?>">
 <input type=hidden name=resource value="<?php echo htmlspecialchars($resource) ?>">
