@@ -1,6 +1,6 @@
 body {width:97.5%;font-size: 70%;}
 /*td, textarea{font-size: 70%;}*/
-#CentralSpaceContainer {float:left;padding:0;margin:0 0 0 -199px; width: 90%; display:inline; }
+#CentralSpaceContainer {float:left;padding:0;margin:0 0 0 -199px; width: 85%; display:inline; }
 #CentralSpace {margin-left: 224px; overflow: hidden; padding: 0; }
 .RecordBox { display: inline-block; margin-right: 15px; }
 #SearchBox { position: relative; margin-left: 0; }
