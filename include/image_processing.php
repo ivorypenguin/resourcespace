@@ -867,6 +867,23 @@ function create_previews_using_im($ref,$thumbonly=false,$extension="jpg",$previe
 			# Debug
 			debug("Contemplating " . $ps[$n]["id"] . " (sw=$sw, tw=$tw, sh=$sh, th=$th, extension=$extension)");
 
+			# Find the target path
+			$path=get_resource_path($ref,true,$ps[$n]["id"],false,"jpg",-1,1,false,"",$alternative);
+			# Delete any file at the target path. Unless using the previewbased option, in which case we need it.			
+            if(!hook("imagepskipdel"))
+				{
+				if (!$previewbased)
+					{
+					if (file_exists($path))
+						{unlink($path);}
+					}
+				}
+                    
+			# Also try the watermarked version.
+			$wpath=get_resource_path($ref,true,$ps[$n]["id"],false,"jpg",-1,1,true,"",$alternative);
+				if (file_exists($wpath))
+					{unlink($wpath);}
+			
 			# Always make a screen size for non-JPEG extensions regardless of actual image size
 			# This is because the original file itself is not suitable for full screen preview, as it is with JPEG files.
 			#
@@ -874,22 +891,9 @@ function create_previews_using_im($ref,$thumbonly=false,$extension="jpg",$previe
 			#
 			# Always make pre/thm/col sizes regardless of source image size.
 			if (($id == "hpr" && !($extension=="jpg" || $extension=="jpeg")) || ($id == "scr" && !($extension=="jpg" || $extension=="jpeg")) || ($sw>$tw) || ($sh>$th) || ($id == "pre") || ($id=="thm") || ($id=="col"))
-				{
-					
-				# Find the target path
-				$path=get_resource_path($ref,true,$ps[$n]["id"],false,"jpg",-1,1,false,"",$alternative);
-				
+				{			
 				# Debug
 				debug("Generating preview size " . $ps[$n]["id"] . " to " . $path);
-
-				# Delete any file at the target path. Unless using the previewbased option, in which case we need it.			
-                                if(!hook("imagepskipdel")):
-				if (!$previewbased){if (file_exists($path)){unlink($path);}}
-                                endif;
-
-				# Also try the watermarked version.
-				$wpath=get_resource_path($ref,true,$ps[$n]["id"],false,"jpg",-1,1,true,"",$alternative);
-				if (file_exists($wpath)){unlink($wpath);}
 	
 				# EXPERIMENTAL CODE TO USE EXISTING ICC PROFILE IF PRESENT
 				global $icc_extraction, $icc_preview_profile, $icc_preview_options,$ffmpeg_supported_extensions;
