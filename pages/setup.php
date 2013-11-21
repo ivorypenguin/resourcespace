@@ -662,6 +662,9 @@ h2#dbaseconfig{  min-height: 32px;}
 		$config_output .= "\$list_display_fields = array(8,3,12);\r\n";
 		$config_output .= "\$sort_fields = array(12);\r\n";
 
+                // Set imagemagick default for new installs to expect the newer version with the sRGB bug fixed.
+                $config_output .= "\$imagemagick_colorspace = \"sRGB\";\r\n";
+                
 	}
 ?>
 <?php //Output Section
