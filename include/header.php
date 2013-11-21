@@ -25,7 +25,10 @@ if ($display_user_rating_stars && $star_search){
 	    }
 	}
 	
-if (getval("thumbs","")==""){setcookie("thumbs",$thumbs_default); }	
+if (getval("thumbs", "")=="")
+    {
+    rs_setcookie("thumbs", $thumbs_default, 1000);
+    }
 ?><!DOCTYPE html>
 <html>	<?php if ($include_rs_header_info){?>
 <!--<?php hook("copyrightinsert");?>
@@ -138,8 +141,8 @@ var pagename="<?php echo $pagename?>";
 var errorpageload = "<h1><?php echo $lang["error"] ?></h1><p><?php echo $lang["error-pageload"] ?></p>" ;
 var applicationname = "<?php echo $applicationname?>";
 var branch_limit="<?php echo $cat_tree_singlebranch?>";
+var global_cookies = "<?php echo $global_cookies?>";
 </script>
-
 
 <script src="<?php echo $baseurl_short?>lib/js/global.js?css_reload_key=<?php echo $css_reload_key?>" type="text/javascript"></script>
 

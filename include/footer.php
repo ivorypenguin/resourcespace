@@ -34,13 +34,8 @@ function SwapCSS(css){
 	} else { 
 	document.getElementById('colourcss').href='<?php echo $baseurl?>/css/Col-' + css + '.css?css_reload_key=<?php echo $css_reload_key?>';
 	}
-	
-	<?php 
-	if ($global_cookies){?>
-	document.cookie ='colourcss='+css+'; path=/';
-	<?php } else { ?> 
+
 	SetCookie("colourcss",css,1000);  
-	<?php }?>
 
 	jQuery.ajax({
 			url:"<?php echo $baseurl?>/pages/ajax/get_plugin_css.php?theme="+css,
@@ -307,7 +302,7 @@ function setContent() {
 				ToggleThumbs();
 			} else if(jQuery('.ui-layout-south').height()>40 && thumbs=="hide"){
 				thumbs="show";console.log('showthumbs');
-				document.cookie = "thumbs=show";
+				SetCookie('thumbs',thumbs,1000);
 				jQuery('#CollectionMinDiv').hide();
 				jQuery('#CollectionMaxDiv').show();jQuery('.ui-layout-south').animate({scrollTop:0}, 'fast');
 			}return false;

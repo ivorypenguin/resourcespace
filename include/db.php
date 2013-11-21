@@ -181,7 +181,25 @@ else
 	}
 
 if (isset($_COOKIE["language"])) {$language=$_COOKIE["language"];}
-if (isset($_GET["language_set"])) {$language=$_GET["language_set"];setcookie("language",$_GET["language_set"]);}
+if (isset($_GET["language_set"]))
+    {
+    $language=$_GET["language_set"];
+    # Cannot use the general.php: rs_setcookie() here since general may not have been included.
+    if ($global_cookies)
+        {
+        # Remove previously set cookies to avoid clashes
+        setcookie("language", "", time() - 3600, $baseurl_short . "pages/");
+        setcookie("language", "", time() - 3600, $baseurl_short);
+        # Set new cookie
+        setcookie("language", $language, time() + (3600*24*1000), "/");
+        }
+    else
+        {
+        # Set new cookie
+        setcookie("language", $language, time() + (3600*24*1000));
+        setcookie("language", $language, time() + (3600*24*1000), $baseurl_short . "pages/");
+        }
+    }
 
 # Languages disabled - always use the default.
 if ($disable_languages) {$language=$defaultlanguage;}

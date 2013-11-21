@@ -7,6 +7,7 @@ include "include/login_functions.php";
 
 $url=getval("url","index.php");
 $api=getval("api","");
+$language=getval("language","");
 
 # process log in
 $error=getval("error","");
@@ -41,25 +42,17 @@ elseif (array_key_exists("username",$_POST) && getval("langupdate","")=="")
 	if ($result['valid'])
 		{
 	 	$expires=0;
-       	if (getval("remember","")!="") {$expires=time()+(3600*24*100);} # remember login for 100 days
+       	if (getval("remember","")!="") {$expires = 100;} # remember login for 100 days
 
 		# Store language cookie
-		if ($global_cookies)
-			{
-			setcookie("language",getval("language",""),time()+(3600*24*1000),"/");
-            }
-		else
-			{
-			setcookie("language",getval("language",""),time()+(3600*24*1000));
-			setcookie("language",getval("language",""),time()+(3600*24*1000),$baseurl_short . "pages/");
-            }
+        rs_setcookie("language", $language, 1000); # Only used if not global cookies
+        rs_setcookie("language", $language, 1000, $baseurl_short . "pages/");
 
 		# Set the session cookie.
-		if ($global_cookies){$cookie_path="/";setcookie("user","",1);} 
-		else {$cookie_path="";setcookie("user","",1,"/");}
-		
+        rs_setcookie("user", "", 0);
+
 		# Set user cookie, setting secure only flag if a HTTPS site, and also setting the HTTPOnly flag so this cookie cannot be probed by scripts (mitigating potential XSS vuln.)
-		setcookie("user",$result['session_hash'],$expires,$cookie_path,"",substr($baseurl,0,5)=="https",true);
+        rs_setcookie("user", $result['session_hash'], $expires, "", "", substr($baseurl,0,5)=="https", true);
 
         # Set default resource types
         setcookie("restypes",$default_res_types);
@@ -88,12 +81,7 @@ if ((getval("logout","")!="") && array_key_exists("user",$_COOKIE))
     sql_query("update user set logged_in=0,session='' where session='$session'");
         
     #blank cookie
-    if ($global_cookies){
-        setcookie("user","",0,"/");
-    }
-    else {
-        setcookie("user","",0);
-        }
+    rs_setcookie("user", "", time() - 3600);
 
     # Also blank search related cookies
     setcookie("search","");	
@@ -112,14 +100,8 @@ if ((getval("logout","")!="") && array_key_exists("user",$_COOKIE))
 if (getval("langupdate","")!="")
 	{
 	# Update language while remaining on this page.
-	$language=getval("language","");
-    if ($global_cookies){
-        setcookie("language",getval("language",""),time()+(3600*24*1000),"/");
-    }
-    else {
-        setcookie("language",getval("language",""),time()+(3600*24*1000));
-        setcookie("language",getval("language",""),time()+(3600*24*1000),$baseurl_short . "pages/");
-        }
+    rs_setcookie("language", $language, 1000); # Only used if not global cookies
+    rs_setcookie("language", $language, 1000, $baseurl_short . "pages/");    
 	redirect("login.php?username=" . urlencode(getval("username","")));
 	}
 

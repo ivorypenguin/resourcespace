@@ -5,17 +5,8 @@ include "../include/authenticate.php";
 
 if (getval("save","")!="")
 	{
-    if ($global_cookies)
-        setcookie("language",getval("language",""),time()+(3600*24*1000),"/");
-    else
-		{
-        setcookie("language",getval("language",""),time()+(3600*24*1000),$baseurl_short);
-
-		// Remove previously set cookies to avoid clashes - this can be removed after some time
-		setcookie("language","",1,$baseurl_short . "pages/");
-		setcookie("language","");
-		}
-
+    rs_setcookie("language", getval("language", ""), 1000); # Only used if not global cookies
+    rs_setcookie("language", getval("language", ""), 1000, $baseurl_short);
 	redirect(getval("uri",$baseurl_short."pages/" . ($use_theme_as_home?'themes.php':$default_home_page)));
 	}
 include "../include/header.php";

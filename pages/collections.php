@@ -383,7 +383,7 @@ if ($count_result>$max_collection_thumbs && $k=="")
 	<?php if (getval("nowarn","")=="") { ?>
 	alert("<?php echo $lang["maxcollectionthumbsreached"]?>");
 	<?php } ?>
-	thumbs="hide";document.cookie = "thumbs=hide";
+	thumbs="hide";SetCookie('thumbs',thumbs,1000);
 	//window.setTimeout("ToggleThumbs();");
 	</script>
 	<?php
@@ -401,13 +401,13 @@ function ToggleThumbs()
 	{
 	thumbs=getCookie('thumbs');
 		if (thumbs=="show"){
-			thumbs="hide";document.cookie = "thumbs=hide";
+			thumbs="hide";SetCookie('thumbs',thumbs,1000);
 			myLayout.sizePane("south", 40);
 			jQuery('#CollectionMinDiv').show();
 			jQuery('#CollectionMaxDiv').hide();jQuery('.ui-layout-south').animate({scrollTop:0}, 'fast');
 		} else { 
 			thumbs="show";console.log('showthumbs');
-			document.cookie = "thumbs=show";
+			SetCookie('thumbs',thumbs,1000);
 			jQuery('#CollectionMinDiv').hide();
 			jQuery('#CollectionMaxDiv').show();
 			myLayout.sizePane("south", <?php echo $collection_frame_height?>);jQuery('.ui-layout-south').animate({scrollTop:0}, 'fast');
@@ -420,11 +420,15 @@ function ToggleThumbs()
 if (getCookie('thumbs')=="hide") { 
 	thumbs="hide";
 	myLayout.sizePane("south", 40);
-			
+	jQuery('#CollectionMinDiv').show();
+	jQuery('#CollectionMaxDiv').hide();jQuery('.ui-layout-south').animate({scrollTop:0}, 'fast');
 } else { 
 	thumbs="show";
+	jQuery('#CollectionMinDiv').hide();
+	jQuery('#CollectionMaxDiv').show();
 	if (jQuery('.ui-layout-south').height()<=<?php echo $collection_frame_height?>){
 	myLayout.sizePane("south", <?php echo $collection_frame_height?>);
+	jQuery('.ui-layout-south').animate({scrollTop:0}, 'fast');
 	}
 	
 } </script>

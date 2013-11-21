@@ -9,9 +9,11 @@ include "../include/search_functions.php";
 include "../include/collections_functions.php";
 include "../include/resource_functions.php";
 
+# Save the thumbs status, this value will be restored when leaving the page
 $saved_thumbs_state=getvalescaped("thumbs",$thumbs_default);
-setcookie("thumbs",$saved_thumbs_state); // always hide thumbs on this page loading
-$thumbs="hide";
+# Hide the thumbs
+rs_setcookie("thumbs", "hide", 1000);
+# Restore the thumbs status when leaving the page
 $headerinsert.="<script type='text/javascript'>jQuery(window).unload(function(){SetCookie('thumbs','".$saved_thumbs_state."');});</script>";
 
 $ref=getvalescaped("ref","",true);

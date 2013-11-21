@@ -218,7 +218,7 @@ if (array_key_exists("user",$_COOKIE) || array_key_exists("user",$_GET) || isset
 					sql_query("update user set logged_in=0,session='' where ref='$userref'");
 			
 					# Blank cookie / var
-					setcookie("user","",0);
+					rs_setcookie("user", "", time() - 3600, "", "", substr($baseurl,0,5)=="https", true);
 					unset($username);
 		
 					if (isset($anonymous_login))
