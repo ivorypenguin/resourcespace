@@ -92,7 +92,7 @@ function nextPhoto()
 	    // image1.style.visibility='visible';
 	    //Effect.Appear(image1);
 		jQuery('#image1').fadeIn(1000)
-	    window.setTimeout("image2.style.background='url(<?php echo $baseurl . "/" .  $homeanim_folder?>/" + next_photo + ".jpg?checksum=<?php echo $checksum ?>)';if(linktarget!=''){jQuery('#slideshowlink').attr('href',linktarget);}else{jQuery('#slideshowlink').removeAttr('href');}",1000);
+	    window.setTimeout("image2.style.backgroundImage='url(<?php echo $baseurl . "/" .  $homeanim_folder?>/" + next_photo + ".jpg?checksum=<?php echo $checksum ?>)';if(linktarget!=''){jQuery('#slideshowlink').attr('href',linktarget);}else{jQuery('#slideshowlink').removeAttr('href');}",1000);
 	    flip=0;
 		}	  	
      
