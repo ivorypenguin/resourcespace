@@ -57,7 +57,7 @@ function setLink($selector, $url, $title, $rel = 'lightbox')
 		jQuery(document).ready(function() {
 			jQuery('<?php echo $selector ?>')
 					.attr('href', '<?php echo $url ?>')
-					.attr('title', '<?php echo htmlspecialchars(i18n_get_translated($title)) ?>')
+					.attr('title', '<?php echo addslashes(htmlspecialchars(i18n_get_translated($title))) ?>')
 					.attr('rel', '<?php echo $rel ?>');
 		});
 		</script>
