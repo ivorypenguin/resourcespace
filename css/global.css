@@ -178,7 +178,7 @@ input.defaultbutton {position: absolute; left: -100%; width: 0; height: 0;}
 .DESC {display: inline;padding-right: 10px;}
 
 /*Resource Panel layout*/
-.Listview {	margin: 25px 0 25px 0;}
+.Listview {	margin: 25px 10px 25px 0;}
 .Listview table{ width:100%;}
 .Listview td {padding: 5px 5px 5px 5px;}
 .ListTools {text-align: right;}
