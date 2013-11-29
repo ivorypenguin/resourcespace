@@ -116,6 +116,8 @@ for ($n=0;$n<count($log);$n++)
 	# For purchases, append size and price
 	if ($log[$n]["type"]=="p") {echo " (" . ($log[$n]["purchase_size"]==""?$lang["collection_download_original"]:$log[$n]["purchase_size"]) . ", " . $currency_symbol . number_format($log[$n]["purchase_price"],2) . ")";}
 	
+	# For downloads, add size 
+	if ($log[$n]["type"]=="d") {echo " (" . ($log[$n]["size"]==""?$lang["collection_download_original"]:$log[$n]["size"]) . ")";}
 	?></td>
 	</tr>
 	<?php
