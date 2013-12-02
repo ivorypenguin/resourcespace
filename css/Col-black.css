@@ -47,9 +47,9 @@ input[readonly] {color: #FFFFFF;}
 
 #ThemeBoxPanel, #SearchBoxPanel {background: #555;}
 #ResearchBoxPanel, .HomePanelIN {background: #555;}
-.ResourcePanel {background: #595959 url(../gfx/black/interface/resourcepanel.gif) repeat-x;}
-.ResourcePanelSmall {background: #595959 url(../gfx/black/interface/resourcepanel.gif) repeat-x;}
-.ResourcePanelLarge {background: #5B5B5B url(../gfx/black/interface/SearchBox.gif) repeat-x;}
+.ResourcePanel {background: #555;}
+.ResourcePanelSmall {background: #555;}
+.ResourcePanelLarge {background: #555;}
 .IconVideo {background: url(../gfx/black/interface/IcVideo.gif) no-repeat 140px 5px;}
 .IconVideoLarge {background: url(../gfx/black/interface/IcVideo.gif) no-repeat 340px 5px;}
 
@@ -78,7 +78,7 @@ input[readonly] {color: #FFFFFF;}
 
 .Question{border-top: 1px solid #555;}
 
-.RecordPanel {background: #505050 url(../gfx/black/interface/recordpanel.gif) repeat-x;border: 1px solid #AAA;}
+.RecordPanel {background: #555;border: 1px solid #AAA;}
 .RecordPanel .Title {	border-bottom: 1px solid #AAA;}
 .RecordPanel .RecordDownload {border: 1px solid #AAAAAA;background: #595959 url(../gfx/black/interface/Download.gif) repeat-x;}
 .RecordPanel .RecordDownload .DownloadDBlend td {border: 1px solid #888;	color: #FFF;}
