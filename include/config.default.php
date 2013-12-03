@@ -2210,3 +2210,6 @@ $swap_clear_and_search_buttons=false;
 
 # Option to have default date left blank, instead of current date.
 $blank_date_upload_template=false;
+
+# Option to show dynamic dropdows as normal dropdowns on the simple search. If set to false, a standard text box is shown instead.
+$simple_search_show_dynamic_as_dropdown=true;

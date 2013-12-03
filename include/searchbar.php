@@ -251,8 +251,8 @@ if (!$basic_simple_search)
 			case 0: # -------- Text boxes?><?php
 			case 1:
 			case 5:
-			case 9:
-			?>	
+			case 9 && !$simple_search_show_dynamic_as_dropdown:
+			?>
 			<input class="SearchWidth" type=text name="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>" id="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>" value="<?php echo htmlspecialchars($value)?>"><?php
 			if ($autocomplete_search) { 
 				# Auto-complete search functionality
@@ -274,7 +274,8 @@ if (!$basic_simple_search)
 		
 			case 2:
 			case 3:
-			// Dropdown and checkbox types - display a list for each
+			case 9 && $simple_search_show_dynamic_as_dropdown:
+			// Dropdown and checkbox types - display a dropdown for both - also for dynamic dropdowns when configured
 			$options=get_field_options($fields[$n]["ref"]);
 			
 			$adjusted_dropdownoptions=hook("adjustdropdownoptions");
