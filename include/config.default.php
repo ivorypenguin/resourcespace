@@ -1648,27 +1648,6 @@ $tabs_on_edit=false;
 # Show additional clear and 'show results' buttons at top of advanced search page
 $advanced_search_buttons_top=false;
 
-# ------------------------------------------------------------------------------------------------------------------
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#
-# ------------------------- Development Items -------------------------
-#
-#
-# The items below are under development. Functionality is incomplete. You are advised to leave these switched off unless you have the ability to correct any problems yourself.
-
 
 # Enable multi-lingual free text fields
 # By default, only the checkbox list/dropdown fields can be multilingual by using the special syntax when defining
