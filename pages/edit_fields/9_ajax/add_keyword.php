@@ -7,5 +7,5 @@ $field=getvalescaped("field","");
 $keyword=getvalescaped("keyword","");
 
 # Append the option and update the field
-sql_query("update resource_type_field set options=concat(options, ', " . escape_check($keyword) . "') where ref='$field'");
+sql_query("update resource_type_field set options=concat(ifnull(options,''), ', " . escape_check($keyword) . "') where ref='$field'");
 
