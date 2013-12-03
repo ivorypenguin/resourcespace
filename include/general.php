@@ -2047,41 +2047,6 @@ function get_user_log($user, $fetchrows=-1)
     }
     return $return;
 	}
-
-function get_breadcrumbs()
-	{
-	# Returns a HTML breadcrumb trail for display at the top of the screen.
-
-	$breadcrumbs=getvalescaped("rs_breadcrumbs","");
-	$bs=explode(",",$breadcrumbs);
-	
-	global $pagename,$lang,$title;
-	$bc="";
-	
-	
-	# Collapse any appropriate levels of the breadcrumbs trail.
-	# Certain pages are deemed 'start pages' and reset the breadcrumbs tree.
-	if (in_array($pagename,array("search_advanced","collection_manage","themes","team_home"))) {$bs=array();}
-
-	# Drop any existing mentions of this page in the tree.
-	$nbs=array();
-	for ($n=0;$n<count($bs);$n++)
-		{
-		$s=explode(":",$bs[$n]);
-		if ($s[0]!=$pagename) {$nbs[]=$bs[$n];}
-		}
-	$bs=$nbs;
-	
-	# Add the current page to the breadcrumbs
-	$bs[]=$pagename. ":" . $_SERVER["QUERY_STRING"];
-	
-
-	# Set the breadcrumbs cookie.
-	$breadcrumbs=join(",",$bs);
-	setcookie("rs_breadcrumbs",$breadcrumbs);
-	
-	return "You are here: " . $breadcrumbs;
-	}
 	
 function resolve_userlist_groups($userlist)
 	{

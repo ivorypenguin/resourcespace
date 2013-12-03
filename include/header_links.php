@@ -1,6 +1,4 @@
-<?php if ($breadcrumbs) { ?>
-<div class="Breadcrumbs"><?php echo get_breadcrumbs()?></div>
-<?php } ?>
+
 		<?php if (!hook("replaceheadernav2")) { ?>
 		<ul>
 		<?php if (!hook("replacehomelinknav")) { ?>
