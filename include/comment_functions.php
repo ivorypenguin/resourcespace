@@ -248,7 +248,7 @@ EOT;
 				}						
 			echo "</div>";	// end of CommentEntryInfoDetails		
 			echo "<div class='CommentEntryInfoFlag'>";		
-			if (getval("comment${thisRef}flagged",""))
+			if (getval("comment${thisRef}flagged","") || $comment['hide'])
 				{
 					echo "<div class='CommentFlagged'>${lang['comments_flag-has-been-flagged']}</div>";			
 				} else {				
