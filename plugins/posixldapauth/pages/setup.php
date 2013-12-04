@@ -8,6 +8,7 @@ $usergroups = sql_query("SELECT ref,name FROM usergroup");
 */
 $ldap_debug = true;
 
+
 // for test
 //$ldapauth['ldapgroupfield'] = 'memberUid';
 
@@ -91,7 +92,7 @@ if ($ldapauth['enable'])
 	$ldapConf['basedn'] = $ldapauth['basedn'];
 	
 	$objLDAP = new ldapAuth($ldapConf);
-	
+	if ($ldap_debug) { $objLDAP->ldap_debug = true; };
 	
 	if ($objLDAP->connect())
 	{
@@ -108,7 +109,7 @@ if ($ldapauth['enable'])
 		if (!isset ($errmsg))
 		{
 			// get the groups
-			error_log( " ldapauth:setup.php line 94 GOT TO THE GROUP SELECT ");
+			error_log(   __FILE__ . " " . __METHOD__ . " " . __LINE__ ." GOT TO THE GROUP SELECT ");
 			$ldapGroupList = $objLDAP->listGroups($ldapauth['ldaptype'],$ldapauth['ldapgroupcontainer']);
 			if (is_array($ldapGroupList)) {
 				$ldapGroupsFound = true;
@@ -140,11 +141,14 @@ else
 
 $headerinsert.="
 	<script src=\"ldap_functions.js\" language=\"JavaScript1.2\"></script>
-    <script type=\"text/javascript\">
+    ";
+
+/*
+<script type=\"text/javascript\">
     status_error_in = '" . preg_replace("/\r?\n/", "\\n", addslashes($lang['posixldapauth_status_error_in'])) . "';
     server_error = '" . preg_replace("/\r?\n/", "\\n", addslashes($lang['posixldapauth_server_error'])) . "';
-</script>
-";
+*/
+
 include "../../../include/header.php";
 
 ?>
@@ -165,7 +169,7 @@ include "../../../include/header.php";
 
       <p><label for="ldapserver"><?php echo $lang['posixldapauth_ldap_server'] ?></label><input id="ldapserver" name="ldapserver" type="text" value="<?php echo $ldapauth['ldapserver']; ?>" size="30" />
       <label for="ldapauth">:</label><input name="port" type="text" value="<?php echo $ldapauth['port']; ?>" size="6" /></p>
-
+		
       <fieldset>
         <legend><?php echo $lang['posixldapauth_ldap_information'] ?></legend>
 	  <table id='tableldaptype'>
@@ -347,9 +351,15 @@ include "../../../include/header.php";
         }
         ?>
         
-   
+   		<input id="lang_status_error" name="lang_status_error" type="hidden" value="<?php echo $lang['posixldapauth_status_error_in']; ?>" size="30" />
+        <input id="lang_server_error" name="lang_server_erro" type="hidden" value="<?php echo $lang['posixldapauth_server_error']; ?>" size="30" />
+        <input id="lang_passed" name="lang_passed" type="hidden" value="<?php echo $lang['posixldapauth_passed']; ?>" size="30" />
+        <input id="lang_could_not_connect" name="lang_could_not_connect" type="hidden" value="<?php echo $lang['posixldapauth_could_not_connect_to_ldap_server']; ?>" size="30" />
+        <input id="lang_could_not_bind" name="lang_could_not_bind" type="hidden" value="<?php echo $lang['posixldapauth_passed']; ?>" size="30" />
+        <input id="lang_test_passed" name="lang_test_passed" type="hidden" value="<?php echo $lang['posixldapauth_tests_passed_save_settings_and_set_group_mapping'] ; ?>" size="30" />
+        <input id="lang_test_failed" name="lang_test_failed" type="hidden" value="<?php echo $lang['posixldapauth_tests_failed_check_settings_and_test_again']; ?>" size="30" />
         <input type="submit" name="submit" value="&nbsp;&nbsp;<?php echo $lang["save"]?>&nbsp;&nbsp;"/>
-
+		
     </form>
   </div>	
 <script type="text/javascript">
