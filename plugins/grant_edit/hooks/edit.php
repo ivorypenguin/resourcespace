@@ -4,8 +4,8 @@ function HookGrant_editEditeditbeforeheader()
 	{
 	global $ref, $baseurl, $usergroup, $grant_edit_groups, $collection;
 	
-	// Do we have access to do any of this
-	if(!in_array($usergroup, $grant_edit_groups)){return;}
+	// Do we have access to do any of this, or is it a template
+	if(!in_array($usergroup, $grant_edit_groups) || $ref<0){return;}
 		
 	// Check for Ajax POST to delete users
 	$grant_edit_action=getvalescaped("grant_edit_action","");
@@ -94,7 +94,7 @@ function HookGrant_editEditReplacesubmitbuttons()
 	global $ref,$lang,$baseurl,$grant_editusers, $multiple, $usergroup, $grant_edit_groups;
 	
 	// Do we have access to see this?
-	if(!in_array($usergroup, $grant_edit_groups)){return;}
+	if(!in_array($usergroup, $grant_edit_groups) || $ref<0){return;}
 	
 	$grant_editusers=sql_query("select ea.user, u.fullname, u.username, ea.expiry from grant_edit ea left join user u on u.ref=ea.user where ea.resource='$ref' and (ea.expiry is NULL or ea.expiry>=NOW()) order by expiry, u.username");
 	//print_r($grant_editusers);
