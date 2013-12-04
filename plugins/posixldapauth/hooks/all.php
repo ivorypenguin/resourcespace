@@ -197,7 +197,19 @@ function HookPosixldapauthAllExternalauth($uname, $pword)
 						$objLdapAuth->unBind();	
 						return true;
 					}
-				}				
+				}	else {
+						// non group based user creation.
+	                    $ref=new_user($nuser['username']);
+	                    if (!$ref) return false; # Shouldn't ever get here.  Something strange happened
+	
+	                    // Update with information from LDAP
+	                    sql_query('update user set password="'.$nuser['password'].
+	                            '", fullname="'.$nuser['fullname'].'", email="'.$nuser['email'].'", usergroup="'.
+	                            $ldapauth['newusergroup'].'", comments="Auto create from LDAP" where ref="'.$ref.'"');
+	
+	                    $username=$nuser['username'];
+	                    $password=$nuser['password'];
+				}			
 			} else {					
 				// username / password is wrong!
 				return false;
