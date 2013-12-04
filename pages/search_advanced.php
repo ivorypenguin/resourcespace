@@ -239,7 +239,6 @@ jQuery(document).ready(function()
 <form method="post" id="advancedform" action="<?php echo $baseurl ?>/pages/search_advanced.php" >
 <input type="hidden" name="submitted" id="submitted" value="yes">
 <input type="hidden" name="countonly" id="countonly" value="">
-<input type="hidden" name="archive" value="<?php echo htmlspecialchars($archive)?>">
 
 <script type="text/javascript">
 var updating=false;
@@ -563,9 +562,35 @@ for ($n=0;$n<count($fields);$n++)
 
 ?>
 </div>
+
 <?php
 }
 
+global $advanced_search_archive_select;
+if($advanced_search_archive_select)
+	{
+	?>
+	<div class="Question">
+		<label><?php echo $lang["status"]?></label>
+		<select class="stdwidth" name="archive" id="archive" onChange="UpdateResultCount();">
+			<?php 
+			for ($n=-2;$n<=3;$n++)
+				{
+				if (!checkperm("z" . $n)) { ?><option value="<?php echo $n?>" <?php if ($archive==$n) { ?>selected<?php } ?>><?php echo $lang["status" . $n]?></option><?php }
+				}		
+			
+			?>
+
+		</select>
+	</div>
+	<?php
+	}
+else
+	{?>
+	<input type="hidden" name="archive" value="<?php echo htmlspecialchars($archive)?>">
+	<?php
+	}
+	
 render_advanced_search_buttons();
 
 // show result count as it stands ?>

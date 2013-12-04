@@ -103,7 +103,7 @@ if ($ref<0 && !(checkperm("c") || checkperm("d")))
     }
 
 # Check edit permission.
-if (!get_edit_access($ref,$resource["archive"]))
+if (!get_edit_access($ref,$resource))
     {
     # The user is not allowed to edit this resource or the resource doesn't exist.
     $error=$lang['error-permissiondenied'];
@@ -157,7 +157,7 @@ if ((getval("autosave","")!="") || (getval("tweak","")=="" && getval("submitted"
 		}		
 
 		if (($save_errors===true || $is_template)&&(getval("tweak","")==""))
-			{
+			{			
 			if ($ref>0 && getval("save","")!="")
 				{
 				# Log this
@@ -192,7 +192,7 @@ if ((getval("autosave","")!="") || (getval("tweak","")=="" && getval("submitted"
 				}
 			}
 		elseif (getval("save","")!="")
-			{
+			{			
 			$show_error=true;
             }
 		}
@@ -1252,10 +1252,10 @@ if (!checkperm("F*")&&!hook("editstatushide")) # Only display Status / Access / 
 
             <select class="stdwidth" name="status" id="archive" <?php if ($edit_autosave) {?>onChange="AutoSave('Status');"<?php } ?>><?php
             for ($n=-2;$n<=3;$n++)
-                {
-                if (checkperm("e" . $n)) { ?><option value="<?php echo $n?>" <?php if ($status==$n) { ?>selected<?php } ?>><?php echo $lang["status" . $n]?></option><?php }
-                } ?>
-            </select>
+				{
+						if (checkperm("e" . $n)) { ?><option value="<?php echo $n?>" <?php if ($status==$n) { ?>selected<?php } ?>><?php echo $lang["status" . $n]?></option><?php }
+				}?>
+			</select>
             <div class="clearerleft"> </div>
             </div><?php
             } /* end hook replacestatusselector */

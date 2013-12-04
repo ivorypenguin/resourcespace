@@ -1763,3 +1763,5 @@ $lang["no_resourcetypes-collections"] = "All %collectiontypes%"; # Use %COLLECTI
 $lang["resourcetypes-collections"] = "All %resourcetypes% and all %collectiontypes%"; # Please find the comments for $lang["resourcetypes-no_collections"] and $lang["no_resourcetypes-collections"]!
 $lang["resourcetypes_separator"] = ", "; # The separator to be used when converting the array of searched resourcetype to a string. E.g. ", " -> "photos, documents"
 $lang["collectiontypes_separator"] = ", "; # The separator to be used when converting the array of searched collections to a string. E.g. ", " -> "public collections, themes"
+$lang["hide_view_access_to_workflow_state"]="Block access to workflow state";
+$lang["collection_share_status_warning"]="Warning - this collection has resources in the following states, please check that these resources will be accessible to other users";

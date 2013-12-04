@@ -1123,7 +1123,7 @@ function allow_multi_edit($collection)
 	}
 	for ($n=0;$n<count($collection);$n++){
 		$resource = $collection[$n];
-		if (!get_edit_access($collection[$n]["ref"],$collection[$n]["archive"],false)){return false;}
+		if (!get_edit_access($collection[$n]["ref"],$collection[$n],false)){return false;}
 		
 	}
 
@@ -1678,12 +1678,16 @@ function is_collection_approved($collection)
 			$result=do_search("!collection" . $collection,"","relevance",0,-1,"desc",false,"",false,"");
 			}	
 		if (!is_array($result)){return true;}
+		
+		$collectionstates=array();
+		global $collection_allow_not_approved_share;
 		for ($n=0;$n<count($result);$n++)
 			{
 			$archivestatus=$result[$n]["archive"];
-			if ($archivestatus<0) {return false;}
+			if ($archivestatus<0 && !$collection_allow_not_approved_share) {return false;}
+			$collectionstates[]=$archivestatus;
 			}
-		return true;
+		return array_unique($collectionstates);
 		}
 
 function edit_collection_external_access($key,$access=-1,$expires="")

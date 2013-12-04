@@ -28,7 +28,7 @@ $sort=getval("sort",$default_sort);
 $error="";
 
 # Not allowed to edit this resource? They shouldn't have been able to get here.
-if (!get_edit_access($ref,$resource["archive"])) {exit ("Permission denied.");}
+if (!get_edit_access($ref,$resource)) {exit ("Permission denied.");}
 
 hook("pageevaluation");
 

@@ -2213,3 +2213,9 @@ $blank_date_upload_template=false;
 
 # Option to show dynamic dropdows as normal dropdowns on the simple search. If set to false, a standard text box is shown instead.
 $simple_search_show_dynamic_as_dropdown=true;
+
+# Option to allow users to see all resources that they uploaded, irrespective of 'z' permissions
+$uploader_view_override=true;
+
+# Allow user to select archive state in advanced search
+$advanced_search_archive_select=true;

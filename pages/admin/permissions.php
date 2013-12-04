@@ -96,6 +96,14 @@ include "include/header.php";
 <?php
 DrawOption("s", $lang["searchcapability"]);
 DrawOption("v", $lang["access_to_restricted_and_confidential_resources"], false);
+
+# ------------ View access to workflow states
+
+for ($n=-2;$n<=3;$n++)
+	{
+	DrawOption("z" . $n, $lang["hide_view_access_to_workflow_state"] . " '" . $lang["status" . $n] . "'", false);
+	}
+	
 DrawOption("g", $lang["restrict_access_to_all_available_resources"], true);
 DrawOption("q", $lang["can_make_resource_requests"], false);
 DrawOption("w", $lang["show_watermarked_previews_and_thumbnails"]);

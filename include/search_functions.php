@@ -154,18 +154,41 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 			# If resources pending review are visible to all, when listing only active resources include
 			# pending review (-1) resources too.
 			if ($sql_filter!="") {$sql_filter.=" and ";}
-			$sql_filter.="(archive='0' or archive=-1)";
+			$sql_filter.="archive in('0','-1')";
 			}
 		else
 			{
-			# Append normal filtering.
+			# Append normal filtering - extended as advanced search now allows searching by archive state
 			if ($sql_filter!="") {$sql_filter.=" and ";}
-			$sql_filter.="archive='$archive'";
+			$sql_filter.="archive = '$archive'";
 			global $userref, $pending_submission_searchable_to_all;
-			if (!$pending_submission_searchable_to_all&&($archive=="-2")&&!(checkperm("e-2")&&checkperm("t"))) $sql_filter.=" and created_by='" . $userref . "'";
+			if (!$pending_submission_searchable_to_all&&($archive=="-2")&&!((checkperm("e-2")&&checkperm("t"))||checkperm("v"))) $sql_filter.=" and created_by='" . $userref . "'";						
+			if (!$pending_review_visible_to_all&&($archive=="-1")&&!((checkperm("e-1")&&checkperm("t"))||checkperm("v"))) $sql_filter.=" and created_by='" . $userref . "'";
 			}
 		}
 	
+	# Add code to filter out resoures in archive states that the user does not have access to due to a 'z' permission
+	$filterblockstates="";
+	for ($n=-2;$n<=3;$n++)
+		{
+		if(checkperm("z" . $n))
+			{			
+			if ($filterblockstates!="") {$filterblockstates.="','";}
+			$filterblockstates .= $n;
+			}
+		}
+	if ($filterblockstates!="")
+		{
+		global $uploader_view_override, $userref;
+		if ($uploader_view_override)
+			{
+			$sql_filter.=" and (archive not in ('$filterblockstates') or created_by='" . $userref . "')";
+			}
+		else
+			{
+			$sql_filter.=" and archive not in ('$filterblockstates')";
+			}
+		}
 	
 	# append ref filter - never return the batch upload template (negative refs)
 	if ($sql_filter!="") {$sql_filter.=" and ";}

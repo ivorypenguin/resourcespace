@@ -86,7 +86,7 @@ function alt_from_resource($source,$target,$name='',$delete=false){
 		if ($delete){
 			// we are supposed to delete the original resource when we're done
 			# Not allowed to edit this resource? They shouldn't have been able to get here.
-			if ((!get_edit_access($source,$srcdata["archive"]))||checkperm('D')) {
+			if ((!get_edit_access($source,$srcdata))||checkperm('D')) {
 				exit ("Permission denied.");
 			} else {
 				delete_resource($source);

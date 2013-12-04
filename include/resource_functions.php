@@ -1930,12 +1930,20 @@ function get_resource_access($resource)
 		if ($extaccess!=-1) {return $extaccess;}
 		}
 	
+	global $uploader_view_override, $userref;
+	if (checkperm("z" . $resourcedata['archive']) && !($uploader_view_override && $resourcedata['created_by'] == $userref))
+		{
+		// User has no access to this archive state 
+		return 2;
+		}
+	
 	if (checkperm("v"))
 		{
 		# Permission to access all resources
 		# Always return 0
 		return 0; 
-		}
+		}	
+
 
 	if ($access==3)
 		{
@@ -1950,13 +1958,13 @@ function get_resource_access($resource)
 		}
 	}
 
-	if ($access == 1 && get_edit_access($ref, $resourcedata['archive']))
+	if ($access == 1 && get_edit_access($ref, $resourcedata))
 		{
 		# If access is restricted and user has edit access, grant open access.
 		$access = 0;
 		}
 
-	global $open_access_for_contributor, $userref;
+	global $open_access_for_contributor;
 	if ($open_access_for_contributor && $access == 1 && $resourcedata['created_by'] == $userref)
 		{
 		# If access is restricted and user has contributed resource, grant open access.
@@ -2087,22 +2095,23 @@ function resource_download_allowed($resource,$size,$resource_type)
 	
 	}
 
-function get_edit_access($resource,$status=-999,$metadata=false)
+function get_edit_access($resource,&$resourcedata="",$metadata=false)
 	{
 	# For the provided resource and metadata, does the  edit access does the current user have to this resource?
 	# Checks the edit permissions (e0, e-1 etc.) and also the group edit filter which filters edit access based on resource metadata.
 	
 	global $userref,$usereditfilter;
 	if (hook("customediteaccess")) {return true;}
-	if ($status==-999)
-		{
-		# Status not provided. Calculate status
-		$status=sql_value("select archive value from resource where ref='$resource'",0);
-		}
-	
+	if(!is_array($resourcedata))
+		{$resourcedata=get_resource_data($resource);};
+		
+	$status=$resourcedata["archive"];
+		
 	if ($resource==0-$userref) {return true;} # Can always edit their own user template.
 
 	if (!checkperm("e" . $status)) {return false;} # Must have edit permission to this resource first and foremost, before checking the filter.
+	
+	if (checkperm("z" . $status) || ($status<0 && !(checkperm("t") || $resourcedata['created_by'] == $userref))) {return false;} # Cannot edit if z permission, or if other user uploads pending approval and not admin
 	
 	$gotmatch=false;
 	if (trim($usereditfilter)=="" || $status<0) # No filter set, or resource is still in a User Contributed state in which case the edit filter should not be applied.

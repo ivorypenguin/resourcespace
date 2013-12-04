@@ -28,10 +28,20 @@ $editaccess=getvalescaped("editaccess","");
 	
 
 #Check if any resources are not approved
-if (!$collection_allow_not_approved_share && !is_collection_approved($ref)) {
+$collectionstates=is_collection_approved($ref);
+if (!$collection_allow_not_approved_share && $collectionstates==false) {
         $show_error=true;
         $error=$lang["notapprovedsharecollection"];
         }
+	
+if(is_array($collectionstates) && (count($collectionstates>1) || !in_array(0,$collectionstates)))
+	{
+	$warningtext=$lang["collection_share_status_warning"];
+	foreach($collectionstates as $collectionstate)
+		{
+		$warningtext.="<br>" . $lang["status" . $collectionstate];
+		}
+	}
 
 
 # Get min access to this collection
@@ -70,7 +80,7 @@ include "../include/header.php";
     exit();}
 ?>
   
-	<div class="BasicsBox"> 
+	<div class="BasicsBox"> 	
 	<form method=post id="collectionform" action="<?php echo $baseurl_short?>pages/collection_share.php">
 	<input type="hidden" name="ref" id="ref" value="<?php echo htmlspecialchars($ref) ?>">
 	<input type="hidden" name="deleteaccess" id="deleteaccess" value="">
@@ -80,7 +90,12 @@ include "../include/header.php";
 	<input type="hidden" name="generateurl" id="generateurl" value="">
 
 	<h1><?php echo str_replace("%collectionname", i18n_get_collection_name($collection), $lang["sharecollection-name"]);?></h1>
-
+	<?php
+	if(isset($warningtext))
+		{
+		echo "<div class='PageInformal'>" . $warningtext . "</div>";
+		}?>
+	
 	<div class="VerticalNav">
 	<ul>
 	<?php
