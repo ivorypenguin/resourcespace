@@ -34,7 +34,7 @@ if (!$collection_allow_not_approved_share && $collectionstates==false) {
         $error=$lang["notapprovedsharecollection"];
         }
 	
-if(is_array($collectionstates) && (count($collectionstates>1) || !in_array(0,$collectionstates)))
+if(is_array($collectionstates) && (count($collectionstates)>1 || !in_array(0,$collectionstates)))
 	{
 	$warningtext=$lang["collection_share_status_warning"];
 	foreach($collectionstates as $collectionstate)
