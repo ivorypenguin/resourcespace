@@ -1253,8 +1253,12 @@ if (!checkperm("F*")&&!hook("editstatushide")) # Only display Status / Access / 
             <select class="stdwidth" name="status" id="archive" <?php if ($edit_autosave) {?>onChange="AutoSave('Status');"<?php } ?>><?php
             for ($n=-2;$n<=3;$n++)
 				{
-						if (checkperm("e" . $n)) { ?><option value="<?php echo $n?>" <?php if ($status==$n) { ?>selected<?php } ?>><?php echo $lang["status" . $n]?></option><?php }
-				}?>
+				if (checkperm("e" . $n)) { ?><option value="<?php echo $n?>" <?php if ($status==$n) { ?>selected<?php } ?>><?php echo $lang["status" . $n]?></option><?php }
+				}
+			foreach ($additional_archive_states as $additional_archive_state)
+                {
+                if (checkperm("e" . $additional_archive_state)) { ?><option value="<?php echo $additional_archive_state?>" <?php if ($status==$additional_archive_state) { ?>selected<?php } ?>><?php echo isset($lang["status" . $additional_archive_state])?$lang["status" . $additional_archive_state]:$additional_archive_state ?></option><?php }
+                }?>
 			</select>
             <div class="clearerleft"> </div>
             </div><?php

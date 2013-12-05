@@ -177,6 +177,17 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 			$filterblockstates .= $n;
 			}
 		}
+	
+	global $additional_archive_states;
+	foreach ($additional_archive_states as $additional_archive_state)
+		{
+		if(checkperm("z" . $additional_archive_state))
+			{
+			if ($filterblockstates!="") {$filterblockstates.=",";}
+			$filterblockstates .= $additional_archive_state;
+			}
+		}
+	
 	if ($filterblockstates!="")
 		{
 		global $uploader_view_override, $userref;

@@ -577,8 +577,11 @@ if($advanced_search_archive_select)
 			for ($n=-2;$n<=3;$n++)
 				{
 				if (!checkperm("z" . $n)) { ?><option value="<?php echo $n?>" <?php if ($archive==$n) { ?>selected<?php } ?>><?php echo $lang["status" . $n]?></option><?php }
-				}		
-			
+				}
+			foreach ($additional_archive_states as $additional_archive_state)
+				{
+				if (!checkperm("z" . $additional_archive_state)) { ?><option value="<?php echo $additional_archive_state?>" <?php if ($archive==$additional_archive_state) { ?>selected<?php } ?>><?php echo isset($lang["status" . $additional_archive_state])?$lang["status" . $additional_archive_state]:$additional_archive_state ?></option><?php }
+				}			
 			?>
 
 		</select>

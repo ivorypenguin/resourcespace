@@ -103,6 +103,11 @@ for ($n=-2;$n<=3;$n++)
 	{
 	DrawOption("z" . $n, $lang["hide_view_access_to_workflow_state"] . " '" . $lang["status" . $n] . "'", false);
 	}
+
+foreach ($additional_archive_states as $additional_archive_state)
+	{
+	DrawOption("z" . $additional_archive_state, $lang["hide_view_access_to_workflow_state"] . " '" . (isset($lang["status" . $additional_archive_state])?$lang["status" . $additional_archive_state]:$additional_archive_state) . "'", false);
+	}
 	
 DrawOption("g", $lang["restrict_access_to_all_available_resources"], true);
 DrawOption("q", $lang["can_make_resource_requests"], false);
@@ -168,6 +173,10 @@ foreach ($rtypes as $rtype)
 for ($n=-2;$n<=3;$n++)
 	{
 	DrawOption("e" . $n, $lang["edit_access_to_workflow_state"] . " '" . $lang["status" . $n] . "'", false);
+	}
+foreach ($additional_archive_states as $additional_archive_state)
+	{
+	DrawOption("e" . $additional_archive_state, $lang["edit_access_to_workflow_state"] . " '" . (isset($lang["status" . $additional_archive_state])?$lang["status" . $additional_archive_state]:$additional_archive_state) . "'", false);
 	}
 
 DrawOption("c", $lang["can_create_resources_and_upload_files-admins"]);
