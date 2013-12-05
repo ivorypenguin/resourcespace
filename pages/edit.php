@@ -261,7 +261,7 @@ if (getval("refreshcollectionframe","")!="")
 include "../include/header.php";
 ?>
 <script type="text/javascript">
- 
+
 
 jQuery(document).ready(function()
     {
@@ -298,9 +298,47 @@ jQuery(document).ready(function()
                 else jQuery(this).addClass('expanded');
 
             });
-            <?php  hook("editadditionaljs");  ?>
+			
+            <?php 			
+		if($ctrls_to_save)
+			{?>
+			jQuery(document).bind('keydown',function (e)
+				{
+				if (!(e.which == 115 && e.ctrlKey) && !(e.which == 83 && e.ctrlKey) && !(e.which == 19) ) 
+					{
+					return true;
+					}
+				else
+					{
+					e.preventDefault();
+					if(jQuery('#mainform'))
+					{
+					jQuery('.AutoSaveStatus').html('<?php echo $lang["saving"] ?>');
+					jQuery('.AutoSaveStatus').show();
+					jQuery.post(jQuery('#mainform').attr('action') + '&autosave=true',jQuery('#mainform').serialize(),
+				
+					function(data)
+						{
+						if (data.trim()=="SAVED")
+							{
+								jQuery('.AutoSaveStatus').html('<?php echo $lang["saved"] ?>');
+								jQuery('.AutoSaveStatus').fadeOut('slow');
+							}
+						else
+							{
+								jQuery('.AutoSaveStatus').html('<?php echo $lang["save-error"] ?>' + data);				
+							}
+						});
+					}	
+					return false;
+					}						
+			   });
+		   <?php
+		   }?>  
+	   
     });
-
+ <?php hook("editadditionaljs") ?>
+ 
 function ShowHelp(field)
 	{
 	// Show the help box if available.
@@ -884,8 +922,8 @@ function display_multilingual_text_field($field)
 
 function display_field($n, $field, $newtab=false)
 	{
-	global $use, $ref, $original_fields, $multilingual_text_fields, $multiple, $lastrt,$is_template, $language, $lang, $blank_edit_template, $edit_autosave, $errors, $tabs_on_edit,$collapsible_sections;
-
+	global $use, $ref, $original_fields, $multilingual_text_fields, $multiple, $lastrt,$is_template, $language, $lang, $blank_edit_template, $edit_autosave, $errors, $tabs_on_edit,$collapsible_sections, $ctrls_to_save;
+	
 	$name="field_" . $field["ref"];
 	$value=$field["value"];
 	$value=trim($value);
@@ -987,7 +1025,7 @@ function display_field($n, $field, $newtab=false)
 
 	<?php
 	# Autosave display
-	if ($edit_autosave) { ?>
+	if ($edit_autosave || $ctrls_to_save) { ?>
 	<div class="AutoSaveStatus" id="AutoSaveStatus<?php echo $field["ref"] ?>" style="display:none;"></div>
 	<?php } ?>
 
@@ -1245,7 +1283,7 @@ if (!checkperm("F*")&&!hook("editstatushide")) # Only display Status / Access / 
             <label for="archive"><?php echo $lang["status"]?></label><?php
             
             # Autosave display
-            if ($edit_autosave)
+            if ($edit_autosave || $ctrls_to_save)
                 { ?>
                 <div class="AutoSaveStatus" id="AutoSaveStatusStatus" style="display:none;"></div><?php
                 } ?>
@@ -1283,8 +1321,8 @@ if (!checkperm("F*")&&!hook("editstatushide")) # Only display Status / Access / 
             <label for="archive"><?php echo $lang["access"]?></label><?php
 
             # Autosave display
-            if ($edit_autosave) { ?><div class="AutoSaveStatus" id="AutoSaveStatusAccess" style="display:none;"></div><?php } ?>
-
+            if ($edit_autosave || $ctrls_to_save) { ?><div class="AutoSaveStatus" id="AutoSaveStatusAccess" style="display:none;"></div><?php } ?>
+	
             <select class="stdwidth" name="access" id="access" onChange="var c=document.getElementById('custom_access');if (this.value==3) {c.style.display='block';} else {c.style.display='none';}<?php if ($edit_autosave) {?>AutoSave('Access');<?php } ?>"><?php
 
             for ($n=0;$n<=($custom_access?3:2);$n++)
@@ -1349,7 +1387,7 @@ if (!checkperm("F*")&&!hook("editstatushide")) # Only display Status / Access / 
         <label for="related"><?php echo $lang["relatedresources"]?></label><?php
 
         # Autosave display
-        if ($edit_autosave) { ?><div class="AutoSaveStatus" id="AutoSaveStatusRelated" style="display:none;"></div><?php } ?>
+        if ($edit_autosave  || $ctrls_to_save) { ?><div class="AutoSaveStatus" id="AutoSaveStatusRelated" style="display:none;"></div><?php } ?>
 
         <textarea class="stdwidth" rows=3 cols=50 name="related" id="related"<?php
         if ($edit_autosave) {?>onChange="AutoSave('Related');"<?php } ?>><?php

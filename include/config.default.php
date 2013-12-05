@@ -2220,7 +2220,6 @@ $uploader_view_override=true;
 # Allow user to select archive state in advanced search
 $advanced_search_archive_select=true;
 
-
 # Additional archive states - option to add workflow states to the default list of -2 (pending submission), -1 (Pending review), 0 (Active), 1 (Awaiting archive), 2 (archived) and 3 (deleted)
 # Can be used in conjunction with 'z' permissions to restrict access to workflow states.
 # Note that for any state you need to create a corresponding language entry e.g.if you had the following additonal states set
@@ -2230,3 +2229,6 @@ $advanced_search_archive_select=true;
 # $lang['status5']="Embargoed";
 
 $additional_archive_states=array();
+
+# Option to use CTRL + S on edit page to save data
+$ctrls_to_save=false;
