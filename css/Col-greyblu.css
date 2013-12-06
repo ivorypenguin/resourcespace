@@ -90,7 +90,7 @@ input[readonly] {color: #FFFFFF;}
 
 .ArchiveResourceTitle, .ResourcePendingSubmissionTitle, .ResourcePendingReviewTitle {color: #C2E066;}
 .DeletedResourceTitle {color: #FF0000;}
-.RecordStory{color: #000000;background: #FFFFFF url(../gfx/greyblu/interface/StoryShadow.gif) repeat-x;}
+.RecordStory{color: #000000;background: #FFFFFF;}
 .RecordStory h1{color: #000000;}
 .RecordStory a:hover{color: #000000;}
 
