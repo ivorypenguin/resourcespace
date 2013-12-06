@@ -15,7 +15,7 @@ $find=getvalescaped("find","");
 $order_by=getvalescaped("order_by","u.username");
 $group=getvalescaped("group",0);
 
-# pager
+# Pager
 $per_page=getvalescaped("per_page_list",$default_perpage_list);setcookie("per_page_list",$per_page);
 
 

@@ -11,7 +11,7 @@ $k=getvalescaped("k","");
 # fetch the current search (for finding simlar matches)
 $search=getvalescaped("search","");
 $order_by=getvalescaped("order_by","relevance");
-$offset=getvalescaped("offset",0,true);
+$search_offset=getvalescaped("search_offset",0,true);
 $restypes=getvalescaped("restypes","");
 if (strpos($search,"!")!==false) {$restypes="";}
 $archive=getvalescaped("archive",0,true);
@@ -19,6 +19,11 @@ $starsearch=getvalescaped("starsearch","");
 $default_sort="DESC";
 if (substr($order_by,0,5)=="field"){$default_sort="ASC";}
 $sort=getval("sort",$default_sort);
+
+$offset=getvalescaped("offset",0);
+$per_page=getvalescaped("per_page_list",$default_perpage_list,true);setcookie("per_page_list",$per_page);
+
+
 
 # next / previous resource browsing
 $go=getval("go","");
@@ -31,7 +36,7 @@ if ($go!="")
 	if ($modified_result_set){
 		$result=$modified_result_set;
 	} else {
-		$result=do_search($search,$restypes,$order_by,$archive,240+$offset+1,$sort,false,$starsearch);
+		$result=do_search($search,$restypes,$order_by,$archive,240+$search_offset+1,$sort,false,$starsearch);
 	}
 	if (is_array($result))
 		{
@@ -44,7 +49,7 @@ if ($go!="")
 		if ($pos!=-1)
 			{
 			if (($go=="previous") && ($pos>0)) {$ref=$result[$pos-1]["ref"];}
-			if (($go=="next") && ($pos<($n-1))) {$ref=$result[$pos+1]["ref"];if (($pos+1)>=($offset+72)) {$offset=$pos+1;}} # move to next page if we've advanced far enough
+			if (($go=="next") && ($pos<($n-1))) {$ref=$result[$pos+1]["ref"];if (($pos+1)>=($search_offset+72)) {$search_offset=$pos+1;}} # move to next page if we've advanced far enough
 			}
 		else
 			{
@@ -65,25 +70,38 @@ if ($go!="")
 include "../include/header.php";
 ?>
 <div class="BasicsBox">
-<p><a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo urlencode($ref)?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by) ?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>"  onClick="return CentralSpaceLoad(this,true);">&lt;&nbsp;<?php echo $lang["backtoresourceview"]?></a></p>
+<p><a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo urlencode($ref)?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($search_offset)?>&order_by=<?php echo urlencode($order_by) ?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>"  onClick="return CentralSpaceLoad(this,true);">&lt;&nbsp;<?php echo $lang["backtoresourceview"]?></a></p>
 
 
 <div class="backtoresults">
-<a href="<?php echo $baseurl_short?>pages/log.php?ref=<?php echo urlencode($ref) ?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>&k=<?php echo urlencode($k) ?>&go=previous&<?php echo hook("nextpreviousextraurl") ?>" onClick="return CentralSpaceLoad(this,true);">&lt;&nbsp;<?php echo $lang["previousresult"]?></a>
+<a href="<?php echo $baseurl_short?>pages/log.php?ref=<?php echo urlencode($ref) ?>&search=<?php echo urlencode($search)?>&search_offset=<?php echo urlencode($search_offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>&k=<?php echo urlencode($k) ?>&go=previous&<?php echo hook("nextpreviousextraurl") ?>" onClick="return CentralSpaceLoad(this,true);">&lt;&nbsp;<?php echo $lang["previousresult"]?></a>
 <?php 
 hook("viewallresults");
 if ($k=="") { ?>
 |
-<a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>&k=<?php echo urlencode($k)?>" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["viewallresults"]?></a>
+<a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($search_offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>&k=<?php echo urlencode($k)?>" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["viewallresults"]?></a>
 <?php } ?>
 |
-<a href="<?php echo $baseurl_short?>pages/log.php?ref=<?php echo urlencode($ref) ?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by) ?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>&k=<?php echo urlencode($k)?>&go=next&<?php echo hook("nextpreviousextraurl") ?>" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["nextresult"]?>&nbsp;&gt;</a>
+<a href="<?php echo $baseurl_short?>pages/log.php?ref=<?php echo urlencode($ref) ?>&search=<?php echo urlencode($search)?>&search_offset=<?php echo urlencode($search_offset)?>&order_by=<?php echo urlencode($order_by) ?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>&k=<?php echo urlencode($k)?>&go=next&<?php echo hook("nextpreviousextraurl") ?>" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["nextresult"]?>&nbsp;&gt;</a>
 </div>
 
 <h1><?php echo $lang["resourcelog"] . " : " . $lang["resourceid"] . " " .  htmlspecialchars($ref) ?></h1>
 
 </div>
 
+<?php
+# Fetch the log.
+$log=get_resource_log($ref);
+
+# Calculate pager vars.
+$results=count($log);
+$totalpages=ceil($results/$per_page);
+$curpage=floor($offset/$per_page)+1;
+
+$url=$baseurl_short."pages/log.php?ref=" . urlencode($ref) . "&search=" . urlencode($search) . "&search_offset=" . urlencode($search_offset) . "&order_by=" . urlencode($order_by) . "&sort=" . urlencode($sort) . "&archive=" . urlencode($archive) . "&k=" . urlencode($k) . hook("nextpreviousextraurl");
+?>
+
+<div class="TopInpageNav"><?php pager(false); ?></div>
 
 <div class="Listview">
 <table border="0" cellspacing="0" cellpadding="0" class="ListviewStyle">
@@ -94,11 +112,11 @@ if ($k=="") { ?>
 <td width="10%"><?php echo $lang["action"]?></td>
 <td width="10%"><?php echo $lang["field"]?></td>
 <td><?php echo $lang["difference"]?></td>
+<?php hook("log_extra_columns_header") ?>
 </tr>
 
 <?php
-$log=get_resource_log($ref);
-for ($n=0;$n<count($log);$n++)
+for ($n=$offset;(($n<count($log)) && ($n<($offset+$per_page)));$n++)
 	{
 	if (!isset($lang["log-".$log[$n]["type"]])){$lang["log-".$log[$n]["type"]]="";}
 	?>
@@ -119,12 +137,16 @@ for ($n=0;$n<count($log);$n++)
 	# For downloads, add size 
 	if ($log[$n]["type"]=="d") {echo " (" . ($log[$n]["size"]==""?$lang["collection_download_original"]:$log[$n]["size"]) . ")";}
 	?></td>
+	<?php hook("log_extra_columns_row") ?>
 	</tr>
 	<?php
 	}
 ?>
 </table>
 </div>
+
+<div class="BottomInpageNav"><?php pager(false); ?></div>
+
 <?php
 include "../include/footer.php";
 ?>
