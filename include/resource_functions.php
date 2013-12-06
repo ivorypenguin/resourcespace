@@ -190,6 +190,8 @@ function save_resource_data($ref,$multi)
 				//$testvalue=$fields[$n]["value"];var_dump($testvalue);$val=unescape($val);var_dump($val);
 				//echo "FIELD:".$fields[$n]["value"]."!==ORIG:".unescape($val); 
 				
+				$oldval=$fields[$n]["value"];
+
 				# This value is different from the value we have on record.
 
 				# Write this edit to the log (including the diff) (unescaped is safe because the diff is processed later)
@@ -208,7 +210,6 @@ function save_resource_data($ref,$multi)
 				# Insert new data and keyword mappings, increase keyword hitcounts.
 				sql_query("insert into resource_data(resource,resource_type_field,value) values('$ref','" . $fields[$n]["ref"] . "','" . escape_check($val) ."')");
 	
-				$oldval=$fields[$n]["value"];
 				
 				if ($fields[$n]["type"]==3 && substr($oldval,0,1) != ',')
 					{
@@ -772,12 +773,14 @@ function update_field($resource,$field,$value)
 
 	if (count($fieldinfo)==0) {return false;} else {$fieldinfo=$fieldinfo[0];}
 	
+        # Fetch previous value
+        $existing=sql_value("select value from resource_data where resource='$resource' and resource_type_field='$field'","");
+                        
 	if ($fieldinfo["keywords_index"])
 		{
-		
 		$is_html=($fieldinfo["type"]==8);	
 		
-		# Fetch previous value and remove the index for those keywords
+		# If there's a previous value, remove the index for those keywords
 		$existing=sql_value("select value from resource_data where resource='$resource' and resource_type_field='$field'","");
 		if (strlen($existing)>0)
 			{
@@ -807,7 +810,9 @@ function update_field($resource,$field,$value)
 		global $resource_field_column_limit;
 		sql_query("update resource set field".$field."=" . trim($value,$resource_field_column_limit) . " where ref='$resource'");
 		}			
-		
+	
+        # Allow plugins to perform additional actions.
+        hook("update_field","",array($resource,$field,$value,$existing));
 	}
 
 if (!function_exists("email_resource")){	
@@ -1098,15 +1103,17 @@ function resource_log($resource,$type,$field,$notes="",$fromvalue="",$tovalue=""
 		$diff=$lang["access" . $fromvalue] . " -> " . $lang["access" . $tovalue];
 		}
 	
-	sql_query("insert into resource_log(date,user,resource,type,resource_type_field,notes,diff,usageoption,purchase_size,purchase_price,access_key) values (now()," . (($userref!="")?"'$userref'":"null") . ",'$resource','$type'," . (($field!="")?"'$field'":"null") . ",'" . escape_check($notes) . "','" . escape_check($diff) . "','$usage','$purchase_size','$purchase_price'," . (isset($k)?"'$k'":"null") . ")");
+	sql_query("insert into resource_log(date,user,resource,type,resource_type_field,notes,diff,usageoption,purchase_size,purchase_price,access_key,previous_value) values (now()," . (($userref!="")?"'$userref'":"null") . ",'$resource','$type'," . (($field!="")?"'$field'":"null") . ",'" . escape_check($notes) . "','" . escape_check($diff) . "','$usage','$purchase_size','$purchase_price'," . (isset($k)?"'$k'":"null") . ",'" . escape_check($fromvalue) . "')");
 	}
 
 function get_resource_log($resource)
     {
     # Returns the log for a given resource.
     # The standard field titles are translated using $lang. Custom field titles are i18n translated.
-
-    $log = sql_query("select distinct r.date,u.username,u.fullname,r.type,f.title,r.notes,r.diff,r.usageoption,r.purchase_price,r.purchase_size,ps.name size, r.access_key,ekeys_u.fullname shared_by from resource_log r left outer join user u on u.ref=r.user left outer join resource_type_field f on f.ref=r.resource_type_field left outer join external_access_keys ekeys on r.access_key=ekeys.access_key left outer join user ekeys_u on ekeys.user=ekeys_u.ref left join preview_size ps on r.purchase_size=ps.id where r.resource='$resource' order by r.date");
+    $extrafields=hook("get_resource_log_extra_fields");
+    if (!$extrafields) {$extrafields="";}
+    
+    $log = sql_query("select distinct r.date,u.username,u.fullname,r.type,f.title,r.notes,r.diff,r.usageoption,r.purchase_price,r.purchase_size,ps.name size, r.access_key,ekeys_u.fullname shared_by" . $extrafields . " from resource_log r left outer join user u on u.ref=r.user left outer join resource_type_field f on f.ref=r.resource_type_field left outer join external_access_keys ekeys on r.access_key=ekeys.access_key left outer join user ekeys_u on ekeys.user=ekeys_u.ref left join preview_size ps on r.purchase_size=ps.id where r.resource='$resource' order by r.date desc");
     for ($n = 0;$n<count($log);$n++)
         {
         $log[$n]["title"] = lang_or_i18n_get_translated($log[$n]["title"], "fieldtitle-");
