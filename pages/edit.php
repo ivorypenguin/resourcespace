@@ -977,7 +977,7 @@ function display_field($n, $field, $newtab=false)
 		?>
 		<div class="Question" id="modeselect_<?php echo $n?>" style="display:none;padding-bottom:0;margin-bottom:0;">
 		<label for="modeselectinput"><?php echo $lang["editmode"]?></label>
-		<select id="modeselectinput_<?php echo $n?>" name="modeselect_<?php echo $field["ref"]?>" class="stdwidth" onChange="var fr=document.getElementById('findreplace_<?php echo $n?>');var q=document.getElementById('question_<?php echo $n?>');if (this.value=='FR') {fr.style.display='block';q.style.display='none';} else {fr.style.display='none';q.style.display='block';}">
+		<select id="modeselectinput_<?php echo $n?>" name="modeselect_<?php echo $field["ref"]?>" class="stdwidth" onChange="var fr=document.getElementById('findreplace_<?php echo $n?>');var q=document.getElementById('question_<?php echo $n?>');if (this.value=='FR') {fr.style.display='block';q.style.display='none';} else {fr.style.display='none';q.style.display='block';}<?php hook ("edit_all_mode_js"); ?>">
 		<option value="RT"><?php echo $lang["replacealltext"]?></option>
 		<?php if (in_array($field["type"], array("0","1","5","8"))) {
 		# Find and replace appies to text boxes only.
@@ -999,6 +999,7 @@ function display_field($n, $field, $newtab=false)
 		<!--- Remove applies to text boxes, checkboxes and dropdowns only. -->
 		<option value="RM"><?php echo $lang["removetext"]?></option>
 		<?php } ?>
+		<?php hook ("edit_all_extra_modes"); ?>
 		</select>
 		</div><!-- End of modeselect_<?php echo $n?> -->
 
@@ -1007,6 +1008,8 @@ function display_field($n, $field, $newtab=false)
 		<?php echo $lang["find"]?> <input type="text" name="find_<?php echo $field["ref"]?>" class="shrtwidth">
 		<?php echo $lang["andreplacewith"]?> <input type="text" name="replace_<?php echo $field["ref"]?>" class="shrtwidth">
 		</div><!-- End of findreplace_<?php echo $n?> -->
+		
+		<?php hook ("edit_all_after_findreplace","",array($field,$n)); ?>
 		<?php
 		}
 	?>
