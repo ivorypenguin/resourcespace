@@ -252,7 +252,6 @@ if ($_FILES)
 					
 				# Log this			
 				daily_stat("Resource upload",$ref);
-				resource_log($ref,"u",0);				
 				$status=upload_file($ref,(getval("no_exif","")!=""),false,(getval('autorotate','')!=''));
 				echo "SUCCESS: " . htmlspecialchars($ref);
 				exit();

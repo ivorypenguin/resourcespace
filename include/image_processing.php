@@ -251,6 +251,10 @@ function upload_file($ref,$no_exif=false,$revert=false,$autorotate=false)
 	# Update disk usage
 	update_disk_usage($ref);
 	
+	# Log this activity.
+	$log_ref=resource_log($ref,"u",0);
+	hook("upload_image_after_log_write","",array($ref,$log_ref));
+	
     return $status;
     }}
 	
