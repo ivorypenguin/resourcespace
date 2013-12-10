@@ -136,6 +136,7 @@ for ($n=$offset;(($n<count($log)) && ($n<($offset+$per_page)));$n++)
 	
 	# For downloads, add size 
 	if ($log[$n]["type"]=="d") {echo " (" . ($log[$n]["size"]==""?$lang["collection_download_original"]:$log[$n]["size"]) . ")";}
+	hook("log_diff_td_extra","",array($ref));
 	?></td>
 	<?php hook("log_extra_columns_row") ?>
 	</tr>
