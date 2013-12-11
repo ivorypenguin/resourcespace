@@ -103,7 +103,7 @@ if ($ref<0 && !(checkperm("c") || checkperm("d")))
     }
 
 # Check edit permission.
-if (!get_edit_access($ref,$resource))
+if (!get_edit_access($ref,$resource["archive"],false,$resource))
     {
     # The user is not allowed to edit this resource or the resource doesn't exist.
     $error=$lang['error-permissiondenied'];

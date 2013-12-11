@@ -1972,7 +1972,7 @@ function get_resource_access($resource)
 		}
 	}
 
-	if ($access == 1 && get_edit_access($ref, $resourcedata))
+	if ($access == 1 && get_edit_access($ref,$resourcedata['archive'],false,$resourcedata))
 		{
 		# If access is restricted and user has edit access, grant open access.
 		$access = 0;
@@ -2109,17 +2109,21 @@ function resource_download_allowed($resource,$size,$resource_type)
 	
 	}
 
-function get_edit_access($resource,&$resourcedata="",$metadata=false)
+function get_edit_access($resource,$status=-999,$metadata=false,&$resourcedata="")
 	{
 	# For the provided resource and metadata, does the  edit access does the current user have to this resource?
 	# Checks the edit permissions (e0, e-1 etc.) and also the group edit filter which filters edit access based on resource metadata.
 	
 	global $userref,$usereditfilter;
 	if (hook("customediteaccess")) {return true;}
-	if(!is_array($resourcedata))
-		{$resourcedata=get_resource_data($resource);};
+	
+	if (!is_array($resourcedata)) # Resource data  may not be passed 
+		{
+		$resourcedata=get_resource_data($resource);		
+		}	
 		
-	$status=$resourcedata["archive"];
+	if ($status==-999) # Archive status may not be passed 
+		{$status=$resourcedata["archive"];}
 		
 	if ($resource==0-$userref) {return true;} # Can always edit their own user template.
 

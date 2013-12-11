@@ -14,7 +14,7 @@ $resource=get_resource_data($ref);
 if ($resource==false) {die;}
 
 # Not allowed to edit this resource?
-if (!get_edit_access($ref,$resource)) {exit ("Permission denied.");}
+if (!get_edit_access($ref,$resource["archive"],false,$resource)) {exit ("Permission denied.");}
 
 ?>
 <?php

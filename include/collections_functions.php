@@ -1123,7 +1123,7 @@ function allow_multi_edit($collection)
 	}
 	for ($n=0;$n<count($collection);$n++){
 		$resource = $collection[$n];
-		if (!get_edit_access($collection[$n]["ref"],$collection[$n],false)){return false;}
+		if (!get_edit_access($collection[$n]["ref"],$collection[$n]["archive"],false,$collection[$n])){return false;}
 		
 	}
 
