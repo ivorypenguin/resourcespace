@@ -14,15 +14,18 @@ $search=getvalescaped("search","");
 $usage=getval("usage","-1");
 $usagecomment=getval("usagecomment","");
 
+$download_url_suffix="?ref=" . urlencode($ref)  . "&size=" . urlencode($size) . "&ext=" . urlencode($ext) . "&k=" . urlencode($k) . "&alternative=" . urlencode($alternative);
+$download_url_suffix.= hook("addtodownloadquerystring");
 
 if ($download_usage && getval("usage","")=="" && !$direct_download)
 	{
-	redirect($baseurl_short."pages/download_usage.php?ref=" . urlencode($ref)  . "&size=" . urlencode($size) . "&ext=" . urlencode($ext) . "&k=" . urlencode($k) . "&alternative=" . urlencode($alternative));
+	redirect($baseurl_short."pages/download_usage.php".$download_url_suffix);
 	}
 
 if (!($url=hook("getdownloadurl", "", array($ref, $size, $ext, 1, $alternative)))) // used in remotedownload-plugin
 	{
-	$url=$baseurl."/pages/download.php?ref=" . urlencode($ref)  . "&size=" . urlencode($size) . "&ext=" . urlencode($ext) . "&k=" . urlencode($k) . "&alternative=" . urlencode($alternative) . "&usage=" . urlencode($usage) . "&usagecomment=" . urlencode($usagecomment);
+	$download_url_suffix.="&usage=" . urlencode($usage) . "&usagecomment=" . urlencode($usagecomment);
+	$url=$baseurl."/pages/download.php" . $download_url_suffix;
 	}
 
 # For Opera and Internet Explorer 7 - redirected downloads are always blocked, so use the '$save_as' config option

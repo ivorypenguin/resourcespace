@@ -70,7 +70,7 @@ if ($noattach=="" && $alternative==-1) # Only for downloads (not previews)
 	if ($tmpfile!==false && file_exists($tmpfile)){$path=$tmpfile;}
 	}
 
-	
+hook('modifydownloadfile');	
 $filesize=filesize_unlimited($path);
 header("Content-Length: " . $filesize);
 

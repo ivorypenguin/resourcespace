@@ -12,11 +12,16 @@ $alternative=getval("alternative",-1);
 
 hook("pageevaluation");
 
+$download_url_suffix=hook("addtodownloadquerystring");
+
 if (getval("save","")!="")
 	{
 	$usage=getvalescaped("usage","");
 	$usagecomment=getvalescaped("usagecomment","");
-	redirect("pages/download_progress.php?ref=" . $ref  . "&size=" . $size . "&ext=" . $ext . "&k=" . $k . "&alternative=" . $alternative . "&usage=" . $usage . "&usagecomment=" . urlencode($usagecomment));
+	if($download_url_suffix==""){$download_url_suffix="?";}
+	else{$download_url_suffix.="&";}
+	$download_url_suffix.="ref=" . urlencode($ref)  . "&size=" . urlencode($size) . "&ext=" . urlencode($ext) . "&k=" . urlencode($k) . "&alternative=" . urlencode($alternative) . "&usage=" . urlencode($usage) . "&usagecomment=" . urlencode($usagecomment);
+	redirect("pages/download_progress.php" . $download_url_suffix);
 	}
 
 include "../include/header.php";
@@ -25,7 +30,7 @@ include "../include/header.php";
 
 <div class="BasicsBox">
 
-<form method=post action="<?php echo $baseurl_short?>pages/download_usage.php" onSubmit="if ((jQuery('#usagecomment').val()=='') || (jQuery('#usage').val()=='')) {alert('<?php echo $lang["usageincorrect"] ?>');return false;} else {return CentralSpacePost(this,true);}">
+<form method=post action="<?php echo $baseurl_short?>pages/download_usage.php<?php echo $download_url_suffix ?>" onSubmit="if ((jQuery('#usagecomment').val()=='') || (jQuery('#usage').val()=='')) {alert('<?php echo $lang["usageincorrect"] ?>');return false;} else {return CentralSpacePost(this,true);}">
 <input type="hidden" name="ref" value="<?php echo htmlspecialchars($ref) ?>" />
 <input type="hidden" name="size" value="<?php echo htmlspecialchars($size) ?>" />
 <input type="hidden" name="ext" value="<?php echo htmlspecialchars($ext) ?>" />
