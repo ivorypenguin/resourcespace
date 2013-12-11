@@ -264,6 +264,9 @@ if ($submitted != "")
 							$newpath = get_temp_dir(false,$id) . "/" . $filename;
 							if (!$copy){rename($p, $newpath);} else {copy($p,$newpath);}
 							# Add the temporary file to the post-archiving deletion list.
+							
+							hook('modifydownloadfile');
+							
 							$deletion_array[]=$newpath;
 							
 							# Set p so now we are working with this new file
