@@ -208,7 +208,7 @@ if ($disable_languages) {$language=$defaultlanguage;}
 if ($language=="us") {$language="en-US";}
 
 # Make sure the provided language is a valid language
-if (!array_key_exists($language,$languages))
+if (empty($language) || !array_key_exists($language,$languages))
 	{
 		if (isset($defaultlanguage))
 			$language=$defaultlanguage;
