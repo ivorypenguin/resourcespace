@@ -6,7 +6,7 @@
 #
 
 
-$lang['image_text_configuration']="Text overlay configuration";
+$lang['image_text_configuration']="Image text configuration";
 $lang['image_text_summary'] = "<div>This plugin will use the data from the specified field and overlay it at the base of the image. The selected groups will see an option to download the original file without the added text<br><br></div>";
 $lang['image_text_field_select']="Select the metadata field that will be used as the additional text source.";
 $lang['image_text_restypes']="Select the resource types that this plugin will apply to";
