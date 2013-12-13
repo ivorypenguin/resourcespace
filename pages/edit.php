@@ -304,7 +304,7 @@ jQuery(document).ready(function()
 			{?>
 			jQuery(document).bind('keydown',function (e)
 				{
-				if (!(e.which == 115 && e.ctrlKey) && !(e.which == 83 && e.ctrlKey) && !(e.which == 19) ) 
+				if (!(e.which == 115 && (e.ctrlKey || e.metaKey)) && !(e.which == 83 && (e.ctrlKey || e.metaKey)) && !(e.which == 19) )
 					{
 					return true;
 					}
