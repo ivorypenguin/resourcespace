@@ -47,7 +47,7 @@ $jumpcount=1;
 <tr class="ListviewTitleStyle">
 <td><?php echo $lang["date"]?></td>
 <td><?php echo $lang["resourceid"]?></td>
-<td><?php $field=get_fields(array($view_title_field)); echo lang_or_i18n_get_translated($field[0]["title"], "fieldtitle-");?></td>
+<td><?php $field=get_fields(array($view_title_field)); if(isset($field[0])){echo lang_or_i18n_get_translated($field[0]["title"], "fieldtitle-");}?></td>
 <td><?php echo $lang["action"]?></td>
 <td><?php echo $lang["field"]?></td>
 </tr>
