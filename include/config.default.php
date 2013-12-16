@@ -2232,3 +2232,6 @@ $additional_archive_states=array();
 
 # Option to use CTRL + S on edit page to save data
 $ctrls_to_save=false;
+
+# Option to separate some resource types in searchbar selection boxes
+$separate_resource_types_in_searchbar=Array();

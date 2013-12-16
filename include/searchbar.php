@@ -176,9 +176,10 @@ if (!$basic_simple_search)
 	$clear_function="";
 	for ($n=0;$n<count($types);$n++)
 		{
-		?><div class="tick<?php if ($searchbar_selectall){ ?> tickindent<?php } ?>"><input class="tickbox" id="TickBox<?php echo $types[$n]["ref"]?>" type="checkbox" name="resource<?php echo $types[$n]["ref"]?>" value="yes" <?php if (((count($rt)==1) && ($rt[0]=="")) || ($restypes=="Global") || (in_array($types[$n]["ref"],$rt))) {?>checked="true"<?php } ?> onClick="HideInapplicableSimpleSearchFields(true);<?php if ($searchbar_selectall){?>resetTickAll();<?php } ?>"/>&nbsp;<?php echo htmlspecialchars($types[$n]["name"]) ?></div><?php	
-		$clear_function.="document.getElementById('TickBox" . $types[$n]["ref"] . "').checked=true;";
-		if ($searchbar_selectall) {$clear_function.="resetTickAll();";}
+		?>
+		<?php if (in_array($types[$n]["ref"],$separate_resource_types_in_searchbar)) { ?><div class="spacer"></div><?php } ?><div class="tick<?php if ($searchbar_selectall && (!in_array($types[$n]["ref"],$separate_resource_types_in_searchbar)) ){ ?> tickindent<?php } ?>"><input class="tickbox<?php if (in_array($types[$n]["ref"],$separate_resource_types_in_searchbar)) echo "sep"; ?>" id="TickBox<?php echo $types[$n]["ref"]?>" type="checkbox" name="resource<?php echo $types[$n]["ref"]?>" value="yes" <?php if (((count($rt)==1) && ($rt[0]=="")) || ($restypes=="Global") || (in_array($types[$n]["ref"],$rt))) {?>checked="true"<?php } ?> onClick="HideInapplicableSimpleSearchFields(true);<?php if ($searchbar_selectall && (!in_array($types[$n]["ref"],$separate_resource_types_in_searchbar))){?>resetTickAll();<?php } ?>"/>&nbsp;<?php echo htmlspecialchars($types[$n]["name"]) ?></div><?php	
+		if (!in_array($types[$n]["ref"],$separate_resource_types_in_searchbar))$clear_function.="document.getElementById('TickBox" . $types[$n]["ref"] . "').checked=true;";
+		if ($searchbar_selectall && (!in_array($types[$n]["ref"],$separate_resource_types_in_searchbar))) {$clear_function.="resetTickAll();";}
 		}
 		?><div class="spacer"></div>
 		<?php if ($searchbar_selectall && ($search_includes_user_collections || $search_includes_public_collections || $search_includes_themes)) { ?>
