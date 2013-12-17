@@ -193,11 +193,13 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 		global $uploader_view_override, $userref;
 		if ($uploader_view_override)
 			{
-			$sql_filter.=" and (archive not in ('$filterblockstates') or created_by='" . $userref . "')";
+			if ($sql_filter!="") {$sql_filter.=" and ";}
+			$sql_filter.="(archive not in ('$filterblockstates') or created_by='" . $userref . "')";
 			}
 		else
 			{
-			$sql_filter.=" and archive not in ('$filterblockstates')";
+			if ($sql_filter!="") {$sql_filter.=" and ";}
+			$sql_filter.="archive not in ('$filterblockstates')";
 			}
 		}
 	
