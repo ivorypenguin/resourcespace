@@ -117,7 +117,9 @@ include "../../include/header.php";
 	<li><a href="<?php echo $baseurl?>/pages/team/team_plugins.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["pluginssetup"]?></a></li>
 	<?php } ?>
 	<li><a href="<?php echo $baseurl?>/pages/admin/index.php"><?php echo $lang["systemsetup"]?></a></li>
+	<?php if($team_centre_bug_report) { ?>   
     <li><a href="<?php echo $baseurl?>/pages/team/team_reportbug.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["reportbug"]?></a></li>
+	<?php } ?>	
 	<?php hook("customteamfunctionadmin")?>
 	<?php } ?>
 	
