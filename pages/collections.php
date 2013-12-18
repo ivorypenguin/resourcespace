@@ -362,7 +362,7 @@ if(!hook("updatemaincheckboxesfromcollectionframe")){
 	if ($use_checkboxes_for_selection){?>
 	<script type="text/javascript"><?php
 	# update checkboxes in main window
-	for ($n=0;$n<count($result);$n++)			
+	for ($n=0;$n<min(count($result),20);$n++)			
 		{
 		$ref=$result[$n]["ref"];
 		?>
@@ -756,7 +756,7 @@ if ($count_result>0)
 if (!$lazyload && $do_lazyload ){?>
 	<div id="lazycollection"><div class="CollectionPanelShell"><table border="0" class="CollectionResourceAlign"><tr><td><img/></td>
 		</tr></table>
-		<div class="CollectionPanelInfo"><?php echo $lang['loading']?></div></div></div>
+		<div class="CollectionPanelInfo"><?php echo $lang['loading']?></div></div>
 	<script>
 	jQuery('#lazycollection').load('<?php echo $baseurl_short?>pages/collections.php?lazyload=true&thumbs=show&collection=<?php echo $usercollection?><?php echo (isset($k) ? "&k=".urlencode($k) : ""); ?>');
 	</script><?php 
@@ -779,7 +779,7 @@ if (file_exists("plugins/collection_listing.php")) {include "plugins/collection_
 
 hook("thumblistextra");
 if (!$lazyload){?>
-</div>
+</div>  <!-- end of lazycollection -->
 <?php }
 
 # Add the infobox.
