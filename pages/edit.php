@@ -612,7 +612,7 @@ if ($enable_copy_data_from && !$multiple && !checkperm("F*"))
 	<div class="Question" id="question_copyfrom">
 	<label for="copyfrom"><?php echo $lang["batchcopyfrom"]?></label>
 	<input class="stdwidth" type="text" name="copyfrom" id="copyfrom" value="" style="width:80px;">
-	<input type="submit" name="copyfromsubmit" value="<?php echo $lang["copy"]?>">
+	<input type="submit" name="copyfromsubmit" value="<?php echo $lang["copy"]?>" onClick="event.preventDefault();CentralSpacePost(document.getElementById('mainform'),true);">
 	</div><!-- end of question_copyfrom -->
 	<?php
 	}
