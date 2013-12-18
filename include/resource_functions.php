@@ -2158,7 +2158,6 @@ function get_edit_access($resource,$status=-999,$metadata=false,&$resourcedata="
 		# Also check resource type, if specified.
 		if (strpos($usereditfilter,"resource_type")!==false)
 			{
-			$resourcedata=get_resource_data($resource,true);
 			$resource_type=$resourcedata['resource_type'];
 
 			$match=filter_match($usereditfilter,"resource_type",$resource_type);
