@@ -74,7 +74,7 @@ function get_resource_path($ref,$getfilepath,$size,$generate=true,$extension="jp
 		if (($scramble) && ($n==(strlen($ref)-1))) {$folder.="_" . $scramblepath;}
 		$folder.="/";
 		#echo "<li>" . $folder;
-		if ((!(file_exists($storagedir . "/" . $folder))) && $generate) {mkdir($storagedir . "/" . $folder,0777);chmod($storagedir . "/" . $folder,0777);}
+		if ((!(file_exists($storagedir . "/" . $folder))) && $generate) {@mkdir($storagedir . "/" . $folder,0777);chmod($storagedir . "/" . $folder,0777);}
 		}
 		
 	# Add the page to the filename for everything except page 1.
@@ -214,9 +214,9 @@ function get_resource_field_data($ref,$multi=false,$use_permissions=true,$origin
     $return = array();
     if ($ord_by)
     {
-    	 $fields = sql_query("select d.value,d.resource_type_field,f.exiftool_field,f.value_filter,f.name,f.display_template,f.display_field,f.tab_name,f.options,f.keywords_index,f.resource_column,f.required,f.type,f.title,f.resource_type,f.required frequired,f.ref,f.ref fref, f.help_text,f.partial_index,f.external_user_access,f.hide_when_uploading,f.hide_when_restricted,f.omit_when_copying,f.regexp_filter,f.display_condition from resource_type_field f left join resource_data d on d.resource_type_field=f.ref and d.resource='$ref' where ( " . (($multi)?"1=1":"f.resource_type=0 or f.resource_type=999 or f.resource_type='$rtype'") . ") order by f.order_by,f.resource_type,f.ref");
+    	 $fields = sql_query("select distinct d.value,d.resource_type_field,f.exiftool_field,f.value_filter,f.name,f.display_template,f.display_field,f.tab_name,f.options,f.keywords_index,f.resource_column,f.required,f.type,f.title,f.resource_type,f.required frequired,f.ref,f.ref fref, f.help_text,f.partial_index,f.external_user_access,f.hide_when_uploading,f.hide_when_restricted,f.omit_when_copying,f.regexp_filter,f.display_condition from resource_type_field f left join resource_data d on d.resource_type_field=f.ref and d.resource='$ref' where ( " . (($multi)?"1=1":"f.resource_type=0 or f.resource_type=999 or f.resource_type='$rtype'") . ") order by f.order_by,f.resource_type,f.ref");
     } else {
-    $fields = sql_query("select d.value,d.resource_type_field,f.exiftool_field,f.value_filter,f.name,f.display_template,f.display_field,f.tab_name,f.options,f.keywords_index,f.resource_column,f.required,f.type,f.title,f.resource_type,f.required frequired,f.ref, f.ref fref, f.help_text,f.partial_index,f.external_user_access,f.hide_when_uploading,f.hide_when_restricted,f.omit_when_copying,f.regexp_filter,f.display_condition from resource_type_field f left join resource_data d on d.resource_type_field=f.ref and d.resource='$ref' where ( " . (($multi)?"1=1":"f.resource_type=0 or f.resource_type=999 or f.resource_type='$rtype'") . ") order by f.resource_type,f.order_by,f.ref");
+    $fields = sql_query("select distinct d.value,d.resource_type_field,f.exiftool_field,f.value_filter,f.name,f.display_template,f.display_field,f.tab_name,f.options,f.keywords_index,f.resource_column,f.required,f.type,f.title,f.resource_type,f.required frequired,f.ref, f.ref fref, f.help_text,f.partial_index,f.external_user_access,f.hide_when_uploading,f.hide_when_restricted,f.omit_when_copying,f.regexp_filter,f.display_condition from resource_type_field f left join resource_data d on d.resource_type_field=f.ref and d.resource='$ref' where ( " . (($multi)?"1=1":"f.resource_type=0 or f.resource_type=999 or f.resource_type='$rtype'") . ") order by f.resource_type,f.order_by,f.ref");
     debug("altert use perms: ".!$use_permissions);
     }
   
@@ -2782,7 +2782,8 @@ function get_nopreview_icon($resource_type,$extension,$col_size,$deprecated1=fal
 	
 	$col=($col_size?"_col":"");
 	$folder=dirname(dirname(__FILE__)) . "/gfx/";
-	
+	$extension=strtolower($extension);
+
 	# Metadata template? Always use icon for 'mdtr', although typically no file will be attached.
 	global $metadata_template_resource_type;
 	if (isset($metadata_template_resource_type) && $metadata_template_resource_type==$resource_type) {$extension="mdtr";}
