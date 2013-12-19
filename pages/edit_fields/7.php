@@ -31,8 +31,10 @@ TreeParents["<?php echo $name?>"]=new Array();
 TreeNames["<?php echo $name?>"]=new Array();
 TreeExpand["<?php echo $name?>"]=new Array();
 TreeID["<?php echo $name?>"]=new Array();
+TreeNode["<?php echo $name?>"]=new Array();
 TreeClickable["<?php echo $name?>"]=new Array();
 TreeChecked["<?php echo $name?>"]=new Array();
+TreeTickedDesc["<?php echo $name?>"]=new Array();
 TreeDynamic["<?php echo $name?>"]=false;
 
 nocategoriesmessage="<?php echo $lang["nocategoriesselected"] ?>";
@@ -48,6 +50,7 @@ $class=explode("\n",$options);
 
 for ($t=0;$t<count($class);$t++)
 	{
+	if ($t % 50 == 0) { echo "\n</script><script>\n"; }
 	$s=explode(",",$class[$t]);
 	if (count($s)==3)
 		{
