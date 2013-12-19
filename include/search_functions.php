@@ -47,7 +47,7 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 	$search=trim($search);
 
         # Dedupe keywords (not for quoted strings as the user may be looking for the same word multiple times together in this instance)
-        if (!$quoted_string) {$keywords=array_unique($keywords);}
+        if (!$quoted_string) {$keywords=array_values(array_unique($keywords));}
         
 	$modified_keywords=hook('dosearchmodifykeywords', '', array($keywords));
 	if ($modified_keywords)
@@ -277,7 +277,7 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 		for ($n=0;$n<count($keywords);$n++)
 			{			
 			$keyword=$keywords[$n];
-			
+
 			if (substr($keyword,0,1)!="!")
 				{
 				global $date_field;
