@@ -569,10 +569,10 @@ function iptc_return_utf8($text)
 	return $text;
 	}
  
-function create_previews($ref,$thumbonly=false,$extension="jpg",$previewonly=false,$previewbased=false,$alternative=-1)
+function create_previews($ref,$thumbonly=false,$extension="jpg",$previewonly=false,$previewbased=false,$alternative=-1,$ignoremaxsize=false)
 	{
     global $keep_for_hpr,$imagemagick_path, $preview_generate_max_file_size;
-    
+   
     // keep_for_hpr will be set to true if necessary in preview_preprocessing.php to indicate that an intermediate jpg can serve as the hpr.
     // otherwise when the file extension is a jpg it's assumed no hpr is needed.
 
@@ -622,7 +622,7 @@ function create_previews($ref,$thumbonly=false,$extension="jpg",$previewonly=fal
 	if (!file_exists($file)) {return false;}
 	
 	# If configured, make sure the file is within the size limit for preview generation
-	if (isset($preview_generate_max_file_size))
+	if (isset($preview_generate_max_file_size) && !$ignoremaxsize)
 		{
 		$filesize = filesize_unlimited($file)/(1024*1024);# Get filesize in MB
 		if ($filesize>$preview_generate_max_file_size) {return false;}

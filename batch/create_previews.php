@@ -5,6 +5,39 @@ include(dirname(__FILE__) . "/../include/general.php");
 include(dirname(__FILE__) . "/../include/image_processing.php");
 include(dirname(__FILE__) . "/../include/resource_functions.php");
 
+
+$ignoremaxsize=false;
+if ($argc >= 2)
+	{
+	$validargs=false;
+	if ( in_array($argv[1], array('--help', '-help', '-h', '-?')) )
+		{
+		echo "To clear the lock after a failed run, ";
+  		echo "pass in '-clearlock'\n";
+		echo "To ignore the maximum preview size configured ($preview_generate_max_file_size), ";
+  		echo "pass in '-ignoremaxsize'.\n";
+  		exit("Bye!");
+		}
+	if (in_array('-ignoremaxsize',$argv) )
+		{
+		$ignoremaxsize=true;
+		$validargs=true;
+		}
+	if (in_array('-clearlock',$argv))
+		{
+		if ( is_process_lock("create_previews") )
+			{
+			clear_process_lock("create_previews");
+			}
+		$validargs=true;
+		}
+	if(!$validargs)
+		{
+		exit("Unknown argv: " . $argv[1]);
+		}
+	} 
+
+
 # Check for a process lock
 if (is_process_lock("create_previews")) {exit("Process lock is in place. Deferring.");}
 set_process_lock("create_previews");
@@ -97,7 +130,7 @@ if ($multiprocess)
 
 
 // We fetch the list of resources to process.
-$resources=sql_query("SELECT resource.ref, resource.file_extension, resource.preview_attempts FROM resource WHERE resource.has_image = 0 and resource.archive = 0 and resource.ref>0");
+$resources=sql_query("SELECT resource.ref, resource.file_extension, resource.preview_attempts, creation_date FROM resource WHERE resource.has_image = 0 and resource.archive=0 and resource.ref>0 and (resource.preview_attempts<5 or resource.preview_attempts is NULL)");
 
 foreach($resources as $resource) // For each resources
   {
@@ -164,18 +197,30 @@ foreach($resources as $resource) // For each resources
 					}
 				}
 			}
-		if ($resource['preview_attempts']<5 and $resource['file_extension']!="") 
-		{
-		create_previews($resource['ref'], false, $resource['file_extension']);
-		echo sprintf("Processed resource %d in %01.2f seconds.\n", $resource['ref'], microtime(true) - $start_time);
-		}
-	else
-		{
-		echo sprintf("Skipped resource " . $resource['ref'] . " - maximum attempts reached or nonexistent file extension. \n");
-		}
-
-      echo sprintf("Processed resource %d in %01.2f seconds.\n", $resource['ref'], microtime(true) - $start_time);
-
+		
+		# Below added to catch an issue with previews failing when large video files were taking a long time to copy to StaticSync location
+		echo "Created at: " . $resource['creation_date'] . "\nTime now: " . date("Y-m-d H:i:s") . "\n";
+		$resourceage = time() - strtotime($resource['creation_date']);		
+		if ($resource['preview_attempts']>3 && $resourceage<1000){echo "Just added so may not have finished copying, resetting attempts \n";sql_query("UPDATE resource SET preview attempts=0 WHERE ref='" . $resource['ref'] . "'");continue;} 
+		
+		#check whether resource already has mp3 preview in which case we set preview_attempts to 5
+		if ($resource['file_extension']!="mp3" && file_exists(get_resource_path($resource['ref'],true,"",false,"mp3")))	
+			{
+			$ref=$resource['ref'];
+			echo "Resource already has mp3 preview\n";
+			sql_query("update resource set preview_attempts=5 where ref='$ref'");
+			}
+			
+		elseif ($resource['preview_attempts']<5 and $resource['file_extension']!="") 
+			{
+			create_previews($resource['ref'], false, $resource['file_extension'],false,false,-1,$ignoremaxsize);
+			echo sprintf("Processed resource %d in %01.2f seconds.\n", $resource['ref'], microtime(true) - $start_time);
+			}
+		else
+			{
+			echo sprintf("Skipped resource " . $resource['ref'] . " - maximum attempts reached or nonexistent file extension. \n");
+			}
+			
 	  if ($multiprocess)
 	  	{
 	      // We exit in order to avoid fork bombing.

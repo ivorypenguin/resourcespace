@@ -113,6 +113,7 @@ if (!get_edit_access($ref,$resource["archive"],false,$resource))
 
 if (getval("regen","")!="")
 	{
+	sql_query("update resource set preview_attempts=0 WHERE ref='" . $ref . "'");
 	create_previews($ref,false,$resource["file_extension"]);
 	}
 
@@ -227,6 +228,7 @@ if (getval("tweak","")!="")
 		tweak_preview_images($ref,0,0.7,$resource["preview_extension"]);
 		break;
 		case "restore":
+		sql_query("update resource set preview_attempts=0 WHERE ref='" . $ref . "'");
 		if ($enable_thumbnail_creation_on_upload)
 			{
 			create_previews($ref,false,$resource["file_extension"]);
