@@ -1038,7 +1038,6 @@ function copy_resource($from,$resource_type=-1)
 	$to=sql_insert_id();
 	
 	# Copying a resource of the 'pending review' state? Notify, if configured.
-	$archive=sql_value("select archive value from resource where ref='$from'",0);
 	if ($archive==-1)
 		{
 		notify_user_contributed_submitted(array($to));
