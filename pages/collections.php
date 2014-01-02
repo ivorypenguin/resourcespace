@@ -362,7 +362,7 @@ if(!hook("updatemaincheckboxesfromcollectionframe")){
 	if ($use_checkboxes_for_selection){?>
 	<script type="text/javascript"><?php
 	# update checkboxes in main window
-	for ($n=0;$n<min(count($result),20);$n++)			
+	for ($n=0;$n<count($result);$n++)			
 		{
 		$ref=$result[$n]["ref"];
 		?>
