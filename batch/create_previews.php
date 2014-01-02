@@ -130,7 +130,9 @@ if ($multiprocess)
 
 
 // We fetch the list of resources to process.
-$resources=sql_query("SELECT resource.ref, resource.file_extension, resource.preview_attempts, creation_date FROM resource WHERE resource.has_image = 0 and resource.archive=0 and resource.ref>0 and (resource.preview_attempts<5 or resource.preview_attempts is NULL)");
+global  $no_preview_extensions;
+$exclude="'" . implode("','",$no_preview_extensions) . "'";
+$resources=sql_query("SELECT resource.ref, resource.file_extension, resource.preview_attempts, creation_date FROM resource WHERE resource.has_image = 0 and resource.archive=0 and resource.ref>0 and (resource.preview_attempts<5 or resource.preview_attempts is NULL) and lower(file_extension) not in (" . $exclude  . ")");
 
 foreach($resources as $resource) // For each resources
   {

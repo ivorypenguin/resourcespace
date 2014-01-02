@@ -271,46 +271,46 @@ function save_resource_data($ref,$multi)
 		{
 		# Also update archive status and access level
 		$oldaccess=$resource_data['access'];
-                $access=getvalescaped("access",$oldaccess,true);
+		$access=getvalescaped("access",$oldaccess,true);
+
+		#$oldarchive=sql_value("select archive value from resource where ref='$ref'","");
+		$oldarchive=$resource_data['archive'];
+		$archive=getvalescaped("status",$oldarchive,true);
 		
-                #$oldarchive=sql_value("select archive value from resource where ref='$ref'","");
-                $oldarchive=$resource_data['archive'];
-                $archive=getvalescaped("status",$oldarchive,true);
-                
-                if($archive!=$oldarchive && !checkperm("e" . $archive)) // don't allow change if user has no permission to change archive state
-                    {
-                    $archive=$oldarchive;
-                    }
-                    
-                if ($access!=$oldaccess || $archive!=$oldarchive) // Only if changed
-                    {
-                    sql_query("update resource set archive='" . $archive . "',access='" . $access . "' $expirysql where ref='$ref'");  
-                    if ($archive!=$oldarchive && $ref>0)
-                        {
-                        resource_log($ref,"s",0,"",$oldarchive,$archive);
-                        }
-                    if ($access!=$oldaccess && $ref>0)
-                        {
-                        resource_log($ref,"a",0,"",$oldaccess,$access);
-                        }
-                    
-                    // Notify the resources team ($email_notify) if moving from pending review->submission.
-                    if ($oldarchive==-2 && $archive==-1 && $ref>0)
-                            {	
-                            notify_user_contributed_submitted(array($ref));
-                            }
-                    if ($oldarchive==-1 && $archive==-2 && $ref>0)
-                            {
-                            notify_user_contributed_unsubmitted(array($ref));
-                            }
-                    if($user_resources_approved_email)
-                        {	
-                        if (($oldarchive==-2 || $oldarchive==-1) && $ref>0 && $archive==0)
-                                {
-                                notify_user_resources_approved(array($ref));
-                                }	
-                        }
-                    }
+		if($archive!=$oldarchive && !checkperm("e" . $archive)) // don't allow change if user has no permission to change archive state
+			{
+			$archive=$oldarchive;
+			}
+			
+		if ($access!=$oldaccess || $archive!=$oldarchive) // Only if changed
+			{
+			sql_query("update resource set archive='" . $archive . "',access='" . $access . "' $expirysql where ref='$ref'");  
+			if ($archive!=$oldarchive && $ref>0)
+				{
+				resource_log($ref,"s",0,"",$oldarchive,$archive);
+				}
+			if ($access!=$oldaccess && $ref>0)
+				{
+				resource_log($ref,"a",0,"",$oldaccess,$access);
+				}
+			
+			// Notify the resources team ($email_notify) if moving from pending review->submission.
+			if ($oldarchive==-2 && $archive==-1 && $ref>0)
+					{	
+					notify_user_contributed_submitted(array($ref));
+					}
+			if ($oldarchive==-1 && $archive==-2 && $ref>0)
+					{
+					notify_user_contributed_unsubmitted(array($ref));
+					}
+			if($user_resources_approved_email)
+				{	
+				if (($oldarchive==-2 || $oldarchive==-1) && $ref>0 && $archive==0)
+						{
+						notify_user_resources_approved(array($ref));
+						}	
+				}
+			}
 		}
 	# For access level 3 (custom) - also save custom permissions
 	if (getvalescaped("access",0)==3) {save_resource_custom_access($ref);}
@@ -546,7 +546,7 @@ function save_resource_data_multi($collection)
 		}
 	
 	# Also update archive status
-	global $user_resources_approved_email;	
+	global $user_resources_approved_email,$email_notify;	
 	if (getval("editthis_status","")!="")
 		{
 		$notifyrefs=array();
@@ -575,35 +575,39 @@ function save_resource_data_multi($collection)
                                     resource_log($ref,"s",0,"",$oldarchive,$archive);
                                     }
                                                                 
-                                // Notify the resources team ($email_notify) if moving from pending review->submission.
-                                if ($oldarchive==-2 && $archive==-1)
-                                        {	
-                                        # Notify the admin users of this change.
-					$notifyrefs[]=$ref;
-                                        }                               
-                                if ($user_resources_approved_email && ($oldarchive==-2 || $oldarchive==-1) && $archive==0)
-					{
-					# Notify the  users of this change.
-					$usernotifyrefs[]=$ref;
-					}
+                                # Check states to see if notifications are necessary
+                                if (
+									($oldarchive==-2 && $archive==-1) ||
+									($oldarchive==-1 && $archive==-2) || 
+									($user_resources_approved_email && ($oldarchive==-2 || $oldarchive==-1) && $archive==0)
+									)
+										{	
+										$notifyrefs[]=$ref;
+										} 
                                 }
                             }                                                			
 			}
                         
 		if (count($notifyrefs)>0)
 			{
-			# Notify the admin users of any submitted resources.
-			notify_user_contributed_submitted($notifyrefs);
-			}
-		if($user_resources_approved_email)
-			{
-			if (count($usernotifyrefs)>0)
+			if ($user_resources_approved_email && ($oldarchive==-2 || $oldarchive==-1) && $archive==0) # Notify the  users that their resources have been approved	
 				{
-				# Notify the admin users of any submitted resources.
 				debug("Emailing approval notification for submitted resources to users");
-				notify_user_resources_approved($usernotifyrefs);
+				notify_user_resources_approved($notifyrefs);
 				}
-			}
+			
+			if ($oldarchive==-2 && $archive==-1) # Notify the resources team ($email_notify) if moving from pending submission->pending review
+				{
+				debug("Emailing notification of submitted resources to " . $email_notify);
+				notify_user_contributed_submitted($notifyrefs);
+				}
+			
+			if ($oldarchive==-1 && $archive==-2) # Notify the admin users of any submitted resources.
+				{
+				debug("Emailing notification of unsubmitted resources to " . $email_notify);
+				notify_user_contributed_unsubmitted($notifyrefs);
+				}			
+			}		
 		}
 	
 	# Expiry field(s) edited? Reset the notification flag so that warnings are sent again when the date is reached.
