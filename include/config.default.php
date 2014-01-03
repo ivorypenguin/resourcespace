@@ -1693,6 +1693,9 @@ $sort_relations_by_filetype=false;
 # Set this to true to separate related resource results into separate sections by resource type (ie. Document, Photo)
 $sort_relations_by_restype=false;
 
+# When using the "View these resources as a result set" link, show the original resource in search result?
+$related_search_show_self=false;
+
 # Allow the addition of 'saved searches' to collections. 
 $allow_save_search=true;
 
