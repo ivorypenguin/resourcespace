@@ -23,6 +23,6 @@ $options=$fdata["options"];
 # Show the category tree
 $category_tree_open=true;
 $treeonly=true;
-include "../edit_fields/7.php";
+include dirname(__FILE__)."/../edit_fields/7.php";
 
 ?>

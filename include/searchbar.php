@@ -247,12 +247,12 @@ if (!$basic_simple_search)
 	#hook to modify field type in special case. Returning zero (to get a standard text box) doesn't work, so return 1 for type 0, 2 for type 1, etc.
 	if(hook("modifyfieldtype")){$fields[$n]["type"]=hook("modifyfieldtype")-1;}
 		
-		switch ($fields[$n]["type"])
+		switch (TRUE)
 			{
-			case 0: # -------- Text boxes?><?php
-			case 1:
-			case 5:
-			case 9 && !$simple_search_show_dynamic_as_dropdown:
+			case ($fields[$n]["type"]==0): # -------- Text boxes?><?php
+			case ($fields[$n]["type"]==1):
+			case ($fields[$n]["type"]==5):
+			case ($fields[$n]["type"]==9 && !$simple_search_show_dynamic_as_dropdown):
 			?>
 			<input class="SearchWidth" type=text name="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>" id="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>" value="<?php echo htmlspecialchars($value)?>"><?php
 			if ($autocomplete_search) { 
@@ -273,9 +273,9 @@ if (!$basic_simple_search)
 			
 			break;
 		
-			case 2:
-			case 3:
-			case 9 && $simple_search_show_dynamic_as_dropdown:
+			case ($fields[$n]["type"]==2):
+			case ($fields[$n]["type"]==3):
+			case ($fields[$n]["type"]==9 && $simple_search_show_dynamic_as_dropdown):
 			// Dropdown and checkbox types - display a dropdown for both - also for dynamic dropdowns when configured
 			$options=get_field_options($fields[$n]["ref"]);
 			
@@ -306,9 +306,9 @@ if (!$basic_simple_search)
 			$clear_function.="document.getElementById('field_" . $fields[$n]["name"] . "').selectedIndex=0;";
 			break;
 			
-			case 4:
-			case 10:
-			case 6:
+			case ($fields[$n]["type"]==4):
+			case ($fields[$n]["type"]==10):
+			case ($fields[$n]["type"]==6):
 			// Date types
 			$d_year='';$d_month='';$d_day='';
 			$s=explode("|",$value);
@@ -358,7 +358,7 @@ if (!$basic_simple_search)
 				document.getElementById('field_" . $fields[$n]["name"] . "_day').selectedIndex=0;
 				";
 			break;
-			case 7:
+			case ($fields[$n]["type"]==7):
 			 
 			
 			

@@ -1,10 +1,13 @@
 <?php /* -------- Category Tree ------------------- */ 
 
+if (isset($n) && isset($fields)){
+        $options=$fields[$n]["options"];
+}
 if (isset($field)){
-	$options=$field["options"];
+        $options=$field["options"];
 }
 
-global $lang,$baseurl,$css_reload_key,$category_tree_show_status_window,$is_search,$category_tree_open;
+global $lang,$baseurl,$css_reload_key,$category_tree_show_status_window,$category_tree_open,$is_search;
 if (!isset($is_search)) {$is_search = false;}
 
 ?><div class="Fixed">
@@ -40,6 +43,7 @@ TreeDynamic["<?php echo $name?>"]=false;
 nocategoriesmessage="<?php echo $lang["nocategoriesselected"] ?>";
 
 <?php
+
 # Load the tree
 $checked=explode(",",strtolower($value));
 For($c=0;$c<count($checked);$c++)
