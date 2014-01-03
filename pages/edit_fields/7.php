@@ -1,11 +1,13 @@
 <?php /* -------- Category Tree ------------------- */ 
 
-if (isset($n) && isset($fields)){
-        $options=$fields[$n]["options"];
-}
-if (isset($field)){
-        $options=$field["options"];
-}
+if (isset($n) && isset($fields))
+	{
+    $options=$fields[$n]["options"];
+	}
+elseif(isset($field["options"]))
+	{
+    $options=$field["options"];
+	}
 
 global $lang,$baseurl,$css_reload_key,$category_tree_show_status_window,$category_tree_open,$is_search;
 if (!isset($is_search)) {$is_search = false;}
