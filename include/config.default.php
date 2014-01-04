@@ -2123,8 +2123,8 @@ $keyboard_navigation_prev_page=188;
 $keyboard_navigation_next_page=190;
 # view all results, default '/'
 $keyboard_navigation_all_results=191;
-# toggle previews in collections frame, default 'h'
-$keyboard_navigation_toggle_previews=72;
+# toggle thumbnails in collections frame, default 't'
+$keyboard_navigation_toggle_thumbnails=84;
 # zoom to/from preview, default 'z'
 $keyboard_navigation_zoom=90;
 

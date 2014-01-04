@@ -464,7 +464,7 @@ else if ($basket)
 	<p style="padding-bottom:10px;"><input type="submit" name="buy" value="&nbsp;&nbsp;&nbsp;<?php echo $lang["buynow"] ?>&nbsp;&nbsp;&nbsp;" /></p>
 	<?php } ?>
 	<?php if (!$disable_collection_toggle) { ?>
-    <a href="#" onClick="ToggleThumbs();return false;">&gt; <?php echo $lang["hidethumbnails"]?></a>
+    <a id="toggleThumbsLink" href="#" onClick="ToggleThumbs();return false;">&gt; <?php echo $lang["hidethumbnails"]?></a>
   <?php } ?>
 	<a href="<?php echo $baseurl_short?>pages/purchases.php" onclick="return CentralSpaceLoad(this,true);">&gt; <?php echo $lang["viewpurchases"]?></a>
 
@@ -500,7 +500,7 @@ elseif ($k!="")
 	    }
 	?>
 	<?php if (!$disable_collection_toggle) { ?>
-    <br/><a href="#" onClick="ToggleThumbs();return false;">&gt; <?php echo $lang["hidethumbnails"]?></a>
+    <br/><a  id="toggleThumbsLink" href="#" onClick="ToggleThumbs();return false;">&gt; <?php echo $lang["hidethumbnails"]?></a>
   <?php } ?>
 </div>
 <?php 
@@ -582,7 +582,7 @@ elseif ($k!="")
 		 
      <div class="collectionscompactstylespacer"></div>
      
-     <a onClick="ToggleThumbs();return false;" href="#">&gt;&nbsp;<?php echo $lang["hidethumbnails"]?></a><?php 
+     <a id="toggleThumbsLink" onClick="ToggleThumbs();return false;" href="#">&gt;&nbsp;<?php echo $lang["hidethumbnails"]?></a><?php 
     }
     else { ?><ul>
   	<?php if ((!collection_is_research_request($usercollection)) || (!checkperm("r"))) { ?>
@@ -632,7 +632,7 @@ elseif ($k!="")
 	<?php } ?>
 	<?php hook("collectiontool");?>
 	<?php if (!$disable_collection_toggle) { ?>
-    <li><a href="#" onClick="ToggleThumbs();return false;">&gt; <?php echo $lang["hidethumbnails"]?></a></li>
+    <li><a id="toggleThumbsLink" href="#" onClick="ToggleThumbs();return false;">&gt; <?php echo $lang["hidethumbnails"]?></a></li>
   <?php } ?>
 </ul><?php } /* end compact collections */?>
 </div>
@@ -824,7 +824,7 @@ if (!$lazyload){
 		<li><input type="submit" name="buy" value="&nbsp;&nbsp;&nbsp;<?php echo $lang["buynow"] ?>&nbsp;&nbsp;&nbsp;" /></li>
 		<?php } ?>
 	  <?php if (!$disable_collection_toggle) { ?>
-		<?php /*if ($count_result<=$max_collection_thumbs) { */?><li><a href="#" onClick="ToggleThumbs();return false;"><?php echo $lang["showthumbnails"]?></a></li><?php /*}*/ ?>
+		<?php /*if ($count_result<=$max_collection_thumbs) { */?><li><a id="toggleThumbsLink" href="#" onClick="ToggleThumbs();return false;"><?php echo $lang["showthumbnails"]?></a></li><?php /*}*/ ?>
 	  <?php } ?>
 		<li><a href="<?php echo $baseurl_short?>pages/purchases.php" onclick="return CentralSpaceLoad(this,true);"><?php echo $lang["viewpurchases"]?></a></li>
 		</ul>
@@ -857,7 +857,7 @@ if (!$lazyload){
 			}
 		?>
 	  <?php if (!$disable_collection_toggle) { ?>
-		<li><a href="#" onClick="ToggleThumbs();return false;"><?php echo $lang["showthumbnails"]?></li>
+		<li><a id="toggleThumbsLink" href="#" onClick="ToggleThumbs();return false;"><?php echo $lang["showthumbnails"]?></li>
 	  <?php } ?>
 	</div>
 	<?php 
@@ -869,7 +869,7 @@ if (!$lazyload){
 	<!--Menu-->	
 	<div id="CollectionMinRightNav"><div id="MinSearchItem">
 	  <?php if ($collections_compact_style){
-		 if (/*($count_result<=$max_collection_thumbs) && */!$disable_collection_toggle) { ?>&nbsp;&nbsp;<a href="#" onClick="ToggleThumbs();return false;">&gt;&nbsp;<?php echo $lang["showthumbnails"]?></a><?php } 
+		 if (/*($count_result<=$max_collection_thumbs) && */!$disable_collection_toggle) { ?>&nbsp;&nbsp;<a id="toggleThumbsLink" href="#" onClick="ToggleThumbs();return false;">&gt;&nbsp;<?php echo $lang["showthumbnails"]?></a><?php } 
 		}
 		else { ?>
 		<ul>
@@ -919,7 +919,7 @@ if (!$lazyload){
 			}
 		?>
 		<?php hook("collectiontoolmin");?>
-		<?php if (/*($count_result<=$max_collection_thumbs) && */!$disable_collection_toggle) { ?><li><a href="#" onClick="ToggleThumbs();return false;"><?php echo $lang["showthumbnails"]?></a></li><?php } ?>
+		<?php if (/*($count_result<=$max_collection_thumbs) && */!$disable_collection_toggle) { ?><li><a id="toggleThumbsLink" href="#" onClick="ToggleThumbs();return false;"><?php echo $lang["showthumbnails"]?></a></li><?php } ?>
 		
 	  </ul>
 	  <?php } ?>
