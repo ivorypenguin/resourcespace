@@ -794,6 +794,7 @@ $extra="";
 #  -----------------------------  Draw tabs ---------------------------
 $tabname="";
 $tabcount=0;
+$tmp = hook("tweakfielddisp", "", array($ref, $fields)); if($tmp) $fields = $tmp;
 if (count($fields)>0 && $fields[0]["tab_name"]!="")
 	{ 
 	?>
@@ -863,7 +864,7 @@ $tabname="";
 $tabcount=0;
 $fieldcount=0;
 $extra="";
-$tmp = hook("tweakfielddisp", "", array($ref, $fields)); if($tmp) $fields = $tmp;
+
 for ($n=0;$n<count($fields);$n++)
 	{
 	
