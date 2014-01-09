@@ -1187,6 +1187,7 @@ $tabcount=0;
 for ($n=0;$n<count($fields);$n++)
 	{
 	# Should this field be displayed?
+	echo $fields[$n]["name"];
 	if (is_field_displayed($fields[$n]))
 		{
 		$newtab=false;	
