@@ -310,7 +310,6 @@ else
 ?>
 <?php } /* End of renderinnerresourcepreview hook */ ?>
 <?php } /* End of replacerenderinnerresourcepreview hook */ ?>
-<div class="RecordActionPanels">
 <?php hook("renderbeforerecorddownload");
 
 if ($download_summary) {include "../include/download_summary.php";}
@@ -769,6 +768,7 @@ hook("resourceactions_anonymous");
 <?php } /* End of renderinnerresourcedownloadspace hook */ ?>
 </ul>
 <div class="clearerleft"> </div>
+
 <?php
 if (!hook("replaceuserratingsbox")){
 # Include user rating box, if enabled and the user is not external.
@@ -781,13 +781,11 @@ if ($user_rating && $k=="") { include "../include/user_rating.php"; }
 
 </div>
 <?php } /* End of renderresourcedownloadspace hook */ ?>
-
 <?php } /* End of renderinnerresourceview hook */ ?>
 </div>
 
 <?php hook("renderbeforeresourcedetails"); ?>
 
-</div><!-- end of RecordActionPanels -->
 <div class="Title"><?php if (!hook("customdetailstitle")) echo $lang["resourcedetails"]?></div>
 
 <?php
