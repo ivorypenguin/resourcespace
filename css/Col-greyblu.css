@@ -178,3 +178,8 @@ input[readonly] {color: #FFFFFF;}
 
 .CommentEntryInfoCommenterName { color: #051933; }
 .CommentBody { color: #ffffff}
+
+.xlthumbsiconactive {background: url(../gfx/black/interface/xliconactive.png) no-repeat 0px;}
+.smallthumbsiconactive {background: url(../gfx/black/interface/smalliconactive.png) no-repeat 0px;}
+.largethumbsiconactive{background: url(../gfx/black/interface/largeiconactive.png) no-repeat 0px;}
+.smalllisticonactive {background: url(../gfx/black/interface/listiconactive.png) no-repeat 0px;}

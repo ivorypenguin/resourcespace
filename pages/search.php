@@ -479,7 +479,7 @@ if (true) # Always show search header now.
 	    echo number_format($resources_count)?><?php echo ($resources_count==$max_results)?"+":""?></span> <?php if ($resources_count==1){echo $lang["youfoundresource"];} else {echo $lang["youfoundresources"];}
 	    }
 	 ?></div>
-	<div class="InpageNavLeftBlock"><?php echo $lang["display"]?>:<br />
+	<div class="InpageNavLeftBlock <?php if($iconthumbs) {echo 'icondisplay';} ?>"><?php echo $lang["display"]?>:<br />
 
 
 	<?php if ($display_selector_dropdowns){?>
@@ -489,13 +489,20 @@ if (true) # Always show search header now.
 	<?php if ($smallthumbs==true) { ?><option <?php if ($display=="smallthumbs"){?>selected="selected"<?php } ?> value="<?php echo $url?>&display=smallthumbs&k=<?php echo urlencode($k) ?>"><?php echo $lang["smallthumbs"]?></option><?php } ?>
 	<option <?php if ($display=="list"){?>selected="selected"<?php } ?> value="<?php echo $url?>&display=list&k=<?php echo urlencode($k) ?>"><?php echo $lang["list"]?></option>
 	</select>&nbsp;
-	<?php } else { ?>
+	<?php } elseif($iconthumbs) { ?>
 
+	<?php if ($xlthumbs==true) { ?> <?php if ($display=="xlthumbs") { ?><span class="xlthumbsiconactive">&nbsp;</span><?php } else { ?><a href="<?php echo $url?>&display=xlthumbs&k=<?php echo urlencode($k) ?>" title='Extra Large Thumbnails' onClick="return CentralSpaceLoad(this);"><span class="xlthumbsicon">&nbsp;</span></a><?php } ?>&nbsp;<?php } ?>
+	<?php if ($display=="thumbs") { ?> <span class="largethumbsiconactive">&nbsp;</span><?php } else { ?><a href="<?php echo $url?>&display=thumbs&k=<?php echo urlencode($k) ?>" title='Large Thumbnails' onClick="return CentralSpaceLoad(this);"><span class="largethumbsicon">&nbsp;</span></a><?php } ?>
+	<?php if ($smallthumbs==true) { ?> <?php if ($display=="smallthumbs") { ?><span class="smallthumbsiconactive">&nbsp;</span><?php } else { ?><a href="<?php echo $url?>&display=smallthumbs&k=<?php echo urlencode($k)?>" title='Small Thumbnails' onClick="return CentralSpaceLoad(this);"><span class="smallthumbsicon">&nbsp;</span></a><?php } } ?>
+	<?php if ($display=="list") { ?> <span class="smalllisticonactive">&nbsp;</span><?php } else { ?><a href="<?php echo $url?>&display=list&k=<?php echo urlencode($k) ?>" title='List View' onClick="return CentralSpaceLoad(this);"><span class="smalllisticon">&nbsp;</span></a><?php } ?> <?php hook("adddisplaymode"); ?> 
+
+<?php } else { ?>
+	
 	<?php if ($xlthumbs==true) { ?> <?php if ($display=="xlthumbs") { ?><span class="Selected"><?php echo $lang["xlthumbs"]?></span><?php } else { ?><a href="<?php echo $url?>&display=xlthumbs&k=<?php echo urlencode($k) ?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["xlthumbs"]?></a><?php } ?>&nbsp; |&nbsp;<?php } ?>
 	<?php if ($display=="thumbs") { ?> <span class="Selected"><?php echo $lang["largethumbs"]?></span><?php } else { ?><a href="<?php echo $url?>&display=thumbs&k=<?php echo urlencode($k) ?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["largethumbs"]?></a><?php } ?>&nbsp; |&nbsp; 
 	<?php if ($smallthumbs==true) { ?> <?php if ($display=="smallthumbs") { ?><span class="Selected"><?php echo $lang["smallthumbs"]?></span><?php } else { ?><a href="<?php echo $url?>&display=smallthumbs&k=<?php echo urlencode($k) ?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["smallthumbs"]?></a><?php } ?>&nbsp; |&nbsp;<?php } ?>
 	<?php if ($display=="list") { ?> <span class="Selected"><?php echo $lang["list"]?></span><?php } else { ?><a href="<?php echo $url?>&display=list&k=<?php echo urlencode($k) ?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["list"]?></a><?php } ?> <?php hook("adddisplaymode"); ?> 
-
+	
 
 	<?php } ?>
 	</div>

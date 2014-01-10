@@ -210,3 +210,12 @@ input[readonly] {color: #000000;}
 
 .CommentEntryInfoCommenterName { color: #3070bf; }
 .CommentBody { color: #000000}
+
+.smalllisticon{background: url(../gfx/interface/listicon.png) no-repeat 0px;}
+.smalllisticonactive {background: url(../gfx/interface/listiconactive.png) no-repeat 0px;}
+.xlthumbsicon{background: url(../gfx/interface/xlicon.png) no-repeat 0px;}
+.xlthumbsiconactive {background: url(../gfx/interface/xliconactive.png) no-repeat 0px;}
+.smallthumbsiconactive{background: url(../gfx/interface/smalliconactive.png) no-repeat 0px;}
+.smallthumbsicon{background: url(../gfx/interface/smallicon.png) no-repeat 0px;}
+.largethumbsicon{background: url(../gfx/interface/largeicon.png) no-repeat 0px;}
+.largethumbsiconactive{background: url(../gfx/interface/largeiconactive.png) no-repeat 0px;}

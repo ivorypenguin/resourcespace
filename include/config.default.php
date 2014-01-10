@@ -2249,3 +2249,7 @@ $remove_usage_textbox=false;
 
 # Moves textbox below dropdown on the download usage page.
 $usage_textbox_below=false;
+
+# Option to replace text descriptions of search views (x-large, large, small, list) with icons
+$iconthumbs=true;
+
