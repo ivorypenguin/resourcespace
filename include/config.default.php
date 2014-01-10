@@ -2243,3 +2243,9 @@ $team_centre_bug_report=true;
 
 # Option to show resource archive status in search results list view
 $list_view_status_column=false;
+
+# Removes textbox on the download usage page.
+$remove_usage_textbox=false;
+
+# Moves textbox below dropdown on the download usage page.
+$usage_textbox_below=false;
