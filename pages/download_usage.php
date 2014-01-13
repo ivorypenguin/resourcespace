@@ -30,7 +30,7 @@ include "../include/header.php";
 
 <div class="BasicsBox">
 
-<form method=post action="<?php echo $baseurl_short?>pages/download_usage.php<?php echo $download_url_suffix ?>" onSubmit="if ((jQuery('#usagecomment').val()=='') || (jQuery('#usage').val()=='')) {alert('<?php echo $lang["usageincorrect"] ?>');return false;} else {return CentralSpacePost(this,true);}">
+<form method=post action="<?php echo $baseurl_short?>pages/download_usage.php<?php echo $download_url_suffix ?>" onSubmit="if (  <?php if (!$usage_comment_blank) { ?>  (jQuery('#usagecomment').val()=='') ||<?php } ?>     (jQuery('#usage').val()=='')) {alert('<?php echo $lang["usageincorrect"] ?>');return false;} else {return CentralSpacePost(this,true);}">
 <input type="hidden" name="ref" value="<?php echo htmlspecialchars($ref) ?>" />
 <input type="hidden" name="size" value="<?php echo htmlspecialchars($size) ?>" />
 <input type="hidden" name="ext" value="<?php echo htmlspecialchars($ext) ?>" />

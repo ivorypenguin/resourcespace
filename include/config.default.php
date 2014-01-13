@@ -2253,3 +2253,5 @@ $usage_textbox_below=false;
 # Option to replace text descriptions of search views (x-large, large, small, list) with icons
 $iconthumbs=true;
 
+# Option to make filling in usage text box a non-requirement.
+$usage_comment_blank=false;
