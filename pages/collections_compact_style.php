@@ -25,6 +25,7 @@ $col_order_by=getvalescaped("col_order_by","name");
 $order_by=getvalescaped("order_by","relevance");
 $sort=getvalescaped("sort","ASC");
 $main_pages=array("search","collection_manage","collection_public","themes");
+$back_home=array("search","preview_all");
 $uniqid=uniqid();
 $load=getvalescaped("colselectload","");
 $display=getvalescaped("display",$default_display);
@@ -177,7 +178,7 @@ hook("collectiontoolcompact2","",array("collection"=>$collection,"count_result"=
 <!-- end edit collection -->
 
 <!-- delete -->
-<?php if (!checkperm("b") && (($userref==$cinfo["user"]) || checkperm("h")) && ($cinfo["cant_delete"]==0)) {?>&nbsp;<option id="delete" value="<?php echo htmlspecialchars($collection) ?>|<?php echo $lang["collectiondeleteconfirm"]?>|<?php echo $baseurl_short?>pages/collection_manage.php?delete=<?php echo urlencode($collection) ?>|<?php if (in_array($pagename,$main_pages)){echo $pagename.'.php?offset='.$offset.'&col_order_by='.$col_order_by.'&sort='.$sort.'&find='.urlencode($find);} else { echo $baseurl_short.'pages/collections.php';}?>|<?php if (in_array($pagename,$main_pages)){echo 'main';} else { echo 'collections';}?>|both">&gt;&nbsp;<?php echo $lang["action-deletecollection"];?>...</option>
+<?php if (!checkperm("b") && (($userref==$cinfo["user"]) || checkperm("h")) && ($cinfo["cant_delete"]==0)) {?>&nbsp;<option id="delete" value="<?php echo htmlspecialchars($collection) ?>|<?php echo $lang["collectiondeleteconfirm"]?>|<?php echo $baseurl_short?>pages/collection_manage.php?delete=<?php echo urlencode($collection) ?>|<?php if (in_array($pagename,$back_home)){echo 'search.php';} elseif(in_array($pagename,$main_pages)){echo $pagename.'.php?offset='.$offset.'&col_order_by='.$col_order_by.'&sort='.$sort.'&find='.urlencode($find);} else { echo $baseurl_short.'pages/collections.php';}?>|<?php if (in_array($pagename,$back_home) || in_array($pagename,$main_pages)){echo 'main';} else {echo 'collections';}?>|<?php if (in_array($pagename,$back_home)){echo 'collections';} else {echo 'both';}?>">&gt;&nbsp;<?php echo $lang["action-deletecollection"];?>...</option>
 <?php } ?>
 <!-- end delete and remove-->
 
