@@ -34,6 +34,8 @@ else
 
 	debug ("Starting ffmpeg_processing.php async with parameters: ref=$ref, file=$file, target=$target, previewonly=$previewonly, snapshottime=$snapshottime, alternative=$alternative");
 
+	# SQL Connection may have hit a timeout
+	sql_connect();
 	sql_query("UPDATE resource SET is_transcoding = 1 WHERE ref = '".escape_check($ref)."'");
 	}
 
@@ -189,6 +191,8 @@ if (isset($ffmpeg_alternatives))
 			if(!hook("removepreviousalts", "", array($ffmpeg_alternatives, $file, $n))):
 
 			# Remove any existing alternative file(s) with this name.
+			# SQL Connection may have hit a timeout
+			sql_connect();
 			$existing=sql_query("select ref from resource_alt_files where resource='$ref' and name='" . escape_check($ffmpeg_alternatives[$n]["name"]) . "'");
 			for ($m=0;$m<count($existing);$m++)
 				{
@@ -222,6 +226,8 @@ if (isset($ffmpeg_alternatives))
 				{
 				# Update the database with the new file details.
 				$file_size = filesize_unlimited($apath);
+				# SQL Connection may have hit a timeout
+				sql_connect();
 				sql_query("update resource_alt_files set file_name='" . escape_check($ffmpeg_alternatives[$n]["filename"] . "." . $ffmpeg_alternatives[$n]["extension"]) . "',file_extension='" . escape_check($ffmpeg_alternatives[$n]["extension"]) . "',file_size='" . $file_size . "',creation_date=now() where ref='$aref'");
 				// add this filename to be added to resource.ffmpeg_alt_previews
 				if (isset($ffmpeg_alternatives[$n]['alt_preview']) && $ffmpeg_alternatives[$n]['alt_preview']==true){
@@ -238,39 +244,12 @@ if (isset($ffmpeg_alternatives))
 	}
 }
 
-global $use_mysqli,$db;
-if ($use_mysqli){$ping_test=mysqli_ping($db);}else {$ping_test=mysql_ping();}
-if (!$ping_test)
-	{
-	global $mysql_server,$mysql_username,$mysql_password,$mysql_db,$mysql_charset;
-	
-	      // For each fork, we need a new connection to database.
-		if ($use_mysqli){
-			$db=mysqli_connect($mysql_server,$mysql_username,$mysql_password,$mysql_db);
-		} else {
-			mysql_connect($mysql_server,$mysql_username,$mysql_password);
-			mysql_select_db($mysql_db);
-		}
 
-      // If $mysql_charset is defined, we use it
-      // else, we use the default charset for mysql connection.
-		if(isset($mysql_charset))
-			{
-			if($mysql_charset)
-				{
-				if ($use_mysqli){
-					global $db;
-					mysqli_set_charset($db,$mysql_charset);
-					}
-				else {
-					mysql_set_charset($mysql_charset);
-					}
-				}
-			}
-	}
 
 if (RUNNING_ASYNC)
 	{
+	# SQL Connection may have hit a timeout
+	sql_connect();
 	sql_query("UPDATE resource SET is_transcoding = 0 WHERE ref = '".escape_check($ref)."'");
 	
 	if ($previewonly)

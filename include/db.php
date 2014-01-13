@@ -82,35 +82,39 @@ set_time_limit($php_time_limit);
 if (!isset($storagedir)) {$storagedir=dirname(__FILE__)."/../filestore";}
 if (!isset($storageurl)) {$storageurl=$baseurl."/filestore";}
 
-# *** CONNECT TO DATABASE ***
-if ($use_mysqli){
-$db=mysqli_connect($mysql_server,$mysql_username,$mysql_password,$mysql_db);
-} else {
-mysql_connect($mysql_server,$mysql_username,$mysql_password);
-mysql_select_db($mysql_db);
-}
+$db = null;
+function sql_connect() {
+	global $use_mysqli,$db,$mysql_server,$mysql_username,$mysql_password,$mysql_db,$mysql_charset,$mysql_force_strict_mode;
+	# *** CONNECT TO DATABASE ***
+	if ($use_mysqli){
+	$db=mysqli_connect($mysql_server,$mysql_username,$mysql_password,$mysql_db);
+	} else {
+	mysql_connect($mysql_server,$mysql_username,$mysql_password);
+	mysql_select_db($mysql_db);
+	}
 
-// If $mysql_charset is defined, we use it
-// else, we use the default charset for mysql connection.
-if(isset($mysql_charset))
-	{
-	if($mysql_charset)
+	// If $mysql_charset is defined, we use it
+	// else, we use the default charset for mysql connection.
+	if(isset($mysql_charset))
 		{
-		if ($use_mysqli){
-			global $db;
-			mysqli_set_charset($db,$mysql_charset);
-			}
-		else {
-			mysql_set_charset($mysql_charset);
+		if($mysql_charset)
+			{
+			if ($use_mysqli){
+				mysqli_set_charset($db,$mysql_charset);
+				}
+			else {
+				mysql_set_charset($mysql_charset);
+				}
 			}
 		}
-	}
 
-# Set MySQL Strict Mode (if configured)
-if ($mysql_force_strict_mode)
-	{
-	sql_query("SET SESSION sql_mode='STRICT_ALL_TABLES'");	
-	}
+	# Set MySQL Strict Mode (if configured)
+	if ($mysql_force_strict_mode)
+		{
+		sql_query("SET SESSION sql_mode='STRICT_ALL_TABLES'");	
+		}
+}
+sql_connect();
 
 #if (function_exists("set_magic_quotes_runtime")) {@set_magic_quotes_runtime(0);}
 
@@ -455,7 +459,7 @@ function CheckDBStruct($path)
 	
 	# Tables first.
 	# Load existing tables list
-	$ts=sql_query("show tables");
+	$ts=sql_query("show tables",false,-1,false);
 	$tables=array();
 	for ($n=0;$n<count($ts);$n++)
 		{
@@ -545,12 +549,12 @@ function CheckDBStruct($path)
 							$sql="alter table $table add column ";
 							$sql.="field".$joins[$m] . " VARCHAR(" . $resource_field_column_limit . ")";
 							sql_query($sql,false,-1,false);
-							$values=sql_query("select resource,value from resource_data where resource_type_field=$joins[$m]");
+							$values=sql_query("select resource,value from resource_data where resource_type_field=$joins[$m]",false,-1,false);
 	
 							for($x=0;$x<count($values);$x++){
 								$value=$values[$x]['value'];
 								$resource=$values[$x]['resource'];
-								sql_query("update resource set field$joins[$m]='".escape_check($value)."' where ref=$resource");	
+								sql_query("update resource set field$joins[$m]='".escape_check($value)."' where ref=$resource",false,-1,false);	
 						    }	
 						}
 					}	
