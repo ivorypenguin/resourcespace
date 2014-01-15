@@ -795,7 +795,7 @@ if (true) # Always show search header now.
 			
             $ref = $result[$n]["ref"];
             $GLOBALS['get_resource_data_cache'][$ref] = $result[$n];
-            $url = $baseurl_short."pages/view.php?ref=" . $ref . "&search=" . urlencode($search) . "&order_by=" . urlencode($order_by) . "&sort=".$sort."&offset=" . urlencode($offset) . "&archive=" . $archive . "&k=" . $k;
+            $url = $baseurl_short."pages/view.php?ref=" . $ref . "&search=" . urlencode($search) . "&order_by=" . urlencode($order_by) . "&sort=".$sort."&offset=" . urlencode($offset) . "&archive=" . $archive . "&k=" . $k . "&curpos=" . $n;
 
             if (isset($result[$n]["url"])) {$url = $result[$n]["url"];} # Option to override URL in results, e.g. by plugin using process_Search_results hook above
  
