@@ -345,8 +345,8 @@ if (($userrequestmode==2 || $userrequestmode==3) && $basket_stores_size)
 
 if(!hook("clearmaincheckboxesfromcollectionframe")){
 	if ($use_checkboxes_for_selection &&!$lazyload){?>
+	
 	<script type="text/javascript">
-
 	var checkboxes=jQuery('input.checkselect');
 	//clear all
 	checkboxes.each(function(box){
@@ -473,7 +473,7 @@ else if ($basket)
 	</div>
 	<?php	
 	}
-elseif ($k!="")
+elseif ($k!="" && !$lazyload)
 	{
 	# ------------- Anonymous access, slightly different display ------------------
 	$tempcol=$cinfo;
