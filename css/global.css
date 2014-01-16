@@ -634,3 +634,18 @@ width: 90px;
 .smallthumbsicon{background: url(../gfx/interface/smallicon.png) no-repeat 0px;}
 .largethumbsicon{background: url(../gfx/interface/largeicon.png) no-repeat 0px;}
 .largethumbsiconactive{background: url(../gfx/interface/largeiconactive.png) no-repeat 0px;}
+
+#contactadminbox  textarea{
+	width:100%;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	margin-right: 5px;
+	}
+	
+.contactadminbutton  {
+	float:right;
+	margin-bottom: 10px;	
+	margin-left: 10px;
+	width: 150px;
+	}

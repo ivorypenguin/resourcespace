@@ -2255,3 +2255,6 @@ $iconthumbs=true;
 
 # Option to make filling in usage text box a non-requirement.
 $usage_comment_blank=false;
+
+# Option to add a link to the resource view page that allows a user to email the $email_notify address about the resource
+$resource_contact_link=false;

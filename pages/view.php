@@ -171,12 +171,38 @@ if ($metadata_report && isset($exiftool_path))
 	<?php
 	}
 
-
 if ($direct_download && !$save_as){
 ?>
 <iframe id="dlIFrm" frameborder=0 scrolling="auto" <?php if ($debug_direct_download){?>width="600" height="200"<?php } else { ?>width="0" height="0"<?php } ?>> This browser can not use IFRAME. </iframe>
 <?php }
 
+if($resource_contact_link && $k=="")
+		{?>
+		<script>
+		function showContactBox(){
+				
+				if(jQuery('#contactadminbox').length)
+					{
+					jQuery('#contactadminbox').slideDown();
+					return false;
+					}
+				
+				jQuery.ajax({
+						type: "GET",
+						url: baseurl_short+"pages/ajax/contactadmin.php?ref="+<?php echo $ref ?>+"&insert=true&ajax=true",
+						success: function(html){
+								jQuery('#RecordDownload li:last-child').after(html);
+								document.getElementById('messagetext').focus();
+								},
+						error: function(XMLHttpRequest, textStatus, errorThrown) {
+							alert('<?php echo $lang["error"] ?>\n' + textStatus);
+							}
+						});
+				}				
+		</script>
+		<?php
+		}
+		
 hook("pageevaluation");
 
 # Load resource field data
@@ -756,7 +782,9 @@ hook ("resourceactions") ?>
 		<li><a href="<?php echo $baseurl_short?>pages/edit.php?ref=<?php echo urlencode($ref)?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>"    onClick="return CentralSpaceLoad(this,true);">&gt; <?php echo $lang["action-edit"]?></a></li>
 		<?php if ($metadata_download)	{ ?>
 		<li><a href="<?php echo $baseurl_short?>pages/metadata_download.php?ref=<?php echo urlencode($ref)?>" onClick="return CentralSpaceLoad(this,true);" >&gt; <?php echo $lang["downloadmetadata"]?></a></li>
-	<?php } ?>
+	<?php } ?><?php if ($resource_contact_link)	{ ?>
+		<li><a href="<?php echo $baseurl_short?>pages/ajax/contactadmin.php?ref=<?php echo urlencode($ref)?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>" onClick="showContactBox();return false;" >&gt; <?php echo $lang["contactadmin"]?></a></li>
+	<?php } ?>	
 	<?php if ((!checkperm("D") || hook('check_single_delete')) && !(isset($allow_resource_deletion) && !$allow_resource_deletion)){?><li><a href="<?php echo $baseurl_short?>pages/delete.php?ref=<?php echo urlencode($ref)?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>" onClick="return CentralSpaceLoad(this,true);">&gt; <?php if ($resource["archive"]==3){echo $lang["action-delete_permanently"];} else {echo $lang["action-delete"];}?></a><?php } ?></li>
 	<?php if (!$disable_alternative_files && !checkperm('A')) { ?>
 	<li><a href="<?php echo $baseurl_short?>pages/alternative_files.php?ref=<?php echo urlencode($ref)?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["managealternativefiles"]?></a></li><?php } ?>

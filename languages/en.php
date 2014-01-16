@@ -1765,3 +1765,6 @@ $lang["resourcetypes_separator"] = ", "; # The separator to be used when convert
 $lang["collectiontypes_separator"] = ", "; # The separator to be used when converting the array of searched collections to a string. E.g. ", " -> "public collections, themes"
 $lang["hide_view_access_to_workflow_state"]="Block access to workflow state";
 $lang["collection_share_status_warning"]="Warning - this collection has resources in the following states, please check that these resources will be accessible to other users";
+$lang["contactadmin"]="Contact administrator";
+$lang["contactadminintro"]="Please enter your message and click 'Send'.";
+$lang["contactadminemailtext"]=" has emailed you about a resource";

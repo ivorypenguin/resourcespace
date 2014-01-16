@@ -1,0 +1,138 @@
+<?php
+include "../../include/db.php";
+include "../../include/authenticate.php"; #if (!checkperm("s")) {exit ("Permission denied.");}
+include "../../include/general.php";
+include "../../include/collections_functions.php";
+include "../../include/resource_functions.php";
+include "../../include/search_functions.php";
+
+
+# Is this an ajax call from the view page?
+$insert=getvalescaped("insert","");
+$ref=getvalescaped("ref","",true);
+
+# Load access level
+$access=get_resource_access($ref);
+# check permissions (error message is not pretty but they shouldn't ever arrive at this page unless entering a URL manually)
+if ($access==2) 
+		{
+		exit("This is a confidential resource.");
+		}
+
+# Fetch resource data
+$resource=get_resource_data($ref);if ($resource===false) {exit("Resource not found.");}
+
+$imagename=i18n_get_translated($resource["field".$view_title_field]);
+
+
+if (getval("send","")!="")
+	{
+	$messagetext=getvalescaped("messagetext","");	
+	$templatevars['url']=$baseurl . "/?r=" . $ref;
+	$templatevars['fromusername']=($userfullname=="" ? $username : $userfullname);
+	$templatevars['resourcename']=$imagename;
+	$templatevars['emailfrom']=$useremail;
+	$subject=$templatevars['fromusername'] . $lang["contactadminemailtext"];
+	$templatevars['message']=$messagetext;
+	$message=$templatevars['fromusername'] . ($useremail!="" ? " (" . $useremail . ")" : "") . $lang["contactadminemailtext"] . "\n\n" . $messagetext . "\n\n" . $lang["clicktoviewresource"] . "\n\n" . $templatevars['url'];
+	
+		
+	global $watermark; 
+	$templatevars['thumbnail']=get_resource_path($ref,true,"thm",false,"jpg",$scramble=-1,$page=1,($watermark)?(($access==1)?true:false):false);
+	if (!file_exists($templatevars['thumbnail'])){
+			$templatevars['thumbnail']="../gfx/".get_nopreview_icon($resourcedata["resource_type"],$resourcedata["file_extension"],false);
+		}	
+	
+	# Build message and send.
+	send_mail($email_notify,$subject,$message,$applicationname,$email_from,"emailcontactadmin",$templatevars,$applicationname);
+	exit("SUCCESS");	
+	}
+
+if ($insert=="")
+	{
+	# Fetch search details (for next/back browsing and forwarding of search params)
+	$search=getvalescaped("search","");
+	$order_by=getvalescaped("order_by","relevance");
+	$offset=getvalescaped("offset",0,true);
+	$default_sort="DESC";
+	if (substr($order_by,0,5)=="field"){$default_sort="ASC";}
+	$sort=getval("sort",$default_sort);
+	$archive=getvalescaped("archive",0,true);
+
+	include "../../include/header.php";		
+	?>
+	<p><a href="<?php echo $baseurl ?>/pages/view.php?ref=<?php echo urlencode($ref) ?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset) ?>&order_by=<?php echo urlencode($order_by) ?>&sort=<?php echo urlencode($sort) ?>&archive=<?php echo urlencode($archive) ?>" onClick="return CentralSpaceLoad(this,true);">&lt;&nbsp;<?php echo $lang["backtoresourceview"]?></a></p>
+	<h1><?php echo $lang["contactadmin"]?></h1>				
+	<div>		
+		
+	<?php
+
+	if ($resource["has_image"]==1)
+		{
+		?><img align="top" src="<?php echo get_resource_path($ref,false,($edit_large_preview?"pre":"thm"),false,$resource["preview_extension"],-1,1,checkperm("w"))?>" alt="<?php echo $imagename ?>" class="Picture"/><br />
+		<?php
+		}
+	else
+		{
+		# Show the no-preview icon
+		?>
+		<img src="<?php echo $baseurl_short ?>gfx/<?php echo get_nopreview_icon($resource["resource_type"],$resource["file_extension"],true)?>" alt="<?php echo $imagename ?>" class="Picture"/>
+		<?php
+		}?>
+		
+	</div>
+	
+	
+	
+	<?php }?>
+
+<script>
+
+function sendResourceMessage()
+	{
+	jQuery.ajax({
+		type: "POST",
+		data: jQuery('#contactadminform').serialize(),
+		url: baseurl_short+"pages/ajax/contactadmin.php?ref="+<?php echo $ref ?>+"&insert=true&send=true",
+		success: function(html){						
+				//jQuery('#RecordDownload li:last-child').after(html);
+				if(html=="SUCCESS")
+					{alert('<?php echo $lang["emailsent"] ?>');}
+				else
+					{alert('<?php echo $lang["error"] ?>\n' + html);}
+				jQuery('#messagetext').val("");
+				jQuery('#contactadminbox').slideUp();
+				},
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
+			alert('<?php echo $lang["error"] ?>\n' + textStatus);
+			}
+		});
+	}
+
+</script>
+<div class="clearerleft"> </div>
+<div id="contactadminbox">
+<p><php echo $lang["contactadmin"] ?></p>
+<form name="contactadminform" method=post id="contactadminform" action="<?php echo $baseurl_short?>pages/ajax/contactadmin.php?ref=<?php echo $ref ?>">
+<input type=hidden name=ref value="<?php echo urlencode($ref) ?>">
+
+<div>
+<p><?php echo $lang["contactadminintro"]?></p>
+<textarea rows=6 name="messagetext" id="messagetext"></textarea>
+<div class="clearerleft"> </div>
+
+<div id="contactadminbuttons">
+<input name="send" type="submit" class="contactadminbutton" value="&nbsp;&nbsp;<?php echo $lang["send"]?>&nbsp;&nbsp;" onClick="sendResourceMessage();return false;" />
+<input name="cancel" type="submit" class="contactadminbutton" value="&nbsp;&nbsp;<?php echo $lang["cancel"]?>&nbsp;&nbsp;" onClick="jQuery('#contactadminbox').slideUp();return false;" />
+</div>
+</div>
+
+
+</form>
+</div>
+
+<?php 
+if ($insert=="")
+	{
+	include "../../include/footer.php";
+	}
