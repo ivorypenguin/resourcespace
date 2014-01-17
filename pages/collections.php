@@ -374,6 +374,7 @@ if(!hook("updatemaincheckboxesfromcollectionframe")){
 	} ?></script><?php
 }# end hook updatemaincheckboxesfromcollectionframe
 
+?><div><?php
 
 /*
 if ($count_result>$max_collection_thumbs && $k=="")
@@ -943,7 +944,7 @@ if (!$lazyload){
 
 <?php draw_performance_footer();?>
 
-
+	</div>
 	</body>
 	</html>
 <?php } 
