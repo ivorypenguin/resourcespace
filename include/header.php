@@ -281,7 +281,16 @@ if ($pagename=="login" || $pagename=="user_request" || $pagename=="user_password
 ?>
 
 <div id="Header" <?php if ($header_text_title){?>style="background:none;"<?php } ?>>
-<?php if ($header_link && !$header_text_title && getval("k","")==""){?><a class="headerlink" href="<?php echo isset($header_link_url) ? $header_link_url : $homepage_url?>"  onClick="return CentralSpaceLoad(this,true);"></a><?php } ?>
+<?php if ($header_link && !$header_text_title && getval("k","")=="") {
+	$url=isset($header_link_url) ? $header_link_url : $homepage_url;
+	if (substr($url, 0, strlen($baseurl)) === $baseurl
+			|| substr($url, 0, strlen($baseurl_short)) === $baseurl_short)
+		$onclick=' onclick="return CentralSpaceLoad(this,true);"';
+	else
+		$onclick='';
+	?><a class="headerlink" href="<?php echo $url ?>"<?php echo $onclick?>></a><?php
+}
+?>
 <?php if ($header_text_title){?>
     <div id="TextHeader"><?php if (getval("k","")==""){?><a href="<?php echo $homepage_url?>"  onClick="return CentralSpaceLoad(this,true);"><?php } ?><?php echo $applicationname;?><?php if (getval("k","")==""){?></a><?php } ?></div>
     <?php if ($applicationdesc!=""){?>
