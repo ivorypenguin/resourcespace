@@ -1,5 +1,5 @@
 name,varchar(20),YES,PRI,,
-descrip,varchar(100),NO,,,
+descrip,text,NO,,,
 author,varchar(100),NO,,,
 update_url,varchar(100),YES,,,
 info_url,varchar(100),YES,,,
