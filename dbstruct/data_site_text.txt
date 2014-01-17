@@ -593,4 +593,4 @@ all,emailnotifyresourcesapproved,"[img_gfx/whitegry/titles/title.gif]<br>
 [text_footer]
 ",403,en,,,1
 collection_email,introtextthemeshare,"Dela snabbt och enkelt alla teman i denna temakategori med andra. Ett e-postmeddelande innehållande en webblänk till respektive tema skapas och skickas automatiskt. Du kan även lägga till ett eget meddelande.",404,sv,,,
-all,emailcontactadmin,"[img_../gfx/whitegry/titles/title.gif]<br>[fromusername] ([emailfrom])[lang_contactadminemailtext]<br><br>[message]<br><br><a href="[url]">[embed_thumbnail]</a><br><br>[text_footer]",405,en,,,
+all,emailcontactadmin,"[img_../gfx/whitegry/titles/title.gif]<br>[fromusername] ([emailfrom])[lang_contactadminemailtext]<br><br>[message]<br><br><a href=""[url]"">[embed_thumbnail]</a><br><br>[text_footer]",405,en,,,
