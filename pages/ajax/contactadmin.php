@@ -90,6 +90,9 @@ if ($insert=="")
 
 function sendResourceMessage()
 	{
+        if (!jQuery('#messagetext').val()) {
+		return false;
+		}
 	jQuery.ajax({
 		type: "POST",
 		data: jQuery('#contactadminform').serialize(),
