@@ -282,13 +282,13 @@ if ($pagename=="login" || $pagename=="user_request" || $pagename=="user_password
 
 <div id="Header" <?php if ($header_text_title){?>style="background:none;"<?php } ?>>
 <?php if ($header_link && !$header_text_title && getval("k","")=="") {
-	$url=isset($header_link_url) ? $header_link_url : $homepage_url;
-	if (substr($url, 0, strlen($baseurl)) === $baseurl
-			|| substr($url, 0, strlen($baseurl_short)) === $baseurl_short)
+	$linkUrl=isset($header_link_url) ? $header_link_url : $homepage_url;
+	if (substr($linkUrl, 0, strlen($baseurl)) === $baseurl
+			|| substr($linkUrl, 0, strlen($baseurl_short)) === $baseurl_short)
 		$onclick=' onclick="return CentralSpaceLoad(this,true);"';
 	else
 		$onclick='';
-	?><a class="headerlink" href="<?php echo $url ?>"<?php echo $onclick?>></a><?php
+	?><a class="headerlink" href="<?php echo $linkUrl ?>"<?php echo $onclick?>></a><?php
 }
 ?>
 <?php if ($header_text_title){?>
