@@ -2258,3 +2258,6 @@ $usage_comment_blank=false;
 
 # Option to add a link to the resource view page that allows a user to email the $email_notify address about the resource
 $resource_contact_link=false;
+
+# Hide geolocation panel by default (a link to show it will be displayed instead)
+$hide_geolocation_panel=false;

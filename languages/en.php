@@ -1768,3 +1768,5 @@ $lang["collection_share_status_warning"]="Warning - this collection has resource
 $lang["contactadmin"]="Contact administrator";
 $lang["contactadminintro"]="Please enter your message and click 'Send'.";
 $lang["contactadminemailtext"]=" has emailed you about a resource";
+$lang["showgeolocationpanel"]="Show location information";
+$lang["hidegeolocationpanel"]="Hide location information";

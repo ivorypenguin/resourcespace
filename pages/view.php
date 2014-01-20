@@ -1045,7 +1045,7 @@ for ($n=0;$n<count($fields);$n++)
 if (!$disable_geocoding) { 
   // only show this section if the resource is geocoded OR they have permission to do it themselves
   if ($edit_access||($resource["geo_lat"]!="" && $resource["geo_long"]!=""))
-  		{ 
+  		{
 		include "../include/geocoding_view.php";
 	  	} 
  	} 
