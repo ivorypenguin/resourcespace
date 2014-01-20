@@ -1,7 +1,7 @@
 
 /* Revert all new styling */
 
-body {font-family: Tahoma, Arial, Helvetica, sans-serif;font-size:11px;}
+body, input {font-family: Tahoma, Arial, Helvetica, sans-serif;font-size:11px;}
 td, textarea {font-family: Tahoma, Arial, Helvetica, sans-serif;font-size:11px;}
  
 h1, h2, .RecordPanel .Title {font: normal 1.5em Arial, Helvetica, sans-serif;}
@@ -13,7 +13,7 @@ h1, h2, .RecordPanel .Title {font: normal 1.5em Arial, Helvetica, sans-serif;}
  
 .Question .stdwidth,.stdwidth, .Question .medwidth,.medwidth, .Question .shrtwidth,.shrtwidth, 
 .Question .vshrtwidth, .Question .medcomplementwidth,
-.SearchSpace .SearchWidth, .URLDisplay
+.SearchSpace .SearchWidth, .SearchSpace .SearchWidthHalf, .URLDisplay
 {font: 11px Tahoma, Arial, Helvetica, sans-serif;}
  
 .HomePanel {width: 166px;} 
