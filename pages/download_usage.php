@@ -40,7 +40,7 @@ include "../include/header.php";
 <h1><?php echo $lang["usage"]?></h1>
 <p><?php echo $lang["indicateusage"]?></p>
 
-<?php if(!$remove_usage_textbox && !$usage_textbox_below) { ?><div class="Question"><label><?php echo $lang["usage"]?></label><textarea rows="5" name="usagecomment" id="usagecomment" type="text" class="stdwidth"></textarea><div class="clearerleft"> </div></div> <?php } ?>
+<?php if(!$remove_usage_textbox && !$usage_textbox_below) { ?><div class="Question"><label><?php echo $lang["usagecomments"]?></label><textarea rows="5" name="usagecomment" id="usagecomment" type="text" class="stdwidth"></textarea><div class="clearerleft"> </div></div> <?php } ?>
 
 <div class="Question"><label><?php echo $lang["indicateusagemedium"]?></label>
 <select class="stdwidth" name="usage" id="usage">
@@ -56,7 +56,7 @@ for ($n=0;$n<count($download_usage_options);$n++)
 </select>
 <div class="clearerleft"> </div></div>
 
-<?php if ($usage_textbox_below && !$remove_usage_textbox) { ?> <div class="Question"><label><?php echo $lang["usage"]?></label><textarea rows="5" name="usagecomment" id="usagecomment" type="text" class="stdwidth"></textarea><div class="clearerleft"> </div></div> <?php } ?>
+<?php if ($usage_textbox_below && !$remove_usage_textbox) { ?> <div class="Question"><label><?php echo $lang["usagecomments"]?></label><textarea rows="5" name="usagecomment" id="usagecomment" type="text" class="stdwidth"></textarea><div class="clearerleft"> </div></div> <?php } ?>
 
 
 <div class="QuestionSubmit">

@@ -1271,6 +1271,7 @@ $lang["field_ref_and_name"]="%ref% - %name%"; # %ref% and %name% will be replace
 
 $lang["indicateusage"]="Please describe your planned use for this resource.";
 $lang["usage"]="Usage";
+$lang["usagecomments"]="Usage";
 $lang["indicateusagemedium"]="Usage medium";
 $lang["usageincorrect"]="You must describe the planned usage and select a medium";
 
