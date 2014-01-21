@@ -144,7 +144,7 @@ function HookFormat_chooserViewReplacedownloadoptions()
 					$size = $originalSize;
 			?>
 			<?php echo $n ?>: {
-				'info': '<?php echo get_size_info($size) ?>',
+				'info': '<?php echo get_size_info($size, $originalSize) ?>',
 				'id': '<?php echo $size['id'] ?>',
 			},
 			<?php } ?>

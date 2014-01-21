@@ -355,7 +355,7 @@ if ($download_summary) {include "../include/download_summary.php";}
 <?php 
 
 # DPI calculations
-function compute_dpi($size, &$dpi, &$dpi_unit, &$dpi_w, &$dpi_h)
+function compute_dpi($width, $height, &$dpi, &$dpi_unit, &$dpi_w, &$dpi_h)
 	{
 	global $lang, $imperial_measurements;
 	if (isset($size['resolution'])&& $size['resolution']!=0) { $dpi=$size['resolution']; }
@@ -365,35 +365,58 @@ function compute_dpi($size, &$dpi, &$dpi_unit, &$dpi_w, &$dpi_h)
 		{
 		# Imperial measurements
 		$dpi_unit=$lang["inch-short"];
-		$dpi_w=round(($size["width"]/$dpi),1);
-		$dpi_h=round(($size["height"]/$dpi),1);
+		$dpi_w=round($width/$dpi,1);
+		$dpi_h=round($height/$dpi,1);
 		}
 	else
 		{
 		$dpi_unit=$lang["centimetre-short"];
-		$dpi_w=round(($size["width"]/$dpi)*2.54,1);
-		$dpi_h=round(($size["height"]/$dpi)*2.54,1);
+		$dpi_w=round(($width/$dpi)*2.54,1);
+		$dpi_h=round(($height/$dpi)*2.54,1);
 		}
 	}
 
 # MP calculation
-function compute_megapixel($size)
+function compute_megapixel($width, $height)
 	{
-	return round(($size["width"]*$size["height"])/1000000,1);
+	return round(($width * $height) / 1000000, 1);
 	}
 
-function get_size_info($size)
+function get_size_info($size, $originalSize = null)
 {
 	global $lang;
-	$output='<p>' . $size["width"] . " x " . $size["height"] . " " . $lang["pixels"];
 
-	$mp=compute_megapixel($size);
+	$newWidth = intval($size['width']);
+	$newHeight = intval($size['height']);
+
+	if ($originalSize != null && $size !== $originalSize)
+		{
+		// Compute actual pixel size
+		$imageWidth = $originalSize['width'];
+		$imageHeight = $originalSize['height'];
+		if ($imageWidth > $imageHeight)
+			{
+			// landscape
+			$newWidth = $size['width'];
+			$newHeight = round(($imageHeight * $newWidth + $imageWidth - 1) / $imageWidth);
+			}
+		else
+			{
+			// portrait or square
+			$newHeight = $size['height'];
+			$newWidth = round(($imageWidth * $newHeight + $imageHeight - 1) / $imageHeight);
+			}
+		}
+
+	$output='<p>' . $newWidth . " x " . $newHeight . " " . $lang["pixels"];
+
+	$mp=compute_megapixel($newWidth, $newHeight);
 	if ($mp>=1)
 		{
 		$output.=" (" . $mp . " " . $lang["megapixel-short"] . ")";
 		}
 
-	compute_dpi($size, $dpi, $dpi_unit, $dpi_w, $dpi_h);
+	compute_dpi($newWidth, $newHeight, $dpi, $dpi_unit, $dpi_w, $dpi_h);
 
 	$output.='</p><p>';
 	$output.=$dpi_w . " " . $dpi_unit . " x " . $dpi_h . " " . $dpi_unit . " " . $lang["at-resolution"]
