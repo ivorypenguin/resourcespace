@@ -157,7 +157,7 @@ jQuery(document).ready( function ()
 	</a>
 	
 <div class="PanelShadow"></div>
-<?php if ($welcome_text_homepicturepanel) { ?><div class="BasicsBox">
+<?php if ($welcome_text_picturepanel) { ?><div class="BasicsBox">
     <h1><?php echo text("welcometitle")?></h1>
     <p><?php echo text("welcometext")?></p>
 </div>
