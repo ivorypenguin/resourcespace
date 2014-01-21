@@ -2261,3 +2261,6 @@ $resource_contact_link=false;
 
 # Hide geolocation panel by default (a link to show it will be displayed instead)
 $hide_geolocation_panel=false;
+
+# Option to move the welcome text into the Home Picture Panel. Stops text from falling behind other panels.
+$welcome_text_picturepanel=false;

@@ -157,6 +157,11 @@ jQuery(document).ready( function ()
 	</a>
 	
 <div class="PanelShadow"></div>
+<?php if ($welcome_text_homepicturepanel) { ?><div class="BasicsBox">
+    <h1><?php echo text("welcometitle")?></h1>
+    <p><?php echo text("welcometext")?></p>
+</div>
+<?php } ?>
 </div>
 <?php } # End of hook replaceslideshow
 ?>
@@ -281,10 +286,11 @@ endif; # end hook homefeaturedcol
 
 	<div class="clearerleft"></div>
 
-<div class="BasicsBox">
+<?php if (!$welcome_text_homepicturepanel) { ?><div class="BasicsBox">
     <h1><?php echo text("welcometitle")?></h1>
     <p><?php echo text("welcometext")?></p>
 </div>
+<?php } ?>
 <?php }  else { ?>
 <div class="BasicsBox">
     <h1><?php echo text("restrictedtitle")?></h1>
