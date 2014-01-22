@@ -884,7 +884,7 @@ function check_display_condition($n, $field)
 	}
 
 # Allows language alternatives to be entered for free text metadata fields.
-function display_multilingual_text_field($field)
+function display_multilingual_text_field($n, $field)
 	{
 	global $language, $languages, $translations;
 	?>
@@ -1075,7 +1075,7 @@ function display_field($n, $field, $newtab=false)
 	# If enabled, include code to produce extra fields to allow multilingual free text to be entered.
 	if ($multilingual_text_fields && ($field["type"]==0 || $field["type"]==1 || $field["type"]==5))
 		{
-		display_multilingual_text_field($field);
+		display_multilingual_text_field($n, $field);
 		}
 	?>
 	<div class="clearerleft"> </div>
