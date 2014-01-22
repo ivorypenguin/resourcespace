@@ -886,7 +886,7 @@ function check_display_condition($n, $field)
 # Allows language alternatives to be entered for free text metadata fields.
 function display_multilingual_text_field($n, $field)
 	{
-	global $language, $languages, $translations;
+	global $language, $languages, $translations, $lang;
 	?>
 	<p><a href="#" class="OptionToggle" onClick="l=document.getElementById('LanguageEntry_<?php echo $n?>');if (l.style.display=='block') {l.style.display='none';this.innerHTML='<?php echo $lang["showtranslations"]?>';} else {l.style.display='block';this.innerHTML='<?php echo $lang["hidetranslations"]?>';} return false;"><?php echo $lang["showtranslations"]?></a></p>
 	<table class="OptionTable" style="display:none;" id="LanguageEntry_<?php echo $n?>">
