@@ -208,9 +208,161 @@ hook("pageevaluation");
 # Load resource field data
 $fields=get_resource_field_data($ref,false,!hook("customgetresourceperms"),-1,$k!="",$use_order_by_tab_view);
 
+
+//Check if we want to use a specified field as a caption below the preview
+if(isset($display_field_below_preview) && is_int($display_field_below_preview))
+	{
+	$df=0;
+	foreach ($fields as $field)
+		{
+		if($field["fref"]==$display_field_below_preview)
+			{
+			$displaycondition=check_display_condition($fields,$df);
+			if($displaycondition)
+				{
+				$previewcaption=$fields[$df];
+				// Remove from the array so we don't display it twice
+				unset($fields[$df]);
+				//Reorder array 
+				$fields=array_values($fields);				
+				}
+			}
+		$df++;			
+		}
+	}
+
 # Load edit access level (checking edit permissions - e0,e-1 etc. and also the group 'edit filter')
 $edit_access=get_edit_access($ref,$resource["archive"],$fields,$resource);
 if ($k!="") {$edit_access=0;}
+
+function check_display_condition($fields,$n)	
+	{
+	#Check if field has a display condition set
+	$displaycondition=true;
+	if ($fields[$n]["display_condition"]!="")
+		{
+		//echo $fields[$n]["display_condition"] . "<br>";
+		$fieldstocheck=array(); #' Set up array to use in jQuery script function
+		$s=explode(";",$fields[$n]["display_condition"]);
+		$condref=0;
+		foreach ($s as $condition) # Check each condition
+			{
+			$displayconditioncheck=false;
+			$s=explode("=",$condition);
+			for ($cf=0;$cf<count($fields);$cf++) # Check each field to see if needs to be checked
+				{
+				if ($s[0]==$fields[$cf]["name"]) # this field needs to be checked
+					{					
+					$checkvalues=$s[1];
+					$validvalues=explode("|",strtoupper($checkvalues));
+					$v=trim_array(explode(",",strtoupper($fields[$cf]["value"])));
+					foreach ($validvalues as $validvalue)
+						{
+						if (in_array($validvalue,$v)) {$displayconditioncheck=true;} # this is  a valid value						
+						}
+					if (!$displayconditioncheck) {$displaycondition=false;}					
+					}
+					
+				} # see if next field needs to be checked
+							
+			$condref++;
+			} # check next condition	
+		
+		}
+	return $displaycondition;
+	}
+	
+function display_field_data($field,$valueonly=false,$fixedwidth=452)
+	{
+	global $ref, $fieldcount, $tabcount, $show_expiry_warning, $access, $tabname, $search, $extra;
+	$value=$field["value"];
+	
+	# Handle expiry fields
+	if (!$valueonly && $field["type"]==6 && $value!="" && $value<=date("Y-m-d H:i") && $show_expiry_warning) 
+		{
+		$extra.="<div class=\"RecordStory\"> <h1>" . $lang["warningexpired"] . "</h1><p>" . $lang["warningexpiredtext"] . "</p><p id=\"WarningOK\"><a href=\"#\" onClick=\"document.getElementById('RecordDownload').style.display='block';document.getElementById('WarningOK').style.display='none';\">" . $lang["warningexpiredok"] . "</a></p></div><style>#RecordDownload {display:none;}</style>";
+		}
+	
+	if (($value!="") && ($value!=",") && ($field["display_field"]==1) && ($access==0 || ($access==1 && !$field["hide_when_restricted"])))
+		{
+		if (!$valueonly)
+			{$title=htmlspecialchars(str_replace("Keywords - ","",$field["title"]));}
+		else {$title="";}
+		//if ($field["type"]==4 || $field["type"]==6) {$value=NiceDate($value,false,true);}
+
+		# Value formatting
+		if (($field["type"]==2) || ($field["type"]==7) || ($field["type"]==9))
+			{$i18n_split_keywords =true;}
+		else 	{$i18n_split_keywords =false;}
+		$value=i18n_get_translated($value,$i18n_split_keywords );
+		if (($field["type"]==2) || ($field["type"]==3) || ($field["type"]==7) || ($field["type"]==9)) {$value=TidyList($value);}
+		$value_unformatted=$value; # store unformatted value for replacement also
+
+		if ($field["type"]!=8) # Do not convert HTML formatted fields (that are already HTML) to HTML.
+			{
+			$value=nl2br(htmlspecialchars($value));
+			}
+		
+		# draw new tab panel?
+		if (!$valueonly && ($tabname!=$field["tab_name"]) && ($fieldcount>0))
+			{
+			$tabcount++;
+			# Also display the custom formatted data $extra at the bottom of this tab panel.
+			?><div class="clearerleft"> </div><?php echo $extra?></div></div><div class="TabbedPanel StyledTabbedPanel" style="display:none;" id="tab<?php echo $tabcount?>"><div><?php	
+			$extra="";
+			}
+		$tabname=$field["tab_name"];
+		$fieldcount++;		
+
+		if (!$valueonly && trim($field["display_template"])!="")
+			{
+			# Process the value using a plugin
+			$plugin="../plugins/value_filter_" . $field["name"] . ".php";
+			if ($field['value_filter']!=""){
+				eval($field['value_filter']);
+			}
+			else if (file_exists($plugin)) {include $plugin;}
+			else if ($field["type"]==4 || $field["type"]==6) { 
+				$value=NiceDate($value,false,true);
+			}
+			
+			# Highlight keywords
+			$value=highlightkeywords($value,$search,$field["partial_index"],$field["name"],$field["keywords_index"]);
+
+			# Use a display template to render this field
+			$template=$field["display_template"];
+			$template=str_replace("[title]",$title,$template);
+			$template=str_replace("[value]",$value,$template);
+			$template=str_replace("[value_unformatted]",$value_unformatted,$template);
+			$template=str_replace("[ref]",$ref,$template);
+			$extra.=$template;
+			}
+		else
+			{
+			#There is a value in this field, but we also need to check again for a current-language value after the i18n_get_translated() function was called, to avoid drawing empty fields
+			if ($value!=""){
+				# Draw this field normally.				
+				
+					# value filter plugin should be used regardless of whether a display template is used.
+					$plugin="../plugins/value_filter_" . $field["name"] . ".php";
+					if ($field['value_filter']!=""){
+						eval($field['value_filter']);
+					}
+					else if (file_exists($plugin)) {include $plugin;}
+					else if ($field["type"]==4 || $field["type"]==6) { 
+						$value=NiceDate($value,false,true);
+					}
+				
+				# Highlight keywords
+				$value=highlightkeywords($value,$search,$field["partial_index"],$field["name"],$field["keywords_index"]);
+				?><div <?php if (!$valueonly){echo "class=\"itemNarrow\""; } elseif (isset($fixedwidth)) {echo "style=\"width:" . $fixedwidth . "px\""; } ?>>
+				<h3><?php echo $title?></h3><p><?php echo $value?></p></div><?php
+				}
+			}
+		}
+	
+	}
+
 ?>
 
 <!--Panel for record and details-->
@@ -282,10 +434,18 @@ elseif (!(isset($resource['is_transcoding']) && $resource['is_transcoding']==1) 
 	{
 	# Include the Flash player if an FLV file exists for this resource.
 	$download_multisize=false;
-      if(!hook("customflvplay"))
-	      {
-          include "flv_play.php";
-	      }
+	?>
+	<div id="previewimagewrapper">
+	<?php 
+    if(!hook("customflvplay"))
+	    {
+        include "flv_play.php";
+	    }
+	if(isset($previewcaption))
+		{				
+		display_field_data($previewcaption, true);
+		}
+	?></div><?php
 	
 	# If configured, and if the resource itself is not an FLV file (in which case the FLV can already be downloaded), then allow the FLV file to be downloaded.
 	if ($flv_preview_downloadable && $resource["file_extension"]!="flv") {$flv_download=true;}
@@ -293,7 +453,18 @@ elseif (!(isset($resource['is_transcoding']) && $resource['is_transcoding']==1) 
 elseif ($use_mp3_player && file_exists($mp3realpath) && hook("custommp3player")){}	
 elseif ($resource['file_extension']=="swf" && $display_swf){
 	$swffile=get_resource_path($ref,true,"",false,"swf");
-	if (file_exists($swffile)) { include "swf_play.php";}	
+	if (file_exists($swffile))
+		{?>
+		<div id="previewimagewrapper">
+		<?php include "swf_play.php"; 
+		if(isset($previewcaption))
+			{
+			echo "<div class=\"clearerleft\"> </div>";					
+			display_field_data($previewcaption, true);
+			}
+		?>
+		</div><?php
+		}
 	}
 elseif ($resource["has_image"]==1)
 	{
@@ -315,7 +486,15 @@ elseif ($resource["has_image"]==1)
 		{ 
 		?><img src="<?php echo $imageurl?>" alt="<?php echo $lang["fullscreenpreview"]?>" class="Picture" GALLERYIMG="no" id="previewimage" /><?php 
 		} 
-	?></a></div><?php 
+	?></a><?php
+	if(isset($previewcaption))
+		{
+		echo "<div class=\"clearerleft\"> </div>";	
+		@list($pw) = @getimagesize($imagepath);
+		display_field_data($previewcaption, true, $pw);
+		}
+	
+	?></div><?php 
 	if ($image_preview_zoom)
 		{ 
 		$previewurl=get_resource_path($ref,false,"scr",false,$resource["preview_extension"],-1,1,$use_watermark);		
@@ -335,14 +514,25 @@ elseif ($resource["has_image"]==1)
 else
 	{
 	?>
+	<div id="previewimagewrapper">
 	<img src="<?php echo $baseurl ?>/gfx/<?php echo get_nopreview_icon($resource["resource_type"],$resource["file_extension"],false)?>" alt="" class="Picture" style="border:none;" id="previewimage" />
 	<?php
+	if(isset($previewcaption))
+		{	
+		echo "<div class=\"clearerleft\"> </div>";	
+		display_field_data($previewcaption, true);
+		}
+	?></div><?php	
 	}
 
 ?>
 <?php } /* End of renderinnerresourcepreview hook */ ?>
 <?php } /* End of replacerenderinnerresourcepreview hook */ ?>
-<?php hook("renderbeforerecorddownload");
+<?php
+
+
+
+hook("renderbeforerecorddownload");
 
 if ($download_summary) {include "../include/download_summary.php";}
 ?>
@@ -510,6 +700,7 @@ function add_download_column($ref, $size, $downloadthissize)
 		?><td class="DownloadButton DownloadDisabled"><?php echo $lang["access1"]?></td><?php
 		}
 	}
+
 
 # Look for a viewer to handle the right hand panel. If not, display the standard photo download / file download boxes.
 if (file_exists("../viewers/type" . $resource["resource_type"] . ".php"))
@@ -925,130 +1116,13 @@ $extra="";
 for ($n=0;$n<count($fields);$n++)
 	{
 	
-	#Check if field has a display condition set
-	$displaycondition=true;
-	if ($fields[$n]["display_condition"]!="")
-		{
-		//echo $fields[$n]["display_condition"] . "<br>";
-		$fieldstocheck=array(); #' Set up array to use in jQuery script function
-		$s=explode(";",$fields[$n]["display_condition"]);
-		$condref=0;
-		foreach ($s as $condition) # Check each condition
-			{
-			$displayconditioncheck=false;
-			$s=explode("=",$condition);
-			for ($cf=0;$cf<count($fields);$cf++) # Check each field to see if needs to be checked
-				{
-				if ($s[0]==$fields[$cf]["name"]) # this field needs to be checked
-					{					
-					$checkvalues=$s[1];
-					$validvalues=explode("|",strtoupper($checkvalues));
-					$v=trim_array(explode(",",strtoupper($fields[$cf]["value"])));
-					foreach ($validvalues as $validvalue)
-						{
-						if (in_array($validvalue,$v)) {$displayconditioncheck=true;} # this is  a valid value						
-						}
-					if (!$displayconditioncheck) {$displaycondition=false;}					
-					}
-					
-				} # see if next field needs to be checked
-							
-			$condref++;
-			} # check next condition	
-		
-		}	
-	
-	
-	
-	
-	
+	$displaycondition=check_display_condition($fields,$n);	
 	
 	if ($displaycondition)
 		{
-		if (!hook("renderfield")) {
-			$value=$fields[$n]["value"];
-			
-			# Handle expiry fields
-			if ($fields[$n]["type"]==6 && $value!="" && $value<=date("Y-m-d H:i") && $show_expiry_warning) 
-				{
-				$extra.="<div class=\"RecordStory\"> <h1>" . $lang["warningexpired"] . "</h1><p>" . $lang["warningexpiredtext"] . "</p><p id=\"WarningOK\"><a href=\"#\" onClick=\"document.getElementById('RecordDownload').style.display='block';document.getElementById('WarningOK').style.display='none';\">" . $lang["warningexpiredok"] . "</a></p></div><style>#RecordDownload {display:none;}</style>";
-				}
-			
-			if (($value!="") && ($value!=",") && ($fields[$n]["display_field"]==1) && ($access==0 || ($access==1 && !$fields[$n]["hide_when_restricted"])))
-				{
-				$title=htmlspecialchars(str_replace("Keywords - ","",$fields[$n]["title"]));
-				//if ($fields[$n]["type"]==4 || $fields[$n]["type"]==6) {$value=NiceDate($value,false,true);}
-
-				# Value formatting
-				if (($fields[$n]["type"]==2) || ($fields[$n]["type"]==7) || ($fields[$n]["type"]==9))
-					{$i18n_split_keywords =true;}
-				else 	{$i18n_split_keywords =false;}
-				$value=i18n_get_translated($value,$i18n_split_keywords );
-				if (($fields[$n]["type"]==2) || ($fields[$n]["type"]==3) || ($fields[$n]["type"]==7) || ($fields[$n]["type"]==9)) {$value=TidyList($value);}
-				$value_unformatted=$value; # store unformatted value for replacement also
-
-				if ($fields[$n]["type"]!=8) # Do not convert HTML formatted fields (that are already HTML) to HTML.
-					{
-					$value=nl2br(htmlspecialchars($value));
-					}
-				
-				# draw new tab panel?
-				if (($tabname!=$fields[$n]["tab_name"]) && ($fieldcount>0))
-					{
-					$tabcount++;
-					# Also display the custom formatted data $extra at the bottom of this tab panel.
-					?><div class="clearerleft"> </div><?php echo $extra?></div></div><div class="TabbedPanel StyledTabbedPanel" style="display:none;" id="tab<?php echo $tabcount?>"><div><?php	
-					$extra="";
-					}
-				$tabname=$fields[$n]["tab_name"];
-				$fieldcount++;		
-
-				if (trim($fields[$n]["display_template"])!="")
-					{
-					# Process the value using a plugin
-					$plugin="../plugins/value_filter_" . $fields[$n]["name"] . ".php";
-					if ($fields[$n]['value_filter']!=""){
-						eval($fields[$n]['value_filter']);
-					}
-					else if (file_exists($plugin)) {include $plugin;}
-					else if ($fields[$n]["type"]==4 || $fields[$n]["type"]==6) { 
-						$value=NiceDate($value,false,true);
-					}
-					
-					# Highlight keywords
-					$value=highlightkeywords($value,$search,$fields[$n]["partial_index"],$fields[$n]["name"],$fields[$n]["keywords_index"]);
-
-					# Use a display template to render this field
-					$template=$fields[$n]["display_template"];
-					$template=str_replace("[title]",$title,$template);
-					$template=str_replace("[value]",$value,$template);
-					$template=str_replace("[value_unformatted]",$value_unformatted,$template);
-					$template=str_replace("[ref]",$ref,$template);
-					$extra.=$template;
-					}
-				else
-					{
-					#There is a value in this field, but we also need to check again for a current-language value after the i18n_get_translated() function was called, to avoid drawing empty fields
-					if ($value!=""){
-						# Draw this field normally.
-						
-						
-							# value filter plugin should be used regardless of whether a display template is used.
-							$plugin="../plugins/value_filter_" . $fields[$n]["name"] . ".php";
-							if ($fields[$n]['value_filter']!=""){
-								eval($fields[$n]['value_filter']);
-							}
-							else if (file_exists($plugin)) {include $plugin;}
-							else if ($fields[$n]["type"]==4 || $fields[$n]["type"]==6) { 
-								$value=NiceDate($value,false,true);
-							}
-						
-						# Highlight keywords
-						$value=highlightkeywords($value,$search,$fields[$n]["partial_index"],$fields[$n]["name"],$fields[$n]["keywords_index"]);
-						?><div class="itemNarrow"><h3><?php echo $title?></h3><p><?php echo $value?></p></div><?php
-						}
-					}
-				}
+		if (!hook("renderfield")) 
+			{
+			display_field_data($fields[$n]);
 			}
 		}
 	}
