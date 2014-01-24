@@ -115,7 +115,7 @@ $lang["action-addtocollection"]="Добавить в коллекцию";
 $lang["action-removefromcollection"]="Убрать из коллекции";
 $lang["addtocollection"]="Добавить в коллекцию";
 $lang["cantmodifycollection"]="Вы не можете изменить эту коллекцию.";
-$lang["currentcollection"]="Текущая";
+$lang["currentcollection"]="Текущая коллекция";
 $lang["viewcollection"]="Посмотреть коллекцию";
 $lang["viewall"]="Посмотреть все";
 $lang["action-editall"]="Изменить все";
@@ -167,7 +167,7 @@ $lang["resourcetitle"]="Название объекта";
 $lang["filename"]="Оригинал файла";
 $lang["requestresource"]="Запрос объектов";
 $lang["requestall"]="Запросить все";
-$lang["action-viewmatchingresources"]="Посмотреть результаты";
+$lang["action-viewmatchingresources"]="Посмотреть соответствующие объекты";
 $lang["nomatchingresources"]="Нет соответствующих объектов";
 $lang["matchingresources"]="соответствующие объекты";
 $lang["advancedsearch"]="Расширенный поиск";
@@ -426,6 +426,7 @@ $lang["deleteallsure"]="Вы уверены, что хотите удалить 
 $lang["batchdonotaddcollection"]="(не добавить в коллекцию)";
 $lang["collectionsthemes"]="Похожие темы и публичные коллекции";
 $lang["recent"]="Новые объекты";
+$lang["n_recent"]="%qty Недавно добавленных объектов";
 $lang["batchcopyfrom"]="Скопируйте данные из объекта со следующим ID";
 $lang["copy"]="Копировать";
 $lang["zipall"]="Скачать коллекцию архивом";
@@ -713,7 +714,7 @@ $lang['google_terrain'] = "Google Terrain";
 $lang['google_default_map'] = "Google Default Map";
 $lang['google_satellite'] = "Google Satellite";
 $lang["markers"] = "Маркеры";
-$lang["useasthemethumbnail"]="Ипользовать этот ресурс как картинку для категории темы?";
+$lang["useasthemethumbnail"]="Ипользовать этот объект как картинку для категории темы?";
 
 $lang["collections-1"] = "(<strong>1</strong> коллекция)";
 $lang["collections-2"] = "(<strong>%d</strong> коллекции с <strong>%d</strong> объектами)"; # %number will be replaced, e.g. 3 Collections
@@ -788,9 +789,16 @@ $lang["ascending"] = "По возрастанию";
 $lang["descending"] = "По убыванию";
 $lang["sort-type"] = "Тип сортировки";
 $lang["collection-order"] = "Порядок коллекции";
+
 $lang["confirmcollectiondownload"]="Пожалуйста, подождите, пока создается архив с объектами. Это может занять какое-то время, зависящее от общего размера выбранных объектов.";
-$lang["collectiondownloadinprogress"]='Пожалуйста, подождите, пока создается архив с объектами. Это может занять какое-то время, зависящее от общего размера выбранных объектов.<br /><br />Чтобы продолжать работу, вы можете  <a href=\"home.php\" target=\"_blank\">> открыть новое окно броузера/a><br /><br />';
+$lang["collectiondownloadinprogress"]='Пожалуйста, подождите, пока создается архив с объектами. Это может занять какое-то время, зависящее от общего размера выбранных объектов.<br /><br />Чтобы продолжать работу, вы можете  <a href=\"home.php\" target=\"_blank\">> открыть новое окно броузера</a><br /><br />';
+$lang["preparingzip"]="Подготовка...";
+$lang["filesaddedtozip"]="файлов скопировано";
+$lang["fileaddedtozip"]="файл скопирован";
+$lang["zipping"]="Архивация";
+$lang["zipcomplete"]="Скачивание архива должно было начаться. Вы можете покинуть эту страницу";
 $lang["resourcenotinresults"]="Текущий объект больше не в результатах, поэтому навигация назад/вперед в данный момент невозможна";
+
 $lang["newflag"]="НОВОЕ!";
 $lang["collectionsdeleteempty"]="Удалить пустые коллекции";
 $lang["collectionsdeleteemptyareyousure"]="Вы уверены, что хотите удалить все свои пустые коллекции?";
@@ -805,6 +813,8 @@ $lang["allcollectionssearchbar"]="Все коллекции";
 $lang["resources"]="Объекты";
 $lang["resources-all-types"]="Объекты всех типов";
 $lang["search-mode"]="Искать...";
+$lang["global"]="Глобальный";
+$lang["action-viewmatchingresources"]="Посмотреть результаты";
 $lang["nomatchingresults"]="Нет результатов";
 $lang["matchingresults"]="результатов"; # e.g. 17 matching results
 $lang["resources"]="объекты";
@@ -815,4 +825,5 @@ $lang["downloadingmetadata"]="Метаданные загружаются";
 $lang["file-contains-metadata"]="Файл, который вы загружаете, содержит все метаданные для этого объекта.";
 $lang["metadata"]="Матаданные";
 $lang["textfile"]="Текстовый файл";
-?>
+
+$lang["progress"]="Прогресс";
