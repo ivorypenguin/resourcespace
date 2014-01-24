@@ -884,9 +884,9 @@ function check_display_condition($n, $field)
 	}
 
 # Allows language alternatives to be entered for free text metadata fields.
-function display_multilingual_text_field($n, $field)
+function display_multilingual_text_field($n, $field, $translations)
 	{
-	global $language, $languages, $translations, $lang;
+	global $language, $languages, $lang;
 	?>
 	<p><a href="#" class="OptionToggle" onClick="l=document.getElementById('LanguageEntry_<?php echo $n?>');if (l.style.display=='block') {l.style.display='none';this.innerHTML='<?php echo $lang["showtranslations"]?>';} else {l.style.display='block';this.innerHTML='<?php echo $lang["hidetranslations"]?>';} return false;"><?php echo $lang["showtranslations"]?></a></p>
 	<table class="OptionTable" style="display:none;" id="LanguageEntry_<?php echo $n?>">
@@ -1075,7 +1075,7 @@ function display_field($n, $field, $newtab=false)
 	# If enabled, include code to produce extra fields to allow multilingual free text to be entered.
 	if ($multilingual_text_fields && ($field["type"]==0 || $field["type"]==1 || $field["type"]==5))
 		{
-		display_multilingual_text_field($n, $field);
+		display_multilingual_text_field($n, $field, $translations);
 		}
 	?>
 	<div class="clearerleft"> </div>
