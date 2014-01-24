@@ -1362,7 +1362,7 @@ function delete_exif_tmpfile($tmpfile)
 	if(file_exists($tmpfile)){unlink ($tmpfile);}
 }
 
-function update_resource($r,$path,$type,$title,$ingest=false)
+function update_resource($r,$path,$type,$title,$ingest=false,$createPreviews=true)
 	{
 	# Update the resource with the file at the given path
 	# Note that the file will be used at it's present location and will not be copied.
@@ -1425,24 +1425,28 @@ function update_resource($r,$path,$type,$title,$ingest=false)
 		{
 		update_field($r,8,$title);
 		extract_exif_comment($r,$extension);
-	} else {
+		}
+	else
+		{
 		extract_exif_comment($r,$extension);
 		update_field($r,8,$title);
-	}
-
+		}
 
 	# Ensure folder is created, then create previews.
 	get_resource_path($r,false,"pre",true,$extension);
 
-	# Generate previews/thumbnails (if configured i.e if not completed by offline process 'create_previews.php')
-	global $enable_thumbnail_creation_on_upload;
-	if ($enable_thumbnail_creation_on_upload) {create_previews($r,false,$extension);}
+	if ($createPreviews)
+		{
+		# Generate previews/thumbnails (if configured i.e if not completed by offline process 'create_previews.php')
+		global $enable_thumbnail_creation_on_upload;
+		if ($enable_thumbnail_creation_on_upload) {create_previews($r,false,$extension);}
+		}
 
 	# Pass back the newly created resource ID.
 	return $r;
 	}
 
-function import_resource($path,$type,$title,$ingest=false)
+function import_resource($path,$type,$title,$ingest=false,$createPreviews=true)
 	{
 	# Import the resource at the given path
 	# This is used by staticsync.php and Camillo's SOAP API
@@ -1450,7 +1454,7 @@ function import_resource($path,$type,$title,$ingest=false)
 
 	# Create resource
 	$r=create_resource($type);
-	return update_resource($r, $path, $type, $title, $ingest);
+	return update_resource($r, $path, $type, $title, $ingest, $createPreviews);
 	}
 
 function get_alternative_files($resource,$order_by="",$sort="")
