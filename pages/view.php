@@ -745,6 +745,10 @@ if ($resource["has_image"]==1 && $download_multisize)
 
 		$headline=$sizes[$n]['id']=='' ? str_replace_formatted_placeholder("%extension", $resource["file_extension"], $lang["originalfileoftype"])
 				: $sizes[$n]["name"];
+		$newHeadline=hook('replacesizelabel', '', array($ref, $resource, $sizes[$n]));
+		if (!empty($newHeadline))
+			$headline=$newHeadline;
+
 		if ($direct_link_previews && $downloadthissize)
 			$headline=make_download_preview_link($ref, $sizes[$n],$headline);
 		if ($hide_restricted_download_sizes && !$downloadthissize && !checkperm("q"))
