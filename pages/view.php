@@ -539,7 +539,9 @@ if ($download_summary) {include "../include/download_summary.php";}
 <?php if (!hook("renderresourcedownloadspace")) { ?>
 <div class="RecordDownload" id="RecordDownload">
 <div class="RecordDownloadSpace">
-<?php if (!hook("renderinnerresourcedownloadspace")) { ?>
+<?php if (!hook("renderinnerresourcedownloadspace")) { 
+	hook("beforeresourcetoolsheader");
+?>
 <h2 id="resourcetools"><?php echo $lang["resourcetools"]?></h2>
 
 <?php 
