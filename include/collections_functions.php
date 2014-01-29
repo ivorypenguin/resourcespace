@@ -61,9 +61,8 @@ function get_user_collections($user,$find="",$order_by="name",$sort="ASC",$fetch
 			$hasown=true;
 		}
 	}
-	if ($find!=""){$hasown=true;} // if doing a search in collections, assume My Collection already exists (to avoid creating new collections due to an empty search result).
 
-	if (!$hasown && $auto_create)
+	if (!$hasown && $auto_create && $find=="") # User has no collections of their own, and this is not a search. Make a new 'My Collection'
 		{
 		# No collections of one's own? The user must have at least one My Collection
 		global $usercollection;
