@@ -449,6 +449,15 @@ jQuery(document).ready(function () {
 		
 });
 	
+<?php
+# If adding to a collection that has been externally shared, show a warning.
+if ($collection_add!="" && count(get_collection_external_access($collection_add))>0)
+    {
+    # Show warning.
+    ?>alert("<?php echo $lang["sharedcollectionaddwarningupload"]?>");<?php
+    }   
+?>
+    
 		
 </script>
 

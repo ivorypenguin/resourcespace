@@ -784,6 +784,8 @@ $lang["noattachedusers"]="No attached users.";
 $lang["confirmdeleteaccess"]="Are you sure you wish to delete this access key? Users that have been given access using this key will no longer be able to access this collection.";
 $lang["noexternalsharing"]="No external sharing.";
 $lang["sharedcollectionaddwarning"]="Warning: This collection has been shared with external users. The resource you have added has now been made available to these users. Click 'share' to manage the external access for this collection.";
+$lang["sharedcollectionaddwarningupload"]="Warning: The selected collection has been shared with external users. The resources you upload will be made available to these users. Click 'share' in the bottom bar to manage the external access for this collection.";
+
 $lang["restrictedsharecollection"]="You have restricted access to one or more of the resources in this collection and therefore sharing is prohibited.";
 $lang["selectgenerateurlexternal"]="To create a URL that will work for external users (people that do not have a login) please choose the access level you wish to grant to the resources.";
 $lang["selectgenerateurlexternalthemecat"]="To create URLs that will allow access to external users (people that do not have a login) please choose the access level you wish to grant to the resources.";
