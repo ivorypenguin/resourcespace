@@ -2265,7 +2265,7 @@ function get_simple_search_fields()
     $return = array();
     for ($n = 0;$n<count($fields);$n++) {
         if ((checkperm("f*") || checkperm("f" . $fields[$n]["ref"]))
-        && !checkperm("f-" . $fields[$n]["ref"])) {
+        && !checkperm("f-" . $fields[$n]["ref"]) && !checkperm("T" . $fields[$n]["resource_type"] )) {
             $fields[$n]["title"] = lang_or_i18n_get_translated($fields[$n]["title"], "fieldtitle-");            
             $return[] = $fields[$n];
         }
