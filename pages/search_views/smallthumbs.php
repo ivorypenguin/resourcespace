@@ -89,7 +89,9 @@
 		
 		
 		<?php hook("smallsearchfreeicon");?>
-		<div class="ResourcePanelIcons"><?php if ($display_resource_id_in_thumbnail && $ref>0) { echo htmlspecialchars($ref); } else { ?>&nbsp;<?php } ?></div>	
+		<?php if (!hook("replaceresourceplaneliconssmall")){?>
+		<div class="ResourcePanelIcons"><?php if ($display_resource_id_in_thumbnail && $ref>0) { echo htmlspecialchars($ref); } else { ?><?php } ?></div>	
+		<?php } /* end hook replaceresourcepaneliconssmall */ ?>
 		<?php hook("smallsearchicon");?>
 		<?php if (!hook("replaceresourcetoolssmall")){?>
 
