@@ -833,6 +833,12 @@ function create_previews_using_im($ref,$thumbonly=false,$extension="jpg",$previe
 		preg_match('/^([0-9]+)x([0-9]+)$/ims',$identoutput,$smatches);
 				if ((@list(,$sw,$sh) = $smatches)===false) { return false; }
 
+		if ($extension=="png"){
+			global $storagedir;
+			$wait=run_command(str_replace("identify","composite",$identify_fullpath)."  -compose Dst_Over -tile ".$storagedir."/../gfx/images/transparency.gif ".escapeshellarg($file)." ".escapeshellarg($file."2")." 2>&1");
+			$file=$file."2";
+		}
+
 		$sizes="";
 		if ($thumbonly) {$sizes=" where id='thm' or id='col'";}
 		if ($previewonly) {$sizes=" where id='thm' or id='col' or id='pre' or id='scr'";}
