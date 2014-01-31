@@ -865,7 +865,7 @@ function email_resource($resource,$resourcename,$fromusername,$userlist,$message
 		# Do we need to add an external access key for this user (e-mail specified rather than username)?
 		if ($key_required[$n])
 			{
-			$k=generate_resource_access_key($resource,$userref,$access,$expires);
+			$k=generate_resource_access_key($resource,$userref,$access,$expires,$emails[$n]);
 			$key="&k=". $k;
 			}
 		
@@ -2861,10 +2861,22 @@ function get_original_imagesize($ref="",$path="", $extension="jpg")
 	
 	}
         
-function generate_resource_access_key($resource,$userref,$access,$expires)
+function generate_resource_access_key($resource,$userref,$access,$expires,$email)
         {
         $k=substr(md5(time()),0,10);
-	sql_query("insert into external_access_keys(resource,access_key,user,access,expires) values ('$resource','$k','$userref','$access'," . (($expires=="")?"null":"'" . $expires . "'"). ");");
+	sql_query("insert into external_access_keys(resource,access_key,user,access,expires,email) values ('$resource','$k','$userref','$access'," . (($expires=="")?"null":"'" . $expires . "'"). ",'" . escape_check($email) . "');");
         return $k;
         }
+
+function get_resource_external_access($resource)
+	{
+	# Return all external access given to a resource 
+	# Users, emails and dates could be multiple for a given access key, an in this case they are returned comma-separated.
+	return sql_query("select access_key,group_concat(DISTINCT user ORDER BY user SEPARATOR ', ') users,group_concat(DISTINCT email ORDER BY email SEPARATOR ', ') emails,max(date) maxdate,max(lastused) lastused,access,expires,collection from external_access_keys where resource='$resource' group by access_key order by date");
+	}
+        
+function delete_resource_access_key($resource,$access_key)
+    {
+    sql_query("delete from external_access_keys where access_key='$access_key' and resource='$resource'");
+    }
 
