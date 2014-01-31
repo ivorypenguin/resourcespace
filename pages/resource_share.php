@@ -52,7 +52,7 @@ include "../include/header.php";
 <div class="BasicsBox"> 
 <form method=post id="resourceshareform" action="<?php echo $baseurl_short?>pages/resource_share.php" onSubmit="return CentralSpacePost(this);">
 <input type="hidden" name="ref" id="ref" value="<?php echo htmlspecialchars($ref) ?>">
-<input type="hidden" name="generateurl" id="generateurl" value="">
+<input type="hidden" name="generateurl" id="generateurl" value="<?php echo getval("generateurl","") ?>">
 <input type="hidden" name="deleteaccess" id="deleteaccess" value="">
             
 	<div class="VerticalNav">
@@ -69,7 +69,7 @@ include "../include/header.php";
                 <p><?php echo $lang["generateurlinternal"]?></p>
                 <p><input class="URLDisplay" type="text" value="<?php echo $baseurl?>/?r=<?php echo $ref?>"></p>
                 <?php
-                }
+                
                        
                 $access=getvalescaped("access","");
 		$expires=getvalescaped("expires","");
@@ -122,6 +122,7 @@ include "../include/header.php";
 			<p><input class="URLDisplay" type="text" value="<?php echo $baseurl?>/?r=<?php echo urlencode($ref) ?>&k=<?php echo generate_resource_access_key($ref,$userref,$access,$expires,"URL")?>">
 			<?php
 			}
+                }
         ?>
         
         </ul>
