@@ -879,8 +879,9 @@ function create_previews_using_im($ref,$thumbonly=false,$extension="jpg",$previe
 
 			# Find the target path
 			$path=get_resource_path($ref,true,$ps[$n]["id"],false,"jpg",-1,1,false,"",$alternative);
+			
 			# Delete any file at the target path. Unless using the previewbased option, in which case we need it.			
-            if(!hook("imagepskipdel"))
+            if(!hook("imagepskipdel") && (!($ps[$n]['id']=="hpr" && $extension=="jpg")))
 				{
 				if (!$previewbased)
 					{
