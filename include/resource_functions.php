@@ -2864,7 +2864,7 @@ function get_original_imagesize($ref="",$path="", $extension="jpg")
 function generate_resource_access_key($resource,$userref,$access,$expires,$email)
         {
         $k=substr(md5(time()),0,10);
-	sql_query("insert into external_access_keys(resource,access_key,user,access,expires,email) values ('$resource','$k','$userref','$access'," . (($expires=="")?"null":"'" . $expires . "'"). ",'" . escape_check($email) . "');");
+	sql_query("insert into external_access_keys(resource,access_key,user,access,expires,email,date) values ('$resource','$k','$userref','$access'," . (($expires=="")?"null":"'" . $expires . "'"). ",'" . escape_check($email) . "',now());");
         return $k;
         }
 
