@@ -158,7 +158,9 @@ include "../include/header.php";
 			{
 			?>
 			<tr>
-			<td><div class="ListTitle"><a target="_blank" href="<?php echo $baseurl . "?c=" . urlencode($ref) . "&k=" . urlencode($keys[$n]["access_key"]) ?>"><?php echo htmlspecialchars($keys[$n]["access_key"]) ?></a></div></td>
+			<td><div class="ListTitle"><a target="_blank" href="<?php echo $baseurl .
+                        (is_numeric($keys[$n]["collection"])?"?c=" . urlencode($keys[$n]["collection"]):"?r=" . urlencode($ref))
+                        . "&k=" . urlencode($keys[$n]["access_key"]) ?>"><?php echo htmlspecialchars($keys[$n]["access_key"]) ?></a></div></td>
                         <td><?php echo (is_numeric($keys[$n]["collection"])?$lang["sharecollection"]:$lang["share-resource"]) ?></td>
 			<td><?php echo htmlspecialchars(resolve_users($keys[$n]["users"]))?></td>
 			<td><?php echo htmlspecialchars($keys[$n]["emails"]) ?></td>
