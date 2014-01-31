@@ -29,16 +29,27 @@ include "../include/header.php";
 
 <h1><?php echo $lang["share-resource"] ?></h1>
 
-
 <div class="BasicsBox"> 
 
-<p><?php echo $lang["generateurlinternal"]?></p>
+	<div class="VerticalNav">
+	<ul>
 
+        <li><a href="<?php echo $baseurl_short?>pages/resource_email.php?ref=<?php echo urlencode($ref)?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>"  onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["emailresource"]?></a></li>
 
-<p><input class="URLDisplay" type="text" value="<?php echo $baseurl?>/?r=<?php echo $ref?>">
-	
+        <li><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/resource_share.php?ref=<?php echo urlencode($ref) ?>&generateurl=true&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by) ?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>"><?php echo $lang["generateurl"]?></a></li>
 
-
+        <?php
+        if (getval("generateurl","")!="")
+		{
+                ?>
+                <p><?php echo $lang["generateurlinternal"]?></p>
+                <p><input class="URLDisplay" type="text" value="<?php echo $baseurl?>/?r=<?php echo $ref?>"></p>
+                <?php
+                }
+        ?>
+        
+        </ul>
+        </div>
 
 </div>
 
