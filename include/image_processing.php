@@ -849,7 +849,7 @@ function create_previews_using_im($ref,$thumbonly=false,$extension="jpg",$previe
 			# If this is just a jpg resource, we avoid the hpr size because the resource itself is an original sized jpg. 
 			# If preview_preprocessing indicates the intermediate jpg should be kept as the hpr image, do that. 
 			if ($keep_for_hpr && $ps[$n]['id']=="hpr"){
-				rename($file,$hpr_path);$keep_for_hpr=false;
+				rename($file,$hpr_path); // $keep_for_hpr is switched to false below
 			}
 			
 			# If we've already made the LPR or SCR then use those for the remaining previews.
@@ -881,7 +881,7 @@ function create_previews_using_im($ref,$thumbonly=false,$extension="jpg",$previe
 			$path=get_resource_path($ref,true,$ps[$n]["id"],false,"jpg",-1,1,false,"",$alternative);
 			
 			# Delete any file at the target path. Unless using the previewbased option, in which case we need it.			
-            if(!hook("imagepskipdel") && (!($ps[$n]['id']=="hpr" && $extension=="jpg")))
+            if(!hook("imagepskipdel") && !$keep_for_hpr)
 				{
 				if (!$previewbased)
 					{
@@ -889,6 +889,7 @@ function create_previews_using_im($ref,$thumbonly=false,$extension="jpg",$previe
 						{unlink($path);}
 					}
 				}
+			if ($keep_for_hpr){$keep_for_hpr=false;}
                     
 			# Also try the watermarked version.
 			$wpath=get_resource_path($ref,true,$ps[$n]["id"],false,"jpg",-1,1,true,"",$alternative);
