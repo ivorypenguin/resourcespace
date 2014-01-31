@@ -865,8 +865,7 @@ function email_resource($resource,$resourcename,$fromusername,$userlist,$message
 		# Do we need to add an external access key for this user (e-mail specified rather than username)?
 		if ($key_required[$n])
 			{
-			$k=substr(md5(time()),0,10);
-			sql_query("insert into external_access_keys(resource,access_key,user,access,expires) values ('$resource','$k','$userref','$access'," . (($expires=="")?"null":"'" . $expires . "'"). ");");
+			$k=generate_resource_access_key($resource,$userref,$access,$expires);
 			$key="&k=". $k;
 			}
 		
@@ -2861,3 +2860,11 @@ function get_original_imagesize($ref="",$path="", $extension="jpg")
 	return $fileinfo;
 	
 	}
+        
+function generate_resource_access_key($resource,$userref,$access,$expires)
+        {
+        $k=substr(md5(time()),0,10);
+	sql_query("insert into external_access_keys(resource,access_key,user,access,expires) values ('$resource','$k','$userref','$access'," . (($expires=="")?"null":"'" . $expires . "'"). ");");
+        return $k;
+        }
+

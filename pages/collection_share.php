@@ -81,7 +81,7 @@ include "../include/header.php";
 ?>
   
 	<div class="BasicsBox"> 	
-	<form method=post id="collectionform" action="<?php echo $baseurl_short?>pages/collection_share.php">
+	<form method=post id="collectionform" action="<?php echo $baseurl_short?>pages/collection_share.php" onSubmit="return CentralSpacePost(this);">
 	<input type="hidden" name="ref" id="ref" value="<?php echo htmlspecialchars($ref) ?>">
 	<input type="hidden" name="deleteaccess" id="deleteaccess" value="">
 	<input type="hidden" name="editaccess" id="editaccess" value="<?php echo htmlspecialchars($editaccess)?>">
