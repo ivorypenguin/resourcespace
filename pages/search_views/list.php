@@ -43,7 +43,7 @@
 		<td <?php hook("listviewcolumnstyle");?>><?php if (isset($result[$n][$rating])&& $result[$n][$rating]>0) { ?><?php for ($y=0;$y<$result[$n][$rating];$y++){?> <div class="IconStar"></div><?php } } else { ?>&nbsp;<?php } ?></td>
 		<?php if ($id_column){?><td <?php hook("listviewcolumnstyle");?>><?php echo $result[$n]["ref"]?></td><?php } ?>
 		<?php if ($resource_type_column){?><td <?php hook("listviewcolumnstyle");?>><?php if (array_key_exists($result[$n]["resource_type"],$rtypes)) { ?><?php echo $rtypes[$result[$n]["resource_type"]]?><?php } ?></td><?php } ?>
-		<?php if ($list_view_status_column){?><td><?php echo $lang["status" . $result[$n]["archive"]]?></td><?php } ?>
+		<?php if ($list_view_status_column){?><td <?php hook("listviewcolumnstyle");?>><?php echo $lang["status" . $result[$n]["archive"]]?></td><?php } ?>
 		<?php if ($date_column){?><td <?php hook("listviewcolumnstyle");?>><?php echo nicedate($result[$n]["creation_date"],false,true)?></td><?php } ?>
 		<?php hook("addlistviewcolumn");?>
 		<td <?php hook("listviewcolumnstyle");?>><div class="ListTools"><a  onClick="return CentralSpaceLoad(this);" <?php if ($infobox) { ?>onmouseover="InfoBoxSetResource(<?php echo htmlspecialchars($ref)?>);"onmouseout="InfoBoxSetResource(0);"<?php } ?> href="<?php echo $url?>">&gt;&nbsp;<?php echo $lang["action-view"]?></a> &nbsp;<?php
