@@ -833,11 +833,6 @@ function create_previews_using_im($ref,$thumbonly=false,$extension="jpg",$previe
 		preg_match('/^([0-9]+)x([0-9]+)$/ims',$identoutput,$smatches);
 				if ((@list(,$sw,$sh) = $smatches)===false) { return false; }
 
-		if ($extension=="png"){
-			global $storagedir;
-			$wait=run_command(str_replace("identify","composite",$identify_fullpath)."  -compose Dst_Over -tile ".$storagedir."/../gfx/images/transparency.gif ".escapeshellarg($file)." ".escapeshellarg($file."2")." 2>&1");
-			$file=$file."2";
-		}
 
 		$sizes="";
 		if ($thumbonly) {$sizes=" where id='thm' or id='col'";}
@@ -854,21 +849,23 @@ function create_previews_using_im($ref,$thumbonly=false,$extension="jpg",$previe
 			
 			# If we've already made the LPR or SCR then use those for the remaining previews.
 			# As we start with the large and move to the small, this will speed things up.
+			if ($extension!="png" && $extension!="gif"){
 			if(file_exists($hpr_path)){$file=$hpr_path;}
 			if(file_exists($lpr_path)){$file=$lpr_path;}
 			if(file_exists($scr_path)){$file=$scr_path;}
-			
+			}
+
 			# Locate imagemagick.
             $convert_fullpath = get_utility_path("im-convert");
             if ($convert_fullpath==false) {exit("Could not find ImageMagick 'convert' utility at location '$imagemagick_path'.");}
 
-			if( $prefix == "cr2:" || $prefix == "nef:" ) {
+			if( $prefix == "cr2:" || $prefix == "nef:" || $extension=="png" || $extension=="gif") {
 			    $flatten = "";
 			} else {
 			    $flatten = "-flatten";
 			}
 
-            $command = $convert_fullpath . ' '. escapeshellarg($file) .'[0] +matte ' . $flatten . ' -quality ' . $imagemagick_quality;
+            $command = $convert_fullpath . ' '. escapeshellarg($file) .(($extension!="png" && $extension!="gif")?'[0] +matte ':'') . $flatten . ' -quality ' . $imagemagick_quality;
 
 			# fetch target width and height
 			$tw=$ps[$n]["width"];$th=$ps[$n]["height"];
@@ -878,7 +875,8 @@ function create_previews_using_im($ref,$thumbonly=false,$extension="jpg",$previe
 			debug("Contemplating " . $ps[$n]["id"] . " (sw=$sw, tw=$tw, sh=$sh, th=$th, extension=$extension)");
 
 			# Find the target path
-			$path=get_resource_path($ref,true,$ps[$n]["id"],false,"jpg",-1,1,false,"",$alternative);
+			if ($extension=="png" || $extension=="gif"){$target_ext=$extension;} else {$target_ext="jpg";}
+			$path=get_resource_path($ref,true,$ps[$n]["id"],false,$target_ext,-1,1,false,"",$alternative);
 			
 			# Delete any file at the target path. Unless using the previewbased option, in which case we need it.			
             if(!hook("imagepskipdel") && !$keep_for_hpr)
@@ -892,7 +890,7 @@ function create_previews_using_im($ref,$thumbonly=false,$extension="jpg",$previe
 			if ($keep_for_hpr){$keep_for_hpr=false;}
                     
 			# Also try the watermarked version.
-			$wpath=get_resource_path($ref,true,$ps[$n]["id"],false,"jpg",-1,1,true,"",$alternative);
+			$wpath=get_resource_path($ref,true,$ps[$n]["id"],false,$target_ext,-1,1,true,"",$alternative);
 				if (file_exists($wpath))
 					{unlink($wpath);}
 			
@@ -940,10 +938,21 @@ function create_previews_using_im($ref,$thumbonly=false,$extension="jpg",$previe
 						}
 				}
 
-				$runcommand = $command ." +matte $profile -resize " . $tw . "x" . $th . "\">\" ".escapeshellarg($path);
+				$runcommand = $command ." ".(($extension!="png" && $extension!="gif")?" +matte $profile ":"")." -resize " . $tw . "x" . $th . "\">\" ".escapeshellarg($path);
                                 if(!hook("imagepskipthumb")):
 				$output=run_command($runcommand);
                                 endif;
+				
+				// checkerboard
+				if ($extension=="png" || $extension=="gif"){
+					global $transparency_background;
+				$transparencyreal=dirname(__FILE__) ."/../" . $transparency_background;
+					$wait=run_command(str_replace("identify","composite",$identify_fullpath)."  -compose Dst_Over -tile ".escapeshellarg($transparencyreal)." ".escapeshellarg($path)." ".escapeshellarg(str_replace($extension,"jpg",$path))." 2>&1");
+					unlink($path);
+					$path=str_replace($extension,"jpg",$path);
+				}               
+                                
+                                
 				//echo $runcommand."<br /><br/>";
 				# echo $runcommand."<br>\n";
 				# Add a watermarked image too?
@@ -952,15 +961,21 @@ function create_previews_using_im($ref,$thumbonly=false,$extension="jpg",$previe
 				if (!hook("replacewatermarkcreation","",array($ref,$ps,$n,$alternative))){
 				if ($alternative==-1 && isset($watermark) && ($ps[$n]["internal"]==1 || $ps[$n]["allow_preview"]==1))
 					{
-					$path=get_resource_path($ref,true,$ps[$n]["id"],false,"",-1,1,true);
-					if (file_exists($path)) {unlink($path);}
+					$wmpath=get_resource_path($ref,true,$ps[$n]["id"],false,"jpg",-1,1,true);
+					if (file_exists($wmpath)) {unlink($wmpath);}
 					
 					$watermarkreal=dirname(__FILE__) ."/../" . $watermark;
 					
-					$runcommand = $command ." +matte $profile -resize " . $tw . "x" . $th . "\">\" -tile ".escapeshellarg($watermarkreal)." -draw \"rectangle 0,0 $tw,$th\" ".escapeshellarg($path); 
+					$runcommand = $command ." +matte $profile -resize " . $tw . "x" . $th . "\">\" -tile ".escapeshellarg($watermarkreal)." -draw \"rectangle 0,0 $tw,$th\" ".escapeshellarg($wmpath); 
+					
+					// alternate command for png/gif using the path from above, and omitting resizing
+					if ($extension=="png" || $extension=="gif"){
+						$runcommand = $convert_fullpath . ' '. escapeshellarg($path) .(($extension!="png" && $extension!="gif")?'[0] +matte ':'') . $flatten . ' -quality ' . $imagemagick_quality ." -tile ".escapeshellarg($watermarkreal)." -draw \"rectangle 0,0 $tw,$th\" ".escapeshellarg($wmpath); 
+					}
 					
 					#die($runcommand);
 					$output=run_command($runcommand);
+					//echo $runcommand."</br>";
 					
 					}
 				}

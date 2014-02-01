@@ -1944,6 +1944,8 @@ $direct_download_noauth = false;
 $direct_link_previews_filestore = false;
 
 $psd_transparency_checkerboard=false;
+// checkerboard for gif and png with transparency
+$transparency_background = "gfx/images/transparency.gif";
 
 # Search for a minimum number of stars in Simple search/Advanaced Search (requires $$display_user_rating_stars)
 $star_search=false;
