@@ -10,7 +10,7 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 	debug("search=$search $go $fetchrows restypes=$restypes archive=$archive daylimit=$recent_search_daylimit");
 	
 	# globals needed for hooks	 
-	global $sql,$order,$select,$sql_join,$sql_filter,$orig_order,$checkbox_and,$collections_omit_archived,$search_sql_double_pass_mode, $usergroup;
+	global $sql,$order,$select,$sql_join,$sql_filter,$orig_order,$checkbox_and,$collections_omit_archived,$search_sql_double_pass_mode,$usergroup,$search_filter_strict;
 
 	$alternativeresults = hook("alternativeresults", "", array($go));
 	if ($alternativeresults) {return $alternativeresults; }
@@ -687,7 +687,11 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 		    if (!$filter_not)
 		    	{
 		    	# Standard operation ('=' syntax)
-			    $sql_join.=" join resource_keyword filter" . $n . " on r.ref=filter" . $n . ".resource and filter" . $n . ".resource_type_field in ('" . join("','",$f) . "') and filter" . $n . ".keyword in ('" . 	join("','",$kw) . "') ";	
+			    $sql_join.=" join resource_keyword filter" . $n . " on r.ref=filter" . $n . ".resource and filter" . $n . ".resource_type_field in ('" . join("','",$f) . "') and filter" . $n . ".keyword in ('" . 	join("','",$kw) . "') ";
+			    if ($search_filter_strict > 1)
+					{
+                    $sql_join.=" join resource_data dfilter" . $n . " on r.ref=dfilter" . $n . ".resource and dfilter" . $n . ".resource_type_field in ('" . join("','",$f) . "') and (find_in_set('". join ("', dfilter" . $n . ".value) or find_in_set('", explode("|",escape_check($s[1]))) ."', dfilter" . $n . ".value))";
+					}
 			    }
 			else
 				{

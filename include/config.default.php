@@ -2088,6 +2088,7 @@ $display_request_log_link=false;
 $iprestrict_friendlyerror=false;
 
 #Make search filter strict (prevents direct access to view/preview page)
+#Set to 2 in order to emulate single resource behaviour in search (EXPERIMENTAL). Prevents search results that are not accessible from showing up. Slight performance penalty on larger search results.
 $search_filter_strict=true;
 
 #Plupload settings
