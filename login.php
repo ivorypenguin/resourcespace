@@ -35,8 +35,8 @@ if ($lockouts>0 || $ulockouts>0)
 # Process the submitted login
 elseif (array_key_exists("username",$_POST) && getval("langupdate","")=="")
     {
-    $username=getvalescaped("username","");
-    $password=getvalescaped("password","");
+    $username=trim(getvalescaped("username",""));
+    $password=trim(getvalescaped("password",""));
 
 	$result=perform_login();
 	if ($result['valid'])
