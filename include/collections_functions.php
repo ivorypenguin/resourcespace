@@ -1006,6 +1006,7 @@ function add_smart_collection()
 
 	$search=getvalescaped("addsmartcollection","");
 	$restypes=getvalescaped("restypes","");
+	if($restypes=="Global"){$restypes="";}
 	$archive=getvalescaped("archive","",true);
 	$starsearch=getvalescaped("starsearch",0);
 	
