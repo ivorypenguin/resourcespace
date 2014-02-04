@@ -29,7 +29,7 @@ function perform_login()
         This is necessary because older (much older!) systems being upgraded may still have passwords stored locally in plain text.
         */        
         sql_query("update user set password=md5(concat('RS',username,password)) where username='".escape_check($username)."' and length(password)<>32");
-                
+        
 	$ip=get_ip();
 
 	# This may change the $username, $password, and $password_hash
@@ -39,7 +39,7 @@ function perform_login()
 	$session_hash=generate_session_hash($password_hash);
 
         # Check the provided credentials
-	$valid=sql_query("select ref,usergroup,account_expires from user where username='".escape_check($username)."' and (password='".escape_check($password)."' or password='".escape_check($password_hash)."')");
+	$valid=sql_query("select ref,usergroup,account_expires from user where username='".escape_check($username)."' and password='".escape_check($password_hash)."'");
 
 	# Prepare result array
 	$result=array();
@@ -48,7 +48,10 @@ function perform_login()
 	if (count($valid)>=1)
 		{
 		# Account expiry
+		$userref=$valid[0]["ref"];
+		$usergroup=$valid[0]["usergroup"];
 		$expires=$valid[0]["account_expires"];
+
 		if ($expires!="" && $expires!="0000-00-00 00:00:00" && strtotime($expires)<=time())
 			{
 			$result['error']=$lang["accountexpired"];
@@ -59,14 +62,12 @@ function perform_login()
 		$result['session_hash']=$session_hash;
 		$result['password_hash']=$password_hash;
 
-		# Update the user record. Set the password hash again in case a plain text password was provided.
+		# Update the user record.
 		# Omit updating session has if using an API, because we don't want API usage to log users out, and there is no 'session' to remember in such a case.
-		if ($api){$session_hash_sql="";} else {$session_hash_sql=",session='".escape_check($session_hash)."'";}
-		sql_query("update user set password='".escape_check($password_hash)."' $session_hash_sql ,last_active=now(),login_tries=0,lang='".getvalescaped("language","")."' where username='".escape_check($username)."' and (password='".escape_check($password)."' or password='".escape_check($password_hash)."')");
+		if ($api){$session_hash_sql="";} else {$session_hash_sql="session='".escape_check($session_hash)."',";}
+		sql_query("update user set $session_hash_sql last_active=now(),login_tries=0,lang='".getvalescaped("language","")."' where ref='$userref'");
 
 		# Log this
-		$userref=$valid[0]["ref"];
-		$usergroup=$valid[0]["usergroup"];
 		daily_stat("User session",$userref);
 		sql_query("insert into resource_log(date,user,resource,type) values (now()," . (($userref!="")?"'$userref'":"null") . ",0,'l')");
 
