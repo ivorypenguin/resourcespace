@@ -25,6 +25,11 @@ function perform_login()
 		$password_hash=$password;
 		}
 
+        /* ------- Automatic migration of plain text passwords to hashed passwords ------------
+        This is necessary because older (much older!) systems being upgraded may still have passwords stored locally in plain text.
+        */        
+        sql_query("update user set password=md5(concat('RS',username,password)) where username='".escape_check($username)."' and length(password)<>32");
+                
 	$ip=get_ip();
 
 	# This may change the $username, $password, and $password_hash
@@ -33,6 +38,7 @@ function perform_login()
 	# Generate a new session hash.
 	$session_hash=generate_session_hash($password_hash);
 
+        # Check the provided credentials
 	$valid=sql_query("select ref,usergroup,account_expires from user where username='".escape_check($username)."' and (password='".escape_check($password)."' or password='".escape_check($password_hash)."')");
 
 	# Prepare result array
