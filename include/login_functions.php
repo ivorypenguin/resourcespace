@@ -33,7 +33,7 @@ function perform_login()
 	# Generate a new session hash.
 	$session_hash=generate_session_hash($password_hash);
 
-	$valid=sql_query("select ref,usergroup from user where username='".escape_check($username)."' and (password='".escape_check($password)."' or password='".escape_check($password_hash)."')");
+	$valid=sql_query("select ref,usergroup,account_expires from user where username='".escape_check($username)."' and (password='".escape_check($password)."' or password='".escape_check($password_hash)."')");
 
 	# Prepare result array
 	$result=array();
@@ -42,7 +42,7 @@ function perform_login()
 	if (count($valid)>=1)
 		{
 		# Account expiry
-		$expires=sql_value("select account_expires value from user where username='".escape_check($username)."' and password='".escape_check($password)."'","");
+		$expires=$valid[0]["account_expires"];
 		if ($expires!="" && $expires!="0000-00-00 00:00:00" && strtotime($expires)<=time())
 			{
 			$result['error']=$lang["accountexpired"];
