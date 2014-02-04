@@ -13,4 +13,8 @@ $lang['action_dates_restrict']="Automatically restrict access to resources when 
 $lang['action_dates_delete_logtext']=" - Automatically deleted by action_dates plugin";
 $lang['action_dates_restrict_logtext']=" - Automatically restricted by action_dates plugin";
 $lang['action_dates_reallydelete']="Fully delete resource when deletion data passed? Resource will be marked as deleted or use configured resource_deletion_state if this is set to false";
+$lang['action_dates_email_admin_days']="Email administrator a set number of days before this date is reached. Leave blank for no email.";
+$lang['action_dates_email_text']="The following resources are due to be restricted in %%DAYS days.";
+$lang['action_dates_email_subject']="Notification of resources due to be restricted";
+
 

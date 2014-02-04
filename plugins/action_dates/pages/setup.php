@@ -18,6 +18,8 @@ $page_def[] = config_add_single_ftype_select('action_dates_deletefield',$lang['a
 $page_def[] = config_add_boolean_select('action_dates_reallydelete',$lang['action_dates_reallydelete']);
 
 $page_def[] = config_add_section_header($lang['action_dates_restrictsettings']);
+
+$page_def[] = config_add_text_input('action_dates_email_admin_days',$lang['action_dates_email_admin_days']);
 $page_def[] = config_add_single_ftype_select('action_dates_restrictfield',$lang['action_dates_restrict']);
 
 
