@@ -1445,6 +1445,8 @@ $themes_ref_column=false;
 # Ask the user the intended usage when downloading
 $download_usage=false;
 $download_usage_options=array("Press","Print","Web","TV","Other");
+# Option to block download (hide the button) if user selects specific option(s). Only used as a guide for the user e.g. to indicate that permission should be sought.
+#$download_usage_prevent_options=array("Press");
 
 # Should public collections exclude themes
 # I.e. once a public collection has been given a theme category, should it be removed from the public collections search results?

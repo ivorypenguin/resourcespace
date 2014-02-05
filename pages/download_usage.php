@@ -26,7 +26,25 @@ if (getval("save","")!="")
 
 include "../include/header.php";
 
-?>
+if(isset($download_usage_prevent_options))
+	{?>
+	<script>
+	function checkvalidusage() {
+		validoptions=new Array(<?php echo "'" . implode("','",$download_usage_prevent_options) . "'" ?>);
+		if(jQuery.inArray( jQuery('#usage').val(), validoptions )!=-1)
+			{
+			jQuery('input[type="submit"]').attr('disabled','disabled')
+			alert("<?php echo $lang["download_usage_option_blocked"] ?>");
+			}
+		else
+			{
+			jQuery('input[type="submit"]').removeAttr('disabled');
+			}
+		}
+
+	</script>
+	<?php
+	}?>
 
 <div class="BasicsBox">
 
@@ -43,13 +61,13 @@ include "../include/header.php";
 <?php if(!$remove_usage_textbox && !$usage_textbox_below) { ?><div class="Question"><label><?php echo $lang["usagecomments"]?></label><textarea rows="5" name="usagecomment" id="usagecomment" type="text" class="stdwidth"></textarea><div class="clearerleft"> </div></div> <?php } ?>
 
 <div class="Question"><label><?php echo $lang["indicateusagemedium"]?></label>
-<select class="stdwidth" name="usage" id="usage">
+<select class="stdwidth" name="usage" id="usage" <?php if(isset($download_usage_prevent_options)){ echo "onchange=\"checkvalidusage();\"";}?>>
 <option value=""><?php echo $lang["select"] ?></option>
 <?php 
 for ($n=0;$n<count($download_usage_options);$n++)
 	{
 	?>
-	<option value="<?php echo $n; ?>"><?php echo htmlspecialchars($download_usage_options[$n]) ?></option>
+	<option value="<?php echo $download_usage_options[$n]; ?>"><?php echo htmlspecialchars($download_usage_options[$n]) ?></option>
 	<?php
 	}
 ?>
@@ -61,7 +79,7 @@ for ($n=0;$n<count($download_usage_options);$n++)
 
 <div class="QuestionSubmit">
 <label for="buttons"> </label>			
-<input name="submit" type="submit" value="&nbsp;&nbsp;<?php echo $lang["action-download"]?>&nbsp;&nbsp;" />
+<input name="submit" type="submit" id="submit" value="&nbsp;&nbsp;<?php echo $lang["action-download"]?>&nbsp;&nbsp;" />
 </div>
 
 </form>

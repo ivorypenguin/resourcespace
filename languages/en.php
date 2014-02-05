@@ -1776,3 +1776,4 @@ $lang["contactadminintro"]="Please enter your message and click 'Send'.";
 $lang["contactadminemailtext"]=" has emailed you about a resource";
 $lang["showgeolocationpanel"]="Show location information";
 $lang["hidegeolocationpanel"]="Hide location information";
+$lang["download_usage_option_blocked"]="This usage option is not available. Please check with your administrator";
