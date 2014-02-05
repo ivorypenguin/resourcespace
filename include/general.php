@@ -286,7 +286,6 @@ function get_resource_field_data_batch($refs)
 function get_resource_types($types = "", $translate = true)
 	{
 	# Returns a list of resource types. The standard resource types are translated using $lang. Custom resource types are i18n translated.
-	
 	// support getting info for a comma-delimited list of restypes (as in a search)
 	if ($types==""){$sql="";} else
 		{
@@ -2317,6 +2316,26 @@ function check_access_key($resource,$key)
 
 			if (hook("modifyuserpermissions")){$userpermissions=hook("modifyuserpermissions");}
 			$userrequestmode=0; # Always use 'email' request mode for external users
+			
+			# Load any plugins specific to the group of the sharing user, but only once as may be checking multiple keys
+			global $emulate_plugins_set;			
+			if ($emulate_plugins_set!==true)
+				{
+				global $plugins;
+				$enabled_plugins = (sql_query("SELECT name,enabled_groups, config, config_json FROM plugins WHERE inst_version>=0 AND length(enabled_groups)>0"));
+				foreach($enabled_plugins as $plugin)
+					{
+					$s=explode(",",$plugin['enabled_groups']);
+					if (in_array($usergroup,$s))
+						{
+						include_plugin_config($plugin['name'],$plugin['config'],$plugin['config_json']);
+						register_plugin($plugin['name']);
+						$plugins[]=$plugin['name'];
+						}
+					}
+				$emulate_plugins_set=true;					
+				}
+				
 			}
 		
 		# Special case for anonymous logins.
@@ -2325,7 +2344,7 @@ function check_access_key($resource,$key)
 		if (isset($anonymous_login))
 			{
 			global $username;
-			$username=$anonymous_login;
+			$username=$anonymous_login;			
 			}
 		
 		# Set the 'last used' date for this key
