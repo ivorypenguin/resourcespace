@@ -134,7 +134,7 @@ function email_collection_request($ref,$details)
 	{
 	# Request mode 0
 	# E-mails a collection request (posted) to the team
-	global $applicationname,$email_from,$baseurl,$email_notify,$username,$useremail,$lang,$request_senduserupdates,$userref;
+	global $applicationname,$email_from,$baseurl,$email_notify,$username,$useremail,$lang,$request_senduserupdates,$userref,$resource_type_request_emails;
 	
 	$message="";
 	#if (isset($username) && trim($username)!="") {$message.=$lang["username"] . ": " . $username . "\n";}
@@ -200,7 +200,19 @@ function email_collection_request($ref,$details)
 	$userconfirmmessage = $lang["requestsenttext"] . "\n\n$message" . $lang["viewcollection"] . ":\n$baseurl/?c=$ref";
 	$message=$lang["user_made_request"] . "\n\n" . $lang["username"] . ": " . $username . "\n$message";
 	$message.=$lang["viewcollection"] . ":\n$baseurl/?c=$ref";
-	send_mail($email_notify,$applicationname . ": " . $lang["requestcollection"] . " - $ref",$message,$useremail,$useremail,"emailcollectionrequest",$templatevars);
+	
+	# Check if alternative request email notification address is set, only valid if collection contains resources of the same type 
+	$admin_notify_email=$email_notify;
+	if(isset($resource_type_request_emails))
+		{
+		$requestrestypes=array_unique(sql_array("select r.resource_type as value from collection_resource cr left join resource r on cr.resource=r.ref where cr.collection='$ref'"));
+		if(count($requestrestypes)==1 && isset($resource_type_request_emails[$requestrestypes[0]]))
+			{
+			$admin_notify_email=$resource_type_request_emails[$requestrestypes[0]];
+			}
+		}	
+	
+	send_mail($admin_notify_email,$applicationname . ": " . $lang["requestcollection"] . " - $ref",$message,$useremail,$useremail,"emailcollectionrequest",$templatevars);
 	if ($request_senduserupdates){send_mail($useremail,$applicationname . ": " . $lang["requestsent"] . " - $ref",$userconfirmmessage,$email_from,$email_notify,"emailusercollectionrequest",$templatevars);}
 	
 	# Increment the request counter
@@ -215,7 +227,7 @@ function managed_collection_request($ref,$details,$ref_is_resource=false)
 	# Managed via the administrative interface
 	
 	# An e-mail is still sent.
-	global $applicationname,$email_from,$baseurl,$email_notify,$username,$useremail,$userref,$lang,$request_senduserupdates,$watermark,$filename_field,$view_title_field,$access;
+	global $applicationname,$email_from,$baseurl,$email_notify,$username,$useremail,$userref,$lang,$request_senduserupdates,$watermark,$filename_field,$view_title_field,$access,$resource_type_request_emails;
 
 	# Has a resource reference (instead of a collection reference) been passed?
 	# Manage requests only work with collections. Create a collection containing only this resource.
@@ -303,11 +315,21 @@ function managed_collection_request($ref,$details,$ref_is_resource=false)
 	$templatevars["requestreason"]=$message;
 	hook("afterrequestcreate", "", array($request));
 	
+	# Check if alternative request email notification address is set, only valid if collection contains resources of the same type 
+	$admin_notify_email=$email_notify;
+	if(isset($resource_type_request_emails))
+		{
+		$requestrestypes=array_unique(sql_array("select r.resource_type as value from collection_resource cr left join resource r on cr.resource=r.ref where cr.collection='$ref'"));
+		if(count($requestrestypes)==1 && isset($resource_type_request_emails[$requestrestypes[0]]))
+			{
+			$admin_notify_email=$resource_type_request_emails[$requestrestypes[0]];
+			}
+		}
 	# Send the e-mail	
 	$userconfirmmessage = $lang["requestsenttext"] . "<br /><br />$message<br /><br />" . $lang["clicktoviewresource"] . "<br />$baseurl/?c=$ref";
 	$message=$lang["user_made_request"]. "<br /><br />" . $lang["username"] . ": " . $username . "<br />$message<br /><br />";
 	$message.=$lang["clicktoviewresource"] . "<br />$baseurl/?q=$request";
-	send_mail($email_notify,$applicationname . ": " . $lang["requestcollection"] . " - $ref",$message,$useremail,$useremail,$admin_mail_template,$templatevars);
+	send_mail($admin_notify_email,$applicationname . ": " . $lang["requestcollection"] . " - $ref",$message,$useremail,$useremail,$admin_mail_template,$templatevars);
 	if ($request_senduserupdates){send_mail($useremail,$applicationname . ": " . $lang["requestsent"] . " - $ref",$userconfirmmessage,$email_from,$email_notify,$user_mail_template,$templatevars);}	
 	
 	# Increment the request counter
@@ -322,7 +344,7 @@ function email_resource_request($ref,$details)
 	# E-mails a basic resource request for a single resource (posted) to the team
 	# (not a managed request)
 	
-	global $applicationname,$email_from,$baseurl,$email_notify,$username,$useremail,$userref,$lang,$request_senduserupdates,$watermark,$filename_field,$view_title_field,$access;
+	global $applicationname,$email_from,$baseurl,$email_notify,$username,$useremail,$userref,$lang,$request_senduserupdates,$watermark,$filename_field,$view_title_field,$access,$resource_type_request_emails;
 	
 	$resourcedata=get_resource_data($ref);
 	$templatevars['thumbnail']=get_resource_path($ref,true,"thm",false,"jpg",$scramble=-1,$page=1,($watermark)?(($access==1)?true:false):false);
@@ -389,7 +411,19 @@ function email_resource_request($ref,$details)
 	$message=$lang["user_made_request"] . "<br /><br />" . $lang["username"] . ": " . $username . " (" . $useremail . ")<br />".$adddetails. $c . "<br /><br />" . $lang["clicktoviewresource"] . "<br />". $templatevars['url'];
 
 	$userconfirmmessage = $lang["requestsenttext"] . "<br /><br />" . $lang["requestreason"] . ": " . $templatevars['details'] . $c . "<br /><br />" . $lang["clicktoviewresource"] . "\n$baseurl/?r=$ref";
-	send_mail($email_notify,$applicationname . ": " . $lang["requestresource"] . " - $ref",$message,$useremail,$useremail,"emailresourcerequest",$templatevars);
+	
+	# Check if alternative request email notification address is set
+	$admin_notify_email=$email_notify;
+	if(isset($resource_type_request_emails))
+		{
+		if(isset($resource_type_request_emails[$resourcedata["resource_type"]]))
+			{
+			$admin_notify_email=$resource_type_request_emails[$resourcedata["resource_type"]];
+			}
+		}
+	
+	
+	send_mail($admin_notify_email,$applicationname . ": " . $lang["requestresource"] . " - $ref",$message,$useremail,$useremail,"emailresourcerequest",$templatevars);
 	if ($request_senduserupdates){send_mail($useremail,$applicationname . ": " . $lang["requestsent"] . " - $ref",$userconfirmmessage,$email_from,$email_notify,"emailuserresourcerequest",$templatevars);}	
 	
 	# Increment the request counter

@@ -2272,3 +2272,11 @@ $welcome_text_picturepanel=false;
 
 #Show a specified metadata field below the resource preview image on the view page. Useful for phoo captions. 
 #$display_field_below_preview=18;
+
+# Optional setting to override the default $email_notify address for resource request email notifications, applies to specified resource types
+# e.g. for photo (resource type 1 by default)
+# $resource_type_request_emails[1]="imageadministrator@my.site"; 
+# e.g. for documents (resource type 2 by default)
+# $resource_type_request_emails[2]="documentadministrator@my.site"; 
+
+
