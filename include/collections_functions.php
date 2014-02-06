@@ -1600,7 +1600,7 @@ function get_home_page_promoted_collections()
 	{
 	return sql_query("select collection.ref,collection.home_page_publish,collection.home_page_text,collection.home_page_image,resource.thumb_height,resource.thumb_width from collection left outer join resource on collection.home_page_image=resource.ref where collection.public=1 and collection.home_page_publish=1 order by collection.ref desc");
 	}
-
+if (!function_exists("draw_compact_style_selector")){
 function draw_compact_style_selector($collection,$onhover=true){
 	
 	global $baseurl,
@@ -1629,9 +1629,9 @@ function draw_compact_style_selector($collection,$onhover=true){
 	$feedback,
 	$colresult,
 	$m,$getthemes;	
-	if(preg_match('/(Android|iPhone|iPad)/', $_SERVER['HTTP_USER_AGENT'])) { 
-		$collections_compact_style_ajax=false; // omit this optimization for mobile as the hover events it relies on sometimes cause the selector to not be loaded prior to clicking.
-	}
+	//if(preg_match('/(Android|iPhone|iPad)/', $_SERVER['HTTP_USER_AGENT'])) { 
+	//	$collections_compact_style_ajax=false; // omit this optimization for mobile as the hover events it relies on sometimes cause the selector to not be loaded prior to clicking.
+	//}
 	if (!$onhover || !$collections_compact_style_ajax ){
 		include(dirname(__FILE__)."/../pages/collections_compact_style.php");
 		return;
@@ -1643,7 +1643,7 @@ function draw_compact_style_selector($collection,$onhover=true){
 	if ($pagename!="collections"){$hovertag="#CentralSpace";} 
 	if ($pagename=="collections"){$hovertag=".CollectBack";} 
 	
-	?>	<select readonly="readonly" <?php if ($pagename=="collections"){if ($collection_dropdown_user_access_mode){?>class="SearchWidthExp" style="margin:0;"<?php } else { ?> class="SearchWidth" style="margin:0;"<?php } } ?> class="ListDropdown" <?php if ($pagename=="search" && $display=="xlthumbs"){?>style="margin:-5px 0px 0px 5px"<?php } ?> <?php if ($pagename=="search" && ( $display=="thumbs" || $display=="smallthumbs")){?>style="margin:-5px 0px 0px 4px "<?php } ?> id="temp<?php echo urlencode($tag) ?>"><option id="tempoption<?php echo urlencode($tag) ?>"><?php echo $lang['select'];?></option></select>
+	?>	<select readonly="readonly" <?php if ($pagename=="collections"){if ($collection_dropdown_user_access_mode){?>class="SearchWidthExp" style="margin:0;"<?php } else { ?> class="SearchWidth" style="margin:0;"<?php } } ?> class="ListDropdown" <?php if ($pagename=="search" && $display=="xlthumbs"){?>style="margin:-5px 0px 0px 5px"<?php } ?> <?php if ($pagename=="search" && ( $display=="thumbs" || $display=="smallthumbs")){?>style="margin:-5px 0px 0px 0px "<?php } ?> id="temp<?php echo urlencode($tag) ?>"><option id="tempoption<?php echo urlencode($tag) ?>"><?php echo $lang['select'];?></option></select>
 	<script>
 	<?php if (substr(getvalescaped("search",""),0,11)!="!collection" && $pagename=="search"){?>
 		jQuery('#temp<?php echo urlencode($tag) ?>').hover(function(){
@@ -1669,6 +1669,7 @@ function draw_compact_style_selector($collection,$onhover=true){
 	
 	<?php
 	
+}
 }
 
 function is_collection_approved($collection)
