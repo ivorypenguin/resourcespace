@@ -16,8 +16,10 @@ function generate_transform_preview($ref){
         if ($command==false) {exit("Could not find ImageMagick 'convert' utility.");}
 
         $orig_ext = sql_value("select file_extension value from resource where ref = '$ref'",'');
-        $originalpath= get_resource_path($ref,true,'',false,$orig_ext);
-
+	$transformsourcepath=get_resource_path($ref,true,'scr',false,'jpg'); //use screen size if available to save time
+	if(!file_exists($transformsourcepath)) // use original if screen not available
+		{exit();$transformsourcepath= get_resource_path($ref,true,'',false,$orig_ext);}
+		
 	# Since this check is in get_temp_dir() omit: if(!is_dir($storagedir."/tmp")){mkdir($storagedir."/tmp",0777);}
 	if(!is_dir(get_temp_dir() . "/transform_plugin")){mkdir(get_temp_dir() . "/transform_plugin",0777);}
 
@@ -29,7 +31,7 @@ function generate_transform_preview($ref){
                 $colorspace2 =  " -colorspace sRGB ";
         }
 
-        $command .= " \"$originalpath\" +matte -delete 1--1 -flatten $colorspace1 -geometry 450 $colorspace2 \"$tmpdir/transform_plugin/pre_$ref.jpg\"";
+        $command .= " \"$transformsourcepath\" +matte -delete 1--1 -flatten $colorspace1 -geometry 450 $colorspace2 \"$tmpdir/transform_plugin/pre_$ref.jpg\"";
         run_command($command);
 
 
