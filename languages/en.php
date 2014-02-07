@@ -1777,3 +1777,5 @@ $lang["contactadminemailtext"]=" has emailed you about a resource";
 $lang["showgeolocationpanel"]="Show location information";
 $lang["hidegeolocationpanel"]="Hide location information";
 $lang["download_usage_option_blocked"]="This usage option is not available. Please check with your administrator";
+$lang["information-onchange_macro"]="On change macro: code to be executed when field value is changed. CAUTION ADVISED";
+

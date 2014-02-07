@@ -233,7 +233,13 @@ function save_resource_data($ref,$multi)
 					if (in_array($fields[$n]["ref"],$joins)){
 						$val=strip_leading_comma($val);	
 						sql_query("update resource set field".$fields[$n]["ref"]."='".escape_check($val)."' where ref='$ref'");
-					}	
+					}
+                                        
+                                # Add any onchange code
+                                      if($fields[$n]["onchange_macro"]!="")
+                                          {
+                                          eval($fields[$n]["onchange_macro"]);    
+                                          }
 				
 				}
 			
@@ -525,6 +531,12 @@ function save_resource_data_multi($collection)
 						remove_keyword_mappings($ref,i18n_get_indexable($oldval),$fields[$n]["ref"],$fields[$n]["partial_index"],$is_date,'','',$is_html);
 						add_keyword_mappings($ref,i18n_get_indexable($newval),$fields[$n]["ref"],$fields[$n]["partial_index"],$is_date,'','',$is_html);
 						}
+                                                
+                                        # Add any onchange code
+                                        if($fields[$n]["onchange_macro"]!="")
+                                            {
+                                            eval($fields[$n]["onchange_macro"]);    
+                                            }
 					}
 				}
 			}
@@ -777,7 +789,7 @@ function update_field($resource,$field,$value)
 	# Updates a field. Works out the previous value, so this is not efficient if we already know what this previous value is (hence it is not used for edit where multiple fields are saved)
 
 	# Fetch some information about the field
-	$fieldinfo=sql_query("select keywords_index,resource_column,partial_index,type from resource_type_field where ref='$field'");
+	$fieldinfo=sql_query("select keywords_index,resource_column,partial_index,type, onchange_macro from resource_type_field where ref='$field'");
 
 	if (count($fieldinfo)==0) {return false;} else {$fieldinfo=$fieldinfo[0];}
 	
@@ -819,6 +831,12 @@ function update_field($resource,$field,$value)
 		sql_query("update resource set field".$field."=" . trim($value,$resource_field_column_limit) . " where ref='$resource'");
 		}			
 	
+        # Add any onchange code
+        if($fieldinfo["onchange_macro"]!="")
+            {
+            eval($fieldinfo["onchange_macro"]);    
+            }
+        
         # Allow plugins to perform additional actions.
         hook("update_field","",array($resource,$field,$value,$existing));
 	}
