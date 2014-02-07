@@ -307,7 +307,7 @@ if ($submitted != "")
 				
 				if($tmpfile!==false && file_exists($tmpfile)){$deletion_array[]=$tmpfile;}
 				daily_stat("Resource download",$ref);
-				resource_log($ref,'d',0,"","","","",$size);
+				resource_log($ref,'d',0,"","","",-1,$size);
 				
 				# update hit count if tracking downloads only
 				if ($resource_hit_count_on_downloads) { 
