@@ -388,7 +388,7 @@ if ($display_user_rating_stars && $k=="")
 			} 
 		});
 		}		
-
+            jQuery('.ui-sortable').sortable('enable');
 			jQuery('#CentralSpace').sortable({
 				helper:"clone",
 				items: ".ResourcePanelShell, .ResourcePanelShellLarge, .ResourcePanelShellSmall",
