@@ -746,6 +746,7 @@ function add_keyword_mappings($ref,$string,$resource_type_field,$partial_index=f
 	if (trim($string)=="") {return false;}
 	$keywords=split_keywords($string,true,$partial_index,$is_date,$is_html);
 
+
 	for ($n=0;$n<count($keywords);$n++)
 		{
 			
@@ -754,7 +755,8 @@ function add_keyword_mappings($ref,$string,$resource_type_field,$partial_index=f
 			$kwpos=$keywords[$n]['position'];
 			$keywords[$n]=$keywords[$n]['keyword'];
 		}
-		
+
+		$kw=$keywords[$n]; 		
 		if (!isset($kwpos)){$kwpos=$n;}
 		global $noadd;
 		if (!(in_array($kw,$noadd)))
@@ -2139,7 +2141,7 @@ function get_edit_access($resource,$status=-999,$metadata=false,&$resourcedata="
 	
 	global $userref,$usereditfilter;
 	if (hook("customediteaccess")) {return true;}
-	
+	debug("BANG2 " . $resource );
 	if (!is_array($resourcedata)) # Resource data  may not be passed 
 		{
 		$resourcedata=get_resource_data($resource);		
