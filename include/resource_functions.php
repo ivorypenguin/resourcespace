@@ -755,7 +755,6 @@ function add_keyword_mappings($ref,$string,$resource_type_field,$partial_index=f
 			$keywords[$n]=$keywords[$n]['keyword'];
 		}
 		
-		$kw=substr($keywords[$n],0,100); # Trim keywords to 100 chars as this is the length of the keywords column.
 		if (!isset($kwpos)){$kwpos=$n;}
 		global $noadd;
 		if (!(in_array($kw,$noadd)))

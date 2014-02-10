@@ -463,6 +463,8 @@ function cleanse_string($string,$preserve_separators,$preserve_hyphen=false,$is_
 if (!function_exists("resolve_keyword")){
 function resolve_keyword($keyword,$create=false)
 	{
+        $keyword=substr($keyword,0,100); # Trim keywords to 100 chars for indexing, as this is the length of the keywords column.
+
 	# Returns the keyword reference for $keyword, or false if no such keyword exists.
 	$return=sql_value("select ref value from keyword where keyword='" . trim(escape_check($keyword)) . "'",false);
 	if ($return===false && $create)
