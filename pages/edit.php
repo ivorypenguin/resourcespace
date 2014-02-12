@@ -586,8 +586,8 @@ for ($n=0;$n<count($types);$n++)
 <?php } else {
 # Multiple method of changing resource type.
  ?>
-<h1 <?php ($collapsible_sections)?"class=\"CollapsibleSectionHead\"":""?>><?php echo $lang["resourcetype"] ?></h1>
-<div <?php ($collapsible_sections)?"class=\"CollapsibleSection\"":""?> id="ResourceTypeSection<?php if ($ref==-1) echo "Upload"; ?>"><input name="editresourcetype" id="editresourcetype" type="checkbox" value="yes" onClick="var q=document.getElementById('editresourcetype_question');if (this.checked) {q.style.display='block';alert('<?php echo $lang["editallresourcetypewarning"] ?>');} else {q.style.display='none';}">&nbsp;<label for="editresourcetype"><?php echo $lang["resourcetype"] ?></label>
+<h1 <?php echo ($collapsible_sections)?"class=\"CollapsibleSectionHead\"":""?>><?php echo $lang["resourcetype"] ?></h1>
+<div <?php echo ($collapsible_sections)?"class=\"CollapsibleSection\"":""?> id="ResourceTypeSection<?php if ($ref==-1) echo "Upload"; ?>"><input name="editresourcetype" id="editresourcetype" type="checkbox" value="yes" onClick="var q=document.getElementById('editresourcetype_question');if (this.checked) {q.style.display='block';alert('<?php echo $lang["editallresourcetypewarning"] ?>');} else {q.style.display='none';}">&nbsp;<label for="editresourcetype"><?php echo $lang["resourcetype"] ?></label>
 <div class="Question" style="display:none;" id="editresourcetype_question">
 <label for="resourcetype"><?php echo $lang["resourcetype"]?></label>
 <select name="resource_type" id="resourcetype" class="stdwidth">
@@ -1262,11 +1262,11 @@ if (!checkperm("F*")&&!hook("editstatushide")) # Only display Status / Access / 
         	{
 	        if ($enable_related_resources && ($multiple || $ref>0)) # Showing relationships
 	        	{
-	        	?></div><!-- end of ResourceMetadataSection --><h1 <?php ($collapsible_sections)?"class=\"CollapsibleSectionHead\"":""?> id="StatusRelationshipsSectionHead"><?php echo $lang["statusandrelationships"]?></h1><div <?php ($collapsible_sections)?"class=\"CollapsibleSection\"":""?> id="StatusRelationshipsSection<?php if ($ref==-1) echo "Upload"; ?>"><?php
+	        	?></div><!-- end of ResourceMetadataSection --><h1 <?php echo ($collapsible_sections)?"class=\"CollapsibleSectionHead\"":""?> id="StatusRelationshipsSectionHead"><?php echo $lang["statusandrelationships"]?></h1><div <?php echo ($collapsible_sections)?"class=\"CollapsibleSection\"":""?> id="StatusRelationshipsSection<?php if ($ref==-1) echo "Upload"; ?>"><?php
 		        }
 		    else
 		    	{
-	        	?></div><!-- end of ResourceMetadataSection --><h1 <?php ($collapsible_sections)?"class=\"CollapsibleSectionHead\"":""?>><?php echo $lang["status"]?></h1><div <?php ($collapsible_sections)?"class=\"CollapsibleSection\"":""?> id="StatusSection<?php if ($ref==-1) echo "Upload"; ?>"><?php # Not showing relationships
+	        	?></div><!-- end of ResourceMetadataSection --><h1 <?php echo ($collapsible_sections)?"class=\"CollapsibleSectionHead\"":""?>><?php echo $lang["status"]?></h1><div <?php echo ($collapsible_sections)?"class=\"CollapsibleSection\"":""?> id="StatusSection<?php if ($ref==-1) echo "Upload"; ?>"><?php # Not showing relationships
 		    	}
 		    }
 		    
@@ -1403,11 +1403,11 @@ if (!checkperm("F*")&&!hook("editstatushide")) # Only display Status / Access / 
         } 
     }
 
-if (false && !$disable_geocoding)
+if ($multiple && !$disable_geocoding)
 	{
 	# Multiple method of changing location.
 	 ?>
-	</div><h1 <?php ($collapsible_sections)?"class=\"CollapsibleSectionHead\"":""?> id="location_title"><?php echo $lang["location-title"] ?></h1><div <?php ($collapsible_sections)?"class=\"CollapsibleSection\"":""?> id="LocationSection<?php if ($ref==-1) echo "Upload"; ?>">
+	</div><h1 <?php echo ($collapsible_sections)?" class=\"CollapsibleSectionHead\"":""?> id="location_title"><?php echo $lang["location-title"] ?></h1><div <?php echo ($collapsible_sections)?"class=\"CollapsibleSection\"":""?> id="LocationSection<?php if ($ref==-1) echo "Upload"; ?>">
 	<div><input name="editlocation" id="editlocation" type="checkbox" value="yes" onClick="var q=document.getElementById('editlocation_question');if (this.checked) {q.style.display='block';} else {q.style.display='none';}">&nbsp;<label for="editlocation"><?php echo $lang["location"] ?></label></div>
 	<div class="Question" style="display:none;" id="editlocation_question">
 	<label for="location"><?php echo $lang["latlong"]?></label>
