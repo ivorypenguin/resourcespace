@@ -76,7 +76,9 @@ if ($search_titles)
             {
             $colaccessmode = $lang["themes"];
             $is_theme=true;
-            $theme_link="<a onClick='return CentralSpaceLoad(this,true);' href='".$baseurl_short."pages/themes.php'>".$lang['themes']."</a>";
+            $theme_link="<a onClick='return CentralSpaceLoad(this,true);' href='".$baseurl_short."pages/themes.php'>".$lang['themes']."</a> &gt; <a onClick='return CentralSpaceLoad(this,true);' href='".$baseurl_short."pages/themes.php?theme1=".urlencode($collectiondata["theme"])."'>".i18n_get_translated($collectiondata["theme"])."</a>";
+            if (strlen($collectiondata["theme2"])>0) $theme_link.=" &gt; <a onClick='return CentralSpaceLoad(this,true);' href='".$baseurl_short."pages/themes.php?theme2=".urlencode($collectiondata["theme2"])."'>".i18n_get_translated($collectiondata["theme2"])."</a>";
+            if (strlen($collectiondata["theme3"])>0) $theme_link.=" &gt; <a onClick='return CentralSpaceLoad(this,true);' href='".$baseurl_short."pages/themes.php?theme3=".urlencode($collectiondata["theme3"])."'>".i18n_get_translated($collectiondata["theme3"])."</a>";
             }
 			
         // add a tooltip to Smart Collection titles (which provides a more detailed view of the searchstring.    
