@@ -127,6 +127,7 @@ include "../../include/header.php";
 	</div>
 	
 <?php if (checkperm("u") && !checkperm("U")) { # Full admin access only to user/disk quota status
+if (!hook("replaceusersonline")) {
 ?>
 <p><?php echo $lang["usersonline"]?>:
 <?php
@@ -134,6 +135,8 @@ $active=get_active_users();
 for ($n=0;$n<count($active);$n++) {if($n>0) {echo", ";}echo "<b>" . $active[$n]["username"] . "</b> (" . $active[$n]["t"] . ")";}
 ?>
 </p>	
+<?php } // end hook("replaceusersonline")
+?>
 
 <p><?php echo $lang["diskusage"]?>: <b><?php echo round(($avail?$used/$avail:0)*100,0)?>%</b> (<?php echo $lang["available"]?>: <?php echo formatfilesize($avail)?>; <?php echo $lang["used"]?>: <?php echo formatfilesize($used)?>; <?php echo $lang["free"]?>:  <?php echo formatfilesize($free)?>)
 </p>
