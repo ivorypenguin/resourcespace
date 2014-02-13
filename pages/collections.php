@@ -870,7 +870,8 @@ if (!$lazyload){
 	<!--Menu-->	
 	<div id="CollectionMinRightNav"><div id="MinSearchItem">
 	  <?php if ($collections_compact_style){
-		 if (/*($count_result<=$max_collection_thumbs) && */!$disable_collection_toggle) { ?>&nbsp;&nbsp;<a id="toggleThumbsLink" href="#" onClick="ToggleThumbs();return false;">&gt;&nbsp;<?php echo $lang["showthumbnails"]?></a><?php } 
+	    hook("beforetogglethumbs");
+	  	 if (/*($count_result<=$max_collection_thumbs) && */!$disable_collection_toggle) { ?>&nbsp;&nbsp;<a id="toggleThumbsLink" href="#" onClick="ToggleThumbs();return false;">&gt;&nbsp;<?php echo $lang["showthumbnails"]?></a><?php } 
 		}
 		else { ?>
 		<ul>
