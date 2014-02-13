@@ -99,7 +99,7 @@
 		<?php if ($use_checkboxes_for_selection){?><input type="checkbox" id="check<?php echo htmlspecialchars($ref)?>" class="checkselect" <?php if (in_array($ref,$collectionresources)){ ?>checked<?php } ?> onclick="if (jQuery('#check<?php echo htmlspecialchars($ref)?>').attr('checked')=='checked'){ AddResourceToCollection(event,<?php echo htmlspecialchars($ref)?>); } else if (jQuery('#check<?php echo htmlspecialchars($ref)?>').attr('checked')!='checked'){ RemoveResourceFromCollection(<?php echo htmlspecialchars($ref)?>); }">&nbsp;<?php } ?>
 		<?php } # end hook thumbscheckboxes?>
 		<?php if ($display_resource_id_in_thumbnail && $ref>0) { echo htmlspecialchars($ref); } else { ?>&nbsp;<?php } ?>
-		</div>	
+		
 
 		<?php if (!hook("replaceresourcetools")){?>
 
@@ -147,7 +147,7 @@
 
 
 		<?php } // end hook replaceresourcetools ?>
-
+        </div>	
 	</div>
 <div class="PanelShadow"></div>
 </div>

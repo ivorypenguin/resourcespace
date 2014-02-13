@@ -90,7 +90,7 @@
 		
 		<?php hook("smallsearchfreeicon");?>
 		<?php if (!hook("replaceresourceplaneliconssmall")){?>
-		<div class="ResourcePanelIcons"><?php if ($display_resource_id_in_thumbnail && $ref>0) { echo htmlspecialchars($ref); } else { ?><?php } ?></div>	
+		<div class="ResourcePanelIcons"><?php if ($display_resource_id_in_thumbnail && $ref>0) { echo htmlspecialchars($ref); } else { ?><?php } ?>	
 		<?php } /* end hook replaceresourcepaneliconssmall */ ?>
 		<?php hook("smallsearchicon");?>
 		<?php if (!hook("replaceresourcetoolssmall")){?>
@@ -117,6 +117,7 @@
 		<?php } ?>
 
 		<?php } // end hook replaceresourcetoolssmall ?>
+		</div>
 <?php hook("smallthumbicon"); ?>
 <div class="clearer"></div></div>	
 <div class="PanelShadow"></div></div>
