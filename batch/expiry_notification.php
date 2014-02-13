@@ -22,7 +22,7 @@ if (count($expired)>0)
 		echo "<br>Sending expiry notification for: " . $resource["ref"] . " - " . $resource["title"];
 		
 		$body.="\n" . $resource["ref"] . " - " . $resource["title"];
-		$body.="\n" . $baseurl . "/r?=" . $resource["ref"] . "\n";
+		$body.="\n" . $baseurl . "/?r=" . $resource["ref"] . "\n";
 		}
 	
 	# Send mail
