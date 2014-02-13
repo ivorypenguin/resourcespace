@@ -52,7 +52,8 @@ function SwapCSS(css){
 
 <?php if (getval("k","")=="") { ?>
 <div id="FooterNavLeft" class=""><?php if (isset($userfixedtheme) && $userfixedtheme=="") { ?><?php echo $lang["interface"]?>:&nbsp;&nbsp;
-<?php // enable custom theme chips 
+<?php if (!hook("replacecustomthemechips"))	{
+	// enable custom theme chips 
 	if (count($available_themes!=0)){
 		foreach ($available_themes as $available_theme){
 		if (substr($available_theme,-5)=="space"){?>
@@ -62,6 +63,7 @@ function SwapCSS(css){
 		<?php } ?>
 	<?php }
 	}
+	}/*End hook("replacecustomthemechips")*/
 ?>	
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php } ?>
 <?php if ($disable_languages==false && $show_language_chooser){?>
