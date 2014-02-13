@@ -413,9 +413,9 @@ if ($display_user_rating_stars && $k=="")
 	
 	</script>
 <?php }
-	else { ?>
+	elseif (!hook("noreorderjs")) { ?>
 	<script type="text/javascript">
-
+        
 			jQuery('.ui-sortable').sortable('disable');
 			jQuery('.ResourcePanelShell').enableSelection();
 			jQuery('.ResourcePanelShellLarge').enableSelection();
