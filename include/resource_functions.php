@@ -1127,21 +1127,23 @@ function resource_log($resource,$type,$field,$notes="",$fromvalue="",$tovalue=""
 		{
 		$diff=$lang["access" . $fromvalue] . " -> " . $lang["access" . $tovalue];
 		}
-	
+
+	$modifiedlogtype=hook("modifylogtype","",array($type));
+	if ($modifiedlogtype) {$type=$modifiedlogtype;}
 	sql_query("insert into resource_log(date,user,resource,type,resource_type_field,notes,diff,usageoption,purchase_size,purchase_price,access_key,previous_value) values (now()," . (($userref!="")?"'$userref'":"null") . ",'$resource','$type'," . (($field!="")?"'$field'":"null") . ",'" . escape_check($notes) . "','" . escape_check($diff) . "','$usage','$purchase_size','$purchase_price'," . (isset($k)?"'$k'":"null") . ",'" . escape_check($fromvalue) . "')");
         $log_ref=sql_insert_id();
 
         return $log_ref;
 	}
 
-function get_resource_log($resource)
+function get_resource_log($resource, $fetchrows=-1)
     {
     # Returns the log for a given resource.
     # The standard field titles are translated using $lang. Custom field titles are i18n translated.
     $extrafields=hook("get_resource_log_extra_fields");
     if (!$extrafields) {$extrafields="";}
     
-    $log = sql_query("select distinct r.ref,r.date,u.username,u.fullname,r.type,f.title,r.notes,r.diff,r.usageoption,r.purchase_price,r.purchase_size,ps.name size, r.access_key,ekeys_u.fullname shared_by" . $extrafields . " from resource_log r left outer join user u on u.ref=r.user left outer join resource_type_field f on f.ref=r.resource_type_field left outer join external_access_keys ekeys on r.access_key=ekeys.access_key left outer join user ekeys_u on ekeys.user=ekeys_u.ref left join preview_size ps on r.purchase_size=ps.id where r.resource='$resource' order by r.date desc");
+    $log = sql_query("select distinct r.ref,r.date,u.username,u.fullname,r.type,f.title,r.notes,r.diff,r.usageoption,r.purchase_price,r.purchase_size,ps.name size, r.access_key,ekeys_u.fullname shared_by" . $extrafields . " from resource_log r left outer join user u on u.ref=r.user left outer join resource_type_field f on f.ref=r.resource_type_field left outer join external_access_keys ekeys on r.access_key=ekeys.access_key left outer join user ekeys_u on ekeys.user=ekeys_u.ref left join preview_size ps on r.purchase_size=ps.id where r.resource='$resource' order by r.date desc",false,$fetchrows);
     for ($n = 0;$n<count($log);$n++)
         {
         $log[$n]["title"] = lang_or_i18n_get_translated($log[$n]["title"], "fieldtitle-");
@@ -1363,7 +1365,7 @@ function write_metadata($path, $ref, $uniqid="")
 
             # Add the filename to the command string.
             $command.= " " . escapeshellarg($tmpfile);
-
+            
             # Perform the actual writing - execute the command string.
             $output = run_command($command);
 

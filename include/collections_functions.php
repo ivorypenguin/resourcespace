@@ -1462,6 +1462,8 @@ function delete_collection_access_key($collection,$access_key)
 function collection_log($collection,$type,$resource,$notes = "")
 	{
 	global $userref;
+	$modifiedcollogtype=hook("modifycollogtype","",array($type,$resource));
+	if ($modifiedcollogtype) {$type=$modifiedcollogtype;}
 	sql_query("insert into collection_log(date,user,collection,type,resource, notes) values (now()," . (($userref!="")?"'$userref'":"null") . ",'$collection','$type'," . (($resource!="")?"'$resource'":"null") . ", '$notes')");
 	}
 /*  Log entry types  
@@ -1481,10 +1483,10 @@ $lang["collectionlog-t"]="Stopped access to resource by ";//  + notes field
 $lang["collectionlog-X"]="Collection deleted";
 $lang["collectionlog-b"]="Batch transformed";
 */
-function get_collection_log($collection)
+function get_collection_log($collection, $fetchrows=-1)
 	{
 	global $view_title_field;	
-	return sql_query("select c.date,u.username,u.fullname,c.type,r.field".$view_title_field." title,c.resource, c.notes from collection_log c left outer join user u on u.ref=c.user left outer join resource r on r.ref=c.resource where collection='$collection' order by c.date");
+	return sql_query("select c.date,u.username,u.fullname,c.type,r.field".$view_title_field." title,c.resource, c.notes from collection_log c left outer join user u on u.ref=c.user left outer join resource r on r.ref=c.resource where collection='$collection' order by c.date desc",false,$fetchrows);
 	}
 	
 function get_collection_videocount($ref)

@@ -4,9 +4,21 @@ include "../include/authenticate.php";
 include "../include/general.php";
 include "../include/collections_functions.php";
 
+$offset=getvalescaped("offset",0);
 $ref=getvalescaped("ref","",true);
 
+# pager
+$per_page=getvalescaped("per_page_list_log",15);setcookie("per_page_list_log",$per_page);
+
 include "../include/header.php";
+$log=get_collection_log($ref, $offset+$per_page);
+$results=count($log);
+$totalpages=ceil($results/$per_page);
+$curpage=floor($offset/$per_page)+1;
+
+$url=$baseurl . "/pages/collection_log.php?ref=" . $ref;
+$jumpcount=1;
+
 ?>
 
 <?php
@@ -23,8 +35,15 @@ if (!checkperm("b"))
 <div class="BasicsBox">
 <?php if ($back_to_collections_link != "") { ?><div style="float:right;"><a href="<?php echo $baseurl_short?>pages/collection_manage.php" onClick="return CentralSpaceLoad(this,true);"><strong><?php echo $back_to_collections_link ?></strong> </a></div> <?php } ?>
 <h1><?php echo str_replace("%collection", $colname, $lang["collectionlogheader"]);?></h1>
+<div class="TopInpageNav">
+<div class="InpageNavLeftBlock"><?php echo $lang["resultsdisplay"]?>:
+	<?php 
+	for($n=0;$n<count($list_display_array);$n++){?>
+	<?php if ($per_page==$list_display_array[$n]){?><span class="Selected"><?php echo $list_display_array[$n]?></span><?php } else { ?><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $url; ?>&per_page_list_log=<?php echo $list_display_array[$n]?>"><?php echo $list_display_array[$n]?></a><?php } ?>&nbsp;|
+	<?php } ?>
+	<?php if ($per_page==99999){?><span class="Selected"><?php echo $lang["all"]?></span><?php } else { ?><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $url; ?>&per_page_list_log=99999"><?php echo $lang["all"]?></a><?php } ?>
+	</div> <?php pager(false); ?></div>
 
-</div>
 
 <div class="Listview">
 <table border="0" cellspacing="0" cellpadding="0" class="ListviewStyle">
@@ -38,14 +57,13 @@ if (!checkperm("b"))
 </tr>
 
 <?php
-$log=get_collection_log($ref);
-for ($n=0;$n<count($log);$n++)
+for ($n=$offset;(($n<count($log)) && ($n<($offset+$per_page)));$n++)
 	{
 	?>
 	<!--List Item-->
 	<tr>
 	<td><?php echo htmlspecialchars(nicedate($log[$n]["date"],true)) ?></td>
-	<td><?php echo htmlspecialchars($log[$n]["username"]) ?> (<?php echo htmlspecialchars($log[$n]["fullname"])?>)</td>
+	<td><?php echo htmlspecialchars($log[$n]["fullname"])?></td>
 	<td><?php 
 		echo $lang["collectionlog-" . $log[$n]["type"]] ;
 		if ($log[$n]["notes"] != "" ) { 
@@ -62,7 +80,13 @@ for ($n=0;$n<count($log);$n++)
 	</tr> 
 <?php } ?>
 </table>
-</div>
+</div> <!-- End of Listview -->
+
+<div class="BottomInpageNav">
+<?php pager(false); ?></div>
+
+</div> <!-- End of BasicsBox -->
+
 <?php
 include "../include/footer.php";
 ?>
