@@ -165,6 +165,11 @@ jQuery(document).ready(function() {
     }
     else
     { 
+        var modAlt=e.altKey;
+        var modShift=e.shiftKey;
+        var modCtrl=e.ctrlKey;
+        var modMeta=e.metaKey;
+        var modOn=(modAlt || modShift || modCtrl || modMeta);
          switch (e.which) 
          {
 			 
