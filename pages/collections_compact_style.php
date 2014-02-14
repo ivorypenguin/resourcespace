@@ -79,7 +79,7 @@ if (count($colresult)>0 && checkperm("e" . $colresult[0]["archive"]) && allow_mu
 
 ?>
 
-
+	<div class="CollectionsCompactToolsContainer">
 	<select <?php if ($pagename=="collections"){if ($collection_dropdown_user_access_mode){?>class="SearchWidthExp" style="margin:0;"<?php } else { ?> class="SearchWidth" style="margin:0;"<?php } } $tag=$pagename."-coltools-".$collection;if ($pagename=="collections"){$tag.="_usercol";}
 	$colvalue="document.getElementById('".$tag."').value";	?> class="ListDropdown" <?php if ($pagename=="search" && $display=="xlthumbs"){?>style="margin:-5px 0px 0px 5px"<?php } ?> <?php if ($pagename=="search" && ( $display=="thumbs" || $display=="smallthumbs")){?>style="margin:-5px 0px 0px 4px "<?php } ?> id="<?php echo $tag?>" onchange="colAction(<?php echo $colvalue?>);<?php echo $colvalue?>='';">
 
@@ -242,7 +242,7 @@ if ($show_edit_all_link && $count_result>0 && $col_editable) { ?>
 
 
     </select>
-
+</div>
 
 
 
