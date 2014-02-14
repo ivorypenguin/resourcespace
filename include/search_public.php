@@ -11,6 +11,9 @@ for ($n=0;$n<count($collections);$n++)
 	{
 	
 	$resources=do_search("!collection".$collections[$n]['ref']);	
+	$hook_result=hook("process_search_results","",array("result"=>$resources,"search"=>"!collection".$collections[$n]['ref']));
+	if ($hook_result!==false) {$resources=$hook_result;}
+	
 	$pub_url="search.php?search=" . urlencode("!collection" . $collections[$n]["ref"]);
 	if ($display=="thumbs")
 		{
@@ -36,6 +39,8 @@ for ($n=0;$n<count($collections);$n++)
             else {
                 $previewpath="../gfx/".get_nopreview_icon($resources[$m]["resource_type"],$resources[$m]["file_extension"],"col");$border=false;
             }
+            $modifiedurl=hook('searchpublicmodifyurl');
+			if ($modifiedurl){ $previewpath=$modifiedurl;$border=true;}
             $images++;
             $space=3+($images-1)*18;
             ?>
