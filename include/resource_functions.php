@@ -1113,7 +1113,7 @@ function resource_log($resource,$type,$field,$notes="",$fromvalue="",$tovalue=""
 	
 	# Add difference to file.
 	$diff="";
-	if (($type=="e" || $type=="m") && $field!="" && ($fromvalue !== $tovalue))
+	if ($fromvalue !== $tovalue)
 		{
 		$diff=log_diff($fromvalue,$tovalue);
 		}
