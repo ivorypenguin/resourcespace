@@ -126,9 +126,9 @@ jQuery(document).ready(function() {
 <script src="<?php echo $baseurl ?>/lib/OpenLayers/OpenLayers.js"></script>
 <script src="https://maps.google.com/maps/api/js?v=3.2&sensor=false"></script>
 <?php } ?>
-
+<?php if (!hook("ajaxcollections")) { ?>
 <script src="<?php echo $baseurl;?>/lib/js/ajax_collections.js?css_reload_key=<?php echo $css_reload_key?>" type="text/javascript"></script>
-
+<?php } ?>
 <link href="<?php echo $baseurl_short;?>lib/plupload/jquery.plupload.queue/css/jquery.plupload.queue.css?<?php echo $css_reload_key;?>" rel="stylesheet" type="text/css" media="screen,projection,print"  />
 <script type="text/javascript" src="<?php echo $baseurl_short;?>lib/js/browserplus-min.js?<?php echo $css_reload_key;?>"></script>
 <script type="text/javascript" src="<?php echo $baseurl_short;?>lib/plupload/plupload.full.js?<?php echo $css_reload_key;?>"></script>
