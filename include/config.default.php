@@ -2130,6 +2130,8 @@ $keyboard_navigation_next_page=190;
 $keyboard_navigation_all_results=191;
 # toggle thumbnails in collections frame, default 't'
 $keyboard_navigation_toggle_thumbnails=84;
+# view all resources from current collection, default 'v'
+$keyboard_navigation_view_all=86;
 # zoom to/from preview, default 'z'
 $keyboard_navigation_zoom=90;
 
