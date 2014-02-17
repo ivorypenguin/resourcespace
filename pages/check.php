@@ -27,6 +27,7 @@ function ResolveKB($value)
 ?>
 
 <div class="BasicsBox"> 
+  <h2>&nbsp;</h2>
   <h1><?php echo $lang["installationcheck"]?></h1>
   <a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/check.php">&gt; <?php echo $lang["repeatinstallationcheck"]?></a>
   <br/><br/>

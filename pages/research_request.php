@@ -24,6 +24,7 @@ include "../include/header.php";
 ?>
 
 <div class="BasicsBox">
+<h2>&nbsp;</h2>
 <h1><?php echo $lang["researchrequest"]?></h1>
 <p class="tight"><?php echo text("introtext")?></p>
 <form method="post" action="<?php echo $baseurl_short?>pages/research_request.php">

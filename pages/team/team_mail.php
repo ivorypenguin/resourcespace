@@ -28,6 +28,7 @@ jQuery(document).ready(function(){
 include "../../include/header.php";
 ?>
 <div class="BasicsBox">
+<h2>&nbsp;</h2>
 <h1><?php echo $lang["sendbulkmail"]?></h1>
 <form id="myform" method="post" action="<?php echo $baseurl_short?>pages/team/team_mail.php">
 
