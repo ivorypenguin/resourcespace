@@ -2081,7 +2081,7 @@ function get_custom_access_user($resource,$user)
 	return sql_value("select access value from resource_custom_access where resource='$resource' and user='$user' and (user_expires is null or user_expires>now())",false);
 	}
 
-function resource_download_allowed($resource,$size,$resource_type)
+function resource_download_allowed($resource,$size,$resource_type,$alternative=-1)
 	{
 
 	# For the given resource and size, can the curent user download it?
@@ -2089,9 +2089,9 @@ function resource_download_allowed($resource,$size,$resource_type)
 	# $resource can be a resource-specific search result array.
 	$access=get_resource_access($resource);
 
-	if (checkperm('X' . $resource_type . "_" . $size) || checkperm('T' . $resource_type . "_" . $size))
+	if ((checkperm('X' . $resource_type . "_" . $size) || checkperm('T' . $resource_type . "_" . $size)) && $alternative==-1)
 		{
-		# Block access to this resource type / size?
+		# Block access to this resource type / size? Not if an alternative file
 		# Only if no specific user access override (i.e. they have successfully requested this size).
 		global $userref;
 		$usercustomaccess = get_custom_access_user($resource,$userref);

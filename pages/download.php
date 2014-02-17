@@ -35,7 +35,7 @@ if ($direct_download_noauth && $direct){
 	$allowed = true;
 } else {
 	# Permissions check
-	$allowed=resource_download_allowed($ref,$size,$resource_data["resource_type"]);
+	$allowed=resource_download_allowed($ref,$size,$resource_data["resource_type"],$alternative);
 }
 
 if (!$allowed)
