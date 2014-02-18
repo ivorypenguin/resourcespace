@@ -360,7 +360,7 @@ jQuery(document).ready(function () {
 	<?php }
 	else { ?>
 	 	//Show diff instructions if supports drag and drop
-		if(!uploader.files.length && uploader.features.dragdrop && uploader.settings.dragdrop)	{jQuery('#plupload_instructions').html('<?php echo $lang["intro-plupload_dragdrop"] ?>');}
+		if(!uploader.files.length && uploader.features.dragdrop && uploader.settings.dragdrop)	{jQuery('#plupload_instructions').html('<?php echo escape_check($lang["intro-plupload_dragdrop"] )?>');}
 	<?php } ?>
 
 	uploader.bind('FileUploaded', function(up, file, info) {
