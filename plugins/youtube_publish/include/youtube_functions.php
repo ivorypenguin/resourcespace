@@ -119,8 +119,8 @@ function get_youtube_access_token($refresh=false)
 function upload_video($access_token="")
 	{
 	global $lang, $video_title, $video_description, $video_keywords, $video_category, $filename, $ref, $status, $youtube_video_url, $youtube_publish_developer_key;
-
-
+	debug("youtube_publish: uploading video resource ID:" . $ref);
+	
 	# Set status as necessary
 	if ($status=="private"){$private = '<yt:private/>';}
 		else{$private = '';}
@@ -157,7 +157,7 @@ function upload_video($access_token="")
 				 );
 
 	$youtube_upload_url="http://uploads.gdata.youtube.com/resumable/feeds/api/users/default/uploads";
-
+	debug("youtube_publish - Resource ID: " . $ref . ". Initiating connection");
 	$curl = curl_init($youtube_upload_url);
 
 
@@ -171,7 +171,8 @@ function upload_video($access_token="")
 	curl_setopt( $curl, CURLOPT_HTTPHEADER, $headers );
 	curl_setopt( $curl, CURLOPT_POSTFIELDS, $data );
 	curl_setopt($curl, CURLOPT_HEADER, TRUE);
-
+	
+	debug("youtube_publish -  Resource ID: " . $ref . ". Executing CURL connection");
 	$response = curl_exec( $curl );
 
 
@@ -180,6 +181,7 @@ function upload_video($access_token="")
 		$info = curl_getinfo($curl);
 		if ($info['http_code']==401)
 			{
+			debug("youtube_publish - Resource ID: " . $ref . ". 401 response received, refreshing access token");
 			curl_close( $curl );
 			get_youtube_access_token(true);
 			return array(false,$lang["youtube_publish_renewing_token"],true);
@@ -189,9 +191,11 @@ function upload_video($access_token="")
 		{
 		curl_close( $curl );
 		$upload_result=$lang["error"] . curl_error($curl);
+		debug("youtube_publish - Resource ID: " . $ref . ". cURL error code received: " . curl_errno($curl));
 		return array(false,curl_errno($curl),false);
 		}
-
+	
+	debug("youtube_publish - Resource ID: " . $ref . ". No  error code received so proceeding");
 	$header = substr($response, 0, $info['header_size']);
 	$retVal = array();
 	$fields = explode("\r\n", preg_replace('/\x0D\x0A[\x09\x20]+/', ' ', $header));
@@ -212,10 +216,12 @@ function upload_video($access_token="")
 	if (isset($retVal['Location']))
 		{
 		$location =  $retVal['Location'];
+		debug("youtube_publish - Resource ID: " . $ref . ". Received upload URL: " . $location);
 		}
 	else
 		{
 		$upload_result=$lang["youtube_publish_failedupload_nolocation"];
+		debug("youtube_publish - Resource ID: " . $ref . ". ERROR - no upload URL received, closing curl connection");
 		curl_close( $curl );
 		return array(false,$upload_result,false);
 		}
