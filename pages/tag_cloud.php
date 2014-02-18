@@ -22,11 +22,7 @@ include "../include/header.php";
 
 
 <div class="BasicsBox"> 
-  <h1>Tag Cloud</h1><p>What have people been searching for? The more a keyword is used the larger it appears.</p>
-  <!--<p><a href="tag_cloud.php?type=Keyword+usage">&gt;&nbsp;Keywords searched for</a>
-  &nbsp;&nbsp;
-  <a href="tag_cloud.php?type=Keyword+added+to+resource">&gt;&nbsp;Keywords added to a resource</a>
-  </p>-->
+  <h1><?php echo $lang["tagcloud"]?></h1><p><?php echo $lang["tagcloudtext"]?></p>
 </div>
 
 <div class="RecordBox">

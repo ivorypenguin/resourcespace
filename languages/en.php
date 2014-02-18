@@ -1779,3 +1779,6 @@ $lang["hidegeolocationpanel"]="Hide location information";
 $lang["download_usage_option_blocked"]="This usage option is not available. Please check with your administrator";
 $lang["information-onchange_macro"]="On change macro: code to be executed when field value is changed. CAUTION ADVISED";
 
+$lang["tagcloudtext"]="With which metadata terms have people been tagging resources? The more a term has been used, the larger it appears in the cloud.<br /><br />You may also click on any term below to execute the search.";
+$lang["tagcloud"]="Tag Cloud";
+
