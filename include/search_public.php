@@ -10,7 +10,7 @@ if ((substr($search,0,11)!="!collection")&&($collections!="")) {
 for ($n=0;$n<count($collections);$n++)
 	{
 	
-	$resources=do_search("!collection".$collections[$n]['ref']);	
+	$resources=do_search("!collection".$collections[$n]['ref'],"","relevance","",5);	
 	$hook_result=hook("process_search_results","",array("result"=>$resources,"search"=>"!collection".$collections[$n]['ref']));
 	if ($hook_result!==false) {$resources=$hook_result;}
 	
