@@ -2281,4 +2281,5 @@ $welcome_text_picturepanel=false;
 # e.g. for documents (resource type 2 by default)
 # $resource_type_request_emails[2]="documentadministrator@my.site"; 
 
-
+# $rating_field. A legacy option that allows for selection of a metadata field that contains administrator ratings (not user ratings) that will be displayed in search list view. Field must be plain text and have numeric only numeric values.
+# $rating_field=121;

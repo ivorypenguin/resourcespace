@@ -37,11 +37,11 @@
 				}
 			?>
 		</div></td>
-		<?php } ?>
+		<?php } 
 		
-		
-		<td <?php hook("listviewcolumnstyle");?>><?php if (isset($result[$n][$rating])&& $result[$n][$rating]>0) { ?><?php for ($y=0;$y<$result[$n][$rating];$y++){?> <div class="IconStar"></div><?php } } else { ?>&nbsp;<?php } ?></td>
-		<?php if ($id_column){?><td <?php hook("listviewcolumnstyle");?>><?php echo $result[$n]["ref"]?></td><?php } ?>
+		if (isset($rating_field))
+			{?><td <?php hook("listviewcolumnstyle");?>><?php if (isset($result[$n][$rating])&& $result[$n][$rating]>0) { ?><?php for ($y=0;$y<$result[$n][$rating];$y++){?> <div class="IconStar"></div><?php } } else { ?>&nbsp;<?php } ?></td><?php }
+		if ($id_column){?><td <?php hook("listviewcolumnstyle");?>><?php echo $result[$n]["ref"]?></td><?php } ?>
 		<?php if ($resource_type_column){?><td <?php hook("listviewcolumnstyle");?>><?php if (array_key_exists($result[$n]["resource_type"],$rtypes)) { ?><?php echo $rtypes[$result[$n]["resource_type"]]?><?php } ?></td><?php } ?>
 		<?php if ($list_view_status_column){?><td <?php hook("listviewcolumnstyle");?>><?php echo $lang["status" . $result[$n]["archive"]]?></td><?php } ?>
 		<?php if ($date_column){?><td <?php hook("listviewcolumnstyle");?>><?php echo nicedate($result[$n]["creation_date"],false,true)?></td><?php } ?>
