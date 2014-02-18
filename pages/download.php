@@ -8,6 +8,7 @@ include "../include/resource_functions.php";
 
 ob_end_clean(); 
 
+if($download_no_session_cache_limiter){session_cache_limiter(false);}
 
 if(strlen(getvalescaped('direct',''))>0){$direct = true;} else { $direct = false;}
 

@@ -2283,3 +2283,6 @@ $welcome_text_picturepanel=false;
 
 # $rating_field. A legacy option that allows for selection of a metadata field that contains administrator ratings (not user ratings) that will be displayed in search list view. Field must be plain text and have numeric only numeric values.
 # $rating_field=121;
+
+# Set this to true to prevent possible issues with IE and download.php. Found an issue with a stray pragma: no-cache header that seemed to be added by SAML SSO solution.
+$download_no_session_cache_limiter=true;
