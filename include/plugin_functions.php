@@ -1018,7 +1018,7 @@ function config_add_multi_group_select($config_var, $label, $width=300)
 function config_single_ftype_select($name, $label, $current, $width=300)
     {
     global $lang;
-    $fields=sql_query('select * from resource_type_field');
+    $fields=sql_query('select * from resource_type_field  order by title, name');
 ?>
   <div class="Question">
     <label for="<?php echo $name?>" title="<?php echo str_replace('%cvn', $name, $lang['plugins-configvar'])?>"><?php echo $label?></label>
@@ -1062,7 +1062,7 @@ function config_add_single_ftype_select($config_var, $label, $width=300)
 function config_multi_ftype_select($name, $label, $current, $width=300)
     {
     global $lang;
-    $fields=sql_query('select * from resource_type_field');
+    $fields=sql_query('select * from resource_type_field order by title, name');
 ?>
   <div class="Question">
     <label for="<?php echo $name?>" title="<?php echo str_replace('%cvn', $name, $lang['plugins-configvar'])?>"><?php echo $label?></label>
