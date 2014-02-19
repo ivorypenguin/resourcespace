@@ -11,7 +11,7 @@ $searchcrumbs="";
 if ($search_titles_searchcrumbs && $use_refine_searchstring){
 $refinements=str_replace(" -",",-",urldecode($search));
 $refinements=explode(",",$search);
-if (substr($search,0,1)=="!"){$startsearchcrumbs=1;} else {$startsearchcrumbs=0;}
+if (substr($search,0,1)=="!" && substr($search,0,6)!="!empty"){$startsearchcrumbs=1;} else {$startsearchcrumbs=0;}
 if ($refinements[0]!=""){
 	for ($n=$startsearchcrumbs;$n<count($refinements);$n++){
 		$search_title_element=str_replace(";"," OR ",$refinements[$n]);
@@ -38,6 +38,24 @@ if ($refinements[0]!=""){
 				$search_title_element=$search_title_element[0];
 				}
 		}
+		if (substr(trim($search_title_element),0,6)=="!empty")
+        {   // superspecial !empty search  
+			$search_title_elementq=trim(str_replace("!empty","",urldecode($search_title_element)));
+			if (is_numeric($search_title_elementq)){
+				$fref=$search_title_elementq;
+				$ftitle=sql_value("select title value from resource_type_field where ref='" .$search_title_elementq . "'","");
+				}
+			else {
+				$ftitleref=sql_query("select title,ref from resource_type_field where name='" . $search_title_elementq . "'","");
+				if (!isset($ftitleref[0])){exit ("invalid !empty search. No such field: $search_title_elementq");}
+				$ftitle=$ftitleref[0]['title'];
+				$fref=$ftitleref[0]['ref'];
+			}
+			if ($ftitle==""){exit ("invalid !empty search");}
+			$search_title_element=str_replace("%field",lang_or_i18n_get_translated($ftitle, "fieldtitle-"),$lang["untaggedresources"]);
+		}
+		
+		
 		$searchcrumbs.="&order_by=" . $order_by . "&sort=".$sort."&offset=" . $offset . "&archive=" . $archive."&sort=".$sort." onClick='return CentralSpaceLoad(this,true);'>".$search_title_element."</a>";
 	}
 }
@@ -138,7 +156,8 @@ if ($search_titles)
         if (count($searched_resource_types_names_array)>0 && count($searched_collection_types_names_array)==0)
             {
             # Only (one or more) resource types are selected
-            $searchtitle = str_replace_formatted_placeholder("%resourcetypes%", $searched_resource_types_names_array, $lang["resourcetypes-no_collections"], false, $lang["resourcetypes_separator"]);
+            	$searchtitle=$lang["all"]." ".implode($lang["resourcetypes_separator"]." ",$searched_resource_types_names_array);
+            //$searchtitle = str_replace_formatted_placeholder("%resourcetypes%", $searched_resource_types_names_array, $lang["resourcetypes-no_collections"], false, $lang["resourcetypes_separator"]);
             }
         elseif (count($searched_resource_types_names_array)==0 && count($searched_collection_types_names_array)>0)
             {
@@ -149,7 +168,9 @@ if ($search_titles)
             {
             # Both resource types and collection types are selected
             # Step 1: Replace %resourcetypes%
-            $searchtitle = str_replace_formatted_placeholder("%resourcetypes%", $searched_resource_types_names_array, $lang["resourcetypes-collections"], false, $lang["resourcetypes_separator"]);
+            $searchtitle=$lang["all"]." ".implode($lang["resourcetypes_separator"]." ",$searched_resource_types_names_array);
+            //$searchtitle = str_replace_formatted_placeholder("%resourcetypes%", $searched_resource_types_names_array, $lang["resourcetypes-collections"], false, //$lang["resourcetypes_separator"]);
+            
             # Step 2: Replace %collectiontypes%
             $searchtitle = str_replace_formatted_placeholder("%collectiontypes%", $searched_collection_types_names_array, $searchtitle, false, $lang["collectiontypes_separator"]);
             }
@@ -163,25 +184,7 @@ if ($search_titles)
             }
 
         $search_title = '<h1 class="searchcrumbs"><a href="'.$baseurl_short.'pages/search.php?search=" onClick="return CentralSpaceLoad(this,true);">'.$searchtitle.'</a></h1> ';
-        }
-    elseif (substr($search,0,6)=="!empty")
-        {
-		$searchq=substr($search,6);
-		$searchq=explode(" ",$searchq);
-		$searchq=rtrim(trim($searchq[0]),",");
-		if (is_numeric($searchq)){
-			$fref=$searchq;
-			$ftitle=sql_value("select title value from resource_type_field where ref='" . $searchq . "'","");}
-		else {
-			$ftitleref=sql_query("select title,ref from resource_type_field where name='" . $searchq . "'","");
-			if (!isset($ftitleref[0])){exit ("invalid !empty search");}
-			$ftitle=$ftitleref[0]['title'];
-			$fref=$ftitleref[0]['ref'];
-		}
-		if ($ftitle==""){exit ("invalid !empty search");}
-		
-        $search_title = '<h1 class="searchcrumbs"><a href='.$baseurl_short.'pages/search.php?search=!empty'.$fref.$parameters_string.' onClick="return CentralSpaceLoad(this,true);">'.str_replace("%field",lang_or_i18n_get_translated($ftitle, "fieldtitle-"),$lang["untaggedresources"]).'</a>'.$searchcrumbs.'</h1> ';
-        }    
+        } 
     elseif (substr($search,0,5)=="!last")
         {
 		$searchq=substr($search,5);
@@ -272,7 +275,7 @@ if ($search_titles)
                 break;
             }
         }
-    else if (substr($search,0,1)!="!")
+    else if (substr($search,0,1)!="!" || substr($search,0,6)=="!empty")
 		{ 
 		$search_title = '<h1 class="searchcrumbs"><a href='.$baseurl_short.'pages/search.php?search='.$parameters_string.' onClick="return CentralSpaceLoad(this,true);"></a>'.$searchcrumbs.'</h1> '; 
 		}   
