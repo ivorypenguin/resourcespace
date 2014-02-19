@@ -175,7 +175,7 @@ if (!$lazyload){?>
 	</head>
 
 	<body class="CollectBack" id="collectbody"<?php if ($infobox) { ?> OnMouseMove="InfoBoxMM(event);"<?php } ?>>
-
+<div style="display:none;" id="currentusercollection"><?php echo $usercollection?></div>
 
 <script>usercollection='<?php echo htmlspecialchars($collection) ?>';</script>
 <?php } 

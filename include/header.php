@@ -216,7 +216,7 @@ jQuery(document).ready(function() {
                      break;
             case <?php echo $keyboard_navigation_zoom; ?>: if (jQuery('.enterLink').length > 0) window.location=jQuery('.enterLink').attr("href");
                      break;
-            case <?php echo $keyboard_navigation_view_all; ?>: CentralSpaceLoad('<?php echo $baseurl;?>/pages/search.php?search=!collection'+usercollection);
+            case <?php echo $keyboard_navigation_view_all; ?>: CentralSpaceLoad('<?php echo $baseurl;?>/pages/search.php?search=!collection'+document.getElementById("currentusercollection").innerHTML,true);
                      break;
           
          }
