@@ -9,6 +9,7 @@ include_once dirname(__FILE__)."/../include/research_functions.php";
 include_once dirname(__FILE__)."/../include/resource_functions.php";
 include_once dirname(__FILE__)."/../include/search_functions.php";
 
+
 $lazyload=getval('lazyload',false);
 
 // copied from collection_manage to support compact style collection adds (without redirecting to collection_manage)
@@ -302,7 +303,7 @@ hook("processusercommand");
 $searches=get_saved_searches($usercollection);
 $do_lazyload=false; // if the collection is over the configured number of resources, only load 20 first, then load the rest immediately.
 // Note that the full search is done initially. The time saved is due to content drawing and transfer.
-$result=do_search("!collection" . $usercollection,"","relevance",0,$lazyload?-1:20);
+$result=do_search("!collection" . $usercollection,"","relevance",0);
 $count_result=count($result);
 $before_lazyload=$count_result;
 
