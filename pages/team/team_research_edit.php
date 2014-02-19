@@ -57,16 +57,22 @@ include "../../include/header.php";
 <div class="Question"><label><?php echo $lang["finaluse"]?></label><div class="Fixed"><?php echo $research["finaluse"]?></div>
 <div class="clearerleft"> </div></div>
 
-<div class="Question"><label><?php echo $lang["resourcetypes"]?></label><div class="Fixed">
-<?php $first=true;$set=explode(", ",$research["resource_types"]);$types=get_resource_types();for ($n=0;$n<count($types);$n++) {if (in_array($types[$n]["ref"],$set)) {if (!$first) {echo ", ";}echo $types[$n]["name"];$first=false;}} ?>
-</div>
-<div class="clearerleft"> </div></div>
+<?php if (!hook("replaceresearcheditresourcetypes")){?>
+	<div class="Question"><label><?php echo $lang["resourcetypes"]?></label><div class="Fixed">
+	<?php $first=true;$set=explode(", ",$research["resource_types"]);$types=get_resource_types();for ($n=0;$n<count($types);$n++) {if (in_array($types[$n]["ref"],$set)) {if (!$first) {echo ", ";}echo $types[$n]["name"];$first=false;}} ?>
+	</div>
+	<div class="clearerleft"> </div></div>
+<?php } ?>
 
+<?php if (!hook("replaceresearcheditnoresources")){?>
 <div class="Question"><label><?php echo $lang["noresourcesrequired"]?></label><div class="Fixed"><?php echo $research["noresources"]?></div>
 <div class="clearerleft"> </div></div>
+<?php } ?>
 
+<?php if (!hook("replaceresearcheditshape")){?>
 <div class="Question"><label><?php echo $lang["shaperequired"]?></label><div class="Fixed"><?php echo $research["shape"]?></div>
 <div class="clearerleft"> </div></div>
+<?php } ?>
 
 <div class="Question"><label><?php echo $lang["assignedtoteammember"]?></label>
 <select class="shrtwidth" name="assigned_to"><option value="0"><?php echo $lang["requeststatus0"]?></option>
