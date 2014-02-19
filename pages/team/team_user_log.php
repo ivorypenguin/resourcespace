@@ -9,6 +9,8 @@ include "../../include/db.php";
 include "../../include/authenticate.php";
 include "../../include/general.php";
 include "../../include/resource_functions.php";
+include "../../include/search_functions.php";
+include "../../include/collections_functions.php";
 
 $offset=getvalescaped("offset",0);
 $ref=getvalescaped("ref","",true);
@@ -47,9 +49,10 @@ $jumpcount=1;
 <tr class="ListviewTitleStyle">
 <td><?php echo $lang["date"]?></td>
 <td><?php echo $lang["resourceid"]?></td>
-<td><?php $field=get_fields(array($view_title_field)); if(isset($field[0])){echo lang_or_i18n_get_translated($field[0]["title"], "fieldtitle-");}?></td>
+<?php if (!hook("replaceuserlogtitleheader")){?><td><?php $field=get_fields(array($view_title_field)); if(isset($field[0])){echo lang_or_i18n_get_translated($field[0]["title"], "fieldtitle-");}?></td><?php } ?>
 <td><?php echo $lang["action"]?></td>
 <td><?php echo $lang["field"]?></td>
+<?php hook("adduserlogcolumnheader");?>
 </tr>
 
 <?php
@@ -62,7 +65,8 @@ for ($n=$offset;(($n<count($log))&& ($n<($offset+$per_page)));$n++)
 	<tr>
 	<td><?php echo nicedate($log[$n]["date"],true,true)?></td>
 	<td><a onClick="return CentralSpaceLoad(this,true);" href='<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $log[$n]["resourceid"]?>'><?php echo $log[$n]["resourceid"]?></a></td>
-	<td><a onClick="return CentralSpaceLoad(this,true);" href='<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $log[$n]["resourceid"]?>'><?php echo i18n_get_translated($log[$n]["resourcetitle"])?></a></td>
+	<td><?php if(!hook("replaceuserlogtitlelink")) {?><a onClick="return CentralSpaceLoad(this,true);" href='<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $log[$n]["resourceid"]?>'><?php if(!hook("replaceuserlogtitle")) {echo i18n_get_translated($log[$n]["resourcetitle"]);}?></a><?php } ?></td>
+	
 	<td><?php echo $lang["log-" . $log[$n]["type"]];
 
 	# For emailed items, append email address from the 'notes' column
@@ -73,6 +77,7 @@ for ($n=$offset;(($n<count($log))&& ($n<($offset+$per_page)));$n++)
 
 	?></td>
 	<td><?php echo $log[$n]["title"] ?></td>
+	<?php hook("adduserlogcolumn");?>
 	</tr>
 	<?php
 	}
