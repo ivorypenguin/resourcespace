@@ -254,6 +254,8 @@ $exiftool_remove_existing=false;
 
 # If Exiftool path is set, write metadata to files upon download if possible.
 $exiftool_write=true;
+# Omit conversion to utf8 when exiftool writes (this happens when $mysql_charset is not set, or $mysql_charset!="utf8")
+$exiftool_write_omit_utf8_conversion=false;
 
 # Set metadata_read to false to omit the option to extract metadata.
 $metadata_read=true;

@@ -1261,7 +1261,7 @@ function write_metadata($path, $ref, $uniqid="")
 	// copys the file to tmp and runs exiftool on it	
 	// uniqid tells the tmp file to be placed in an isolated folder within tmp
 
-	global $exiftool_remove_existing,$storagedir,$exiftool_write,$exiftool_no_process,$mysql_charset;
+	global $exiftool_remove_existing,$storagedir,$exiftool_write,$exiftool_no_process,$mysql_charset,$exiftool_write_omit_utf8_conversion;
 
     # Fetch file extension and resource type.
 	$resource_data=get_resource_data($ref);
@@ -1351,13 +1351,13 @@ function write_metadata($path, $ref, $uniqid="")
                             # Trim leading space if any.
                             if (substr($keyword, 0, 1)==" ") {$keyword = substr($keyword, 1);}
                             # Convert the data to UTF-8 if not already.
-                            if (!isset($mysql_charset) || (isset($mysql_charset) && strtolower($mysql_charset)!="utf8")){$keyword = mb_convert_encoding($keyword, 'UTF-8');}
+                            if (!$exiftool_write_omit_utf8_conversion && (!isset($mysql_charset) || (isset($mysql_charset) && strtolower($mysql_charset)!="utf8"))){$keyword = mb_convert_encoding($keyword, 'UTF-8');}
                             $command.= escapeshellarg("-" . $group_tag . "=" . htmlentities($keyword, ENT_QUOTES, "UTF-8")) . " ";
                             }
                         break;
                     default:
                         # Convert the data to UTF-8 if not already.
-                        if (!isset($mysql_charset) || (isset($mysql_charset) && strtolower($mysql_charset)!="utf8")){$writevalue = mb_convert_encoding($writevalue, 'UTF-8');}
+                        if (!$exiftool_write_omit_utf8_conversion && (!isset($mysql_charset) || (isset($mysql_charset) && strtolower($mysql_charset)!="utf8"))){$writevalue = mb_convert_encoding($writevalue, 'UTF-8');}
                         $command.= escapeshellarg("-" . $group_tag . "=" . htmlentities($writevalue, ENT_QUOTES, "UTF-8")) . " ";
                     }
                 }
