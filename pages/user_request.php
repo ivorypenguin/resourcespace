@@ -126,6 +126,37 @@ if (isset($custom_registration_fields))
 			</select>
 			<?php } ?>
 			
+			<?php if ($type==5) { # checkbox
+				?>
+				<div class="stdwidth Inline">			
+				<?php								
+				$i=0;
+				foreach ($custom_registration_options[$custom[$n]] as $option)		# display each checkbox
+					{
+					$i++;
+					$option_exploded = explode (":",$option);
+					if (count($option_exploded) == 2)		# there are two fields, the first indicates if checked by default, the second is the name
+						{
+						$option_checked = ($option_exploded[0] == "1");
+						$option_label = htmlspecialchars(i18n_get_translated(trim($option_exploded[1])));
+						}
+					else		# there are not two fields so treat the whole string as the name and set to unchecked
+						{
+						$option_checked = false;
+						$option_label = htmlspecialchars(i18n_get_translated(trim($option)));
+						}
+					$option_field_name = "custom" . $n . "_" . $i;		# same format as all custom fields, but with a _<n> indicating sub field number
+					?>
+					<div>				
+						<input name="<?php echo $option_field_name; ?>" id="<?php echo $option_field_name; ?>" type="checkbox" <?php if ($option_checked) { ?> checked="checked"<?php } ?> value="<?php echo $option_label; ?>"></input>
+						<label for="<?php echo $option_field_name; ?>" class=""><?php echo $option_label;?></label>												
+					</div>
+					<?php					
+					}			
+				?>				
+				</div>			
+			<?php } ?>
+			
 			<div class="clearerleft"> </div>
 			</div>
 			<?php

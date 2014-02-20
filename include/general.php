@@ -1058,14 +1058,31 @@ function email_user_request()
 		# Required fields?
 		if (isset($custom_registration_required)) {$required=explode(",",$custom_registration_required);}
 	
+		# Loop through custom fields
 		for ($n=0;$n<count($custom);$n++)
-			{
-			if (isset($required) && in_array($custom[$n],$required) && getval("custom" . $n,"")=="")
+			{			
+			$custom_field_value = getval("custom" . $n,"");
+			$custom_field_sub_value_list = "";
+			
+			for ($i=1; $i<=1000; $i++)		# check if there are sub values, i.e. custom<n>_<n> form fields, for example a bunch of checkboxes if custom type is set to "5"
 				{
-				return false; # Required field was not set.
+				$custom_field_sub_value = getval("custom" . $n . "_" . $i, "");								
+				if ($custom_field_sub_value == "") continue;
+				$custom_field_sub_value_list .= ($custom_field_sub_value_list == "" ? "" : ", ") . $custom_field_sub_value;		# we have found a sub value so append to the list
 				}
 			
-			$c.=i18n_get_translated($custom[$n]) . ": " . getval("custom" . $n,"") . "\n\n";
+			if ($custom_field_sub_value_list != "")		# we found sub values
+				{
+				$c.=i18n_get_translated($custom[$n] . ": " . $custom_field_sub_value_list) . "\n\n";		# append with list of all sub values found
+				}
+			elseif ($custom_field_value != "")		# if no sub values found then treat as normal field
+				{
+				$c.=i18n_get_translated($custom[$n] . ": " . $custom_field_value) . "\n\n";		# there is a value so append it
+				}
+			elseif (isset($required) && in_array($custom[$n],$required))		# if the field was mandatory and a value or sub value(s) not set then we return false
+				{
+				return false;
+				}
 			}
 		}
 

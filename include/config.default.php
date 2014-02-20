@@ -1032,6 +1032,11 @@ $collection_public_hide_owner=false;
 #   3: Drop down box (set options using $custom_registration_options["Field Name"]=array("Option 1","Option 2","Option 3");
 #   4: HTML block, e.g. help text paragraph (set HTML using $custom_registration_html["Field Name"]="<b>Some HTML</b>";
 #      Optionally, you can add the language to this, ie. $custom_registration_html["Field Name"]["en"]=...
+#   5: Checkbox, set options using $custom_registration_options["Field Name"]=array("0:Option 1","1:Option 2","Option 3");
+#      where 0: and 1: are unchecked and checked(respectively) by default, if not specified then assumed unchecked.  Example:
+#      $custom_registration_options["Department"]=array("0:Human Resources","1:Marketing","1:Sales","IT");
+#      Note that if this field is listed in $custom_registration_required, then the user will be forced to check at least one option.
+
 
 # Allow user group to be selected as part of user registration?
 # User groups available for user selection must be specified using the 'Allow registration selection' option on each user group
