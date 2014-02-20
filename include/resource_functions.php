@@ -1929,7 +1929,7 @@ function get_keyword_from_option($option)
 	
 function add_field_option($field,$option)
 	{
-	sql_query("update resource_type_field set options=concat(options,', " . escape_check($option) . "') where ref='$field'");
+	sql_query("update resource_type_field set options=concat(ifnull(options,''),', " . escape_check($option) . "') where ref='$field'");
 	return true;
 	}
 

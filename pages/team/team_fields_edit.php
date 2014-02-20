@@ -128,7 +128,6 @@ for ($n=0;$n<count($options);$n++)
 
 </table>
 </div>
-</form>
 
 <div class="BasicsBox">
     <form method="post" action="<?php echo $baseurl_short?>pages/team/team_fields_edit.php">
@@ -142,6 +141,7 @@ for ($n=0;$n<count($options);$n++)
 		</div>
 	</form>
 </div>
+</form>
 
 <?php		
 include "../../include/footer.php";
