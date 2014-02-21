@@ -128,7 +128,7 @@ if (isset($custom_registration_fields))
 			
 			<?php if ($type==5) { # checkbox
 				?>
-				<div class="stdwidth Inline">			
+				<div class="stdwidth">			
 					<table>
 						<tbody>
 						<?php								
@@ -154,7 +154,7 @@ if (isset($custom_registration_fields))
 									<input name="<?php echo $option_field_name; ?>" id="<?php echo $option_field_name; ?>" type="checkbox" <?php if ($option_checked) { ?> checked="checked"<?php } ?> value="<?php echo $option_label; ?>"></input>
 								</td>
 								<td>
-									<label for="<?php echo $option_field_name; ?>" class="InnerLabel""><?php echo $option_label;?></label>												
+									<label for="<?php echo $option_field_name; ?>" class="InnerLabel"><?php echo $option_label;?></label>												
 								</td>
 							</tr>
 							<?php					
