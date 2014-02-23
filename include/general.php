@@ -3413,7 +3413,7 @@ function format_display_field($value){
 
 if (!function_exists("draw_performance_footer")){
 function draw_performance_footer(){
-	global $config_show_performance_footer,$querycount,$querytime,$querylog,$pagename;
+	global $config_show_performance_footer,$querycount,$querytime,$querylog,$pagename,$hook_cache_hits,$hook_cache;
 	$performance_footer_id=uniqid("performance");
 	if ($config_show_performance_footer){	
 	$querylog=sortmulti ($querylog, "time", "desc", FALSE, FALSE);
@@ -3423,6 +3423,14 @@ function draw_performance_footer(){
 	<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><div style="float:left;"><?php } else { ?><div style="float:right; margin-right: 10px;"><?php } ?>
 	<table class="InfoTable" style="float: right;margin-right: 10px;">
 	<tr><td>Page Load</td><td><?php show_pagetime();?></td></tr>
+	<?php 
+		if(isset($hook_cache_hits) && isset($hook_cache)) {			
+		?>
+		<tr><td>Hook cache hits</td><td><?php echo $hook_cache_hits;?></td></tr>	
+		<tr><td>Hook cache entries</td><td><?php echo count($hook_cache); ?></td></tr>
+		<?php
+		}
+	?>
 	<tr><td>Query count</td><td><?php echo $querycount?></td></tr>
 	<tr><td>Query time</td><td><?php echo round($querytime,4)?></td></tr>
 	<?php $dupes=0;

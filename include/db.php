@@ -251,35 +251,67 @@ $headerinsert="";
 # Initialise hook for plugins
 hook("initialise");
 
+# Global hook cache and related hits counter
+$hook_cache = array();
+$hook_cache_hits = 0;
+
 function hook($name,$pagename="",$params=array())
 	{
-	# Plugin architecture. Look for a hook with this name and execute.
-	if ($pagename=="") {global $pagename;} # If page name not provided, use global page name.
+	# Plugin architecture.  Look for hooks with this name (and corresponding page, if applicable) and run them sequentially.
+	# Utilises a cache for significantly better performance.  
+	# Enable $draw_performance_footer in config.php to see stats.
+	
+	global $hook_cache;	
+	if ($pagename=="") global $pagename;		
+	
+	# the index name for the $hook_cache
+	$hook_cache_index = $name . "|" . $pagename;
+	
+	# we have already processed this hook name and page combination before so return from cache
+	if (isset($hook_cache[$hook_cache_index])) 
+		{
+		# increment stats
+		global $hook_cache_hits;
+		$hook_cache_hits++;						
+		$b_return=false;
+		foreach ($hook_cache[$hook_cache_index] as $function)
+			{
+			$b_return=call_user_func_array($function,$params);
+			}
+		return $b_return;
+		}
+
+	# we have not encountered this hook and page combination before so go add it
 	global $plugins;
 	
-	$found=false;
+	# this will hold all of the functions to call when hitting this hook name and page combination
+	$function_list = array();
+	
 	for ($n=0;$n<count($plugins);$n++)
-		{
+		{	
 		# "All" hooks
-		$function="Hook" . ucfirst($plugins[$n]) . "All" . ucfirst($name);
+		$function="Hook" . ucfirst($plugins[$n]) . "All" . ucfirst($name);		
 		if (function_exists($function)) 
-			{
-			# Function must return 'true' if successful (so existing functionality is replaced)
-			$found=call_user_func_array($function, $params);
+			{			
+			$function_list[]=$function;
 			}
-		else { //use 'else' here because without it it's possible to end up running hook functions twice when the hook passes pagename and params directly.
-		# Specific hook	
+		else 
+			{
+			# Specific hook	
 			$function="Hook" . ucfirst($plugins[$n]) . ucfirst($pagename) . ucfirst($name);
-			if (function_exists($function))
+			if (function_exists($function)) 
 				{
-				# Function must return 'true' if successful (so existing functionality is replaced)
-				$found=call_user_func_array($function, $params);
+				$function_list[]=$function;
 				}
 			}
-		}
-	return $found;
+		}	
+	
+	# add the function list to cache
+	$hook_cache[$hook_cache_index]=$function_list;
+	
+	# do a callback to run the function(s) - this will not cause an infinite loop as we have just added to cache for execution.
+	return hook($name,$pagename,$params);	
 	}
-
 
 function sql_query($sql,$cache=false,$fetchrows=-1,$dbstruct=true)
     {
