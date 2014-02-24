@@ -212,9 +212,13 @@ $lang["anyday"]="beliebiger Tag";
 $lang["anycountry"]="beliebiges Land";
 $lang["resultsdisplay"]="Resultate anzeigen";
 $lang["xlthumbs"]="sehr groß";
+$lang["xlthumbstitle"]="Sehr große Vorschaubilder";
 $lang["largethumbs"]="groß";
+$lang["largethumbstitle"]="Große Vorschaubilder";
 $lang["smallthumbs"]="klein";
+$lang["smallthumbstitle"]="Kleine Vorschaubilder";
 $lang["list"]="Liste";
+$lang["listtitle"]="Listenansicht";
 $lang["perpage"]="pro Seite";
 
 $lang["gotoadvancedsearch"]="zur erweiterten Suche";

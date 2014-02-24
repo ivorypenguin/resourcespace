@@ -201,9 +201,13 @@ $lang["anyday"]="Any day";
 $lang["anycountry"]="Any country";
 $lang["resultsdisplay"]="Results display";
 $lang["xlthumbs"]="X-large";
+$lang["xlthumbstitle"]="Extra Large Thumbnails";
 $lang["largethumbs"]="Large";
+$lang["largethumbstitle"]="Large Thumbnails";
 $lang["smallthumbs"]="Small";
+$lang["smallthumbstitle"]="Small Thumbnails";
 $lang["list"]="List";
+$lang["listtitle"]="List View";
 $lang["perpage"]="per page";
 
 $lang["gotoadvancedsearch"]="Advanced search";

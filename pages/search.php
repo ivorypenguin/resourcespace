@@ -491,10 +491,10 @@ if (true) # Always show search header now.
 	</select>&nbsp;
 	<?php } elseif($iconthumbs) { ?>
 
-	<?php if ($xlthumbs==true) { ?> <?php if ($display=="xlthumbs") { ?><span class="xlthumbsiconactive">&nbsp;</span><?php } else { ?><a href="<?php echo $url?>&display=xlthumbs&k=<?php echo urlencode($k) ?>" title='Extra Large Thumbnails' onClick="return CentralSpaceLoad(this);"><span class="xlthumbsicon">&nbsp;</span></a><?php } ?>&nbsp;<?php } ?>
-	<?php if ($display=="thumbs") { ?> <span class="largethumbsiconactive">&nbsp;</span><?php } else { ?><a href="<?php echo $url?>&display=thumbs&k=<?php echo urlencode($k) ?>" title='Large Thumbnails' onClick="return CentralSpaceLoad(this);"><span class="largethumbsicon">&nbsp;</span></a><?php } ?>
-	<?php if ($smallthumbs==true) { ?> <?php if ($display=="smallthumbs") { ?><span class="smallthumbsiconactive">&nbsp;</span><?php } else { ?><a href="<?php echo $url?>&display=smallthumbs&k=<?php echo urlencode($k)?>" title='Small Thumbnails' onClick="return CentralSpaceLoad(this);"><span class="smallthumbsicon">&nbsp;</span></a><?php } } ?>
-	<?php if ($display=="list") { ?> <span class="smalllisticonactive">&nbsp;</span><?php } else { ?><a href="<?php echo $url?>&display=list&k=<?php echo urlencode($k) ?>" title='List View' onClick="return CentralSpaceLoad(this);"><span class="smalllisticon">&nbsp;</span></a><?php } ?> <?php hook("adddisplaymode"); ?> 
+	<?php if ($xlthumbs==true) { ?> <?php if ($display=="xlthumbs") { ?><span class="xlthumbsiconactive">&nbsp;</span><?php } else { ?><a href="<?php echo $url?>&display=xlthumbs&k=<?php echo urlencode($k) ?>" title='<?php echo $lang["xlthumbstitle"] ?>' onClick="return CentralSpaceLoad(this);"><span class="xlthumbsicon">&nbsp;</span></a><?php } ?>&nbsp;<?php } ?>
+	<?php if ($display=="thumbs") { ?> <span class="largethumbsiconactive">&nbsp;</span><?php } else { ?><a href="<?php echo $url?>&display=thumbs&k=<?php echo urlencode($k) ?>" title='<?php echo $lang["largethumbstitle"] ?>' onClick="return CentralSpaceLoad(this);"><span class="largethumbsicon">&nbsp;</span></a><?php } ?>
+	<?php if ($smallthumbs==true) { ?> <?php if ($display=="smallthumbs") { ?><span class="smallthumbsiconactive">&nbsp;</span><?php } else { ?><a href="<?php echo $url?>&display=smallthumbs&k=<?php echo urlencode($k)?>" title='<?php echo $lang["smallthumbstitle"] ?>' onClick="return CentralSpaceLoad(this);"><span class="smallthumbsicon">&nbsp;</span></a><?php } } ?>
+	<?php if ($display=="list") { ?> <span class="smalllisticonactive">&nbsp;</span><?php } else { ?><a href="<?php echo $url?>&display=list&k=<?php echo urlencode($k) ?>" title='<?php echo $lang["listtitle"] ?>' onClick="return CentralSpaceLoad(this);"><span class="smalllisticon">&nbsp;</span></a><?php } ?> <?php hook("adddisplaymode"); ?> 
 
 <?php } else { ?>
 	
