@@ -260,7 +260,7 @@ if ($_FILES)
 				{
 				# Replacing an existing resource file
 				$status=upload_file($replace_resource,(getval("no_exif","")!=""),false,(getval('autorotate','')!=''));
-
+				hook("additional_replace_existing");
 				echo "SUCCESS: " . htmlspecialchars($replace_resource);
 				exit();
 				}
