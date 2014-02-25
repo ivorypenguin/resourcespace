@@ -65,6 +65,9 @@ if (is_array($preview_preprocessing_results)){
 	if (isset($preview_preprocessing_results['extension'])){
 		$extension=$preview_preprocessing_results['extension'];
 	}
+	if (isset($preview_preprocessing_results['keep_for_hpr'])){
+		$keep_for_hpr=$preview_preprocessing_results['keep_for_hpr'];
+	}
 }
 	
 /* ----------------------------------------
