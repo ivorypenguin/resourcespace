@@ -148,8 +148,12 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 	# append archive searching (don't do this for collections or !listall, archived resources can still appear in these searches)
 	if ( (substr($search,0,8)!="!listall" && substr($search,0,11)!="!collection") || ($collections_omit_archived && !checkperm("e2")))
 		{
-		global $pending_review_visible_to_all;
-		if ($archive==0 && $pending_review_visible_to_all)
+		global $pending_review_visible_to_all,$search_all_workflow_states;
+		if ($search_all_workflow_states)
+			{
+			# Nothing to append, as we're searching all states.
+			}
+		elseif ($archive==0 && $pending_review_visible_to_all)
 			{
 			# If resources pending review are visible to all, when listing only active resources include
 			# pending review (-1) resources too.

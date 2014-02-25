@@ -2293,3 +2293,9 @@ $welcome_text_picturepanel=false;
 
 # Set this to true to prevent possible issues with IE and download.php. Found an issue with a stray pragma: no-cache header that seemed to be added by SAML SSO solution.
 $download_no_session_cache_limiter=false;
+
+
+# Specifies that searching will search all workflow states
+# NOTE - does not work with $advanced_search_archive_select=true (advanced search status searching) as the below option removes the workflow selection altogether.
+$search_all_workflow_states=false;
+
