@@ -11,7 +11,7 @@ $k=getvalescaped("k","");if (($k=="") || (!check_access_key($ref,$k))) {include 
 
 # Load resource data
 $resource=get_resource_data($ref);
-if ($resource===false) {exit("Resource not found.");}
+if ($resource===false) {exit($lang['resourcenotfound']);}
 
 # Load resource field data
 $fields=get_resource_field_data($ref,false,!hook("customgetresourceperms"),-1,$k!="",$use_order_by_tab_view);

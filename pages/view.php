@@ -85,7 +85,7 @@ hook("chgffmpegpreviewext", "", array($ref));
 
 # Load resource data
 $resource=get_resource_data($ref);
-if ($resource===false) {exit("Resource not found.");}
+if ($resource===false) {exit($lang['resourcenotfound']);}
 
 // get mp3 paths if necessary and set $use_mp3_player switch
 if (!(isset($resource['is_transcoding']) && $resource['is_transcoding']==1) && (in_array($resource["file_extension"],$ffmpeg_audio_extensions) || $resource["file_extension"]=="mp3") && $mp3_player){

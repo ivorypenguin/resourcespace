@@ -20,7 +20,7 @@ if ($access==2)
 		}
 
 # Fetch resource data
-$resource=get_resource_data($ref);if ($resource===false) {exit("Resource not found.");}
+$resource=get_resource_data($ref);if ($resource===false) {exit($lang['resourcenotfound']);}
 
 $imagename=i18n_get_translated($resource["field".$view_title_field]);
 

@@ -510,6 +510,7 @@ $lang["clicktoviewresource"]="Klicken Sie untenstehenden Link um die Ressource a
 $lang["statuscode"]="Statuscode";
 $lang["unoconv_pdf"]="erzeugt durch Open Office";
 $lang['calibre_pdf']="erzeugt durch Calibre";
+$lang["resourcenotfound"]="Ressource nicht gefunden.";
 
 # Resource log - actions
 $lang["resourcelog"]="Ressourcenprotokoll";

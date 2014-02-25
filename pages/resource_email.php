@@ -6,7 +6,7 @@ include "../include/resource_functions.php";
 
 $ref=getvalescaped("ref","",true);
 # Fetch resource data
-$resource=get_resource_data($ref);if ($resource===false) {exit("Resource not found.");}
+$resource=get_resource_data($ref);if ($resource===false) {exit($lang['resourcenotfound']);}
 
 # fetch the current search 
 $search=getvalescaped("search","");
