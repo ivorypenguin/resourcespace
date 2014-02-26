@@ -23,6 +23,7 @@ if (!$cinfo["request_feedback"]) {exit("Access denied.");}
 $comments=get_collection_comments($collection);
 if (count($comments)==0 && $feedback_resource_select==false) {$errors=$lang["feedbacknocomments"];}
 
+$comment="";
 if (getval("save","")!="")
 	{
 	# Save comment
