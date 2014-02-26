@@ -1305,7 +1305,7 @@ function get_collection_comments($collection)
 function send_collection_feedback($collection,$comment)
 	{
 	# Sends the feedback to the owner of the collection.
-	global $applicationname,$lang,$userfullname,$userref,$k,$feedback_resource_select;
+	global $applicationname,$lang,$userfullname,$userref,$k,$feedback_resource_select,$feedback_email_required,$regex_email;
 	
 	$cinfo=get_collection($collection);if ($cinfo===false) {exit("Collection not found");}
 	$user=get_user($cinfo["user"]);
@@ -1318,6 +1318,7 @@ function send_collection_feedback($collection,$comment)
 	else
 		{
 		# External user.
+		if ($feedback_email_required && !preg_match ("/${regex_email}/", getvalescaped("email",""))) {$errors[]=$lang["youremailaddress"] . ": " . $lang["requiredfield"];return $errors;}
 		$body.=$lang["fullname"] . ": " . getval("name","") . "\n";
 		$body.=$lang["email"] . ": " . getval("email","") . "\n";
 		}

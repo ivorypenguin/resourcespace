@@ -27,11 +27,23 @@ if (getval("save","")!="")
 	{
 	# Save comment
 	$comment=trim(getvalescaped("comment",""));
-	send_collection_feedback($collection,$comment);
-
-	# Stay on this page for external access users (no access to search)
-	refresh_collection_frame();
-	$done=true;
+	$saveerrors=send_collection_feedback($collection,$comment);	
+	if(is_array($saveerrors))
+		{
+		foreach($saveerrors as $saveerror)
+			{
+			if($errors=="")
+				{$errors = $saveerror;}
+			else
+				{$errors.=" !! <br><br>!! " . $saveerror;}
+			}
+		}
+	else
+		{
+		# Stay on this page for external access users (no access to search)
+		refresh_collection_frame();
+		$done=true;
+		}
 	}
 
 $headerinsert.="<script src=\"../lib/lightbox/js/jquery.lightbox-0.5.min.js\" type=\"text/javascript\"></script>";
@@ -110,7 +122,7 @@ include "../include/header.php";
 
 <div class="Question">
 <?php if ($errors!="") { ?><div class="FormError">!! <?php echo $errors?> !!</div><?php } ?>
-<label for="comment"><?php echo $lang["message"]?></label><textarea class="stdwidth" style="width:450px;" rows=20 cols=80 name="comment" id="comment"></textarea>
+<label for="comment"><?php echo $lang["message"]?></label><textarea class="stdwidth" style="width:450px;" rows=20 cols=80 name="comment" id="comment"><?php echo htmlspecialchars($comment) ?></textarea>
 <div class="clearerleft"> </div>
 </div>
 
@@ -119,11 +131,11 @@ include "../include/header.php";
 	# For external users, ask for their name/e-mail in case this has been passed to several users.
 	?>
 	<div class="Question">
-	<label for="name"><?php echo $lang["yourname"]?></label><input type="text" class="stdwidth" name="name" id="name"></textarea>
+	<label for="name"><?php echo $lang["yourname"]?></label><input type="text" class="stdwidth" name="name" id="name" value="<?php echo htmlspecialchars(getvalescaped("name","")) ?>">
 	<div class="clearerleft"> </div>
 	</div>
 	<div class="Question">
-	<label for="email"><?php echo $lang["youremailaddress"]?></label><input type="text" class="stdwidth" name="email" id="email"></textarea>
+	<label for="email"><?php echo $lang["youremailaddress"]; if ($feedback_email_required){echo " *";}?></label><input type="text" class="stdwidth" name="email" id="email" value="<?php echo htmlspecialchars(getvalescaped("email","")) ?>">
 	<div class="clearerleft"> </div>
 	</div>
 	<?php

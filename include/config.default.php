@@ -2299,3 +2299,5 @@ $download_no_session_cache_limiter=false;
 # NOTE - does not work with $advanced_search_archive_select=true (advanced search status searching) as the below option removes the workflow selection altogether.
 $search_all_workflow_states=false;
 
+# Require email address to be entered when users are submitting collecion feedback
+$feedback_email_required=true;
