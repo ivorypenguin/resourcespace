@@ -274,7 +274,7 @@ function check_display_condition($fields,$n)
 	
 function display_field_data($field,$valueonly=false,$fixedwidth=452)
 	{
-	global $ref, $fieldcount, $tabcount, $show_expiry_warning, $access, $tabname, $search, $extra;
+	global $ref, $fieldcount, $tabcount, $show_expiry_warning, $access, $tabname, $search, $extra, $lang;
 	$value=$field["value"];
 	
 	# Handle expiry fields
