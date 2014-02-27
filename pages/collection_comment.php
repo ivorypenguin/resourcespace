@@ -19,7 +19,7 @@ $rating=$commentdata["rating"];
 # Check access
 if (!$cinfo["request_feedback"] && ($userref!=$cinfo["user"]) && ($cinfo["allow_changes"]!=1) && (!checkperm("h"))) {exit("Access denied.");}
 
-if (getval("save","")!="")
+if (getval("submitted","")!="")
 	{
 	# Save comment
 	$comment=trim(getvalescaped("comment",""));
@@ -54,11 +54,11 @@ if (file_exists($imagepath)){?>
 
 <?php if (!hook("replacecollectioncommentform")) { ?>
 
-<form method="post" action="<?php echo $baseurl_short?>pages/collection_comment.php">
+<form method="post" action="<?php echo $baseurl_short?>pages/collection_comment.php"  onSubmit="return CentralSpacePost(this,true);">
 <input type="hidden" name="ref" value="<?php echo htmlspecialchars($ref) ?>">
 <input type="hidden" name="k" value="<?php echo htmlspecialchars($k) ?>">
 <input type="hidden" name="collection" value="<?php echo htmlspecialchars($collection) ?>">
-
+<input type=hidden name="submitted" value="true">
 <div class="Question">
 <label for="name"><?php echo $lang["comment"]?></label><textarea class="stdwidth" style="width:450px;" rows=20 cols=80 name="comment" id="comment"><?php echo htmlspecialchars($comment)?></textarea>
 <div class="clearerleft"> </div>
@@ -94,4 +94,4 @@ if (file_exists($imagepath)){?>
 
 <?php		
 include "../include/footer.php";
-?>
+
