@@ -720,7 +720,7 @@ else
 	{ 
 	?>
 <table cellpadding="0" cellspacing="0">
-<tr>
+<tr <?php hook("downloadtableheaderattributes")?>>
 <?php
 $table_headers_drawn=false;
 $nodownloads=false;$counter=0;$fulldownload=false;
@@ -755,15 +755,17 @@ if ($resource["has_image"]==1 && $download_multisize)
 			$headline=make_download_preview_link($ref, $sizes[$n],$headline);
 		if ($hide_restricted_download_sizes && !$downloadthissize && !checkperm("q"))
 			continue;
-
-		if ($table_headers_drawn==false) { ?>
-			<td><?php echo $lang["fileinformation"]?></td>
-			<td><?php echo $lang["filesize"]?></td>
-			<?php if ($showprice) { ?><td><?php echo $lang["price"] ?></td><?php } ?>
-			<td class="textcenter"><?php echo $lang["options"]?></td>
-			</tr>
- 			<?php
-			$table_headers_drawn=true;} ?>
+		if(!hook("replacedownloadspacetableheaders")){
+			if ($table_headers_drawn==false) { ?>
+				<td><?php echo $lang["fileinformation"]?></td>
+				<td><?php echo $lang["filesize"]?></td>
+				<?php if ($showprice) { ?><td><?php echo $lang["price"] ?></td><?php } ?>
+				<td class="textcenter"><?php echo $lang["options"]?></td>
+				</tr>
+ 				<?php
+				$table_headers_drawn=true;
+			} 
+		} # end hook("replacedownloadspacetableheaders")?>
 		<tr class="DownloadDBlend" id="DownloadBox<?php echo $n?>">
 		<td><h2><?php echo $headline?></h2><?php
 		if (is_numeric($sizes[$n]["width"]))
