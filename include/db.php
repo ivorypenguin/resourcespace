@@ -880,7 +880,7 @@ function checkperm($perm)
     
 function pagename()
 	{
-	$name=getvalescaped('pagename', '');
+	$name=safe_file_name(getvalescaped('pagename', ''));
 	if (!empty($name))
 		return $name;
 	$url=str_replace("\\","/", $_SERVER["PHP_SELF"]); // To work with Windows command line scripts
