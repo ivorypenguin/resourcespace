@@ -767,7 +767,7 @@ if ($resource["has_image"]==1 && $download_multisize)
 			} 
 		} # end hook("replacedownloadspacetableheaders")?>
 		<tr class="DownloadDBlend" id="DownloadBox<?php echo $n?>">
-		<td><h2><?php echo $headline?></h2><?php
+		<td class="DownloadFileName"><h2><?php echo $headline?></h2><?php
 		if (is_numeric($sizes[$n]["width"]))
 			{
 			echo get_size_info($sizes[$n]);
@@ -789,7 +789,7 @@ if ($resource["has_image"]==1 && $download_multisize)
 				{ 
 				# Add an extra line for previewing
 				?> 
-				<tr class="DownloadDBlend"><td><h2><?php echo $lang["preview"]?></h2><p><?php echo $lang["fullscreenpreview"]?></p></td><td><?php echo $sizes[$n]["filesize"]?></td>
+				<tr class="DownloadDBlend"><td class="DownloadFileName"><h2><?php echo $lang["preview"]?></h2><p><?php echo $lang["fullscreenpreview"]?></p></td><td><?php echo $sizes[$n]["filesize"]?></td>
 				<?php if ($userrequestmode==2 || $userrequestmode==3) { ?><td></td><?php } # Blank spacer column if displaying a price above (basket mode).
 				?>
 				<td class="DownloadButton">
@@ -811,7 +811,7 @@ elseif (strlen($resource["file_extension"])>0 && !($access==1 && $restricted_ful
 			if(!hook("origdownloadlink")):
 		?>
 		<tr class="DownloadDBlend">
-		<td><h2><?php echo (isset($original_download_name)) ? str_replace_formatted_placeholder("%extension", $resource["file_extension"], $original_download_name, true) : str_replace_formatted_placeholder("%extension", $resource["file_extension"], $lang["originalfileoftype"]); ?></h2></td>
+		<td class="DownloadFileName"><h2><?php echo (isset($original_download_name)) ? str_replace_formatted_placeholder("%extension", $resource["file_extension"], $original_download_name, true) : str_replace_formatted_placeholder("%extension", $resource["file_extension"], $lang["originalfileoftype"]); ?></h2></td>
 		<td><?php echo formatfilesize(filesize_unlimited($path))?></td>
 		<td class="DownloadButton">
 		<?php if (!$direct_download || $save_as){ ?>
@@ -835,7 +835,7 @@ if (($nodownloads || $counter==0) && !checkperm("T" . $resource["resource_type"]
 	# No file. Link to request form.
 	?>
 	<tr class="DownloadDBlend">
-	<td><h2><?php echo ($counter==0)?$lang["offlineresource"]:$lang["access1"]?></h2></td>
+	<td class="DownloadFileName"><h2><?php echo ($counter==0)?$lang["offlineresource"]:$lang["access1"]?></h2></td>
 	<td><?php echo $lang["notavailableshort"]?></td>
 
 	<?php if (checkperm("q"))
@@ -862,7 +862,7 @@ if (isset($flv_download) && $flv_download)
 	# Allow the FLV preview to be downloaded. $flv_download is set when showing the FLV preview video above.
 	?>
 	<tr class="DownloadDBlend">
-	<td><h2><?php echo (isset($ffmpeg_preview_download_name)) ? $ffmpeg_preview_download_name : str_replace_formatted_placeholder("%extension", $ffmpeg_preview_extension, $lang["cell-fileoftype"]); ?></h2></td>
+	<td class="DownloadFileName"><h2><?php echo (isset($ffmpeg_preview_download_name)) ? $ffmpeg_preview_download_name : str_replace_formatted_placeholder("%extension", $ffmpeg_preview_extension, $lang["cell-fileoftype"]); ?></h2></td>
 	<td><?php echo formatfilesize(filesize_unlimited($flvfile))?></td>
 	<td class="DownloadButton">
 	<?php if (!$direct_download || $save_as){?>
@@ -927,7 +927,7 @@ if ($alt_access)
 			}
 		?>
 		<tr class="DownloadDBlend" <?php if ($alt_pre!="" && $alternative_file_previews_mouseover) { ?>onMouseOver="orig_preview=jQuery('#previewimage').attr('src');orig_width=jQuery('#previewimage').width();jQuery('#previewimage').attr('src','<?php echo $alt_pre ?>');jQuery('#previewimage').width(orig_width);" onMouseOut="jQuery('#previewimage').attr('src',orig_preview);"<?php } ?>>
-		<td>
+		<td class="DownloadFileName">
 		<?php if(!hook("renderaltthumb")): ?>
 		<?php if ($alt_thm!="") { ?><a href="<?php echo $baseurl_short?>pages/preview.php?ref=<?php echo urlencode($ref)?>&alternative=<?php echo $altfiles[$n]["ref"]?>&k=<?php echo urlencode($k)?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>&<?php echo hook("previewextraurl") ?>"><img src="<?php echo $alt_thm?>" class="AltThumb"></a><?php } ?>
 		<?php endif; ?>
