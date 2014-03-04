@@ -126,7 +126,13 @@ function add_resource_to_collection($resource,$collection,$smartadd=false,$size=
 
 			# Set the flag so a warning appears.
 			global $collection_share_warning;
+			# Check to see if all shares have expired
+			$expiry_dates=sql_array("select distinct expires value from external_access_keys where collection=$collection");
+			$datetime=time();
 			$collection_share_warning=true;
+			foreach($expiry_dates as $key => $date) {
+				if($date!="" && $date<$datetime){$collection_share_warning=false;}
+			}
 			
 			for ($n=0;$n<count($keys);$n++)
 				{
