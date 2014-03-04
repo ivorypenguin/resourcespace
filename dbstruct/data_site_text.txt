@@ -428,7 +428,7 @@ done,resource_email,"Eine E-Mail mit Link zur Ressource wurde an die angegebenen
 done,resource_request,"Ihre Anfrage wurde abgeschickt und wird in Kürze bearbeitet.",289,de,,,0
 done,user_password,"Eine E-Mail mit Ihrem Benutzernamen und Passwort wurde an Sie gesendet.",290,de,,,0
 done,user_request,"Ihre Anfrage nach einem Zugang wurde abgeschickt und wird in Kürze bearbeitet.",291,de,,,0
-download_click,introtext,"Um die Datei herunterzuladen, clicken Sie bitte mit der rechten Maustaste auf den untenstehenden Link und wählen Sie ""Speichern unter..."". Sie können dann auswählen an welchem Ort Sie die Datei abspeichern wollen. Um die Datei im Browser zu öffnen, clicken Sie den Link bitte mit der linken Maustaste.",292,de,,,0
+download_click,introtext,"Um die Datei herunterzuladen, klicken Sie bitte mit der rechten Maustaste auf den untenstehenden Link und wählen Sie ""Speichern unter..."". Sie können dann auswählen an welchem Ort Sie die Datei abspeichern wollen. Um die Datei im Browser zu öffnen, klicken Sie den Link bitte mit der linken Maustaste.",292,de,,,0
 download_progress,introtext,"Ihr Download wird in Kürze starten. Nachdem der Download abgeschlossen ist, wählen Sie bitte einen der folgenden Links.",293,de,,,0
 edit,batch,"",294,de,,,0
 edit,multiple,"Bitte wählen Sie die Felder aus, die Sie verändern wollen. Felder, die Sie nicht anwählen, werden nicht verändert.",295,de,,,0
@@ -449,7 +449,7 @@ Wir werden Sie kontinuierlich informieren. Sobald wir Ihre Anfrage bearbeitet ha
 resource_email,introtext,"Geben Sie dieses Bild per E-Mail weiter. Es wird ein Link versendet. Sie können außerdem eine persönliche Nachricht in die E-Mail einfügen.",306,de,,,0
 resource_request,introtext,"Die Ressource, die Sie herunterladen möchten, ist nicht online verfügbar. Die Informationen zur Ressource werden automatisch per E-Mail versendet. Zusätzlich können Sie weitere Bemerkungen hinzufügen.",307,de,,,0
 search_advanced,introtext,"<strong>Suchtipp</strong><br>
-Jeder Bereich, den Sie nicht ausfüllen / anclicken, liefert alle Resultate aus dem Bereich.",308,de,,,0
+Jeder Bereich, den Sie nicht ausfüllen / anklicken, liefert alle Ergebnisse aus dem Bereich.",308,de,,,0
 tag,introtext,"Verbessern Sie die Suchergebnisse, indem Sie Ressourcen taggen. Sagen Sie, was Sie sehen, getrennt durch Leerzeichen oder Komma... z.B.: Hund, Haus, Ball, Geburtstag, Kuchen. Geben Sie den vollen Namen von Personen in Fotos und die Ort der Aufnahme an, wenn bekannt.",309,de,,,0
 terms,introtext,"Sie müssen zuerst die Nutzungsbedingungen akzeptieren.
 

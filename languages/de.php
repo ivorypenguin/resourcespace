@@ -187,14 +187,14 @@ $lang["logout"]="Abmelden";
 $lang["contactus"]="Kontakt";
 # next line
 $lang["home"]="Startseite";
-$lang["searchresults"]="Suchresultate";
+$lang["searchresults"]="Suchergebnisse";
 $lang["themes"]="Themen";
 $lang["mycollections"]="Meine Kollektionen";
 $lang["myrequests"]="Meine Anfragen";
 $lang["collections"]="Kollektionen";
 $lang["mycontributions"]="Meine Beiträge";
 $lang["researchrequest"]="Suchanfrage";
-$lang["helpandadvice"]="Hilfe & Unterstützung";
+$lang["helpandadvice"]="Hilfe &amp; Unterstützung";
 $lang["teamcentre"]="Administration";
 # footer link
 $lang["aboutus"]="Über uns";
@@ -210,7 +210,7 @@ $lang["anyyear"]="beliebiges Jahr";
 $lang["anymonth"]="beliebiger Monat";
 $lang["anyday"]="beliebiger Tag";
 $lang["anycountry"]="beliebiges Land";
-$lang["resultsdisplay"]="Resultate anzeigen";
+$lang["resultsdisplay"]="Ergebnisse anzeigen";
 $lang["xlthumbs"]="sehr groß";
 $lang["xlthumbstitle"]="Sehr große Vorschaubilder";
 $lang["largethumbs"]="groß";
@@ -461,7 +461,7 @@ $lang["colour"]="Farbe";
 $lang["jumptopage"]="springe zur Seite";
 $lang["jump"]="springe";
 $lang["titleandcountry"]="Titel / Land";
-$lang["torefineyourresults"]="Um Ihre Resultate zu verfeinern versuchen Sie";
+$lang["torefineyourresults"]="Um Ihre Ergebnisse zu verfeinern versuchen Sie";
 $lang["verybestresources"]="Die besten Ressourcen";
 $lang["addtocurrentcollection"]="Zur aktuellen Kollektion hinzufügen";
 $lang["addresource"]="Einzelne Ressource hinzufügen";
@@ -471,9 +471,9 @@ $lang["clickbrowsetolocate"]="für eine Dateiauswahl bitte klicken";
 $lang["resourcetools"]="Ressourcen-Werkzeuge";
 $lang["fileinformation"]="Datei-Information";
 $lang["options"]="Optionen";
-$lang["previousresult"]="vorige Resultate";
-$lang["viewallresults"]="alle Resultate anzeigen";
-$lang["nextresult"]="weitere Resultate";
+$lang["previousresult"]="voriges Ergebnis";
+$lang["viewallresults"]="alle Ergebnisse anzeigen";
+$lang["nextresult"]="nächstes Ergebnis";
 $lang["pixels"]="Pixel";
 $lang["download"]="Download";
 $lang["preview"]="Vorschau";
@@ -657,7 +657,7 @@ $lang["treeobjecttype-field"]=$lang["field"]="Feld";
 $lang["save"]="Speichern";
 $lang["revert"]="Wiederherstellen";
 $lang["cancel"]="abbrechen";
-$lang["view"]="anzeigen";
+$lang["view"]="zeige";
 $lang["type"]="Typ";
 $lang["text"]="Text";
 $lang["yes"]="ja";
@@ -689,7 +689,7 @@ $lang["complete"]="Fertig";
 $lang["backtohome"]="zurück zur Startseite";
 $lang["continuetohome"]="weiter zur Startseite";
 $lang["backtohelphome"]="zurück zur Hilfeseite";
-$lang["backtosearch"]="zurück zu meinen Suchresultaten";
+$lang["backtosearch"]="zurück zu meinen Suchergebnissen";
 $lang["backtoview"]="Ressource-Ansicht";
 $lang["backtoeditresource"]="zurück zur Ressourcen-Bearbeitung";
 $lang["backtouser"]="zurück zum Benutzer-Login";
@@ -785,7 +785,7 @@ $lang["generateurls"]="URLs generieren";
 $lang["generateexternalurl"]="Externe URL generieren";
 $lang["generateexternalurls"]="Externe URLs generieren";
 $lang["generateurlinternal"]="Die folgende URL funktioniert nur für eingeloggte Benutzer.";
-$lang["generateurlexternal"]="Die folgende URL funktioniert ohne Login. <strong>Bitte beachten Sie, wenn neue Ressourcen zur Kollektion hinzugefügt werden, funktioniert diese URL aus Sicherheitsgriünden nicht mehr und muss neu generiert werden.</strong>";
+$lang["generateurlexternal"]="Die folgende URL funktioniert ohne Login. <strong>Bitte beachten Sie: Wenn neue Ressourcen zur Kollektion hinzugefügt werden, funktioniert diese URL aus Sicherheitsgründen nicht mehr und muss neu generiert werden.</strong>";
 $lang["generatethemeurlsexternal"]="Die untenstehenden URLs können ohne Login benutzt werden.";
 $lang["showexistingthemeshares"]="Bestehende Weitergaben für Themen in dieser Kategorie anzeigen";
 $lang["internalusersharing"]="Weitergeben an interne Benutzer";
@@ -933,7 +933,7 @@ $lang["matchingrelatedkeywords"]="Passende verknüpfte Stichworte";
 $lang["newkeywordrelationship"]="Neue Verknüpfung für Stichworte hinzufügen...";
 $lang["searchkeyword"]="Stichwort für Suche";
 
-$lang["exportdata"]="Export Daten";
+$lang["exportdata"]="Daten-Export";
 $lang["exporttype"]="Export Typ";
 
 $lang["managealternativefiles"]="Alternative Dateien verwalten";
@@ -972,7 +972,7 @@ $lang["userresourcesunsubmitted"]="Die folgenden Ressourcen wurden von Benutzern
 $lang["viewalluserpending"]="Alle von Benutzern zur Überprüfung eingesandten Ressourcen anzeigen:";
 
 # New for 1.7
-$lang["installationcheck"]="Installation Überprüfen";
+$lang["installationcheck"]="Installation überprüfen";
 $lang["managefieldoptions"]="Feldoptionen verwalten";
 $lang["matchingresourcesheading"]="Passende Ressourcen";
 $lang["backtofieldlist"]="Zurück zur Feldliste";
@@ -1267,7 +1267,7 @@ $lang["markers"] = "Markierungen";
 
  $lang["associatedcollections"]="Verbundene Kollektionen";
  $lang["emailfromuser"]="E-Mail senden von ";
- $lang["emailfromsystem"]="Haken entfernen, um die E-Mail von der System Adresse zu senden: ";
+ $lang["emailfromsystem"]="Haken entfernen, um die E-Mail von der System-Adresse zu senden: ";
 
 
 
@@ -1780,9 +1780,9 @@ $lang["download_collection"]="Kollektion herunterladen";
 
 $lang["all-resourcetypes"] = "Ressourcen"; # Will be used as %resourcetypes% if all resourcetypes are searched.
 $lang["all-collectiontypes"] = "Kollektionen"; # Will be used as %collectiontypes% if all collection types are searched.
-$lang["resourcetypes-no_collections"] = "Alle %resourcetypes%"; # Use %RESOURCETYPES%, %resourcetypes% or %Resourcetypes% as a placeholder. The placeholder will be replaced with the resourcetype in plural (or $lang["all-resourcetypes"]), using the same case. E.g. "All %resourcetypes%" -> "All photos"
-$lang["no_resourcetypes-collections"] = "Alle %collectiontypes%"; # Use %COLLECTIONTYPES%, %collectiontypes% or %Collectiontypes% as a placeholder. The placeholder will be replaced with the collectiontype (or $lang["all-collectiontypes"]), using the same case. E.g. "All %collectiontypes%" -> "All my collections"
-$lang["resourcetypes-collections"] = "Alle %resourcetypes% und alle %collectiontypes%"; # Please find the comments for $lang["resourcetypes-no_collections"] and $lang["no_resourcetypes-collections"]!
+$lang["resourcetypes-no_collections"] = "Alle %Resourcetypes%"; # Use %RESOURCETYPES%, %resourcetypes% or %Resourcetypes% as a placeholder. The placeholder will be replaced with the resourcetype in plural (or $lang["all-resourcetypes"]), using the same case. E.g. "All %resourcetypes%" -> "All photos"
+$lang["no_resourcetypes-collections"] = "Alle %Collectiontypes%"; # Use %COLLECTIONTYPES%, %collectiontypes% or %Collectiontypes% as a placeholder. The placeholder will be replaced with the collectiontype (or $lang["all-collectiontypes"]), using the same case. E.g. "All %collectiontypes%" -> "All my collections"
+$lang["resourcetypes-collections"] = "Alle %Resourcetypes% und alle %Collectiontypes%"; # Please find the comments for $lang["resourcetypes-no_collections"] and $lang["no_resourcetypes-collections"]!
 $lang["resourcetypes_separator"] = ", "; # The separator to be used when converting the array of searched resourcetype to a string. E.g. ", " -> "photos, documents"
 $lang["collectiontypes_separator"] = ", "; # The separator to be used when converting the array of searched collections to a string. E.g. ", " -> "public collections, themes"
 $lang["hide_view_access_to_workflow_state"]="Zugriff auf Status blockieren";
