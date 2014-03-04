@@ -237,12 +237,12 @@ EOT;
 			
 			$createdDate = new DateTime($comment["created"]);
 			
-			echo "<div class='CommentEntryInfoDetails'>" . $createdDate->format('D') . " " . nicedate($comment["created"],true). " ";			
+			echo "<div class='CommentEntryInfoDetails'>" . strftime('%a',$createdDate->getTimestamp()) . " " . nicedate($comment["created"],true). " ";			
 			if ($comment['responseToDateTime']!="")
 				{
 				$responseToName = htmlspecialchars ($comment['responseToName']);
 				$responseToDate = new DateTime($comment["responseToDateTime"]);				
-				$responseToDateTime =  $responseToDate->format('D') . " " . nicedate($comment['responseToDateTime'], true);						
+				$responseToDateTime =  strftime('%a',$responseToDate->getTimestamp()) . " " . nicedate($comment['responseToDateTime'], true);						
 				$jumpAnchorID = "comment" . $comment['ref_parent'];								
 				echo $lang['comments_in-response-to'] . "<br /><a class='.smoothscroll' rel='' href='#${jumpAnchorID}'>${responseToName} " . $lang['comments_in-response-to-on'] . " ${responseToDateTime}</a>";				
 				}						
