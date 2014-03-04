@@ -13,7 +13,7 @@ for ($m=0;$m<count($options);$m++)
 	$option_trans_simple[]=$trans;
 	}
 
-if ($auto_order_checkbox) {asort($option_trans);}
+if ($auto_order_checkbox) {natsort($option_trans);}
 $options=array_keys($option_trans); # Set the options array to the keys, so it is now effectively sorted by translated string	
 	
 $set=trim_array(explode(",",$value));
