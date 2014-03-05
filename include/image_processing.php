@@ -652,7 +652,19 @@ function create_previews($ref,$thumbonly=false,$extension="jpg",$previewonly=fal
 				$apath=get_resource_path($ref,true,"",true,$image_alternatives[$n]["target_extension"],-1,1,false,"",$aref);
 				
 				# Process the image
-                $command = $convert_fullpath . " " . $image_alternatives[$n]["params"] . " " . escapeshellarg($file) . " " . escapeshellarg($apath);
+				$version=get_imagemagick_version();
+				if($version[0]>5 || ($version[0]==5 && $version[1]>5) || ($version[0]==5 && $version[1]==5 && $version[2]>7 ))
+					{
+					// Use the new imagemagick command syntax (file then parameters)
+					$command = $convert_fullpath . " " . escapeshellarg($file) . " " . $image_alternatives[$n]["params"] . " " . escapeshellarg($apath);
+					}
+				else
+					{
+					// Use the old imagemagick command syntax (parameters then file)
+					$command = $convert_fullpath . " " . $image_alternatives[$n]["params"] . " " . escapeshellarg($file) . " " . escapeshellarg($apath);
+					}
+			
+                
                 $output = run_command($command);
 
 				if (file_exists($apath)){
