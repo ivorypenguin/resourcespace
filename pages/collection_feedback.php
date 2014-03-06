@@ -36,7 +36,7 @@ if (getval("save","")!="")
 			if($errors=="")
 				{$errors = $saveerror;}
 			else
-				{$errors.=" !! <br><br>!! " . $saveerror;}
+				{$errors.="<br><br> " . $saveerror;}
 			}
 		}
 	else
@@ -53,7 +53,14 @@ $headerinsert.="<link type=\"text/css\" href=\"../lib/lightbox/css/jquery.lightb
 
 
 include "../include/header.php";
+
+if ($errors!="")
+	{
+	echo "<script>alert('" .  str_replace(array("<br>","<br/>","<br />"),"\\n\\n",$errors) . "');</script>";
+	}
 ?>
+
+
 
 <div class="BasicsBox">
 <h1><?php echo $lang["sendfeedback"]?></h1>
@@ -122,7 +129,7 @@ include "../include/header.php";
 ?>
 
 <div class="Question">
-<?php if ($errors!="") { ?><div class="FormError">!! <?php echo $errors?> !!</div><?php } ?>
+<?php if ($errors!="") { ?><div class="FormError"><?php echo $errors?></div><?php } ?>
 <label for="comment"><?php echo $lang["message"]?></label><textarea class="stdwidth" style="width:450px;" rows=20 cols=80 name="comment" id="comment"><?php echo htmlspecialchars($comment) ?></textarea>
 <div class="clearerleft"> </div>
 </div>
