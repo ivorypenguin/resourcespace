@@ -2301,3 +2301,6 @@ $search_all_workflow_states=false;
 
 # Require email address to be entered when users are submitting collecion feedback
 $feedback_email_required=true;
+
+// Set smart collection sort order. May want to set to resourceid if $order_by_resource_id is set 
+$smart_collections_sort_order="relevance";

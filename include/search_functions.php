@@ -850,7 +850,7 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 		$collection=escape_check($collection[0]);
 
 		# smart collections update
-		global $allow_smart_collections,$smart_collections_async;
+		global $allow_smart_collections,$smart_collections_async, $smart_collections_sort_order;
 		if ($allow_smart_collections){
 			global $smartsearch_ref_cache;
 			if (isset($smartsearch_ref_cache[$collection])){
