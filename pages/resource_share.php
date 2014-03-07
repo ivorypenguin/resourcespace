@@ -34,6 +34,7 @@ if (getval("deleteaccess","")!="")
     }
 
 include "../include/header.php";
+hook("resource_share_afterheader");
 ?>
 
 <?php if (isset($show_error)){?>
