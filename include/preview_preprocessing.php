@@ -84,47 +84,6 @@ if (isset($qlpreview_path) && !in_array($extension, $qlpreview_exclude_extension
 	if (file_exists($target)){$newfile = $target;debug("qlpreview success!");}	
 	}
 
-/* ----------------------------------------
-	Try InDesign - for non-exiftool - CS4 not supported
-   ----------------------------------------
-*/
-# Note: for good results, InDesign Preferences must be set to save Preview image at Extra Large size.
-if ($exiftool_fullpath==false)
-	{
-	if ($extension=="indd" && !isset($newfile))
-		{
-		$indd_thumb = extract_indd_thumb ($file);
-		if ($indd_thumb!="no")
-			{
-			base64_to_jpeg( $indd_thumb, $target);
-			if (file_exists($target)){$newfile = $target;}
-			}
-		hook("indesign");	
-		}
-	}
-	
-	
-/* ----------------------------------------
-       Try InDesignThumbnail - exiftool
-  ----------------------------------------
-*/
-# Note: for good results, InDesign Preferences must be set to save Preview image at Extra Large size.
-# Thanks to Jeff Harmon for this code
-
-if ($extension=="indd" && !isset($newfile))
-    {
-    if ($exiftool_fullpath!=false)
-        {
-        run_command($exiftool_fullpath.' -b -thumbnailimage '.escapeshellarg($file).' > '.$target);
-        }
-    if (file_exists($target))
-        {
-        #if the file contains an image, use it; if it's blank, it needs to be erased because it will cause an error in ffmpeg_processing.php
-        if (filesize_unlimited($target)>0){$newfile = $target;}else{unlink($target);}
-        }
-    hook("indesign");
-    }
-
 
 /* ----------------------------------------
 	Try InDesign - for CS5 (page previews)
@@ -138,32 +97,38 @@ if ($exiftool_fullpath!=false)
 
 		if (is_array($indd_thumbs))
 			{
-			$n=0;	
-			foreach ($indd_thumbs as $indd_thumb)
-				{
-				base64_to_jpeg( $indd_thumb, $target."_".$n);
-				$n++;
-				}
 			$pagescommand="";
-			for ($x=0;$x<$n;$x++)
-				{
-				$pagescommand.=" ".$target."_".$x;
-				}
-			// process jpgs as a pdf so the existing pdf paging code can be used.	
-			$file=get_resource_path($ref,true,"",false,"pdf");		
-			$jpg2pdfcommand = $convert_fullpath . " ".$pagescommand." " . $file; 
-			$output=run_command($jpg2pdfcommand);
-			for ($x=0;$x<$n;$x++)
-				{
-				unlink($target."_".$x);
-				}
-			$extension="pdf";
-			$dUseCIEColor=false;
-			$n=0;	
-			$x=0;
+			$n=0;
+			foreach ($indd_thumbs as $indd_page){
+				echo $indd_page;
+				$pagescommand.=" ".$target."_".$n;
+				base64_to_jpeg( str_replace("base64:","",$indd_page), $target."_".$n);
+				
+				$n++;
 			}
-		}	
-	}
+		}
+		
+		
+		// process jpgs as a pdf so the existing pdf paging code can be used.	
+		$file=get_resource_path($ref,true,"",false,"pdf");		
+		$jpg2pdfcommand = $convert_fullpath . " ".$pagescommand." " . $file; 
+		
+		$output=run_command($jpg2pdfcommand);
+			
+		$n=0;
+		foreach ($indd_thumbs as $indd_page){
+				
+			unlink($target."_".$n);
+			$n++;
+		}
+		
+		$extension="pdf";
+		$dUseCIEColor=false;
+		$n=0;	
+		$x=0;
+		}
+	}	
+	
 	
 /* ----------------------------------------
 	Try PhotoshopThumbnail

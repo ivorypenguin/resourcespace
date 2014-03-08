@@ -1388,51 +1388,25 @@ function base64_to_jpeg( $imageData, $outputfile ) {
  $jpeg = fopen( $outputfile, "wb" ) or die ("can't open");
  fwrite( $jpeg, base64_decode( $imageData ) );
  fclose( $jpeg );
+ 
 }
 
-function extract_indd_thumb ($filename) {
-	// not used
-    $source = file_get_contents($filename);
-
-    $xmpdata_start = strrpos($source,"<xap:Thumbnails");
-    $xmpdata_end = strrpos($source,"</xap:Thumbnails>");
-    $xmplength = $xmpdata_end-$xmpdata_start;
-    $xmpdata = substr($source,$xmpdata_start,$xmplength+12);
-    $regexp     = "/<xapGImg:image>.+<\/xapGImg:image>/";
-    preg_match ($regexp, $xmpdata, $r);
-    if (isset($r['0'])){
-    	$indd_thumb = strip_tags($r['0']);
-    	$indd_thumb = str_replace("#xA;","",$indd_thumb);
-    	return $indd_thumb;} else {return "no";}
-    }
-     
 function extract_indd_pages ($filename)
     {
     $exiftool_fullpath = get_utility_path("exiftool");
     if ($exiftool_fullpath!=false)
         {
-        run_command($exiftool_fullpath.' -b '.$filename.' > '.$filename.'metadata');
-        $source = file_get_contents($filename.'metadata');
-        $xmpdata = $source;
-        $regexp     = "/<xmpGImg:image>.+<\/xmpGImg:image>/";
-        preg_match_all ($regexp, $xmpdata, $r);
-        $indd_thumbs=array();
-        if (isset($r[0]) && count($r[0])>0)
-            {
-            $n=0;
-            foreach ($r[0] as $image)
-                {
-                $indd_thumbs[$n] = strip_tags($image);
-                $indd_thumbs[$n] = str_replace("#xA;","",$indd_thumbs[$n]);
-                $n++;
-                }
-            $n=0;
-            unlink($filename.'metadata');
-            return ($indd_thumbs);
-            } 
-        }
-    }     
- 
+        $array=run_command($exiftool_fullpath.' -b -j -pageimage '.$filename.' > '.$filename.'pageimage');
+        $array=json_decode(file_get_contents($filename.'pageimage'));
+        
+        $array=$array[0]->PageImage;
+        
+        unlink($filename.'pageimage');
+        return $array;
+        
+        
+		}     
+ }
  
 function generate_file_checksum($resource,$extension,$anyway=false)
 	{
