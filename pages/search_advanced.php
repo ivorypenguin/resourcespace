@@ -529,19 +529,19 @@ $wrap=0;
 $clear_function="";
 if ($search_includes_user_collections) 
     { ?>
-    <td align="middle"><?php if ($searchbar_selectall){ ?>&nbsp;&nbsp;<?php } ?><input class="tickboxcoll" id="TickBoxMyCol" type="checkbox" name="resourcetypemycol" value="yes" <?php if (((count($rt)==1) && ($rt[0]=="")) || (in_array("mycol",$rt))) {?>checked="true"<?php } ?>onClick="resetTickAllColl();" onChange="UpdateResultCount();"/>&nbsp;<?php echo $lang["mycollections"]?></td><?php	
+    <td align="middle"><?php if ($searchbar_selectall){ ?>&nbsp;&nbsp;<?php } ?><input class="tickboxcoll" id="TickBoxMyCol" type="checkbox" name="resourcetypemycol" value="yes" <?php if (((count($rt)==1) && ($rt[0]=="")) || (in_array("mycol",$rt))) {?>checked="checked"<?php } ?>onClick="resetTickAllColl();" onChange="UpdateResultCount();"/>&nbsp;<?php echo $lang["mycollections"]?></td><?php	
     $clear_function.="document.getElementById('TickBoxMyCol').checked=true;";
     $clear_function.="resetTickAllColl();";
     }
 if ($search_includes_public_collections) 
     { ?>
-    <td align="middle"><?php if ($searchbar_selectall){ ?>&nbsp;&nbsp;<?php } ?><input class="tickboxcoll" id="TickBoxPubCol" type="checkbox" name="resourcetypepubcol" value="yes" <?php if (((count($rt)==1) && ($rt[0]=="")) || (in_array("pubcol",$rt))) {?>checked="true"<?php } ?>onClick="resetTickAllColl();" onChange="UpdateResultCount();"/>&nbsp;<?php echo $lang["findpubliccollection"]?></td><?php	
+    <td align="middle"><?php if ($searchbar_selectall){ ?>&nbsp;&nbsp;<?php } ?><input class="tickboxcoll" id="TickBoxPubCol" type="checkbox" name="resourcetypepubcol" value="yes" <?php if (((count($rt)==1) && ($rt[0]=="")) || (in_array("pubcol",$rt))) {?>checked="checked"<?php } ?>onClick="resetTickAllColl();" onChange="UpdateResultCount();"/>&nbsp;<?php echo $lang["findpubliccollection"]?></td><?php	
     $clear_function.="document.getElementById('TickBoxPubCol').checked=true;";
     $clear_function.="resetTickAllColl();";
     }
 if ($search_includes_themes) 
     { ?>
-    <td align="middle"><?php if ($searchbar_selectall){ ?>&nbsp;&nbsp;<?php } ?><input class="tickboxcoll" id="TickBoxThemes" type="checkbox" name="resourcetypethemes" value="yes" <?php if (((count($rt)==1) && ($rt[0]=="")) || (in_array("themes",$rt))) {?>checked="true"<?php } ?>onClick="resetTickAllColl();" onChange="UpdateResultCount();"/>&nbsp;<?php echo $lang["findcollectionthemes"]?></td><?php	
+    <td align="middle"><?php if ($searchbar_selectall){ ?>&nbsp;&nbsp;<?php } ?><input class="tickboxcoll" id="TickBoxThemes" type="checkbox" name="resourcetypethemes" value="yes" <?php if (((count($rt)==1) && ($rt[0]=="")) || (in_array("themes",$rt))) {?>checked="checked"<?php } ?>onClick="resetTickAllColl();" onChange="UpdateResultCount();"/>&nbsp;<?php echo $lang["findcollectionthemes"]?></td><?php	
     $clear_function.="document.getElementById('TickBoxThemes').checked=true;";
     $clear_function.="resetTickAllColl();";
     }

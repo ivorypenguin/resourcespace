@@ -124,7 +124,7 @@ jQuery(document).ready(function() {
 <script type="text/javascript" src="<?php echo $baseurl?>/lib/ckeditor/ckeditor.js"></script>
 <?php if (!$disable_geocoding) { ?>
 <script src="<?php echo $baseurl ?>/lib/OpenLayers/OpenLayers.js"></script>
-<script src="https://maps.google.com/maps/api/js?v=3.2&sensor=false"></script>
+<script src="https://maps.google.com/maps/api/js?v=3.2&amp;sensor=false"></script>
 <?php } ?>
 <?php if (!hook("ajaxcollections")) { ?>
 <script src="<?php echo $baseurl;?>/lib/js/ajax_collections.js?css_reload_key=<?php echo $css_reload_key?>" type="text/javascript"></script>
@@ -335,7 +335,7 @@ else
 	<li><?php if ($allow_password_change && !checkperm("p")) { ?>
 	<a href="<?php echo $baseurl?>/pages/user_preferences.php"  onClick="return CentralSpaceLoad(this,true);"><?php } ?><?php echo htmlspecialchars(($userfullname=="" ? $username : $userfullname)) ?><?php } /* end replacefullnamelink */?><?php if ($allow_password_change && !checkperm("p")) { ?></a><?php } ?></li>
 	<?php hook("addtoplinks");?>
-	<li><a href="<?php echo $baseurl?>/login.php?logout=true&nc=<?php echo time()?>"><?php echo $lang["logout"]?></a></li>
+	<li><a href="<?php echo $baseurl?>/login.php?logout=true&amp;nc=<?php echo time()?>"><?php echo $lang["logout"]?></a></li>
 	<?php hook("addtologintoolbarmiddle");?>
 	<?php if ($contact_link) { ?><li><a href="<?php echo $baseurl?>/pages/contact.php"  onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["contactus"]?></a></li><?php } ?>
 	</ul>

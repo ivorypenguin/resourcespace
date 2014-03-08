@@ -83,7 +83,7 @@ function UserRatingSet(userref,ref,rating)
 	}
 ?>
 
-<div class="RatingCount" id="RatingCount"><?php if ($user_rating_stats && $user_rating_only_once){?><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl?>/pages/user_ratings.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by) ?>&sort=<?php echo urlencode($sort) ?>&archive=<?php echo urlencode($archive) ?>"><?php } ?><?php echo urlencode($rating_count) ?> <?php echo ($rating_count==1?$lang["rating_lowercase"]:$lang["ratings"])?><?php if ($user_rating_stats && $user_rating_only_once){?></a><?php }?></div>
+<div class="RatingCount" id="RatingCount"><?php if ($user_rating_stats && $user_rating_only_once){?><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl?>/pages/user_ratings.php?ref=<?php echo $ref?>&amp;search=<?php echo urlencode($search)?>&amp;offset=<?php echo urlencode($offset)?>&amp;order_by=<?php echo urlencode($order_by) ?>&amp;sort=<?php echo urlencode($sort) ?>&amp;archive=<?php echo urlencode($archive) ?>"><?php } ?><?php echo urlencode($rating_count) ?> <?php echo ($rating_count==1?$lang["rating_lowercase"]:$lang["ratings"])?><?php if ($user_rating_stats && $user_rating_only_once){?></a><?php }?></div>
 </td>
 </tr>
 </table>

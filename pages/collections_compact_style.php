@@ -96,7 +96,7 @@ if (count($colresult)>0 && checkperm("e" . $colresult[0]["archive"]) && allow_mu
 
 <!-- preview all *-->
 <?php if ($preview_all && $count_result>0){?>
-<option value="<?php echo htmlspecialchars($collection) ?>|0|0|<?php echo $baseurl_short?>pages/preview_all.php?ref=<?php echo urlencode($collection) ?>&offset=<?php echo urlencode($offset) ?>&order_by=<?php echo urlencode($order_by) ?>&col_order_by=<?php echo urlencode($col_order_by) ?>&sort=<?php echo urlencode($sort) ?>&find=<?php echo urlencode($find)?>&backto=<?php if (in_array($pagename,$main_pages)){echo urlencode($pagename);}?>|main|false">&gt;&nbsp;<?php echo $lang["preview_all"]?></option>
+<option value="<?php echo htmlspecialchars($collection) ?>|0|0|<?php echo $baseurl_short?>pages/preview_all.php?ref=<?php echo urlencode($collection) ?>&amp;offset=<?php echo urlencode($offset) ?>&amp;order_by=<?php echo urlencode($order_by) ?>&amp;col_order_by=<?php echo urlencode($col_order_by) ?>&amp;sort=<?php echo urlencode($sort) ?>&amp;find=<?php echo urlencode($find)?>&amp;backto=<?php if (in_array($pagename,$main_pages)){echo urlencode($pagename);}?>|main|false">&gt;&nbsp;<?php echo $lang["preview_all"]?></option>
 <?php } ?>
 <!-- end preview_all -->
 
@@ -195,7 +195,7 @@ if ($show_edit_all_link && $count_result>0 && $col_editable) { ?>
 
 <!-- edit previews -->
 <?php if ($count_result>0 && $col_editable) { ?>
-<option value="<?php echo htmlspecialchars($collection) ?>|0|0|<?php echo $baseurl_short?>pages/collection_edit_previews.php?ref=<?php echo urlencode($collection) ?>&offset=<?php echo urlencode($offset) ?>&order_by=<?php echo urlencode($order_by) ?>&col_order_by=<?php echo urlencode($col_order_by) ?>&sort=<?php echo urlencode($sort) ?>&find=<?php echo urlencode($find)?>&backto=<?php if (in_array($pagename,$main_pages)){echo htmlspecialchars($pagename) ;}?>|main|false">&gt;&nbsp;<?php echo $lang['editcollectionresources']?>...</option>
+<option value="<?php echo htmlspecialchars($collection) ?>|0|0|<?php echo $baseurl_short?>pages/collection_edit_previews.php?ref=<?php echo urlencode($collection) ?>&amp;offset=<?php echo urlencode($offset) ?>&amp;order_by=<?php echo urlencode($order_by) ?>&amp;col_order_by=<?php echo urlencode($col_order_by) ?>&amp;sort=<?php echo urlencode($sort) ?>&amp;find=<?php echo urlencode($find)?>&amp;backto=<?php if (in_array($pagename,$main_pages)){echo htmlspecialchars($pagename) ;}?>|main|false">&gt;&nbsp;<?php echo $lang['editcollectionresources']?>...</option>
 <?php } ?>
 <!-- end previews  -->
 

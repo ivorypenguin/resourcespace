@@ -62,7 +62,7 @@ function HookRefineresultsSearchBeforesearchresultsexpandspace()
 	<div class="RecordBox clearerleft" id="RefineResults" style="display:none;">
 	<div class="RecordPanel" id="refine_panel">  
 	
-	<form method="post" action="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search) ?>&k=<?php echo $k ?>" onSubmit="return CentralSpacePost (this,true);">
+	<form method="post" action="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search) ?>&amp;k=<?php echo $k ?>" onSubmit="return CentralSpacePost (this,true);">
 	<div class="Question Inline" id="question_refine" style="border-top:none;">
 	<label id="label_refine" for="label_refine"><?php echo $lang["additionalkeywords"]?></label>
 	<input class="medwidth Inline" type=text id="refine_keywords" name="refine_keywords" value="<?php echo $value ?>">

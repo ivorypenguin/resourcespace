@@ -56,7 +56,7 @@ if ($refinements[0]!=""){
 		}
 		
 		
-		$searchcrumbs.="&order_by=" . $order_by . "&sort=".$sort."&offset=" . $offset . "&archive=" . $archive."&sort=".$sort." onClick='return CentralSpaceLoad(this,true);'>".$search_title_element."</a>";
+		$searchcrumbs.="&amp;order_by=" . $order_by . "&amp;sort=".$sort."&amp;offset=" . $offset . "&amp;archive=" . $archive."&amp;sort=".$sort."\" onClick='return CentralSpaceLoad(this,true);'>".$search_title_element."</a>";
 	}
 }
 }
@@ -64,7 +64,7 @@ if ($refinements[0]!=""){
 if ($search_titles)
     {
 
-    $parameters_string = '&order_by=' . $order_by . '&sort='.$sort.'&offset=' . $offset . '&archive=' . $archive.'&sort='.$sort . '&k=' . $k;
+    $parameters_string = '&amp;order_by=' . $order_by . '&amp;sort='.$sort.'&amp;offset=' . $offset . '&amp;archive=' . $archive.'&amp;sort='.$sort . '&amp;k=' . $k;
 
     if (substr($search,0,11)=="!collection")
         {
@@ -285,7 +285,7 @@ if ($search_titles)
 	// extra collection title links
 	if (substr($search,0,11)=="!collection"){
 		if ($k=="" && !checkperm("b") && ($userrequestmode!=2 && $userrequestmode!=3)){$search_title_links='<a href="#" onclick="ChangeCollection(' . $collectiondata["ref"] . ', \'\');">&gt;&nbsp;'.$lang["selectcollection"].'</a>&nbsp;&nbsp;';}
-		if (count($result)!=0 && $k==""&&$preview_all){$search_title_links.='<a href="'.$baseurl_short.'pages/preview_all.php?ref='.$collectiondata["ref"].'&order_by='.$order_by.'&sort='.$sort.'&archive='.$archive.'&k='.$k.'">&gt;&nbsp;'.$lang['preview_all'].'</a>';}
+		if (count($result)!=0 && $k==""&&$preview_all){$search_title_links.='<a href="'.$baseurl_short.'pages/preview_all.php?ref='.$collectiondata["ref"].'&amp;order_by='.$order_by.'&amp;sort='.$sort.'&amp;archive='.$archive.'&amp;k='.$k.'">&gt;&nbsp;'.$lang['preview_all'].'</a>';}
 		$search_title.='</div>';
 		if ($display!="list"){$search_title_links.= '<br /><br />';}
 	}
