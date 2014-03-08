@@ -125,7 +125,6 @@ if ($exiftool_fullpath!=false)
 		$extension="pdf";
 		$dUseCIEColor=false;
 		$n=0;	
-		$x=0;
 		}
 	}	
 	

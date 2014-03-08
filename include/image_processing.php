@@ -1391,22 +1391,18 @@ function base64_to_jpeg( $imageData, $outputfile ) {
  
 }
 
-function extract_indd_pages ($filename)
-    {
+function extract_indd_pages ($filename){
     $exiftool_fullpath = get_utility_path("exiftool");
     if ($exiftool_fullpath!=false)
         {
-        $array=run_command($exiftool_fullpath.' -b -j -pageimage '.$filename.' > '.$filename.'pageimage');
-        $array=json_decode(file_get_contents($filename.'pageimage'));
+        $array=run_command($exiftool_fullpath.' -b -j -pageimage '.$filename);
+        $array=json_decode( $array);
         
         $array=$array[0]->PageImage;
         
-        unlink($filename.'pageimage');
         return $array;
-        
-        
 		}     
- }
+}
  
 function generate_file_checksum($resource,$extension,$anyway=false)
 	{
