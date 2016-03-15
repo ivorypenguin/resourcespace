@@ -1,0 +1,18 @@
+{
+  "name": "monstrum/jcrop",
+  "description": "Image Editor in standard jQuery plugin Structure. Fork from https://github.com/tapmodo/Jcrop",
+  "homepage": "https://github.com/monstrum/Jcrop",
+  "keywords": [
+    "image drag and crop",
+    "crop",
+    "zoom and crop",
+    "thumbnail"
+  ],
+  "authors": [{
+    "name": "Matias Meno",
+    "email": "m@tias.me",
+    "homepage": "http://www.matiasmeno.com"
+  }],
+  "license": "MIT",
+  "minimum-stability": "dev"
+}

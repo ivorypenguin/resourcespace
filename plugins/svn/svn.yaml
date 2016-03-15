@@ -1,0 +1,5 @@
+name    : svn
+author  : Tom Gleason
+version : 0.1
+desc    : Enables SVN status/updates.
+category: advanced

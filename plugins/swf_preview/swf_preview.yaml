@@ -1,0 +1,6 @@
+name    : swf_preview
+author  : Montala Ltd.
+version : 1.01
+desc    : Enables uploaded SWF files to be previewed as swf files on resource view page. 
+config_url: /plugins/swf_preview/pages/setup.php
+category: Asset processing,User interface

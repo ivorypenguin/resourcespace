@@ -1,0 +1,6 @@
+name: checkmail
+author: Colorhythm LLC
+version: 1.0
+desc: Allows ingestion of e-mailed attachments
+config_url: /plugins/checkmail/pages/setup.php
+category: advanced

@@ -1,0 +1,6 @@
+name       : meta_append
+author     : Montala Limited
+version    : 1.0
+desc       : Append user definable timestamp and daily upload number (per user) to a field
+config_url : /plugins/meta_append/pages/setup.php
+category: Workflow and access

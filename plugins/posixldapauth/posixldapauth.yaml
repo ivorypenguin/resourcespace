@@ -1,0 +1,6 @@
+name: posixldapauth
+author: Brian Adams, Guenter Bartsch, David White
+version: 0.99
+desc: LDAP authentication for AD & LDAP with Updated Language Support
+config_url: /plugins/posixldapauth/pages/setup.php
+category: advanced

@@ -1,0 +1,8 @@
+name    : api_search
+author  : Tom Gleason, Montala Limited
+version : 1.0
+desc    : Search API
+config_url: /plugins/api_search/pages/setup.php
+info_url: /plugins/api_search/?help=true
+default_priority: 999
+category: api

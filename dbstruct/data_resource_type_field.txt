@@ -1,0 +1,27 @@
+1,keywords,Keywords,1,30,1,0,0,,1,1,2#025,,,0,,"Keywords,Subject",1,0,,0,1,,0,0,,,,,,,,
+3,country,Country,9,60,1,0,0,country,1,1,2#101,,,0,,"category,country",1,0,,0,1,,0,0,,,,,,,,
+8,title,Title,0,10,1,0,0,title,0,1,2#005,,,1,,Title,1,0,,0,1,,0,0,,,,,,,,
+9,extract,"Document extract",1,7,0,0,2,,1,0,,"<div class=""RecordStory"">
+
+  <h1>[title]</h1>
+
+  <p>[value]</p>
+
+</div>",,0,,,1,0,,0,1,,0,0,,,,,,,,
+10,credit,Credit,0,90,1,0,0,,1,1,2#080,,,0,,"Source,Creator,Credit,By-line",1,0,,0,1,,0,0,,,,,,,,
+12,date,Date,4,80,1,0,0,creation_date,1,1,2#055,,,0,,DateTimeOriginal,0,0,,0,1,,0,0,"if ($value!=''){$value=nicedate($value,false);}",,,,,,,
+18,caption,Caption,1,40,1,0,0,,1,0,2#120,"<div class=""item""><h3>[title]</h3><p>[value]</p></div>
+
+<div class=""clearerleft""> </div>",,0,,"Caption-Abstract,Description,ImageDescription",1,0,,0,1,,0,0,,,,,,,,
+25,,Notes,1,110,0,0,0,,1,0,2#103,"<div class=""RecordStory"">
+
+  <h1>[title]</h1>
+
+  <p>[value]</p>
+
+</div>",,0,,JobID,1,0,,0,1,,0,0,,,,,,,,
+29,person,"Named person(s)",0,70,1,0,0,,1,1,,,,0,,People,1,0,,0,1,,0,0,,,,,,,,
+52,camera,"Camera make / model",0,1600,0,0,1,,1,0,,,,0,,Model,1,0,,0,1,,1,0,,,,,,,,
+51,originalfilename,"Original filename",0,20,1,0,0,file_path,0,1,,,,0,,,1,0,,0,1,,1,0,,,,,,,,
+54,source,Source,3,1601,0,0,1,,1,1,,,,0,,,1,0,,0,1,,0,0,,,,,,,,
+72,text,"Extracted text",5,50,1,0,0,,0,0,,"<div class=""item""><h3>[title]</h3><p>[value]</p></div><div class=""clearerleft""> </div>",,0,,,1,0,,0,1,,1,0,,,,,,,,

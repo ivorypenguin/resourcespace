@@ -1,0 +1,4 @@
+ref,int(11),YES,PRI,,auto_increment
+ip_domain,varchar(200),YES,,,
+apis,varchar(200),YES,,,
+userref,int(11),YES,,,

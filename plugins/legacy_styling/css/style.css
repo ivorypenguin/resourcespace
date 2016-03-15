@@ -1,0 +1,77 @@
+
+/* Revert all new styling */
+
+body, input {font-family: Tahoma, Arial, Helvetica, sans-serif;font-size:11px;}
+td, textarea {font-family: Tahoma, Arial, Helvetica, sans-serif;font-size:11px;}
+ 
+h1, h2, .RecordPanel .Title {font: normal 1.5em Arial, Helvetica, sans-serif;}
+
+.CollectBack .SearchWidth, .CollectBack .SearchWidthExp,  
+#CentralSpace .SearchWidth, #CentraSpace .SearchWidthExp,  
+#CollectionMinDrop .SearchWidth, #CollectionMinDrop .SearchWidthExp,
+.ListDropdown {font: 10px Tahoma, Arial, Helvetica, sans-serif;}
+ 
+.Question .stdwidth,.stdwidth, .Question .medwidth,.medwidth, .Question .shrtwidth,.shrtwidth, 
+.Question .vshrtwidth, .Question .medcomplementwidth,
+.SearchSpace .SearchWidth, .SearchSpace .SearchWidthHalf, .URLDisplay
+{font: 11px Tahoma, Arial, Helvetica, sans-serif;}
+ 
+.HomePanel {width: 166px;} 
+
+#CentralSpaceContainer {padding-right: 174px;}
+#SearchBoxPanel, #ResearchBoxPanel {width: 172px;}
+#SearchBox {width: 174px;}
+
+.SearchSpace {padding: 6px;width: 160px;}
+.SearchSpace .SearchWidth {width: 156px;}
+
+.Listview td {padding: 3px 4px 4px 2px;}
+.RecordPanel {padding: 6px 6px 16px;}
+.RecordPanel .RecordDownload {width: 352px;}
+.RecordPanel .RecordDownload table {width: 340px;}
+.HomePanelIN {padding: 6px;min-height:90px;}
+
+#ThemeBoxPanel, #SearchBoxPanel, #ResearchBoxPanel, .HomePanelIN, .RecordPanel .RecordDownload, .RecordPanel, .ResourcePanel, .ResourcePanelSmall, .ResourcePanelLarge
+        {
+        border-radius:10px;     -moz-border-radius: 10px; -webkit-border-radius: 10px;
+        } 
+
+#clearbutton, #searchbutton
+    {
+    width: 75px;
+    }
+
+.SearchSpace .SearchWidthHalf {width: 73px;margin: 5px 5px 5px 0;}
+.SearchSpace .SearchWidthRight {margin-right:0;}
+
+.HomePanel h2 {background-position: 1px 5px;}
+
+.ResourcePanelShell {width: 164px;}
+.ResourcePanel {width: 162px;}
+.ResourceAlign {width:162px;}
+.Question label, .QuestionSubmit label{	width: 190px;}
+#CentralSpaceLogin {width: 550px;}
+.FormHelp{margin: 0px 0px 10px 20%;}
+#searchbarrt
+    {
+    margin-top:0;    
+    }
+.buttonsave{margin-right:20%;}
+
+#CollectionMenu{width: 166px;}
+.CollectionSpace{left: 199px;}
+.CollectionPanelShell {width: 77px;height: 110px;}
+.CollectionResourceAlign {width: 77px}
+
+.HomePanelPromotedIN {min-height: 130px;}
+
+#themeselect {
+width: 150px;
+font-family:inherit;
+margin-bottom:10px;
+}
+
+.checkboxes, .verticalcheckboxes {padding-left:190px;}
+.checkboxtext {width:170px;}
+
+

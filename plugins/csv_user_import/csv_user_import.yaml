@@ -1,0 +1,8 @@
+name: csv_user_import
+desc: Provides ability to import a batch of users based on a pre-formatted CSV file
+author: Montala Limited
+version: 1.0
+# info_url: http://www.montala.com
+default_priority: 100
+# config_url: /plugins/csv_user_import/pages/setup.php
+category: advanced

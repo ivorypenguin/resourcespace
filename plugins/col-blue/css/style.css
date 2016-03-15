@@ -1,0 +1,197 @@
+body {color:#B5C3D4;background: #4B6B95 linear-gradient(#203C61,#4173B2);}
+h2 {color: #FFFFFF;}
+h1 {color: #FFFFFF;}
+.ui-layout-resizer {background: #999 linear-gradient(#E4E4E4,#4A4A4A);}
+.CollectBack {color:#B6BBC1; background: #293340 linear-gradient(#41556C,#282C38);}
+
+a:link {color:#B5C3D4;}
+a:visited {color:#B5C3D4;}
+a:hover {color:#FFFFFF;}
+a:active {color:#B5C3D4;}
+
+input[readonly] {color: #FFFFFF;}
+
+#Header {border-bottom: 1px solid #5A7599;background: #203D62 url(../gfx/greyblu/titles/title.gif) no-repeat; background-position: 10px 15px;}
+.SlimHeader #Header{background: #4B6B95 linear-gradient(#233B57,#224066);}
+#Footer {border-top: 1px solid #94A7C0;}
+#TextHeader, #TextHeader a {color:#c2e066;}
+#TextDesc{color:#c2e066;}
+
+.TopInpageNav {border-bottom: 1px solid #5A7599;}
+
+
+.OxColourPale, .ListviewTitleStyle {color:#B5C3D4;}
+
+.Listview td {
+  border-bottom: 1px solid #BBBBBB;
+  color: #737373;
+}
+.Listview .ListviewTitleStyle td {background: none;}
+.Listview td {border-bottom: 1px solid #5A7599;color:#B5C3D4;}
+.ListviewStyle thead, .ListviewTitleStyle {background: none;}
+.ListviewBoxedTitleStyle td {background: none;}
+.FormError {color: #C2E066;}
+.FormIncorrect {color: #C2E066;border: 1px solid #6C8963;background: #203B5D;}
+.PageInformal {color: #C2E066;border: 1px solid #6C8963;background: #203B5D;}
+
+.NoFind {border: 1px solid #94A7C0;background: #203B5D;}
+.NoFind .highlight {color:#FFFFFF;}
+.NoFind a:link, .NoFind a:visited, .NoFind a:hover, .NoFind a:active {color:#FFFFFF;text-decoration:underline;}
+
+.HorizontalWhiteNav a:link, .HorizontalWhiteNav a:visited, .HorizontalWhiteNav a:active, .HorizontalWhiteNav a:hover, .BasicsBox .VerticalNav a:link, .BasicsBox .VerticalNav a:visited, .BasicsBox .VerticalNav a:active, .BasicsBox .VerticalNav a:hover, .ListTitle a:link, .ListTitle a:visited, .ListTitle a:hover, .ListTitle a:active, .HomePanel a:link, .HomePanel a:visited, .HomePanel a:active, .HomePanel a:hover {color:#FFFFFF;}
+.HorizontalWhiteNav li, .HorizontalNav li {border-left:1px solid #B5C3D4;}
+
+#CollectionMinRightNav li {border-left:1px solid #B6BBC1;}
+
+.CollectBack a:link, .CollectBack a:visited, .CollectBack a:active {color:#B6BBC1;}
+.CollectBack a:hover  {color:#FFFFFF;}
+.CollectBack h2 a:link, .CollectBack h2 a:visited, .CollectBack h2 a:active, .CollectBack h2 a:hover {color:white;}
+
+#CollectionMenu {border-right: 1px solid #79899C;}
+#CollectionMenuExp {border-right: 1px solid #79899C;}
+
+#ThemeBoxPanel, #SearchBoxPanel, #ResearchBoxPanel, .ResourcePanel, .ResourcePanelSmall, .ResourcePanelLarge, .HomePanelIN, .HomePicturePanelIN
+	{
+	border: 1px solid #94A7C0;
+	}
+
+#ThemeBoxPanel , #SearchBoxPanel {background: #469;}
+#ResearchBoxPanel, .HomePanelIN {background: #469;}
+.ResourcePanel,.ResourcePanelSmall,.ResourcePanelLarge {background-color: #469;}
+.IconVideo {background: url(../gfx/greyblu/interface/IcVideo.gif) no-repeat 140px 5px;}
+.IconVideoLarge {background: url(../gfx/greyblu/interface/IcVideo.gif) no-repeat 340px 5px;}
+
+.ImageBorder, .RecordPanel ,.Picture {border: 1px solid #FFFFFF;}
+.VideoBorder {border: 1px solid #000000;}	
+.CollectImageBorder {border: 1px solid #79899C;}	
+.IconCollect, .KeyCollect	{background: url(../gfx/greyblu/interface/IcCol.gif) no-repeat;}
+.IconCollectOut, .KeyCollectOut	{background: url(../gfx/greyblu/interface/IcColOut.gif) no-repeat;}
+.IconEmail, .KeyEmail	{background: url(../gfx/greyblu/interface/IcEml.gif) no-repeat;}
+.IconEdit, .KeyEdit	{background: url(../gfx/greyblu/interface/IcEdit.gif) no-repeat;}
+.IconPreview, .KeyPreview	{background: url(../gfx/greyblu/interface/IcPre.gif) no-repeat;}
+.IconStar, .KeyStar	{	background: url(../gfx/greyblu/interface/IcStar.gif) no-repeat;}
+.IconComment, .KeyComment	{	background: url(../gfx/greyblu/interface/IcComment.gif) no-repeat;}
+.ASC	{background: url(../gfx/greyblu/interface/ASC.gif) no-repeat;background-position:center;}
+.DESC	{background: url(../gfx/greyblu/interface/DESC.gif) no-repeat; background-position:center;}
+.IconUserRatingStar	{	background: url(../gfx/greyblu/interface/RatingStarYellow.gif) no-repeat;}
+.IconUserRatingSpace	{	background: url(../gfx/greyblu/interface/RatingStarBlank.gif) no-repeat;}
+.StarSelect {  background: transparent url(../gfx/greyblu/interface/RatingStarYellow.gif) no-repeat;}
+.StarEmpty {  background: transparent url('../gfx/greyblu/interface/RatingStarLightBlue.gif') no-repeat;}
+.StarCurrent { background: transparent url('../gfx/greyblu/interface/RatingStarWhite.gif') no-repeat;}
+
+.NavUnderline {border-bottom: 1px solid #5A7599;}
+
+.SearchSpace .tick, .SearchSpace .SearchItem, .ListviewStyle, .RecordPanel .SearchSimilar, #RelatedResourceData a, .RecordPanel .item p, .RecordPanel .itemNarrow p, .BasicsBox h1, .BasicsBox h2, .BasicsBox p, .OxColourWhite, .Selected, .Selected a, .Question, .RecordPanel .Title {color: #FFFFFF;} 
+
+.Question{border-top: 1px solid #5A7599;}
+
+.RecordPanel {background-color: #469;border: 1px solid #94A7C0;}
+.RecordPanel .Title {	border-bottom: 1px solid #94A7C0;}
+.ViewPanelTitles {	border-bottom: 1px solid #94A7C0;}
+.ViewPanelTitles .Title { border-bottom: 0; }
+.RecordDownload {background: none;}
+.RecordPanel .RecordDownload {border: 1px solid #94A7C0; background: #446699 linear-gradient(#446699,#3C5985);}
+.RecordPanel .RecordDownload .DownloadDBlend td {border: 1px solid #6280a7;	color: #FFFFFF;}
+.RecordPanel .RecordDownloadSpace .DownloadDBlend .DownloadButton {background: #595959 linear-gradient(#3F5B40,#68AA53);}
+.RecordPanel .RecordDownloadSpace .DownloadDBlend p {color: #BECBDB;text-align: left;}
+.RecordPanel .RecordDownloadSpace .DownloadDBlend a {color: #FFFFFF;text-align: left;}
+.RecordPanel .RecordDownloadSpace .DownloadDBlend {background: #3E5C89 linear-gradient(#304768,#476A9F);}
+
+.ArchiveResourceTitle, .ResourcePendingSubmissionTitle, .ResourcePendingReviewTitle {color: #C2E066;}
+.DeletedResourceTitle {color: #FF0000;}
+.RecordStory{color: #000000;background: #FFFFFF;}
+.RecordStory h1{color: #000000;}
+.RecordStory a:hover{color: #000000;}
+
+.BasicsBox .HorizontalNav li {border-right:1px solid #B5C3D4;border-top-style: none;border-bottom-style: none;border-left-style: none;}
+.BasicsBox .VerticalNav li, .ThemeBox li {list-style: url(../gfx/greyblu/interface/bullet.gif) none inside;}
+.ThemeBox {border-bottom: 1px solid #5A7599;}
+
+.HomePanel h2 {background: url(../gfx/greyblu/interface/HomeArrow.gif) no-repeat 1px 10px;}
+.HomePanelThemes h2, .HomePanelMyCollections h2, .HomePanelHelp h2 {padding-left: 43px;}
+.HomePanelThemes h2 {background: url(../gfx/greyblu/interface/themes.png) no-repeat 0 0;}
+.HomePanelMyCollections h2 {background: url(../gfx/greyblu/interface/my_collections.png) no-repeat -2px 0;padding-left:36px;}
+.HomePanelHelp h2 {background: url(../gfx/greyblu/interface/help.png) no-repeat 0 0;}
+
+.BasicsBox ul, .BasicsBox ol {color:#FFFFFF;}
+.Tab a {border: 1px solid #B5C3D4;border-bottom-style: none;color: #95a3b4;background-color:#52719B;}
+.StyledTabbedPanel {border: 1px solid #B5C3D4;border-top: 1px solid white;background:#446699;}
+.TabSelected a {color: white;background-color:#6985A9;border-top-color: white;}
+
+.InfoTable {border-collapse:collapse;}
+.InfoTable tr {background-image: url(../gfx/greyblu/interface/SearchBox.gif);background-repeat: repeat-x;background-color: #597499;}
+.InfoTable td {border:1px solid #94A7C0;border-top:1px solid #fff;padding:10px;}
+
+.NewFlag {background-color:#C2E066;color:#446693;}
+
+/* Mouseover effect on list views */
+.ListviewStyle tr:hover td {background-color: #5982bb;} 
+.ListviewStyle tr.ListviewTitleStyle:hover td, .ListviewStyle tr.ListviewBoxedTitleStyle:hover td {background:none;} 
+
+/* single file upload progress bar */
+.meter-value {background-color: #B5C3D4;}
+
+/* System Setup */
+.treetext {color: #000000;}
+.treetext a:link {color: #000000; background: none;}
+.treetext a:visited {color: #000000; background: none;}
+.treetext a:hover {color: #000000; background: none;}
+.treetext a:active {color: #000000; background: none;}
+.proptitle{color: #FFFFFF;background: rgb(119,119,119);}	
+.propbox{color: #000000;background: #FFFFFF;}
+.propbox a:link {color: rgb(181,195,212); background: none;}
+.propbox a:visited {color: rgb(181,195,212); background: none;}
+.propbox a:hover {color: #000000; background: none;}
+.propbox a:active {color: #000000; background: none;}
+.permissionstable tr td.permheader{color: #000000;background: rgb(221,221,221);}
+.permissionstable tbody{color: #000000;}
+.CodeMirror-wrapping{color: #000000;background: #FFFFFF;}
+.PanelShadow{background: none;}
+.collapsed { background: url(../gfx/greyblu/interface/HomeArrow.gif) no-repeat top left; background-position:3px 8px;}
+.expanded { background: url(../gfx/greyblu/interface/HomeArrowDown.gif) no-repeat top left; background-position:0px 12px;}
+.CommentFlag { background-image: url('../gfx/greyblu/interface/FlagOff.png');}
+.CommentEntryInfoCommenterName { color: #ffffff; }
+.CommentBody { color: #ffffff}
+.xlthumbsiconactive {background: url(../gfx/greyblu/interface/xliconactive.png) no-repeat 0px;}
+.smallthumbsiconactive {background: url(../gfx/greyblu/interface/smalliconactive.png) no-repeat 0px;}
+.largethumbsiconactive{background: url(../gfx/greyblu/interface/largeiconactive.png) no-repeat 0px;}
+.smalllisticonactive {background: url(../gfx/greyblu/interface/listiconactive.png) no-repeat 0px;}
+.plupload_file_name {color: #000;}
+.plupload_buttons  a{color: #000;}
+.plupload_buttons .plupload_disabled {color: #B5C3D4;}
+
+#SearchBoxPanel, #ResearchBoxPanel,#HomeSiteText.dashtext,.HomePanelIN {
+	background: rgba(68, 102, 153, 0.67);
+	border: 1px solid #d0d0d0;
+	color:#FFF;
+}
+#SlideshowContainer #HomeSiteText.dashtext h1 {color: #FFF;}
+
+/* Responsive */
+.glyph_user {background:url('../../rse_responsive/gfx/responsive_spritesheet_white.png') -20px 0;}
+.glyph_menu {background:url('../../rse_responsive/gfx/responsive_spritesheet_white.png') 0 0;}
+.glyph_result {background:url('../../rse_responsive/gfx/responsive_spritesheet_white.png') -40px 0;}
+#Header #HeaderButtons a:link, 
+#Header #HeaderButtons a:visited, 
+#Header #HeaderButtons a:active,
+.SlimHeader #Header #HeaderButtons a:link, 
+.SlimHeader #Header #HeaderButtons a:visited, 
+.SlimHeader #Header #HeaderButtons a:active {color: #FFF;}
+/* Search Anchor Highlighting */
+.search-anchor .ResourcePanel  {background-color:#fff;}
+
+#modal
+    {
+    background-color:rgb(68, 102, 153)
+    }
+#modal .RecordPanel
+	{
+	border:none;
+	}
+	
+#login_box {
+	background: rgba(68, 102, 153, 0.67);
+	border: 1px solid #D0D0D0;
+}
+	
+	

@@ -1,0 +1,4 @@
+#flickr_status {height: 80px;}
+
+#image_preview_container {display:table;text-align:center;}
+#image_preview {display: table-cell;vertical-align: middle;}

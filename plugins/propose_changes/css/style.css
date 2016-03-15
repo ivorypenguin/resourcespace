@@ -1,0 +1,91 @@
+
+.ProposeChangesSection{
+    border-collapse: collapse;
+	width: 100%;
+    }
+    
+.ProposeChangesQuestion{
+	padding: 0.5em 0em 1em;
+    border-bottom: 1px solid #000;
+    vertical-align: top;
+    }
+    
+.ProposeChangesLabel, .propose_changes_current, .propose_change_button, .proposed_change {
+    vertical-align: top;
+    min-height: 10px;
+    float: left;
+    }  
+
+.ProposeChangesLabel	{
+	margin-top: 0.4em;
+	}
+        
+.ProposeChangesTitle {
+    font-weight: bold;
+    float: left;
+    }
+.propose_changes_current {
+	font-style: italic;
+}
+    
+.ProposeChangesAcceptDeleteColumn {
+    float: left;
+    }
+
+.ProposeChangesQuestion {
+	width:100%;
+}
+
+.ProposeChangesLabel {
+	width:20%;
+	max-width:20%;
+}
+.ProposeChangesCurrent {
+	width:20%;
+	max-width:20%;
+}
+.ProposeChangesProposed {
+	width:40%;
+	max-width:40%;
+	overflow-x: auto;
+}
+.ProposeChangesAcceptDeleteColumn {
+	width:20%;
+	max-width:20%;
+}
+@media(max-width:1120px) {
+    .ProposeChangesLabel, .ProposeChangesCurrent, .ProposeChangesProposed {
+        width:80%;
+        max-width:80%;
+		float: left;
+    }
+    .ProposeChangesLabel.ProposeChangesTitle, .ProposeChangesCurrent.ProposeChangesTitle, .ProposeChangesProposed.ProposeChangesTitle {
+        display:none;
+    }
+    .ProposeChangesAcceptDeleteColumn.ProposeChangesTitle {
+    	margin-left:80%;
+    }	
+		
+	.propose_change_button, .proposed_change  input  {
+		margin-top: 5px;
+		clear: left;
+	}
+	
+	.ProposeChangesLabel {
+    	font-weight: bold;
+	}
+	
+	.ProposeChangesQuestion td label{
+		display:block;
+	}
+}
+
+
+        
+    
+    
+  
+    
+
+
+    

@@ -1,0 +1,6 @@
+name: resource_tools_compact
+desc: Resource Tools Compact View
+author: Montala Limited
+version: 1.0
+config_url: /plugins/resource_tools_compact/pages/setup.php
+default_priority: 100

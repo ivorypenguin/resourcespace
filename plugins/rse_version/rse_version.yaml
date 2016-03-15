@@ -1,0 +1,6 @@
+name: rse_version
+desc: ResourceSpace Enterprise - Version Control
+author: Montala Limited
+version: 1.0
+default_priority: 100
+category: Enterprise

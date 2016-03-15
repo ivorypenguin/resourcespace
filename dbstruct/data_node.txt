@@ -1,0 +1,249 @@
+1,3,Afghanistan,,10
+2,3,"Aland Islands",,20
+3,3,Albania,,30
+4,3,Algeria,,40
+5,3,"American Samoa",,50
+6,3,Andorra,,60
+7,3,Angola,,70
+8,3,Anguilla,,80
+9,3,Antarctica,,90
+10,3,"Antigua And Barbuda",,100
+11,3,Argentina,,110
+12,3,Armenia,,120
+13,3,Aruba,,130
+14,3,Australia,,140
+15,3,Austria,,150
+16,3,Azerbaijan,,160
+17,3,Bahamas,,170
+18,3,Bahrain,,180
+19,3,Bangladesh,,190
+20,3,Barbados,,200
+21,3,Belarus,,210
+22,3,Belgium,,220
+23,3,Belize,,230
+24,3,Benin,,240
+25,3,Bermuda,,250
+26,3,Bhutan,,260
+27,3,Bolivia,,270
+28,3,"Bosnia And Herzegovina",,280
+29,3,Botswana,,290
+30,3,"Bouvet Island",,300
+31,3,Brazil,,310
+32,3,"British Indian Ocean Territory",,320
+33,3,"Brunei Darussalam",,330
+34,3,Bulgaria,,340
+35,3,"Burkina Faso",,350
+36,3,Burundi,,360
+37,3,Cambodia,,370
+38,3,Cameroon,,380
+39,3,Canada,,390
+40,3,"Cape Verde",,400
+41,3,"Cayman Islands",,410
+42,3,"Central African Republic",,420
+43,3,Chad,,430
+44,3,Chile,,440
+45,3,China,,450
+46,3,"Christmas Island",,460
+47,3,"Cocos (Keeling) Islands",,470
+48,3,Colombia,,480
+49,3,Comoros,,490
+50,3,Congo,,500
+51,3,"Congo - The Democratic Republic Of The",,510
+52,3,"Cook Islands",,520
+53,3,"Costa Rica",,530
+54,3,"Côte D'ivoire",,540
+55,3,Croatia,,550
+56,3,Cuba,,560
+57,3,Cyprus,,570
+58,3,"Czech Republic",,580
+59,3,Denmark,,590
+60,3,Djibouti,,600
+61,3,Dominica,,610
+62,3,"Dominican Republic",,620
+63,3,Ecuador,,630
+64,3,Egypt,,640
+65,3,"El Salvador",,650
+66,3,"Equatorial Guinea",,660
+67,3,Eritrea,,670
+68,3,Estonia,,680
+69,3,Ethiopia,,690
+70,3,"Falkland Islands (Malvinas)",,700
+71,3,"Faroe Islands",,710
+72,3,Fiji,,720
+73,3,Finland,,730
+74,3,France,,740
+75,3,"French Guiana",,750
+76,3,"French Polynesia",,760
+77,3,"French Southern Territories",,770
+78,3,Gabon,,780
+79,3,Gambia,,790
+80,3,Georgia,,800
+81,3,Germany,,810
+82,3,Ghana,,820
+83,3,Gibraltar,,830
+84,3,Greece,,840
+85,3,Greenland,,850
+86,3,Grenada,,860
+87,3,Guadeloupe,,870
+88,3,Guam,,880
+89,3,Guatemala,,890
+90,3,Guernsey,,900
+91,3,Guinea,,910
+92,3,Guinea-Bissau,,920
+93,3,Guyana,,930
+94,3,Haiti,,940
+95,3,"Heard Island And Mcdonald Islands",,950
+96,3,"Holy See (Vatican City State)",,960
+97,3,Honduras,,970
+98,3,"Hong Kong",,980
+99,3,Hungary,,990
+100,3,Iceland,,1000
+101,3,India,,1010
+102,3,Indonesia,,1020
+103,3,"Iran - Islamic Republic Of",,1030
+104,3,Iraq,,1040
+105,3,Ireland,,1050
+106,3,"Isle Of Man",,1060
+107,3,Israel,,1070
+108,3,Italy,,1080
+109,3,Jamaica,,1090
+110,3,Japan,,1100
+111,3,Jersey,,1110
+112,3,Jordan,,1120
+113,3,Kazakhstan,,1130
+114,3,Kenya,,1140
+115,3,Kiribati,,1150
+116,3,"Korea - Democratic People's Republic Of",,1160
+117,3,"Korea - Republic Of",,1170
+118,3,Kuwait,,1180
+119,3,Kyrgyzstan,,1190
+120,3,"Lao People's Democratic Republic",,1200
+121,3,Latvia,,1210
+122,3,Lebanon,,1220
+123,3,Lesotho,,1230
+124,3,Liberia,,1240
+125,3,"Libyan Arab Jamahiriya",,1250
+126,3,Liechtenstein,,1260
+127,3,Lithuania,,1270
+128,3,Luxembourg,,1280
+129,3,Macao,,1290
+130,3,"Macedonia - The Former Yugoslav Republic Of",,1300
+131,3,Madagascar,,1310
+132,3,Malawi,,1320
+133,3,Malaysia,,1330
+134,3,Maldives,,1340
+135,3,Mali,,1350
+136,3,Malta,,1360
+137,3,"Marshall Islands",,1370
+138,3,Martinique,,1380
+139,3,Mauritania,,1390
+140,3,Mauritius,,1400
+141,3,Mayotte,,1410
+142,3,Mexico,,1420
+143,3,"Micronesia - Federated States Of",,1430
+144,3,"Moldova - Republic Of",,1440
+145,3,Monaco,,1450
+146,3,Mongolia,,1460
+147,3,Montenegro,,1470
+148,3,Montserrat,,1480
+149,3,Morocco,,1490
+150,3,Mozambique,,1500
+151,3,Myanmar,,1510
+152,3,Namibia,,1520
+153,3,Nauru,,1530
+154,3,Nepal,,1540
+155,3,Netherlands,,1550
+156,3,"Netherlands Antilles",,1560
+157,3,"New Caledonia",,1570
+158,3,"New Zealand",,1580
+159,3,Nicaragua,,1590
+160,3,Niger,,1600
+161,3,Nigeria,,1610
+162,3,Niue,,1620
+163,3,"Norfolk Island",,1630
+164,3,"Northern Mariana Islands",,1640
+165,3,Norway,,1650
+166,3,Oman,,1660
+167,3,Pakistan,,1670
+168,3,Palau,,1680
+169,3,"Palestinian Territory - Occupied",,1690
+170,3,Panama,,1700
+171,3,"Papua New Guinea",,1710
+172,3,Paraguay,,1720
+173,3,Peru,,1730
+174,3,Philippines,,1740
+175,3,Pitcairn,,1750
+176,3,Poland,,1760
+177,3,Portugal,,1770
+178,3,"Puerto Rico",,1780
+179,3,Qatar,,1790
+180,3,Réunion,,1800
+181,3,Romania,,1810
+182,3,"Russian Federation",,1820
+183,3,Rwanda,,1830
+184,3,"Saint Barthélemy",,1840
+185,3,"Saint Helena",,1850
+186,3,"Saint Kitts And Nevis",,1860
+187,3,"Saint Lucia",,1870
+188,3,"Saint Martin",,1880
+189,3,"Saint Pierre And Miquelon",,1890
+190,3,"Saint Vincent And The Grenadines",,1900
+191,3,Samoa,,1910
+192,3,"San Marino",,1920
+193,3,"Sao Tome And Principe",,1930
+194,3,"Saudi Arabia",,1940
+195,3,Senegal,,1950
+196,3,Serbia,,1960
+197,3,Seychelles,,1970
+198,3,"Sierra Leone",,1980
+199,3,Singapore,,1990
+200,3,Slovakia,,2000
+201,3,Slovenia,,2010
+202,3,"Solomon Islands",,2020
+203,3,Somalia,,2030
+204,3,"South Africa",,2040
+205,3,"South Georgia And The South Sandwich Islands",,2050
+206,3,Spain,,2060
+207,3,"Sri Lanka",,2070
+208,3,Sudan,,2080
+209,3,Suriname,,2090
+210,3,"Svalbard And Jan Mayen",,2100
+211,3,Swaziland,,2110
+212,3,Sweden,,2120
+213,3,Switzerland,,2130
+214,3,"Syrian Arab Republic",,2140
+215,3,"Taiwan - Province Of China",,2150
+216,3,Tajikistan,,2160
+217,3,"Tanzania - United Republic Of",,2170
+218,3,Thailand,,2180
+219,3,Timor-Leste,,2190
+220,3,Togo,,2200
+221,3,Tokelau,,2210
+222,3,Tonga,,2220
+223,3,"Trinidad And Tobago",,2230
+224,3,Tunisia,,2240
+225,3,Turkey,,2250
+226,3,Turkmenistan,,2260
+227,3,"Turks And Caicos Islands",,2270
+228,3,Tuvalu,,2280
+229,3,Uganda,,2290
+230,3,Ukraine,,2300
+231,3,"United Arab Emirates",,2310
+232,3,"United Kingdom",,2320
+233,3,"United States",,2330
+234,3,"United States Minor Outlying Islands",,2340
+235,3,Uruguay,,2350
+236,3,Uzbekistan,,2360
+237,3,Vanuatu,,2370
+238,3,"Venezuela - Bolivarian Republic Of",,2380
+239,3,"Viet Nam",,2390
+240,3,"Virgin Islands - British",,2400
+241,3,"Virgin Islands - U.S.",,2410
+242,3,"Wallis And Futuna",,2420
+243,3,"Western Sahara",,2430
+244,3,Yemen,,2440
+245,3,Zambia,,2450
+246,3,Zimbabwe,,2460
+247,54,"Digital Camera",,20
+248,54,"Scanned Negative",,30
+249,54,"Scanned Photo",,40

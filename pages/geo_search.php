@@ -1,0 +1,92 @@
+<?php
+include "../include/db.php";
+include_once "../include/general.php";
+include "../include/authenticate.php"; 
+include "../include/resource_functions.php";
+include "../include/header.php";
+
+?>
+<div class="BasicsBox"> 
+<h1><?php echo $lang["geographicsearch"] ?></h1>
+<p><?php echo $lang["geographicsearch_help"] ?></p>
+
+
+<!-- Drag mode selector -->
+<div id="GeoDragMode">
+<?php echo $lang["geodragmode"] ?>:&nbsp;
+<input type="radio" name="dragmode" id="dragmodearea" checked="checked" onClick="control.point.activate()" /><label for="dragmodearea"><?php echo $lang["geodragmodeareaselect"] ?></label>
+&nbsp;&nbsp;
+<input type="radio" name="dragmode" id="dragmodepan" onClick="control.point.deactivate();" /><label for="dragmodepan"><?php echo $lang["geodragmodepan"] ?></label>
+</div>
+
+<?php include "../include/geo_map.php"; ?>
+<script>
+
+var control = new OpenLayers.Control();
+OpenLayers.Util.extend(control, {
+draw: function () {
+    this.point = new OpenLayers.Handler.Box( control,
+        {"done": this.notice});
+    this.point.activate();
+},
+
+notice: function (bounds) {
+	var blpix = new OpenLayers.Pixel(bounds.left,bounds.bottom);
+	var bl=map.getLonLatFromPixel(blpix).transform
+		(
+           map.getProjectionObject(), // from Spherical Mercator Projection}
+      	   new OpenLayers.Projection("EPSG:4326")
+      	)
+
+	var trpix = new OpenLayers.Pixel(bounds.right,bounds.top);
+	var tr=map.getLonLatFromPixel(trpix).transform
+		(
+           map.getProjectionObject(), // from Spherical Mercator Projection}
+      	   new OpenLayers.Projection("EPSG:4326")
+      	);
+      
+    // Store the map window position to make it easier when returning for another search
+    SetCookie("geobound",map.getCenter().lon + "," + map.getCenter().lat + "," + map.getZoom()); 
+    
+    // Specially encoded search string to avoid keyword splitting
+    var url="<?php echo $baseurl_short?>pages/search.php?search=!geo" + (bl.lat + "b" + bl.lon + "t" + tr.lat + "b" + tr.lon).replace(/\-/gi,'m').replace(/\./gi,'p');
+
+<?php
+// Show results in a modal
+if($geo_search_modal_results)
+    {
+    ?>
+    ModalClose();
+    ModalLoad(url);
+
+    return;
+    <?php
+    }
+    ?>
+    window.location.href=url;
+	
+}
+    });map.addControl(control);
+jQuery('#UICenter').scroll(function() {
+  map.events.clearMouseCache();
+});
+<?php if (isset($_COOKIE["geobound"]))
+	{
+	$bounds=$_COOKIE["geobound"];
+	}
+else
+	{
+	$bounds=$geolocation_default_bounds;
+	}
+$bounds=explode(",",$bounds);
+?>
+map.setCenter(new OpenLayers.LonLat(<?php echo htmlspecialchars($bounds[0]) ?>,<?php echo htmlspecialchars($bounds[1]) ?>),<?php echo $bounds[2] ?>);
+
+
+	
+</script>
+</div>
+
+<?php
+include "../include/footer.php";
+?>

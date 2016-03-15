@@ -1,0 +1,9 @@
+.Question span form {
+    display: none;
+    margin-top: 10px;
+    margin-left: 300px;
+}
+
+#new_slideshow_img_resource {
+    width: 100px;
+}

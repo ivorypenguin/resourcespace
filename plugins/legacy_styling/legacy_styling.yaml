@@ -1,0 +1,5 @@
+name: legacy_styling
+desc: Reverts to the pre October 2013 styling - for legacy theme compatibility.
+author: Montala Limited
+version: 1.0
+category: Legacy, User interface

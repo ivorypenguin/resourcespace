@@ -1,0 +1,8 @@
+name: autoassign_mrequests
+author: Montala Limited
+version: 1.0
+desc: Used to auto-assign managed requests to a specific user based on resource type and field value map
+info_url: http://www.montala.com
+config_url: /plugins/autoassign_mrequests/pages/setup.php
+default_priority: 100
+category: Workflow and access

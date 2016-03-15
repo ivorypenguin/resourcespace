@@ -1,0 +1,6 @@
+name: youtube_publish
+author: Neil Braddy
+version: 1.0
+desc: Publishes video resource to configured YouTube account.
+config_url: /plugins/youtube_publish/pages/setup.php
+category: content sharing

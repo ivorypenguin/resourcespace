@@ -1,0 +1,6 @@
+name    : grant_edit
+author  : Montala Ltd.
+version : 1.0
+desc    : Enables administrators to grant users temporary full edit access to resources
+config_url: /plugins/grant_edit/pages/setup.php
+category: Workflow and access

@@ -1,0 +1,6 @@
+name    : action_dates
+author  : Montala Ltd.
+version : 1.0
+desc    : Enables scheduled deletion or restriction of resources based upon date fields
+config_url: /plugins/action_dates/pages/setup.php
+category: Workflow and access

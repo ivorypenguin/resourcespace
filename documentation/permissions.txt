@@ -1,0 +1,84 @@
+
+
+Example permissions string:
+r,s,a,t,
+    
+Note that case is important.
+    
+Code Permission      
+==== ==========
+
+Search
+------
+s	Can search for resources
+v	Can view confidential (admin only) resources, also download 'restricted' resources
+g	Without this permission, the users in the group will have 'restricted' access to any 'restricted/open' resources.
+q	Can make resource requests.
+w	Show watermarked previews/thumbnails ($watermark must be set in config.php prior to resource upload in order for watermarks to be created.)
+
+Metadata Fields / Resource Types
+--------------------------------
+f*	Can see all fields
+f?	Can see field with reference ? e.g. f1,f2,f3 (applies to editing, advanced search, and viewing resources).
+f-? Can not see the field with reference ? e.g. f*,f-3 means see all fields except field 3.
+F?	DENY write access to the field. The field will not appear on edit or edit all.
+F*  DENY write access to all fields.
+F-? ALLOW write access to the given field, used with F* to allow write access to specific fields only.
+T?  DENY access to resources with the given resource type ID, also hide this resource type when editing/searching
+T?_$  	DENY access to resources with the given resource type ID AND the given download size ID, for example T1_scr denies access to the screen size download for photo resources. Use "T1_" (i.e. empty download ID) to deny access to the original resource file.
+X?  RESTRICT access to resources with the given resource type ID.
+XU?	RESTRICT upload access for resources of type ID.
+X?_$	RESTRICT access to resources with the given resource type ID AND the given download size ID, for example X1_scr restricts access to the screen size download for photo resources.
+P?	Allows edit only access to a specific field on the upload form only. Allows a user to provide a field on upload that is otherwise hidden from them (e.g. confidential information such as subject name).
+
+Resource creation
+-----------------
+c	Can create resources / upload files (Team Centre users; resources go directly into usable state)
+d	Can create resources / upload files (Normal users; resources go into 'pre-check' state.)
+
+e?	Can edit resources in specific archive state, e.g. e0, e1, e2 (includes deletion)
+		e0: Not archived (visible in a normal search)
+		e1: Waiting to be archived (hidden from searches)
+		e2: Archived (visible in archive searches only)
+	Normally the resource management team will have e0 and e1, and the archive team will have e1 and e2.
+	Further permissions govern access to user contributed resources.
+		e-2: User contributed, awaiting user submission
+		e-1: User contributed, awaiting team review
+i	Can manage archive resources
+n	Can tag resources using 'Speed Tagging' (must be enabled in config).
+
+Themes / Collections
+--------------------
+b	Supress bottom collections frame and all associated collections functionality (not advisable for administrator groups as collections make resource management much easier)
+h	Can publish themes, and edit all collections
+j*	Can see all theme categories
+j?	Can see theme in category ? (e.g. jCars,jAnimals)
+J	Can only search for resources that belong to themes (not advisable!)
+X	Allows selection of a user group to determine access level when sharing externally so that when accessed options, fields etc. will be viewed as if by a member of that group
+
+Restrictive permissions
+-----------------------
+p	Can not change own password. Useful for shared user accounts.
+D	Can not delete resources.
+noex	Cannot share resources externally (internal sharing is still possible, provided $allow_share=true;)
+
+Administration
+--------------
+a	Can access administration tree
+t	Can see the team centre home
+r	Can manage research requests
+R	Can manage resource requests / orders
+Ra	Can assign resource requests to others
+Rd  Can be assigned resource requests (also; can only see resource requests assigned to them in the Manage Resource Requests area)
+o	Can manage content
+m	Can bulk-mail users
+u	Can manage users
+k	Can manage keywords (add/remove keyword relationships and add/remove/rename checkbox/dropdown list options)
+bdk?	Cannot add dynamic keywords to the list straight from the field (ie. when on Upload or Edit page)
+
+Restrictive group permissions (allows isolated groups to be created)
+-----
+U	(upper case) Can manage users in children groups to the user's group only
+E	(upper case) Can email resources to users in the user's own group, children groups and parent
+	group only. Also when using custom access, can only select groups from own group, children
+	groups and parent group. For user list auto-completion (e.g. when e-mailing a resource) the user will only see uesrs from their own group, children groups and parent group.

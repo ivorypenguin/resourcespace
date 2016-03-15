@@ -1,0 +1,5 @@
+name    : ref_urls
+author  : Axel Dörfler
+version : 1.0
+desc    : Serves resource files via URL and ref (only for logged in users)
+category: advanced

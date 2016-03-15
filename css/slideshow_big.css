@@ -1,0 +1,22 @@
+#UICenter
+    {
+    background-repeat: no-repeat;
+    background-position: center top;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    -webkit-transition: background-image 1s linear;
+    transition: background-image 1s linear;
+    }    
+#CentralSpace{min-height:500px;}
+#HomeSiteText
+    {
+    min-width: 250px;
+    max-width: 40%;
+    border-radius:5px;	-moz-border-radius: 5px; -webkit-border-radius: 5px;
+    }
+#HomeSiteTextInner{padding:15px;}
+#HomeSiteText h1,#HomeSiteText p {color:#fff;}
+#HomeSiteText p {padding-bottom:8px;}
+#HomePanelContainer {float: left; padding: 10px 0px;}

@@ -1,0 +1,8 @@
+name: col-whitegry
+desc: White and grey theme for ResourceSpace
+author: Montala Ltd
+version: 1.0
+default_priority: 1000
+category: User interface
+config_url: /plugins/col-whitegry/pages/setup.php
+userpreferencegroup: colourtheme

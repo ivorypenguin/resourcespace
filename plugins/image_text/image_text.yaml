@@ -1,0 +1,6 @@
+name    : image_text
+author  : Montala Ltd.
+version : 1.0
+desc    : Enables field data to be added to image at download
+config_url: /plugins/image_text/pages/setup.php
+category: Asset processing

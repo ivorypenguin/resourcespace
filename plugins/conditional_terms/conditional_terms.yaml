@@ -1,0 +1,5 @@
+name: conditional_terms
+desc: Enables conditional display of terms page at download based on resource metadata 
+author: Montala Limited
+config_url: /plugins/conditional_terms/pages/setup.php
+version: 1.0

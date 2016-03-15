@@ -1,0 +1,6 @@
+name    : transform
+author  : David Dwiggins
+version : 1.4
+desc    : Enables creation of cropped and scaled alternative images (jCrop w/Mobile support)
+config_url: /plugins/transform/pages/setup.php
+default_priority: 998
