@@ -129,11 +129,15 @@ while ($tmspointer<$tmscount && $tmspointer<$tms_link_test_count)
 		}
 		
 				
-	//exit(print_r($tms_query_ids));
 	fwrite($logfile,"Retrieving data from TMS system\r\n");
 	$tmsresults=tms_link_get_tms_data("", $tms_query_ids);	
 	
-	//exit(print_r($tmsresults));
+	if(!is_array($tmsresults) || count($tmsresults)==0)
+		{
+		echo "No TMS data received, continuing" . PHP_EOL;
+		$tmspointer = $tmspointer+$tms_link_query_chunk_size;
+		continue;
+		}
 	
 	// Go through this set of resources and update db/show data/do something else
 	for($ri=$tmspointer;$ri<($tmspointer + $tms_link_query_chunk_size) && (($tmspointer + $ri)<$tms_link_test_count) && $ri<$tmscount;$ri++)
@@ -180,7 +184,7 @@ while ($tmspointer<$tmscount && $tmspointer<$tms_link_test_count)
 								if(!$tms_link_test_mode)
 									{
 									$logmessage = "---- Updating RS field " . $tms_link_field_id . " from column " . $tms_link_column_name . ". VALUE: " . $tmsresult[$tms_link_column_name] . "\r\n";
-									//echo $logmessage;
+									echo $logmessage;
 									fwrite($logfile,$logmessage);
 									update_field($tms_resources[$ri]["resource"],$tms_link_field_id,escape_check($tmsresult[$tms_link_column_name]));
 									}
@@ -193,7 +197,7 @@ while ($tmspointer<$tmscount && $tmspointer<$tms_link_test_count)
 						$tmsupdated++;
 						$tms_updated_array[$tms_resources[$ri]["resource"]]=$tms_resources[$ri]["objectid"];
 						
-						fwrite($logfile,"Resource " . $tms_resources[$ri]["resource"] . " : Updated successfully");
+						fwrite($logfile,"Resource " . $tms_resources[$ri]["resource"] . " : Updated successfully \r\n");
 						}
 					else
 						{

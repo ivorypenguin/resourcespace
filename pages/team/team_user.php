@@ -196,7 +196,7 @@ for ($n=$offset;(($n<count($users)) && ($n<($offset+$per_page)));$n++)
 	<?php } ?>
 	<td><?php echo nicedate($users[$n]["created"]) ?></td>
 	<td><?php echo $users[$n]["approved"]?$lang["yes"]:$lang["no"] ?></td>
-	<td><?php echo nicedate($users[$n]["last_active"]) ?></td>
+	<td><?php echo nicedate($users[$n]["last_active"],true) ?></td>
 	<?php hook("additional_user_column");?>
 	<td><?php if (($usergroup==3) || ($users[$n]["usergroup"]!=3)) { ?><div class="ListTools">
 	<a href="<?php echo $baseurl ?>/pages/admin/admin_system_log.php?actasuser=<?php echo $users[$n]["ref"]?>&backurl=<?php echo urlencode($url . "&offset=" . $offset)?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["log"]?></a>
@@ -238,12 +238,18 @@ if(!hook("replace_create_user"))
     }
 
     hook('render_options_to_create_users');
-    ?>
-<div class="BasicsBox">
-<div class="Question"><label><?php echo $lang["purgeusers"]?></label>
-<div class="Fixed"><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl ?>/pages/team/team_user_purge.php">&gt;&nbsp;<?php echo $lang["purgeusers"]?></a></div>
-<div class="clearerleft"> </div></div>
-</div>
+    
+if ($user_purge)
+	{
+	?>
+	<div class="BasicsBox">
+	<div class="Question"><label><?php echo $lang["purgeusers"]?></label>
+	<div class="Fixed"><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl ?>/pages/team/team_user_purge.php">&gt;&nbsp;<?php echo $lang["purgeusers"]?></a></div>
+	<div class="clearerleft"> </div></div>
+	</div>
+	<?php
+	}
+?>
 
 <?php if (!hook("replaceusersonline")) { ?>
 <div class="BasicsBox">

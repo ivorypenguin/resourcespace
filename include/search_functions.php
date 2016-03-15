@@ -736,8 +736,7 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
         {
         $sql_join=" join collection_resource jcr on jcr.resource=r.ref join collection jc on jcr.collection=jc.ref and length(jc.theme)>0 " . $sql_join;
         }
-     
-        
+ 	   
     # --------------------------------------------------------------------------------
     # Special Searches (start with an exclamation mark)
     # --------------------------------------------------------------------------------
@@ -1835,17 +1834,32 @@ function search_form_to_search_query($fields,$fromsearchbar=false)
             break;
             }
         }
-
-        // Allow a single special search to be prepended to the search string.  For example, !contributions<user id>
-        foreach ($_POST as $key=>$value)
+		
+        $propertysearchcodes=array();
+        global $advanced_search_properties;
+        foreach($advanced_search_properties as $advanced_search_property=>$code)
             {
-            if ($key[0]=='!' && strlen($value) > 0)
+            $propval=getvalescaped($advanced_search_property,"");
+            if($propval!="")
+                {$propertysearchcodes[] =$code . ":" . $propval;}
+            }
+        if(count($propertysearchcodes)>0)
+            {
+            $search = '!properties' . implode(';', $propertysearchcodes) . ' ' . $search;
+            }
+        else
+            {
+            // Allow a single special search to be prepended to the search string.  For example, !contributions<user id>
+            foreach ($_POST as $key=>$value)
                 {
-                $search=$key . $value . ',' . $search;
-                break;
+                if ($key[0]=='!' && strlen($value) > 0)
+                    {
+                    $search=$key . $value . ',' . $search;
+                    //break;
+                    }
                 }
             }
-
+            
         return $search;
     }
 
@@ -1920,12 +1934,15 @@ function compile_search_actions($top_actions)
 
     global $baseurl_short, $lang, $k, $search, $restypes, $order_by, $archive, $sort, $daylimit, $home_dash, $url,
            $allow_smart_collections, $resources_count, $show_searchitemsdiskusage, $offset, $allow_save_search,
-           $collection, $usercollection;
+           $collection, $usercollection, $internal_share_access;
+
+	if(!isset($internal_share_access)){$internal_share_access=false;}
+	
 
     // globals that could also be passed as a reference
     global $starsearch;
 
-    if(!checkperm('b') && $k == '') 
+    if(!checkperm('b') && ($k == '' || $internal_share_access)) 
         {
         if($top_actions && $allow_save_search && $usercollection != $collection)
             {
@@ -2063,7 +2080,7 @@ function compile_search_actions($top_actions)
             }
         }
 
-    if($top_actions && $k == '')
+    if($top_actions && ($k == '' || $internal_share_access))
         {
         $options[$o]['value']            = 'csv_export_results_metadata';
 		$options[$o]['label']            = $lang['csvExportResultsMetadata'];
@@ -2257,6 +2274,17 @@ function search_filter($search,$archive,$restypes,$starsearch,$recent_search_day
 		}
 	    }
 	
+	
+	# Append media restrictions
+	global $heightmin,$heightmax,$widthmin,$widthmax,$filesizemin,$filesizemax,$fileextension,$haspreviewimage;
+	
+	if ($heightmin!='')
+		{		
+		if ($sql_filter!="") {$sql_filter.=" and ";}
+		$sql_filter.= "dim.height>='$heightmin'";
+		}
+		
+		
 	# append ref filter - never return the batch upload template (negative refs)
 	if ($sql_filter!="") {$sql_filter.=" and ";}
 	$sql_filter.="r.ref>0";
@@ -2401,6 +2429,19 @@ function search_special($search,$sql_join,$fetchrows,$sql_prefix,$sql_suffix,$or
         return $result;
         }
     
+    # View Related - Pushed Metadata (for the view page)
+    if (substr($search,0,14)=="!relatedpushed")
+        {
+        # Extract the resource number
+        $resource=explode(" ",$search);$resource=str_replace("!relatedpushed","",$resource[0]);
+        $order_by=str_replace("r.","",$order_by); # UNION below doesn't like table aliases in the order by.
+        
+        return sql_query($sql_prefix . "select distinct r.hit_count score,rt.name resource_type_name, $select from resource r join resource_type rt on r.resource_type=rt.ref and rt.push_metadata=1 join resource_related t on (t.related=r.ref and t.resource='" . $resource . "') $sql_join  where 1=1 and $sql_filter group by r.ref 
+        UNION
+        select distinct r.hit_count score, rt.name resource_type_name, $select from resource r join resource_type rt on r.resource_type=rt.ref and rt.push_metadata=1 join resource_related t on (t.resource=r.ref and t.related='" . $resource . "') $sql_join  where 1=1 and $sql_filter group by r.ref 
+        order by $order_by" . $sql_suffix,false,$fetchrows);
+        }
+        
     # View Related
     if (substr($search,0,8)=="!related")
         {
@@ -2420,6 +2461,8 @@ function search_special($search,$sql_join,$fetchrows,$sql_prefix,$sql_suffix,$or
         select distinct r.hit_count score, $select from resource r join resource_related t on (t.resource=r.ref and t.related='" . $resource . "') $sql_join  where 1=1 and $sql_filter group by r.ref 
         order by $order_by" . $sql_suffix,false,$fetchrows);
         }
+        
+
         
     # Geographic search
     if (substr($search,0,4)=="!geo")
@@ -2551,6 +2594,71 @@ function search_special($search,$sql_join,$fetchrows,$sql_prefix,$sql_suffix,$or
         $fieldref=intval(trim(substr($search,8)));
         $sql_join.=" join resource_data on r.ref=resource_data.resource and resource_data.resource_type_field=$fieldref and resource_data.value<>'' ";
         return sql_query($sql_prefix . "select distinct r.hit_count score, $select from resource r $sql_join and r.ref > 0 and $sql_filter group by r.ref order by $order_by" . $sql_suffix,false,$fetchrows);
+        }
+        
+    # Search for resource properties
+    if (substr($search,0,11)=="!properties")
+        {
+        // Note: in order to combine special searches with normal searches, these are separated by space (" ")
+        $searches_array = explode(' ', $search);
+        $properties     = explode(';', substr($searches_array[0], 11));
+        $sql_join.=" left join resource_dimensions rdim on r.ref=rdim.resource";
+        
+        foreach ($properties as $property)
+            {
+            $propertycheck=explode(":",$property);
+            if(count($propertycheck)==2)
+                {
+                $propertyname=$propertycheck[0];
+                $propertyval=escape_check($propertycheck[1]);
+                if($sql_filter==""){$sql_filter .= " where ";}else{$sql_filter .= " and ";}
+                switch($propertyname)
+                    {
+                    case "hmin":
+                        $sql_filter.=" rdim.height>='".  intval($propertyval) . "'";
+                    break;
+                    case "hmax":
+                        $sql_filter.=" rdim.height<='".  intval($propertyval) . "'";
+                    break;
+                    case "wmin":
+                        $sql_filter.=" rdim.width>='".  intval($propertyval) . "'";
+                    break;
+                    case "wmax":
+                        $sql_filter.=" rdim.width<='".  intval($propertyval) . "'";
+                    break;
+                    case "fmin":
+                        // Need to convert MB value to bytes
+                        $sql_filter.=" r.file_size>='".  (floatval($propertyval) * 1024 * 1024) . "'";
+                    break;
+                    case "fmax":
+                        // Need to convert MB value to bytes
+                        $sql_filter.=" r.file_size<='". (floatval($propertyval) * 1024 * 1024) . "'";
+                    break;
+                    case "fext":
+                        $propertyval=str_replace("*","%",$propertyval);
+                        $sql_filter.=" r.file_extension ";
+                        if(substr($propertyval,0,1)=="-")
+                            {
+                            $propertyval = substr($propertyval,1);
+                            $sql_filter.=" not ";                            
+                            }
+                        if(substr($propertyval,0,1)==".")
+                            {
+                            $propertyval = substr($propertyval,1);
+                            }
+                        $sql_filter.=" like '". escape_check($propertyval) . "'";
+                    break;
+                    case "pi":
+                        $sql_filter.=" r.has_image='".  intval($propertyval) . "'";
+                    break;
+                    case "cu":
+                        $sql_filter.=" r.created_by='".  intval($propertyval) . "'";
+                    break;
+                    }
+                }
+            }
+            
+        return sql_query($sql_prefix . "select distinct r.hit_count score, $select from resource r $sql_join  where r.ref > 0 and $sql_filter group by r.ref order by $order_by" . $sql_suffix,false,$fetchrows);
         }
 
     # Within this hook implementation, set the value of the global $sql variable:

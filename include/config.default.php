@@ -532,7 +532,7 @@ $searchbyday=false;
 # For the tailor made preview sizes / downloads, this value is set per preview size in the system setup.
 $restricted_full_download=false;
 
-# Instead of showing a download size as "Restricted", the download size is hidden
+# Instead of showing a download size as "Restricted", the download size is hidden - ONLY IF the user has not got the ability to request ("q" permission).
 $hide_restricted_download_sizes=false;
 
 # Also search the archive and display a count with every search? (performance penalty)
@@ -604,6 +604,12 @@ $advancedsearch_disabled = false;
 # Display the advanced search as a 'search' link in the top navigation
 $advanced_search_nav=false;
 
+# Show Contributed by on Advanced Search (ability to search for resources contributed by a specific user)
+$advanced_search_contributed_by = false;
+
+# Show Media section on Advanced Search
+$advanced_search_media_section = false;
+
 # Do not display 'search results' link in the top navigation
 $disable_searchresults = false;
 
@@ -621,6 +627,7 @@ $help_link=true;
 $search_results_link=true;
 
 # Display a 'My Collections' link in the top navigation
+# Note that permission 'b' is needed for collection_manage.php to be displayed
 $mycollections_link=false;
 
 # Display a 'My Requests' link in the top navigation
@@ -770,6 +777,8 @@ $defaulttheme="";
 /** USER PREFERENCES **/
 $user_preferences = true;
 
+/* Should the "purge users" function be available? */
+$user_purge=true;
 
 # List of active plugins.
 # Note that multiple plugins must be specified within array() as follows:
@@ -1027,6 +1036,9 @@ $open_access_for_contributor=false;
 
 # Should a user that has contributed a resource always have edit access to it? (even if the resource is live)
 $edit_access_for_contributor=false;
+
+# Prevent granting of open access if a user has edit permissions. Setting to true will allow group permissions ('e*' and 'ea*') to determine editability.
+$prevent_open_access_on_edit_for_active=false;
 
 # Auto-completion of search (quick search only)
 $autocomplete_search=true;
@@ -1946,6 +1958,9 @@ $staticsync_deleted_state=2;
 # NOTE: Alternative file processing only works when $staticsync_ingest is set to 'true'.
 $staticsync_alternatives_suffix="_alternatives";
 
+# Option to have alternative files located in same directory as primary files but identified by a defined string. As with staticsync_alternatives_suffix this only works when $staticsync_ingest is set to 'true'.
+#$staticsync_alternative_file_text="_alt_";
+
 # if false, the system will always synthesize a title from the filename and path, even
 # if an embedded title is found in the file. If true, the embedded title will be used.
 $staticsync_prefer_embedded_title = true;
@@ -1977,8 +1992,8 @@ $multilingual_text_fields=false;
 $upload_methods = array(
 		'single_upload' => true,
 		'in_browser_upload' => true,
-		'fetch_from_ftp' => true,
-		'fetch_from_local_folder' => true,
+		'fetch_from_ftp' => false,
+		'fetch_from_local_folder' => false,
 	);
 
 # Allow to change the location of the upload folder, so that it is not in the
@@ -2017,9 +2032,6 @@ $allow_save_search=true;
 
 # Use the collection name in the downloaded zip filename when downloading collections as a zip file?
 $use_collection_name_in_zip_name=false;
-
-# Enable a permanently visible 'themes bar' on the left hand side of the screen for quick access to themes.
-$use_theme_bar=false;
 
 # Default DPI setting for the view page if no resolution is stored in the db.
 $view_default_dpi=300;
@@ -2308,6 +2320,9 @@ $icc_extraction = false;
 # but will not be embedded
 $icc_preview_profile = 'sRGB_IEC61966-2-1_black_scaled.icc';
 
+# embed the target preview profile?
+$icc_preview_profile_embed=false;
+
 # additional options for profile conversion during preview generation
 $icc_preview_options = '-intent perceptual -black-point-compensation';
 
@@ -2583,7 +2598,6 @@ $regex_email = "[a-zA-Z0-9._%-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}";	# currently exc
 
 $do_not_add_to_new_collection_default=false;  # will set "do not add to a collection" as the default option for upload option
 $no_metadata_read_default=false; // If set to true and $metadata_read is false then metadata will be imported by default
-$metadata_read=true; // Hides the "Do not import embedded EXIF/IPTC/XMP metadata for this upload" option from upload options. 
 $removenever=false; # Remove 'never' option for resource request access expiration and sets default expiry date to 7 days
 $hide_resource_share_link=false; // Configurable option to hide the "Share" link on the resource view page.
 
@@ -2914,3 +2928,35 @@ $pdf_resource_type_templates = array();
 
 #Option to display year in a four digit format
 $date_yyyy = false;
+
+# Option to display external shares in standard internal collection view when accessed by a logged in user
+$external_share_view_as_internal=false;
+
+/*When sharing externally as a specific user group (permission x), limit the user groups shown only if
+they are allowed*/
+$allowed_external_share_groups = array();
+
+// CSV Download - add original URL column
+$csv_export_add_original_size_url_column = false;
+
+// Show required field legend on upload
+$show_required_field_label = true;
+
+// Show extra home / about / contact us links in the page footer?
+$bottom_links_bar=false;
+
+# Prevent users without accounts from requesting resources when accessing external shares. If true, external users requesting access will be redirected to the login screen so only recommended if account requests are allowed.
+$prevent_external_requests=false;
+
+/*
+Display watermark without repeating it
+Possible values for position: NorthWest, North, NorthEast, West, Center, East, SouthWest, South, SouthEast
+
+IMPORTANT: the watermark used will need to have an aspect ratio of 1 for this to work as expected. A different aspect ratio
+           will return unexpected results
+
+$watermark_single_image = array(
+    'scale'    => 40,
+    'position' => 'Center',
+);
+*/

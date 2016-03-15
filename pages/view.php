@@ -14,6 +14,9 @@ include_once "../include/resource_functions.php";
 include_once "../include/collections_functions.php";
 include_once "../include/image_processing.php";
 
+// Set a flag for logged in users if $external_share_view_as_internal is set and logged on user is accessing an external share
+$internal_share_access = ($k!="" && $external_share_view_as_internal && isset($is_authenticated) && $is_authenticated);
+
 $ref=getvalescaped("ref","",true);
 
 # Update hit count
@@ -80,7 +83,7 @@ if ($go!="")
     if (is_string($newkey)) {$k = $newkey;}
 
     # Check access permissions for this new resource, if an external user.
-    if ($k!="" && !check_access_key($ref, $k)) {$ref = $origref;} # Cancel the move.
+    if ($k!="" && !$internal_share_access && !check_access_key($ref, $k)) {$ref = $origref;} # Cancel the move.
 	}
 
 hook("chgffmpegpreviewext", "", array($ref));
@@ -109,7 +112,7 @@ if ($use_mp3_player)
 		{$mp3path=get_resource_path($ref,false,"",false,"mp3");}
 	}
 # Load access level
-$access=get_resource_access($ref);
+$access=get_resource_access($resource);
 hook("beforepermissionscheck");
 # check permissions (error message is not pretty but they shouldn't ever arrive at this page unless entering a URL manually)
 if($access == 2) 
@@ -181,7 +184,7 @@ if ($direct_download && !$save_as){
 <iframe id="dlIFrm" frameborder=0 scrolling="auto" <?php if ($debug_direct_download){?>width="600" height="200" style="display:block;"<?php } else { ?>style="display:none"<?php } ?>> This browser can not use IFRAME. </iframe>
 <?php }
 
-if($resource_contact_link && $k=="")
+if($resource_contact_link && ($k=="" || $internal_share_access))
 		{?>
 		<script>
 		function showContactBox(){
@@ -217,74 +220,13 @@ if(isset($related_type_show_with_data)) {
 	$multi_fields = TRUE;
 }
 
-$fields=get_resource_field_data($ref,$multi_fields,!hook("customgetresourceperms"),-1,$k!="",$use_order_by_tab_view);
+# Load field data
+$fields=get_resource_field_data($ref,$multi_fields,!hook("customgetresourceperms"),-1,($k!="" && !$internal_share_access),$use_order_by_tab_view);
 $modified_view_fields=hook("modified_view_fields","",array($ref,$fields));if($modified_view_fields){$fields=$modified_view_fields;}
-// Get tab names and order from fields in order to know which one is the last tab
-$fields_tab_names = array();
-	
-foreach ($fields as $field) {
-	$fields_tab_names[] = $field['tab_name'];
-	$resources_per_tab_name[$field['tab_name']][] = $field['ref'];
-}
-
-$fields_tab_names = array_values(array_unique($fields_tab_names));
-
-// Clean the tabs by removing the ones that would just be empty:
-$tabs_with_data = array();
-foreach ($fields_tab_names as $tabname) {
-	for ($i = 0; $i < count($fields); $i++) { 
-		
-		$displaycondition = check_view_display_condition($fields, $i);
-	
-		if($displaycondition && $tabname == $fields[$i]['tab_name'] && $fields[$i]['value'] != '' && $fields[$i]['value'] != ',' && $fields[$i]['display_field'] == 1 && ($access == 0 || ($access == 1 && !$field['hide_when_restricted']))) {
-			$tabs_with_data[] = $tabname;
-		}
-
-	}
-}
-$fields_tab_names = array_intersect($fields_tab_names, $tabs_with_data);
-
-if(isset($related_type_show_with_data)) {
-	// Get resource type tab names (if any set):
-	$resource_type_tab_names = sql_array('SELECT tab_name as value FROM resource_type', '');
-	$resource_type_tab_names = array_values(array_unique($resource_type_tab_names));
-
-	// These are the tab names which will be rendered for the resource specified:
-	$fields_tab_names = array_values(array_unique((array_merge($fields_tab_names, $resource_type_tab_names))));
-}
-
-// Make sure the fields_tab_names is empty if there are no values:
-foreach ($fields_tab_names as $key => $value) {
-	if(empty($value)) {
-		unset($fields_tab_names[$key]);
-	}
-}
-
-//Check if we want to use a specified field as a caption below the preview
-if(isset($display_field_below_preview) && is_int($display_field_below_preview))
-	{
-	$df=0;
-	foreach ($fields as $field)
-		{
-		if($field["fref"]==$display_field_below_preview)
-			{
-			$displaycondition=check_view_display_condition($fields,$df);
-			if($displaycondition)
-				{
-				$previewcaption=$fields[$df];
-				// Remove from the array so we don't display it twice
-				unset($fields[$df]);
-				//Reorder array 
-				$fields=array_values($fields);				
-				}
-			}
-		$df++;			
-		}
-	}
 
 # Load edit access level (checking edit permissions - e0,e-1 etc. and also the group 'edit filter')
 $edit_access=get_edit_access($ref,$resource["archive"],$fields,$resource);
-if ($k!="") {$edit_access=0;}
+if ($k!="" && !$internal_share_access) {$edit_access=0;}
 
 function check_view_display_condition($fields,$n)	
 	{
@@ -427,7 +369,7 @@ function display_field_data($field,$valueonly=false,$fixedwidth=452)
 	}
 
 // Add custom CSS for external users: 
-if($k !='' && $custom_stylesheet_external_share) {
+if($k !='' && !$internal_share_access && $custom_stylesheet_external_share) {
     $css_path = dirname(__FILE__) . '/..' . $custom_stylesheet_external_share_path;
     if(file_exists($css_path)) {
         echo '<link href="' . $baseurl . $custom_stylesheet_external_share_path . '" rel="stylesheet" type="text/css" media="screen,projection,print" />';
@@ -846,7 +788,7 @@ function make_download_preview_link($ref, $size, $label)
 
 function add_download_column($ref, $size_info, $downloadthissize)
 	{
-	global $save_as, $direct_download, $order_by, $lang, $baseurl_short, $baseurl, $k, $search, $request_adds_to_collection, $offset, $archive, $sort;
+	global $save_as, $direct_download, $order_by, $lang, $baseurl_short, $baseurl, $k, $search, $request_adds_to_collection, $offset, $archive, $sort, $internal_share_access;
 	if ($downloadthissize)
 		{
 		?><td class="DownloadButton"><?php
@@ -885,7 +827,7 @@ function add_download_column($ref, $size_info, $downloadthissize)
 		if (!hook("resourcerequest"))
 			{
 			?><td class="DownloadButton"><?php
-			if ($request_adds_to_collection && ($k=="" || isset($_COOKIE['user'])) && !checkperm('b')) // We can't add to a collection if we are accessing an external share, unless we are a logged in user
+			if ($request_adds_to_collection && ($k=="" || $internal_share_access) && !checkperm('b')) // We can't add to a collection if we are accessing an external share, unless we are a logged in user
 				{
 				echo add_to_collection_link($ref,$search,"alert('" . addslashes($lang["requestaddedtocollection"]) . "');",$size_info["id"]);
 				}
@@ -1111,8 +1053,9 @@ if ($access==0) $alt_access=true; # open access (not restricted)
 if ($alt_access) 
 	{
 	$alt_order_by="";$alt_sort="";
-	if ($alt_types_organize){$alt_order_by="alt_type";$alt_sort="asc";} 
-	$altfiles=get_alternative_files($ref,$alt_order_by,$alt_sort);
+	if ($alt_types_organize){$alt_order_by="alt_type";$alt_sort="asc";}
+	if(!isset($altfiles))
+		{$altfiles=get_alternative_files($ref,$alt_order_by,$alt_sort);}
 	hook("processaltfiles");
 	$last_alt_type="-";
 	for ($n=0;$n<count($altfiles);$n++)
@@ -1143,17 +1086,18 @@ if ($alt_access)
 		$alt_thm="";$alt_pre="";
 		if ($alternative_file_previews)
 			{
-			$alt_thm_file=get_resource_path($ref,true,"col",false,"jpg",-1,1,false,"",$altfiles[$n]["ref"]);
+			$use_watermark=check_use_watermark();
+			$alt_thm_file=get_resource_path($ref,true,"col",false,"jpg",-1,1,$use_watermark,"",$altfiles[$n]["ref"]);
 			if (file_exists($alt_thm_file))
 				{
 				# Get web path for thumb (pass creation date to help cache refresh)
-				$alt_thm=get_resource_path($ref,false,"col",false,"jpg",-1,1,false,$altfiles[$n]["creation_date"],$altfiles[$n]["ref"]);
+				$alt_thm=get_resource_path($ref,false,"col",false,"jpg",-1,1,$use_watermark,$altfiles[$n]["creation_date"],$altfiles[$n]["ref"]);
 				}
-			$alt_pre_file=get_resource_path($ref,true,"pre",false,"jpg",-1,1,false,"",$altfiles[$n]["ref"]);
+			$alt_pre_file=get_resource_path($ref,true,"pre",false,"jpg",-1,1,$use_watermark,"",$altfiles[$n]["ref"]);
 			if (file_exists($alt_pre_file))
 				{
 				# Get web path for preview (pass creation date to help cache refresh)
-				$alt_pre=get_resource_path($ref,false,"pre",false,"jpg",-1,1,false,$altfiles[$n]["creation_date"],$altfiles[$n]["ref"]);
+				$alt_pre=get_resource_path($ref,false,"pre",false,"jpg",-1,1,$use_watermark,$altfiles[$n]["creation_date"],$altfiles[$n]["ref"]);
 				}
 			}
 		?>
@@ -1216,7 +1160,7 @@ if(!hook("replaceactionslistopen")){?>
 
 # ----------------------------- Resource Actions -------------------------------------
 hook ("resourceactions") ?>
-<?php if ($k=="") { ?>
+<?php if ($k=="" || $internal_share_access) { ?>
 <?php if (!hook("replaceresourceactions")) {
 	global $resourcetoolsGT;
 	hook("resourceactionstitle");
@@ -1339,7 +1283,7 @@ if(!hook('replaceactionslistclose')){
 <?php
 if (!hook("replaceuserratingsbox")){
 # Include user rating box, if enabled and the user is not external.
-if ($user_rating && $k=="") { include "../include/user_rating.php"; }
+if ($user_rating && ($k=="" || $internal_share_access)) { include "../include/user_rating.php"; }
 } /* end hook replaceuserratingsbox */
 
 
@@ -1354,231 +1298,56 @@ if ($user_rating && $k=="") { include "../include/user_rating.php"; }
 <?php hook("renderbeforeresourcedetails"); ?>
 
 
+<?php
+/* ---------------  Display metadata ----------------- */
+?>
 <div id="Panel1" class="ViewPanel">
     <div id="Titles1" class="ViewPanelTitles">
         <div class="Title Selected" panel="Metadata"><?php if (!hook("customdetailstitle")) echo $lang["resourcedetails"]?></div>
     </div>
 </div>
-<div id="Metadata">
-<?php
-$extra="";
-
-#  -----------------------------  Draw tabs ---------------------------
-$tabname="";
-$tabcount=0;
-$tmp = hook("tweakfielddisp", "", array($ref, $fields)); if($tmp) $fields = $tmp;
-if((isset($fields_tab_names) && !empty($fields_tab_names)) && count($fields) > 0) { ?>
-	
-	<div class="TabBar">
-	
-	<?php
-		foreach ($fields_tab_names as $tabname) { ?>
-
-			<div id="tabswitch<?php echo $tabcount; ?>" class="Tab<?php if($tabcount == 0) { ?> TabSelected<?php } ?>">
-				<a href="#" onclick="SelectTab(<?php echo $tabcount; ?>);return false;"><?php echo i18n_get_translated($tabname)?></a>
-			</div>
-		
-		<?php 
-			$tabcount++;
-		} ?>
-
-	</div> <!-- end of TabBar -->
-	<script type="text/javascript">
-	function SelectTab(tab) {
-		// Deselect all tabs
-		<?php for($n = 0; $n < $tabcount; $n++) { ?>
-		document.getElementById("tab<?php echo $n; ?>").style.display="none";
-		document.getElementById("tabswitch<?php echo $n; ?>").className="Tab";
-		<?php } ?>
-		document.getElementById("tab" + tab).style.display="block";
-		document.getElementById("tabswitch" + tab).className="Tab TabSelected";
-	}
-	</script>
-
-<?php
-} ?>
-
-<div id="tab0" class="TabbedPanel<?php if ($tabcount>0) { ?> StyledTabbedPanel<?php } ?>">
-<div class="clearerleft"> </div>
-<div>
-<?php 
-#  ----------------------------- Draw standard fields ------------------------
-?>
-<?php if ($show_resourceid) { ?><div class="itemNarrow"><h3><?php echo $lang["resourceid"]?></h3><p><?php echo htmlspecialchars($ref)?></p></div><?php } ?>
-<?php if ($show_access_field) { ?><div class="itemNarrow"><h3><?php echo $lang["access"]?></h3><p><?php echo @$lang["access" . $resource["access"]]?></p></div><?php } ?>
-<?php if ($show_resource_type) { ?><div class="itemNarrow"><h3><?php echo $lang["resourcetype"]?></h3><p><?php echo  get_resource_type_name($resource["resource_type"])?></p></div><?php } ?>
-<?php if ($show_hitcount){ ?><div class="itemNarrow"><h3><?php echo $resource_hit_count_on_downloads?$lang["downloads"]:$lang["hitcount"]?></h3><p><?php echo $resource["hit_count"]+$resource["new_hit_count"]?></p></div><?php } ?>
-<?php hook("extrafields");?>
-<?php
-# contributed by field
-if (!hook("replacecontributedbyfield")){
-$udata=get_user($resource["created_by"]);
-if ($udata!==false)
-	{
-	?>
-<?php if ($show_contributed_by){?>	<div class="itemNarrow"><h3><?php echo $lang["contributedby"]?></h3><p><?php if (checkperm("u")) { ?><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/team/team_user_edit.php?ref=<?php echo $udata["ref"]?>"><?php } ?><?php echo highlightkeywords(htmlspecialchars($udata["fullname"]),$search)?><?php if (checkperm("u")) { ?></a><?php } ?></p></div><?php } ?>
-	<?php
-	}
-} // end hook replacecontributedby
-
-# Show field data
-$tabname="";
-$tabcount=0;
-$extra="";
-$show_default_related_resources = TRUE;
-foreach ($fields_tab_names as $tabname) {
-
-	for($i = 0; $i < count($fields); $i++) {
-
-		$displaycondition = check_view_display_condition($fields, $i);
-
-		if($displaycondition && $tabname == $fields[$i]['tab_name']) {
-			if(!hook('renderfield',"", array($fields[$i]))) {
-				display_field_data($fields[$i]);
-
-				// Show the fields with a display template now
-				echo $extra;
-				$extra = '';
-			}
-		}
-
-	}
-
-	// Add related resources which have the same tab name:
-	if(isset($related_type_show_with_data) && isset($fields_tab_names) && !empty($fields_tab_names)) {
-		
-		include '../include/related_resources.php';
-
-		$show_default_related_resources = FALSE;
-
-		//Once we've shown the related resources unset the variable so they won't be shown as thumbnails:
-		unset($relatedresources);
-	}
-
-	$tabcount++;
-	if($tabcount != count($fields_tab_names)) { ?>
-		<div class="clearerleft"></div>
-		</div>
-		</div>
-		<div class="TabbedPanel StyledTabbedPanel" style="display:none;" id="tab<?php echo $tabcount?>"><div>
-	<?php
-	}
-
-}
-
-if(empty($fields_tab_names)) {
-	for($i = 0; $i < count($fields); $i++) {
-
-		$displaycondition = check_view_display_condition($fields, $i);
-
-		if($displaycondition) {
-			if(!hook('renderfield',"", array($fields[$i]))) {
-				display_field_data($fields[$i]);
-			}
-		}
-
-	}
-}
-
-// Option to display related resources of specified types along with metadata
-if ($enable_related_resources && $show_default_related_resources)
-	{
-	$relatedresources=do_search("!related" . $ref);
-	#build array of related resources' types
-	$related_restypes=array();
-	for ($n=0;$n<count($relatedresources);$n++)
-		{
-		$related_restypes[]=$relatedresources[$n]['resource_type'];
-		}
-	#reduce extensions array to unique values
-	$related_restypes=array_unique($related_restypes);
-	
-	$relatedtypes_shown=array();
-	$related_resources_shown=0;
-	if(isset($related_type_show_with_data))
-		{
-		
-		# Render fields with display template before the list of related resources:
-		echo $extra;
-		
-		foreach($related_type_show_with_data as $rtype)
-			{
-			// Is this a resource type that needs to be displayed?
-			if (!in_array($rtype,$related_type_show_with_data) || (!in_array($rtype,$related_restypes) && !$related_type_upload_link))
-				{
-				continue;
-				}
-			$restypename=sql_value("select name as value from resource_type where ref = '$rtype'","");
-			$restypename = lang_or_i18n_get_translated($restypename, "resourcetype-", "-2");		
-			
-			?>
-			<div class="clearerleft"></div>
-			<div class="item" id="RelatedResourceData">			
-			<?php
-			if(in_array($rtype,$related_restypes) || ($related_type_upload_link && $edit_access))
-				{
-				///only show the table if there are related resources of this type
-				?>
-				<div class="Listview ListviewTight" >
-					<table border="0" cellspacing="0" cellpadding="0" class="ListviewStyle">
-					<tbody>
-					<tr class="ListviewTitleStyle">
-					<td><h3><?php echo $restypename ?></h3></td>		
-					<td><div class="ListTools"></div></td>                                    
-					</tr>
-					<?php
-					foreach($relatedresources as $relatedresource)
-						{
-						if($relatedresource["resource_type"]==$rtype)
-							{
-							$relatedtitle=$relatedresource["field".$view_title_field];
-												
-							echo "<tr id=\"relatedresource" . $relatedresource["ref"] . "\" class=\"RelatedResourceRow\">";
-							echo "<td class=\"link\"><a href=\"" . $baseurl_short . "pages/view.php?ref=" . $relatedresource["ref"] . "\">" . htmlspecialchars($relatedtitle) . "</a></td>";                                    
-							echo "<td>";
-							if($edit_access)
-								{echo "<div class=\"ListTools\" ><a href=\"#\" onClick=\"if(confirm('" . $lang["related_resource_confirm_delete"] . "')){relateresources(" . $ref . "," . $relatedresource["ref"] . ",'remove');}return false;\" >&gt;&nbsp;" . $lang["action-remove"] . "</a></div>";
-								}
-							echo "</td>";	
-							echo "</tr>";	
-							$related_resources_shown++;
-							}
-						}
-					
-					if($related_type_upload_link && $edit_access)
-						{
-						echo "<tr><td></td><td><div class=\"ListTools\"><a href=\"" . $baseurl_short . "pages/edit.php?ref=-" . $userref . "&uploader=plupload&resource_type=" . $rtype ."&submitted=true&relateto=" . $ref . "&collection_add=&redirecturl=" . urlencode($baseurl . "/?r=" . $ref) . "\">&gt;&nbsp;" . $lang["upload"] . "</a></div></td>";
-						}			
-			
-					?>
-					</tbody>
-					</table>
-											 
-				</div>
-						
-				<?php
-				// We have displayed these, don't show them again later
-				$relatedtypes_shown[]=$rtype;
-				}
-			?>
-			</div><!-- End of RelatedResourceData -->
-			<?php
-			}
-		}    
-    }
-    
-?><?php hook("extrafields2");?>
-<?php if(!$force_display_template_order_by){ ?> <div class="clearerleft"></div> <?php } ?>
-<?php if(!isset($related_type_show_with_data)) { echo $extra; } ?>
-<?php if($force_display_template_order_by){ ?> <div class="clearerleft"></div> <?php } ?>
-</div>
-</div>
-<?php hook("renderafterresourcedetails"); ?>
-<!-- end of tabbed panel-->
-</div>
+<?php include "view_metadata.php"; ?>
 </div></div>
 <div class="PanelShadow"></div>
 </div>
+
+<?php
+/*
+ ----------------------------------
+ Show "pushed" metadata - from related resources with push_metadata set on the resource type. Metadata for those resources
+ appears here in the same style.
+ 
+ */
+$pushed=do_search("!relatedpushed" . $ref);
+foreach ($pushed as $pushed_resource)
+	{
+	RenderPushedMetadata($pushed_resource);
+	}
+
+function RenderPushedMetadata($resource)
+	{
+	global $k,$view_title_field,$lang;
+	$ref=$resource["ref"];
+	$fields=get_resource_field_data($ref,false,!hook("customgetresourceperms"),-1,($k!="" && !$internal_share_access),false);
+	$access=get_resource_access($ref);
+	?>
+	<div class="RecordBox">
+        <div class="RecordPanel">  <div class="backtoresults">&gt; <a href="view.php?ref=<?php echo $ref ?>" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["view"] ?></a></div>
+        <div class="Title"><?php echo $resource["resource_type_name"] . " : " . $resource["field" . $view_title_field] ?></div>
+        <?php include "view_metadata.php"; ?>
+        </div>
+        <div class="PanelShadow"></div>
+        </div>
+	<?php
+	}
+/*
+End of pushed metadata support
+------------------------------------------
+*/ 
+?>
+
+
+
 
 <?php if ($view_panels) { ?>
 <div class="RecordBox">
@@ -1622,7 +1391,7 @@ if (!$disable_geocoding) {
 ?>
 
 <?php 
-	if ($comments_resource_enable && $k=="") include_once ("../include/comment_resources.php");
+	if ($comments_resource_enable && ($k=="" || $internal_share_access)) include_once ("../include/comment_resources.php");
 ?>
 	  	  
 <?php hook("w2pspawn");?>
@@ -1664,7 +1433,7 @@ if ($view_resource_collections && !checkperm('b')){ ?>
 	<?php }
 
 // include optional ajax metadata report
-if ($metadata_report && isset($exiftool_path) && $k==""){?>
+if ($metadata_report && isset($exiftool_path) && ($k=="" || $internal_share_access)){?>
         <div class="RecordBox">
         <div class="RecordPanel">  
         <div class="Title"><?php echo $lang['metadata-report']?></div>
@@ -1681,7 +1450,7 @@ if ($metadata_report && isset($exiftool_path) && $k==""){?>
 
 
 # -------- Related Resources (must be able to search for this to work)
-if (isset($relatedresources) && (count($relatedresources) > $related_resources_shown)&& checkperm("s") && ($k=="")) {
+if (isset($relatedresources) && (count($relatedresources) > $related_resources_shown)&& checkperm("s") && ($k=="" || $internal_share_access)) {
 $result=$relatedresources;
 if (count($result)>0) 
 	{
@@ -1900,7 +1669,7 @@ if (count($result)>0)
 	}} 
 
 
-if($enable_find_similar && checkperm('s') && ($k == '')) { ?>
+if($enable_find_similar && checkperm('s') && ($k == '' || $internal_share_access)) { ?>
 <!--Panel for search for similar resources-->
 <div class="RecordBox">
 <div class="RecordPanel"> 

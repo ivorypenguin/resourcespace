@@ -81,6 +81,7 @@ if (getval("loginas","")!="")
 <form method=post action="<?php echo $baseurl_short?>pages/team/team_user_edit.php">
 <input type=hidden name=ref value="<?php echo urlencode($ref) ?>">
 <input type=hidden name=backurl value="<?php echo getval("backurl", $baseurl_short . "pages/team/team_user.php?nc=" . time())?>">
+<input name="save" type="submit" style="display:none;" value="save" /><!-- to capture default action -->
 
 <?php
 if (($user["login_tries"]>=$max_login_attempts_per_username) && (strtotime($user["login_last_try"]) > (time() - ($max_login_attempts_wait_minutes * 60))))
@@ -92,14 +93,14 @@ if (($user["login_tries"]>=$max_login_attempts_per_username) && (strtotime($user
 	<div class="clearerleft"> </div>
 <?php } ?>
 
-<div class="Question"><label><?php echo $lang["username"]?></label><input name="username" type="text" class="stdwidth" value="<?php echo $user["username"]?>"><div class="clearerleft"> </div></div>
+<div class="Question"><label><?php echo $lang["username"]?></label><input name="username" type="text" class="stdwidth" value="<?php echo form_value_display($user,"username") ?>"><div class="clearerleft"> </div></div>
 
 <?php if (!hook("password")) { ?>
 <div class="Question"><label><?php echo $lang["password"]?></label><input name="password" type="text" class="medwidth" value="<?php echo (strlen($user["password"])==64 || strlen($user["password"])==32)?$lang["hidden"]:$user["password"]?>">&nbsp;<input class="medcomplementwidth" type=submit name="suggest" value="<?php echo $lang["suggest"]?>" /><div class="clearerleft"> </div></div>
 <?php } ?>
 
 <?php if (!hook("replacefullname")){?>
-<div class="Question"><label><?php echo $lang["fullname"]?></label><input name="fullname" type="text" class="stdwidth" value="<?php echo htmlspecialchars($user["fullname"])?>"><div class="clearerleft"> </div></div>
+<div class="Question"><label><?php echo $lang["fullname"]?></label><input name="fullname" type="text" class="stdwidth" value="<?php echo form_value_display($user,"fullname") ?>"><div class="clearerleft"> </div></div>
 <?php } ?>
 
 <div class="Question"><label><?php echo $lang["group"]?></label>
@@ -116,7 +117,7 @@ if (($user["login_tries"]>=$max_login_attempts_per_username) && (strtotime($user
 		else
 			{
 			?>
-			<option value="<?php echo $groups[$n]["ref"]?>" <?php if ($user["usergroup"]==$groups[$n]["ref"]) {?>selected<?php } ?>><?php echo $groups[$n]["name"]?></option>	
+			<option value="<?php echo $groups[$n]["ref"]?>" <?php if (getval("usergroup",$user["usergroup"])==$groups[$n]["ref"]) {?>selected<?php } ?>><?php echo $groups[$n]["name"]?></option>	
 			<?php
 			}
 		}
@@ -126,17 +127,17 @@ if (($user["login_tries"]>=$max_login_attempts_per_username) && (strtotime($user
 <div class="clearerleft"> </div></div>
 <?php hook("additionalusergroupfields"); ?>
 
-<div class="Question"><label><?php echo $lang["emailaddress"]?></label><input name="email" type="text" class="stdwidth" value="<?php echo $user["email"]?>"><div class="clearerleft"> </div></div>
+<div class="Question"><label><?php echo $lang["emailaddress"]?></label><input name="email" type="text" class="stdwidth" value="<?php echo form_value_display($user,"email") ?>"><div class="clearerleft"> </div></div>
 
-<div class="Question"><label><?php echo $lang["accountexpiresoptional"]?><br/><?php echo $lang["format"] . ": " . $lang["yyyy-mm-dd"]?></label><input name="account_expires" type="text" class="stdwidth" value="<?php echo $user["account_expires"]?>"><div class="clearerleft"> </div></div>
+<div class="Question"><label><?php echo $lang["accountexpiresoptional"]?><br/><?php echo $lang["format"] . ": " . $lang["yyyy-mm-dd"]?></label><input name="account_expires" type="text" class="stdwidth" value="<?php echo form_value_display($user,"account_expires")?>"><div class="clearerleft"> </div></div>
 
-<div class="Question"><label><?php echo $lang["ipaddressrestriction"]?><br/><?php echo $lang["wildcardpermittedeg"]?> 194.128.*</label><input name="ip_restrict" type="text" class="stdwidth" value="<?php echo $user["ip_restrict"]?>"><div class="clearerleft"> </div></div>
+<div class="Question"><label><?php echo $lang["ipaddressrestriction"]?><br/><?php echo $lang["wildcardpermittedeg"]?> 194.128.*</label><input name="ip_restrict" type="text" class="stdwidth" value="<?php echo form_value_display($user,"ip_restrict") ?>"><div class="clearerleft"> </div></div>
 
-<div class="Question"><label><?php echo $lang["searchfilteroverride"]?></label><input name="search_filter_override" type="text" class="stdwidth" value="<?php echo $user["search_filter_override"]?>"><div class="clearerleft"> </div></div>
+<div class="Question"><label><?php echo $lang["searchfilteroverride"]?></label><input name="search_filter_override" type="text" class="stdwidth" value="<?php echo form_value_display($user,"search_filter_override")?>"><div class="clearerleft"> </div></div>
 
 <?php hook("additionaluserfields");?>
 <?php if (!hook("replacecomments")) { ?>
-<div class="Question"><label><?php echo $lang["comments"]?></label><textarea name="comments" class="stdwidth" rows=5 cols=50><?php echo htmlspecialchars($user["comments"])?></textarea><div class="clearerleft"> </div></div>
+<div class="Question"><label><?php echo $lang["comments"]?></label><textarea name="comments" class="stdwidth" rows=5 cols=50><?php echo form_value_display($user,"comments")?></textarea><div class="clearerleft"> </div></div>
 <?php } ?>
 <div class="Question"><label><?php echo $lang["created"]?></label>
 <div class="Fixed"><?php echo nicedate($user["created"],true) ?></div>

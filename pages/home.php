@@ -34,7 +34,7 @@ function loadWelcomeText()
 		}
 	}
 
-if (!hook("replaceslideshow")) 
+if (!hook("replaceslideshow"))
 	{
 	global $slideshow_photo_delay;
 
@@ -81,7 +81,7 @@ if (!hook("replaceslideshow"))
 			}
 	 	} 
 
-	if($static_slideshow_image && $filecount > 0)
+	if($static_slideshow_image && $filecount > 0 && $slideshow_big)
 		{
 		$randomimage=rand(1,$filecount);
 		// We only want to use one of the available images	
@@ -91,7 +91,7 @@ if (!hook("replaceslideshow"))
 		var big_slideshow_timer = 0;
 		RegisterSlideshowImage('<?php echo $imagelink[$randomimage] ?>', undefined, true);
 		</script>
-	   <?php
+		 <?php
 		}
 		
 	$homeimages=$filecount;

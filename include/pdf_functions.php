@@ -74,7 +74,7 @@ function generate_pdf($html_template_path, $filename, array $bind_placeholders =
     // Do we have a physical HTML template
     if(!file_exists($html_template_path))
         {
-        return false;
+        trigger_error('File "' . $html_template_path . '" does not exist!');
         }
 
     $html = file_get_contents($html_template_path);
@@ -97,6 +97,36 @@ function generate_pdf($html_template_path, $filename, array $bind_placeholders =
         {
         // Bind [%param%] placeholders to their values
         $html = str_replace('[%' . $param . '%]', $param_value, $html);
+        
+        // replace \r\n with <br>. This is how they do it at the moment at html2pdf.fr
+        $html = str_replace("\r\n", '<br>', $html);
+        }
+
+    // Handle [%if var is set%] and [%endif%] statements
+    preg_match_all('/\[%if (.*?) is set%\]/', $html, $if_isset_matches);
+    foreach($if_isset_matches[0] as $if_isset_match)
+        {
+        $remove_placeholder_elements = array('[%if ', ' is set%]');
+        $var_name = str_replace($remove_placeholder_elements, '', $if_isset_match);
+
+        $if_isset_match_position = strpos($html, $if_isset_match);
+        $endif_position          = strpos($html, '[%endif%]', $if_isset_match_position);
+        $substr_lenght           = $endif_position - $if_isset_match_position;
+
+        $substr_html_one   = substr($html, 0, $if_isset_match_position);
+        $substr_html_two   = substr($html, $if_isset_match_position, $substr_lenght + 9);
+        $substr_html_three = substr($html, $endif_position + 9);
+
+        if(!array_key_exists($var_name, $bind_params))
+            {
+            $html = $substr_html_one . $substr_html_three;
+
+            continue;
+            }
+
+        $substr_html_two = str_replace(array($if_isset_match, '[%endif%]'), '', $substr_html_two);
+
+        $html = $substr_html_one . $substr_html_two . $substr_html_three;
         }
 
     // Last resort to clean up PDF templates by searching for all remaining placeholders

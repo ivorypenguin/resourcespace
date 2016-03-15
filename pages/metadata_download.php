@@ -169,7 +169,10 @@ if($download && $data_only)
         $placeholders['metadatafield-' . $metadata_field['ref'] . ':value'] = $metadata_field_value;
         }
 
-    generate_pdf($pdf_template_path, $PDF_filename, $placeholders);
+    if(!generate_pdf($pdf_template_path, $PDF_filename, $placeholders))
+        {
+        trigger_error('ResourceSpace could not generate PDF for data only type!');
+        }
     }
 
 include "../include/header.php";

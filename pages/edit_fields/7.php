@@ -31,6 +31,7 @@ TreeClickable["<?php echo $name?>"]=new Array();
 TreeChecked["<?php echo $name?>"]=new Array();
 TreeTickedDesc["<?php echo $name?>"]=new Array();
 TreeDynamic["<?php echo $name?>"]=false;
+branch_limit_field['field_<?php echo $field['ref']; ?>'] = branch_limit;
 
 nocategoriesmessage="<?php echo $lang["nocategoriesselected"] ?>";
 

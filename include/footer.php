@@ -16,11 +16,6 @@ if(getval("loginmodal",""))
 if (getval("ajax","")=="" && !hook("replace_footer")) 
 	{ 
 	hook("beforefooter");
-	# Include theme bar?
-	if ($use_theme_bar && !in_array($pagename,array("search_advanced","login","preview","admin_header","user_password","user_request")) && ($loginterms==false))
-		{
-		?></td></tr></table><?php
-		}
 ?>
 <div class="clearer"></div>
 
@@ -55,7 +50,7 @@ if(!in_array($pagename,$omit_footer_pages) && ($loginterms==false))
 <!--Global Footer-->
 <div id="Footer">
 
-<?php if (getval("k","")=="") 
+<?php if ($k=="" || (isset($internal_share_access) && $internal_share_access)) 
 	{ ?>
 	<div id="FooterNavLeft" class="">
 	<span id="FooterLanguages">
@@ -70,7 +65,7 @@ if(!in_array($pagename,$omit_footer_pages) && ($loginterms==false))
 	<?php 
 	if (!hook("replacefooternavright"))
 		{
-		if ($about_link || $contact_link) 
+		if ($bottom_links_bar && ($about_link || $contact_link))
 			{ ?>
 			<div id="FooterNavRight" class="HorizontalNav HorizontalWhiteNav">
 			<ul>

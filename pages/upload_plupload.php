@@ -43,17 +43,17 @@ if ($collection_add==-1)
 	
 	
 $uploadparams= array(
-						"replace"=>$replace,
-						"alternative"=>$alternative,
-						"collection_add"=>$collection_add,
-						"resource_type"=>$resource_type,
-						"no_exif"=>getval("no_exif",""),
-						"autorotate"=>getval("autorotate",""),
-						"replace_resource"=>$replace_resource,
-						"archive"=>$archive,
-						"relateto"=>getval("relateto",""),
-						"filename_field"=>getval("filename_field","")
-					);
+    'replace'          => $replace,
+    'alternative'      => $alternative,
+    'collection_add'   => $collection_add,
+    'resource_type'    => $resource_type,
+    'no_exif'          => getval('no_exif', ''),
+    'autorotate'       => getval('autorotate', ''),
+    'replace_resource' => $replace_resource,
+    'archive'          => $archive,
+    'relateto'         => getval('relateto', ''),
+    'filename_field'   => getval('filename_field', '')
+);
 
 
 global $merge_filename_with_title;
@@ -674,10 +674,10 @@ var pluploadconfig = {
                 } ?>
 
         // Flash settings
-        flash_swf_url: '../lib/plupload_2.1.2/Moxie.swf',
+        flash_swf_url: '../lib/plupload_2.1.8/Moxie.swf',
 
         // Silverlight settings
-        silverlight_xap_url : '../lib/plupload_2.1.2/Moxie.xap',
+        silverlight_xap_url : '../lib/plupload_2.1.8/Moxie.xap',
         dragdrop: true,        
         
         preinit: {
@@ -763,6 +763,7 @@ var pluploadconfig = {
                                 }
 
                             uploader.settings.url = pluploader_new_url;
+                            <?php hook('beforeupload_end'); ?>
                         });
                     
                 
@@ -910,9 +911,9 @@ if ($collection_add!="" && count(get_collection_external_access($collection_add)
 
 <?php
 	# Add language support if available
-	if (file_exists("../lib/plupload_2.1.2/i18n/" . $language . ".js"))
+	if (file_exists("../lib/plupload_2.1.8/i18n/" . $language . ".js"))
 		{
-		echo "<script type=\"text/javascript\" src=\"../lib/plupload_2.1.2/i18n/" . $language . ".js?" . $css_reload_key . "\"></script>";
+		echo "<script type=\"text/javascript\" src=\"../lib/plupload_2.1.8/i18n/" . $language . ".js?" . $css_reload_key . "\"></script>";
 		}
 		?>
 		

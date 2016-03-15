@@ -12,21 +12,23 @@ include(dirname(__FILE__)."/../../include/authenticate.php");
 // required: check that this plugin is available to the user
 if (!in_array("api_search",$plugins)){die("no access");}
 
-$search=getval("search","");
-$search=refine_searchstring($search);
-$restypes=getvalescaped("restypes","");
-$order_by=getvalescaped("order_by","relevance");
-$sort=getvalescaped("sort","desc");
-$archive=getvalescaped("archive",0);
-$starsearch=getvalescaped("starsearch","");
-$collection=getvalescaped("collection","",true);
-$original = filter_var(getvalescaped('original', FALSE), FILTER_VALIDATE_BOOLEAN);
-$metadata = filter_var(getvalescaped('metadata', FALSE), FILTER_VALIDATE_BOOLEAN);
+$search           = getval('search', '');
+$search           = refine_searchstring($search);
+$restypes         = getvalescaped('restypes', '');
+$order_by         = getvalescaped('order_by','relevance');
+$sort             = getvalescaped('sort','desc');
+$archive          = getvalescaped('archive',0);
+$starsearch       = getvalescaped('starsearch', '');
+$collection       = getvalescaped('collection', '',true);
+$original         = filter_var(getvalescaped('original', FALSE), FILTER_VALIDATE_BOOLEAN);
+$metadata         = filter_var(getvalescaped('metadata', FALSE), FILTER_VALIDATE_BOOLEAN);
 $prettyfieldnames = filter_var(getvalescaped('prettyfieldnames', FALSE), FILTER_VALIDATE_BOOLEAN);
-$access_filter = getvalescaped('access', -999, TRUE);
-$shortnames = filter_var(getvalescaped('shortnames',FALSE), FILTER_VALIDATE_BOOLEAN);
+$access_filter    = getvalescaped('access', -999, TRUE);
+$shortnames       = filter_var(getvalescaped('shortnames',FALSE), FILTER_VALIDATE_BOOLEAN);
+$results_per_page = getvalescaped('results_per_page', 0, true);
+$page             = getvalescaped('page', 0, true);
 
-$help=getval("help","");
+$help=getval('help', '');
 if ($help!=""){
 header('Content-type: text/plain');
 echo file_get_contents("readme.txt");
@@ -83,60 +85,44 @@ foreach ($results as $key => $result) {
 }
 $results = array_values($results);
 
-$paginate=false;
-if (getval("results_per_page","")!="" || getval("page","")!=""){
-    $paginate=true;
-    $results_per_page=getval("results_per_page",15);
-    $page=getval("page",1);
-    $min_result=($page-1)*$results_per_page;
-    $max_result=($page*$results_per_page)-1;
+
+// Limit results shown back through multiple pages
+$paginate = false;
+if(0 < $results_per_page || 0 < $page)
+    {
+    $paginate = true;
+
+    $results_per_page = (0 < $results_per_page ? $results_per_page : 15);
+    $page             = (0 < $page ? $page : 1);
+
+    $min_result = ($page - 1) * $results_per_page;
+    $max_result = ($page * $results_per_page) - 1;
 
     // build a new array with pagination info
-    $pagination=array();
-    $pagination["total_pages"]=ceil(count($results)/$results_per_page);
+    $pagination = array();
+    $pagination['total_pages'] = ceil(count($results) / $results_per_page);
     
-    // default to first page if an invalid page is given.
-    if ($page>$pagination["total_pages"]){
-        $page=1;
-        $min_result=0;
-        $max_result=$results_per_page-1;
-    }
-    
-    $pagination["total_resources"]=count($results);
-    $pagination["per_page"]=$results_per_page;
-    $pagination["page"]=$page;
-    
-
-    /* commented out as it should probably be done application side
-    // build a next/prev query strings for easier pagination:
-    // $url=$_SERVER['REQUEST_URI'];
-    // $urlparts=parse_url($url);
-
-    // parse_str($urlparts['query'],$queryparts);
-    // $newquery=array();
-    // foreach ($queryparts as $key=>$value){
-    //  if ($key!='page' && $key!='key' && $key!='results_per_page'){
-    //  $newquery[$key]=$value;
-    //  }
-    // }
-    // $newquery=http_build_query($newquery);
-    // protocol = strtolower(substr($_SERVER["SERVER_PROTOCOL"],0,5))=='https'?'https':'http';
-    // if (($page+1)<=$pagination["total_pages"]){
-    //  $pagination["next_page"]=$newquery."&page=".($page+1);
-    // }
-    // if (($page-1)>0){
-    //  $pagination["previous_page"]=$newquery."&page=".($page-1);
-    // }
-    */
-    
-    $newresult=array();
-    for ($n=0;$n<count($results);$n++){
-        if (($n>=$min_result) && $n<=$max_result){
-        $newresult[]=$results[$n];
+    // If client code is looking for a page outside of range, send 400 error
+    if($page > $pagination['total_pages'])
+        {
+        header('HTTP/1.0 400 Bad Request', true, 400);
+        exit(str_replace('[%max_page_number%]', $pagination['total_pages'], $lang['api_search_error_page_out_of_range']));
         }
+    
+    $pagination['total_resources'] = count($results);
+    $pagination['per_page']        = $results_per_page;
+    $pagination['page']            = $page;
+
+    $newresult = array();
+    for($n = 0; $n < count($results); $n++)
+        {
+        if(($n >= $min_result) && $n <= $max_result)
+            {
+            $newresult[] = $results[$n];
+            }
+        }    
+    $results = $newresult;
     }
-    $results=$newresult;
-}
 
 if (getval("previewsize","")!=""){
     for($n=0;$n<count($results);$n++){

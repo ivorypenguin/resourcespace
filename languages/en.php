@@ -138,6 +138,7 @@ $lang["property-regexp_filter"]="Regexp filter";
 $lang["information-regexp_filter"]="Regular Expression filtering - e.g. '[A-Z]+' will ensure only upper case letters can be entered.";
 $lang["information-regexp_fail"]="The entered value was not in the required format.";
 $lang["property-tab_name"]="Tab name";
+$lang["property-push_metadata"]="Push metadata";
 $lang["property-smart_theme_name"]="Smart featured collection name";
 $lang["property-exiftool_field"]="Exiftool field";
 $lang["property-exiftool_filter"]="Exiftool filter";
@@ -158,7 +159,7 @@ $lang["information-display_condition"]="Display condition: this field will only 
 $lang["property-onchange_macro"]="On change macro";
 $lang["information-onchange_macro"]="On change macro: code to be executed when field value is changed. CAUTION ADVISED";
 $lang["information-derestrict_filter"]="Derestrict filter. Can be used in conjunction with g permission so that all resources are restricted unless metadata condition is met";
-
+$lang["information-push_metadata"]="If set, the metadata for this resource will be displayed on the resource view page for any related resources. For example, you may relate several photos to a person resource. If this property is set on the person resource, then the person metadata will appear on all related photo resource records, avoiding duplication of data in the system.";
 $lang["property-query"]="Query";
 
 $lang["information-id"]="Note: 'Id' below MUST be set to a three character unique code.";
@@ -569,6 +570,7 @@ $lang["log-s"]="Change status";
 $lang["log-a"]="Change access";
 $lang["log-r"]="Reverted metadata";
 $lang["log-b"]="Created alternate";
+$lang["log-y"]="Deleted alternate";
 $lang["log-missinglang"]="[type] (missing lang)"; # [type] will be replaced.
 $lang['log-adminpermissionsrequired'] = 'Full admin permission required!';
 
@@ -884,6 +886,7 @@ $lang["externalshareexpired"]="Sorry, this share has expired and is no longer av
 $lang["notapprovedsharecollection"]="One or more resources in this collection are not active and therefore sharing is prohibited.";
 $lang["notapprovedsharetheme"]="Sharing is prohibited for at least one collection, because one or more resources is not active.";
 $lang["notapprovedresources"]="The following resources are not active and cannot be added to a shared collection: ";
+$lang['error_generating_access_key'] = 'Could not generate an access key';
 
 
 # New for 1.3
@@ -2402,3 +2405,10 @@ $lang['email_daily_digest_text'] = "This is a summary of your unread messages fr
 $lang['user_pref_daily_digest_mark_read'] = "Mark messages as read once I have been sent the summary email";
 $lang['mymessages_introtext'] = "You can configure which messages appear here by changing your user preferences";
 $lang["login_slideshow_image_notes"] = "This image will be used for the login page background only";
+$lang['media'] = "Media";
+$lang["pixel_height"]="Pixel height";
+$lang["pixel_width"]="Pixel width";
+$lang["file_extension_label"]="File extension";
+$lang["signin_required"]="You must be signed in to perform this action";
+$lang["signin_required_request_account"]="You must be signed in to perform this action. If you do not have an account you can request one by clicking on the above link";
+$lang["error_batch_edit_resources"] = "The following resources have not been updated";

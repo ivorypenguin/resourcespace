@@ -118,7 +118,7 @@ if (!hook("renderresultthumb"))
 		<!-- END HOOK Renderimagethumb-->
 		<?php 
 		hook("beforesearchstars");
-		if ($display_user_rating_stars && $k=="")
+		if ($display_user_rating_stars && ($k=="" || $internal_share_access))
 			{ 
 			if (!hook("replacesearchstars"))
 				{
@@ -312,7 +312,7 @@ if (!hook("renderresultthumb"))
 			<?php
 			if(!hook("iconcollect"))
 				{
-				if (!checkperm("b") && $k=="" && !$use_checkboxes_for_selection) 
+				if (!checkperm("b") && ($k=="" || $internal_share_access)  && !$use_checkboxes_for_selection) 
 					{ ?>
 					<span class="IconCollect">
 						<?php echo add_to_collection_link($ref,$search)?>
@@ -330,7 +330,7 @@ if (!hook("renderresultthumb"))
 				} # end hook iconcollect ?>
 			<!-- Remove from collection icon -->
 			<?php 
-			if (!checkperm("b") && substr($search,0,11)=="!collection" && $k=="" && !$use_checkboxes_for_selection) 
+			if (!checkperm("b") && substr($search,0,11)=="!collection" && ($k=="" || $internal_share_access) && !$use_checkboxes_for_selection) 
 				{
 				if ($search=="!collection".$usercollection)
 					{ ?>
@@ -352,7 +352,7 @@ if (!hook("renderresultthumb"))
 			<?php 
 			if(!hook("iconemail")) 
 				{ 
-				if ($allow_share && $k=="") 
+				if ($allow_share && ($k=="" || $internal_share_access)) 
 					{ ?>
 					<span class="IconEmail">
 						<a 
@@ -379,7 +379,7 @@ if (!hook("renderresultthumb"))
 			// access level.
 			if($search_results_edit_icon && checkperm("e" . $result[$n]["archive"]) && !hook("iconedit")) 
 				{ 
-				if ($allow_share && $k=="") 
+				if ($allow_share && ($k=="" || $internal_share_access)) 
 					{ ?>
 					<span class="IconEdit">
 						<a 
@@ -410,7 +410,7 @@ if (!hook("renderresultthumb"))
 				} ?>
 			<!-- Collection comment icon -->
 			<?php 
-			if($k=="")
+			if($k=="" || $internal_share_access)
 				{
 				if (($collection_reorder_caption || $collection_commenting) && (substr($search,0,11)=="!collection")) 
 					{ ?>

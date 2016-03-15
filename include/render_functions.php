@@ -76,10 +76,7 @@ function render_sort_order(array $order_fields)
         var selected_sort_option = jQuery('#sort_selection option:selected').val();
         var option_url           = selected_option.data('url');
 
-        if('ASC' === selected_sort_option)
-            {
-            option_url += '&sort=ASC';
-            }
+        option_url += '&sort=' + selected_sort_option;
 
          <?php echo $modal ? 'Modal' : 'CentralSpace'; ?>Load(option_url);
     });
@@ -301,9 +298,9 @@ function render_actions(array $collection_data, $top_actions = true, $two_line =
                 case 'save_search_to_dash':
                     var option_url  = jQuery('#<?php echo $action_selection_id; ?> option:selected').data('url');
                     var option_link = jQuery('#<?php echo $action_selection_id; ?> option:selected').data('link');
-
-                    // Dash requires to have some search paramenters (even if they are the default ones)
-                    if((window.location.href).replace(window.baseurl, '') != '/pages/search.php')
+                    
+                    // Dash requires to have some search parameters (even if they are the default ones)
+                    if((basename(option_link).substr(0, 10)) != 'search.php')
                         {
                         option_link = (window.location.href).replace(window.baseurl, '');
                         }
@@ -419,3 +416,84 @@ function render_user_group_multi_select($name, array $current = array(), $size =
     </select>
     <?php
     }
+
+/**
+* render_text_input_question - Used to display a question with simple text input
+* 
+* @param string $label						Label of question
+* @param string $input  					Name of input field
+* @param string $additionaltext (optional) 	Text to to display after input
+* @param boolean $numeric 					Set to true to force numeric input
+*/
+function render_text_question($label, $input, $additionaltext="", $numeric=false, $extra="", $current="")
+    {
+	?>
+	<div class="Question" id = "pixelwidth">
+		<label><?php echo $label; ?></label>
+		<div>
+		<?php
+		echo "<input name=\"" . $input . "\" type=\"text\" ". ($numeric?"numericinput":"") . "\" value=\"" . $current . "\"" . $extra . "/>\n";
+			
+		echo $additionaltext;
+		?>
+		</div>
+	</div>
+	<div class="clearerleft"> </div>
+	<?php
+	}
+	
+/**
+* render_split_text_question - Used to display a question with two inputs e.g. for a from/to range
+* 
+* @param string $label	Label of question
+* @param array  $inputs  Array of input names and labels(eg. array('pixelwidthmin'=>'From','pixelwidthmin'=>'To')
+* @param string $additionaltext (optional) 	Text to to display after input
+* @param boolean $numeric 					Set to true to force numeric input
+*/
+function render_split_text_question($label, $inputs = array(), $additionaltext="", $numeric=false, $extra="", $currentvals=array())
+    {
+	?>
+	<div class="Question" id = "pixelwidth">
+		<label><?php echo $label; ?></label>
+		<div>
+		<?php
+		foreach ($inputs as $inputname=>$inputtext)
+			{
+			echo "<div class=\"SplitSearch\">" . $inputtext . "</div>\n";
+			echo "<input name=\"" . $inputname . "\" class=\"SplitSearch\" type=\"text\"". ($numeric?"numericinput":"") . "\" value=\"" . $currentvals[$inputname] . "\"" . $extra . " />\n";
+			}
+		echo $additionaltext;
+		?>
+		</div>
+	</div>
+	<div class="clearerleft"> </div>
+	<?php
+	}
+
+/**
+* render_dropdown_question - Used to display a question with a dropdown selector
+* 
+* @param string $label	Label of question
+* @param string $input  name of input field
+* @param array  $options  Array of options (value and text pairs) (eg. array('pixelwidthmin'=>'From','pixelwidthmin'=>'To')
+*/
+function render_dropdown_question($label, $inputname, $options = array(), $current="", $extra="")
+    {
+	?>
+	<div class="Question" id = "pixelwidth">
+		<label><?php echo $label; ?></label>
+		<select  name="<?php echo $inputname?>" id="<?php echo $inputname?>" <?php echo $extra; ?>>
+		<?php
+		foreach ($options as $optionvalue=>$optiontext)
+			{
+			?>
+			<option value="<?php echo htmlspecialchars(trim($optionvalue))?>" <?php if (trim($optionvalue)==trim($current)) {?>selected<?php } ?>><?php echo htmlspecialchars(trim($optiontext))?></option>
+			<?php
+			}
+		?>
+		</select>
+
+	</div>
+	<div class="clearerleft"> </div>
+	<?php
+	}

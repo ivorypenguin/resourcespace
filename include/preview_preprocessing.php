@@ -106,7 +106,7 @@ if ($exiftool_fullpath!=false)
 			
 			$n=0;
 			foreach ($indd_thumbs as $indd_page){
-				echo $indd_page;
+				// echo $indd_page;
 				$pagescommand.=" ".$target."_".$n;
 				base64_to_jpeg( str_replace("base64:","",$indd_page), $target."_".$n);
 				

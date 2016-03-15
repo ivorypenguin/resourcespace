@@ -193,7 +193,7 @@ function addColumnHeader($orderName, $labelKey)
 <?php	
 
 $groups=sql_query("
-	select 		
+	select 	distinct 	
 		parentusergroup.ref as ref,
 		parentusergroup.name as name
 	from 

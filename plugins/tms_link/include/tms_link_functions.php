@@ -17,73 +17,42 @@ function unistr_to_ords($str, $encoding = 'UTF-8'){
     return($ords);
 }
 
+function getEncodingOrder()
+   {
+   $ary[] = 'UTF-32';
+   $ary[] = 'UTF-32BE';
+   $ary[] = 'UTF-32LE';
+   $ary[] = 'UTF-16';
+   $ary[] = 'UTF-16BE';
+   $ary[] = 'UTF-16LE';
+   $ary[] = 'UTF-8';
+   $ary[] = 'ASCII';
+   $ary[] = 'ISO-2022-JP';
+   $ary[] = 'JIS';
+   $ary[] = 'windows-1252';
+   $ary[] = 'windows-1251';
+   $ary[] = 'UCS-2LE';
+   $ary[] = 'SJIS-win';
+   $ary[] = 'EUC-JP';
+    
+   return $ary;
+   }
 
 function tms_convert_value($value, $key)
-	{
-	global $tms_link_numeric_columns;
-	
-    $ary[] = "UTF-32";
-    $ary[] = "UTF-32BE";
-    $ary[] = "UTF-32LE";
-    $ary[] = "UTF-16";
-    $ary[] = "UTF-16BE";
-    $ary[] = "UTF-16LE";
-	$ary[] = "UTF-8";	
-	$ary[] = "ASCII";
-	$ary[] = "ISO-2022-JP";
-	$ary[] = "JIS";
-	$ary[] = "windows-1252";
-	$ary[] = "SJIS-win";
-	$ary[] = "EUC-JP";
-	$encoding=mb_detect_encoding($value, $ary, true);
-	///echo "Original value " . $value . PHP_EOL;
-	//if($encoding!="UTF-8" && !in_array($key,$tms_link_numeric_columns))
-	if(!in_array($key,$tms_link_numeric_columns))
-		{
-		//Binary to hexadecimal			
-		
-		$hex = bin2hex($value);				
-		
-		//And then from hex to string		
-		$newstring="";
-		for ($i=0;$i<strlen($hex) -1;$i+=2)
-			{			
-			$newstring .= chr(hexdec($hex[$i].$hex[$i+1]));
-			}			
-		//And then from UCS-2LE/SQL_Latin1_General_CP1_CI_AS  or whatever we have detected (that's the column format in the DB) to UTF-8
-		//echo "ENCODING: " . $encoding . ". " . PHP_EOL;
-		//echo "converted string : '" . $value . PHP_EOL . "'";
-		
-		// Some results just had a new line characetr which couldn't be converted
-		if($newstring != preg_replace('/[\x00-\x1F\x80-\xFF]/', '', $newstring))
-			{
-			$newstring =iconv('UCS-2LE', 'UTF-8', $newstring);
-			}
-		
-		// The next conditional section was used but seems to be no longer needed after the Japanese characters were sorted out
-		/*if($encoding==""){$newstring =iconv('UCS-2LE', 'UTF-8', $newstring);}
-		elseif($encoding=="SJIS-win")
-			{
-			//mb_convert_encoding($str, "SJIS");
-			$newstring = iconv('windows-1252', 'UTF-8', $newstring);
-			//$newstring = iconv('SJIS', 'UTF-8', $newstring);
-			//$newstring=mb_convert_encoding( $newstring, "UTF-8", $encoding );
-			}
-		else
-			{
-			//$newstring = iconv('UCS-2LE', 'UTF-8', $newstring);
-			$newstring=mb_convert_encoding( $newstring, "UTF-8", $encoding );
-			}
-		*/
-		//return $newstring . " (" . $encoding . ")";
-		return $newstring;
-		}
-	
-				
-	//return $value . " (" . $encoding . ")";
-	return $value;
-	}
-	
+    {
+    global $tms_link_numeric_columns, $tms_link_text_columns;
+
+    $encoding = mb_detect_encoding($value, getEncodingOrder(), true);
+
+    // Check if field is defined as UTF-16 or it's not an UTF-8 field
+    if(in_array($key, $tms_link_text_columns) || !in_array($key, $tms_link_numeric_columns))
+        {
+        return mb_convert_encoding($value, 'UTF-8', 'UCS-2LE');
+        }
+
+    return $value;
+    }
+
 
 function tms_link_get_tms_data($resource,$tms_object_id="",$resourcechecksum="")
 	{

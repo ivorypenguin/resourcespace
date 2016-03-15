@@ -8,9 +8,14 @@ include_once '../include/render_functions.php';
 
 # External access support (authenticate only if no key provided, or if invalid access key provided)
 $s=explode(" ",getvalescaped("search",""));
-$k=getvalescaped("k","");if (($k=="") || (!check_access_key_collection(str_replace("!collection","",$s[0]),$k))) {include "../include/authenticate.php";}
+$k=getvalescaped("k","");
 
-if ($k=="")
+if (($k=="") || (!check_access_key_collection(str_replace("!collection","",$s[0]),$k))) {include "../include/authenticate.php";}
+
+// Set a flag for logged in users if $external_share_view_as_internal is set and logged on user is accessing an external share
+$internal_share_access = ($k!="" && $external_share_view_as_internal && isset($is_authenticated) && $is_authenticated);
+
+if ($k=="" || $internal_share_access)
     {
     #note current user collection for add/remove links if we haven't got it set already
     if(!isset($usercollection))
@@ -32,7 +37,7 @@ if ($k=="")
 		}
 	}
 # Disable checkboxes for external users.
-if ($k!="") {$use_checkboxes_for_selection=false;}
+if ($k!="" && !$internal_share_access) {$use_checkboxes_for_selection=false;}
 
 $search = getvalescaped('search', '');
 $modal  = ('true' == getval('modal', ''));
@@ -212,7 +217,7 @@ if ((!is_numeric($offset)) || ($offset<0)) {$offset=0;}
 // Is this a collection search?
 $collectionsearch = substr($search,0,11)=="!collection"; // We want the default collection order to be applied
 
-$order_by=getvalescaped("order_by","");if (strpos($search,"!")===false) {rs_setcookie('saved_order_by', $order_by);}
+$order_by=getvalescaped("order_by","");if (strpos($search,"!")===false || substr($search,0,11)=="!properties") {rs_setcookie('saved_order_by', $order_by);}
 if ($order_by=="")
 	{
 	if ($collectionsearch) // We want the default collection order to be applied
@@ -293,7 +298,7 @@ else
 	rs_setcookie('starsearch', $starsearch);
 }
 
-# If returning to an old search, restore the page/order by
+# If returning to an old search, restore the page/order by and other non search string parameters
 if (!array_key_exists("search",$_GET) && !array_key_exists("search",$_POST))
 	{
 	$offset=getvalescaped("saved_offset",0,true);rs_setcookie('saved_offset', $offset);
@@ -314,16 +319,16 @@ if (getvalescaped("refreshcollectionframe","")!="")
 $refs=array();
 
 # Special query? Ignore restypes
-if (strpos($search,"!")!==false) {$restypes="";}
+if (strpos($search,"!")!==false &&  substr($search,0,11)!="!properties") {$restypes="";}
 
 # Do the search!
 $search=refine_searchstring($search);
-if (strpos($search,"!")===false) {rs_setcookie('search', $search);}
+if (strpos($search,"!")===false || substr($search,0,11)=="!properties") {rs_setcookie('search', $search);}
 hook('searchaftersearchcookie');
 if (!hook("replacesearch")) {
 	$result=do_search($search,$restypes,$order_by,$archive,$per_page+$offset,$sort,false,$starsearch,false,false,$daylimit, getvalescaped("go",""));
 }
-if($k=="" && strpos($search,"!")===false && $archive==0){$collections=do_collections_search($search,$restypes);} // don't do this for external shares
+if(($k=="" || $internal_share_access) && strpos($search,"!")===false && $archive==0){$collections=do_collections_search($search,$restypes);} // don't do this for external shares
 
 # Allow results to be processed by a plugin
 $hook_result=hook("process_search_results","search",array("result"=>$result,"search"=>$search));
@@ -336,8 +341,7 @@ if ($collectionsearch)
 	$collection=$collection[0];
 	$collectiondata=get_collection($collection);
 	
-	if ($k!="") {$usercollection=$collection;} # External access - set current collection.
-	
+	if ($k!="" && !$internal_share_access) {$usercollection=$collection;} # External access - set current collection.
 	if (!$collectiondata){?>
 		<script>alert('<?php echo $lang["error-collectionnotfound"];?>');document.location='<?php echo $baseurl."/pages/" . $default_home_page;?>'</script>
 	<?php } 
@@ -373,7 +377,7 @@ if ((($config_search_for_number && is_numeric($search)) || $searchresourceid > 0
 
 # Include the page header to and render the search results
 include "../include/header.php";
-if($k=="")
+if($k=="" || $internal_share_access)
 	{
 	 ?>
 	<script type="text/javascript">
@@ -384,7 +388,7 @@ if($k=="")
 	</script>
  	<?php
 	}
-if ($display_user_rating_stars && $k=="")
+if ($display_user_rating_stars && ($k=="" || $internal_share_access))
 	{
 	if (!hook("replace_user_rating_searchviewjs")){?>
 	<script src="<?php echo $baseurl ?>/lib/js/user_rating_searchview.js?1" type="text/javascript"></script>
@@ -776,7 +780,7 @@ if (!hook("replacesearchheader")) # Always show search header now.
 		if(!hook("replaceasadded"))
 			{
 			if (isset($collection)){$rel=$lang["collection_order_description"];}
-			elseif (strpos($search,"!")!==false) {$rel=$lang["asadded"];}
+			elseif (strpos($search,"!")!==false && substr($search,0,11)!="!properties") {$rel=$lang["asadded"];}
 			}
 
 		$orderFields = array('relevance' => $rel);
@@ -852,6 +856,8 @@ if (!hook("replacesearchheader")) # Always show search header now.
 			}
 		render_actions($collectiondata,true);
 
+		hook("search_header_after_actions");
+		
 		if (!$display_selector_dropdowns && !$perpage_dropdown){?>
 		<div class="InpageNavLeftBlock"><?php echo ucfirst($lang["perpage"]);?>:<br />
 		<?php 
@@ -931,7 +937,6 @@ if (!hook("replacesearchheader")) # Always show search header now.
 	<div id="CentralSpaceResources">
 	<?php
 	
-	//exit("HERE" . print_r($result));
 	if ((!is_array($result) || count($result)<1) && empty($collections))
 		{
 			// No matches found? Log this in
@@ -993,7 +998,7 @@ if (!hook("replacesearchheader")) # Always show search header now.
 			<?php if ($order_by=="field".$df[$x]['ref']) {?><td class="Selected"><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&amp;sort=<?php echo urlencode($revsort)?>&amp;order_by=field<?php echo $df[$x]['ref']?>&amp;archive=<?php echo urlencode($archive) ?>&amp;k=<?php echo urlencode($k)?>&amp;restypes=<?php echo urlencode($restypes) ?>" onClick="return CentralSpaceLoad(this);"><?php echo htmlspecialchars($df[$x]['title'])?></a><div class="<?php echo urlencode($sort)?>">&nbsp;</div></td><?php } else { ?><td><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&amp;order_by=field<?php echo $df[$x]['ref']?>&amp;sort=<?php echo urlencode($revsort)?>&amp;archive=<?php echo urlencode($archive) ?>&amp;k=<?php echo urlencode($k)?>&amp;restypes=<?php echo urlencode($restypes) ?>" onClick="return CentralSpaceLoad(this);"><?php echo htmlspecialchars($df[$x]['title'])?></a></td><?php } ?>
 			<?php }
 		
-		if ($display_user_rating_stars && $k=="" || hook("forceratingstarheading")){?><td><?php if ($order_by=="popularity") {?><span class="Selected"><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&amp;order_by=popularity&amp;archive=<?php echo urlencode($archive) ?>&amp;k=<?php echo urlencode($k)?>&amp;restypes=<?php echo urlencode($restypes) ?>&amp;sort=<?php echo urlencode($revsort)?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["popularity"]?></a><div class="<?php echo urlencode($sort)?>">&nbsp;</div></span><?php } else { ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&amp;order_by=popularity&amp;archive=<?php echo urlencode($archive) ?>&amp;k=<?php echo urlencode($k)?>&amp;restypes=<?php echo urlencode($restypes) ?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["popularity"]?></a><?php } ?></td><?php } 
+		if ($display_user_rating_stars && ($k=="" || $internal_share_access) || hook("forceratingstarheading")){?><td><?php if ($order_by=="popularity") {?><span class="Selected"><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&amp;order_by=popularity&amp;archive=<?php echo urlencode($archive) ?>&amp;k=<?php echo urlencode($k)?>&amp;restypes=<?php echo urlencode($restypes) ?>&amp;sort=<?php echo urlencode($revsort)?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["popularity"]?></a><div class="<?php echo urlencode($sort)?>">&nbsp;</div></span><?php } else { ?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&amp;order_by=popularity&amp;archive=<?php echo urlencode($archive) ?>&amp;k=<?php echo urlencode($k)?>&amp;restypes=<?php echo urlencode($restypes) ?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["popularity"]?></a><?php } ?></td><?php } 
 		if (isset($rating_field)){?><td>&nbsp;</td><!-- contains admin ratings --><?php }
 		if ($id_column){?><?php if ($order_by=="resourceid"){?><td class="Selected"><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&amp;sort=<?php echo urlencode($revsort)?>&amp;order_by=resourceid&amp;archive=<?php echo urlencode($archive) ?>&amp;k=<?php echo urlencode($k)?>&amp;restypes=<?php echo urlencode($restypes) ?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["id"]?></a><div class="<?php echo urlencode($sort)?>">&nbsp;</div></td><?php } else { ?><td><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&amp;sort=<?php echo urlencode($revsort)?>&amp;order_by=resourceid&amp;archive=<?php echo urlencode($archive) ?>&amp;k=<?php echo urlencode($k)?>&amp;restypes=<?php echo urlencode($restypes) ?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["id"]?></a></td><?php } ?><?php } ?>
 		<?php if ($resource_type_column){?><?php if ($order_by=="resourcetype"){?><td class="Selected"><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&amp;sort=<?php echo urlencode($revsort)?>&amp;order_by=resourcetype&amp;archive=<?php echo urlencode($archive) ?>&amp;k=<?php echo urlencode($k)?>&amp;restypes=<?php echo urlencode($restypes) ?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["type"]?></a><div class="<?php echo urlencode($sort)?>">&nbsp;</div></td><?php } else { ?><td><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&amp;sort=<?php echo urlencode($revsort)?>&amp;order_by=resourcetype&amp;archive=<?php echo urlencode($archive) ?>&amp;k=<?php echo urlencode($k) ?>&amp;restypes=<?php echo urlencode($restypes) ?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["type"]?></a></td><?php } ?><?php } ?>
@@ -1064,12 +1069,12 @@ if (!hook("replacesearchheader")) # Always show search header now.
 			$GLOBALS['get_resource_data_cache'][$ref] = $result[$n];
 			$url = $baseurl_short."pages/view.php?ref=" . $ref . "&amp;search=" . urlencode($search) . "&amp;order_by=" . urlencode($order_by) . "&amp;sort=". urlencode($sort) . "&amp;offset=" . urlencode($offset) . "&amp;archive=" . urlencode($archive) . "&amp;k=" . urlencode($k) . "&amp;curpos=" . urlencode($n) . '&amp;restypes=' . urlencode($restypes);
 			
-			if ($result[$n]["access"]==0 && !checkperm("g"))
+			if ($result[$n]["access"]==0 && !checkperm("g") && !$internal_share_access)
 				{
 				# Resource access is open but user does not have the 'g' permission. Set access to restricted. If they have been granted specific access this will be added next
 				$result[$n]["access"]=1; 
 				}			
-			
+				
 			// Check if user or group has been granted specific access level as set in array returned from do_search function. 
 			if($result[$n]["user_access"]!="")
 				{$result[$n]["access"]=$result[$n]["user_access"];}

@@ -482,11 +482,7 @@ h2#dbaseconfig{  min-height: 32px;}
 		else
 			$baseurl = 'http://'.php_uname('n'); //Set the baseurl to the machine hostname. 
 
-		//Generate default random keys.
-		$scramble_key = generatePassword();
-		$spider_password = generatePassword();
-        $api_scramble_key = generatePassword();
-		//Setup search paths (Currently only Linux/Mac OS X)
+                // Setup search paths (Currently only Linux/Mac OS X)
 		$os=php_uname('s');
 		if($os=='Linux' || $os=="Darwin"){
 			$search_paths[]='/usr/bin';
@@ -657,6 +653,12 @@ h2#dbaseconfig{  min-height: 32px;}
             {
             $errors['admin_email'] = true;
             }
+        else
+            {
+            // Email_notify is not used much now so we default it to the admin e-mail address.
+            $config_output .= "# Email settings\r\n";
+            $config_output .= "\$email_notify = '$admin_email';\r\n";
+            }
 
         // Check password
         $password_validation_result = check_password($admin_password);
@@ -670,7 +672,7 @@ h2#dbaseconfig{  min-height: 32px;}
             }
 
 		//Verify email addresses are valid
-		$config_output .= "# Email settings\r\n";
+
 
 		$email_from = get_post('email_from');
         if('' != $email_from)
@@ -689,40 +691,12 @@ h2#dbaseconfig{  min-height: 32px;}
             $errors['email_from'] = true;
             }
 
-        $email_notify = get_post('email_notify');
-        if('' !== $email_notify)
-            {
-            if(filter_var($email_notify, FILTER_VALIDATE_EMAIL) && 'resourcespace@my.site' !== $email_notify)
-                {
-                $config_output .= "\$email_notify = '$email_notify';\r\n\r\n";
-                }
-            else
-                {
-                $errors['email_notify'] = true;
-                }
-            }
-        else
-            {
-            $errors['email_notify'] = true;
-            }
+		// Set random keys. These used to be requested on the setup form but there was no reason to ask the user for these.
+                $config_output .= "# Secure keys\r\n";
+                $config_output .= "\$spider_password = '" . generatePassword() . "';\r\n";
+                $config_output .= "\$scramble_key = '" . generatePassword() . "';\r\n";
+                $config_output .= "\$api_scramble_key = '" . generatePassword() . "';\r\n\r\n";
 		
-		//Check the spider_password (required) and scramble_key (optional)
-		$spider_password = get_post('spider_password');
-		if ($spider_password!='')
-			$config_output .= "\$spider_password = '$spider_password';\r\n";
-		else
-			$errors['spider_password']=true;
-		$scramble_key = get_post('scramble_key');
-		if ($scramble_key!='')
-			$config_output .= "\$scramble_key = '$scramble_key';\r\n\r\n";
-		else
-			$warnings['scramble_key']=true;
-        $api_scramble_key = get_post('api_scramble_key');    
-        if ($api_scramble_key!='')
-			$config_output .= "\$api_scramble_key = '$api_scramble_key';\r\n\r\n";
-		else
-			$warnings['api_scramble_key']=true;    
-			
 		$config_output .= "# Paths\r\n";
 		//Verify paths actually point to a useable binary
 		$imagemagick_path = sslash(get_post('imagemagick_path'));
@@ -957,12 +931,8 @@ if ((isset($_REQUEST['submit'])) && (!isset($errors)))
         }
 
     // Create user
-    // Defaults in case creating user fails for some reason
-    $credentials_username = 'admin';
-    $credentials_password = 'admin';
-
-    $password_hash = hash('sha256', md5('RS' . $credentials_username . $credentials_password));
-    $sql_query     = "INSERT INTO user(username, password, fullname, email, usergroup) VALUES('" . $credentials_username . "', '" . $password_hash . "', '" . escape_check($admin_fullname) . "', '" . escape_check($admin_email) . "', 3)";
+    $credentials_username = '';
+    $credentials_password = '';
 
     $user_count = sql_value("SELECT count(*) value FROM user WHERE username = '{$admin_username}'", 0);
     if(0 == $user_count)
@@ -974,10 +944,16 @@ if ((isset($_REQUEST['submit'])) && (!isset($errors)))
 
         $credentials_username = $admin_username;
         $credentials_password = $admin_password;
+
+        sql_query($sql_query);
         }
 
-    sql_query($sql_query);
-	   ?>
+    // We got so far but if somehow we didn't create a user so far, trigger error now and let user be aware of it
+    if('' == $credentials_username)
+        {
+        trigger_error('Unexpected error! ResourceSpace could not set your credentials or username doesn\'t have a value!');
+        }
+        ?>
 	<div id="intro">
 		<h1><?php echo $lang["setup-successheader"]; ?></h1>
 		<p><?php echo $lang["setup-successdetails"]; ?></p>
@@ -992,6 +968,14 @@ if ((isset($_REQUEST['submit'])) && (!isset($errors)))
 				</ul>
 			</li>
 		</ul>
+    <?php
+    if('' == $credentials_password)
+        {
+        ?>
+        <p>Warning! for some unknown reason your password is being seen as not having a value. Please log in and change the password!</p>
+        <?php
+        }
+    ?>
 	</div>
 	<?php
 	}
@@ -1005,11 +989,11 @@ else
 				<h2><?php echo $lang["installationcheck"]; ?></h2>
 				<?php 
 					$continue = true;
-					$phpversion = phpversion();
-					if ($phpversion<'4.4')
+					$phpversion = PHP_VERSION;
+					if(version_compare($phpversion, '5.3.0', '<='))
 						{
-						$result = $lang["status-fail"] . ": " . str_replace("?", "4.4", $lang["shouldbeversion"]);
-						$pass = false;
+						$result   = $lang["status-fail"] . ": " . str_replace('?', '5.3.0', $lang['shouldbeversion']);
+						$pass     = false;
 						$continue = false;
 						} 
 					else
@@ -1339,39 +1323,6 @@ else
                     ?>
 					<label for="emailfrom"><?php echo $lang["setup-emailfrom"];?></label><input id="emailfrom" type="text" name="email_from" value="<?php echo $email_from;?>"/><strong>*</strong><a class="iflink" href="#if-emailfrom">?</a>
 					<p id="if-emailfrom" class="iteminfo"><?php echo $lang["setup-if_emailfrom"];?></p>
-				</div>
-				<div class="configitem">
-                <?php
-                if(isset($errors['email_notify']))
-                    {
-                    ?>
-                    <div class="erroritem"><?php echo $lang["setup-emailerr"];?></div>
-                    <?php
-                    }
-                    ?>
-					<label for="emailnotify"><?php echo $lang["setup-emailnotify"];?></label><input id="emailnotify" type="text" name="email_notify" value="<?php echo $email_notify;?>"/><strong>*</strong><a class="iflink" href="#if-emailnotify">?</a>
-					<p id="if-emailnotify" class="iteminfo"><?php echo $lang["setup-if_emailnotify"];?></p>
-				</div>
-				<div class="configitem">
-				<?php if(isset($errors['spider_password'])){?>
-						<div class="erroritem"><?php echo $lang["setup-if_spiderpassword"];?></div>
-					<?php } ?>
-					<label for="spiderpassword"><?php echo $lang["setup-spiderpassword"];?></label><input id="spiderpassword" type="text" name="spider_password" value="<?php echo $spider_password;?>"/><strong>*</strong><a class="iflink" href="#if-spiderpassword">?</a>
-					<p id="if-spiderpassword" class="iteminfo"><?php echo $lang["setup-err_spiderpassword"];?></p>
-				</div>
-				<div class="configitem">
-					<?php if(isset($warnings['scramble_key'])){?>
-						<div class="warnitem"><?php echo $lang["setup-err_scramblekey"];?></div>
-					<?php } ?>
-					<label for="scramblekey"><?php echo $lang["setup-scramblekey"];?></label><input id="scramblekey" type="text" name="scramble_key" value="<?php echo $scramble_key;?>"/><a class="iflink" href="#if-scramblekey">?</a>
-					<p id="if-scramblekey" class="iteminfo"><?php echo $lang["setup-if_scramblekey"];?></p>
-				</div>
-                <div class="configitem">
-					<?php if(isset($warnings['api_scramble_key'])){?>
-						<div class="warnitem"><?php echo $lang["setup-err_apiscramblekey"];?></div>
-					<?php } ?>
-					<label for="scramblekey"><?php echo $lang["setup-apiscramblekey"];?></label><input id="apiscramblekey" type="text" name="api_scramble_key" value="<?php echo $api_scramble_key;?>"/><a class="iflink" href="#if-apiscramblekey">?</a>
-					<p id="if-apiscramblekey" class="iteminfo"><?php echo $lang["setup-if_apiscramblekey"];?></p>
 				</div>
 
 			</p>

@@ -1019,7 +1019,7 @@ function build_dash_tile_list($dtiles_available)
   			</td>
   			<td>
   				<?php 
-  				if(isset($buildstring["tltype"]) && $buildstring["tltype"]=="conf" && $buildstring["tlstyle"]!="custm" && $buildstring["tlstyle"]!="pend")
+  				if(isset($buildstring["tltype"]) && $buildstring["tltype"]=="conf" && $buildstring["tlstyle"]!="custm" && $buildstring["tlstyle"]!="pend" && isset($lang[$tile["title"]]))
   					{echo $lang[$tile["title"]];}
   				else 
   					{echo $tile["title"];}

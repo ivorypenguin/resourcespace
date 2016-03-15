@@ -3,7 +3,10 @@ include "../include/db.php";
 include_once "../include/general.php";
 include "../include/authenticate.php"; if (!checkperm("s")) {exit ("Permission denied.");}
 include "../include/search_functions.php";
+include_once "../include/resource_functions.php";
 include_once "../include/collections_functions.php";
+include_once dirname(__FILE__) . '/../include/render_functions.php';
+
 
 $archive=getvalescaped("archive",0,true);
 $starsearch=getvalescaped("starsearch","");	
@@ -40,8 +43,7 @@ if (getval("submitted","")=="yes" && getval("resetform","")=="")
 	# Build a search query from the search form
 	$search=search_form_to_search_query($fields);
 	$search=refine_searchstring($search);
-	
-    
+	    
 	hook("moresearchcriteria");
 
 	if (getval("countonly","")!="")
@@ -74,16 +76,18 @@ if (getval("submitted","")=="yes" && getval("resetform","")=="")
 		?>
 		<html>
 		<script type="text/javascript">
-			
-			function populate_view_buttons(content) {
-				var inputs = parent.document.getElementsByTagName('input'), i;
+            function populate_view_buttons(content)
+                {
+                var inputs = parent.document.getElementsByClassName('dosearch');
 
-				for(i in inputs) {
-					if((' ' + inputs[i].className + ' ').indexOf('dosearch') > -1) {
-						inputs[i].value = content;
-					}
-				}
-			}
+                for(var i = 0; i < inputs.length; i++)
+                    {
+                    if(typeof inputs[i] !== 'undefined')
+                        {
+                        inputs[i].value = content;
+                        }
+                    }
+                }
 		
 		<?php if ($count==0) { ?>
 			populate_view_buttons("<?php echo $lang["nomatchingresults"]?>");
@@ -110,33 +114,58 @@ if (getval("submitted","")=="yes" && getval("resetform","")=="")
 $search=@$_COOKIE["search"];
 $keywords=explode(",",$search);
 $allwords="";$found_year="";$found_month="";$found_day="";$found_start_date="";$found_end_date="";
+foreach($advanced_search_properties as $advanced_search_property=>$code)
+  {$$advanced_search_property="";}
+ 
 $values=array();
-for ($n=0;$n<count($keywords);$n++)
-	{
-	$keyword=$keywords[$n];
-	if (strpos($keyword,":")!==false)
-		{
-		$nk=explode(":",$keyword);
-		$name=trim($nk[0]);
-		$keyword=trim($nk[1]);
-		if ($name=="day") {$found_day=$keyword;}
-		if ($name=="month") {$found_month=$keyword;}
-		if ($name=="year") {$found_year=$keyword;}
-		if ($name=="startdate") {$found_start_date=$keyword;}
-		if ($name=="enddate") {$found_end_date=$keyword;}
-		if (isset($values[$name])){$values[$name].=" ".$keyword;}
-		else {
-			$values[$name]=$keyword;
-		}
-		}
-	else
-		{
-		if ($allwords=="") {$allwords=$keyword;} else {$allwords.=", " . $keyword;}
-		}
-	}
-$allwords=str_replace(", ","",$allwords);
-
-if (getval("resetform","")!="") {$found_year="";$found_month="";$found_day="";$found_start_date="";$found_end_date="";$allwords="";$starsearch="";}
+if (getval("resetform","")!="")
+  { 
+  $found_year="";$found_month="";$found_day="";$found_start_date="";$found_end_date="";$allwords="";$starsearch="";
+  }
+else
+  {
+  for ($n=0;$n<count($keywords);$n++)
+	  {
+	  $keyword=$keywords[$n];
+	  if (strpos($keyword,":")!==false && substr($keyword,0,1)!="!")
+		  {
+		  $nk=explode(":",$keyword);
+		  $name=trim($nk[0]);
+		  $keyword=trim($nk[1]);
+		  if ($name=="day") {$found_day=$keyword;}
+		  if ($name=="month") {$found_month=$keyword;}
+		  if ($name=="year") {$found_year=$keyword;}
+		  if ($name=="startdate") {$found_start_date=$keyword;}
+		  if ($name=="enddate") {$found_end_date=$keyword;}
+		  if (isset($values[$name])){$values[$name].=" ".$keyword;}
+		  else
+			 {
+			 $values[$name]=$keyword;
+			 }
+		  }
+	  elseif (substr($keyword,0,11)=="!properties")
+		  {
+		  $properties = explode(";",substr($keyword,11));
+		  $propertyfields = array_flip($advanced_search_properties);
+		  foreach($properties as $property)
+			  {
+			  $propertycheck=explode(":",$property);
+			  $propertyname=$propertycheck[0];
+			  $propertyval=escape_check($propertycheck[1]);
+			  if($propertyval!="")
+				{
+				$fieldname=$propertyfields[$propertyname];
+				$$fieldname=$propertyval;
+				}
+			  }
+		  } 
+	  else
+		  {
+		  if ($allwords=="") {$allwords=$keyword;} else {$allwords.=", " . $keyword;}
+		  }
+	  }
+   $allwords=str_replace(", ","",$allwords);
+  }
 
 function render_advanced_search_buttons() {
  global $lang, $swap_clear_and_search_buttons;
@@ -194,7 +223,9 @@ jQuery(document).ready(function()
 				jQuery('#SearchCollectionsCheckbox').removeAttr('checked');	
 
 				jQuery('#AdvancedSearchTypeSpecificSectionGlobalHead').show();
-				if (getCookie('AdvancedSearchTypeSpecificSectionGlobal')!="collapsed"){jQuery("#AdvancedSearchTypeSpecificSectionGlobal").show();}
+				if (getCookie('AdvancedSearchTypeSpecificSectionGlobal')!="collapsed"){jQuery("#AdvancedSearchTypeSpecificSectionGlobal").show();}				
+				jQuery('#AdvancedSearchMediaSectionHead').show();
+				if (getCookie('AdvancedSearchMediaSection')!="collapsed"){jQuery("#AdvancedSearchMediaSection").show();}
 			}
 			else if (id=="Collections") {
 				//Uncheck All checkboxes
@@ -213,9 +244,12 @@ jQuery(document).ready(function()
 				selectedtypes.push(id);		   
                 jQuery('#SearchGlobal').removeAttr('checked');
 				jQuery('#SearchCollectionsCheckbox').removeAttr('checked');				
-				// Show global search sections	
+				// Show global and media search sections	
                 jQuery("#AdvancedSearchTypeSpecificSectionGlobalHead").show();
                 if (getCookie('AdvancedSearchTypeSpecificSectionGlobal')!="collapsed"){jQuery("#AdvancedSearchTypeSpecificSectionGlobal").show();}
+				jQuery('#AdvancedSearchMediaSectionHead').show();
+				if (getCookie('AdvancedSearchMediaSection')!="collapsed"){jQuery("#AdvancedSearchMediaSection").show();}						
+				
 				// Show resource type specific search sections	if only one checked
 				if(selectedtypes.length==1){
 					if (getCookie('AdvancedSearchTypeSpecificSection'+id)!="collapsed"){jQuery('#AdvancedSearchTypeSpecificSection'+id).show();}
@@ -240,9 +274,11 @@ jQuery(document).ready(function()
 					jQuery('#AdvancedSearchTypeSpecificSection'+selectedtypes[0]+'Head').show();				
 				}
 			}
-			//Always Show Global
+			//Always Show Global and media
 			jQuery("#AdvancedSearchTypeSpecificSectionGlobalHead").show();
-            if (getCookie('AdvancedSearchTypeSpecificSectionGlobal')!="collapsed"){jQuery("#AdvancedSearchTypeSpecificSectionGlobal").show();}	
+            if (getCookie('AdvancedSearchTypeSpecificSectionGlobal')!="collapsed"){jQuery("#AdvancedSearchTypeSpecificSectionGlobal").show();}
+			jQuery('#AdvancedSearchMediaSectionHead').show();
+			if (getCookie('AdvancedSearchMediaSection')!="collapsed"){jQuery("#AdvancedSearchMediaSection").show();}
 		}
 
         SetCookie("advancedsearchsection", selectedtypes);
@@ -372,7 +408,7 @@ if (!hook('advsearchallfields')) { ?>
 <!-- Search across all fields -->
 <input type="hidden" id="hiddenfields" name="hiddenfields" value="">
 <div class="Question">
-<label for="allfields"><?php echo $lang["allfields"]?></label><input class="stdwidth" type=text name="allfields" id="allfields" value="<?php echo htmlspecialchars($allwords)?>" onChange="UpdateResultCount();">
+<label for="allfields"><?php echo $lang["allfields"]?></label><input class="SearchWidth" type=text name="allfields" id="allfields" value="<?php echo htmlspecialchars($allwords)?>" onChange="UpdateResultCount();">
 <div class="clearerleft"> </div>
 </div>
 <?php } ?>
@@ -382,7 +418,7 @@ if (!hook('advsearchallfields')) { ?>
 <?php if (!hook('advsearchresid')) { ?>
 <!-- Search for resource ID(s) -->
 <div class="Question">
-<label for="resourceids"><?php echo $lang["resourceids"]?></label><input class="stdwidth" type=text name="resourceids" id="resourceids" value="<?php echo htmlspecialchars(getval("resourceids","")) ?>" onChange="UpdateResultCount();">
+<label for="resourceids"><?php echo $lang["resourceids"]?></label><input class="SearchWidth" type=text name="resourceids" id="resourceids" value="<?php echo htmlspecialchars(getval("resourceids","")) ?>" onChange="UpdateResultCount();">
 <div class="clearerleft"> </div>
 </div>
 <?php }
@@ -426,7 +462,7 @@ if (!$daterange_search)
 <?php }} ?>
 <?php if ($star_search && $display_user_rating_stars){?>
 <div class="Question"><label><?php echo $lang["starsminsearch"];?></label>
-<select id="starsearch" name="starsearch" class="stdwidth" onChange="UpdateResultCount();">
+<select id="starsearch" name="starsearch" class="SearchWidth" onChange="UpdateResultCount();">
 <option value=""><?php echo $lang['anynumberofstars']?></option>
 <?php for ($n=1;$n<=5;$n++){?>
 	 <option value="<?php echo $n;?>" <?php if ($n==$starsearch){?>selected<?php } ?>><?php for ($x=0;$x<$n;$x++){?>&#9733;<?php } ?></option>
@@ -472,7 +508,7 @@ for ($n=0;$n<count($fields);$n++)
 	if (getval("resetform","")!="") {$value="";}
 	
 	# Render this field
-	render_search_field($fields[$n],$value,true);
+	render_search_field($fields[$n],$value,true,"SearchWidth");
 
 	}
 ?>
@@ -534,7 +570,7 @@ for ($n=0;$n<count($fields);$n++)
 	if (array_key_exists($fields[$n]["name"],$values)) {$value=$values[$fields[$n]["name"]];} else {$value="";}
 	if (getval("resetform","")!="") {$value="";}
 	# Render this field
-	render_search_field($fields[$n],$value,true);
+	render_search_field($fields[$n],$value,true,"SearchWidth");
 	}
 
 ?>
@@ -549,7 +585,7 @@ if($advanced_search_archive_select)
 	?>
 	<div class="Question">
 		<label><?php echo $lang["status"]?></label>
-		<select class="stdwidth" name="archive" id="archive" onChange="UpdateResultCount();">
+		<select class="SearchWidth" name="archive" id="archive" onChange="UpdateResultCount();">
 			<?php 
 			for ($n=-2;$n<=3;$n++)
 				{
@@ -570,23 +606,48 @@ else
 	<input type="hidden" name="archive" value="<?php echo htmlspecialchars($archive)?>">
 	<?php
 	}
-?>
 
-<div class="Question">
-    <label><?php echo $lang["contributedby"]; ?></label>
-    <?php
-    preg_match('/^![a-zA-Z]+(\d+)/',getval('search',''),$matches);
-    $single_user_select_field_value=isset($matches[1]) ? $matches[1] : '';
-    $single_user_select_field_id='!contributions';
-    $single_user_select_field_onchange='UpdateResultCount();';
-    include "../include/user_select.php";
-    unset($single_user_select_field_value);
-    unset($single_user_select_field_id);
-    unset($single_user_select_field_onchange);
+if($advanced_search_contributed_by)
+    {
     ?>
-</div>
+    <div class="Question">
+        <label><?php echo $lang["contributedby"]; ?></label>
+        <?php
+        preg_match('/^![a-zA-Z]+(\d+)/',getval('search',''),$matches);
+        $single_user_select_field_value=isset($matches[1]) ? $matches[1] : '';
+        $single_user_select_field_id='properties_contributor';
+        $single_user_select_field_onchange='UpdateResultCount();';
+    	$userselectclass="searchWidth";
+        include "../include/user_select.php";
+    	?>
+        <script>
+    	jQuery('#properties_contributor').change(function(){UpdateResultCount();});
+    	</script>
+    	<?php
+        unset($single_user_select_field_value);
+        unset($single_user_select_field_id);
+        unset($single_user_select_field_onchange);
+        ?>
+    </div>
+    <?php
+    }
 
-<?php
+if($advanced_search_media_section)
+    {
+    ?>
+    <h1 class="AdvancedSectionHead CollapsibleSectionHead" id="AdvancedSearchMediaSectionHead" ><?php echo $lang["media"]; ?></h1>
+    <div class="AdvancedSection" id="AdvancedSearchMediaSection">
+    <?php 
+    render_split_text_question($lang["pixel_height"], array('media_heightmin'=>'From','media_heightmax'=>'To'),$lang["pixels"], true, " class=\"stdWidth\" OnChange=\"UpdateResultCount();\"", array('media_heightmin'=>$media_heightmin,'media_heightmax'=>$media_heightmax));
+    render_split_text_question($lang["pixel_width"], array('media_widthmin'=>'From','media_widthmax'=>'To'),$lang["pixels"], true, " class=\"stdWidth\" OnChange=\"UpdateResultCount();\"", array('media_widthmin'=>$media_widthmin,'media_widthmax'=>$media_widthmax));
+    render_split_text_question($lang["filesize"], array('media_filesizemin'=>'From','media_filesizemax'=>'To'),$lang["megabyte-symbol"], false, " class=\"stdWidth\" OnChange=\"UpdateResultCount();\"", array('media_filesizemin'=>$media_filesizemin,'media_filesizemax'=>$media_filesizemax));
+    render_text_question($lang["file_extension_label"], "media_fileextension", "",false," class=\"SearchWidth\" OnChange=\"UpdateResultCount();\"",$media_fileextension);
+    render_dropdown_question($lang["previewimage"], "properties_haspreviewimage", array(""=>"","1"=>$lang["yes"],"0"=>$lang["no"]), $properties_haspreviewimage, " class=\"SearchWidth\" OnChange=\"UpdateResultCount();\"");
+    ?>
+    </div><!-- End of AdvancedSearchMediaSection -->
+    <?php
+    }
+
 render_advanced_search_buttons();
 
 // show result count as it stands ?>
@@ -595,7 +656,16 @@ render_advanced_search_buttons();
 if($archive!==0){
 	?>
 	<script>
-		UpdateResultCount();
+	jQuery(document).ready(function()
+	  {
+	  UpdateResultCount();
+	  jQuery("input").keypress(function(event) {
+		   if (event.which == 13) {
+			   event.preventDefault();
+			   jQuery("#advancedform").submit();
+		   }
+	  });
+	  });
 	</script>
 	<?php
 }

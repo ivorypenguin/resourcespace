@@ -19,7 +19,7 @@ if (getval("allseen","")!="")
 <div class="VerticalNav">
 <ul>
 <li>
-<a href="<?php echo $baseurl_short?>/pages/user/user_preferences.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["userpreferences"];?></a>
+<a href="<?php echo $baseurl_short?>pages/user/user_preferences.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["userpreferences"];?></a>
 </li>
 <?php
 	$messages=array();

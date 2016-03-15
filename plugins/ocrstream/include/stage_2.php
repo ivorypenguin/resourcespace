@@ -43,19 +43,13 @@ $ocr_temp_dir = $_SESSION['ocr_temp_dir'];
 if (($param_1 === 'pre_1' || $_SESSION["ocr_force_processing_" . $ID] === 1) && !$force_on_preview) {
     ocr_image_processing ($ID, $im_preset_1, $ocr_temp_dir);
     # Check if temp image(s) were created
-    $multi_filepath = ($ocr_temp_dir . '/im_tempfile_' . $ID . '-0.jpg');
-    $single_filepath = ($ocr_temp_dir . '/im_tempfile_' . $ID . '.jpg');
-    if (!file_exists($single_filepath) && !file_exists($multi_filepath)) {
+    $filename = ($ocr_temp_dir . '/im_tempfile_' . $ID . '-0000.jpg');
+    if (!file_exists($filename)) {
         set_ocr_state($ID, 0);
         session_unset();
         exit(json_encode(array("error" => $lang['ocr_error_6'])));
     }
-    # Check if images are completely black
-    if (file_exists($multi_filepath)) {
-        $filename = $multi_filepath;
-    } else {
-        $filename = $single_filepath;
-    }
+    
     $is_black = checkImage($filename);
     if ($is_black) {
         if ($retry_on_preview) {

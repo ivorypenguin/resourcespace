@@ -25,7 +25,7 @@ function get_user_requests()
 function save_request($request)
     {
     # Use the posted form to update the request
-    global $applicationname,$baseurl,$lang,$request_senduserupdates;
+    global $applicationname,$baseurl,$lang,$request_senduserupdates,$admin_resource_access_notifications;
         
     $status=getvalescaped("status","",true);
     $expires=getvalescaped("expires","");
@@ -51,7 +51,7 @@ function save_request($request)
             sql_query("update request set assigned_to='$assigned_to' where ref='$request'");
             $message=$lang["requestassignedtoyoumail"] . "\n\n$baseurl/?q=" . $request . "\n";
             
-            get_config_option($assigned_to,'user_pref_resource_access_notifications', $send_message, $admin_resource_access_notifications);		  
+            get_config_option($assigned_to,'user_pref_resource_access_notifications', $send_message, true);		  
             if($send_message)
                 {
                 get_config_option($assigned_to,'email_user_notifications', $send_email);

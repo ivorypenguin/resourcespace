@@ -259,7 +259,11 @@ function flickr_get_response_tag($xml,$response_tag)
 	$start=strpos($xml,"<" . $response_tag . ">");
 	$end=strpos($xml,"</" . $response_tag . ">");	
 	
-	if ($start===false) {echo "<pre>" . htmlspecialchars($xml) . "</pre>";return false;}
+	if ($start===false)
+		{
+		#echo "<pre>" . htmlspecialchars($xml) . "</pre>";
+		return false;
+		}
 	
 	return trim(substr($xml,$start+strlen($response_tag) + 2,$end-$start-strlen($response_tag)-2));
 	}

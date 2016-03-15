@@ -31,7 +31,7 @@ $usagecomment=getvalescaped("usagecomment","");
 
 
 $resource_data=get_resource_data($ref);
-
+resource_type_config_override($resource_data["resource_type"]);
 if ($direct_download_noauth && $direct){
 	# if this is a direct download and direct downloads w/o authentication are enabled, allow regardless of permissions
 	$allowed = true;
@@ -68,7 +68,7 @@ if (!file_exists($path) && $noattach!="")
 	}
 
 # writing RS metadata to files: exiftool
-if ($noattach=="" && $alternative==-1) # Only for downloads (not previews)
+if ($noattach=="" && $alternative==-1 && $exiftool_write) # Only for downloads (not previews)
 	{
 	$tmpfile=write_metadata($path,$ref);
 	if ($tmpfile!==false && file_exists($tmpfile)){$path=$tmpfile;}
@@ -93,95 +93,7 @@ if ($noattach=="")
 	} 
 	
 	# We compute a file name for the download.
-	$filename=$ref . $size . ($alternative>0?"_" . $alternative:"") . "." . $ext;
-	
-	if ($original_filenames_when_downloading)
-		{
-		# Use the original filename.
-		if ($alternative>0)
-			{
-			# Fetch from the resource_alt_files alternatives table (this is an alternative file)
-			$origfile=get_alternative_file($ref,$alternative);
-			$origfile=$origfile["file_name"];
-			}
-		else
-			{
-				
-			# Fetch from field data or standard table		
-
-			$origfile=get_data_by_field($ref,$filename_field);	
-				
-			}
-		if (strlen($origfile)>0)
-			{
-			# do an extra check to see if the original filename might have uppercase extension that can be preserved.	
-			$pathparts=pathinfo($origfile);
-			if (isset($pathparts['extension'])){
-				if (strtolower($pathparts['extension'])==$ext){$ext=$pathparts['extension'];}	
-			} 
-			
-			# Use the original filename if one has been set.
-			# Strip any path information (e.g. if the staticsync.php is used).
-			# append preview size to base name if not the original
-			if($size != '' && !$download_filenames_without_size)
-				{
-				$filename = strip_extension(mb_basename($origfile)) . '-' . $size . '.' . $ext;
-				}
-			else
-				{
-				$filename = strip_extension(mb_basename($origfile)) . '.' . $ext;
-				}
-
-			if($prefix_resource_id_to_filename)
-				{
-				$filename = $prefix_filename_string . $ref . "_" . $filename;
-				}
-			}
-		}
-
-	if ($download_filename_id_only){
-		if(!hook('customdownloadidonly', '', array($ref, $ext, $alternative))) {
-			$filename=$ref . "." . $ext;
-
-			if($size != '' && $download_id_only_with_size) {
-				$filename = $ref . '-' . $size . '.' . $ext;
-			}
-
-			if(isset($prefix_filename_string) && trim($prefix_filename_string) != '') {
-				$filename = $prefix_filename_string . $filename;
-			}
-
-		}
-	}
-	
-	if (isset($download_filename_field))
-		{
-		$newfilename=get_data_by_field($ref,$download_filename_field);
-		if ($newfilename)
-			{
-			$filename = trim(nl2br(strip_tags($newfilename)));
-			if($size != "" && !$download_filenames_without_size)
-				{
-				$filename = substr($filename, 0, 200) . '-' . $size . '.' . $ext;
-				}
-			else
-				{
-				$filename = substr($filename, 0, 200) . '.' . $ext;
-				}
-
-			if($prefix_resource_id_to_filename)
-				{
-				$filename = $prefix_filename_string . $ref . '_' . $filename;
-				}
-			}
-		}
-
-	# Remove critical characters from filename
-	$altfilename=hook("downloadfilenamealt");
-	if(!($altfilename)) $filename = preg_replace('/:/', '_', $filename);
-	else $filename=$altfilename;
-
-    	hook("downloadfilename");
+	$filename=get_download_filename($ref,$size,$alternative,$ext);
 
 	if (!$direct)
 		{

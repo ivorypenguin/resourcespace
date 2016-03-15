@@ -196,9 +196,12 @@ function load_plugins($plugins_dir)
  closedir($dirh);
  }
 
-load_plugins(dirname(__FILE__)."/../../plugins/");
-if (!file_exists($storagedir . "/plugins/")) {mkdir($storagedir . "/plugins/");}
-load_plugins(dirname(__FILE__)."/../../filestore/plugins/");
+load_plugins(dirname(__FILE__) . '/../../plugins/');
+if(!file_exists($storagedir . '/plugins/'))
+   {
+   mkdir($storagedir . '/plugins/');
+   }
+load_plugins($storagedir . '/plugins/');
 
 ksort ($plugins_avail);
 

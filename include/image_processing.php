@@ -1134,7 +1134,7 @@ function create_previews($ref,$thumbonly=false,$extension="jpg",$previewonly=fal
 
 function create_previews_using_im($ref,$thumbonly=false,$extension="jpg",$previewonly=false,$previewbased=false,$alternative=-1,$ingested=false)
 	{
-	global $keep_for_hpr,$imagemagick_path,$imagemagick_preserve_profiles,$imagemagick_quality,$imagemagick_colorspace,$default_icc_file,$autorotate_no_ingest,$always_make_previews,$lean_preview_generation,$previews_allow_enlarge;
+	global $keep_for_hpr,$imagemagick_path,$imagemagick_preserve_profiles,$imagemagick_quality,$imagemagick_colorspace,$default_icc_file,$autorotate_no_ingest,$always_make_previews,$lean_preview_generation,$previews_allow_enlarge,$alternative_file_previews;
 
 	$icc_transform_complete=false;
 	debug("create_previews_using_im(ref=$ref,thumbonly=$thumbonly,extension=$extension,previewonly=$previewonly,previewbased=$previewbased,alternative=$alternative,ingested=$ingested)");
@@ -1326,9 +1326,10 @@ function create_previews_using_im($ref,$thumbonly=false,$extension="jpg",$previe
 				}
 
 				if($icc_extraction && file_exists($iccpath) && !$icc_transform_complete){
+					global $icc_preview_profile_embed;
 					// we have an extracted ICC profile, so use it as source
 					$targetprofile = dirname(__FILE__) . '/../iccprofiles/' . $icc_preview_profile;
-					$profile  = " -strip -profile $iccpath $icc_preview_options -profile $targetprofile -strip ";
+					$profile  = " -strip -profile $iccpath $icc_preview_options -profile $targetprofile".($icc_preview_profile_embed?" ":" -strip ");
 					// consider ICC transformation complete, if one of the sizes has been rendered that will be used for the smaller sizes
                     if ($id == 'hpr' || $id == 'lpr' || $id == 'scr') $icc_transform_complete=true;
 				} else {
@@ -1365,17 +1366,14 @@ function create_previews_using_im($ref,$thumbonly=false,$extension="jpg",$previe
 					unlink($path);
 					$path=str_replace($extension,"jpg",$path);
 				}               
-                                
-                                
-				//echo $runcommand."<br /><br/>";
-				# echo $runcommand."<br>\n";
+
 				# Add a watermarked image too?
-				global $watermark;
+				global $watermark, $watermark_single_image;
 				
 				if (!hook("replacewatermarkcreation","",array($ref,$ps,$n,$alternative))){
-				if ($alternative==-1 && isset($watermark) && ($ps[$n]["internal"]==1 || $ps[$n]["allow_preview"]==1))
+				if (($alternative==-1 || ($alternative!==-1 && $alternative_file_previews)) && isset($watermark) && ($ps[$n]["internal"]==1 || $ps[$n]["allow_preview"]==1))
 					{
-					$wmpath=get_resource_path($ref,true,$ps[$n]["id"],false,"jpg",-1,1,true);
+					$wmpath=get_resource_path($ref,true,$ps[$n]["id"],false,"jpg",-1,1,true,'',$alternative);
 					if (file_exists($wmpath)) {unlink($wmpath);}
 					
 					$watermarkreal=dirname(__FILE__) ."/../" . $watermark;
@@ -1386,11 +1384,30 @@ function create_previews_using_im($ref,$thumbonly=false,$extension="jpg",$previe
 					if ($extension=="png" || $extension=="gif"){
 						$runcommand = $convert_fullpath . ' '. escapeshellarg($path) .(($extension!="png" && $extension!="gif")?'[0] +matte ':'') . $flatten . ' -quality ' . $preview_quality ." -tile ".escapeshellarg($watermarkreal)." -draw \"rectangle 0,0 $tw,$th\" ".escapeshellarg($wmpath); 
 					}
-					
-					#die($runcommand);
-					$output=run_command($runcommand);
-					//echo $runcommand."</br>";
-					
+
+                    // Generate the command for a single watermark instead of a tiled one
+                    if(isset($watermark_single_image))
+                        {
+                        $wm_scale = $watermark_single_image['scale'];
+
+                        $wm_scaled_width  = $tw * ($wm_scale / 100);
+                        $wm_scaled_height = $th * ($wm_scale / 100);
+
+                        // Command example: convert input.jpg watermark.png -gravity Center -geometry 40x40+0+0 -resize 1100x800 -composite wm_version.jpg
+                        $runcommand = sprintf('%s %s %s -gravity %s -geometry %sx%s+0+0 -resize %sx%s -composite %s',
+                            $convert_fullpath,
+                            escapeshellarg($file),
+                            escapeshellarg($watermarkreal),
+                            escapeshellarg($watermark_single_image['position']),
+                            escapeshellarg($wm_scaled_width),
+                            escapeshellarg($wm_scaled_height),
+                            escapeshellarg($tw),
+                            escapeshellarg($th),
+                            escapeshellarg($wmpath)
+                        );
+                        }
+
+					$output = run_command($runcommand);
 					}
 				}// end hook replacewatermarkcreation
 				} 
@@ -1792,19 +1809,35 @@ function base64_to_jpeg( $imageData, $outputfile ) {
  
 }
 
+/**
+* Extracts JPG previews from INDD files when these have been set with a preview
+* Note: it requires ExifTool >= 9.50
+* 
+* @param string $filename
+* 
+* @return array|bool
+*/
 function extract_indd_pages($filename)
     {
-    $exiftool_fullpath = get_utility_path("exiftool");
+    $exiftool_fullpath = get_utility_path('exiftool');
     if ($exiftool_fullpath)
         {
         $array = run_command($exiftool_fullpath.' -b -j -pageimage ' . escapeshellarg($filename));
         $array = json_decode($array);
-        
-        if (isset($array[0]->PageImage))
-        	{
-        	return $array[0]->PageImage;
-        	}
+
+        if(isset($array[0]->PageImage))
+            {
+            if(is_array($array[0]->PageImage))
+                {
+                return $array[0]->PageImage;
+                }
+            else
+                {
+                return array($array[0]->PageImage);
+                }
+            }
         }
+
     return false;
     }
 

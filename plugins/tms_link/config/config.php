@@ -22,8 +22,12 @@ $tms_link_object_id_field=0;
 $tms_link_enable_update_script=true;
 $tms_link_script_failure_notify_days=3;
 
+/* The names have not been changed for legacy reasons
+* IMPORTANT: $tms_link_text_columns and $tms_link_numeric_columns are now used to distinguish between UTF-16 and UTF-8
+* - UTF-16 => $tms_link_text_columns
+* - UTF-8 => $tms_link_numeric_columns
+*/
 $tms_link_text_columns=array("ObjectStatus","Department","Classification","Curator","Cataloguer","ObjectName","SubjectKeywords","Creators","Titles","StylePeriod","CulturalContext","Medium","Geography","CreditLine","Description","RelatedObjects","Inscription","Provenance","CurrLocDisplay","Copyright","Dimensions","Restrictions","CreditLineRepro","ObjRightsType");
-
 $tms_link_numeric_columns=array("ObjectID","ObjectNumber","CuratorRevISODate","Dated","RowChecksum");
 
 $tms_link_field_mappings_saved=base64_encode(serialize(array(

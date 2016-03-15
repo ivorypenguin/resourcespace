@@ -48,7 +48,7 @@ if (getval("save","")!="")
 
         if ($execution_lockout) {$config_options="";} # Not allowed to save PHP if execution_lockout set.
         
-	sql_query("update resource_type set name='" . $name . "',config_options='" . $config_options . "', allowed_extensions='" . $allowed_extensions . "',tab_name='" . $tab . "' where ref='$ref'");
+	sql_query("update resource_type set name='" . $name . "',config_options='" . $config_options . "', allowed_extensions='" . $allowed_extensions . "',tab_name='" . $tab . "',push_metadata='" . (getvalescaped("push_metadata","")!=""?"1":"0") . "' where ref='$ref'");
 	
 	redirect(generateURL($baseurl_short . "pages/admin/admin_resource_types.php",$url_params));
 	}
@@ -89,7 +89,8 @@ $restypedata=sql_query ("
 		order_by,
 		config_options,
 		allowed_extensions,
-		tab_name
+		tab_name,
+                push_metadata
         from
 		resource_type
 	where
@@ -183,13 +184,13 @@ else
     
     <div class="Question">
 	<label><?php echo $lang["property-name"]?></label>
-	<input name="name" type="text" class="stdwidth" value="<?php echo htmlspecialchars($restypedata["name"])?>">
+	<input name="name" type="text" class="stdwidth" value="<?php echo htmlspecialchars($restypedata["name"])?>" />
 	<div class="clearerleft"> </div>
     </div>
     
     <div class="Question">
 	<label><?php echo $lang["property-allowed_extensions"]?></label>
-	<input name="allowed_extensions" type="text" class="stdwidth" value="<?php echo htmlspecialchars($restypedata["allowed_extensions"])?>">
+	<input name="allowed_extensions" type="text" class="stdwidth" value="<?php echo htmlspecialchars($restypedata["allowed_extensions"])?>" />
 	
 	<div class="FormHelp" style="padding:0;clear:left;" >
 	    <div class="FormHelpInner"><?php echo $lang["information-allowed_extensions"] ?>
@@ -214,7 +215,7 @@ else
 
     <div class="Question">
 	<label><?php echo $lang["property-tab_name"]?></label>
-	<input name="tab" type="text" class="stdwidth" value="<?php echo htmlspecialchars($restypedata["tab_name"])?>">
+	<input name="tab" type="text" class="stdwidth" value="<?php echo htmlspecialchars($restypedata["tab_name"])?>" />
 	<div class="FormHelp" style="padding:0;clear:left;" >
 	    <div class="FormHelpInner"><?php echo $lang["admin_resource_type_tab_info"] ?>
 	    </div>
@@ -222,6 +223,15 @@ else
 	<div class="clearerleft"> </div>
     </div>
     
+        <div class="Question">
+	<label><?php echo $lang["property-push_metadata"]?></label>
+	<input name="push_metadata" type="checkbox" value="yes" <?php if ($restypedata["push_metadata"]==1) { echo "checked"; } ?> />
+	<div class="FormHelp" style="padding:0;clear:left;" >
+	    <div class="FormHelpInner"><?php echo $lang["information-push_metadata"] ?>
+	    </div>
+	</div>
+	<div class="clearerleft"> </div>
+    </div>
     
     <div class="QuestionSubmit">
     <label for="buttons"> </label>			

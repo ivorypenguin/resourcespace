@@ -78,7 +78,7 @@ if($display_as_radiobuttons)
                                 $col++;
                                 ?>
                                 <td width="10" valign="middle">
-                                    <input type="radio" id="field_<?php echo $field["ref"] . '_' . sha1($val); ?>" name="field_<?php echo $field["ref"]; ?>" value="<?php echo $val; ?>" <?php if($val==$set || ','.$val == $set) {?>checked<?php } ?> <?php if($edit_autosave) {?>onChange="AutoSave('<?php echo $field["ref"] ?>');"<?php } if ($autoupdate) { ?>onChange="UpdateResultCount();"<?php } echo $help_js; ?>/>
+                                    <input type="radio" id="field_<?php echo $field["ref"] . '_' . sha1($val); ?>" name="field_<?php echo $field["ref"]; ?>" value="<?php echo $val; ?>" <?php if(i18n_get_translated($val)==i18n_get_translated($set) || ','.i18n_get_translated($val) == i18n_get_translated($set)) {?>checked<?php } ?> <?php if($edit_autosave) {?>onChange="AutoSave('<?php echo $field["ref"] ?>');"<?php } if ($autoupdate) { ?>onChange="UpdateResultCount();"<?php } echo $help_js; ?>/>
                                 </td>
                                 <td align="left" valign="middle">
                                     <label class="customFieldLabel" for="field_<?php echo $field["ref"] . '_' . sha1($val); ?>" <?php if($edit_autosave) { ?>onmousedown="radio_allow_save();" <?php } ?>><?php echo $val; ?></label>

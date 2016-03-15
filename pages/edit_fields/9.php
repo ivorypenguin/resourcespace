@@ -17,7 +17,7 @@ if(strpos($value, "\r\n") !== false)
 ?>
 
 <div class="dynamickeywords ui-front">
-<input type="text" class="stdwidth" value="<?php echo $lang["starttypingkeyword"]?>" onFocus="<?php if ($pagename=="edit"){ echo "ShowHelp(" . $field["ref"] . ");";} ?>if (this.value=='<?php echo $lang["starttypingkeyword"]?>') {this.value='';}" onBlur="<?php if ($pagename=="edit"){ echo "HideHelp(" . $field["ref"] . ");";} ?>if (this.value=='') {this.value='<?php echo $lang["starttypingkeyword"]?>'}; if(typeof(UpdateResultCount) == 'function' && this.value!='' && this.value!='<?php echo $lang["starttypingkeyword"]?>'){this.value='<?php echo $lang["starttypingkeyword"]?>';}" name="<?php echo $name ?>_selector" id="<?php echo $name ?>_selector" />
+<input type="text" <?php if ($pagename=="search_advanced") { ?> class="SearchWidth" <?php } else {?>  class="stdwidth" <?php } ?> value="<?php echo $lang["starttypingkeyword"]?>" onFocus="<?php if ($pagename=="edit"){ echo "ShowHelp(" . $field["ref"] . ");";} ?>if (this.value=='<?php echo $lang["starttypingkeyword"]?>') {this.value='';}" onBlur="<?php if ($pagename=="edit"){ echo "HideHelp(" . $field["ref"] . ");";} ?>if (this.value=='') {this.value='<?php echo $lang["starttypingkeyword"]?>'}; if(typeof(UpdateResultCount) == 'function' && this.value!='' && this.value!='<?php echo $lang["starttypingkeyword"]?>'){this.value='<?php echo $lang["starttypingkeyword"]?>';}" name="<?php echo $name ?>_selector" id="<?php echo $name ?>_selector" />
 
 <input type="hidden" name="<?php echo $name ?>" id="<?php echo $name ?>" value="<?php echo htmlspecialchars($value) ?>"/>
 

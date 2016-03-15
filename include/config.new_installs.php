@@ -18,6 +18,9 @@ $sort_fields = array(12);
 // Set imagemagick default for new installs to expect the newer version with the sRGB bug fixed.
 $imagemagick_colorspace = "sRGB";
 
+// No "contact us" link for new installations
+$contact_link=false;
+
 $slideshow_big=true;
 $home_slideshow_width=1400;
 $home_slideshow_height=900;

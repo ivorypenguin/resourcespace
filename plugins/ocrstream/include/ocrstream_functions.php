@@ -335,7 +335,7 @@ function ocr_image_processing($ID, $im_preset, $ocr_temp_dir) {
     $convert_fullpath = get_utility_path("im-convert");
     $ext = get_file_extension($ID);
     $resource_path = get_resource_path($ID, true, "", false, $ext);
-    $im_ocr_cmd = ("{$convert_fullpath} " . implode(' ', $im_preset) . ' ' . escapeshellarg($resource_path) . ' ' . escapeshellarg("{$ocr_temp_dir}/im_tempfile_{$ID}.{$ocr_im_ext}"));
+    $im_ocr_cmd = ("{$convert_fullpath} " . implode(' ', $im_preset) . ' ' . escapeshellarg($resource_path) . ' ' . escapeshellarg("{$ocr_temp_dir}/im_tempfile_{$ID}-%04d.{$ocr_im_ext}"));
     debug("CLI command: $im_ocr_cmd");
     $process = new Process($im_ocr_cmd);
     $process->setTimeout(3600);
@@ -366,7 +366,7 @@ function tesseract_processing($ID, $ocr_lang, $ocr_psm, $ocr_temp_dir, $mode, $p
         $n = 0;
         set_time_limit(1800);
         while ($n < $pg_num) {
-            file_put_contents("{$ocr_temp_dir}/im_ocr_file_{$ID}", trim("{$ocr_temp_dir}/im_tempfile_{$ID}-{$n}.{$ocr_im_ext}") . PHP_EOL, FILE_APPEND);
+            file_put_contents("{$ocr_temp_dir}/im_ocr_file_{$ID}", trim("{$ocr_temp_dir}/im_tempfile_{$ID}-" . sprintf('%04d',$n) . ".{$ocr_im_ext}") . PHP_EOL, FILE_APPEND);
             $n++;
         }
         $tess_cmd = ("{$tesseract_fullpath} {$ocr_temp_dir}/im_ocr_file_{$ID} " . escapeshellarg("{$ocr_temp_dir}/ocr_output_file_{$ID}") . " -l {$ocr_lang} -psm {$ocr_psm}");
@@ -377,7 +377,7 @@ function tesseract_processing($ID, $ocr_lang, $ocr_psm, $ocr_temp_dir, $mode, $p
         $i = 0;
         set_time_limit(1800);
         while ($i < $pg_num) {
-            $ocr_input_file = ("{$ocr_temp_dir}/im_tempfile_{$ID}-{$i}.{$ocr_im_ext}");
+            $ocr_input_file = ("{$ocr_temp_dir}/im_tempfile_{$ID}-" . sprintf('%04d',$i) . ".{$ocr_im_ext}");
             $tess_cmd = ("{$tesseract_fullpath} {$ocr_input_file} " . escapeshellarg("{$ocr_temp_dir}/ocrtempfile_{$ID}") . " -l {$ocr_lang} -psm {$ocr_psm}");
             run_tess_cmd($tess_cmd, $ID);
             file_put_contents("{$ocr_temp_dir}/ocr_output_file_{$ID}.txt", file_get_contents("{$ocr_temp_dir}/ocrtempfile_{$ID}.txt"), FILE_APPEND);
@@ -385,7 +385,7 @@ function tesseract_processing($ID, $ocr_lang, $ocr_psm, $ocr_temp_dir, $mode, $p
         }
         // Case [3]: Single page (processed temp image) 
     } elseif ($mode === 'single_processed') {
-        $ocr_input_file = ("{$ocr_temp_dir}/im_tempfile_{$ID}.{$ocr_im_ext}");
+        $ocr_input_file = ("{$ocr_temp_dir}/im_tempfile_{$ID}-0000.{$ocr_im_ext}");
         $tess_cmd = ("{$tesseract_fullpath} {$ocr_input_file} " . escapeshellarg("{$ocr_temp_dir}/ocr_output_file_{$ID}") . " -l {$ocr_lang} -psm {$ocr_psm}");
         run_tess_cmd($tess_cmd, $ID);
         // Case [4]: Single page (original resource)

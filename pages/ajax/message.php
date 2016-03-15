@@ -6,9 +6,9 @@
 	// check for callback, i.e. this file being called directly to get any new messages
 	if (basename(__FILE__)==basename($_SERVER['PHP_SELF']))
 		{
-
-		include __DIR__ . "/../../include/general.php";
-		include __DIR__ . "/../../include/db.php";
+		include_once __DIR__ . "/../../include/db.php";
+		include_once __DIR__ . "/../../include/general.php";
+		
 
 		// It is an acknowledgement so set as seen and get out of here
 		if (isset($_GET['seen']))

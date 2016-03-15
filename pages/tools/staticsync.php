@@ -132,7 +132,7 @@ function ProcessFolder($folder)
            $staticsync_autotheme, $staticsync_folder_structure, $staticsync_extension_mapping_default, 
            $staticsync_extension_mapping, $staticsync_mapped_category_tree, $staticsync_title_includes_path, 
            $staticsync_ingest, $staticsync_mapfolders, $staticsync_alternatives_suffix, $theme_category_levels, $staticsync_defaultstate,
-           $additional_archive_states,$staticsync_extension_mapping_append_values, $staticsync_deleted_state;
+           $additional_archive_states,$staticsync_extension_mapping_append_values, $staticsync_deleted_state, $staticsync_alternative_file_text;
     
     $collection = 0;
     
@@ -142,7 +142,7 @@ function ProcessFolder($folder)
     $dh = opendir($folder);
     while (($file = readdir($dh)) !== false)
         {
-        if ( $file == '.' || $file == '..')
+        if ( $file == '.' || $file == '..' || (isset($staticsync_alternative_file_text) && strpos($file,$staticsync_alternative_file_text)!==false))
             {
             continue;
             }
@@ -190,12 +190,11 @@ function ProcessFolder($folder)
             
             if ($count > $staticsync_max_files) { return(true); }
 
-            # Already exists?
+            # Already exists or an alternative file?
             if (!isset($done[$shortpath]))
                 {
                 $count++;
                 echo "Processing file: $fullpath" . PHP_EOL;
-                
                 if ($collection == 0 && $staticsync_autotheme)
                     {
                     # Make a new collection for this folder.
@@ -399,6 +398,30 @@ function ProcessFolder($folder)
                                 }
                             }   
                         }
+					elseif($staticsync_ingest && isset($staticsync_alternative_file_text))
+						{
+						$basefilename=str_ireplace(".$extension", '', $file);
+						$altfilematch = $folder . "/" . $basefilename . $staticsync_alternative_file_text . "*.*";
+						echo "Searching for alternative files for base file: " . $basefilename , PHP_EOL; 
+						echo "checking " . $altfilematch . PHP_EOL;
+						$altfiles = glob($altfilematch);
+						$existing_alts=get_alternative_files($r);
+						foreach ($altfiles as $altfile)
+							{
+							echo "Found alternative file - " . $altfile . PHP_EOL;
+                            $newalt["file_size"]   = filesize_unlimited($altfile);
+							$altparts = explode(".", $altfile);
+                            $newalt["extension"] = $altparts[count($altparts)-1];
+							$newalt["altdescription"] = substr(str_ireplace($folder . "/" . $basefilename . $staticsync_alternative_file_text,"",$altfile),0,-(strlen($newalt["extension"])+1));
+							$newalt["name"] = str_replace("?", strtoupper($newalt["extension"]), $lang["fileoftype"]);
+                            $newalt["ref"] = add_alternative_file($r, $newalt["name"], $newalt["altdescription"], $altfile, $newalt["extension"], $newalt["file_size"]);
+							$newalt["path"] = get_resource_path($r, true, '', true, $newalt["extension"], -1, 1, false, '',  $newalt["ref"]);
+                            $newalt["basefilename"] = $basefilename;
+                            rename($altfile,$newalt["path"]); # Move alternative file
+                            hook("staticsync_after_alt", '',array($r,$newalt));
+							echo "Added alternative file ref:"  . $newalt["ref"] . ", name: " . $newalt["name"] . ". " . "(" . $newalt["altdescription"] . ") Size: " . $newalt["file_size"] . "\n";
+							}
+						}
 
                     # Add to collection
                     if ($staticsync_autotheme)

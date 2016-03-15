@@ -6,8 +6,10 @@ include "../include/search_functions.php";
 include "../include/resource_functions.php";
 include_once "../include/collections_functions.php";
 
-# Fetch vars
-$ref=getvalescaped("ref","",true);
+// Fetch vars
+$ref        = getvalescaped('ref', '', true);
+$user_group = getvalescaped('usergroup', '', true);
+
 # if bypass sharing page option is on, redirect to e-mail
 if ($bypass_share_screen)
 	{
@@ -209,6 +211,10 @@ include "../include/header.php";
 			<?php $grouplist=get_usergroups(true);
 			foreach ($grouplist as $group)
 				{
+                if(!empty($allowed_external_share_groups) && !in_array($group['ref'], $allowed_external_share_groups))
+                    {
+                    continue;
+                    }
 				?>
 				<option value="<?php echo $group["ref"] ?>" <?php if (getval("editgroup","")==$group["ref"] || (getval("editgroup","")=="" && $usergroup==$group["ref"])) { ?>selected<?php } ?>><?php echo $group["name"] ?></option>
 				<?php
@@ -238,15 +244,33 @@ include "../include/header.php";
 			</div>
 			<?php
 			}
-		else if (getvalescaped("editaccess","")=="")
-			{
-			# Access has been selected. Generate a new URL.
-			?>
-			<p><?php echo $lang["generateurlexternal"]?></p>
-		
-			<p><input class="URLDisplay" type="text" value="<?php echo $baseurl?>/?c=<?php echo urlencode($ref) ?>&k=<?php echo generate_collection_access_key($ref,0,"URL",$access,$expires,getval("usergroup",""))?>">
-			<?php
-			}
+        else if('' == getvalescaped('editaccess', ''))
+            {
+            // Access has been selected. Generate a new URL.
+            $generated_access_key = '';
+
+            if(empty($allowed_external_share_groups) || (!empty($allowed_external_share_groups) && in_array($user_group, $allowed_external_share_groups)))
+                {
+                $generated_access_key = generate_collection_access_key($ref, 0, 'URL', $access, $expires, $user_group);
+                }
+
+            if('' != $generated_access_key)
+                {
+                ?>
+                <p><?php echo $lang['generateurlexternal']; ?></p>
+                <p>
+                    <input class="URLDisplay" type="text" value="<?php echo $baseurl?>/?c=<?php echo urlencode($ref) ?>&k=<?php echo $generated_access_key; ?>">
+                </p>
+                <?php
+                }
+            else
+                {
+                ?>
+                <div class="PageInformal"><?php echo $lang['error_generating_access_key']; ?></div>
+                <?php
+                }
+            }
+
 		# Process editing of external share
 		if ($editexternalurl)
 			{

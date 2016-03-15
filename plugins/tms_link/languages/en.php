@@ -44,5 +44,5 @@ $lang["tms_link_enable_update_script_info"]="Enable script that will automatical
 $lang["tms_link_log_directory"]="Directory to store script logs in. If this is left blank or is invalid then no logging will occur.";
 $lang["tms_link_log_expiry"]="Number of days to store script logs for. Any TMS logs in this directory that are older will be deleted";
 $lang["tms_link_colum_type_required"]="<strong>NOTE</strong>: If adding a new column, please add the column name to the appropriate list below to indicate whether the new column contains numeric or text data.";
-$lang["tms_link_numeric_columns"]="List of columns that should be retrieved as numeric values e.g. codes, times, dates (comma separated)";
-$lang["tms_link_text_columns"]="List of columns that should be retrieved as text (comma separated)";
+$lang["tms_link_numeric_columns"]="List of columns that should be retrieved as UTF-8";
+$lang["tms_link_text_columns"]="List of columns that should be retrieved as UTF-16";

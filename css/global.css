@@ -151,7 +151,7 @@ button[type="submit"] { font-size: 1em; }
 
 #CentralSpace .SearchWidth {width: 550px;font-size: 0.9em ;margin: 0px 0px;padding: 0px;}
 #CentraSpace .SearchWidthExp {width:200px;font-size: 0.9em ;margin: 0px 0px;padding: 0px;}
-
+#CentralSpace .SplitSearch {float: left; margin-left: 5px;margin-right: 5px;}
 
 .CollectionPanelShell {padding:0;float: left;margin: 0px 15px 5px 0px;width: 97px;height: 120px; text-align: left;}
 .CollectionPanelInfo{}
@@ -359,7 +359,7 @@ button[type="submit"] { font-size: 1em; }
 /*Home styling */
 .HomePanel {margin:0px 15px 15px 0px;width: 250px;float: left;} 
 .HomePanelIN {padding: 15px;min-height: 150px;}
-.HomePanel h2 {font-size: 1.8em;padding-left: 42px;display:block;margin: 5px 0px;}
+.HomePanel h2 {padding-left: 42px;display:block;margin: 5px 0px;}
 .HomePanel p {margin: 0; padding: 5px 0 4px 0;}
 .HomePicturePanel {    margin:0px 15px 10px 0px;float: left;width: 517px;}
 .HomePicturePanelIN img {width:517px; height:350px;}
@@ -528,9 +528,9 @@ div.autocomplete ul li {
 
 li.plupload_droptext {font-size: 1.1em;}
 
-
+.plupload_filelist_header {height:12px;}
  /* Smoothness changes - general */
-#pluploader .plupload_header_content {padding-left:10px}
+#pluploader .plupload_header_content {padding-left:10px;background-image:none;}
 #pluploader .plupload_view_switch{bottom:16px;}
 #pluploader .plupload_view_switch .ui-button-icon-only {margin-right:0px;}
 

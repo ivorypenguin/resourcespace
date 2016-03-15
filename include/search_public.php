@@ -32,8 +32,7 @@ for ($n=0;$n<count($collections);$n++)
             {
             $border=true;    
 			$ref=$resources[$m]['ref'];
-            $previewpath=get_resource_path($ref, true, "col", false, "jpg", -1, 1, false);
-            if (file_exists($previewpath)){
+            if ($resources[$m]['has_image']){
                 $previewpath=get_resource_path($ref,false,"col",false,"jpg",-1,1,false,$resources[$m]["file_modified"]);
             }
             else {

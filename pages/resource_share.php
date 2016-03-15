@@ -6,7 +6,9 @@ include "../include/search_functions.php";
 include "../include/resource_functions.php";
 include_once "../include/collections_functions.php";
 
-$ref          = getvalescaped("ref","",true);
+$ref        = getvalescaped('ref', '', true);
+$user_group = getvalescaped('usergroup', '', true);
+
 # fetch the current search (for finding simlar matches)
 $search       = getvalescaped("search", "");
 $order_by     = getvalescaped("order_by", "relevance");
@@ -173,7 +175,12 @@ if($editing && !$editexternalurl)
 								<select id="groupselect" name="usergroup" class="stdwidth">
 								<?php $grouplist = get_usergroups(true);
 								foreach ($grouplist as $group)
-									{ 
+									{
+                                    if(!empty($allowed_external_share_groups) && !in_array($group['ref'], $allowed_external_share_groups))
+                                        {
+                                        continue;
+                                        }
+
 									$selected = getval("editgroup","") == $group["ref"] || (getval("editgroup","") == "" && $usergroup == $group["ref"]);
 									?>
 									<option value="<?php echo $group["ref"] ?>" <?php if ($selected) echo "selected" ?>><?php echo $group["name"] ?></option>
@@ -204,15 +211,33 @@ if($editing && !$editexternalurl)
                         </div>
                         <?php
                         }
-                    else if (getvalescaped("editaccess","") == "")
+                    else if('' == getvalescaped('editaccess', ''))
                         {
-                        # Access has been selected. Generate a new URL.
-                        ?>
-                        <p><?php echo $lang["generateurlexternal"]?></p>
-                    
-                        <p><input class="URLDisplay" type="text" value="<?php echo $baseurl?>/?r=<?php echo urlencode($ref) ?>&k=<?php echo generate_resource_access_key($ref,$userref,$access,$expires,"URL",getvalescaped("usergroup", ""))?>">
-                        <?php
+                        // Access has been selected. Generate a new URL.
+                        $generated_access_key = '';
+
+                        if(empty($allowed_external_share_groups) || (!empty($allowed_external_share_groups) && in_array($user_group, $allowed_external_share_groups)))
+                            {
+                            $generated_access_key = generate_resource_access_key($ref, $userref, $access, $expires, 'URL', $user_group);
+                            }
+
+                        if('' != $generated_access_key)
+                            {
+                            ?>
+                            <p><?php echo $lang['generateurlexternal']; ?></p>
+                            <p>
+                                <input class="URLDisplay" type="text" value="<?php echo $baseurl?>/?r=<?php echo urlencode($ref) ?>&k=<?php echo $generated_access_key; ?>">
+                            </p>
+                            <?php
+                            }
+                        else
+                            {
+                            ?>
+                            <div class="PageInformal"><?php echo $lang['error_generating_access_key']; ?></div>
+                            <?php
+                            }
                         }
+
                     # Process editing of external share
                     if ($editexternalurl)
                         {

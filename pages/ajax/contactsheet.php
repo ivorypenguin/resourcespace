@@ -71,7 +71,6 @@ if (isset($print_contact_title)){
 function contact_sheet_add_fields($resourcedata)
 	{
 	global $pdf, $n, $getfields, $sheetstyle, $imagesize, $refnumberfontsize, $leading, $csf, $pageheight, $currentx, $currenty, $topx, $topy, $bottomx, $bottomy, $logospace, $deltay,$width,$config_sheetsingle_include_ref,$contactsheet_header,$cellsize,$ref,$pagewidth; 
-	//exit (print_r($getfields));
 
 	if ($sheetstyle=="single" && $config_sheetsingle_include_ref=="true"){
 		$pdf->SetY($bottomy);
@@ -94,17 +93,15 @@ function contact_sheet_add_fields($resourcedata)
 	
 		if ($sheetstyle=="thumbnails") 
 			{
-			$pdf->Cell($imagesize,(($refnumberfontsize+$leading)/72),$value,0,2,'L',0,'',1);
-			//if ($ff==2){echo print_r($getfields) . " " . $pdf->GetY();exit();}
-			
+			$pdf->Cell($imagesize,(($refnumberfontsize+$leading)/72),$value,0,2,'L',0,'',1);			
 			$bottomy=$pdf->GetY();
 			$bottomx=$pdf->GetX();
 			}
 		else if ($sheetstyle=="list")
 			{
-			
-			$pdf->SetXY($pdf->GetX()+$imagesize+0.1,$pdf->GetY());
+			$pdf->SetXY($pdf->GetX()+$imagesize+0.1,$pdf->GetY()+(0.2*($ff+$deltay)));
 			$pdf->MultiCell($pagewidth-3,0.15,$value,0,"L");
+			$pdf->SetXY($currentx,$currenty);
 			}
 		else if ($sheetstyle=="single")
 			{
@@ -189,7 +186,7 @@ function contact_sheet_add_image()
 	# Add spacing cell
 	if ($sheetstyle=="list")
 		{		
-		$pdf->Cell($cellsize[0],0.5,'',0,0);		
+		$pdf->Cell($cellsize[0],$cellsize[1],'',0,0);    
 		}
 	/*else if ($sheetstyle=="single")
 		{		

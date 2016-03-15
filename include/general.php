@@ -1500,9 +1500,22 @@ function newlines($text)
 
 function get_active_users()
 	{
-	# Returns a list of active users, i.e. users still logged on with a last-active time within the last 2 hours.
-	return sql_query("select username,round((unix_timestamp(now())-unix_timestamp(last_active))/60,0) t from user where logged_in=1 and unix_timestamp(now())-unix_timestamp(last_active)<(3600*2) order by t;");
-	}
+    global $usergroup, $U_perm_strict;
+    $sql = "where logged_in=1 and unix_timestamp(now())-unix_timestamp(last_active)<(3600*2)";
+    if (checkperm("U") && $U_perm_strict)
+        {
+        $sql.= " and find_in_set('" . $usergroup . "',g.parent) ";
+        }
+
+    // Return users in both user's user group and children groups
+    elseif (checkperm('U') && !$U_perm_strict)
+        {
+    	$sql .= " and (g.ref = '" . $usergroup . "' OR find_in_set('" . $usergroup . "', g.parent))";
+        }
+    
+    # Returns a list of all active users, i.e. users still logged on with a last-active time within the last 2 hours.
+    return sql_query("select u.username,round((unix_timestamp(now())-unix_timestamp(u.last_active))/60,0) t from user u left outer join usergroup g on u.usergroup=g.ref $sql order by t;");
+    }
 
 function get_all_site_text($findpage="",$findname="",$findtext="")
 	{
@@ -2969,6 +2982,8 @@ function check_access_key($resource,$key)
 	
 	# Option to plugin in some extra functionality to check keys
 	if (hook("check_access_key","",array($resource,$key))===true) {return true;}
+	global $external_share_view_as_internal, $is_authenticated;
+    	if($external_share_view_as_internal && (isset($_COOKIE["user"]) && !(isset($is_authenticated) && $is_authenticated))){return false;} // We want to authenticate the user if not already authenticated so we can show the page as internal
 	
 	$keys=sql_query("select user,usergroup,expires from external_access_keys where resource='$resource' and access_key='$key' and (expires is null or expires>now())");
 
@@ -3069,6 +3084,10 @@ function check_access_key($resource,$key)
 function check_access_key_collection($collection,$key)
 	{
 	if ($collection=="" || !is_numeric($collection)) {return false;}
+    
+    global $external_share_view_as_internal;
+    if($external_share_view_as_internal && isset($_COOKIE["user"])){return false;} // We want to authenticate the user so we can show the page as internal
+    
 	$r=get_collection_resources($collection);
 	if (count($r)==0){return false;}
 	
@@ -3588,9 +3607,11 @@ function user_email_exists($email)
 	}
 
 function filesize_unlimited($path)
-    {
+    { 
     # A resolution for PHP's issue with large files and filesize().
-
+	
+	hook("beforefilesize_unlimited","",array($path));
+	
     if (PHP_OS=='WINNT')
         {
 		if (class_exists("COM"))
@@ -3617,17 +3638,20 @@ function filesize_unlimited($path)
     	{
 		$bytesize = exec("stat -c '%s' " . escapeshellarg($path));
     	}
-
+    	
 	if(!is_int($bytesize))
 		{
-		return @filesize($path); # Bomb out, the output wasn't as we expected. Return the filesize() output.
+		$bytesize= @filesize($path); # Bomb out, the output wasn't as we expected. Return the filesize() output.
 		}
+		
+	hook("afterfilesize_unlimited","",array($path));
+	
 	return $bytesize;
     }
 
 function strip_leading_comma($val)
     {
-    return str_replace(',', '', $val);
+    return preg_replace('/^\,/','',$val);
     }
 
 // String EnCrypt + DeCrypt function
@@ -4843,4 +4867,104 @@ function get_notification_users($userpermission="SYSTEM_ADMIN")
 		return $notification_users_cache[$userpermissionindex];
 		}
 	}
+        
+function form_value_display($row,$name,$default="")
+    {
+    # Returns a sanitised row from the table in a safe form for use in a form value, suitable overwritten by POSTed data if it has been supplied.
+    if (array_key_exists($name,$row)) {$default=$row[$name];}
+    return htmlspecialchars(getval($name,$default));
+    }
 
+function get_download_filename($ref,$size,$alternative,$ext)
+	{
+	# Constructs a filename for download
+	global $original_filenames_when_downloading,$download_filenames_without_size,$download_id_only_with_size,$download_filename_id_only,$download_filename_field,$prefix_resource_id_to_filename,$filename_field,$prefix_filename_string;
+	
+	$filename = $ref . $size . ($alternative>0?"_" . $alternative:"") . "." . $ext;
+	
+	if ($original_filenames_when_downloading)
+		{
+		# Use the original filename.
+		if ($alternative>0)
+			{
+			# Fetch from the resource_alt_files alternatives table (this is an alternative file)
+			$origfile=get_alternative_file($ref,$alternative);
+			$origfile=$origfile["file_name"];
+			}
+		else
+			{
+			# Fetch from field data or standard table	
+			$origfile=get_data_by_field($ref,$filename_field);	
+			}
+		if (strlen($origfile)>0)
+			{
+			# do an extra check to see if the original filename might have uppercase extension that can be preserved.	
+			$pathparts=pathinfo($origfile);
+			if (isset($pathparts['extension'])){
+				if (strtolower($pathparts['extension'])==$ext){$ext=$pathparts['extension'];}	
+			} 
+			
+			# Use the original filename if one has been set.
+			# Strip any path information (e.g. if the staticsync.php is used).
+			# append preview size to base name if not the original
+			if($size != '' && !$download_filenames_without_size)
+				{
+				$filename = strip_extension(mb_basename($origfile)) . '-' . $size . '.' . $ext;
+				}
+			else
+				{
+				$filename = strip_extension(mb_basename($origfile)) . '.' . $ext;
+				}
+
+			if($prefix_resource_id_to_filename)
+				{
+				$filename = $prefix_filename_string . $ref . "_" . $filename;
+				}
+			}
+		}
+
+	if ($download_filename_id_only){
+		if(!hook('customdownloadidonly', '', array($ref, $ext, $alternative))) {
+			$filename=$ref . "." . $ext;
+
+			if($size != '' && $download_id_only_with_size) {
+				$filename = $ref . '-' . $size . '.' . $ext;
+			}
+
+			if(isset($prefix_filename_string) && trim($prefix_filename_string) != '') {
+				$filename = $prefix_filename_string . $filename;
+			}
+
+		}
+	}
+	
+	if (isset($download_filename_field))
+		{
+		$newfilename=get_data_by_field($ref,$download_filename_field);
+		if ($newfilename)
+			{
+			$filename = trim(nl2br(strip_tags($newfilename)));
+			if($size != "" && !$download_filenames_without_size)
+				{
+				$filename = substr($filename, 0, 200) . '-' . $size . '.' . $ext;
+				}
+			else
+				{
+				$filename = substr($filename, 0, 200) . '.' . $ext;
+				}
+
+			if($prefix_resource_id_to_filename)
+				{
+				$filename = $prefix_filename_string . $ref . '_' . $filename;
+				}
+			}
+		}
+
+	# Remove critical characters from filename
+	$altfilename=hook("downloadfilenamealt");
+	if(!($altfilename)) $filename = preg_replace('/:/', '_', $filename);
+	else $filename=$altfilename;
+
+    hook("downloadfilename");
+	return $filename;
+	}

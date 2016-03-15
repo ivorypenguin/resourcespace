@@ -15,7 +15,8 @@ $lang["csv_upload_condition4"]="<li>To assign different access levels (open,rest
 $lang["csv_upload_condition5"]="<li>To be able to upload resource files later using batch replace functionality there should be a column named 'Original filename' and each file should have a unique filename</li>";
 $lang["csv_upload_condition6"]="<li>All other column headers must correspond to the full name of a resource metadata field</li>";
 $lang["csv_upload_condition7"]="<li>All mandatory fields for the created resource types must be present</li>";
-$lang["csv_upload_condition8"]="<li>Column(s) that will have values containing <b>commas( , )</b>, make sure you format it as type <b>text</b> so you don't have to add quotes (\"\"). When saving as a csv file, make sure to check the option of quoting text type cells.</li>";
+$lang["csv_upload_condition8"]="<li>Column(s) that will have values containing <b>commas( , )</b>, make sure you format it as type <b>text</b> so you don't have to add quotes (\"\"). When saving as a csv file, make sure to check the option of quoting text type cells</li>";
+$lang["csv_upload_condition9"]='<li>You can download a CSV file example by clicking on <a href="../downloads/csv_upload_example.csv">csv-upload-example.csv</a></li>';
 $lang["csv_upload_error_no_permission"]="You do not have the correct permissions to upload a CSV file";
 $lang["check_line_count"]="At least two rows found in CSV file";
 $lang["check_header_names"]="Header names match those in the meta fields";

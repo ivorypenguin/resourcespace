@@ -14,6 +14,12 @@ $refinements=explode(",",$search);
 if (substr($search,0,1)=="!" && substr($search,0,6)!="!empty"){$startsearchcrumbs=1;} else {$startsearchcrumbs=0;}
 if ($refinements[0]!=""){
 	for ($n=$startsearchcrumbs;$n<count($refinements);$n++){
+		# strip the first semi-colon so it's not swapped with an " OR "
+		$semi_pos = strpos($refinements[$n],":;");
+		if ($semi_pos !== false) {
+			$refinements[$n] = substr_replace($refinements[$n],": ",$semi_pos,strlen(":;"));
+		}
+		
 		$search_title_element=str_replace(";"," OR ",$refinements[$n]);
 		if ($n!=0 || $archive!=0){$searchcrumbs.=" > </count> </count> </count> ";}
 		$searchcrumbs.="<a href=\"".$baseurl_short."pages/search.php?search=";

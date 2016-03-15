@@ -140,7 +140,7 @@ global  $no_preview_extensions;
 $exclude="'" . implode("','",$no_preview_extensions) . "'";
 $condition="resource.has_image=0 and";
 if ($noimage) {$condition="";}
-$resources=sql_query("SELECT resource.ref, resource.file_extension, resource.preview_attempts, creation_date FROM resource WHERE $condition resource.ref>0 and (resource.preview_attempts<5 or resource.preview_attempts is NULL) and lower(file_extension) not in (" . $exclude  . ")");
+$resources=sql_query("SELECT resource.ref, resource.file_extension, ifnull(resource.preview_attempts,1) preview_attempts, creation_date FROM resource WHERE $condition resource.ref>0 and (resource.preview_attempts<5 or resource.preview_attempts is NULL) and file_extension is not null and length(file_extension)>0 and lower(file_extension) not in (" . $exclude  . ")");
 
 foreach($resources as $resource) // For each resources
   {
@@ -225,15 +225,14 @@ foreach($resources as $resource) // For each resources
 			{
 			if(!empty($resource['file_path'])){$ingested=false;}
 			else{$ingested=true;}
+
+			# Increment the preview count.
+			sql_query("update resource set preview_attempts=ifnull(preview_attempts,1) + 1 where ref='" . $resource['ref'] . "'");
+
 			create_previews($resource['ref'], false, $resource['file_extension'],false,false,-1,$ignoremaxsize,$ingested);
 			echo sprintf("Processed resource %d in %01.2f seconds.\n", $resource['ref'], microtime(true) - $start_time);
 			}
-		else
-			{
-			sql_query("update resource set preview_attempts=ifnull(preview_attempts,0) + 1 where ref='" . $resource['ref'] . "'");
-			echo sprintf("Skipped resource " . $resource['ref'] . " - maximum attempts reached or nonexistent file extension. \n");
-			}
-			
+
 	  if ($multiprocess)
 	  	{
 	      // We exit in order to avoid fork bombing.

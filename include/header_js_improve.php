@@ -110,9 +110,9 @@ jQuery(document).ready(function() {
 
 
 <?php if ($plupload_widget){?>
-	<link href="<?php echo $baseurl_short;?>lib/plupload_2.1.2/jquery.ui.plupload/css/jquery.ui.plupload.css?<?php echo $css_reload_key;?>" rel="stylesheet" type="text/css" media="screen,projection,print"  />	
+	<link href="<?php echo $baseurl_short;?>lib/plupload_2.1.8/jquery.ui.plupload/css/jquery.ui.plupload.css?<?php echo $css_reload_key;?>" rel="stylesheet" type="text/css" media="screen,projection,print"  />	
 <?php } else { ?>
-	<link href="<?php echo $baseurl_short;?>lib/plupload_2.1.2/jquery.plupload.queue/css/jquery.plupload.queue.css?<?php echo $css_reload_key;?>" rel="stylesheet" type="text/css" media="screen,projection,print"  />
+	<link href="<?php echo $baseurl_short;?>lib/plupload_2.1.8/jquery.plupload.queue/css/jquery.plupload.queue.css?<?php echo $css_reload_key;?>" rel="stylesheet" type="text/css" media="screen,projection,print"  />
 <?php } ?>
 
 
@@ -450,18 +450,6 @@ hook("afterheader");
 } // end if !ajax
 
 
-# Include theme bar?
-if ($use_theme_bar && (getval("k","")=="") && !in_array($pagename,array("themes","preview_all","done","search_advanced","login","preview","admin_header","user_password","user_request")) && ($pagename!="terms") && (getval("url","")!="index.php"))
-    {
-    # Tables seem to be the only solution to having a left AND right side bar, due to the way the clear CSS attribute works.
-    ?>
-    <table width="100%" style="margin:0;padding:0;"><tr><td width="185" valign="top" align="left" style="margin:0;padding:0;">
-    <?php
-    include "themebar.php";
-    ?>
-    </td><td valign="top" style="margin:0;padding:0;">
-    <?php
-    }
 	
 
 if (getval("k","")!="") { ?>

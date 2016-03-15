@@ -106,7 +106,20 @@ function populate_resource_nodes($startingref=0)
 		
 	debug("resource_node_migration starting from node ID: " . $startingref);
 	$nodes=sql_query("select n.ref, n.name, n.resource_type_field, f.partial_index from node n join resource_type_field f on n.resource_type_field=f.ref order by resource_type_field;");
-	$count=count($nodes);	
+	$count=count($nodes);
+	
+	if($count==0)
+		{			
+		// Node table is not yet populated. Need to populate this first
+		$metadatafields=sql_query("select * from resource_type_field");
+		foreach($metadatafields as $metadatafield)
+			{
+			migrate_resource_type_field_check($metadatafield);
+			}			
+		$nodes=sql_query("select n.ref, n.name, n.resource_type_field, f.partial_index from node n join resource_type_field f on n.resource_type_field=f.ref order by resource_type_field;");
+		$count=count($nodes);
+		}
+		
 	set_process_lock("resource_node_migration");
 	
 	for($n=$startingref;$n<$count;$n++)

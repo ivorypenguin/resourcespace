@@ -2,6 +2,13 @@
 include "../include/db.php";
 include_once "../include/general.php";
 $k=getvalescaped("k","");if (($k=="") || (!check_access_key(getvalescaped("ref",""),$k))) {include_once "../include/authenticate.php";}
+
+if ($k!="" && (!isset($internal_share_access) || !$internal_share_access) && $prevent_external_requests)
+	{
+	echo "<script>window.location = '" .  $baseurl . "/login.php?error="  . (($allow_account_request)?"signin_required_request_account":"signin_required") . "'</script>";
+	exit();
+	}
+
 include "../include/request_functions.php";
 include "../include/resource_functions.php";
 include_once "../include/collections_functions.php";

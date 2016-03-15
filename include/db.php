@@ -238,7 +238,11 @@ process_config_options();
 # Include the appropriate language file
 $pagename=safe_file_name(str_replace(".php","",pagename()));
 
-$language=setLanguage();
+// Allow plugins to set $language from config as we cannot run hooks at this point
+if(!isset($language))
+	{
+	$language = setLanguage();
+	}
 
 # Fix due to rename of US English language file
 if (isset($language) && $language=="us") {$language="en-US";}

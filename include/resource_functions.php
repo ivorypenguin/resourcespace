@@ -97,14 +97,13 @@ function save_resource_data($ref,$multi,$autosave_field="")
 			{
 
             node_field_options_override($fields[$n]);
-			//print_r($fields[$n]["nodes"]);
 			if ($fields[$n]["type"]==2)
 				{
 				# construct the value from the ticked boxes
 				$val=","; # Note: it seems wrong to start with a comma, but this ensures it is treated as a comma separated list by split_keywords(), so if just one item is selected it still does individual word adding, so 'South Asia' is split to 'South Asia','South','Asia'.
 				//$options=trim_array(explode(",",$fields[$n]["options"]));
 				
-				foreach($fields[$n]["nodes"] as $noderef => $nodedata)
+                foreach($fields[$n]["nodes"] as $noderef => $nodedata)
 					{
 					$name=$fields[$n]["ref"] . "_" . md5($nodedata['name']);
 					if (getval($name,"")=="yes")
@@ -173,7 +172,7 @@ function save_resource_data($ref,$multi,$autosave_field="")
 						}
 					}
 				}
-			elseif ($fields[$n]["type"] == 3 || $fields[$n]["type"] == 12)
+			elseif ($fields[$n]["type"] == 3)
 				{
 				$val=getvalescaped("field_" . $fields[$n]["ref"],"");	
 				foreach($fields[$n]["nodes"] as $noderef => $nodedata)
@@ -192,6 +191,56 @@ function save_resource_data($ref,$multi,$autosave_field="")
 					{
 					$val = ','.$val;
 					}				
+				}
+			elseif ($fields[$n]["type"] == 12)
+				{
+				$val=getvalescaped("field_" . $fields[$n]["ref"],"");	
+				foreach($fields[$n]["nodes"] as $noderef => $nodedata)
+					{
+					if (in_array(strip_leading_comma($val),i18n_get_translations($nodedata['name'])))
+						{
+						$nodes_to_add[] = $noderef;
+						// Correct the string to include all multingual strings as for dropdowns
+						$val=$nodedata['name'];
+						}
+					else
+						{
+						$nodes_to_remove[] = $noderef;
+						}
+					}							
+				// if it doesn't already start with a comma, add one
+				if (substr($val,0,1) != ',')
+					{
+					$val = ','.$val;
+					}				
+				}
+            elseif ($fields[$n]["type"] == 7 || $fields[$n]["type"]==9) // Category tree or dynamic keywords
+				{
+				$submittedval=getvalescaped("field_" . $fields[$n]["ref"],"");
+				$submittedvals=explode(",",$submittedval);
+                $newvals=array();
+                foreach($fields[$n]["nodes"] as $noderef => $nodedata)
+                    {
+                    $addnode=false;
+                    foreach($submittedvals as $checkval)
+                        {                  
+                        if (in_array($checkval,i18n_get_translations($nodedata['name'])))
+                            {
+                            $addnode=true;                            
+                            }                        
+                        }
+                    if($addnode)
+                        {
+                        $nodes_to_add[] = $noderef;
+                        // Correct the string to include all multingual strings as for dropdowns
+                        $newvals[]=$nodedata['name'];    
+                        }
+                    else
+                        {
+                        $nodes_to_remove[] = $noderef;    
+                        }
+                    }
+				$val = ',' . implode(",",$newvals);
 				}
 			else
 				{
@@ -347,7 +396,9 @@ function save_resource_data($ref,$multi,$autosave_field="")
 	# Update resource_node table
 	delete_resource_nodes($ref,$nodes_to_remove);
 	if(count($nodes_to_add)>0)
-		{add_resource_nodes($ref,$nodes_to_add);}
+		{
+        add_resource_nodes($ref,$nodes_to_add);
+		}
             
 	# Expiry field(s) edited? Reset the notification flag so that warnings are sent again when the date is reached.
 	$expirysql="";
@@ -460,40 +511,38 @@ function save_resource_data_multi($collection)
 
 	$ref=$list[0];
 	$fields=get_resource_field_data($ref,true);
-	global $auto_order_checkbox,$auto_order_checkbox_case_insensitive;
+	global $auto_order_checkbox,$auto_order_checkbox_case_insensitive, $FIXED_LIST_FIELD_TYPES;
 	$expiry_field_edited=false;
-
+   
 	for ($n=0;$n<count($fields);$n++)
 		{
 		if (getval("editthis_field_" . $fields[$n]["ref"],"")!="" || hook("save_resource_data_multi_field_decision","",array($fields[$n]["ref"])))
 			{
+             # Set up arrays of node ids selcted and we will then resolve these to add/remove. We can't remove all nodes as user may not have access
+            $nodes_to_add=array();
+            $nodes_to_remove=array();
+            $selected_nodes=array();
+            $unselected_nodes=array();
+        
+            node_field_options_override($fields[$n]);
 			if ($fields[$n]["type"]==2)
 				{
 				# construct the value from the ticked boxes
 				$val=","; # Note: it seems wrong to start with a comma, but this ensures it is treated as a comma separated list by split_keywords(), so if just one item is selected it still does individual word adding, so 'South Asia' is split to 'South Asia','South','Asia'.
                 
-                node_field_options_override($fields[$n]);
-				
-                $options = trim_array($fields[$n]['node_options']);
-
-				if ($auto_order_checkbox) {
-					if($auto_order_checkbox_case_insensitive){natcasesort($options);}
-					else{sort($options);}
-				}
-				
-				for($m=0; $m < count($options); $m++)
+                
+                foreach($fields[$n]["nodes"] as $noderef => $nodedata)
 					{
-                    $translated_val = i18n_get_translated($options[$m]);
-					$name           = $fields[$n]['ref'] . '_' . md5($translated_val);
-
-                    if('yes' == getval($name, ''))
+					$name=$fields[$n]["ref"] . "_" . md5($nodedata['name']);
+					if (getval($name,"")=="yes")
 						{
-						if($val != ',')
-                            {
-                            $val .= ',';
-                            }
-
-                        $val .= $translated_val;
+						if ($val!=",") {$val .= ",";}
+						$val .= $nodedata['name'];
+						$selected_nodes[] = $noderef;
+						}
+					else
+						{
+						$unselected_nodes[] = $noderef;
 						}
 					}
 				}
@@ -529,11 +578,72 @@ function save_resource_data_multi($collection)
 			elseif ($fields[$n]["type"] == 3)
 				{
 				$val=getvalescaped("field_" . $fields[$n]["ref"],"");				
+				foreach($fields[$n]["nodes"] as $noderef => $nodedata)
+					{
+					if (strip_leading_comma($val) == $nodedata['name'])
+						{
+						$selected_nodes[] = $noderef;
+						}
+					else
+						{
+						$unselected_nodes[] = $noderef;
+						}
+					}							
 				// if it doesn't already start with a comma, add one
 				if (substr($val,0,1) != ',')
 					{
 					$val = ','.$val;
-					}
+					}				
+				}
+            elseif ($fields[$n]["type"] == 12)
+				{
+				$val=getvalescaped("field_" . $fields[$n]["ref"],"");	
+				foreach($fields[$n]["nodes"] as $noderef => $nodedata)
+					{
+					if (in_array(strip_leading_comma($val),i18n_get_translations($nodedata['name'])))
+						{
+						$selected_nodes[] = $noderef;
+						// Correct the string to include all multingual strings as for dropdowns
+						$val=$nodedata['name'];
+						}
+					else
+						{
+						$unselected_nodes[] = $noderef;
+						}
+					}							
+				// if it doesn't already start with a comma, add one
+				if (substr($val,0,1) != ',')
+					{
+					$val = ','.$val;
+					}				
+				}
+            elseif ($fields[$n]["type"] == 7 || $fields[$n]["type"]==9) // Category tree or dynamic keywords     
+				{
+				$submittedval=getvalescaped("field_" . $fields[$n]["ref"],"");
+				$submittedvals=explode(",",$submittedval);
+                $newvals=array();
+                foreach($fields[$n]["nodes"] as $noderef => $nodedata)
+                    {
+                    $addnode=false;
+                    foreach($submittedvals as $checkval)
+                        {                  
+                        if (in_array($checkval,i18n_get_translations($nodedata['name'])))
+                            {
+                            $addnode=true;                            
+                            }                        
+                        }
+                    if($addnode)
+                        {
+                        $selected_nodes[] = $noderef;
+                        // Correct the string to include all multingual strings as for dropdowns
+                        $newvals[]=$nodedata['name'];    
+                        }
+                    else
+                        {
+                        $unselected_nodes[] = $noderef;    
+                        }
+                    }
+				$val = ',' . implode(",",$newvals);
 				}
 			else
 				{
@@ -549,46 +659,69 @@ function save_resource_data_multi($collection)
 				# Work out existing field value.
 				$existing=escape_check(sql_value("select value from resource_data where resource='$ref' and resource_type_field='" . $fields[$n]["ref"] . "'",""));
 				
-				# Find and replace mode? Perform the find and replace.
 				if (getval("modeselect_" . $fields[$n]["ref"],"")=="FR")
 					{
+                    # Find and replace mode? Perform the find and replace.
 					$val=str_replace
 						(
 						getvalescaped("find_" . $fields[$n]["ref"],""),
 						getvalescaped("replace_" . $fields[$n]["ref"],""),
 						$existing
-						);
+						);                    
 					}
 				
 				# Append text/option(s) mode?
 				if (getval("modeselect_" . $fields[$n]["ref"],"")=="AP")
 					{
 					$val=append_field_value($fields[$n],$origval,$existing);
+                    $nodes_to_add=$selected_nodes;
 					}
 					
 				# Prepend text/option(s) mode?
-				if (getval("modeselect_" . $fields[$n]["ref"],"")=="PP"){
+				elseif (getval("modeselect_" . $fields[$n]["ref"],"")=="PP")
+                    {
 					global $filename_field;
-					if ($fields[$n]["ref"]==$filename_field){
+					if ($fields[$n]["ref"]==$filename_field)
+                        {
 						$val=rtrim($origval,"_")."_".trim($existing); // use an underscore if editing filename.
-					}
+                        }
 					else {
 						# Automatically append a space when appending text types.
 						$val=$origval . " " . $existing;
-					}
-				}
-				
-				# Remove text/option(s) mode?
-				if (getval("modeselect_" . $fields[$n]["ref"],"")=="RM")
+                        }
+                    }
+				elseif (getval("modeselect_" . $fields[$n]["ref"],"")=="RM")
 					{
-					$val=str_replace($origval,"",$existing);
+                    # Remove text/option(s) mode
+                    $val=str_replace($origval,"",$existing);
+                    if($fields[$n]["required"] && strip_leading_comma($val)=="")
+                        {
+                        // Required field and  no value now set, revert to existing and add to array of failed edits
+                        global $lang;
+                        $val=$existing;
+                        if(!isset($errors[$fields[$n]["ref"]]))
+                            {$errors[$fields[$n]["ref"]]=$lang["requiredfield"] . ". " . $lang["error_batch_edit_resources"] . ": " ;}
+                        $errors[$fields[$n]["ref"]] .=  $ref;
+                        if($m<count($list)-1){$errors[$fields[$n]["ref"]] .= ",";}
+                        
+                        }
+                    else
+                        {
+                        $nodes_to_remove=$selected_nodes;
+                        }
 					}
-					
+				else
+					{
+                    # Replace text/option(s) mode
+					$nodes_to_add=$selected_nodes;
+                    $nodes_to_remove=$unselected_nodes;
+					}
+                
                 # Possibility to hook in and alter the value - additional mode support
                 $hookval=hook("save_resource_data_multi_extra_modes","",array($ref,$fields[$n]));
                 if ($hookval!==false) {$val=$hookval;}
 
-				$val=strip_leading_comma($val);		
+				//$val=strip_leading_comma($val);
 				#echo "<li>existing=$existing, new=$val";
 				if ($existing!==str_replace("\\","",$val))
 					{
@@ -615,11 +748,11 @@ function save_resource_data_multi($collection)
 					$oldval=$existing;
 					$newval=$val;
 					
-					if ($fields[$n]["type"]==3)
+					if (in_array($fields[$n]["type"],$FIXED_LIST_FIELD_TYPES))
 						{
-						# Prepend a comma when indexing dropdowns
-						$newval="," . $val;
-						$oldval="," . $oldval;
+						# Prepend a comma when indexing dropdowns and checkboxes
+						$newval=  strlen($val)>0 && $val[0]==',' ? $val : ',' . $val;
+                        $oldval=  strlen($oldval)>0 && $oldval[0]==',' ? $oldval : ',' . $oldval;
 						}
 					
 					if ($fields[$n]["keywords_index"]==1)
@@ -631,7 +764,15 @@ function save_resource_data_multi($collection)
 
 						remove_keyword_mappings($ref,i18n_get_indexable($oldval),$fields[$n]["ref"],$fields[$n]["partial_index"],$is_date,'','',$is_html);
 						add_keyword_mappings($ref,i18n_get_indexable($newval),$fields[$n]["ref"],$fields[$n]["partial_index"],$is_date,'','',$is_html);
-						}           
+						}
+                        
+                    # Update resource_node table
+                    delete_resource_nodes($ref,$nodes_to_remove);
+                    if(count($nodes_to_add)>0)
+                        {
+                        add_resource_nodes($ref,$nodes_to_add);
+                        }
+            
                             # Add any onchange code
                             if($fields[$n]["onchange_macro"]!="")
                                 {
@@ -814,13 +955,15 @@ function save_resource_data_multi($collection)
 		update_xml_metadump($list[$m]);
 		}
 	
-	hook("aftersaveresourcedata");	
+	hook("aftersaveresourcedata");
+    if (count($errors)==0) {return true;} else {return $errors;}
+    
 	}
 }
 
 function append_field_value($field_data,$new_value,$exiting_value)
 	{
-	if ($field_data["type"]!=2 && $field_data["type"]!=3 && $field_data["type"]!=9 && substr($new_value,0,1)!=",")
+	if ($field_data["type"]!=2 && $field_data["type"]!=3 && $field_data["type"]!=9 && $field_data["type"]!=12 && substr($new_value,0,1)!=",")
 		{
 		# Automatically append a space when appending text types.
 		$val=$exiting_value . " " . $new_value;
@@ -977,6 +1120,9 @@ function remove_all_keyword_mappings_for_field($resource,$resource_type_field)
                     
 function update_field($resource,$field,$value)
 	{
+
+    global $FIXED_LIST_FIELD_TYPES;
+
 	# Updates a field. Works out the previous value, so this is not efficient if we already know what this previous value is (hence it is not used for edit where multiple fields are saved)
 
 	# accept shortnames in addition to field refs
@@ -986,61 +1132,89 @@ function update_field($resource,$field,$value)
 	$fieldinfo=sql_query("select keywords_index,resource_column,partial_index,type, onchange_macro from resource_type_field where ref='$field'");
 
 	if (count($fieldinfo)==0) {return false;} else {$fieldinfo=$fieldinfo[0];}
-	
-        # If this is a dynamic keyword we need to add it to the field options
-        if($fieldinfo['type']==9 && !checkperm('bdk' . $field))
+	    
+    $fieldoptions = get_nodes($field);
+    $newvalues    = trim_array(explode(',', $value));
+    
+    # Set up arrays of node ids to add/remove. 
+	if (in_array($fieldinfo['type'], $FIXED_LIST_FIELD_TYPES))
+        {
+        $nodes_to_add=array();
+        $nodes_to_remove=array();
+        }
+    
+    # If this is a dynamic keyword we need to add it to the field options
+    if($fieldinfo['type']==9 && !checkperm('bdk' . $field))
+        {
+        $currentoptions=array();
+        foreach($fieldoptions as $fieldoption)
             {
-            $fieldoptions= get_nodes($field);
-            $currentoptions=array();
-            foreach($fieldoptions as $fieldoption)
+            $fieldoptiontranslations=explode("~",$fieldoption['name']);
+            if (count($fieldoptiontranslations)<2)
                 {
-                $fieldoptiontranslations=explode("~",$fieldoption['name']);
-                if (count($fieldoptiontranslations)<2)
-                    {
-                    $currentoptions[]=trim($fieldoption['name']); # Not a translatable field
-                    debug("update_field: current field option: '" . trim($fieldoption['name']) . "'<br>");
-                    }
-                else
-                    {
-                    $default="";
-                    for ($n=1;$n<count($fieldoptiontranslations);$n++)
-                        {
-                        # Not a translated string, return as-is
-                        if (substr($fieldoptiontranslations[$n],2,1)!=":" && substr($fieldoptiontranslations[$n],5,1)!=":" && substr($fieldoptiontranslations[$n],0,1)!=":")
-                            {
-                            $currentoptions[]=trim($fieldoption);
-                            debug("update_field: current field option: '" . $fieldoption . "'<br>");
-                            }
-                        else
-                            {
-                            # Support both 2 character and 5 character language codes (for example en, en-US).
-                            $p=strpos($fieldoptiontranslations[$n],':');                         
-                            $currentoptions[]=trim(substr($fieldoptiontranslations[$n],$p+1));
-                            debug("update_field: current field option: '" . trim(substr($fieldoptiontranslations[$n],$p+1)) . "'<br>");
-                            } 
-                        }
-                    }
+                $currentoptions[]=trim($fieldoption['name']); # Not a translatable field
+                debug("update_field: current field option: '" . trim($fieldoption['name']) . "'<br>");
                 }
-            $newvalues=explode(",",$value);
-            foreach($newvalues as $newvalue)
+            else
                 {
-                # Check if each new value exists in current options list
-                if(!in_array($newvalue,$currentoptions))
+                $default="";
+                for ($n=1;$n<count($fieldoptiontranslations);$n++)
                     {
-                    # Append the option and update the field
-                    //sql_query("update resource_type_field set options=concat(ifnull(options,''), ', " . escape_check(trim($newvalue)) . "') where ref='$field'");
-
-                    set_node(null,$field,escape_check(trim($newvalue)),null,null);
-
-                    $currentoptions[]=trim($newvalue);
-                    debug("update_field: field option added: '" . trim($newvalue) . "'<br>");
-                    }                    
+                    # Not a translated string, return as-is
+                    if (substr($fieldoptiontranslations[$n],2,1)!=":" && substr($fieldoptiontranslations[$n],5,1)!=":" && substr($fieldoptiontranslations[$n],0,1)!=":")
+                        {
+                        $currentoptions[]=trim($fieldoption);
+                        debug("update_field: current field option: '" . $fieldoption . "'<br>");
+                        }
+                    else
+                        {
+                        # Support both 2 character and 5 character language codes (for example en, en-US).
+                        $p=strpos($fieldoptiontranslations[$n],':');                         
+                        $currentoptions[]=trim(substr($fieldoptiontranslations[$n],$p+1));
+                        debug("update_field: current field option: '" . trim(substr($fieldoptiontranslations[$n],$p+1)) . "'<br>");
+                        } 
+                    }
                 }
             }
-        
-        # Fetch previous value
-        $existing=sql_value("select value from resource_data where resource='$resource' and resource_type_field='$field'","");
-                        
+        foreach($newvalues as $newvalue)
+            {
+            # Check if each new value exists in current options list
+            if('' != $newvalue && !in_array($newvalue,$currentoptions))
+                {
+                # Append the option and update the field
+                //sql_query("update resource_type_field set options=concat(ifnull(options,''), ', " . escape_check(trim($newvalue)) . "') where ref='$field'");
+                $newnode = set_node(null,$field,escape_check(trim($newvalue)),null,null);
+                $nodes_to_add[] = $newnode;
+
+                $currentoptions[]=trim($newvalue);
+                debug("update_field: field option added: '" . trim($newvalue) . "'<br>");
+                }
+            }
+        }
+    
+    # Fetch previous value
+    $existing=sql_value("select value from resource_data where resource='$resource' and resource_type_field='$field'","");
+     
+    if (in_array($fieldinfo['type'], $FIXED_LIST_FIELD_TYPES))
+        {
+        foreach($fieldoptions as $nodedata)
+            {
+            if (in_array($nodedata["name"],$newvalues))
+                {
+                $nodes_to_add[] = $nodedata["ref"];
+                }
+            else
+                {
+                $nodes_to_remove[] = $nodedata["ref"];
+                }
+            }
+        # Update resource_node table
+        delete_resource_nodes($resource,$nodes_to_remove);
+        if(count($nodes_to_add)>0)
+            {
+            add_resource_nodes($resource,$nodes_to_add);
+            }
+        }
 	if ($fieldinfo["keywords_index"])
 		{
 		$is_html=($fieldinfo["type"]==8);	
@@ -1052,11 +1226,11 @@ function update_field($resource,$field,$value)
 			remove_keyword_mappings($resource,i18n_get_indexable($existing),$field,$fieldinfo["partial_index"],false,'','',$is_html);
 			}
 		
-		if (in_array($fieldinfo['type'], array(2,3,7,9,12)) && substr($value,0,1) <> ','){
+		if (in_array($fieldinfo['type'], $FIXED_LIST_FIELD_TYPES) && substr($value,0,1) <> ','){
 			$value = ','.$value;
 		}
 		
-		$value=strip_leading_comma($value);	
+		//$value=strip_leading_comma($value);
 		
 		# Index the new value
 		add_keyword_mappings($resource,i18n_get_indexable($value),$field,$fieldinfo["partial_index"],false,'','',$is_html);
@@ -1627,7 +1801,6 @@ function write_metadata($path, $ref, $uniqid="")
 	{
 	// copys the file to tmp and runs exiftool on it	
 	// uniqid tells the tmp file to be placed in an isolated folder within tmp
-
 	global $exiftool_remove_existing,$storagedir,$exiftool_write,$exiftool_no_process,$mysql_charset,$exiftool_write_omit_utf8_conversion;
 
     # Fetch file extension and resource type.
@@ -1649,7 +1822,8 @@ function write_metadata($path, $ref, $uniqid="")
 				
 		$filename = pathinfo($path);
 		$filename = $filename['basename'];	
-		$tmpfile=get_temp_dir(false,$uniqid) . "/" . $filename;
+		$randstring=md5(mt_rand()); // Added to make sure that simultaneous downloads are not attempting to write to the same file
+		$tmpfile=get_temp_dir(false,$uniqid) . "/" . $randstring . "_" .  $filename;
 		copy($path,$tmpfile);
 		
         # Add the call to exiftool and some generic arguments to the command string.
@@ -1898,7 +2072,7 @@ function get_alternative_files($resource,$order_by="",$sort="")
 		$ordersort="";
 	}
 	$extrasql=hook("get_alternative_files_extra_sql","",array($resource));
-	return sql_query("select ref,name,description,file_name,file_extension,file_size,creation_date,alt_type from resource_alt_files where resource='".escape_check($resource)."' $extrasql order by ".escape_check($ordersort)." file_size desc");
+	return sql_query("select ref,name,description,file_name,file_extension,file_size,creation_date,alt_type from resource_alt_files where resource='".escape_check($resource)."' $extrasql order by ".escape_check($ordersort)." name asc, file_size desc");
 	}
 	
 function add_alternative_file($resource,$name,$description="",$file_name="",$file_extension="",$file_size=0,$alt_type='')
@@ -1953,6 +2127,9 @@ function delete_alternative_file($resource,$ref)
         
 	# Delete the database row
 	sql_query("delete from resource_alt_files where resource='$resource' and ref='$ref'");
+	
+	# Log the deletion
+	resource_log($resource,'y','');
 	
 	# Update disk usage
 	update_disk_usage($resource);
@@ -2072,7 +2249,7 @@ function notify_user_contributed_submitted($refs,$collection=0)
 	// Send a notification mail to the administrators when resources are moved from "User Contributed - Pending Submission" to "User Contributed - Pending Review"
 	global $notify_user_contributed_submitted,$applicationname,$email_notify,$baseurl,$lang,$use_phpmailer;
 	if (!$notify_user_contributed_submitted) {return false;} # Only if configured.
-	$htmlbreak="";
+	$htmlbreak="\r\n";
 	if ($use_phpmailer){$htmlbreak="<br><br>";}
 	
 	$list="";
@@ -2093,7 +2270,7 @@ function notify_user_contributed_submitted($refs,$collection=0)
 	$templatevars['url']=$baseurl . "/pages/search.php?search=!userpending";	
 	$templatevars['list']=$list;
 		
-	$message=$lang["userresourcessubmitted"] . "\n\n". $templatevars['list'] . $lang["viewalluserpending"] . "\n\n" . $templatevars['url'];
+	$message=$lang["userresourcessubmitted"] . "\n\n". $templatevars['list'] . "\n\n" . $lang["viewalluserpending"] . "\n\n" . $templatevars['url'];
 	$notificationmessage=$lang["userresourcessubmittednotification"];
 	$notify_users=get_notification_users(array("e-1","e0")); 
 	$message_users=array();
@@ -2117,11 +2294,11 @@ function notify_user_contributed_submitted($refs,$collection=0)
 		global $userref;
 		if($collection!=0)
 			{
-			message_add($message_users,$notificationmessage,$baseurl . "/pages/search.php?search=!contributions" . $userref . "&archive=-1",MESSAGE_ENUM_NOTIFICATION_TYPE_SCREEN,MESSAGE_DEFAULT_TTL_SECONDS,SUBMITTED_COLLECTION,$collection);
+			message_add($message_users,$notificationmessage,$baseurl . "/pages/search.php?search=!contributions" . $userref . "&archive=-1",$userref,MESSAGE_ENUM_NOTIFICATION_TYPE_SCREEN,MESSAGE_DEFAULT_TTL_SECONDS,SUBMITTED_COLLECTION,$collection);
 			}
 		else
 			{
-			message_add($message_users,$notificationmessage,$baseurl . "/pages/search.php?search=!contributions" . $userref . "&archive=-1",MESSAGE_ENUM_NOTIFICATION_TYPE_SCREEN,MESSAGE_DEFAULT_TTL_SECONDS,SUBMITTED_RESOURCE,(is_array($refs)?$refs[0]:$refs));
+			message_add($message_users,$notificationmessage,$baseurl . "/pages/search.php?search=!contributions" . $userref . "&archive=-1",$userref,MESSAGE_ENUM_NOTIFICATION_TYPE_SCREEN,MESSAGE_DEFAULT_TTL_SECONDS,SUBMITTED_RESOURCE,(is_array($refs)?$refs[0]:$refs));
 			}
 		}
 	}
@@ -2132,7 +2309,7 @@ function notify_user_contributed_unsubmitted($refs,$collection=0)
 	global $notify_user_contributed_unsubmitted,$applicationname,$email_notify,$baseurl,$lang,$use_phpmailer;
 	if (!$notify_user_contributed_unsubmitted) {return false;} # Only if configured.
 	
-	$htmlbreak="";
+	$htmlbreak="\r\n";
 	if ($use_phpmailer){$htmlbreak="<br><br>";}
 	
 	$list="";
@@ -2461,9 +2638,10 @@ function get_resource_access($resource)
 	global $k;
 	if ($k!="")
 		{
+        global $internal_share_access;
 		# External access - check how this was shared.
 		$extaccess=sql_value("select access value from external_access_keys where resource=".$ref." and access_key='" . escape_check($k) . "' and (expires is null or expires>now())",-1);
-		if ($extaccess!=-1) {return $extaccess;}
+		if ($extaccess!=-1 && (!$internal_share_access || ($internal_share_access && $extaccess<$access))) {return $extaccess;}
 		}
 	
 	global $uploader_view_override, $userref;
@@ -2493,7 +2671,8 @@ function get_resource_access($resource)
 		}
 	}
 
-	if ($access == 1 && get_edit_access($ref,$resourcedata['archive'],false,$resourcedata))
+	global $prevent_open_access_on_edit_for_active;
+	if ($access == 1 && get_edit_access($ref,$resourcedata['archive'],false,$resourcedata) && !$prevent_open_access_on_edit_for_active)
 		{
 		# If access is restricted and user has edit access, grant open access.
 		$access = 0;
@@ -3367,7 +3546,7 @@ function notify_user_resources_approved($refs)
 	// Send a notification mail to the user when resources have been approved
 	global $applicationname,$baseurl,$lang;	
 	debug("Emailing user notifications of resource approvals");	
-	$htmlbreak="";
+	$htmlbreak="\r\n";
 	global $use_phpmailer,$userref,$templatevars;
 	if ($use_phpmailer){$htmlbreak="<br><br>";}
 	$notifyusers=array();
@@ -3426,12 +3605,41 @@ function notify_user_resources_approved($refs)
 	
 		
 
-function get_original_imagesize($ref="",$path="", $extension="jpg")
+function get_original_imagesize($ref="",$path="", $extension="jpg", $forcefromfile=false)
 	{
 	$fileinfo=array();
 	if($ref=="" || $path==""){return false;}
 	global $imagemagick_path, $imagemagick_calculate_sizes;
 	$file=$path;
+	
+	$o_size=sql_query("select * from resource_dimensions where resource={$ref}");
+	if(!empty($o_size))
+		{
+		if(count($o_size)>1)
+			{
+			# delete all the records and start fresh. This is a band-aid should there be multiple records as a result of using api_search
+			sql_query("delete from resource_dimensions where resource={$ref}");
+			$o_size=false;
+			$forcefromfile=true;
+			}
+		else
+			{
+			$o_size=$o_size[0];
+			}
+		}
+	else
+		{
+		$o_size=false;
+		}
+		
+	if($o_size!==false && !$forcefromfile){
+		
+		$fileinfo[0]=$o_size['file_size'];
+		$fileinfo[1]=$o_size['width'];
+		$fileinfo[2]=$o_size['height'];
+		return $fileinfo;
+	}
+	
 	$filesize=filesize_unlimited($file);
 	
 	# imagemagick_calculate_sizes is normally turned off 
@@ -3452,8 +3660,15 @@ function get_original_imagesize($ref="",$path="", $extension="jpg")
 		preg_match('/^([0-9]+)x([0-9]+)$/ims',$identoutput,$smatches);
 		@list(,$sw,$sh) = $smatches;
 		if (($sw!='') && ($sh!=''))
-		  {
-			sql_query("insert into resource_dimensions (resource, width, height, file_size) values('". $ref ."', '". $sw ."', '". $sh ."', '" . $filesize . "')");
+			{
+			if(!$o_size)
+				{
+				sql_query("insert into resource_dimensions (resource, width, height, file_size) values('". $ref ."', '". $sw ."', '". $sh ."', '" . $filesize . "')");
+				}
+			else
+				{
+				sql_query("update resource_dimensions set width='". $sw ."', height='". $sh ."', file_size='" . $filesize . "' where resource={$ref}");
+				}
 			}
 		}	
 	else 
@@ -3464,8 +3679,15 @@ function get_original_imagesize($ref="",$path="", $extension="jpg")
 			
 		# Use GD to calculate the size
 		if (!((@list($sw,$sh) = @getimagesize($file))===false)&& !$rawfile)
-			{		
-			sql_query("insert into resource_dimensions (resource, width, height, file_size) values('". $ref ."', '". $sw ."', '". $sh ."', '" . $filesize . "')");
+			{
+			if(!$o_size)
+				{	
+				sql_query("insert into resource_dimensions (resource, width, height, file_size) values('". $ref ."', '". $sw ."', '". $sh ."', '" . $filesize . "')");
+				}
+			else
+				{
+				sql_query("update resource_dimensions set width='". $sw ."', height='". $sh ."', file_size='" . $filesize . "' where resource={$ref}");
+				}
 			}
 		else
 			{
@@ -3485,41 +3707,54 @@ function get_original_imagesize($ref="",$path="", $extension="jpg")
 			    if (!empty($ffprobe_array['width'] )) { $sw = intval($ffprobe_array['width']);  }
 			    if (!empty($ffprobe_array['height'])) { $sh = intval($ffprobe_array['height']); }
 			    if (isset($ffprobe_array['streams']) && is_array($ffprobe_array['streams']))
-				{
-				foreach( $ffprobe_array['streams'] as $stream )
-				    {
-				    if (!empty($stream['codec_type']) && $stream['codec_type'] === 'video')
 					{
-					$sw = intval($stream['width']);
-					$sh = intval($stream['height']);
-					break;
+					foreach( $ffprobe_array['streams'] as $stream )
+						{
+						if (!empty($stream['codec_type']) && $stream['codec_type'] === 'video')
+							{
+							$sw = intval($stream['width']);
+							$sh = intval($stream['height']);
+							break;
+							}
+						}
 					}
-				    }
 				}
-			    }
 
 			if ($sw!=='?' && $sh!=='?')
 			    {
 			    # Size could be calculated after all
-			    sql_query("insert into resource_dimensions (resource, width, height, file_size) values('". $ref ."', '". $sw ."', '". $sh ."', '" . $filesize . "')");
+			    if(!$o_size)
+					{
+					sql_query("insert into resource_dimensions (resource, width, height, file_size) values('". $ref ."', '". $sw ."', '". $sh ."', '" . $filesize . "')");
+					}
+				else
+					{
+					sql_query("update resource_dimensions set width='". $sw ."', height='". $sh ."', file_size='" . $filesize . "' where resource={$ref}");
+					}
 			    }
 			else
 			    {
 
 			    # Size cannot be calculated.
 			    $sw="?";$sh="?";
-
-			    # Insert a dummy row to prevent recalculation on every view.
-			    sql_query("insert into resource_dimensions (resource, width, height, file_size) values('". $ref ."','0', '0', '" . $filesize . "')");
-			    }
+				if(!$o_size)
+					{
+					# Insert a dummy row to prevent recalculation on every view.
+					sql_query("insert into resource_dimensions (resource, width, height, file_size) values('". $ref ."','0', '0', '" . $filesize . "')");
+					}
+				else
+					{
+					sql_query("update resource_dimensions set width='0', height='0', file_size='" . $filesize . "' where resource={$ref}");
+					}
+				}
 			}
 		}
-
-
-	$fileinfo[0]=$filesize;
-	$fileinfo[1]=$sw;
-	$fileinfo[2]=$sh;
-	return $fileinfo;
+		
+		
+		$fileinfo[0]=$filesize;
+		$fileinfo[1]=$sw;
+		$fileinfo[2]=$sh;
+		return $fileinfo;
 	
 	}
         

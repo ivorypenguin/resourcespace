@@ -227,6 +227,7 @@ if ($submitted != "")
 	# Build a list of files to download
 	for ($n=0;$n<count($result);$n++)
 		{
+		resource_type_config_override($result[$n]["resource_type"]);
 		$copy=false; 
 		$ref=$result[$n]["ref"];
 		# Load access level
@@ -529,7 +530,7 @@ if ($submitted != "")
 
 		if($use_zip_extension)
 			{
-			$zip->addFile($csv_file, '/Col-' . $collection . '-metadata-export.csv');
+			$zip->addFile($csv_file, 'Col-' . $collection . '-metadata-export.csv');
 			}
 		else
 			{

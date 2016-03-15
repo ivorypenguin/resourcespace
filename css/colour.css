@@ -214,6 +214,10 @@ div.autocomplete ul li {color: #000;}
 .treetext a:visited {color: #000000; background: none;}
 .treetext a:hover {color: #000000; background: none;}
 .treetext a:active {color: #000000; background: none;}
+
+.plupload_container {padding:0px;}
+.plupload_logo {background-image:none;}
+.plupload_header_content {color:#1c94c4;}
 li.plupload_droptext {color:#999;}
 .plupload_file_size{color:#777;}
 #pluploader .plupload_header, #pluploader .plupload_add, #pluploader .plupload_start, #pluploader .plupload_file {opacity:1;} 

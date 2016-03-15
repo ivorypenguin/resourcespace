@@ -130,6 +130,13 @@ if ((getval("logout","")!="") && array_key_exists("user",$_COOKIE))
     rs_setcookie('search', '');
     rs_setcookie('saved_offset', '');
     rs_setcookie('saved_archive', '');
+    rs_setcookie('restypes', '');
+    
+    // Blank cookies under /pages as well
+    rs_setcookie('search', '', 0, $baseurl_short . 'pages');
+    rs_setcookie('saved_offset', '', 0, $baseurl_short . 'pages');
+    rs_setcookie('saved_archive', '', 0, $baseurl_short . 'pages');
+    rs_setcookie('restypes', '', 0, $baseurl_short . 'pages');
     
     unset($username);
 	

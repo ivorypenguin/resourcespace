@@ -324,14 +324,19 @@ if(!$user_select_internal)
 	<div class="Question">
 	<label for="groupselect"><?php echo $lang["externalshare_using_permissions_from_user_group"] ?></label>
 	<select id="groupselect" name="usergroup" class="stdwidth">
-	<?php $grouplist=get_usergroups(true);
-	foreach ($grouplist as $group)
-		{
-		?>
-		<option value="<?php echo $group["ref"] ?>" <?php if ($usergroup==$group["ref"]) { ?>selected<?php } ?>><?php echo $group["name"] ?></option>
-		<?php
-		}
-	?>
+    <?php
+    $grouplist = get_usergroups(true);
+    foreach($grouplist as $group)
+        {
+        if(!empty($allowed_external_share_groups) && !in_array($group['ref'], $allowed_external_share_groups))
+            {
+            continue;
+            }
+        ?>
+        <option value="<?php echo $group["ref"] ?>" <?php if ($usergroup==$group["ref"]) { ?>selected<?php } ?>><?php echo $group["name"] ?></option>
+        <?php
+        }
+        ?>
 	</select>
 	<div class="clearerleft"> </div>
 	</div>

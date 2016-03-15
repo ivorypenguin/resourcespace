@@ -25,7 +25,7 @@ if ($new_size_id!="")
 	exit;
 	}
 
-$ref=getval("ref","");
+$ref = getvalescaped('ref', '');
 
 if (!sql_value("select ref as value from preview_size where ref='{$ref}' and internal<>'1'",false) && !$internal_preview_sizes_editable)		// note that you are not allowed to edit internal sizes without $internal_preview_sizes_editable=true
 	{

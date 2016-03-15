@@ -343,7 +343,7 @@ function delete_collection($ref)
 	# Deletes the collection with reference $ref
 	global $home_dash;
 	
-	hook("beforedeletecollection");
+	hook("beforedeletecollection","",array($ref));
 	sql_query("delete from collection where ref='$ref'");
 	sql_query("delete from collection_resource where collection='$ref'");
 	sql_query("delete from collection_keyword where collection='$ref'");
@@ -407,10 +407,9 @@ function search_public_collections($search="", $order_by="name", $sort="ASC", $e
 	    	{
 	    	   if (substr($keywords[$n],0,16)=="collectiontitle:") $newsearch.=" ".substr($keywords[$n],16);    // wildcard * - %
 	    	}
-	    	if (strpos($newsearch,"*")===false) $newsearch.="%";
-	    	else $newsearch=str_replace("*", "%", $newsearch);
-	    	$newsearch=trim($newsearch);
-	    	$sql="and c.name like '$newsearch'";
+
+        $newsearch = strpos($newsearch,'*')===false ? '%' . trim($newsearch) . '%' : str_replace('*', '%', trim($newsearch));
+        $sql="and c.name like '$newsearch'";
 	    	
 	    }
 	if (strlen($search)>1 || is_numeric($search))
@@ -1963,7 +1962,7 @@ function compile_collection_actions(array $collection_data, $top_actions)
            $edit_all_checkperms, $preview_all, $order_by, $sort, $archive, $contact_sheet_link_on_collection_bar,
            $show_searchitemsdiskusage, $emptycollection, $remove_resources_link_on_collection_bar, $count_result,
            $download_usage, $home_dash, $top_nav_upload_type, $pagename, $offset, $col_order_by, $find, $default_sort,
-           $starsearch, $restricted_share, $hidden_collections;
+           $starsearch, $restricted_share, $hidden_collections, $internal_share_access;
 
     $options = array();
 	$o=0;
@@ -2022,7 +2021,7 @@ function compile_collection_actions(array $collection_data, $top_actions)
         }
 
     // Select collection option - not for collection bar
-    if($pagename != 'collections' && $k == '' && !checkperm('b')
+    if($pagename != 'collections' && ($k == '' || $internal_share_access) && !checkperm('b')
     	&& ($pagename == 'themes' || $pagename === 'collection_manage' || $pagename === 'resource_collection_list' || $top_actions))
         {
         $options[$o]['value'] = 'select_collection';
@@ -2031,7 +2030,7 @@ function compile_collection_actions(array $collection_data, $top_actions)
         }
 
     // Edit Collection
-    if((($userref == $collection_data['user']) || (checkperm('h')))  && $k == '') 
+    if((($userref == $collection_data['user']) || (checkperm('h')))  && ($k == '' || $internal_share_access)) 
         {
         $extra_tag_attributes = sprintf('
                 data-url="%spages/collection_edit.php?ref=%s"
@@ -2048,7 +2047,7 @@ function compile_collection_actions(array $collection_data, $top_actions)
         }
 
     // Upload to collection
-    if(((checkperm('c') || checkperm('d')) && $collection_data['savedsearch'] == 0 && ($userref == $collection_data['user'] || $collection_data['allow_changes'] == 1 || checkperm('h'))) && $k == '')
+    if(((checkperm('c') || checkperm('d')) && $collection_data['savedsearch'] == 0 && ($userref == $collection_data['user'] || $collection_data['allow_changes'] == 1 || checkperm('h'))) && ($k == '' || $internal_share_access))
         {
         $data_attribute['url'] = sprintf('%spages/edit.php?uploader=%s&ref=-%s&collection_add=%s',
             $baseurl_short,
@@ -2064,7 +2063,7 @@ function compile_collection_actions(array $collection_data, $top_actions)
         }
 
     // Home_dash is on, AND NOT Anonymous use, AND (Dash tile user (NOT with a managed dash) || Dash Tile Admin)
-    if(!$top_actions && $home_dash && $k == '' && checkPermission_dashcreate())
+    if(!$top_actions && $home_dash && ($k == '' || $internal_share_access) && checkPermission_dashcreate())
         {
         $data_attribute['url'] = sprintf('
             %spages/dash_tile.php?create=true&tltype=srch&promoted_resource=true&freetext=true&all_users=1&link=/pages/search.php?search=!collection%s&order_by=relevance&sort=DESC
@@ -2125,7 +2124,7 @@ function compile_collection_actions(array $collection_data, $top_actions)
         }
 
     // Contact Sheet
-    if($k=="" && $contact_sheet == true && ($manage_collections_contact_sheet_link || $contact_sheet_link_on_collection_bar))
+    if(($k=="" || $internal_share_access) && $contact_sheet == true && ($manage_collections_contact_sheet_link || $contact_sheet_link_on_collection_bar))
         {
         $data_attribute = array(
             'url' => sprintf('%spages/contactsheet_settings.php?ref=%s',
@@ -2141,7 +2140,7 @@ function compile_collection_actions(array $collection_data, $top_actions)
         }
 
     // Share
-    if($k=="" && $manage_collections_share_link && $allow_share && (checkperm('v') || checkperm ('g') || (collection_min_access($collection_data['ref'])<=1 && $restricted_share))) 
+    if(($k=="" || $internal_share_access) && $manage_collections_share_link && $allow_share && (checkperm('v') || checkperm ('g') || (collection_min_access($collection_data['ref'])<=1 && $restricted_share))) 
         {
         $extra_tag_attributes = sprintf('
                 data-url="%spages/collection_share.php?ref=%s"
@@ -2158,7 +2157,7 @@ function compile_collection_actions(array $collection_data, $top_actions)
         }
 
     // Remove
-    if($k=="" && $manage_collections_remove_link && $userref != $collection_data['user'] && !checkperm('b'))
+    if(($k=="" || $internal_share_access) && $manage_collections_remove_link && $userref != $collection_data['user'] && !checkperm('b'))
         {
         $options[$o]['value']='remove_collection';
 		$options[$o]['label']=$lang['action-remove'];
@@ -2166,7 +2165,7 @@ function compile_collection_actions(array $collection_data, $top_actions)
         }
 
     // Delete
-    if($k=="" && (($userref == $collection_data['user']) || checkperm('h')) && ($collection_data['cant_delete'] == 0)) 
+    if(($k=="" || $internal_share_access) && (($userref == $collection_data['user']) || checkperm('h')) && ($collection_data['cant_delete'] == 0)) 
         {
         $options[$o]['value']='delete_collection';
 		$options[$o]['label']=$lang['action-delete'];
@@ -2174,7 +2173,7 @@ function compile_collection_actions(array $collection_data, $top_actions)
         }
 
     // Collection Purge
-    if($k=="" && $collection_purge && isset($collections) && checkperm('e0') && $collection_data['cant_delete'] == 0)
+    if(($k=="" || $internal_share_access) && $collection_purge && isset($collections) && checkperm('e0') && $collection_data['cant_delete'] == 0)
         {
         $options[$o]['value']='purge_collection';
 		$options[$o]['label']=$lang['purgeanddelete'];
@@ -2182,7 +2181,7 @@ function compile_collection_actions(array $collection_data, $top_actions)
         }
 
     // Collection log
-    if($k=="" && ($userref== $collection_data['user'] || (checkperm('h'))))
+    if(($k=="" || $internal_share_access) && ($userref== $collection_data['user'] || (checkperm('h'))))
         {
         $extra_tag_attributes = sprintf('
                 data-url="%spages/collection_log.php?ref=%s"
@@ -2199,7 +2198,7 @@ function compile_collection_actions(array $collection_data, $top_actions)
         }
         
     // View all
-    if($k=="" && (isset($collection_data["c"]) && $collection_data["c"]>0) || count($result) > 0)
+    if(($k=="" || $internal_share_access) && (isset($collection_data["c"]) && $collection_data["c"]>0) || count($result) > 0)
         {
         $data_attribute['url'] =  $baseurl_short . 'pages/search.php?search=!collection' . urlencode($collection_data['ref']) . "&k=" . urlencode($k);
         $options[$o]['value']='view_all_resources_in_collection';
@@ -2210,7 +2209,7 @@ function compile_collection_actions(array $collection_data, $top_actions)
 
     // Edit all
     # If this collection is (fully) editable, then display an edit all link
-    if($k=="" && $show_edit_all_link && (count($result) > 0))
+    if(($k=="" || $internal_share_access) && $show_edit_all_link && (count($result) > 0))
         {
         if(!$edit_all_checkperms || allow_multi_edit($collection_data['ref'])) 
             {
@@ -2231,7 +2230,7 @@ function compile_collection_actions(array $collection_data, $top_actions)
 
     // Delete all
     // Note: functionality moved from edit collection page
-    if($k=="" 
+    if(($k=="" || $internal_share_access) 
 		&& !$top_actions
         && (count($result) != 0 || $count_result != 0)
         && !(isset($allow_resource_deletion) && !$allow_resource_deletion)
@@ -2245,7 +2244,7 @@ function compile_collection_actions(array $collection_data, $top_actions)
         }
 
     // Preview all
-    if(count($result) != 0 && $k == '' && $preview_all)
+    if(count($result) != 0 && ($k=="" || $internal_share_access) && $preview_all)
         {
         $extra_tag_attributes = sprintf('
                 data-url="%spages/preview_all.php?ref=%s"
@@ -2262,7 +2261,7 @@ function compile_collection_actions(array $collection_data, $top_actions)
         }
 
     // Remove all
-    if($k == '' && isset($emptycollection) && $remove_resources_link_on_collection_bar && collection_writeable($collection_data['ref']))
+    if(($k=="" || $internal_share_access) && isset($emptycollection) && $remove_resources_link_on_collection_bar && collection_writeable($collection_data['ref']))
         {
         $data_attribute['url'] = sprintf('%spages/collections.php?emptycollection=%s&removeall=true&submitted=removeall&ajax=true',
             $baseurl_short,
@@ -2276,7 +2275,7 @@ function compile_collection_actions(array $collection_data, $top_actions)
         }
     
     // Edit Previews
-	if ($k == '' && $count_result > 0 && ($userref == $collection_data['user'] || $collection_data['allow_changes'] == 1 || checkperm('h')) && allow_multi_edit($collection_data['ref']))
+	if (($k=="" || $internal_share_access) && $count_result > 0 && ($userref == $collection_data['user'] || $collection_data['allow_changes'] == 1 || checkperm('h')) && allow_multi_edit($collection_data['ref']))
 		{
 		$main_pages   = array('search', 'collection_manage', 'collection_public', 'themes');
 		$back_to_page = (in_array($pagename, $main_pages) ? htmlspecialchars($pagename) : '');
@@ -2298,7 +2297,7 @@ function compile_collection_actions(array $collection_data, $top_actions)
 		}
 
     // Show disk usage
-    if($k == '' && !$top_actions && $show_searchitemsdiskusage) 
+    if(($k=="" || $internal_share_access) && !$top_actions && $show_searchitemsdiskusage) 
         {
         $extra_tag_attributes = sprintf('
                 data-url="%spages/search_disk_usage.php?search=!collection%s&k=%s"
@@ -2316,7 +2315,7 @@ function compile_collection_actions(array $collection_data, $top_actions)
         }
 
     // CSV export of collection metadata
-    if(!$top_actions && $k == '')
+    if(!$top_actions && ($k=="" || $internal_share_access))
         {
     	if(empty($order_by))
     		{

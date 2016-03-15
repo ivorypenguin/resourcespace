@@ -31,9 +31,9 @@ $introtext=text("introtext");
 		<?php if (!(!checkperm("d")&&!(checkperm('c') && checkperm('e0')))) { ?>
 		<li><a href="<?php echo $baseurl_short?>pages/contribute.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["mycontributions"]?></a></li>
 		<?php } ?>
-		
+		<?php if (!checkperm("b")){?>
 		<li><a href="<?php echo $baseurl_short?>pages/collection_manage.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["mycollections"]?></a></li>
-		
+		<?php } ?>
 		<script>message_poll();</script>
 		<li><a href="<?php echo $baseurl_short?>pages/user/user_messages.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["mymessages"]; 
 		?></a><span style="display: none;" class="MessageCountPill"></span></li>

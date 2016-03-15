@@ -10,6 +10,8 @@ include_once dirname(__FILE__)."/../include/resource_functions.php";
 include_once dirname(__FILE__)."/../include/search_functions.php";
 include_once dirname(__FILE__) . '/../include/render_functions.php';
 
+// Set a flag for logged in users if $external_share_view_as_internal is set and logged on user is accessing an external share
+$internal_share_access = ($k!="" && $external_share_view_as_internal && isset($is_authenticated) && $is_authenticated);
 
 // copied from collection_manage to support compact style collection adds (without redirecting to collection_manage)
 $addcollection=getvalescaped("addcollection","");
@@ -33,7 +35,7 @@ if($emptycollection!='' && getvalescaped("submitted","")=='removeall' && getval(
     }
     
 # Disable checkboxes for external users.
-if ($k!="") {$use_checkboxes_for_selection=false;}
+if ($k!="" && !$internal_share_access) {$use_checkboxes_for_selection=false;}
 
 if(!isset($thumbs))
     {
@@ -65,7 +67,7 @@ if ($collection!="")
 	hook("prechangecollection");
 	#change current collection
 	
-	if ($k=="" && $collection==-1)
+	if (($k=="" || $internal_share_access) && $collection==-1)
 		{
 		# Create new collection
 		if ($entername!=""){ $name=$entername;} 
@@ -80,7 +82,7 @@ if ($collection!="")
 		{
                 $validcollection=sql_value("select ref value from collection where ref='$collection'",0);
                 # Switch the existing collection
-		if ($k=="") {set_user_collection($userref,$collection);}
+		if ($k=="" || $internal_share_access) {set_user_collection($userref,$collection);}
 		$usercollection=$collection;
 		}
 
@@ -93,7 +95,7 @@ $cinfo=get_collection($usercollection);
 
 # Check to see if the user can edit this collection.
 $allow_reorder=false;
-if (($k=="") && (($userref==$cinfo["user"]) || ($cinfo["allow_changes"]==1) || (checkperm("h"))))
+if (($k=="" || $internal_share_access) && (($userref==$cinfo["user"]) || ($cinfo["allow_changes"]==1) || (checkperm("h"))))
 	{
 	$allow_reorder=true;
 	}	
@@ -600,7 +602,7 @@ else if ($basket)
 	</div>
 	<?php	
 	}
-elseif ($k!="")
+elseif ($k!="" && !$internal_share_access)
 	{
 	# ------------- Anonymous access, slightly different display ------------------
 	$tempcol=$cinfo;
@@ -743,7 +745,7 @@ elseif ($k!="")
 
 <?php 
 # Loop through saved searches
-if (isset($cinfo['savedsearch'])&&$cinfo['savedsearch']==null  && $k=='')
+if (isset($cinfo['savedsearch'])&&$cinfo['savedsearch']==null  && ($k=='' || $internal_share_access))
 	{ // don't include saved search item in result if this is a smart collection  
 
 	# Setting the save search icon
@@ -832,7 +834,7 @@ if ($count_result>0)
 		</div>
 		<?php } ?>
 	
-		<?php if ($k=="") { ?><div class="CollectionPanelInfo">
+		<?php if ($k=="" || $internal_share_access) { ?><div class="CollectionPanelInfo">
 		<?php if (($feedback) || (($collection_reorder_caption || $collection_commenting))) { ?>
 		<span class="IconComment <?php if ($result[$n]["commentset"]>0) { ?>IconCommentAnim<?php } ?>"><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_comment.php?ref=<?php echo urlencode($ref) ?>&collection=<?php echo urlencode($usercollection) ?>"><img src="<?php echo $baseurl_short?>gfx/interface/sp.gif" alt="" width="14" height="12" /></a></span>		
 		<?php } ?>
