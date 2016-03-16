@@ -325,9 +325,20 @@ if (strpos($search,"!")!==false &&  substr($search,0,11)!="!properties") {$resty
 $search=refine_searchstring($search);
 if (strpos($search,"!")===false || substr($search,0,11)=="!properties") {rs_setcookie('search', $search);}
 hook('searchaftersearchcookie');
-if (!hook("replacesearch")) {
-	$result=do_search($search,$restypes,$order_by,$archive,$per_page+$offset,$sort,false,$starsearch,false,false,$daylimit, getvalescaped("go",""));
-}
+
+if ($search_includes_resources || substr($search,0,1)==="!")
+	{
+	$search_includes_resources=true; // Always enable resource display for special searches.
+	if (!hook("replacesearch"))
+		{	
+		$result=do_search($search,$restypes,$order_by,$archive,$per_page+$offset,$sort,false,$starsearch,false,false,$daylimit, getvalescaped("go",""));
+		}
+	}
+else
+	{
+	$result=array(); # Do not return resources (e.g. for collection searching only)
+	}
+
 if(($k=="" || $internal_share_access) && strpos($search,"!")===false && $archive==0){$collections=do_collections_search($search,$restypes);} // don't do this for external shares
 
 # Allow results to be processed by a plugin
@@ -1015,7 +1026,7 @@ if (!hook("replacesearchheader")) # Always show search header now.
 			{
 			include "../include/search_public.php";
 			}
-
+	if ($search_includes_resources) {
 	
 	# work out common keywords among the results
 	if ((count($result)>$suggest_threshold) && (strpos($search,"!")===false) && ($suggest_threshold!=-1))
@@ -1121,6 +1132,7 @@ if (!hook("replacesearchheader")) # Always show search header now.
             hook("customdisplaymode");
 
             }
+	}
         }
     # Listview - Add closing tag if a list is displayed.
     if ($list_displayed==true)
@@ -1135,7 +1147,7 @@ if (!hook("replacesearchheader")) # Always show search header now.
         # Display keys (only keys used in the current search view).
         if (!hook("replacesearchkey"))
             {
-            if (is_array($result) && count($result)>0)
+            if (is_array($result) && count($result)>0 && $search_includes_resources)
                 { ?>
                 <div class="BottomInpageKey"><?php
                     echo $lang["key"] . " ";

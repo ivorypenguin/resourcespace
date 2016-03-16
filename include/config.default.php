@@ -1385,6 +1385,8 @@ $simple_search_dropdown_filtering=false;
 $search_includes_themes=false;
 $search_includes_public_collections=false;
 $search_includes_user_collections=false;
+$search_includes_resources=true;
+
 # Should the Clear button leave collection searches off by default?
 $clear_button_unchecks_collections=true;
 
