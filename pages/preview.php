@@ -31,10 +31,10 @@ $page=getvalescaped("page",1);
 $alternative=getvalescaped("alternative",-1);
 if (strpos($search,"!")!==false) {$restypes="";}
 
-$default_sort="DESC";
-if (substr($order_by,0,5)=="field"){$default_sort="ASC";}
-$sort=getval("sort",$default_sort);
-if($sort != 'ASC' || $sort != 'DESC') {$sort = $default_sort;}
+$default_sort_direction="DESC";
+if (substr($order_by,0,5)=="field"){$default_sort_direction="ASC";}
+$sort=getval("sort",$default_sort_direction);
+if($sort != 'ASC' || $sort != 'DESC') {$sort = $default_sort_direction;}
 
 # next / previous resource browsing
 $go=getval("go","");

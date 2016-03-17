@@ -40,9 +40,9 @@ $video_category = getvalescaped("video_category",""); // This is the uploading v
 if ($youtube_publish_url_field>0){$youtube_url=sql_value("select value from resource_data where resource='$ref' and resource_type_field=$youtube_publish_url_field", "");}
 $youtube_error=false;
 
-$default_sort="DESC";
-if (substr($order_by,0,5)=="field"){$default_sort="ASC";}
-$sort=getval("sort",$default_sort);
+$default_sort_direction="DESC";
+if (substr($order_by,0,5)=="field"){$default_sort_direction="ASC";}
+$sort=getval("sort",$default_sort_direction);
 
 if ($youtube_publish_client_id=="" || $youtube_publish_client_secret=="")
 		{

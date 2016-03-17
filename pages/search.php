@@ -246,9 +246,9 @@ else {$daylimit="";} // clear cookie for new search
 
 # Most sorts such as popularity, date, and ID should be descending by default,
 # but it seems custom display fields like title or country should be the opposite.
-$default_sort_order="DESC";
-if (substr($order_by,0,5)=="field"){$default_sort_order="ASC";}
-$sort=getvalescaped("sort",$default_sort_order);rs_setcookie('saved_sort', $sort);
+$default_sort_direction="DESC";
+if (substr($order_by,0,5)=="field"){$default_sort_direction="ASC";}
+$sort=getvalescaped("sort",$default_sort_direction);rs_setcookie('saved_sort', $sort);
 $revsort = ($sort=="ASC") ? "DESC" : "ASC";
 
 ## If displaying a collection

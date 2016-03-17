@@ -21,13 +21,13 @@ if(strpos($search, '!') !== false)
 
 $archive      = getvalescaped('archive', 0, true);
 $starsearch   = getvalescaped('starsearch', '');
-$default_sort = 'DESC';
+$default_sort_direction = 'DESC';
 if(substr($order_by, 0, 5) == 'field')
     {
-    $default_sort = 'ASC';
+    $default_sort_direction = 'ASC';
     }
 
-$sort               = getval('sort', $default_sort);
+$sort               = getval('sort', $default_sort_direction);
 $metadata           = get_resource_field_data($ref, false, true, -1, getval('k', '') != ''); 
 $filename           = $ref;
 $download           = getval('download', '') != '';

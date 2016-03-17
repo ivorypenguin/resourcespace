@@ -317,7 +317,8 @@ if(!hook("replace_user_request_required_key"))
 	<p><sup>*</sup> <?php echo $lang["requiredfield"] ?></p>
 	<?php
 	}
-    
-include "../include/footer.php";
 ?>
 </div><!-- end of login_box -->
+<?php
+include "../include/footer.php";
+

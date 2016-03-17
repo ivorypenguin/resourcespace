@@ -17,8 +17,8 @@ $restypes     = getvalescaped("restypes", "");
 if (strpos($search,"!") !== false) { $restypes = ""; }
 $archive      = getvalescaped("archive", 0, true);
 $starsearch   = getvalescaped("starsearch", "");
-$default_sort = (substr($order_by,0,5) == "field") ? "ASC" : "DESC";
-$sort         = getval("sort", $default_sort);
+$default_sort_direction = (substr($order_by,0,5) == "field") ? "ASC" : "DESC";
+$sort         = getval("sort", $default_sort_direction);
 
 # Check if editing existing external share
 $editaccess   = getvalescaped("editaccess", "");

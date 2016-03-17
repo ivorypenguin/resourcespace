@@ -28,17 +28,17 @@ $search=getvalescaped("search","");
 if (strpos($search,"!")===false) {rs_setcookie('search', $search);} # store the search in a cookie if not a special search
 $offset=getvalescaped("offset",0);if (strpos($search,"!")===false) {rs_setcookie('saved_offset', $offset);}
 if ((!is_numeric($offset)) || ($offset<0)) {$offset=0;}
-$order_by=getvalescaped("order_by",$default_sort);if (strpos($search,"!")===false) {rs_setcookie('saved_order_by', $order_by);}
-if ($order_by=="") {$order_by=$default_sort;}
+$order_by=getvalescaped("order_by",$default_sort_direction);if (strpos($search,"!")===false) {rs_setcookie('saved_order_by', $order_by);}
+if ($order_by=="") {$order_by=$default_sort_direction;}
 $per_page=getvalescaped("per_page",$default_perpage);rs_setcookie('per_page', $per_page);
 $archive=getvalescaped("archive",0);if (strpos($search,"!")===false) {rs_setcookie('saved_archive', $archive);}
 $jumpcount=0;
 
 # Most sorts such as popularity, date, and ID should be descending by default,
 # but it seems custom display fields like title or country should be the opposite.
-$default_sort="DESC";
-if (substr($order_by,0,5)=="field"){$default_sort="ASC";}
-$sort=getval("sort",$default_sort);rs_setcookie('saved_sort', $sort);
+$default_sort_direction="DESC";
+if (substr($order_by,0,5)=="field"){$default_sort_direction="ASC";}
+$sort=getval("sort",$default_sort_direction);rs_setcookie('saved_sort', $sort);
 $revsort = ($sort=="ASC") ? "DESC" : "ASC";
 
 
@@ -69,9 +69,9 @@ $page=getvalescaped("page",1);
 $alternative=getvalescaped("alternative",-1);
 if (strpos($search,"!")!==false) {$restypes="";}
 
-$default_sort="DESC";
-if (substr($order_by,0,5)=="field"){$default_sort="ASC";}
-$sort=getval("sort",$default_sort);
+$default_sort_direction="DESC";
+if (substr($order_by,0,5)=="field"){$default_sort_direction="ASC";}
+$sort=getval("sort",$default_sort_direction);
 $headerinsert="
 	 <!--[if lt IE 7]><link rel='stylesheet' type='text/css' href='../css/ie.css'><![endif]-->
 ";
