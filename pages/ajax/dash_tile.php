@@ -34,18 +34,49 @@ if(isset($user_rawtile) && !empty($user_rawtile))
 /* 
  * Reorder Tile
  */
-$index=getvalescaped("new_index","",TRUE);
-if(!empty($index) && isset($usertile))
-	{
-	if($index > $usertile["order_by"])
-		{$index+=5;}
-	else 
-		{$index-=5;}
-	update_user_dash_tile_order($userref,$usertile["ref"],$index);
-	reorder_user_dash($userref);
-	exit("Tile ".$usertile["ref"]." at index: ".($index));
+$index               = getvalescaped('new_index', '', true);
+$selected_user_group = getvalescaped('selected_user_group', '', true);
+
+// Re-order user tiles
+if(!empty($index) && isset($usertile) && '' == $selected_user_group)
+    {
+    if($index > $usertile["order_by"])
+        {$index+=5;}
+    else 
+        {$index-=5;}
+    update_user_dash_tile_order($userref,$usertile["ref"],$index);
+    reorder_user_dash($userref);
+    exit("Tile ".$usertile["ref"]." at index: ".($index));
+    }
+
+// Re-order user group tiles
+if(!empty($index) && isset($tile) && !isset($usertile) && '' != $selected_user_group)
+    {
+    $usergroup_tile = get_usergroup_tile($tile['ref'], $selected_user_group);
+    if(0 == count($usergroup_tile))
+        {
+        exit($lang['nodashtilefound']);
+        }
+
+    if($index > $usergroup_tile['default_order_by'])
+        {
+        $index += 5;
+        }
+    else 
+        {
+        $index -= 5;
+        }
+
+    update_usergroup_dash_tile_order($selected_user_group, $usergroup_tile['ref'], $index);
+    reorder_usergroup_dash($selected_user_group);
+
+    log_activity($lang['dashtile'], LOG_CODE_REORDERED, $index, 'usergroup_dash_tile', 'default_order_by', $usergroup_tile['ref']);
+
+    exit("Tile {$usergroup_tile['ref']} at index: {$index}");
 	}
-if(!empty($index) && isset($tile) && !isset($usertile))
+
+// Re-order default dash tiles
+if(!empty($index) && isset($tile) && !isset($usertile) && '' == $selected_user_group)
 	{
 	if($index > $tile["default_order_by"])
 		{$index+=5;}

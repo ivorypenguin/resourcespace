@@ -949,7 +949,7 @@ function get_user_by_email($email)
     return $return;
 }
 
-function get_usergroups($usepermissions=false,$find="")
+function get_usergroups($usepermissions = false, $find = '', $id_name_pair_array = false)
 {
     # Returns a list of user groups. The standard user groups are translated using $lang. Custom user groups are i18n translated.
     # Puts anything starting with 'General Staff Users' - in the English default names - at the top (e.g. General Staff).
@@ -991,6 +991,19 @@ function get_usergroups($usepermissions=false,$find="")
         }
         $return = array_values($return); # Reassigns the indices.
     }
+
+    // Return only an array with ref => name pairs
+    if($id_name_pair_array)
+        {
+        $return_id_name_array = array();
+
+        foreach($return as $user_group)
+            {
+            $return_id_name_array[$user_group['ref']] = $user_group['name'];
+            }
+
+        return $return_id_name_array;
+        }
 
     return $return;
 
@@ -1034,7 +1047,7 @@ if(!function_exists('save_user')){
 */
 function save_user($ref)
     {
-    global $lang, $allow_password_email;
+    global $lang, $allow_password_email, $home_dash;
 
     # Save user details, data is taken from the submitted form.
     if(getval('deleteme', '') != '')
@@ -1048,6 +1061,9 @@ function save_user($ref)
         }
     else
         {
+        $current_user_data = get_user($ref);
+
+        // Get submitted values
         $username               = trim(getvalescaped('username', ''));
         $password               = trim(getvalescaped('password', ''));
         $fullname               = trim(getvalescaped('fullname', ''));
@@ -1109,7 +1125,12 @@ function save_user($ref)
         log_activity(null, LOG_CODE_EDITED, $username, 'user', 'username', $ref);
         log_activity(null, LOG_CODE_EDITED, $fullname, 'user', 'fullname', $ref);
         log_activity(null, LOG_CODE_EDITED, $email, 'user', 'email', $ref);
-        log_activity(null, LOG_CODE_EDITED, $usergroup, 'user', 'usergroup', $ref);
+
+        if(isset($current_user_data['usergroup']) && $current_user_data['usergroup'] != $usergroup)
+            {
+            log_activity(null, LOG_CODE_EDITED, $usergroup, 'user', 'usergroup', $ref);
+            }
+
         log_activity(null, LOG_CODE_EDITED, $ip_restrict, 'user', 'ip_restrict', $ref, null, '');
         log_activity(null, LOG_CODE_EDITED, $search_filter_override, 'user', 'search_filter_override', $ref, null, '');
         log_activity(null, LOG_CODE_EDITED, $expires, 'user', 'account_expires', $ref);
@@ -1127,6 +1148,19 @@ function save_user($ref)
         comments='" . $comments . "',
         approved='" . ((getval('approved', '') == "") ? '0' : '1') . "' $additional_sql where ref='$ref'");
         }
+
+        // Add user group dash tiles as soon as we've changed the user group
+        if($home_dash)
+            {
+            // If user group has changed, remove all user dash tiles that were valid for the old user group
+            if((isset($current_user_data['usergroup']) && '' != $current_user_data['usergroup']) && $current_user_data['usergroup'] != $usergroup)
+                {
+                sql_query("DELETE FROM user_dash_tile WHERE user = '{$ref}' AND dash_tile IN (SELECT dash_tile FROM usergroup_dash_tile WHERE usergroup = '{$current_user_data['usergroup']}')");
+                }
+
+            include __DIR__ . '/dash_functions.php';
+            build_usergroup_dash($usergroup, $ref);
+            }
 
     if($allow_password_email && getval('emailme', '') != '')
         {

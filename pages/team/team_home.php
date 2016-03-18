@@ -89,12 +89,31 @@ include "../../include/header.php";
                 echo str_replace("%number", $unassigned,$lang["researches-with-requeststatus0-2"]);
                 break;
             } ?> 
-        </li><?php } ?>
+        </li><?php }
 
-    <?php if (checkperm("u")) { ?><li><a href="<?php echo $baseurl_short?>pages/team/team_user.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["manageusers"]?></a></li><?php } ?>
+    if(checkperm('u'))
+        {
+        ?>
+        <li><a href="<?php echo $baseurl_short; ?>pages/team/team_user.php" onClick="return CentralSpaceLoad(this, true);"><?php echo $lang['manageusers']; ?></a></li>
+        <?php
+        }
 
-    <?php if((checkperm("h") && !checkperm("hdta")) || (checkperm("dta") && !checkperm("h"))){ ?><li><a href="<?php echo $baseurl_short?>pages/team/team_dash_admin.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["managedefaultdash"]?></a></li><?php } ?>
-    
+    if((checkperm('h') && !checkperm('hdta')) || (checkperm('dta') && !checkperm('h')))
+        {
+        ?>
+        <li><a href="<?php echo $baseurl_short; ?>pages/team/team_dash_admin.php" onClick="return CentralSpaceLoad(this, true);"><?php echo $lang['managedefaultdash']; ?></a></li>
+        <?php
+        }
+
+    // Manage user group dash tiles
+    if(checkperm('h') && checkperm('hdt_ug'))
+        {
+        ?>
+        <li><a href="<?php echo $baseurl_short; ?>pages/team/team_dash_admin.php?show_usergroups_dash=true" onClick="return CentralSpaceLoad(this, true);"><?php echo $lang['manage_user_group_dash_tiles']; ?></a></li>
+        <?php
+        }
+        ?>
+
     <li><a href="<?php echo $baseurl_short?>pages/team/team_stats.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["viewstatistics"]?></a></li>
     
     <li><a href="<?php echo $baseurl_short?>pages/team/team_report.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["viewreports"]?></a></li>

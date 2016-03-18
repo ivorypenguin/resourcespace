@@ -4,8 +4,17 @@ include_once "../../include/general.php";
 include "../../include/authenticate.php";
 if(!checkPermission_dashadmin()){exit($lang["error-permissiondenied"]);}
 include "../../include/dash_functions.php";
+include '../../include/render_functions.php';
 
 
+
+$show_usergroups_dash = ('true' == getvalescaped('show_usergroups_dash', '') ? true : false);
+if($show_usergroups_dash)
+    {
+    $user_groups         = get_usergroups(false, '', true);
+    // Get selected user group or default to first user group found
+    $selected_user_group = getvalescaped('selected_user_group', key($user_groups), true);
+    }
 
 if(getvalescaped("quicksave",FALSE))
 	{
@@ -16,7 +25,16 @@ if(getvalescaped("quicksave",FALSE))
 	if(!empty($tile) && is_numeric($tile))
 		{
 		#Tile available to this user?
-		$available = get_alluser_available_tiles($tile);
+		$all_user_available   = get_alluser_available_tiles($tile);
+        $user_group_available = array();
+
+        if($show_usergroups_dash)
+            {
+            $user_group_available = get_usergroup_available_tiles($selected_user_group, $tile);
+            }
+
+        $available = array_merge($all_user_available, $user_group_available);
+
 		if(!empty($available))
 			{
 			$tile = $available[0];
@@ -61,23 +79,51 @@ if(getvalescaped("quicksave",FALSE))
 include "../../include/header.php";
 ?>
 <div class="BasicsBox"> 
-	<h1><?php echo $lang["managedefaultdash"];?></h1>
-<p>
-	<a href="<?php echo $baseurl_short?>pages/team/team_home.php" onClick="return CentralSpaceLoad(this,true);">
-		&lt;&nbsp;<?php echo $lang["backtoteamhome"]?>
-	</a>
-</p>
-<p>
-	<a href="<?php echo $baseurl_short?>pages/team/team_dash_tile.php" onClick="return CentralSpaceLoad(this,true);">
-		&lt;&nbsp;<?php echo $lang["managedefaultdash"]?>
-	</a>
-</p>
-<p>
-	<a href="<?php echo $baseurl_short?>pages/team/team_dash_tile_special.php" onClick="return CentralSpaceLoad(this,true);">
-		&gt;&nbsp;<?php echo $lang["specialdashtiles"];?>
-	</a>
-</p>
-	<form class="Listview">
+    <h1><?php echo ($show_usergroups_dash ? $lang['manage_user_group_dash_tiles'] : $lang['managedefaultdash']); ?></h1>
+    <p>
+        <a href="<?php echo $baseurl_short?>pages/team/team_home.php" onClick="return CentralSpaceLoad(this,true);">&lt;&nbsp;<?php echo $lang['backtoteamhome']; ?></a>
+    </p>
+<?php
+if(!$show_usergroups_dash)
+    {
+    ?>
+    <p>
+        <a href="<?php echo $baseurl_short?>pages/team/team_dash_tile.php" onClick="return CentralSpaceLoad(this,true);">&lt;&nbsp;<?php echo $lang['managedefaultdash']; ?></a>
+    </p>
+    <p>
+        <a href="<?php echo $baseurl_short?>pages/team/team_dash_tile_special.php" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang['specialdashtiles']; ?></a>
+    </p>
+    <?php
+    }
+else
+    {
+    // Show link to re-order user group dash tiles
+    $href = "{$baseurl_short}pages/team/team_dash_tile.php";
+    if($show_usergroups_dash)
+        {
+        $href .= "?show_usergroups_dash=true&selected_user_group={$selected_user_group}";
+        }
+    ?>
+    <p>
+        <a href="<?php echo $href; ?>" onClick="return CentralSpaceLoad(this, true);">&lt;&nbsp;<?php echo $lang['manage_user_group_dash_tiles']; ?></a>
+    </p>
+    <?php
+    }
+
+if($show_usergroups_dash)
+    {
+    render_dropdown_question($lang['property-user_group'], 'select_user_group', $user_groups, $selected_user_group);
+    ?>
+    <script>
+        jQuery('#select_user_group').change(function(){
+            CentralSpaceLoad('<?php echo $baseurl_short; ?>pages/team/team_dash_admin.php?show_usergroups_dash=true&selected_user_group=' + jQuery(this[this.selectedIndex]).val(), true);
+        });
+    </script>
+    <?php
+    }
+    ?>
+
+    <form class="Listview">
 	<input type="hidden" name="submit" value="true" />
 	<table class="ListviewStyle">
 		<thead>
@@ -92,8 +138,15 @@ include "../../include/header.php";
 		</thead>
 		<tbody id="dashtilelist">
 	  	<?php
-	  	$dtiles_available = get_alluser_available_tiles();
-		build_dash_tile_list($dtiles_available);
+        if($show_usergroups_dash)
+            {
+            $dtiles_available = get_usergroup_available_tiles($selected_user_group);
+            }
+        else
+            {
+            $dtiles_available = get_alluser_available_tiles();
+            }
+        build_dash_tile_list($dtiles_available);
 	  	?>
 	  </tbody>
   	</table>

@@ -2198,7 +2198,6 @@ $lang['disk_size_no_upload_explain']="Due to space constraints, uploading has be
  * Start - User Dash Strings
  */
 $lang["savethissearchtodash"]="Save to dash tile";
-$lang["pushtoallusers"]="Push this dash tile to all users?";
 $lang["createnewdashtile"]="Create new dash tile";
 $lang["specialdashtiles"]="Special dash tiles";
 $lang["editdashtile"]="Edit dash tile";
@@ -2236,6 +2235,14 @@ $lang["dasheditchangeall_users"]="Turning off this setting will not remove this 
 $lang["dashtilevisitlink"]="Visit target link";
 $lang["alluserprebuiltdashtiles"]="Create pre-constructed dash tiles (added for all users)";
 $lang["manageowndashinto"]="Manage dash tiles available for your dash. You can add / remove or edit tiles on your dash if you have the permissions to do so.";
+
+/* User group dash tiles */
+$lang['manage_user_group_dash_tiles']  = 'Manage user group dash tiles';
+$lang['who_should_see_dash_tile']      = 'Who should see this tile?';
+$lang['dash_tile_audience_me']         = 'only me';
+$lang['dash_tile_audience_all_users']  = 'all users';
+$lang['dash_tile_audience_user_group'] = 'specific user group(s)';
+/* End of user group dash tiles */
 
 /* Create Config dash tile link descriptions (text) */
 $lang["createdashtilependingsubmission"]="User contributions pending submission (hides if none in state)";

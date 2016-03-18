@@ -396,6 +396,8 @@ function render_actions(array $collection_data, $top_actions = true, $two_line =
     return;
     }
 }
+
+
 /**
 * @param string $name
 * @param array  $current  Current selected values (eg. array(1, 3) for Admins and Super admins user groups selected)
@@ -415,6 +417,60 @@ function render_user_group_multi_select($name, array $current = array(), $size =
         ?>
     </select>
     <?php
+    }
+
+
+/**
+* @param string  $name
+* @param integer $current  Current selected value. Use user group ID
+*/
+function render_user_group_select($name, $current = null, $style = '')
+    {
+    ?>
+    <select id="<?php echo $name; ?>" name="<?php echo $name; ?>" style="<?php echo $style; ?>">
+    <?php
+    foreach(get_usergroups() as $usergroup)
+        {
+        ?>
+        <option value="<?php echo $usergroup['ref']; ?>"<?php echo ((!is_null($current) && $usergroup['ref'] == $current) ? ' selected' : ''); ?>><?php echo $usergroup['name']; ?></option>
+        <?php
+        }
+        ?>
+    </select>
+    <?php
+    }
+
+
+/**
+* Renders a list of user groups
+* 
+* @param string $name
+* @param array  $current  Current selected values (eg. array(1, 3) for Admins and Super admins user groups selected)
+* @param string $style    CSS styling that will apply to the outer container (ie. table element)
+*
+* @return void
+*/
+function render_user_group_checkbox_select($name, array $current = array(), $style = '')
+    {
+    ?>
+    <table id="<?php echo $name; ?>"<?php if('' !== $style) { ?>style="<?php echo $style; ?>"<?php } ?>>
+        <tbody>
+    <?php
+    foreach(get_usergroups() as $group)
+        {
+        ?>
+        <tr>
+            <td><input id="<?php echo $name . '_' . $group['ref']; ?>" type="checkbox" name="<?php echo $name; ?>[]" value="<?php echo $group['ref']; ?>"<?php if(in_array($group['ref'], $current)) { ?> checked<?php } ?> /></td>
+            <td><label for="<?php echo $name . '_' . $group['ref']; ?>"><?php echo $group['name']; ?></label></td>
+        </tr>
+        <?php
+        }
+        ?>
+        </tbody>
+    </table>
+    <?php
+
+    return;
     }
 
 /**

@@ -12,7 +12,7 @@
  *  If passed false you must give this tile to a user with sql_insert_id() to have it used
  * 
  */
-function create_dash_tile($url,$link,$title,$reload_interval,$all_users,$default_order_by,$resource_count,$text="",$delete=1)
+function create_dash_tile($url,$link,$title,$reload_interval,$all_users,$default_order_by,$resource_count,$text="",$delete=1, array $specific_user_groups = array())
 	{
 	
 	$rebuild_order=TRUE;
@@ -21,8 +21,8 @@ function create_dash_tile($url,$link,$title,$reload_interval,$all_users,$default
 	if(empty($reload_interval) || !is_numeric($reload_interval))
 		{$reload_interval=0;}
 
-	$delete = $delete?1:0;
-	$all_users=$all_users?1:0;
+	$delete    = $delete ? 1 : 0;
+	$all_users = $all_users ? 1 : 0;
 
 	if(!is_numeric($default_order_by))
 		{
@@ -42,12 +42,18 @@ function create_dash_tile($url,$link,$title,$reload_interval,$all_users,$default
 		{
 		$result = sql_query("INSERT INTO dash_tile (url,link,title,reload_interval_secs,all_users,default_order_by,resource_count,allow_delete,txt) VALUES ('".$url."','".$link."','".escape_check($title)."',".$reload_interval.",".$all_users.",".$default_order_by.",".$resource_count.",".$delete.",'".escape_check($text)."')");
 		$tile=sql_insert_id();
+
+        foreach($specific_user_groups as $user_group_id)
+            {
+            add_usergroup_dash_tile($user_group_id, $tile, $default_order_by);
+            build_usergroup_dash($user_group_id);
+            }
 		}
 
 	# If tile already existed then this no reorder
 	if($rebuild_order){reorder_default_dash();}
 	
-	if($all_users==1)
+	if($all_users==1 && empty($specific_user_groups))
 		{
 		sql_query("DELETE FROM user_dash_tile WHERE dash_tile=".$tile);
 		$result = sql_query("INSERT user_dash_tile (user,dash_tile,order_by) SELECT user.ref,'".$tile."',5 FROM user");
@@ -111,6 +117,7 @@ function delete_dash_tile($tile,$cascade=TRUE,$force=FALSE)
 	if($cascade)
 		{
 		sql_query("DELETE FROM user_dash_tile WHERE dash_tile='".$tile."'");
+		sql_query("DELETE FROM usergroup_dash_tile WHERE dash_tile = '{$tile}'");
 		}
 	}
 
@@ -294,8 +301,8 @@ function get_alluser_available_tiles($tile="null")
 				dash_tile
 			WHERE
 				dash_tile.all_users=1 
-			
 			".$tilecheck."
+                AND ref NOT IN (SELECT dash_tile FROM usergroup_dash_tile)
 			ORDER BY 
 			dash_tile,
 			default_order_by
@@ -308,16 +315,30 @@ function get_alluser_available_tiles($tile="null")
  * Retrieves the default dash which only display all_user tiles.
  * This should only be accessible to thos with Dash Tile Admin permissions
  */
-function get_default_dash()
+function get_default_dash($user_group_id = null)
 	{
 	global $baseurl,$baseurl_short,$lang,$anonymous_login,$username,$dash_tile_shadows;
 	#Build Tile Templates
-	$tiles = sql_query("SELECT dash_tile.ref AS 'tile',dash_tile.title,dash_tile.url,dash_tile.reload_interval_secs,dash_tile.link,dash_tile.default_order_by as 'order_by',dash_tile.allow_delete FROM dash_tile WHERE dash_tile.all_users=1 AND (dash_tile.allow_delete=1 OR (dash_tile.allow_delete=0 AND dash_tile.ref IN (SELECT DISTINCT user_dash_tile.dash_tile FROM user_dash_tile))) ORDER BY default_order_by");
+	$tiles = sql_query("SELECT dash_tile.ref AS 'tile',dash_tile.title,dash_tile.url,dash_tile.reload_interval_secs,dash_tile.link,dash_tile.default_order_by as 'order_by',dash_tile.allow_delete FROM dash_tile WHERE dash_tile.all_users = 1 AND dash_tile.ref NOT IN (SELECT dash_tile FROM usergroup_dash_tile) AND (dash_tile.allow_delete=1 OR (dash_tile.allow_delete=0 AND dash_tile.ref IN (SELECT DISTINCT user_dash_tile.dash_tile FROM user_dash_tile))) ORDER BY default_order_by");
+    
+    if(!is_null($user_group_id))
+        {
+        $tiles = get_usergroup_available_tiles($user_group_id);
+        }
+
 	$order=10;
 	if(count($tiles)==0){echo $lang["nodashtilefound"];exit;}
 	foreach($tiles as $tile)
 		{
-		if($order != $tile["order_by"] || ($tile["order_by"] % 10) > 0){update_default_dash_tile_order($tile["tile"],$order);}
+        if(($order != $tile["order_by"] || ($tile["order_by"] % 10) > 0) && is_null($user_group_id))
+            {
+            update_default_dash_tile_order($tile["tile"],$order);
+            }
+        else if(($order != $tile['default_order_by'] || ($tile['default_order_by'] % 10) > 0) && !is_null($user_group_id))
+            {
+            update_usergroup_dash_tile_order($user_group_id, $tile['tile'], $order);
+            }
+
 		$order+=10;
 		?>
 		<a 
@@ -368,7 +389,7 @@ function get_default_dash()
 				});
 			}
 			function updateDashTileOrder(index,tile) {
-				jQuery.post( "<?php echo $baseurl?>/pages/ajax/dash_tile.php",{"tile":tile,"new_index":((index*10))});
+				jQuery.post( "<?php echo $baseurl?>/pages/ajax/dash_tile.php",{"tile":tile,"new_index":((index*10))<?php if(!is_null($user_group_id)) { echo ", \"selected_user_group\": {$user_group_id}";} ?>});
 			}
 			var dragging=false;
 				jQuery(function() {
@@ -519,67 +540,144 @@ function get_managed_dash()
  * Add a tile for a user group
  *
  */
-function add_usergroup_dash_tile($usergroup,$tile,$default_order_by)
-	{
-	$reorder=TRUE;
-	if(!is_numeric($usergroup) || !is_numeric($tile))
-		{return false;}
-	if(!is_numeric($default_order_by))
-		{
-		$default_order_by=append_usergroup_position($usergroup);
-		$reorder=FALSE;
-		}
-	$existing = sql_query("SELECT * FROM usergroup_dash_tile WHERE usergroup=".$usergroup." AND dash_tile=".$tile);
-	if(!$existing)
-		{
-		$result = sql_query("INSERT INTO usergroup_dash_tile (usergroup,dash_tile,default_order_by) VALUES (".$usergroup.",".$tile.",".$default_order_by.")");
-		}
-	else
-		{
-		return $existing;
-		}
-	if($reorder){reorder_usergroup_dash($usergroup);}
-	return true;
-	}
+function add_usergroup_dash_tile($usergroup, $tile, $default_order_by)
+    {
+    if(!is_numeric($usergroup) || !is_numeric($tile))
+        {
+        return false;
+        }
+
+    $reorder = true;
+    if(!is_numeric($default_order_by))
+        {
+        $default_order_by = append_usergroup_position($usergroup);
+        $reorder          = false;
+        }
+
+    $existing = sql_query("SELECT * FROM usergroup_dash_tile WHERE usergroup = '{$usergroup}' AND dash_tile = {$tile}");
+    if(!$existing)
+        {
+        $result = sql_query("INSERT INTO usergroup_dash_tile (usergroup, dash_tile, default_order_by) VALUES ('{$usergroup}', '{$tile}', '{$default_order_by}')");
+        }
+    else
+        {
+        return $existing;
+        }
+
+    if($reorder)
+        {
+        reorder_usergroup_dash($usergroup);
+        }
+
+    return true;
+    }
 
 /*
  * Get the position for a new tile at the end of the current usergroup tiles.
  * Returns the last position or the first position if no tiles found for this usergroup
  */
 function append_usergroup_position($usergroup)
-	{
-	$last_tile=sql_query("SELECT order_by FROM usergroup_dash_tile WHERE usergroup='".$usergroup."' ORDER BY default_order_by DESC LIMIT 1");
-	return isset($last_tile[0]["default_order_by"])?$last_tile[0]["order_by"]+10:10;
-	}
+    {
+    $last_tile = sql_query("SELECT order_by FROM usergroup_dash_tile WHERE usergroup = '{$usergroup}' ORDER BY default_order_by DESC LIMIT 1");
+
+    return isset($last_tile[0]['default_order_by']) ? $last_tile[0]['order_by'] + 10 : 10;
+    }
+
 function reorder_usergroup_dash($usergroup)
-	{
-	$usergroup_tiles = sql_query("SELECT usergroup_dash_tile.ref FROM usergroup_dash_tile LEFT JOIN dash_tile ON usergroup_dash_tile.dash_tile = dash_tile.ref WHERE usergroup_dash_tile.usergroup='".$usergroup."' ORDER BY usergroup_dash_tile.default_order_by");
-	$order_by=10 * count($usergroup_tiles);
-	for($i=count($usergroup_tiles)-1;$i>=0;$i--)
-		{
-		update_usergroup_dash_tile_order($usergroup,$usergroup_tiles[$i]["ref"],$order_by);
-		$order_by-=10;
-		}
-	}
-function update_usergroup_dash_tile_order($usergroup,$tile,$default_order_by)
-	{
-	sql_query("UPDATE usergroup_dash_tile SET default_order_by='".escape_check($default_order_by)."' WHERE usergroup='".escape_check($usergroup)."' and ref='".$tile."'");
-	}
+    {
+    $usergroup_tiles = sql_query("SELECT usergroup_dash_tile.ref FROM usergroup_dash_tile LEFT JOIN dash_tile ON usergroup_dash_tile.dash_tile = dash_tile.ref WHERE usergroup_dash_tile.usergroup = '{$usergroup}' ORDER BY usergroup_dash_tile.default_order_by");
+    $order_by        = 10 * count($usergroup_tiles);
 
-function build_usergroup_dash($user,$usergroup)
-	{
-	$usergroup_tiles = sql_query("SELECT dash_tile.ref AS 'tile',dash_tile.title,dash_tile.all_users,dash_tile.url,dash_tile.reload_interval_secs,dash_tile.link,usergroup_dash_tile.ref as 'usergroup_tile',usergroup_dash_tile.default_order_by FROM usergroup_dash_tile JOIN dash_tile ON usergroup_dash_tile.dash_tile=dash_tile.ref WHERE usergroup_dash_tile.usergroup='".$usergroup."' ORDER BY usergroup_dash_tile.default_order_by");
-	$starting_order = append_user_position($user);
-	foreach($usergroup_tiles as $tile)
-		{
-		add_user_dash_tile($user,$tile,$starting_order);
-		$starting_order+=10;
-		}
-	}
-function get_usergroup_dash($usergroup)
-	{
+    for($i = count($usergroup_tiles) - 1; $i >= 0; $i--)
+        {
+        update_usergroup_dash_tile_order($usergroup, $usergroup_tiles[$i]['ref'], $order_by);
+        $order_by -= 10;
+        }
+    }
 
-	}
+function update_usergroup_dash_tile_order($usergroup, $tile, $default_order_by)
+    {
+    sql_query("UPDATE usergroup_dash_tile SET default_order_by = '{$default_order_by}' WHERE usergroup = '{$usergroup}' AND ref = '{$tile}'");
+    }
+
+function build_usergroup_dash($user_group, $user_id = 0)
+    {
+    $user_group_tiles = sql_array("SELECT dash_tile.ref AS `value` FROM usergroup_dash_tile JOIN dash_tile ON usergroup_dash_tile.dash_tile = dash_tile.ref WHERE usergroup_dash_tile.usergroup = '{$user_group}' ORDER BY usergroup_dash_tile.default_order_by");
+
+    // If client code has specified a user ID, then just add the tiles for it
+    if(is_numeric($user_id) && 0 < $user_id)
+        {
+        $starting_order = append_user_position($user_id);
+
+        foreach($user_group_tiles as $tile)
+            {
+            sql_query("DELETE FROM user_dash_tile WHERE user = '{$user_id}' AND dash_tile = {$tile}");
+
+            add_user_dash_tile($user_id, $tile, $starting_order);
+            $starting_order += 10;
+            }
+
+        return;
+        }
+
+    $user_list = sql_array("SELECT ref AS `value` FROM user WHERE usergroup = '{$user_group}'");
+    foreach($user_list as $user)
+        {
+        $starting_order  = append_user_position($user);
+
+        foreach($user_group_tiles as $tile)
+            {
+            sql_query("DELETE FROM user_dash_tile WHERE user = '{$user}' AND dash_tile = {$tile}");
+
+            add_user_dash_tile($user, $tile, $starting_order);
+            $starting_order += 10;
+            }
+        }
+
+    return;
+    }
+
+function get_tile_user_groups($tile_id)
+    {
+    return sql_array("SELECT usergroup AS `value` FROM usergroup_dash_tile WHERE dash_tile = '{$tile_id}';");
+    }
+
+
+function get_usergroup_available_tiles($user_group_id, $tile = '')
+    {
+    if(!is_numeric($user_group_id))
+        {
+        trigger_error('$user_group_id has to be a number');
+        }
+
+    $tile_sql = '';
+    if('' != $tile)
+        {
+        $tile_sql = "AND dt.ref = '" . escape_check($tile) . "'";
+        }
+
+    return sql_query("SELECT dt.ref, dt.ref AS `tile`, dt.title, dt.txt, dt.link, dt.url, dt.reload_interval_secs, dt.resource_count, dt.all_users, dt.allow_delete, dt.default_order_by, udt.order_by , 1 AS 'dash_tile' FROM dash_tile AS dt LEFT JOIN usergroup_dash_tile AS udt ON dt.ref = udt.dash_tile WHERE dt.all_users = 1 AND udt.usergroup = '{$user_group_id}' {$tile_sql} ORDER BY udt.default_order_by ASC");
+    }
+
+/**
+ * Get usergroup_dash_tile record
+ * 
+ * @param integer $tile_id
+ * @param integer $user_group_id
+ * 
+ * @return array
+ */
+ function get_usergroup_tile($tile_id, $user_group_id)
+    {
+    $return = sql_query("SELECT * FROM usergroup_dash_tile WHERE dash_tile = '" . escape_check($tile_id) . "' AND usergroup = '" . escape_check($user_group_id) . "'");
+
+    if(0 < count($return))
+        {
+        return $return[0];
+        }
+
+    return array();
+    }
 
 /*
  * User Dash Functions 
@@ -631,7 +729,7 @@ function add_user_dash_tile($user,$tile,$order_by)
   */
  function create_new_user_dash($user)
  	{
- 	$tiles = sql_query("SELECT dash_tile.ref as 'tile',dash_tile.title,dash_tile.url,dash_tile.reload_interval_secs,dash_tile.link,dash_tile.default_order_by as 'order' FROM dash_tile WHERE dash_tile.all_users=1 AND (dash_tile.allow_delete=1 OR (dash_tile.allow_delete=0 AND dash_tile.ref IN (SELECT DISTINCT user_dash_tile.dash_tile FROM user_dash_tile))) ORDER BY default_order_by");
+ 	$tiles = sql_query("SELECT dash_tile.ref as 'tile',dash_tile.title,dash_tile.url,dash_tile.reload_interval_secs,dash_tile.link,dash_tile.default_order_by as 'order' FROM dash_tile WHERE dash_tile.all_users = 1 AND ref NOT IN (SELECT dash_tile FROM usergroup_dash_tile) AND (dash_tile.allow_delete=1 OR (dash_tile.allow_delete=0 AND dash_tile.ref IN (SELECT DISTINCT user_dash_tile.dash_tile FROM user_dash_tile))) ORDER BY default_order_by");
  	foreach($tiles as $tile)
  		{
  		add_user_dash_tile($user,$tile["tile"],$tile["order"]);
@@ -765,6 +863,7 @@ function get_user_available_tiles($user,$tile="null")
 						WHERE
 							user_dash_tile.user = '".$user."'
 					)
+                AND ref NOT IN (SELECT dash_tile FROM usergroup_dash_tile)
 				)
 			UNION
 				(
