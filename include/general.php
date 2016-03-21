@@ -5002,3 +5002,98 @@ function get_download_filename($ref,$size,$alternative,$ext)
     hook("downloadfilename");
 	return $filename;
 	}
+
+function job_queue_add($type="",$job_data=array(),$user="",$time="", $success_text="", $failure_text="", $job_code="")
+	{
+	// Adds a job to the job_queue table.
+	if($time==""){$time=date('Y-m-d H:i:s');}
+	if($type==""){return false;}
+	if($user==""){global $userref;$user=isset($userref)?$userref:0;}
+    $job_data_json=json_encode($job_data,JSON_UNESCAPED_SLASHES); // JSON_UNESCAPED_SLASHES is needed so we can effectively compare jobs
+    // Check for existing job matching
+    $existing_user_jobs=job_queue_get_jobs($type,"","",$job_code);
+	if(count($existing_user_jobs)>0)
+            {
+            global $lang;
+            return $lang["job_queue_duplicate_message"];
+            }
+	sql_query("insert into job_queue (type,job_data,user,start_date,status,success_text,failure_text,job_code) values('" . escape_check($type) . "','" . escape_check($job_data_json) . "','" . $user . "','" . $time . "','" . STATUS_ACTIVE .  "','" . $success_text . "','" . $failure_text . "','" . escape_check($job_code) . "')");
+    return true;
+	}
+	
+function job_queue_update($ref,$job_data=array(),$newstatus="", $newtime="")
+	{
+	$sql="update  job_queue set job_data='" . escape_check(json_encode($job_data)) . "'";
+	if($newtime!=""){$sql.=",start_date='" . $newtime . "'";}
+	if($newstatus!=""){$sql.=",status='" . $newstatus . "'";}
+	$sql.=" where ref='" . $ref . "'";
+	sql_query($sql);
+	}
+
+function job_queue_delete($ref)
+	{
+	sql_query("delete from job_queue where ref='" . $ref . "'");
+	}
+
+function job_queue_get_jobs($type="", $status="", $user="", $job_code="", $job_order_by="ref", $job_sort="desc", $find="")
+	{
+	// Gets offline jobs
+	$condition=array();
+	if($type!=""){$condition[] = " type ='" . escape_check($type) . "'";}
+	if($status!=""){$condition[] =" status ='" . escape_check($status) . "'";}
+	if($user!=""){$condition[] =" user ='" . escape_check($user) . "'";}
+	if($job_code!=""){$condition[] =" job_code ='" . escape_check($job_code) . "'";}
+	if($find!="")
+		{
+		$find=escape_check($find);
+		$condition[] = " (j.ref like '%" . $find . "%'  or j.job_data like '%" . $find . "%' or j.success_text like '%" . $find . "%' or j.failure_text like '%" . $find . "%' or j.user like '%" . $find . "%' or u.username like '%" . $find . "%' or u.fullname like '%" . $find . "%')";
+		}
+	$conditional_sql="";
+	if (count($condition)>0){$conditional_sql=" where " . implode(" and ",$condition);}
+		
+	$sql = "select j.ref,j.type,j.job_data,j.user,j.status, j.start_date, j.success_text, j.failure_text,j.job_code, u.username, u.fullname from job_queue j left join user u on u.ref=j.user " . $conditional_sql . " order by " . escape_check($job_order_by) . " " . escape_check($job_sort);
+	$jobs=sql_query($sql);
+	return $jobs;
+	}
+	
+function job_queue_run_job($job)
+	{
+	// Runs offline job using defined job handler
+	$jobref = $job["ref"];
+	$job_data=json_decode($job["job_data"], true);
+	$jobuser = $job["user"];
+    $job_success_text=$job["success_text"];
+	$job_failure_text=$job["failure_text"];
+	
+	if(is_process_lock('job_' . $jobref)){return;}
+	set_process_lock('job_' . $jobref);
+	
+	$logmessage =  " - Running job #" . $jobref . PHP_EOL;
+	echo $logmessage;
+	debug($logmessage);
+	
+	$logmessage =  " - Looking for " . __DIR__ . "/job_handlers/" . $job["type"] . ".php" . PHP_EOL;
+	echo $logmessage;
+	debug($logmessage);
+		
+	if (file_exists(__DIR__ . "/job_handlers/" . $job["type"] . ".php"))
+		{
+		$logmessage="Attempting to run job #" . $jobref . " using handler " . $job["type"]. PHP_EOL;
+		echo $logmessage;
+		debug($logmessage);
+		include __DIR__ . "/job_handlers/" . $job["type"] . ".php";
+		}
+	else
+		{
+		$logmessage="Unable to find handlerfile: " . $job["type"]. PHP_EOL;
+		echo $logmessage;
+		debug($logmessage);
+		job_queue_update($jobref,$job_data,STATUS_ERROR);
+		}
+	
+	$logmessage =  " - Finished job #" . $jobref . PHP_EOL;
+	echo $logmessage;
+	debug($logmessage);
+	
+	clear_process_lock('job_' . $jobref);
+	}

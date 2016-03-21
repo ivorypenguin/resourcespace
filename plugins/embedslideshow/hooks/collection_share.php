@@ -100,7 +100,7 @@ function HookEmbedslideshowCollection_shareExtra_share_options()
 			ed.style.position='relative';
 			ed.style.top='0';
 			ed.style.left='0';
-			ed.src='" . $baseurl . "/plugins/embedslideshow/pages/viewer.php?ref=$ref&key=$key&size=" . getval("size","") . "&transition=" . getval("transition","") . "&width=" . $width . "&height=" . $height . "&showtext=".getval("showtext","0")."';
+			ed.src='" . $baseurl . "/plugins/embedslideshow/pages/viewer.php?ref=$ref&k=$key&size=" . getval("size","") . "&transition=" . getval("transition","") . "&width=" . $width . "&height=" . $height . "&showtext=".getval("showtext","0")."';
 			document.getElementById('embedslideshow_minimise_" . $ref . "').style.display='none';
 			document.getElementById('embedslideshow_maximise_" . $ref . "').style.display='block';	
 			document.getElementById('embedslideshow_back_" . $ref . "').style.display='none';
@@ -112,14 +112,14 @@ function HookEmbedslideshowCollection_shareExtra_share_options()
 			ed.style.position='absolute';
 			ed.style.top='20px';
 			ed.style.left='20px';
-			ed.src='" . $baseurl . "/plugins/embedslideshow/pages/viewer.php?ref=$ref&key=$key&size=scr&width=850&transition=" . getval("transition","") . "';
+			ed.src='" . $baseurl . "/plugins/embedslideshow/pages/viewer.php?ref=$ref&k=$key&size=scr&width=850&transition=" . getval("transition","") . "';
 			ed.style.zIndex=999;
 			document.getElementById('embedslideshow_minimise_" . $ref . "').style.display='block';
 			document.getElementById('embedslideshow_maximise_" . $ref . "').style.display='none';	
 			document.getElementById('embedslideshow_back_" . $ref . "').style.display='block';	
 			\">" . $lang["embedslideshow_maximise"] . "</a></div>";
 			}
-		$embed.="<iframe id=\"embedslideshow_" . $ref . "\" Style=\"background-color:#fff;cursor: pointer;\" width=\"$width_w_border\" height=\"$height\" src=\"" . $baseurl . "/plugins/embedslideshow/pages/viewer.php?ref=$ref&key=$key&size=" . getval("size","") . "&transition=" . getval("transition","") . "&width=$width&height=$height&showtext=".getval("showtext","0")."\" frameborder=0 scrolling=no>Your browser does not support frames.</iframe>";
+		$embed.="<iframe id=\"embedslideshow_" . $ref . "\" Style=\"background-color:#fff;cursor: pointer;\" width=\"$width_w_border\" height=\"$height\" src=\"" . $baseurl . "/plugins/embedslideshow/pages/viewer.php?ref=$ref&k=$key&size=" . getval("size","") . "&transition=" . getval("transition","") . "&width=$width&height=$height&showtext=".getval("showtext","0")."\" frameborder=0 scrolling=no>Your browser does not support frames.</iframe>";
 		
 		# Compress embed HTML.
 		$embed=str_replace("\n"," ",$embed);
@@ -134,7 +134,7 @@ function HookEmbedslideshowCollection_shareExtra_share_options()
 
 		<div class="Question">		
 		<label><?php echo $lang["embedslideshow_directlink"] ?></label>
-		<div class="Fixed"><a href="<?php echo $baseurl ?>/plugins/embedslideshow/pages/viewer.php?ref=<?php echo $ref ?>&key=<?php echo $key ?>&size=<?php echo getval("size","") ?>&transition=<?php echo getval("transition","") ?>&width=<?php echo $width ?>&height=<?php echo $height ?>&showtext=<?php echo getval("showtext","0");?>" target="_blank"><?php echo $lang["embedslideshow_directlinkopen"] ?></a></div>
+		<div class="Fixed"><a href="<?php echo $baseurl ?>/plugins/embedslideshow/pages/viewer.php?ref=<?php echo $ref ?>&k=<?php echo $key ?>&size=<?php echo getval("size","") ?>&transition=<?php echo getval("transition","") ?>&width=<?php echo $width ?>&height=<?php echo $height ?>&showtext=<?php echo getval("showtext","0");?>" target="_blank"><?php echo $lang["embedslideshow_directlinkopen"] ?></a></div>
 		<div class="clearerleft"></div>
 		</div>
 				

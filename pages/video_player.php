@@ -115,6 +115,8 @@ if(!hook("swfplayer"))
 			data-setup='{ 
 				<?php if($play_on_hover){?>
 					"loadingSpinner" : false,
+					"TextTrackDisplay" : true,
+					"nativeTextTracks": false,
 					"children": { 
 						"bigPlayButton":false, 
 						<?php if($pagename=='search' && $display=='smallthumbs'){?>
@@ -142,7 +144,8 @@ if(!hook("swfplayer"))
 			<?php } ?>
 		>
 		    <source src="<?php echo $flashpath_raw?>" type="video/<?php echo $ffmpeg_preview_extension?>" >
-		    <p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+			<p class="vjs-no-js">To view this video please enable JavaScript, and consider upgrading to a web browser that <a href="http://videojs.com/html5-video-support/" target="_blank">supports HTML5 video</a></p>
+			<?php hook("html5videoextra"); ?>
 		</video>
 		
 		<?php if($play_on_hover){ ?>	

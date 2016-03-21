@@ -1521,9 +1521,21 @@ function debug($text)
 		{
 		$debugdir = dirname($debug_log_location);
 		if (!is_dir($debugdir)){mkdir($debugdir, 0755, true);}
+		}
+	else 
+		{
+		$debug_log_location=get_debug_log_dir() . "/debug.txt";
+		}
+	if(!file_exists($debug_log_location))
+		{
+		// Set the permissions if we can to prevent browser access (will not work on Windows)
+		$f=fopen($debug_log_location,"a");
+		chmod($debug_log_location,0333);
+		}
+	else
+		{
 		$f=fopen($debug_log_location,"a");
 		}
-	else {$f=fopen(get_debug_log_dir() . "/debug.txt","a");}
 	fwrite($f,date("Y-m-d H:i:s") . " " . $text . "\n");
 	fclose ($f);
 	return true;

@@ -138,7 +138,6 @@ $lang["property-regexp_filter"]="Regexp filter";
 $lang["information-regexp_filter"]="Regular Expression filtering - e.g. '[A-Z]+' will ensure only upper case letters can be entered.";
 $lang["information-regexp_fail"]="The entered value was not in the required format.";
 $lang["property-tab_name"]="Tab name";
-$lang["property-push_metadata"]="Push metadata";
 $lang["property-smart_theme_name"]="Smart featured collection name";
 $lang["property-exiftool_field"]="Exiftool field";
 $lang["property-exiftool_filter"]="Exiftool filter";
@@ -159,7 +158,7 @@ $lang["information-display_condition"]="Display condition: this field will only 
 $lang["property-onchange_macro"]="On change macro";
 $lang["information-onchange_macro"]="On change macro: code to be executed when field value is changed. CAUTION ADVISED";
 $lang["information-derestrict_filter"]="Derestrict filter. Can be used in conjunction with g permission so that all resources are restricted unless metadata condition is met";
-$lang["information-push_metadata"]="If set, the metadata for this resource will be displayed on the resource view page for any related resources. For example, you may relate several photos to a person resource. If this property is set on the person resource, then the person metadata will appear on all related photo resource records, avoiding duplication of data in the system.";
+
 $lang["property-query"]="Query";
 
 $lang["information-id"]="Note: 'Id' below MUST be set to a three character unique code.";
@@ -2126,6 +2125,7 @@ $lang["done__user_password"]="An e-mail containing your username and password ha
 $lang["done__user_request"]="Your request for a user account has been sent. Your login details will be sent to you shortly.";
 $lang["download_click__introtext"]="To download the resource file, right click the link below and choose \"Save As...\". You will then be asked where you would like to save the file. To open the file in your browser simply click the link.";
 $lang["download_progress__introtext"]="Your download will start shortly. When your download completes, use the links below to continue.";
+$lang["downloadfile_nofile"]="The file requested was not found.";
 $lang["edit__batch"]="";
 $lang["edit__multiple"]="Please select which fields you wish to overwrite. Fields you do not select will be left untouched.";
 $lang["help__introtext"]='<iframe src="http://www.resourcespace.org/knowledge-base/?from_rs=true" style="width:1235px;height:600px;border:none;margin:-20px;"/>
@@ -2419,3 +2419,12 @@ $lang["file_extension_label"]="File extension";
 $lang["signin_required"]="You must be signed in to perform this action";
 $lang["signin_required_request_account"]="You must be signed in to perform this action. If you do not have an account you can request one by clicking on the above link";
 $lang["error_batch_edit_resources"] = "The following resources have not been updated";
+# Job queue message strings
+$lang["job_queue_manage"] = "Manage job queue";
+$lang["job_queue_manage_job"] = "Manage job";
+$lang["job_queue_type"] = "Job type";
+$lang["job_queue_duplicate_message"] = "Job creation failed. There is already a matching job in the queue.";
+$lang["alternative_file_created"] = "Alternative file successfully created.";
+$lang["alternative_file_creation_failed"] = "Alternative file creation failed";
+$lang["download_file_created"] = "Your file is ready for download.";
+$lang["download_file_creation_failed"] = "Your file download request failed.";

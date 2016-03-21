@@ -2962,3 +2962,12 @@ $watermark_single_image = array(
     'position' => 'Center',
 );
 */
+
+# $offline_job_queue. Enable the job_queue functionality that runs resource heavy tasks to be run offline and sned notifiations once complete. Initially used by video_tracks plugin 
+# If set to true a frequent cron job or scheduled task should be added to run pages/tools/offline_jobs.php 
+$offline_job_queue=false;
+# Delete completed jobs from the queue?
+$offline_job_delete_completed=false;
+
+# Default lifetime in days of a temporary download file created by the job queue. After this time it will be deleted by another job
+$download_file_lifetime=14;

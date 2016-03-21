@@ -462,7 +462,9 @@ if ($_FILES)
                                     {
                                     create_previews($alternative,false,$extension,false,false,$aref);
                                     }
-                            
+							
+                            hook('after_alt_upload','',array($alternative,array("ref"=>$aref,"file_size"=>$file_size,"extension"=>$extension,"name"=>$plfilename,"altdescription"=>"","path"=>$path,"basefilename"=>str_ireplace("." . $extension, '', $plfilename))));
+							
                             echo "SUCCESS " . htmlspecialchars($alternative) . ", " . htmlspecialchars($aref);
 							// Check to see if we need to notify users of this change							
 							if($notify_on_resource_change_days!=0)

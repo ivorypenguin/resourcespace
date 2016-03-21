@@ -89,3 +89,11 @@ $advanced_search_properties=array("media_heightmin"=>"hmin",
                                   "properties_haspreviewimage"=>"pi",
                                   "properties_contributor"=>"cu"
                                   );
+							  
+
+// ------------------------- JOB STATUS / GENERIC STATUS CODES -------------------------
+define ('STATUS_DISABLED',				0);
+define ('STATUS_ACTIVE',				1);
+define ('STATUS_COMPLETE',				2);	
+define ('STATUS_ERROR',					5);
+					  

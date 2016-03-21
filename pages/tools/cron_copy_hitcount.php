@@ -1,9 +1,9 @@
 <?php
-include dirname(__FILE__) . "/../../include/db.php";
+include_once dirname(__FILE__) . "/../../include/db.php";
 include_once dirname(__FILE__) . "/../../include/general.php";
-include dirname(__FILE__) . "/../../include/reporting_functions.php";
-include dirname(__FILE__) . "/../../include/resource_functions.php";
-include dirname(__FILE__) . "/../../include/search_functions.php";
+include_once dirname(__FILE__) . "/../../include/reporting_functions.php";
+include_once dirname(__FILE__) . "/../../include/resource_functions.php";
+include_once dirname(__FILE__) . "/../../include/search_functions.php";
 set_time_limit(60*30);
 
 # All scheduled tasks are here for now, as older installations still call this file directly instead of batch/cron.php.
@@ -38,6 +38,12 @@ update_disk_usage_cron();
 # Send daily digest of notifications
 message_send_unread_emails();
 
+if($offline_job_queue)
+    {
+    // May be required if there has not yet been a cron task set up for the offfline_jobs.php
+    include dirname(__FILE__) . "/offline_jobs.php";
+    }
+    
 #Perform any plugin cron tasks
 hook("addplugincronjob");
 

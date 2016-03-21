@@ -30,50 +30,74 @@ $usage=getvalescaped("usage","-1");
 $usagecomment=getvalescaped("usagecomment","");
 
 
-$resource_data=get_resource_data($ref);
-resource_type_config_override($resource_data["resource_type"]);
-if ($direct_download_noauth && $direct){
-	# if this is a direct download and direct downloads w/o authentication are enabled, allow regardless of permissions
-	$allowed = true;
-} else {
-	# Permissions check
-	$allowed=resource_download_allowed($ref,$size,$resource_data["resource_type"],$alternative);
-}
-
-if (!$allowed)
+// Is this a user specific download?
+$userfiledownload=getvalescaped("userfile","");
+if($userfiledownload!="")
 	{
-		# This download is not allowed. How did the user get here?
-		exit("Permission denied");
+	$noattach="";
+	$exiftool_write=false;
+	$filedetails=explode("_",$userfiledownload);
+	$ref=$filedetails[0];
+	$downloadkey=strip_extension($filedetails[1]);
+	$ext=substr($filedetails[1],strlen($downloadkey)+1);
+	$path=get_temp_dir(false,'user_downloads') . "/" . $ref . "_" . md5($username . $downloadkey . $scramble_key) . "." . $ext;
+	hook('modifydownloadpath');
+	}
+else
+	{
+	
+	$resource_data=get_resource_data($ref);
+	resource_type_config_override($resource_data["resource_type"]);
+	if ($direct_download_noauth && $direct){
+		# if this is a direct download and direct downloads w/o authentication are enabled, allow regardless of permissions
+		$allowed = true;
+	} else {
+		# Permissions check
+		$allowed=resource_download_allowed($ref,$size,$resource_data["resource_type"],$alternative);
 	}
 
-# additional access check, as the resource download may be allowed, but access restriction should force watermark.	
-$access=get_resource_access($ref);	
-$use_watermark=check_use_watermark($ref);
+	if (!$allowed)
+		{
+			# This download is not allowed. How did the user get here?
+			exit("Permission denied");
+		}
 
-# If no extension was provided, we fallback to JPG.
-if ($ext=="") {$ext="jpg";}
+	# additional access check, as the resource download may be allowed, but access restriction should force watermark.	
+	$access=get_resource_access($ref);	
+	$use_watermark=check_use_watermark($ref);
 
-$noattach=getval("noattach","");
-$path=get_resource_path($ref,true,$size,false,$ext,-1,$page,$use_watermark && $alternative==-1,"",$alternative);
+	# If no extension was provided, we fallback to JPG.
+	if ($ext=="") {$ext="jpg";}
 
-hook('modifydownloadpath');
+	$noattach=getval("noattach","");
+	$path=get_resource_path($ref,true,$size,false,$ext,-1,$page,$use_watermark && $alternative==-1,"",$alternative);
+	
+	hook('modifydownloadpath');
 
-if (!file_exists($path)) {$path=get_resource_path($ref,true,"",false,$ext,-1,$page,false,"",$alternative);}
+	if (!file_exists($path)) {$path=get_resource_path($ref,true,"",false,$ext,-1,$page,false,"",$alternative);}
+        
+	if (!file_exists($path) && $noattach!="")
+		{
+		# Return icon for file (for previews)
+		$info=get_resource_data($ref);
+		$path="../gfx/" . get_nopreview_icon($info["resource_type"],$ext,"thm");
+		}
 
-if (!file_exists($path) && $noattach!="")
-	{
-	# Return icon for file (for previews)
-	$info=get_resource_data($ref);
-	$path="../gfx/" . get_nopreview_icon($info["resource_type"],$ext,"thm");
+	# writing RS metadata to files: exiftool
+	if ($noattach=="" && $alternative==-1 && $exiftool_write) # Only for downloads (not previews)
+		{
+		$tmpfile=write_metadata($path,$ref);
+		if ($tmpfile!==false && file_exists($tmpfile)){$path=$tmpfile;}
+		}
 	}
 
-# writing RS metadata to files: exiftool
-if ($noattach=="" && $alternative==-1 && $exiftool_write) # Only for downloads (not previews)
-	{
-	$tmpfile=write_metadata($path,$ref);
-	if ($tmpfile!==false && file_exists($tmpfile)){$path=$tmpfile;}
-	}
 
+if (!file_exists($path))
+    {
+    //include dirname(__FILE__)."/../include/header.php";
+    error_alert($lang["downloadfile_nofile"], true);
+    exit();
+    }
 hook('modifydownloadfile');	
 $filesize=filesize_unlimited($path);
 header("Content-Length: " . $filesize);
