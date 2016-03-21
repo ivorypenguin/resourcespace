@@ -165,7 +165,7 @@ if (getval("langupdate","")!="")
 
 include "include/header.php";
 
-if($login_background)
+if($login_background && !hook('replace_login_background'))
 	{
     $backimageurl = "";
     $dir = dirname(__FILE__) . "/" . $homeanim_folder;

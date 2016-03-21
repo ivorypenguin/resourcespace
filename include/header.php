@@ -216,10 +216,21 @@ if ($contact_sheet)
 	<link href="<?php echo $baseurl_short;?>lib/plupload_2.1.8/jquery.plupload.queue/css/jquery.plupload.queue.css?<?php echo $css_reload_key;?>" rel="stylesheet" type="text/css" media="screen,projection,print"  />
 	<script type="text/javascript" src="<?php echo $baseurl_short;?>lib/plupload_2.1.8/jquery.plupload.queue/jquery.plupload.queue.min.js?<?php echo $css_reload_key;?>"></script>
 <?php } ?>
-<?php if($videojs && ($pagename=='search' && $keyboard_navigation_video_search) || ($pagename=='view' && $keyboard_navigation_video_view) || (($pagename=='preview' || $pagename=='preview_all') && $keyboard_navigation_video_preview)){ ?>
+<?php
+if($videojs && ($pagename=='search' && $keyboard_navigation_video_search) || ($pagename=='view' && $keyboard_navigation_video_view) || (($pagename=='preview' || $pagename=='preview_all') && $keyboard_navigation_video_preview))
+    {
+    ?>
 	<script type="text/javascript" src="<?php echo $baseurl_short?>lib/js/videojs-extras.js?<?php echo $css_reload_key?>"></script>
-<?php } ?>
+    <?php
+    }
 
+if($dash_tile_colour && 0 === count($dash_tile_colour_options))
+    {
+    ?>
+    <script src="<?php echo $baseurl_short; ?>lib/js/jscolor.min.js?css_reload_key=<?php echo $css_reload_key; ?>"></script>
+    <?php
+    }
+    ?>
 
 <script type="text/javascript">
 var baseurl_short="<?php echo $baseurl_short?>";

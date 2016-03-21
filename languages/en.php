@@ -2428,3 +2428,5 @@ $lang["alternative_file_created"] = "Alternative file successfully created.";
 $lang["alternative_file_creation_failed"] = "Alternative file creation failed";
 $lang["download_file_created"] = "Your file is ready for download.";
 $lang["download_file_creation_failed"] = "Your file download request failed.";
+$lang["replace_resource_preserve_original"]="Keep the existing file as an alternative?";
+$lang["replace_resource_original_description"]= "Original %EXTENSION file"; // %EXTENSION  will be relaced by originl file extension
