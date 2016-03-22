@@ -67,6 +67,8 @@ $page_def[] = config_add_single_select(
 $page_def[] = config_add_boolean_select('archive_search', $lang['stat-archivesearch'], $enable_disable_options, 300, '', true);
 $page_def[] = config_add_boolean_select('use_checkboxes_for_selection', $lang['userpreference_use_checkboxes_for_selection_label'], $enable_disable_options, 300, '', true);
 $page_def[] = config_add_boolean_select('display_resource_id_in_thumbnail', $lang['systemconfig_display_resource_id_in_thumbnail_label'], $enable_disable_options, 300, '', true);
+$page_def[] = config_add_boolean_select('advanced_search_contributed_by', $lang['systemconfig_advanced_search_contributed_by_label'], $enable_disable_options, 300, '', true);
+$page_def[] = config_add_boolean_select('advanced_search_media_section', $lang['systemconfig_advanced_search_media_section_label'], $enable_disable_options, 300, '', true);
 $page_def[] = config_add_html('</div>');
 
 
