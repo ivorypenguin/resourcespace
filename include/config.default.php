@@ -614,10 +614,10 @@ $advancedsearch_disabled = false;
 $advanced_search_nav=false;
 
 # Show Contributed by on Advanced Search (ability to search for resources contributed by a specific user)
-$advanced_search_contributed_by = false;
+$advanced_search_contributed_by = true;
 
 # Show Media section on Advanced Search
-$advanced_search_media_section = false;
+$advanced_search_media_section = true;
 
 # Do not display 'search results' link in the top navigation
 $disable_searchresults = false;
