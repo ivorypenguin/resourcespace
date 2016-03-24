@@ -430,14 +430,14 @@ function save_resource_data($ref,$multi,$autosave_field="")
 			if ($access!=$oldaccess && $ref>0)
 				{
 				resource_log($ref,"a",0,"",$oldaccess,$access);
-                                
-                                if ($oldaccess==3 && $access!=3)
-                                    {
-                                    # Moving out of the custom state. Delete any usergroup specific access.
-                                    # This can delete any 'manual' usergroup grants also as the user will have seen this as part of the custom access.
-                                    delete_resource_custom_access_usergroups($ref);
-                                    }
 				}
+            
+            if ($oldaccess==3 && $access!=3)
+                {
+                # Moving out of the custom state. Delete any usergroup specific access.
+                # This can delete any 'manual' usergroup grants also as the user will have seen this as part of the custom access.
+                delete_resource_custom_access_usergroups($ref);
+                }
 			
 			
 			# Clear any outstanding notifications relating to submission of this resource
