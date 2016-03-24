@@ -69,12 +69,13 @@ t	Can see the team centre home
 r	Can manage research requests
 R	Can manage resource requests / orders
 Ra	Can assign resource requests to others
-Rd  Can be assigned resource requests (also; can only see resource requests assigned to them in the Manage Resource Requests area)
+Rd	Can be assigned resource requests (also; can only see resource requests assigned to them in the Manage Resource Requests area)
 o	Can manage content
 m	Can bulk-mail users
 u	Can manage users
 k	Can manage keywords (add/remove keyword relationships and add/remove/rename checkbox/dropdown list options)
 bdk?	Cannot add dynamic keywords to the list straight from the field (ie. when on Upload or Edit page)
+ex	Can manage external shares with expiry set to "Never"
 
 Restrictive group permissions (allows isolated groups to be created)
 -----

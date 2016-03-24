@@ -112,6 +112,14 @@ include "../../include/header.php";
         <li><a href="<?php echo $baseurl_short; ?>pages/team/team_dash_admin.php?show_usergroups_dash=true" onClick="return CentralSpaceLoad(this, true);"><?php echo $lang['manage_user_group_dash_tiles']; ?></a></li>
         <?php
         }
+
+    // Manage external shares
+    if(checkperm('ex'))
+        {
+        ?>
+        <li><a href="<?php echo $baseurl_short; ?>pages/team/team_external_shares.php" onClick="return CentralSpaceLoad(this, true);"><?php echo $lang['manage_external_shares']; ?></a></li>
+        <?php
+        }
         ?>
 
     <li><a href="<?php echo $baseurl_short?>pages/team/team_stats.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["viewstatistics"]?></a></li>
