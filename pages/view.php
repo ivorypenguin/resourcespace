@@ -956,7 +956,7 @@ elseif (strlen($resource["file_extension"])>0 && !($access==1 && $restricted_ful
 		<tr class="DownloadDBlend">
 		<td class="DownloadFileName"><h2><?php echo (isset($original_download_name)) ? str_replace_formatted_placeholder("%extension", $resource["file_extension"], $original_download_name, true) : str_replace_formatted_placeholder("%extension", $resource["file_extension"], $lang["originalfileoftype"]); ?></h2></td>
 		<td class="DownloadFileSize"><?php echo formatfilesize(filesize_unlimited($path))?></td>
-		<td class="DownloadButton">
+		<td <?php hook("modifydownloadbutton") ?>  class="DownloadButton">
 		<?php if (!$direct_download || $save_as){ ?>
 			<a <?php if (!hook("downloadlink","",array("ref=" . $ref . "&k=" . $k . "&ext=" . $resource["file_extension"] ))) { ?>href="<?php echo $baseurl_short?>pages/terms.php?ref=<?php echo urlencode($ref)?>&k=<?php echo urlencode($k)?>&search=<?php echo urlencode($search) ?>&url=<?php echo urlencode("pages/download_progress.php?ref=" . $ref . "&ext=" . $resource["file_extension"] . "&k=" . $k . "&search=" . urlencode($search) . "&offset=" . $offset . "&archive=" . $archive . "&sort=".$sort."&order_by=" . urlencode($order_by))?>"<?php } ?> onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["action-download"] ?></a>
 		<?php } else { ?>
@@ -1000,7 +1000,7 @@ if(($nodownloads || $counter == 0) && !checkperm('T' . $resource['resource_type'
             'k'               => $k
         );
         ?>
-        <td class="DownloadButton">
+        <td <?php hook("modifydownloadbutton") ?> class="DownloadButton">
             <a href="<?php echo generateURL($baseurl_short . 'pages/metadata_download.php', $generate_data_only_url_params); ?>"><?php echo $lang['action-generate_pdf']; ?></a>
         </td>
         <?php
@@ -1011,7 +1011,7 @@ if(($nodownloads || $counter == 0) && !checkperm('T' . $resource['resource_type'
 		if(!hook('resourcerequest'))
             {
             ?>
-            <td class="DownloadButton">
+            <td <?php hook("modifydownloadbutton") ?> class="DownloadButton">
                 <a href="<?php echo $baseurl_short?>pages/resource_request.php?ref=<?php echo urlencode($ref)?>&k=<?php echo urlencode($k) ?>"  onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["action-request"]?></a>
             </td>
             <?php
@@ -1020,7 +1020,7 @@ if(($nodownloads || $counter == 0) && !checkperm('T' . $resource['resource_type'
     else
 		{
 		?>
-		<td class="DownloadButton DownloadDisabled"><?php echo $lang["access1"]?></td>
+		<td <?php hook("modifydownloadbutton") ?> class="DownloadButton DownloadDisabled"><?php echo $lang["access1"]?></td>
 		<?php
 		}
         ?>
@@ -1035,7 +1035,7 @@ if (isset($flv_download) && $flv_download)
 	<tr class="DownloadDBlend">
 	<td class="DownloadFileName"><h2><?php echo (isset($ffmpeg_preview_download_name)) ? $ffmpeg_preview_download_name : str_replace_formatted_placeholder("%extension", $ffmpeg_preview_extension, $lang["cell-fileoftype"]); ?></h2></td>
 	<td class="DownloadFileSize"><?php echo formatfilesize(filesize_unlimited($flvfile))?></td>
-	<td class="DownloadButton">
+	<td <?php hook("modifydownloadbutton") ?> class="DownloadButton">
 	<?php if (!$direct_download || $save_as){?>
 		<a href="<?php echo $baseurl_short?>pages/terms.php?ref=<?php echo urlencode($ref)?>&search=<?php echo urlencode($search); ?>&k=<?php echo urlencode($k)?>&url=<?php echo urlencode("pages/download_progress.php?ref=" . $ref . "&ext=" . $ffmpeg_preview_extension . "&size=pre&k=" . $k . "&search=" . urlencode($search) . "&offset=" . $offset . "&archive=" . $archive . "&sort=".$sort."&order_by=" . urlencode($order_by))?>"  onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["action-download"] ?></a>
 	<?php } else { ?>
@@ -1115,7 +1115,7 @@ if ($alt_access)
 		?>
 		
 		<?php if ($access==0){?>
-		<td class="DownloadButton">
+		<td <?php hook("modifydownloadbutton") ?> class="DownloadButton">
 		<?php 		
 		if (!$direct_download || $save_as)
 			{
@@ -1128,7 +1128,7 @@ if ($alt_access)
 			<a href="#" onclick="directDownload('<?php echo $baseurl_short?>pages/download_progress.php?ref=<?php echo urlencode($ref)?>&ext=<?php echo $altfiles[$n]["file_extension"]?>&k=<?php echo urlencode($k)?>&alternative=<?php echo $altfiles[$n]["ref"]?>')"><?php echo $lang["action-download"]?></a>
 		<?php } // end if direct_download ?></td></td>
 		<?php } else { ?>
-		<td class="DownloadButton DownloadDisabled"><?php echo $lang["access1"]?></td>
+		<td <?php hook("modifydownloadbutton") ?> class="DownloadButton DownloadDisabled"><?php echo $lang["access1"]?></td>
 		<?php } ?>
 		</tr>
 		<?php	

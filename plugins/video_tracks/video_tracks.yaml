@@ -3,4 +3,5 @@ author  : Montala Ltd.
 version : 1.0
 desc    : Add support for different audio and subtitle options for video resources
 config_url: /plugins/video_tracks/pages/setup.php
-category: advanced
+info_url: /plugins/video_tracks/pages/about.html
+category: Asset processing, advanced

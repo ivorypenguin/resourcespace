@@ -168,7 +168,7 @@ if('true' === $ajax && 'true' === getval('draw_tree_node_table', '') && 7 == $fi
 $submit_new_option = getvalescaped('submit_new_option', '');
 if('true' === $ajax && !(trim($submit_new_option)=="") && 'add_new' === $submit_new_option)
     {
-    $new_option_name     = trim(getvalescaped('new_option_name', ''));
+    $new_option_name     = trim(getval('new_option_name', ''));
     $new_option_parent   = getvalescaped('new_option_parent', '');
     $new_option_order_by = get_node_order_by($field, 7 == $field_data['type'], $new_option_parent);
 
@@ -181,7 +181,7 @@ if('true' === $ajax && !(trim($submit_new_option)=="") && 'add_new' === $submit_
             ?>
             <tr id="node_<?php echo $new_record_ref; ?>">
                 <td>
-                    <input type="text" name="option_name" form="option_<?php echo $new_record_ref; ?>" value="<?php echo $new_option_name; ?>" onblur="this.value=this.value.trim()" >
+                    <input type="text" name="option_name" form="option_<?php echo $new_record_ref; ?>" value="<?php echo htmlspecialchars($new_option_name); ?>" onblur="this.value=this.value.trim()" >
                 </td>
                 <td>
                     <div class="ListTools">
@@ -258,7 +258,7 @@ if($ajax)
             ?>
             <tr id="node_<?php echo $node['ref']; ?>">
                 <td>
-                    <input type="text" name="option_name" form="option_<?php echo $node['ref']; ?>" value="<?php echo $node['name']; ?>" onblur="this.value=this.value.trim()" >
+                    <input type="text" name="option_name" form="option_<?php echo $node['ref']; ?>" value="<?php echo htmlspecialchars($node['name']); ?>" onblur="this.value=this.value.trim()" >
                 </td>
                 <td>
                     <div class="ListTools">

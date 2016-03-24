@@ -19,7 +19,7 @@ if(strpos($value, "\r\n") !== false)
 <div class="dynamickeywords ui-front">
 <input type="text" <?php if ($pagename=="search_advanced") { ?> class="SearchWidth" <?php } else {?>  class="stdwidth" <?php } ?> value="<?php echo $lang["starttypingkeyword"]?>" onFocus="<?php if ($pagename=="edit"){ echo "ShowHelp(" . $field["ref"] . ");";} ?>if (this.value=='<?php echo $lang["starttypingkeyword"]?>') {this.value='';}" onBlur="<?php if ($pagename=="edit"){ echo "HideHelp(" . $field["ref"] . ");";} ?>if (this.value=='') {this.value='<?php echo $lang["starttypingkeyword"]?>'}; if(typeof(UpdateResultCount) == 'function' && this.value!='' && this.value!='<?php echo $lang["starttypingkeyword"]?>'){this.value='<?php echo $lang["starttypingkeyword"]?>';}" name="<?php echo $name ?>_selector" id="<?php echo $name ?>_selector" />
 
-<input type="hidden" name="<?php echo $name ?>" id="<?php echo $name ?>" value="<?php echo htmlspecialchars($value) ?>"/>
+<input type='hidden' name='<?php echo $name ?>' id='<?php echo $name ?>' value='<?php echo htmlspecialchars($value) ?>'/>
 
 
 <div id="<?php echo $name?>_selected" class="keywordsselected"></div>
@@ -90,12 +90,12 @@ if(strpos($value, "\r\n") !== false)
 
 	function updateSelectedKeywords_<?php echo $name ?>(user_action)
 		{
-		var html="";
-		var value="";
+		var html='';
+		var value='';
 		for (var n=0;n<KeywordCounter_<?php echo $name ?>;n++)
 			{
 			html+='<a href="#" onClick="removeKeyword_<?php echo $name ?>(\'' + escape(Keywords_<?php echo $name ?>[n]) +'\',true);return false;">[ x ]</a> &nbsp;' + Keywords_<?php echo $name ?>[n] + '<br/>';
-			value+="," + resolveTranslated_<?php echo $name ?>(Keywords_<?php echo $name ?>[n]);
+			value+='|' + resolveTranslated_<?php echo $name ?>(Keywords_<?php echo $name ?>[n]);
 			}
 		document.getElementById('<?php echo $name?>_selected').innerHTML=html;
 		jQuery('#<?php echo $name?>').val(value).change(); // Set value and call change to trigger a display condition check if required.
@@ -124,10 +124,12 @@ if(strpos($value, "\r\n") !== false)
 	for ($m=0;$m<count($field['node_options']);$m++)
 		{
 		$trans=i18n_get_translated($field['node_options'][$m]);
+		
+		$trans=escape_check($trans);
 		if ($trans!="" && $trans!=$field['node_options'][$m]) # Only add if actually different (i.e., an i18n string)
 			{
 			?>
-			KeywordsTranslated_<?php echo $name ?>["<?php echo $trans ?>"]="<?php echo $field['node_options'][$m] ?>";
+			KeywordsTranslated_<?php echo $name ?>['<?php echo $trans ?>']='<?php echo escape_check(addslashes($field['node_options'][$m])) ?>';
 			<?php
 			}
 		}
@@ -148,10 +150,10 @@ if(strpos($value, "\r\n") !== false)
 		{
 		$trans=i18n_get_translated($field['node_options'][$m]);
 			
-		if ($trans!="" && in_array(trim($trans),$selected_values))
+		if ($trans!="" && in_array(trim($field['node_options'][$m]),$selected_values))
 			{
 			?>
-			addKeyword_<?php echo $name ?>("<?php echo $trans ?>");
+			addKeyword_<?php echo $name ?>('<?php echo escape_check($trans) ?>');
 			<?php
 			}
 		}

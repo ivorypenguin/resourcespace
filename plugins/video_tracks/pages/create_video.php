@@ -123,7 +123,7 @@ if(getval("generate","")!="")
 			if(file_exists($targetfile))
 				{
 				$filename=remove_extension($filename) . "_" . date("Ymd_Hi") . "." . $video_track_command["extension"];
-				$targetfile=$video_tracks_export_folder . $filename;
+				$targetfile=$video_tracks_export_folder . "/" . $filename;
 				}
             
 			$message=$lang["video_tracks_export_file_created"];

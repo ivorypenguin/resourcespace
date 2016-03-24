@@ -31,10 +31,10 @@ for ($m=0;$m<count($fielddata['node_options']);$m++)
 	
 if (!$exactmatch && !$readonly)
 	{
-	$results[] = htmlspecialchars($lang["createnewentryfor"] . " " . $keyword);
+	$results[] = $lang["createnewentryfor"] . " " . $keyword;
 	}
 elseif($readonly && empty($results)){
-	$results[] = htmlspecialchars($lang["noentryexists"] . " " . $keyword);
+	$results[] = $lang["noentryexists"] . " " . $keyword;
 }
 
 echo json_encode($results);

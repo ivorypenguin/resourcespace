@@ -457,6 +457,9 @@ $pdf_split_pages_to_resources=false;
 $videojs=true;
 
 # Create a preview video for ffmpeg compatible files? A FLV (Flash Video) file will automatically be produced for supported file types (most video types - AVI, MOV, MPEG etc.)
+/* Examples of preview options to convert to different types (don't forget to set the extension as well):
+* MP4: $ffmpeg_preview_options = '-f mp4 -ar 22050 -b 650k -ab 32k -ac 1';
+*/
 $ffmpeg_preview=true; 
 $ffmpeg_preview_seconds=120; # how many seconds to preview
 $ffmpeg_preview_extension="flv";
