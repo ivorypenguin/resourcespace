@@ -1136,3 +1136,38 @@ a.FeaturedSimpleLink:hover {
     top: -300px;
 }
 
+/* Manage External Shares */
+.TeamExternalSharesPager {
+    width: 240px;
+    float: right;
+    margin-top: -50px;
+    margin-right: 10px;
+}
+
+.FormFilter {
+    width: 700px;
+}
+
+.FilterItemContainer {
+    margin-top: 10px;
+}
+
+.FilterItemContainer:nth-child(2) {
+    margin-top: 0px;
+}
+
+.FilterItemContainer > label {
+    width: 300px;
+    float: left;
+    margin-top: 0.4em;
+}
+
+#filter_date_from, #filter_date_to {
+    width: 100px;
+}
+
+form.FormFilter button {
+    display: block;
+    margin-top: 20px;
+    float: right;
+}

@@ -553,3 +553,74 @@ function render_dropdown_question($label, $inputname, $options = array(), $curre
 	<div class="clearerleft"> </div>
 	<?php
 	}
+
+/**
+* Render a table row (tr) for a single access key
+* 
+* @param array $record Access key record details
+* 
+* @return void
+*/
+function render_access_key_tr(array $record)
+    {
+    global $baseurl, $baseurl_short, $lang;
+    $link      = '';
+    $type      = '';
+    $edit_link = '';
+
+    // Set variable dependent on type (ie. Resource / Collection)
+    if('' == $record['collection'] && '' != $record['resource'])
+        {
+        // For resource
+        $link      = $baseurl . '?r=' . urlencode($record['resource']) . '&k=' . urlencode($record['access_key']);
+        $type      = $lang['share-resource'];
+        $edit_link = sprintf('%spages/resource_share.php?ref=%s&editaccess=%s&editexpiration=%s&editaccesslevel=%s&editgroup=',
+            $baseurl_short,
+            urlencode($record['resource']),
+            urlencode($record['access_key']),
+            urlencode($record['expires']),
+            urlencode($record['access']),
+            urlencode($record['usergroup'])
+        );
+        }
+    else
+        {
+        // For collection
+        $link      = $baseurl . '?c=' . urlencode($record['collection']) . '&k=' . urlencode($record['access_key']);
+        $type      = $lang['sharecollection'];
+        $edit_link = sprintf('%spages/collection_share.php?ref=%s&editaccess=%s&editexpiration=%s&editaccesslevel=%s&editgroup=',
+            $baseurl_short,
+            urlencode($record['collection']),
+            urlencode($record['access_key']),
+            urlencode($record['expires']),
+            urlencode($record['access']),
+            urlencode($record['usergroup'])
+        );
+        }
+        ?>
+
+
+    <tr id="access_key_<?php echo $record['access_key']; ?>">
+        <td>
+            <div class="ListTitle">
+                <a href="<?php echo $link; ?>" target="_blank"><?php echo htmlspecialchars($record['access_key']); ?></a>
+            </div>
+        </td>
+        <td><?php echo htmlspecialchars($type); ?></td>
+        <td><?php echo htmlspecialchars(resolve_users($record['users'])); ?></td>
+        <td><?php echo htmlspecialchars($record['emails']); ?></td>
+        <td><?php echo htmlspecialchars(nicedate($record['maxdate'], true)); ?></td>
+        <td><?php echo htmlspecialchars(nicedate($record['lastused'], true)); ?></td>
+        <td><?php echo htmlspecialchars(('' == $record['expires']) ? $lang['never'] : nicedate($record['expires'], false)); ?></td>
+        <td><?php echo htmlspecialchars((-1 == $record['access']) ? '' : $lang['access' . $record['access']]); ?></td>
+        <td>
+            <div class="ListTools">
+                <a href="#" onClick="delete_access_key('<?php echo $record['access_key']; ?>', '<?php echo $record['resource']; ?>', '<?php echo $record['collection']; ?>');">&gt;&nbsp;<?php echo $lang['action-delete']; ?></a>
+                <a href="<?php echo $edit_link; ?>">&gt;&nbsp;<?php echo $lang['action-edit']; ?></a>
+            </div>
+        </td>
+    </tr>
+    <?php
+
+    return;
+    }

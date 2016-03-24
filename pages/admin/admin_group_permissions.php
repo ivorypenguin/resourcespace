@@ -293,6 +293,7 @@ else
 	$permissions_done[]="k";
 	$permissions_done[]="a";	
 	}
+DrawOption('ex', $lang['permission_manage_external_shares']);
 ?>				<tr class="ListviewTitleStyle">
 					<td colspan=3 class="permheader"><?php echo $lang["other"] ?></td>
 				</tr>

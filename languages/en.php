@@ -2432,3 +2432,9 @@ $lang["download_file_created"] = "Your file is ready for download.";
 $lang["download_file_creation_failed"] = "Your file download request failed.";
 $lang["replace_resource_preserve_original"]="Keep the existing file as an alternative?";
 $lang["replace_resource_original_description"]= "Original %EXTENSION file"; // %EXTENSION  will be relaced by originl file extension
+
+/* Manage external shares */
+$lang['permission_manage_external_shares'] = 'Can manage external shares with expiry set to "Never"';
+$lang['manage_external_shares'] = 'Manage external shares';
+$lang['filter_label'] = 'Filter';
+/* end of Manage external shares */
