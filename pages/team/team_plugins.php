@@ -368,12 +368,12 @@ if (count($plugins_avail)>0)
             foreach($p_cats as $p_cat)
                {
                $p_cat = trim(strtolower($p_cat));
-               if(array_search("advanced",$p_cats))
+               if(strtolower($p_cat) == "advanced")
                   {
                   array_push($advanced_plugins,$plugin_row);
                   unset($p_cats[array_search("advanced",$p_cats)]);
                   }
-               else if(array_search("general",$p_cats))
+               elseif(strtolower($p_cat) =="general")
                   {
                   array_push($general_plugins,$plugin_row);
                   unset($p_cats[array_search("general",$p_cats)]);

@@ -19,6 +19,14 @@ function HookVideo_tracksViewHtml5videoextra()
 	  }
 	}
 
+function HookVideo_tracksViewModifydownloadbutton()
+	{
+	global $video_altfiles,$n, $alt_access;   
+	if(!isset($alt_access) || !isset($video_altfiles[$n]) || mb_strtolower($video_altfiles[$n]["file_extension"])!="vtt")
+        {echo " colspan=2 ";}	
+	}
+	
+	
 function HookVideo_tracksViewDownloadbuttonreplace()
 	{    
     global $context,$display,$ref,$video_altfiles,$n, $alt_access, $lang;

@@ -1110,7 +1110,7 @@ function http_get_preferred_language($strict_mode=false)
 
 function setLanguage()
 	{
-	global $browser_language,$disable_languages,$defaultlanguage,$languages;
+	global $browser_language,$disable_languages,$defaultlanguage,$languages,$global_cookies,$baseurl_short;
 	$language="";
 	if (isset($_GET["language_set"]))
 	    {

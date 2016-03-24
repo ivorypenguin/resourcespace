@@ -216,15 +216,16 @@ function save_resource_data($ref,$multi,$autosave_field="")
 				}
             elseif ($fields[$n]["type"] == 7 || $fields[$n]["type"]==9) // Category tree or dynamic keywords
 				{
-				$submittedval=getvalescaped("field_" . $fields[$n]["ref"],"");
-				$submittedvals=explode(",",$submittedval);
+                $submittedval=getval("field_" . $fields[$n]["ref"],"");
+				$submittedvals=explode("|",$submittedval);
                 $newvals=array();
                 foreach($fields[$n]["nodes"] as $noderef => $nodedata)
                     {
+               
                     $addnode=false;
                     foreach($submittedvals as $checkval)
-                        {                  
-                        if (in_array($checkval,i18n_get_translations($nodedata['name'])))
+                        {
+                        if (trim($checkval) == trim($nodedata['name']))
                             {
                             $addnode=true;                            
                             }                        
@@ -233,7 +234,7 @@ function save_resource_data($ref,$multi,$autosave_field="")
                         {
                         $nodes_to_add[] = $noderef;
                         // Correct the string to include all multingual strings as for dropdowns
-                        $newvals[]=$nodedata['name'];    
+                        $newvals[]=escape_check($nodedata['name']);    
                         }
                     else
                         {
@@ -619,16 +620,15 @@ function save_resource_data_multi($collection)
 				}
             elseif ($fields[$n]["type"] == 7 || $fields[$n]["type"]==9) // Category tree or dynamic keywords     
 				{
-				$submittedval=getvalescaped("field_" . $fields[$n]["ref"],"");
-				$submittedvals=explode(",",$submittedval);
+				$submittedval=getval("field_" . $fields[$n]["ref"],"");
+				$submittedvals=explode("|",$submittedval);
                 $newvals=array();
                 foreach($fields[$n]["nodes"] as $noderef => $nodedata)
                     {
                     $addnode=false;
                     foreach($submittedvals as $checkval)
                         {                  
-                        if (in_array($checkval,i18n_get_translations($nodedata['name'])))
-                            {
+						if (trim($checkval) == trim($nodedata['name']))                            {
                             $addnode=true;                            
                             }                        
                         }
@@ -636,7 +636,7 @@ function save_resource_data_multi($collection)
                         {
                         $selected_nodes[] = $noderef;
                         // Correct the string to include all multingual strings as for dropdowns
-                        $newvals[]=$nodedata['name'];    
+                        $newvals[]=escape_check($nodedata['name']);    
                         }
                     else
                         {
