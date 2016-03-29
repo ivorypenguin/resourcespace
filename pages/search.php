@@ -222,7 +222,7 @@ if ($order_by=="")
 	{
 	if ($collectionsearch) // We want the default collection order to be applied
 		{
-		$order_by="relevance";
+		$order_by=$default_collection_sort;
 		}
 	else
 		{

@@ -138,6 +138,7 @@ $lang["property-regexp_filter"]="Regexp filter";
 $lang["information-regexp_filter"]="Regular Expression filtering - e.g. '[A-Z]+' will ensure only upper case letters can be entered.";
 $lang["information-regexp_fail"]="The entered value was not in the required format.";
 $lang["property-tab_name"]="Tab name";
+$lang["property-push_metadata"]="Push metadata";
 $lang["property-smart_theme_name"]="Smart featured collection name";
 $lang["property-exiftool_field"]="Exiftool field";
 $lang["property-exiftool_filter"]="Exiftool filter";
@@ -158,6 +159,7 @@ $lang["information-display_condition"]="Display condition: this field will only 
 $lang["property-onchange_macro"]="On change macro";
 $lang["information-onchange_macro"]="On change macro: code to be executed when field value is changed. CAUTION ADVISED";
 $lang["information-derestrict_filter"]="Derestrict filter. Can be used in conjunction with g permission so that all resources are restricted unless metadata condition is met";
+$lang["information-push_metadata"]="If set, the metadata for this resource will be displayed on the resource view page for any related resources. For example, you may relate several photos to a person resource. If this property is set on the person resource, then the person metadata will appear on all related photo resource records, avoiding duplication of data in the system.";
 
 $lang["property-query"]="Query";
 

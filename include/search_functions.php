@@ -11,7 +11,7 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
     debug("search=$search $go $fetchrows restypes=$restypes archive=$archive daylimit=$recent_search_daylimit");
 
     # globals needed for hooks
-    global $sql,$order,$select,$sql_join,$sql_filter,$orig_order,$collections_omit_archived,$search_sql_double_pass_mode,$usergroup,$search_filter_strict,$default_sort,$superaggregationflag;
+    global $sql,$order,$select,$sql_join,$sql_filter,$orig_order,$collections_omit_archived,$search_sql_double_pass_mode,$usergroup,$search_filter_strict,$default_sort,$superaggregationflag,$default_collection_sort;
 
 	$superaggregation = isset($superaggregationflag) && $superaggregationflag===true ? ' WITH ROLLUP' : '';
 

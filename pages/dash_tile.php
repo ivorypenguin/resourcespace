@@ -145,7 +145,7 @@ if($submitdashtile)
 
 		if($promoted_image)
 			{
-			$buildurl = str_replace("promimg=".$buildstring["promimg"],"promimg=".$promoted_image,$tile["url"]);
+			$buildurl = str_replace("promimg=".$buildstring["promimg"],"promimg=".$promoted_image,$buildurl);
 			}
 
 		if(($tile["all_users"] || $all_users ) && checkPermission_dashadmin())

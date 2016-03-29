@@ -946,7 +946,7 @@ function config_single_ftype_select($name, $label, $current, $width=300, $rtype=
     	$fields=sql_query('select * from resource_type_field ' .  (($fieldtypefilter=="")?'':' where ' . $fieldtypefilter) . ' order by title, name');
     }
     else{
-    	$fields=sql_query("select * from resource_type_field where resource_type='$ftype' " .  (($fieldtypefilter=="")?"":" and " . $fieldtypefilter) . "order by title, name");
+    	$fields=sql_query("select * from resource_type_field where resource_type='$rtype' " .  (($fieldtypefilter=="")?"":" and " . $fieldtypefilter) . "order by title, name");
     }
 ?>
   <div class="Question">

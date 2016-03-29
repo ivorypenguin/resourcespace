@@ -17,7 +17,7 @@ TO DO: add here other functions used for rendering such as:
 if (!function_exists("render_sort_order")){
 function render_sort_order(array $order_fields)
     {
-    global $order_by, $baseurl_short, $lang, $search, $archive, $restypes, $k, $sort;
+    global $order_by, $baseurl_short, $lang, $search, $archive, $restypes, $k, $sort, $date_field;
 
     // use query strings here as this is used to render elements and sometimes it
     // can depend on other params
@@ -30,9 +30,15 @@ function render_sort_order(array $order_fields)
     $options = '';
     foreach($order_fields as $name => $label)
         {
+        // date shows as 'field'.$date_field rather than 'date' for collection searches so let's fix it
+        if($name=='field'.$date_field)
+			{
+			$name='date';
+			}
+		
         $fixed_order = $name == 'relevance';
-        $selected    = $order_by == $name;
-
+        $selected    = $order_by == $name; echo "selected=$selected - name=$name<br/>";
+		
         // Build the option:
         $option = '<option value="' . $name . '"';
 

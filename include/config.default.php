@@ -575,6 +575,10 @@ $original_filename_sort=false; // deprecated, based on resource table column
 # Options are date, colour, relevance, popularity, country
 $default_sort="relevance";
 
+# What is the default sort order when viewing collection resources?
+# Options are date, colour, relevance, popularity, country
+$default_collection_sort="relevance";
+
 # Enable themes (promoted collections intended for showcasing selected resources)
 $enable_themes=true;
 
