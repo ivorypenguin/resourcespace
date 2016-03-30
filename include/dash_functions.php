@@ -334,7 +334,7 @@ function get_default_dash($user_group_id = null)
             {
             update_default_dash_tile_order($tile["tile"],$order);
             }
-        else if(($order != $tile['default_order_by'] || ($tile['default_order_by'] % 10) > 0) && !is_null($user_group_id))
+        else if((!isset($tile['default_order_by']) || $order != $tile['default_order_by'] || ($tile['default_order_by'] % 10) > 0) && !is_null($user_group_id))
             {
             update_usergroup_dash_tile_order($user_group_id, $tile['tile'], $order);
             }
