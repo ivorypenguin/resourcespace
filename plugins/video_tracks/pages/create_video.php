@@ -286,7 +286,8 @@ if(count($subtitle_alts)>0)
 	<div class="Question" id="question_video_subtitles">
 	   <label><?php echo $lang["video_tracks_select_subtitle"] ?></label>
 		<select class="stdwidth" name="video_subtitle_file" id="video_subtitle_file" >
-		<?php
+		<option value=""><?php echo $lang["select"]; ?></option>
+        <?php
 		foreach ($subtitle_alts as $subtitle_alt)
 			{
 			if(in_array(mb_strtolower($subtitle_alt["file_extension"]),$video_tracks_subtitle_extensions))
@@ -307,7 +308,8 @@ if(count($audio_alts)>0)
 	<div class="Question" id="question_video_audio">
 	   <label><?php echo $lang["video_tracks_select_audio"] ?></label>
 		<select class="stdwidth" name="video_audio_file" id="video_subtitle_file" >
-		<?php
+		<option value=""><?php echo $lang["select"]; ?></option>
+        <?php
 		foreach ($audio_alts as $audio_alt)
 			{
 			if(in_array(mb_strtolower($audio_alt["file_extension"]),$video_tracks_audio_extensions))
@@ -351,7 +353,7 @@ if(count($audio_alts)>0)
 	<div class="clearerleft"> </div>
 </div>
 <div class="video_tracks_buttons">
-	<input type="submit" name="submit" class="video_tracks_button" value="<?php echo $lang["video_tracks_generate"]; ?>" onClick="if(jQuery('#video_track_download').is(':checked') && !video_tracks_offline){this.form.submit;}else{ModalPost(this.form,false,true);return false;}"/>
+	<input type="submit" name="submit" class="video_tracks_button" value="<?php echo $lang["video_tracks_generate"]; ?>" onClick="if(jQuery('#video_track_download').is(':checked') && !video_tracks_offline){this.form.submit;}else{ModalPost(this.form,false,true);jQuery('.video_tracks_button').attr('disabled',true);return false;}"/>
 	<input type="submit" name="submit" class="video_tracks_button" value="<?php echo $lang["close"]; ?>" onClick="ModalClose();return false;"/>
 </div>
 

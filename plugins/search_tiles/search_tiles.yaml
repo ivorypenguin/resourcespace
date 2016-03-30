@@ -1,0 +1,6 @@
+name    : search_tiles
+author  : Montala Ltd.
+version : 1.0
+desc    : Display search results as dash tiles (collections only at present)
+config_url: /plugins/search_tiles/pages/setup.php
+category: User interface

@@ -21,8 +21,21 @@ if (!hook("renderresultsmallthumb"))
 					$use_watermark=false;	
 					}
 				# Work out the preview image path
-				$col_url=get_resource_path($ref,false,"col",false,$result[$n]["preview_extension"],-1,1,$use_watermark,$result[$n]["file_modified"]);
-				if (isset($result[$n]["col_url"])) {$col_url=$result[$n]["col_url"];} # If col_url set in data, use instead, e.g. by manipulation of data via process_search_results hook
+				if (isset($result[$n]["col_url"]))
+					{$col_url=$result[$n]["col_url"];} # If col_url set in data, use instead, e.g. by manipulation of data via process_search_results hook
+				else
+					{
+					$col_path=get_resource_path($ref,true,"col",false,$result[$n]["preview_extension"],-1,1,$use_watermark,$result[$n]["file_modified"]);
+					if ($result[$n]["has_image"] && file_exists($col_path))
+						{
+						$col_url=get_resource_path($ref,false,"col",false,$result[$n]["preview_extension"],-1,1,$use_watermark,$result[$n]["file_modified"]);
+						}
+					else
+						{
+						$col_url=get_resource_path($ref,false,"col",false,$result[$n]["preview_extension"],-1,1,$use_watermark,$result[$n]["file_modified"]);
+						$col_url = $baseurl_short . "gfx/" . get_nopreview_icon($result[$n]["resource_type"],$result[$n]["file_extension"],"col");
+						}
+					}
 				?>
 				<table border="0" class="ResourceAlignSmall<?php hook('searchdecorateresourcetableclass'); ?>">
 				<?php hook("resourcetop");?>
