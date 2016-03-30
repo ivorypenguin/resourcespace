@@ -14,8 +14,6 @@ $remove=getval("remove","");
 
 $all=(($add=='' && $remove=='')?true:false);
 
-$nodrop=array(); // list of fields that refuse to drop
-
 $fields=sql_array("SELECT `COLUMN_NAME` value FROM `INFORMATION_SCHEMA`.`COLUMNS` WHERE `TABLE_SCHEMA`='{$mysql_db}' AND `TABLE_NAME`='resource' AND `COLUMN_NAME` LIKE 'field%'");
 echo "fields:";print_r($fields);echo"<br/><br/>";
 
@@ -28,7 +26,7 @@ if($remove!=='' || $all){
 		
 		foreach($fields as $field){
 			$field_ref=substr($field,(strlen("field")));
-			if(!in_array($field_ref,$data_joins) && !in_array($field_ref,$nodrop)){
+			if(!in_array($field_ref,$data_joins)){
 				$remove[]=$field_ref;
 			}
 		}
@@ -37,7 +35,7 @@ if($remove!=='' || $all){
 		$remove=explode(",",$remove);
 		$r_count=count($remove);
 		for($r=0 && $r_count>0;$r<$r_count;$r++){
-			if(!in_array("field".$remove[$r],$fields) || in_array($field_ref,$nodrop)){
+			if(!in_array("field".$remove[$r],$fields)){
 				unset($remove[$r]);
 			}
 		}
@@ -66,8 +64,8 @@ if($add!=='' || $all){
 		$add=$data_joins;
 	}
 	else{
-		$add=expolde(",",$add);
-		$a_count=count($adds);
+		$add=explode(",",$add);
+		$a_count=count($add);
 		for($a=0;$a<$a_count;$a++){
 			if(!in_array($add[$a],$data_joins)){
 				echo "Field $option is not part of $data_joins...removing from list<br/>";

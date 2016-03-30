@@ -2904,7 +2904,7 @@ $user_pref_system_management_notifications=true;
 # User preference - email_user_notifications. Option to receive emails instead of new style system notifications where appropriate. 
 $email_user_notifications=false;
 
-# Execution lockout mode - prevents entry of SQL and PHP even to admin users (e.g. config overrides and report SQL, and upload of new plugins) - useful on shared / multi-tennant systems.
+# Execution lockout mode - prevents entry of PHP even to admin users (e.g. config overrides and upload of new plugins) - useful on shared / multi-tennant systems.
 $execution_lockout=false;
 
 # Load help page in a modal?
@@ -2992,3 +2992,8 @@ $download_file_lifetime=14;
 $replace_resource_preserve_option=false;
 # $replace_resource_preserve_default - if $replace_resource_preserve_option is enabled, should the option be checked by default?
 $replace_resource_preserve_default=false;
+
+# When searching collections, return results based on the metadata of the resources inside also
+$collection_search_includes_resource_metadata=false;
+
+

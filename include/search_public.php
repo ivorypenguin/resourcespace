@@ -1,15 +1,9 @@
 <?php
-//echo "testing sp2<br/>";
-# Perform the search
-if (!isset($collections)){
-    $collections=search_public_collections($search,"theme","ASC",!$search_includes_themes,!$search_includes_public_collections,false);
-}
 
-if ((substr($search,0,11)!="!collection")&&($collections!="")) {
+if ((substr($search,0,11)!="!collection")&&($collections!="")&&is_array($collections)) {
     
 for ($n=0;$n<count($collections);$n++)
 	{
-	
 	$resources=do_search("!collection".$collections[$n]['ref'],"","relevance","",5);	
 	$hook_result=hook("process_search_results","",array("result"=>$resources,"search"=>"!collection".$collections[$n]['ref']));
 	if ($hook_result!==false) {$resources=$hook_result;}

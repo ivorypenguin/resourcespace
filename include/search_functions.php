@@ -11,7 +11,7 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
     debug("search=$search $go $fetchrows restypes=$restypes archive=$archive daylimit=$recent_search_daylimit");
 
     # globals needed for hooks
-    global $sql,$order,$select,$sql_join,$sql_filter,$orig_order,$collections_omit_archived,$search_sql_double_pass_mode,$usergroup,$search_filter_strict,$default_sort,$superaggregationflag,$default_collection_sort;
+    global $sql,$order,$select,$sql_join,$sql_filter,$orig_order,$collections_omit_archived,$search_sql_double_pass_mode,$usergroup,$search_filter_strict,$default_sort,$superaggregationflag;
 
 	$superaggregation = isset($superaggregationflag) && $superaggregationflag===true ? ' WITH ROLLUP' : '';
 
@@ -64,7 +64,22 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 
     $order_by=isset($order[$order_by]) ? $order[$order_by] : $order['relevance'];       // fail safe by falling back to default if not found
 
-    $keywords=split_keywords($search);
+    # Extract search parameters and split to keywords.
+    $search_params=$search;
+    if (substr($search,0,1)=="!")
+        {
+        # Special search, discard the special search identifier when splitting keywords and extract the search paramaters
+        $s=strpos($search," ");
+        if ($s===false)
+            {
+            $search_params=""; # No search specified
+            }
+        else
+            {
+            $search_params=substr($search,$s+1); # Extract search params            
+            }
+        }
+    $keywords=split_keywords($search_params);
 
     foreach (get_indexed_resource_type_fields() as $resource_type_field)
         {
@@ -1752,8 +1767,7 @@ function search_form_to_search_query($fields,$fromsearchbar=false)
 
             break;
 
-            case 7: 
-            case 9: # -------- Category tree and dynamic keywords
+            case 7:  # -------- Category tree
             $name="field_" . $fields[$n]["ref"];
             $value=getvalescaped($name,"");
             $selected=trim_array(explode(",",$value));
@@ -1776,7 +1790,31 @@ function search_form_to_search_query($fields,$fromsearchbar=false)
                 $search.=$fields[$n]["name"] . ":" . $p;
                 }
             break;
+        
+            case 9: # -------- Dynamic keywords
+            $name="field_" . $fields[$n]["ref"];
+            $value=getvalescaped($name,"");
+            $selected=trim_array(explode("|",$value));
+            $p="";
+            for ($m=0;$m<count($selected);$m++)
+                {
+                if ($selected[$m]!="")
+                    {
+                    if ($p!="") {$p.=";";}
+                    $p.=$selected[$m];
+                    }
 
+                # Resolve keywords to make sure that the value has been indexed prior to including in the search string.
+                $keywords=split_keywords($selected[$m]);
+                foreach ($keywords as $keyword) {resolve_keyword($keyword,true);}
+                }
+            if ($p!="")
+                {
+                if ($search!="") {$search.=", ";}
+                $search.=$fields[$n]["name"] . ":" . $p;
+                }
+            break;
+        
             // Radio buttons:
             case 12:
                 if($fields[$n]['display_as_dropdown']) {
@@ -1845,7 +1883,7 @@ function search_form_to_search_query($fields,$fromsearchbar=false)
             }
         if(count($propertysearchcodes)>0)
             {
-            $search = '!properties' . implode(';', $propertysearchcodes) . ' , ' . $search;
+            $search = '!properties' . implode(';', $propertysearchcodes) . ' ' . $search;
             }
         else
             {
@@ -2321,6 +2359,41 @@ function search_special($search,$sql_join,$fetchrows,$sql_prefix,$sql_suffix,$or
         $order_by=str_replace("r.rating","rating",$order_by);
                 
         return sql_query($sql_prefix . "select distinct *,r2.hit_count score from (select $select from resource r $sql_join where $sql_filter order by ref desc limit $last ) r2 order by $order_by" . $sql_suffix,false,$fetchrows);
+        }
+    
+     # Collections containing resources
+     # NOTE - this returns collections not resources! Not intended for use in user searches.
+     # This is used when the $collection_search_includes_resource_metadata option is enabled and searches collections based on the contents of the collections.
+    if (substr($search,0,19)=="!contentscollection")
+        {
+        $flags=substr($search,19,strpos($search," ")-19); # Extract User/Public/Theme flags from the beginning of the search parameter.
+    	if ($flags=="") {$flags="TP";} # Sensible default
+
+        # Add collections based on the provided collection type flags.
+        $collection_filter="(";
+        if (strpos($flags,"T")!==false) # Include themes
+            {
+            if ($collection_filter!="(") {$collection_filter.=" or ";}
+            $collection_filter.=" (c.public=1 and (length(c.theme)>0))";
+            }
+	
+	 if (strpos($flags,"P")!==false) # Include public collections
+            {
+            if ($collection_filter!="(") {$collection_filter.=" or ";}
+            $collection_filter.=" (c.public=1 and (length(c.theme)=0 or c.theme is null))";
+            }
+        
+        if (strpos($flags,"U")!==false) # Include the user's own collections
+            {
+            if ($collection_filter!="(") {$collection_filter.=" or ";}
+            global $userref;
+            $collection_filter.=" (c.public=0 and c.user='$userref')";
+            }
+        $collection_filter.=")";
+        
+        # Formulate SQL
+        $sql="select distinct c.* from collection c join resource r $sql_join join collection_resource cr on cr.resource=r.ref and cr.collection=c.ref where $sql_filter and $collection_filter group by c.ref order by ref desc";#echo $search . " " . $sql;
+        return sql_query($sql);
         }
     
     # View Resources With No Downloads

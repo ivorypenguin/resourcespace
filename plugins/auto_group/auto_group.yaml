@@ -1,6 +1,6 @@
 name: auto_group
 author: Colorhythm LLC
 version: 1.0
-desc: Auto generation of new groups in a multi-cleint setup
+desc: Auto generation of new groups in a multi-client setup
 config_url: /plugins/auto_group/pages/setup.php
 category: Workflow and access

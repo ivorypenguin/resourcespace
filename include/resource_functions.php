@@ -1129,7 +1129,7 @@ function update_field($resource,$field,$value)
 	if (!is_numeric($field)){$field=sql_value("select ref value from resource_type_field where name='".escape_check($field)."'","");}
 
 	# Fetch some information about the field
-	$fieldinfo=sql_query("select keywords_index,resource_column,partial_index,type, onchange_macro from resource_type_field where ref='$field'");
+	$fieldinfo=sql_query("select ref,keywords_index,resource_column,partial_index,type, onchange_macro from resource_type_field where ref='$field'");
 
 	if (count($fieldinfo)==0) {return false;} else {$fieldinfo=$fieldinfo[0];}
 	    
@@ -1245,7 +1245,7 @@ function update_field($resource,$field,$value)
 
 	# If this is a 'joined' field we need to add it to the resource column
 	$joins=get_resource_table_joins();
-	if(in_array($field,$joins))
+	if(in_array($fieldinfo['ref'],$joins))
 		{
 		if ($value!="null")
 			{

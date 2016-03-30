@@ -721,7 +721,7 @@ function managed_collection_request($ref,$details,$ref_is_resource=false)
 		get_config_option($userref,'email_user_notifications', $send_email);    
         if($send_email && $useremail!="")
             {
-			send_mail($useremail,$applicationname . ": " . $lang["requestsent"] . " - $ref",$userconfirmmessage,$email_from,$email_notify,$user_mail_template,$templatevars);
+			send_mail($useremail,$applicationname . ": " . $lang["requestsent"] . " - $ref",$userconfirmmessage,$email_from,"",$user_mail_template,$templatevars,$applicationname);
             }        
         else
             {  

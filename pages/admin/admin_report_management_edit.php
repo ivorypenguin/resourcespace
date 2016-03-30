@@ -4,7 +4,7 @@ include "../../include/db.php";
 include_once "../../include/general.php";
 include "../../include/authenticate.php";
 
-if (!checkperm("a") || $execution_lockout)
+if (!checkperm("a"))
 	{
 	exit ("Permission denied.");
 	}
