@@ -2979,7 +2979,7 @@ $watermark_single_image = array(
 );
 */
 
-# $offline_job_queue. Enable the job_queue functionality that runs resource heavy tasks to be run offline and sned notifiations once complete. Initially used by video_tracks plugin 
+# $offline_job_queue. Enable the job_queue functionality that runs resource heavy tasks to be run offline and send notifications once complete. Initially used by video_tracks plugin 
 # If set to true a frequent cron job or scheduled task should be added to run pages/tools/offline_jobs.php 
 $offline_job_queue=false;
 # Delete completed jobs from the queue?

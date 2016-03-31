@@ -21,7 +21,7 @@ function HookSearch_tilesSearchReplacesearchpublic($search="",$collections="")
             $hook_result=hook("process_search_results","",array("result"=>$resources,"search"=>"!collection".$collections[$n]['ref']));
             if ($hook_result!==false) {$resources=$hook_result;}
             
-            echo "<a href=\"" . $baseurl_short . "pages/search.php?search=" . urlencode("!collection" . $collections[$n]["ref"]) . "\" onClick=\"CentralSpaceLoad(this,true);\" 
+            echo "<a href=\"" . $baseurl_short . "pages/search.php?search=" . urlencode("!collection" . $collections[$n]["ref"]) . "\" onClick=\"return CentralSpaceLoad(this,true);\" 
 			class=\"HomePanel DashTile\" id=\"search_tile_col" . $collections[$n]['ref'] . "\">
 			<div id=\"contents_search_tile_col" . $collections[$n]['ref'] . "\" class=\"HomePanelIN HomePanelDynamicDash " . (($search_tiles_text_shadow)? "TileContentShadow":"") . "\">
 			";

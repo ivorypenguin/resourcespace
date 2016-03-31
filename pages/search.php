@@ -769,10 +769,10 @@ if (!hook("replacesearchheader")) # Always show search header now.
 			<?php if ($display=="list") { ?> <span class="Selected"><?php echo $lang["list"]?></span><?php } else { ?><a href="<?php echo $url?>&amp;display=list&amp;k=<?php echo urlencode($k) ?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["list"]?></a><?php } ?> <?php hook("adddisplaymode"); ?> 
 			<?php
 			}
+		?>
+		</div>
+		<?php
 		}
-	?>
-	</div> 
-	<?php
 	if ($display_selector_dropdowns && $recent_search_period_select && strpos($search,"!")===false && getvalescaped("recentdaylimit","")==""){?>
 	<div class="InpageNavLeftBlock"><?php echo $lang["period"]?>:<br />
 		<select class="medcomplementwidth ListDropdown" style="width:auto" id="resultsdisplay" name="resultsdisplay" onchange="CentralSpaceLoad(this.value,true);">
