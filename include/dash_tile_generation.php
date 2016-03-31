@@ -208,7 +208,7 @@ function tile_config_pending($tile,$tile_id,$tile_width,$tile_height)
 	if(!empty($tile['title']))
 		{
 		?>
-		<h2 class="title"><?php echo htmlspecialchars($tile['title']); ?></h2>
+		<h2 class="title"><?php echo htmlspecialchars(i18n_get_translated($tile['title'])); ?></h2>
 		<?php
 		}
 	else if(!empty($tile['txt']) && isset($lang[strtolower($tile['txt'])]))
@@ -235,7 +235,7 @@ function tile_config_pending($tile,$tile_id,$tile_width,$tile_height)
 		else
 			{
 			?>
-		<p><?php echo htmlspecialchars($tile['txt']); ?></p>
+		<p><?php echo htmlspecialchars(i18n_get_translated($tile['txt'])); ?></p>
 			<?php
 			}
 		}
@@ -358,14 +358,14 @@ function tile_search_thumbs($tile,$tile_id,$tile_width,$tile_height,$promoted_im
 	if(!empty($tile["title"]))
 		{ ?>
 		<h2 class="title thmbs_tile">
-		<?php echo htmlspecialchars($tile["title"]);?>
+		<?php echo htmlspecialchars(i18n_get_translated($tile["title"]));?>
 		</h2>
 		<?php
 		}
 	else if(!empty($tile["txt"]))
 		{ ?>
 		<h2 class="title notitle thmbs_tile">
-		<?php echo htmlspecialchars($tile["txt"]);?>
+		<?php echo htmlspecialchars(i18n_get_translated($tile["txt"]));?>
 		</h2>
 		<?php
 		}
@@ -373,7 +373,7 @@ function tile_search_thumbs($tile,$tile_id,$tile_width,$tile_height,$promoted_im
  	if(!empty($tile["title"]) && !empty($tile["txt"]))
 		{ ?>
 		<p>
-		<?php echo htmlspecialchars($tile["txt"]);?>
+		<?php echo htmlspecialchars(i18n_get_translated($tile["txt"]));?>
 		</p>
 		<?php
 		}
@@ -453,14 +453,14 @@ function tile_search_multi($tile,$tile_id,$tile_width,$tile_height)
 	if(!empty($tile["title"]))
 		{ ?>
 		<h2 class="title thmbs_tile">
-		<?php echo htmlspecialchars($tile["title"]);?>
+		<?php echo htmlspecialchars(i18n_get_translated($tile["title"]));?>
 		</h2>
 		<?php
 		}
 	else if(!empty($tile["txt"]))
 		{ ?>
 		<h2 class="title notitle thmbs_tile">
-		<?php echo htmlspecialchars($tile["txt"]);?>
+		<?php echo htmlspecialchars(i18n_get_translated($tile["txt"]));?>
 		</h2>
 		<?php
 		}
@@ -468,7 +468,7 @@ function tile_search_multi($tile,$tile_id,$tile_width,$tile_height)
 	if(!empty($tile["title"]) && !empty($tile["txt"]))
 		{ ?>
 		<p>
-		<?php echo htmlspecialchars($tile["txt"]);?>
+		<?php echo htmlspecialchars(i18n_get_translated($tile["txt"]));?>
 		</p>
 		<?php
 		}
@@ -521,14 +521,14 @@ function tile_search_blank($tile,$tile_id,$tile_width,$tile_height)
 	if(!empty($tile["title"]))
 		{ ?>
 		<h2 class="title thmbs_tile">
-		<?php echo htmlspecialchars($tile["title"]);?>
+		<?php echo htmlspecialchars(i18n_get_translated($tile["title"]));?>
 		</h2>
 		<?php
 		}
 	else if(!empty($tile["txt"]))
 		{ ?>
 		<h2 class="title notitle thmbs_tile">
-		<?php echo htmlspecialchars($tile["txt"]);?>
+		<?php echo htmlspecialchars(i18n_get_translated($tile["txt"]));?>
 		</h2>
 		<?php
 		}
@@ -536,7 +536,7 @@ function tile_search_blank($tile,$tile_id,$tile_width,$tile_height)
  	if(!empty($tile["title"]) && !empty($tile["txt"]))
 		{ ?>
 		<p>
-		<?php echo htmlspecialchars($tile["txt"]);?>
+		<?php echo htmlspecialchars(i18n_get_translated($tile["txt"]));?>
 		</p>
 		<?php
 		}

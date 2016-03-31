@@ -1157,9 +1157,9 @@ function build_dash_tile_list($dtiles_available)
   			<td>
   				<?php 
   				if(isset($buildstring["tltype"]) && $buildstring["tltype"]=="conf" && $buildstring["tlstyle"]!="custm" && $buildstring["tlstyle"]!="pend" && isset($lang[$tile["title"]]))
-  					{echo $lang[$tile["title"]];}
+  					{echo i18n_get_translated($lang[$tile["title"]]);}
   				else 
-  					{echo $tile["title"];}
+  					{echo i18n_get_translated($tile["title"]);}
   				?>
   			</td>
   			<td>
@@ -1180,11 +1180,11 @@ function build_dash_tile_list($dtiles_available)
   				
   				if(strlen($tile["txt"])>75)
   					{
-  					echo substr($tile["txt"],0,72)."...";
+  					echo substr(i18n_get_translated($tile["txt"]),0,72)."...";
   					}
   				else
   					{
-  					echo $tile["txt"];
+  					echo i18n_get_translated($tile["txt"]);
   					}
   				?>
   			</td>
