@@ -20,7 +20,7 @@ If a file is to be created for only a specific user to download you can create a
 
 include_once dirname(__FILE__) . "/../image_processing.php";
 				
-$shell_exec_cmd = str_replace("%%TARGETFILE%%",$job_data["outputfile"],$job_data["command"]);
+$shell_exec_cmd = str_replace("%%TARGETFILE%%","'" . $job_data["outputfile"] . "'",$job_data["command"]);
 global $config_windows,$baseurl;
 if ($config_windows)
 	{

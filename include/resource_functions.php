@@ -961,12 +961,12 @@ function save_resource_data_multi($collection)
 	}
 }
 
-function append_field_value($field_data,$new_value,$exiting_value)
+function append_field_value($field_data,$new_value,$existing_value)
 	{
 	if ($field_data["type"]!=2 && $field_data["type"]!=3 && $field_data["type"]!=9 && $field_data["type"]!=12 && substr($new_value,0,1)!=",")
 		{
 		# Automatically append a space when appending text types.
-		$val=$exiting_value . " " . $new_value;
+		$val=$existing_value . " " . $new_value;
 		}
 	else
 		{
@@ -974,9 +974,9 @@ function append_field_value($field_data,$new_value,$exiting_value)
 		if(substr($new_value,0,1)!=",")
 			{
 			$new_value=",".$new_value;
-		}
+            }
 		
-		$val=$exiting_value . $new_value;
+		$val=(trim($existing_value)!=","?$existing_value:"") . $new_value;
 		
 		}
 	return $val;

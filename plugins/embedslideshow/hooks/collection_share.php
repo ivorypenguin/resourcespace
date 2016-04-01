@@ -120,11 +120,39 @@ function HookEmbedslideshowCollection_shareExtra_share_options()
 			\">" . $lang["embedslideshow_maximise"] . "</a></div>";
 			}
 		$embed.="<iframe id=\"embedslideshow_" . $ref . "\" Style=\"background-color:#fff;cursor: pointer;\" width=\"$width_w_border\" height=\"$height\" src=\"" . $baseurl . "/plugins/embedslideshow/pages/viewer.php?ref=$ref&k=$key&size=" . getval("size","") . "&transition=" . getval("transition","") . "&width=$width&height=$height&showtext=".getval("showtext","0")."\" frameborder=0 scrolling=no>Your browser does not support frames.</iframe>";
-		
+
 		# Compress embed HTML.
 		$embed=str_replace("\n"," ",$embed);
 		$embed=str_replace("\t"," ",$embed);
 		while (strpos($embed,"  ")!==false) {$embed=str_replace("  "," ",$embed);}
+
+        global $embedslideshow_dynamic_size;
+        if($embedslideshow_dynamic_size) 
+            {
+            $embed .= sprintf("
+                <script>
+                jQuery(document).ready(function() {
+                    function change_src_size()
+                        {
+                        var embedded_iframe = document.getElementById('embedslideshow_%s');
+                        var embedded_src    = embedded_iframe.src;
+
+                        // Set resource preview size to iFrame source size
+                        embedded_src = ReplaceUrlParameter(embedded_src, 'width', embedded_iframe.width);
+                        embedded_src = ReplaceUrlParameter(embedded_src, 'height', embedded_iframe.height);
+                        // Let ResourceSpace know this should be dynamic
+                        embedded_src += '&dynamic=true';
+                        embedded_iframe.setAttribute('src', embedded_src);
+
+                        return true;
+                        }
+                    change_src_size();
+                });
+                </script>
+                ",
+                $ref
+            );
+            }
 		?>
 		<div class="Question">		
 		<label><?php echo $lang["slideshowhtml"] ?></label>

@@ -15,7 +15,7 @@ $plugin_page_heading = $lang["embedslideshowconfig"];
 // Build the $page_def array of descriptions of each configuration variable the plugin uses.
 $page_def[] = config_add_boolean_select('embedslideshow_textfield', $lang['embedslideshow_textfield']);
 $page_def[] = config_add_single_ftype_select('embedslideshow_resourcedatatextfield',$lang['embedslideshow_resourcedatatextfield']);
-
+$page_def[] = config_add_boolean_select('embedslideshow_dynamic_size', $lang['embedslideshow_dynamic_size']);
 
 // Do the page generation ritual -- don't change this section.
 $upload_status = config_gen_setup_post($page_def, $plugin_name);

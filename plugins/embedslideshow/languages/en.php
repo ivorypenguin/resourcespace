@@ -34,3 +34,4 @@ $lang["embedslideshow_directlink"]="Non-embedded direct URL";
 $lang["embedslideshow_directlinkopen"]="Open direct link (new page)";
 
 $lang["jump"]="jump";
+$lang['embedslideshow_dynamic_size'] = 'Dynamic resize of preview based on player size?';
