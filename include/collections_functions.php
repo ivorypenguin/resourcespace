@@ -1985,7 +1985,12 @@ function compile_collection_actions(array $collection_data, $top_actions)
         {
         return $options;
         }
-
+	
+	if(empty($order_by))
+    	{
+		$order_by = $default_collection_sort;
+		}
+	
     if(!collection_is_research_request($collection_data['ref']) || !checkperm('r'))
         {
         if(!$top_actions && checkperm('s') && $pagename === 'collections')
@@ -2080,10 +2085,12 @@ function compile_collection_actions(array $collection_data, $top_actions)
     if(!$top_actions && $home_dash && ($k == '' || $internal_share_access) && checkPermission_dashcreate())
         {
         $data_attribute['url'] = sprintf('
-            %spages/dash_tile.php?create=true&tltype=srch&promoted_resource=true&freetext=true&all_users=1&link=/pages/search.php?search=!collection%s&order_by=relevance&sort=DESC
+            %spages/dash_tile.php?create=true&tltype=srch&promoted_resource=true&freetext=true&all_users=1&link=/pages/search.php?search=!collection%s&order_by=%s&sort=%s
             ',
             $baseurl_short,
-            $collection_data['ref']
+            $collection_data['ref'],
+            $order_by,
+            $sort
         );
 
         $options[$o]['value']='save_collection_to_dash';
@@ -2331,10 +2338,6 @@ function compile_collection_actions(array $collection_data, $top_actions)
     // CSV export of collection metadata
     if(!$top_actions && ($k=="" || $internal_share_access))
         {
-    	if(empty($order_by))
-    		{
-			$order_by = $default_collection_sort;
-    		}
 
         $options[$o]['value']            = 'csv_export_results_metadata';
 		$options[$o]['label']            = $lang['csvExportResultsMetadata'];

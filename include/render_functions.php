@@ -77,6 +77,34 @@ function render_sort_order(array $order_fields)
     </select>
     
     <script>
+    function updateCollectionActions(order_by,sort_direction){
+    	jQuery("#CollectionDiv .ActionsContainer select option").each(function(){
+    		dataURL = jQuery(this).data("url");
+    		if(typeof dataURL!=='undefined'){
+    			dataURLVars = dataURL.split('&');
+    			
+    			replace_needed=false;
+    			
+    			for (i = 0; i < dataURLVars.length; i++) {
+        			dataURLParameterName = dataURLVars[i].split('=');
+	
+   	     			if (dataURLParameterName[0] === 'order_by') {
+   	        			dataURLVars[i] = dataURLParameterName[0]+'='+order_by;
+   	        			replace_needed=true;
+   		     		}
+       		 		else if (dataURLParameterName[0] === 'sort') {
+      	     			dataURLVars[i] = dataURLParameterName[0]+'='+sort_direction;
+      	     			replace_needed=true;
+      		  		}
+     		   	}
+   		     	if(replace_needed){
+   		     		newDataURL=dataURLVars.join("&");
+    				jQuery(this).attr("data-url", newDataURL);
+    			}
+    		}
+    	});
+    }
+    
     jQuery('#sort_order_selection').change(function() {
         var selected_option      = jQuery('#sort_order_selection option[value="' + this.value + '"]');
         var selected_sort_option = jQuery('#sort_selection option:selected').val();
@@ -85,6 +113,7 @@ function render_sort_order(array $order_fields)
         option_url += '&sort=' + selected_sort_option;
 
          <?php echo $modal ? 'Modal' : 'CentralSpace'; ?>Load(option_url);
+        updateCollectionActions(selected_option.val(), selected_sort_option);
     });
 
     jQuery('#sort_selection').change(function() {
@@ -95,6 +124,7 @@ function render_sort_order(array $order_fields)
         selected_sort_order_option_url += '&sort=' + selected_option;
 
         <?php echo $modal ? 'Modal' : 'CentralSpace'; ?>Load(selected_sort_order_option_url);
+        updateCollectionActions(selected_sort_order_option.val(), selected_option);
     });
     </script>
     <?php
@@ -142,7 +172,7 @@ function render_actions(array $collection_data, $top_actions = true, $two_line =
         return;
         }
 
-    global $baseurl, $lang, $k, $pagename;
+    global $baseurl, $lang, $k, $pagename, $order_by, $sort;
 
     
     // globals that could also be passed as a reference

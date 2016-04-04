@@ -424,7 +424,7 @@ if (!hook("replacecdivrender"))
 				}
 			});
 			window.onload = function() {
-				CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=<?php echo urlencode($thumbs); ?>&collection='+usercollection+'<?php echo (isset($k) ? "&k=".urlencode($k) : ""); ?>');
+				CollectionDivLoad('<?php echo $baseurl_short?>pages/collections.php?thumbs=<?php echo urlencode($thumbs); ?>&collection='+usercollection+'<?php echo (isset($k) ? "&k=".urlencode($k) : ""); ?>&order_by=<?php echo (isset($order_by) ? urlencode($order_by) : ""); ?>&sort=<?php echo (isset($sort) ? urlencode($sort) : ""); ?>');
 				InitThumbs();
 			}
 	</script>

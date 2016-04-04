@@ -2014,10 +2014,12 @@ function compile_search_actions($top_actions)
                 {
                 $option_name = 'save_collection_to_dash';
                 $data_attribute['url'] = sprintf('
-                    %spages/dash_tile.php?create=true&tltype=srch&promoted_resource=true&freetext=true&all_users=1&link=/pages/search.php?search=%s&order_by=relevance&sort=DESC
+                    %spages/dash_tile.php?create=true&tltype=srch&promoted_resource=true&freetext=true&all_users=1&link=/pages/search.php?search=%s&order_by=%s&sort=%s
                     ',
                     $baseurl_short,
-                    $search
+                    $search,
+                    $order_by,
+                    $sort
                 );
                 }
 

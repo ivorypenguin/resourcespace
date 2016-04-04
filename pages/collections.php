@@ -10,6 +10,9 @@ include_once dirname(__FILE__)."/../include/resource_functions.php";
 include_once dirname(__FILE__)."/../include/search_functions.php";
 include_once dirname(__FILE__) . '/../include/render_functions.php';
 
+$order_by=getvalescaped("order_by",$default_collection_sort);
+$sort=getvalescaped("sort","DESC");
+
 // Set a flag for logged in users if $external_share_view_as_internal is set and logged on user is accessing an external share
 $internal_share_access = ($k!="" && $external_share_view_as_internal && isset($is_authenticated) && $is_authenticated);
 

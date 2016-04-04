@@ -76,7 +76,7 @@ if(getval("generate","")!="")
 			$shell_exec_cmd .= " -vf subtitles='" . $subtitle_path . "'";
 			}
 
-		$shell_exec_cmd .= " %%TARGETFILE%%";
+		$shell_exec_cmd .= " " . $video_track_command["command"] . " %%TARGETFILE%%";
 		
 		// Video requirements have been defined. What does the user want to do with the video?	
 		if(getval("video_track_save_alt","")!="" && $edit_access)
@@ -193,6 +193,7 @@ if(getval("generate","")!="")
 				file_put_contents(get_temp_dir() . "/ffmpeg_" . $randstring . ".bat",$shell_exec_cmd);
 				$shell_exec_cmd=get_temp_dir() . "/ffmpeg_" . $randstring . ".bat";
 				}
+                
             $output=run_command($shell_exec_cmd);
             if(file_exists($targetfile))
                 {
