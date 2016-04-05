@@ -342,7 +342,7 @@ if ($themes_category_split_pages && isset($themes[0]) && !$theme_direct_jump)
 		if($simpleview)
 		{$link.="&simpleview=true";}
 		echo "&gt;&nbsp;";
-		?><a href="<?php echo $link ?>" onClick="return CentralSpaceLoad(this,true);"><span><?php echo htmlspecialchars($themes[$x]) ?>&nbsp;</span></a><?php
+		?><a href="<?php echo $link ?>" onClick="return CentralSpaceLoad(this,true);"><span><?php echo htmlspecialchars(i18n_get_collection_name($themes[$x])) ?>&nbsp;</span></a><?php
 		}
 	echo "</div>";
 

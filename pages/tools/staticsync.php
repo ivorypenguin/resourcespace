@@ -51,19 +51,38 @@ if (is_process_lock("staticsync"))
     }
 set_process_lock("staticsync");
 
+// Strip trailing slash if it has been left in
+$syncdir=rtrim($syncdir,"/");
+
 echo "Preloading data... ";
 $count = 0;
-
-$done = sql_array("SELECT file_path value FROM resource WHERE LENGTH(file_path)>0 AND file_path LIKE '%/%'");
-$done = array_flip($done);
-
-# Load all modification times into an array for speed
-$modtimes = array();
-$resource_modified_times = sql_query("SELECT file_modified, file_path FROM resource WHERE archive=0 AND LENGTH(file_path) > 0");
-foreach ($resource_modified_times as $rmd)
+$done=array();
+$syncedresources = sql_query("SELECT ref, file_path, file_modified, archive FROM resource WHERE LENGTH(file_path)>0 AND file_path LIKE '%/%'");
+foreach($syncedresources as $syncedresource)
     {
-    $modtimes[$rmd["file_path"]] = $rmd["file_modified"];
+    $done[$syncedresource["file_path"]]["ref"]=$syncedresource["ref"];
+    $done[$syncedresource["file_path"]]["modified"]=$syncedresource["file_modified"];
+    $done[$syncedresource["file_path"]]["archive"]=$syncedresource["archive"];
     }
+    
+// Set up an array to monitor processing of new alternative files
+$alternativefiles=array();
+
+// Add all the synced alternative files to the list of completed
+if(isset($staticsync_alternative_file_text) && !$staticsync_ingest)
+    {
+    // Add any staticsynced alternative files to the array so we don't process them unnecessarily
+    $syncedalternatives = sql_query("SELECT ref, file_name, resource, creation_date FROM resource_alt_files WHERE file_name like '%" . escape_check($syncdir) . "%'");
+    foreach($syncedalternatives as $syncedalternative)
+        {
+        $shortpath=str_replace($syncdir . DIRECTORY_SEPARATOR, '', $syncedalternative["file_name"]);      
+        $done[$shortpath]["ref"]=$syncedalternative["resource"];
+        $done[$shortpath]["modified"]=$syncedalternative["creation_date"];
+        $done[$shortpath]["alternative"]=$syncedalternative["ref"];
+        }
+    }
+    
+    
 
 $lastsync = sql_value("SELECT value FROM sysvars WHERE name='lastsync'","");
 $lastsync = (strlen($lastsync) > 0) ? strtotime($lastsync) : '';
@@ -128,27 +147,36 @@ function touch_category_tree_level($path_parts)
 
 function ProcessFolder($folder)
     {
-    global $lang, $syncdir, $nogo, $staticsync_max_files, $count, $done, $modtimes, $lastsync, $ffmpeg_preview_extension, 
+    global $lang, $syncdir, $nogo, $staticsync_max_files, $count, $done, $lastsync, $ffmpeg_preview_extension, 
            $staticsync_autotheme, $staticsync_folder_structure, $staticsync_extension_mapping_default, 
            $staticsync_extension_mapping, $staticsync_mapped_category_tree, $staticsync_title_includes_path, 
            $staticsync_ingest, $staticsync_mapfolders, $staticsync_alternatives_suffix, $theme_category_levels, $staticsync_defaultstate,
-           $additional_archive_states,$staticsync_extension_mapping_append_values, $staticsync_deleted_state, $staticsync_alternative_file_text;
+           $additional_archive_states,$staticsync_extension_mapping_append_values, $staticsync_deleted_state, $staticsync_alternative_file_text,
+           $resource_deletion_state, $alternativefiles;
     
     $collection = 0;
     
-    echo "Processing Folder: $folder" . PHP_EOL;
+    echo "Processing Folder: " . $folder . PHP_EOL;
     
     # List all files in this folder.
     $dh = opendir($folder);
     while (($file = readdir($dh)) !== false)
         {
-        if ( $file == '.' || $file == '..' || (isset($staticsync_alternative_file_text) && strpos($file,$staticsync_alternative_file_text)!==false))
+        if ( $file == '.' || $file == '..')
             {
             continue;
             }
-        $filetype  = filetype($folder . "/" . $file);
-        $fullpath  = $folder . "/" . $file;
-        $shortpath = str_replace($syncdir . "/", '', $fullpath);
+        $filetype  = filetype($folder . DIRECTORY_SEPARATOR . $file);
+        $fullpath  = $folder . DIRECTORY_SEPARATOR . $file;
+        $shortpath = str_replace($syncdir . DIRECTORY_SEPARATOR, '', $fullpath);
+        
+        if(isset($staticsync_alternative_file_text) && strpos($file,$staticsync_alternative_file_text)!==false)
+            {
+            // Set a flag so we can process this later in case we don't processs this along with a primary resource file (it may be a new alternative file for an existing resource)
+            $alternativefiles[]=$syncdir . DIRECTORY_SEPARATOR . $shortpath;
+            continue;
+            }
+            
         # Work out extension
         $extension = explode(".", $file);
         if(count($extension)>1)
@@ -190,7 +218,7 @@ function ProcessFolder($folder)
             
             if ($count > $staticsync_max_files) { return(true); }
 
-            # Already exists or an alternative file?
+            # Already exists or deleted/archived in which case we won't proceed?
             if (!isset($done[$shortpath]))
                 {
                 $count++;
@@ -345,7 +373,6 @@ function ProcessFolder($folder)
                                     else 
                                         {
                                         # Save the value
-                                        print_r($path_parts);
                                         $value = $path_parts[$level-1];
                                         
                                         if($staticsync_extension_mapping_append_values){
@@ -398,29 +425,19 @@ function ProcessFolder($folder)
                                 }
                             }   
                         }
-					elseif($staticsync_ingest && isset($staticsync_alternative_file_text))
+					elseif(isset($staticsync_alternative_file_text))
 						{
 						$basefilename=str_ireplace(".$extension", '', $file);
 						$altfilematch = $folder . "/" . $basefilename . $staticsync_alternative_file_text . "*.*";
 						echo "Searching for alternative files for base file: " . $basefilename , PHP_EOL; 
 						echo "checking " . $altfilematch . PHP_EOL;
 						$altfiles = glob($altfilematch);
-						$existing_alts=get_alternative_files($r);
 						foreach ($altfiles as $altfile)
 							{
-							echo "Found alternative file - " . $altfile . PHP_EOL;
-                            $newalt["file_size"]   = filesize_unlimited($altfile);
-							$altparts = explode(".", $altfile);
-                            $newalt["extension"] = $altparts[count($altparts)-1];
-							$newalt["altdescription"] = substr(str_ireplace($folder . "/" . $basefilename . $staticsync_alternative_file_text,"",$altfile),0,-(strlen($newalt["extension"])+1));
-							$newalt["name"] = str_replace("?", strtoupper($newalt["extension"]), $lang["fileoftype"]);
-                            $newalt["ref"] = add_alternative_file($r, $newalt["name"], $newalt["altdescription"], $altfile, $newalt["extension"], $newalt["file_size"]);
-							$newalt["path"] = get_resource_path($r, true, '', true, $newalt["extension"], -1, 1, false, '',  $newalt["ref"]);
-                            $newalt["basefilename"] = $basefilename;
-                            rename($altfile,$newalt["path"]); # Move alternative file
-                            hook("staticsync_after_alt", '',array($r,$newalt));
-							echo "Added alternative file ref:"  . $newalt["ref"] . ", name: " . $newalt["name"] . ". " . "(" . $newalt["altdescription"] . ") Size: " . $newalt["file_size"] . "\n";
-							}
+                            staticsync_process_alt($altfile,$r);			
+							echo "Processed alternative: " . $shortpath . PHP_EOL;
+                            }
+						continue;
 						}
 
                     # Add to collection
@@ -441,11 +458,11 @@ function ProcessFolder($folder)
                     echo " *** Skipping file - it was not possible to move the file (still being imported/uploaded?)" . PHP_EOL;
                     }
                 }
-            else
+            elseif (!isset($done[$shortpath]["archive"]) || $done[$shortpath]["archive"]!=$resource_deletion_state)
                 {
-                # check modified date and update previews if necessary
+                # check modified date and update previews if necessary (not for deleted resources)
                 $filemod = filemtime($fullpath);
-                if (array_key_exists($shortpath,$modtimes) && ($filemod > strtotime($modtimes[$shortpath])))
+                if (isset($done[$shortpath]["modified"]) && $filemod > strtotime($done[$shortpath]["modified"]))
                     {
                     $count++;
                     # File has been modified since we last created previews. Create again.
@@ -485,9 +502,109 @@ function ProcessFolder($folder)
             }   
         }   
     }
+    
+function staticsync_process_alt($alternativefile, $ref="", $alternative="")
+    {
+    // Process an alternative file
+    global $staticsync_alternative_file_text, $syncdir, $lang, $staticsync_ingest, $alternative_file_previews, $done;
+	
+    $shortpath = str_replace($syncdir . DIRECTORY_SEPARATOR, '', $alternativefile);
+	if(!isset($done[$shortpath]))
+		{
+		$alt_parts=pathinfo($alternativefile);
+		$altfilenameparts = explode($staticsync_alternative_file_text,$alt_parts['filename']);
+		$altbasename=$altfilenameparts[0];
+		if($ref=="")
+			{
+			// We need to find which resource this relates to
+			echo "Searching for primary resource related to " . $alternativefile . "  in " . $alt_parts['dirname'] . DIRECTORY_SEPARATOR . $altbasename . "." .  PHP_EOL;
+			foreach($done as $syncedfile=>$synceddetails)
+				{
+				if(strpos($syncdir . DIRECTORY_SEPARATOR . $syncedfile,$alt_parts['dirname'] . DIRECTORY_SEPARATOR . $altbasename . ".")!==false)
+					{
+					// This synced file has the same base name as the resource
+					$ref= $synceddetails["ref"];
+					break;
+					}
+				}        
+			}
+        
+         if($ref=="")
+            {
+            echo "No primary resource found for " . $alternativefile . ". Skipping file" . PHP_EOL;
+            debug("staticsync - No primary resource found for " . $alternativefile . ". Skipping file");
+            return false;
+            }
+         
+        echo "Processing alternative file - '" . $alternativefile . "' for resource #" . $ref . PHP_EOL;
+		
+		$alt["file_size"]   = filesize_unlimited($alternativefile);
+		$altparts = explode(".", $alternativefile);
+		$alt["extension"] = $altparts[count($altparts)-1];
+		
+		if($alternative=="")
+			{
+			// Create a new alternative file
+			$alt["altdescription"] = $altfilenameparts[1];
+			$alt["name"] = str_replace("?", strtoupper($alt["extension"]), $lang["fileoftype"]);
+			$alt["ref"] = add_alternative_file($ref, $alt["name"], $alt["altdescription"], $alternativefile, $alt["extension"], $alt["file_size"]);
+			
+			echo "Created a new alternative file - '" . $alt["ref"] . "' for resource #" . $ref . PHP_EOL;
+            debug("Staticsync - Created a new alternative file - '" . $alt["ref"] . "' for resource #" . $ref);
+			$alt["path"] = get_resource_path($ref, true, '', false, $alt["extension"], -1, 1, false, '',  $alt["ref"]);
+			echo "- alternative file path - " . $alt["path"] . PHP_EOL;
+            debug("Staticsync - alternative file path - " . $alt["path"]);
+			$alt["basefilename"] = $altbasename;
+			if($staticsync_ingest)
+				{
+				echo "- moving file to " . $alt["path"] . PHP_EOL;
+				rename($alternativefile,$alt["path"]); # Move alternative file
+				}
+			if ($alternative_file_previews)
+				{create_previews($ref,false,$alt["extension"],false,false,$alt["ref"],false, $staticsync_ingest);}
+			hook("staticsync_after_alt", '',array($ref,$alt));
+			echo "Added alternative file ref:"  . $alt["ref"] . ", name: " . $alt["name"] . ". " . "(" . $alt["altdescription"] . ") Size: " . $alt["file_size"] . PHP_EOL;
+            debug("Staticsync - added alternative file ref:"  . $alt["ref"] . ", name: " . $alt["name"] . ". " . "(" . $alt["altdescription"] . ") Size: " . $alt["file_size"]);
+            $done[$shortpath]["processed"]=true;
+			}  
+		}
+    elseif($alternative!="" && $alternative_file_previews)
+        {
+        // An existing alternative file has changed, update previews if required
+        debug("Alternative file changed, recreating previews");
+		create_previews($ref, false,  $alt["extension"], false, false, $alternative, false, $staticsync_ingest);
+        sql_query("UPDATE resource_alt_files SET creation_date=NOW() WHERE ref='$alternative'"); 
+        $done[$shortpath]["processed"]=true;           
+        }	
+	echo "Completed path : " . $shortpath . PHP_EOL;
+	$done[$shortpath]["ref"]=$ref;
+    $done[$shortpath]["alternative"]=$alternative;
+    }
 
 # Recurse through the folder structure.
 ProcessFolder($syncdir);
+
+// Look for alternative files that may have not been processed
+foreach($alternativefiles as $alternativefile)
+    {
+    $shortpath = str_replace($syncdir . "/", '', $alternativefile);
+    echo "Processing alternative file " . $shortpath . PHP_EOL;
+    debug("Staticsync -  Processing altfile " . $shortpath);
+    if (!isset($done[$shortpath]))
+        {
+        staticsync_process_alt($alternativefile);        
+        }
+    elseif($alternative_file_previews)
+        {
+        // File already synced but check if it has been modified as may need to update previews
+        $altfilemod = filemtime($alternativefile);
+        if (isset($done[$shortpath]["modified"]) && $altfilemod > strtotime($done[$shortpath]["modified"]))
+            {
+            // Update the alternative file
+            staticsync_process_alt($alternativefile,$done[$shortpath]["resource"],$done[$shortpath]["alternative"]);
+            }
+        }
+    }
 
 echo "...done." . PHP_EOL;
 
@@ -496,30 +613,51 @@ if (!$staticsync_ingest)
     # If not ingesting files, look for deleted files in the sync folder and archive the appropriate file from ResourceSpace.
     echo "Looking for deleted files..." . PHP_EOL;
     # For all resources with filepaths, check they still exist and archive if not.
-    $resources_to_archive = sql_query("SELECT ref,file_path FROM resource WHERE archive=0 AND LENGTH(file_path)>0 AND file_path LIKE '%/%'");
-    
+    //$resources_to_archive = sql_query("SELECT ref,file_path FROM resource WHERE archive=0 AND LENGTH(file_path)>0 AND file_path LIKE '%/%'");
+    $resources_to_archive =array();
+    $n=0;
+    foreach($done as $syncedfile=>$synceddetails)    
+        {
+        if(!isset($synceddetails["processed"]) && isset($synceddetails["archive"]) && $synceddetails["archive"]!=$staticsync_deleted_state || isset($synceddetails["alternative"]))
+            {
+            $resources_to_archive[$n]["file_path"]=$syncedfile;
+            $resources_to_archive[$n]["ref"]=$synceddetails["ref"];
+            if(isset($synceddetails["alternative"]))
+                {$resources_to_archive[$n]["alternative"]=$synceddetails["alternative"];}
+            $n++;
+            }
+        }
+        
     # ***for modified syncdir directories:
     $syncdonemodified = hook("modifysyncdonerf");
     if (!empty($syncdonemodified)) { $resources_to_archive = $syncdonemodified; } 
     
-    foreach ($resources_to_archive as $rf) 
+    foreach ($resources_to_archive as $rf)
         {
-        $fp = $syncdir . "/" . $rf["file_path"];
-            
-        # ***for modified syncdir directories:
+        $fp = $syncdir . DIRECTORY_SEPARATOR . $rf["file_path"];
         if (isset($rf['syncdir']) && $rf['syncdir'] != '')
+               {
+               # ***for modified syncdir directories:
+               $fp = $rf['syncdir'].$rf["file_path"];
+               }
+         
+        if ($fp!="" && !file_exists($fp))
             {
-            $fp = $rf['syncdir'].$rf["file_path"];
-            }
-
-        if (!file_exists($fp))
-            {
-            echo "File no longer exists: {$rf["ref"]} ($fp)" . PHP_EOL;
-            # Set to archived.
-            sql_query("UPDATE resource SET archive='" . $staticsync_deleted_state . "' WHERE ref='{$rf["ref"]}'");
-            sql_query("DELETE FROM collection_resource WHERE resource='{$rf["ref"]}'");
+            if(!isset($rf["alternative"]))
+                {
+                echo "File no longer exists: " . $rf["ref"] . " " . $fp . PHP_EOL;
+                # Set to archived.
+                sql_query("UPDATE resource SET archive='" . $staticsync_deleted_state . "' WHERE ref='{$rf["ref"]}'");
+                sql_query("DELETE FROM collection_resource WHERE resource='{$rf["ref"]}'");                
+                } 
+            else
+                {
+                echo "Alternative file no longer exists: resource " . $rf["ref"] . " alt:" . $rf["alternative"] . " " . $fp . PHP_EOL;
+                sql_query("DELETE FROM resource_alt_files WHERE ref='" . $rf["alternative"] . "'");
+                }                  
             }
         }
+        
     # Remove any themes that are now empty as a result of deleted files.
     sql_query("DELETE FROM collection WHERE theme IS NOT NULL AND LENGTH(theme) > 0 AND 
                 (SELECT count(*) FROM collection_resource cr WHERE cr.collection=collection.ref) = 0;");
@@ -532,3 +670,4 @@ sql_query("UPDATE sysvars SET value=now() WHERE name='lastsync'");
 clear_process_lock("staticsync");
 
 ?>
+

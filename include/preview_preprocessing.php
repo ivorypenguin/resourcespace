@@ -18,7 +18,7 @@ $preprocess=true; // indicate that an intermediate jpg is being made, so that im
 if (!$previewonly)
 	{
 	$file=get_resource_path($ref,true,"",false,$extension,-1,1,false,"",$alternative); 
-	$target=get_resource_path($ref,true,"",false,"jpg",-1,1,false,"",$alternative); 
+	$target=get_resource_path($ref,true,"",true,"jpg",-1,1,false,"",$alternative); 
 	}
 else
 	{
