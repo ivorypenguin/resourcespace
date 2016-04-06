@@ -4519,7 +4519,7 @@ function get_resource_type_fields($restypes="", $field_order_by="ref", $field_so
 			{
 			$conditionsql.=" where ( ";
 			}
-		$conditionsql.=" name like '%" . $find . "%' or options like '%" . $find . "%'or title like '%" . $find . "%'or tab_name like '%" . $find . "%'or exiftool_field like '%" . $find . "%'or help_text like '%" . $find . "%'or ref like '%" . $find . "%'or tooltip_text like '%" .$find . "%' or display_template like '%" .$find . "%')";
+		$conditionsql.=" name like '%" . $find . "%' or title like '%" . $find . "%' or tab_name like '%" . $find . "%' or exiftool_field like '%" . $find . "%' or help_text like '%" . $find . "%' or ref like '%" . $find . "%' or tooltip_text like '%" .$find . "%' or display_template like '%" .$find . "%')";
 		}
 	// Allow for sorting, enabled for use by System Setup pages
 	//if(!in_array($field_order_by,array("ref","name","tab_name","type","order_by","keywords_index","resource_type","display_field","required"))){$field_order_by="ref";}		
