@@ -476,7 +476,7 @@ function get_default_dash($user_group_id = null)
  */
 function get_managed_dash()
 	{
-	global $baseurl,$baseurl_short,$lang,$anonymous_login,$username,$dash_tile_shadows, $anonymous_default_dash, $userref, $dash_tile_colour, $dash_tile_colour_options;
+	global $baseurl,$baseurl_short,$lang,$anonymous_login,$username,$dash_tile_shadows, $anonymous_default_dash, $userref, $usergroup, $dash_tile_colour, $dash_tile_colour_options;
 	#Build Tile Templates
 	if(checkPermission_anonymoususer() && !$anonymous_default_dash)
         {
@@ -493,7 +493,8 @@ function get_managed_dash()
         $tiles = sql_query("SELECT dash_tile.ref AS 'tile', dash_tile.title, dash_tile.url, dash_tile.reload_interval_secs, dash_tile.link, dash_tile.default_order_by as 'order_by'
                               FROM dash_tile
                              WHERE dash_tile.all_users = 1
-                               AND dash_tile.ref NOT IN (SELECT dash_tile FROM usergroup_dash_tile WHERE usergroup_dash_tile.usergroup <> '{$userref}')
+                               AND (dash_tile.ref IN (SELECT dash_tile FROM usergroup_dash_tile WHERE usergroup_dash_tile.usergroup = '{$usergroup}')
+								OR dash_tile.ref NOT IN (SELECT distinct dash_tile FROM usergroup_dash_tile))
                                AND (
                                     dash_tile.allow_delete = 1
                                     OR (

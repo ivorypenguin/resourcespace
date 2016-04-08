@@ -1975,8 +1975,16 @@ function compile_collection_actions(array $collection_data, $top_actions)
            $manage_collections_remove_link, $userref, $collection_purge, $show_edit_all_link, $result,
            $edit_all_checkperms, $preview_all, $order_by, $sort, $archive, $contact_sheet_link_on_collection_bar,
            $show_searchitemsdiskusage, $emptycollection, $remove_resources_link_on_collection_bar, $count_result,
-           $download_usage, $home_dash, $top_nav_upload_type, $pagename, $offset, $col_order_by, $find, $default_sort, $default_collection_sort,
-           $starsearch, $restricted_share, $hidden_collections, $internal_share_access;
+           $download_usage, $home_dash, $top_nav_upload_type, $pagename, $offset, $col_order_by, $find, $default_sort, $default_collection_sort, $starsearch, $restricted_share, $hidden_collections, $internal_share_access, $search, $usercollection;
+           
+	if(isset($search) && substr($search, 0, 11) == '!collection' && ($k == '' || $internal_share_access))
+		{ 
+		# Extract the collection number - this bit of code might be useful as a function
+    	$search_collection = explode(' ', $search);
+    	$search_collection = str_replace('!collection', '', $search_collection[0]);
+    	$search_collection = explode(',', $search_collection); // just get the number
+    	$search_collection = escape_check($search_collection[0]);
+    	}
 
     $options = array();
 	$o=0;
@@ -2041,7 +2049,7 @@ function compile_collection_actions(array $collection_data, $top_actions)
 
     // Select collection option - not for collection bar
     if($pagename != 'collections' && ($k == '' || $internal_share_access) && !checkperm('b')
-    	&& ($pagename == 'themes' || $pagename === 'collection_manage' || $pagename === 'resource_collection_list' || $top_actions))
+    	&& ($pagename == 'themes' || $pagename === 'collection_manage' || $pagename === 'resource_collection_list' || $top_actions) && ((isset($search_collection) && isset($usercollection) && $search_collection!=$usercollection) || !isset($search_collection)))
         {
         $options[$o]['value'] = 'select_collection';
 		$options[$o]['label'] = $lang['selectcollection'];

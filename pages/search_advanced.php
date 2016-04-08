@@ -57,12 +57,10 @@ if (getval("submitted","")=="yes" && getval("resetform","")=="")
 			}
 		else
 			{
-$restypes="1,2,3,4,5,6,7,8,9";
-			#debug("restypes:".$restypes."=".$search.";".substr($restypes,0,11));
 			if (substr($restypes,0,11)!="Collections" && !$collection_search_includes_resource_metadata)
 			    $result=do_search($search,$restypes,"relevance",$archive,1,"",false,$starsearch);
 			else 
-			    $result=do_collections_search($search,$reschumastypes,$archive);
+			    $result=do_collections_search($search,$restypes,$archive);
 			if (is_array($result))
 				{
 				$count=count($result);

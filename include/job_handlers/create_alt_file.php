@@ -38,7 +38,7 @@ $output=run_command($shell_exec_cmd);
 	{
 	$newfilesize=filesize_unlimited($targetfile);
 	sql_query("update resource_alt_files set file_size='" . $newfilesize ."' where resource='" . $job_data["resource"] . "' and ref='" . $newaltfile . "'");
-	global $alternative_file_previews, $lang, $baseurl, $view_title_field;
+	global $alternative_file_previews, $lang, $baseurl, $view_title_field, $offline_job_delete_completed;
 	if ($alternative_file_previews)
 		{create_previews($job_data["resource"],false,$job_data["alt_extension"],false,false,$newaltfile);}
 	$message = ($job_success_text!="")?$job_success_text:$lang["alternative_file_created"] . ": " . str_replace(array('%ref','%title'),array($job_data['resource'],$resource['field' . $view_title_field]),$lang["ref-title"]) . "(" . $job_data["alt_name"] . "," . $job_data["alt_description"] . ")";

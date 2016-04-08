@@ -332,7 +332,8 @@ $linkUrl=isset($header_link_url) ? $header_link_url : $homepage_url;
 if($slimheader)
     {
     ?>
-    <div id="Header" <?php echo (isset($slimheader_darken) && $slimheader_darken) ? "class='slimheader_darken'":"";?>>
+    <div id="Header" <?php echo (isset($slimheader_darken) && $slimheader_darken) ? "class='slimheader_darken'":"";
+    if (isset($header_colour_style_override) && $header_colour_style_override!='') { ?> style="background: <?php echo $header_colour_style_override; ?>;"<?php } ?>>
     <?php hook("responsiveheader");
     if($header_text_title) 
         {?>

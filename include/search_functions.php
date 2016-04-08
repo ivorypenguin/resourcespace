@@ -2155,7 +2155,7 @@ function search_filter($search,$archive,$restypes,$starsearch,$recent_search_day
 	$sql_filter="";
 	
 	# Apply resource types
-	if (($restypes!="")&&(substr($restypes,0,6)!="Global"))
+	if (($restypes!="")&&(substr($restypes,0,6)!="Global") && substr($search, 0, 11) != '!collection')
 	    {
 	    if ($sql_filter!="") {$sql_filter.=" and ";}
 	    $restypes_x=explode(",",$restypes);

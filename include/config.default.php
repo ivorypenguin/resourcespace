@@ -178,6 +178,9 @@ $linkedheaderimgsrc="";
 # Include ResourceSpace version header in View Source
 $include_rs_header_info=true;
 
+# Used for specifying custom colour for header background
+$header_colour_style_override='';
+
 # Available languages
 # If $defaultlanguage is not set, the brower's default language will be used instead
 $defaultlanguage="en"; # default language, uses ISO 639-1 language codes ( en, es etc.)
@@ -2996,4 +2999,7 @@ $replace_resource_preserve_default=false;
 # When searching collections, return results based on the metadata of the resources inside also
 $collection_search_includes_resource_metadata=false;
 
+# Specify field references for fields that you do not wish the blank default entry to appear for, so the first keyword node is selected by default.
+# e.g. array(3,12);
+$default_to_first_node_for_fields=array();
 
