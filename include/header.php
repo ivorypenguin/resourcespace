@@ -553,5 +553,12 @@ if ($k!="" && !$internal_share_access) { ?>
 </style>
 <?php }
 // Ajax specific hook
-if ($ajax) {hook("afterheaderajax");}
+if ($ajax) {
+    // remove Spectrum colour picker as it is out of CentralSpace div scope
+    ?><script>
+        jQuery('.sp-container').remove();
+    </script>
+    <?php
+    hook("afterheaderajax");
+}
 ?>

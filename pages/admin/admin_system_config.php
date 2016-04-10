@@ -18,6 +18,16 @@ $page_def[] = config_add_file_input(
     $baseurl . '/pages/admin/admin_system_config.php',
     300
 );
+
+$page_def[] = config_add_colouroverride_input(
+    'header_colour_style_override',
+    $lang["setup-headercolourstyleoverride"],
+    '',
+    null,
+    true,
+    "jQuery('#Header').css('background',value);"
+);
+
 $page_def[] = config_add_text_input('email_from', $lang['setup-emailfrom'], false, 300, false, '', true);
 $page_def[] = config_add_text_input('email_notify', $lang['setup-emailnotify'], false, 300, false, '', true);
 $page_def[] = config_add_html('</div>');

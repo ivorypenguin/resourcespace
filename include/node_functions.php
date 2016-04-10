@@ -13,7 +13,7 @@ include_once 'migration_functions.php';
 * @param  integer  $parent                ID of the parent of this node
 * @param  integer  $order_by              Value of the order in the list (e.g. 10)
 *
-* @return boolean
+* @return boolean|integer
 */
 function set_node($ref, $resource_type_field, $name, $parent, $order_by)
     {
@@ -925,4 +925,65 @@ function update_resource_node_hitcount($resource,$nodes)
 	# For the specified $resource, increment the hitcount for each node in array
     if(!is_array($nodes)){$nodes=array($nodes);}
 	if (count($nodes)>0) {sql_query("update resource_node set new_hit_count=new_hit_count+1 where resource='$resource' and node in (" . implode(",",$nodes) . ")",false,-1,true,0);}
+    }
+
+
+/**
+* Copy all nodes from one metadata field to another one.
+* Used mostly with copy field functionality
+* 
+* @param integer $from resource_type_field ID FROM which we copy
+* @param integer $to   resource_type_field ID TO which we copy
+* 
+* @return boolean
+*/
+function copy_resource_type_field_nodes($from, $to)
+    {
+    global $FIXED_LIST_FIELD_TYPES;
+
+    // Since field has been copied, they are both the same, so we only need to check the from field
+    $type = sql_value("SELECT `type` AS `value` FROM resource_type_field where ref = '{$from}'", 0);
+
+    if(!in_array($type, $FIXED_LIST_FIELD_TYPES))
+        {
+        return false;
+        }
+
+    $nodes = get_nodes($from, null, true);
+
+    // Handle category trees
+    if(7 == $type)
+        {
+        // array(from_ref => new_ref)
+        $processed_nodes = array();
+
+        foreach($nodes as $node)
+            {
+            if(array_key_exists($node['ref'], $processed_nodes))
+                {
+                continue;
+                }
+
+            $parent = $node['parent'];
+
+            // Child nodes need to have their parent set to the new parent ID
+            if('' != trim($parent))
+                {
+                $parent = $processed_nodes[$parent];
+                }
+
+            $new_node_id                   = set_node(null, $to, $node['name'], $parent, $node['order_by']);
+            $processed_nodes[$node['ref']] = $new_node_id;
+            }
+
+        return true;
+        }
+
+    // Default handle for types different than category trees
+    foreach($nodes as $node)
+        {
+        set_node(null, $to, $node['name'], $node['parent'], $node['order_by']);
+        }
+
+    return true;
     }

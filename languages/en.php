@@ -1181,6 +1181,7 @@ $lang["setup-login_to"]="Login to";
 $lang["setup-configuration_file_output"]="Configuration file output";
 $lang["more-information"]="More information";
 $lang["setup-structuralplugins"]="System templates";
+$lang["setup-headercolourstyleoverride"]="Custom header colour";
 
 # Collection log - actions
 $lang["collectionlog"]="Collection log";
