@@ -54,9 +54,11 @@ if ($use_local)
 		{
 		mkdir($folder,0777);
 		}
-
-	// We list folder contents
-	$files = getFolderContents($folder);
+	if(!$local_upload_file_tree)
+		{
+		// We list folder contents
+		$files = getFolderContents($folder);
+		}
 	}
 else
 	{
@@ -147,7 +149,7 @@ else
 	{
 	# file picker
 	// folder path needs to be relative to web root
-	$filetree_path=str_replace($_SERVER['DOCUMENT_ROOT'],'',$folder);
+	$filetree_path=$folder;
 	?>
 	<script src="<?php echo $baseurl?>/lib/jqueryfiletree/jQueryFileTree.js?css_reload_key=<?php echo $css_reload_key?>" type="text/javascript"></script>
 	<link type="text/css" href="<?php echo $baseurl?>/lib/jqueryfiletree/jQueryFileTree.min.css?css_reload_key=<?php echo $css_reload_key?>" rel="stylesheet" />
@@ -176,7 +178,7 @@ else
         		jQuery(".filetreeselect input:checkbox").each(function(){
         			var sThisVal = (this.checked ? jQuery(this).next().attr('rel') : "");
         			if(sThisVal!==''){
-        				newValPos=sThisVal.indexOf("<?php echo $filetree_path?>")+ filetree_path.length -1;// the -1 keeps the "/" there
+        				newValPos=sThisVal.indexOf("<?php echo $filetree_path?>")+ filetree_path.length;
         				newVal = sThisVal.substr(newValPos);
         				jQuery("form").append('<input type="hidden" name="uploadfiles[]" value="'+newVal+'"/>');
         			}

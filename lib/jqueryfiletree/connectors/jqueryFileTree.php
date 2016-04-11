@@ -26,10 +26,12 @@ if( !array_key_exists('HTTP_REFERER', $_SERVER) ) exit('No direct script access 
  * ex: $root = $_SERVER['DOCUMENT_ROOT'];
  */
 //$root = null;
-$root = $_SERVER['DOCUMENT_ROOT'];
-if( !$root ) exit("ERROR: Root filesystem directory not set in jqueryFileTree.php");
+$root = '';
+//if( !$root ) exit("ERROR: Root filesystem directory not set in jqueryFileTree.php");
 
+//$root = '';
 $postDir = rawurldecode($root.(isset($_POST['dir']) ? $_POST['dir'] : null ));
+if(substr($postDir,-1)!=='/'){$postDir.="/";}
 
 // set checkbox if multiSelect set to true
 $checkbox = ( isset($_POST['multiSelect']) && $_POST['multiSelect'] == 'true' ) ? "<input type='checkbox' class='upload_select'/>" : null;
@@ -39,7 +41,6 @@ $selectOnlyFiles = ( isset($_POST['selectOnlyFiles']) && $_POST['selectOnlyFiles
 $allowedExtensions = ( isset($_POST['allowedExtensions']) ? $_POST['allowedExtensions'] : '' );
 
 if( file_exists($postDir) ) {
-
 	$files		= scandir($postDir);
 	$returnDir	= substr($postDir, strlen($root));
 
@@ -65,5 +66,4 @@ if( file_exists($postDir) ) {
 		echo "</ul>";
 	}
 }
-
 ?>

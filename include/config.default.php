@@ -2916,6 +2916,9 @@ $execution_lockout=false;
 # Load help page in a modal?
 $help_modal=true;
 
+// maximum number of words shown before more/less link is shown (used in resource log)
+$max_words_before_more=30;
+
 # User preference - if set to false, hide the notification popups for new messages
 $user_pref_show_notifications=true;
 

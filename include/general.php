@@ -4100,6 +4100,39 @@ function format_display_field($value){
 	return $string;
 }
 
+// formats a string with a collapsible more / less section
+function format_string_more_link($string,$max_words_before_more=-1)
+    {
+    $words=preg_split('/\s/',$string);
+    if (count($words) < $max_words_before_more)
+        {
+        return $string;
+        }
+    global $lang;
+    $unique_id=uniqid();
+    if ($max_words_before_more==-1)
+        {
+        global $max_words_before_more;
+        }
+    $return_value = "";
+    for ($i=0; $i<count($words); $i++)
+        {
+        if ($i>0)
+            {
+            $return_value .= ' ';
+            }
+        if ($i==$max_words_before_more)
+            {
+            $return_value .= '<a id="' . $unique_id . 'morelink" href="#" onclick="jQuery(\'#' . $unique_id . 'morecontent\').show(); jQuery(this).hide();">' .
+                strtoupper($lang["action-more"]) . ' &gt;</a><span id="' . $unique_id . 'morecontent" style="display:none;">';
+            }
+        $return_value.=$words[$i];
+        }
+    $return_value .= ' <a href="#" onclick="jQuery(\'#' . $unique_id . 'morelink\').show(); jQuery(\'#' . $unique_id . 'morecontent\').hide();">&lt; ' .
+        strtoupper($lang["action-less"]) . '</a></span>';
+    return $return_value;
+    }
+
 // found multidimensional array sort function to support the performance footer
 // http://www.php.net/manual/en/function.sort.php#104464
  function sortmulti ($array, $index, $order, $natsort=FALSE, $case_sensitive=FALSE) {
