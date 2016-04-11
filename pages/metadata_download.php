@@ -1,12 +1,20 @@
 <?php
 include '../include/db.php';
 include_once '../include/general.php';
-include '../include/authenticate.php';
-include '../include/resource_functions.php';
+
+$k   = getvalescaped('k', '');
+$ref = getvalescaped('ref', '', true);
+
+// External access support (authenticate only if no key provided, or if invalid access key provided)
+if('' == $k || !check_access_key($ref, $k))
+    {
+    include '../include/authenticate.php';
+    }
+
+include_once '../include/resource_functions.php';
 include_once '../include/collections_functions.php';
 include_once '../include/pdf_functions.php';
 
-$ref      = getvalescaped('ref', '', true);
 $resource = get_resource_data($ref);
 
 // fetch the current search (for finding similar matches)

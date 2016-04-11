@@ -10,6 +10,7 @@ set_time_limit(60*60*4);
 
 $use_local = getvalescaped('use_local', '') !== '';
 $collection = getvalescaped("collection","",true);
+$alternative = getvalescaped("alternative","");
 
 include "../../include/header.php";
 
@@ -29,6 +30,18 @@ else
 ?>
 
 <div class="BasicsBox">
+<?php
+if($alternative!=='')
+	{
+	?>
+	<p>
+		<a href="<?php echo $baseurl_short?>pages/alternative_files.php?ref=<?php echo urlencode($alternative)?>" onClick="return CentralSpaceLoad(this,true);">&lt;&nbsp;<?php echo $lang["backtomanagealternativefiles"]?></a>
+		<br / >
+		<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo urlencode($alternative)?>">&lt;&nbsp;<?php echo $lang["backtoresourceview"]?></a>
+	</p>
+	<?php
+	}
+?>
 <h1><?php echo $titleh1 ?></h1>
 </div>
 
@@ -91,95 +104,169 @@ for ($n=0;$n<count($uploadfiles);$n++)
     $ftp_folder_stripped = rtrim($ftp_folder);
     $ftp_folder_stripped = rtrim($ftp_folder_stripped, '/');
     $path = $ftp_folder_stripped . DIRECTORY_SEPARATOR . $uploadfiles[$n];
-
-	# Copy the resource
-	$ref=copy_resource(0-$userref);
 	
-	# Find and store extension in the database
-	$extension=explode(".",$uploadfiles[$n]);
-	$extension=trim(strtolower($extension[count($extension)-1]));
-	sql_query("update resource set file_extension='$extension',preview_extension='$extension' where ref='$ref'");
-
-
-	$localpath=get_resource_path($ref,true,"",true,$extension);
-
-	$result=false;
-	error_reporting(0);
-
-	if ($use_local)
+	if($alternative!=='')
 		{
-		$result=copy($folder . DIRECTORY_SEPARATOR . $uploadfiles[$n],$localpath);
-		}
-	else
-		{
-		$result=ftp_get($ftp,$localpath,$path,FTP_BINARY);
-		}
+		# Upload an alternative file
 
-	if (!$result) 
-		{
-		$status = str_replace("%path%", $path, $lang["upload_failed_for_path"]);
-		sleep(2);
-		$failed++;
-		?><script type="text/javascript">document.getElementById('uploadlog').innerHTML+="<?php echo $status?></br>";</script><?php
-		flush();
-		}
-	else
-		{
-        $status = str_replace(array("%file%", "%filestotal%", "%path%"), array($n+1, count($uploadfiles), $path), $lang["uploadedstatus"]);
-		?><script type="text/javascript">document.getElementById('uploadlog').innerHTML+="<?php echo $status?></br>";</script><?php
-		flush();
+        # Add a new alternative file
+        $ref=add_alternative_file($alternative,$uploadfiles[$n]);
+        
+        $extension=explode(".",$uploadfiles[$n]);
+		$extension=trim(strtolower($extension[count($extension)-1]));
+                            
+        # Find the path for this resource.
+        $localpath=get_resource_path($alternative, true, "", true, $extension, -1, 1, false, "", $ref);
+                            
+        # Move the sent file to the alternative file location
+        $result='';
+		error_reporting(0);
+		                 
+        # PLUpload - file was sent chunked and reassembled - use the reassembled file location
+        $result=copy($folder . DIRECTORY_SEPARATOR . $uploadfiles[$n], $localpath);
 
-		if($enable_thumbnail_creation_on_upload) // Test if thumbnail creation is allowed during upload
+        if ($result===false) 
 			{
-			# Create previews
-			create_previews($ref, false, $extension);
-            $previewstatus = str_replace(array("%file%", "%filestotal%"), array(($n+1), count($uploadfiles)), $lang["previewstatus"]);
-
-			# Show thumb?
-			$rd = get_resource_data($ref);
-			$thumb = get_resource_path($ref, true, "thm", false, $rd["preview_extension"]);
-			if (file_exists($thumb))
-				{
-				$previewstatus.= "<br/><img src='" . get_resource_path($ref, false, "thm", false, $rd["preview_extension"]) . "'><br/><br/>";
-				}
-			else {$previewstatus.= "<br/><br/>";}
-			?><script type="text/javascript">document.getElementById('uploadlog').innerHTML+="<?php echo $previewstatus ?>";</script><?php
+			$status = str_replace("%path%", $path, $lang["upload_failed_for_path"]);
+			sleep(2);
+			$failed++;
+			?><script type="text/javascript">document.getElementById('uploadlog').innerHTML+="<?php echo $status?></br>";</script><?php
+			flush();
+			}
+		else
+			{
+			$status = str_replace(array("%file%", "%filestotal%", "%path%"), array($n+1, count($uploadfiles), $path), $lang["uploadedstatus"]);
+			?><script type="text/javascript">document.getElementById('uploadlog').innerHTML+="<?php echo $status?></br>";</script><?php
 			flush();
 
-			} // Test if thumbnail creation is allowed during upload
-
-		# Store original filename in field, if set
-		if (isset($filename_field))
-			{
-			$filename = $uploadfiles[$n];
-			if ($use_local)
+			chmod($path,0777);
+			$file_size = @filesize_unlimited($localpath);
+							
+			# Save alternative file data.
+			sql_query("update resource_alt_files set file_name='" . escape_check($uploadfiles[$n]) . "',file_extension='" . escape_check($extension) . "',file_size='" . $file_size . "',creation_date=now() where resource='$alternative' and ref='$ref'");
+							
+			if ($alternative_file_previews_batch)
 				{
-				$filename = mb_basename($filename);
+				create_previews($alternative,false,$extension,false,false,$ref);
+				
+				# Show thumb?
+				$rd = get_alternative_file($alternative,$ref);
+				$thumb = get_resource_path($alternative, true, "thm", false, $rd["preview_extension"]);
+				if (file_exists($thumb))
+					{
+					$previewstatus.= "<br/><img src='" . get_resource_path($alternative, false, "thm", false, $rd["preview_extension"]) . "'><br/><br/>";
+					}
+				else {$previewstatus.= "<br/><br/>";}
+				?><script type="text/javascript">document.getElementById('uploadlog').innerHTML+="<?php echo $previewstatus ?>";</script><?php
+				flush();
 				}
-			update_field($ref,$filename_field, $filename);
+			hook('after_alt_upload','',array($alternative,array("ref"=>$ref,"file_size"=>$file_size,"extension"=>$extension,"name"=>$uploadfiles[$n],"altdescription"=>"","path"=>$localpath,"basefilename"=>str_ireplace("." . $extension, '', $uploadfiles[$n]))));
+							
+			// Check to see if we need to notify users of this change							
+			if($notify_on_resource_change_days!=0)
+				{								
+				// we don't need to wait for this..
+				ob_flush();flush();
+				notify_resource_change($alternative);
+				}
+									
+			# Update disk usage
+			update_disk_usage($alternative);
+			
+			$done++;
 			}
+		}
+	else
+		{
+		# Copy the resource
+		$ref=copy_resource(0-$userref);
+	
+		# Find and store extension in the database
+		$extension=explode(".",$uploadfiles[$n]);
+		$extension=trim(strtolower($extension[count($extension)-1]));
+		sql_query("update resource set file_extension='$extension',preview_extension='$extension' where ref='$ref'");
 
-		# get file metadata 
-		if (getval("no_exif","")=="") {extract_exif_comment($ref,$extension);}
-		
-		# extract text from documents (e.g. PDF, DOC).
-		global $extracted_text_field;
-		if (isset($extracted_text_field) && !$no_exif) {extract_text($ref,$extension);}
 
-		$done++;
+		$localpath=get_resource_path($ref,true,"",true,$extension);
 
-		# Add to collection?
-		if ($collection!="")
+		$result=false;
+		error_reporting(0);
+
+		if ($use_local)
 			{
-			$refs[] = $ref;
+			$result=copy($folder . DIRECTORY_SEPARATOR . $uploadfiles[$n],$localpath);
+			}
+		else
+			{
+			$result=ftp_get($ftp,$localpath,$path,FTP_BINARY);
 			}
 
-		# Log this
-		daily_stat("Resource upload",$ref);
-		resource_log($ref,'u',0);
+		if (!$result) 
+			{
+			$status = str_replace("%path%", $path, $lang["upload_failed_for_path"]);
+			sleep(2);
+			$failed++;
+			?><script type="text/javascript">document.getElementById('uploadlog').innerHTML+="<?php echo $status?></br>";</script><?php
+			flush();
+			}
+		else
+			{
+			$status = str_replace(array("%file%", "%filestotal%", "%path%"), array($n+1, count($uploadfiles), $path), $lang["uploadedstatus"]);
+			?><script type="text/javascript">document.getElementById('uploadlog').innerHTML+="<?php echo $status?></br>";</script><?php
+			flush();
+
+			if($enable_thumbnail_creation_on_upload) // Test if thumbnail creation is allowed during upload
+				{
+				# Create previews
+				create_previews($ref, false, $extension);
+				$previewstatus = str_replace(array("%file%", "%filestotal%"), array(($n+1), count($uploadfiles)), $lang["previewstatus"]);
+
+				# Show thumb?
+				$rd = get_resource_data($ref);
+				$thumb = get_resource_path($ref, true, "thm", false, $rd["preview_extension"]);
+				if (file_exists($thumb))
+					{
+					$previewstatus.= "<br/><img src='" . get_resource_path($ref, false, "thm", false, $rd["preview_extension"]) . "'><br/><br/>";
+					}
+				else {$previewstatus.= "<br/><br/>";}
+				?><script type="text/javascript">document.getElementById('uploadlog').innerHTML+="<?php echo $previewstatus ?>";</script><?php
+				flush();
+
+				} // Test if thumbnail creation is allowed during upload
+
+			# Store original filename in field, if set
+			if (isset($filename_field))
+				{
+				$filename = $uploadfiles[$n];
+				if ($use_local)
+					{
+					$filename = mb_basename($filename);
+					}
+				update_field($ref,$filename_field, $filename);
+				}
+
+			# get file metadata 
+			if (getval("no_exif","")=="") {extract_exif_comment($ref,$extension);}
+		
+			# extract text from documents (e.g. PDF, DOC).
+			global $extracted_text_field;
+			if (isset($extracted_text_field) && !$no_exif) {extract_text($ref,$extension);}
+
+			$done++;
+
+			# Add to collection?
+			if ($collection!="")
+				{
+				$refs[] = $ref;
+				}
+
+			# Log this
+			daily_stat("Resource upload",$ref);
+			resource_log($ref,'u',0);
+
+			}
 
 		}
-
 	}
 
 if (!$use_local)
@@ -208,7 +295,7 @@ switch ($failed)
         $summary_failed = $lang["resources_failed-1"];
         break;
     default:
-        $summary_failed = str_replace("%failed%", $failed, $lang["resources_failed-n"]);
+        $summary_failed = str_replace("%done%", $failed, $lang["resources_failed-n"]);
         break;
     }
 

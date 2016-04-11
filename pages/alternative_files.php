@@ -98,7 +98,19 @@ for ($n=0;$n<count($files);$n++)
 </table>
 </div>
 
-<p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/upload_plupload.php?alternative=<?php echo urlencode($ref) ?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo $sort?>&archive=<?php echo urlencode($archive)?>">&gt;&nbsp;<?php echo $lang["alternativebatchupload"] ?></a></p>
+<p>
+	<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/upload_plupload.php?alternative=<?php echo urlencode($ref) ?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo $sort?>&archive=<?php echo urlencode($archive)?>">&gt;&nbsp;<?php echo $lang["alternativebatchupload"] ?></a>
+	<?php
+	if($upload_methods['fetch_from_local_folder'])
+		{
+		?>
+		<br/>
+		<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/team/team_batch_select.php?use_local=yes&collection_add=&entercolname=&autorotate=&alternative=<?php echo urlencode($ref) ?>&uploader=local&single=&local=true&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo $sort?>&archive=<?php echo urlencode($archive)?>">&gt;&nbsp;<?php echo $lang["alternativelocalupload"] ?></a>
+		<?php
+		}
+	?>
+</p>
+
 
 
 </form>

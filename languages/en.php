@@ -1265,6 +1265,7 @@ $lang["allowedextensions"]="Allowed extensions";
 $lang["allowedextensions-extensions"]="Allowed extensions: %EXTENSIONS"; # Use %EXTENSIONS, %extensions or %Extensions as a placeholder. The placeholder will be replaced with the filename extensions, using the same case. E.g. "Allowed Extensions: %EXTENSIONS" -> "Allowed Extensions: JPG, PNG"
 
 $lang["alternativebatchupload"]="Upload alternative files";
+$lang["alternativelocalupload"]="Upload alternative files - fetch from local upload folder";
 
 $lang["confirmdeletefieldoption"]="Are you sure you wish to DELETE this field option?";
 

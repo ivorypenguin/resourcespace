@@ -2021,6 +2021,9 @@ $upload_methods = array(
 # web visible path. Relative and abolute paths are allowed.
 $local_ftp_upload_folder = 'upload/';
 
+# Use a file tree display for local folder upload
+$local_upload_file_tree=false;
+
 # Hide links to other uploader
 $hide_uploadertryother = false;
 

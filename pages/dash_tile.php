@@ -31,7 +31,7 @@ if($submitdashtile)
 		{
         $new_buildurl_tltype        = getvalescaped('tltype', '');
         $new_buildurl_tlstyle       = getvalescaped('tlstyle', '');
-        $new_buildurl_tlstylecolour = getvalescaped('tlstylecolour', '');
+        $new_buildurl_tlstylecolour = urlencode(getvalescaped('tlstylecolour', ''));
 
 		# No URL provided - build a URL (standard title types).
 		$buildurl = "pages/ajax/dash_tile.php?tltype={$new_buildurl_tltype}&tlstyle={$new_buildurl_tlstyle}";
@@ -102,7 +102,7 @@ if($submitdashtile)
 		#Change of tilestyle?
 		$tile_style     = getvalescaped('tlstyle', FALSE);
 		$promoted_image = getvalescaped('promoted_image', FALSE);
-        $tlstylecolour  = getvalescaped('tlstylecolour', '');
+        $tlstylecolour  = urlencode(getvalescaped('tlstylecolour', ''));
 
 		if($tile_style)
 			{
@@ -134,7 +134,7 @@ if($submitdashtile)
                 {
                 if(isset($buildstring['tlstylecolour']))
                     {
-                    $buildurl = str_replace("tlstylecolour={$buildstring['tlstylecolour']}", "tlstylecolour={$tlstylecolour}", $buildurl);
+                    $buildurl = str_replace("tlstylecolour=" . urlencode($buildstring['tlstylecolour']), "tlstylecolour={$tlstylecolour}", $buildurl);
                     }
                 else
                     {

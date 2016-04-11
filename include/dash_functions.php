@@ -350,7 +350,7 @@ function get_default_dash($user_group_id = null)
 
             if(isset($buildstring['tltype']) && allow_tile_colour_change($buildstring['tltype']) && isset($buildstring['tlstylecolour']))
                 {
-                $tile_custom_style .= "background-color: #{$buildstring['tlstylecolour']};";
+                $tile_custom_style .= get_tile_custom_style($buildstring);
                 }
             }
             ?>
@@ -517,7 +517,7 @@ function get_managed_dash()
 
             if(isset($buildstring['tltype']) && allow_tile_colour_change($buildstring['tltype']) && isset($buildstring['tlstylecolour']))
                 {
-                $tile_custom_style .= "background-color: #{$buildstring['tlstylecolour']};";
+                $tile_custom_style .= get_tile_custom_style($buildstring);
                 }
             }
 		?>
@@ -957,7 +957,7 @@ function get_user_dash($user)
 
             if(isset($buildstring['tltype']) && allow_tile_colour_change($buildstring['tltype']) && isset($buildstring['tlstylecolour']))
                 {
-                $tile_custom_style .= "background-color: #{$buildstring['tlstylecolour']};";
+                $tile_custom_style .= get_tile_custom_style($buildstring);
                 }
             }
 		?>
@@ -1268,8 +1268,7 @@ function allow_tile_colour_change($tile_type, $tile_style = '')
 */
 function render_dash_tile_colour_chooser($tile_style, $tile_colour)
     {
-    global $lang, $dash_tile_colour, $dash_tile_colour_options;
-
+    global $lang, $dash_tile_colour, $dash_tile_colour_options, $baseurl;
     if('ftxt' == $tile_style)
         {
         ?>
@@ -1289,7 +1288,17 @@ function render_dash_tile_colour_chooser($tile_style, $tile_colour)
     if(0 === count($dash_tile_colour_options))
         {
         ?>
-        <input id="tile_style_colour" name="tlstylecolour" class="jscolor {required: false}" onchange="update_tile_preview_colour(this.jscolor);" value="<?php echo $tile_colour; ?>">
+        <script src="<?php echo $baseurl; ?>/lib/spectrum/spectrum.js"></script>
+        <link rel="stylesheet" href="<?php echo $baseurl; ?>/lib/spectrum/spectrum.css" />
+        <input id="tile_style_colour" name="tlstylecolour" type="text" onchange="update_tile_preview_colour(this.value);" value="<?php echo $tile_colour; ?>">
+        <script>
+            jQuery('#tile_style_colour').spectrum({
+                showAlpha: true,
+                showInput: true,
+                clickoutFiresChange: true,
+                preferredFormat: 'rgb'
+            });
+        </script>
         <?php
         }
     else
@@ -1375,3 +1384,23 @@ function render_dash_tile_colour_chooser($tile_style, $tile_colour)
 
     return;
     }
+
+function get_tile_custom_style($buildstring)
+    {
+    if (isset($buildstring['tlstylecolour']))
+        {
+        $return_value="background-color: ";
+        if (preg_match('/^[a-fA-F0-9]+$/',$buildstring['tlstylecolour']))
+            {
+            // this is a fix for supporting legacy hex values that do not have '#' at start
+            $return_value.='#';
+            }
+        $return_value.=$buildstring['tlstylecolour'] . ';';
+        return $return_value;
+        }
+    else
+        {
+        return '';
+        }
+    }
+

@@ -8,6 +8,7 @@ $use_local = getvalescaped('use_local', '') !== '';
 $resource_type = getvalescaped('resource_type','');
 $collection_add = getvalescaped("collection_add","");
 $collectionname = getvalescaped("entercolname","");
+$alternative = getvalescaped('alternative','');
 
 $allowed_extensions=get_allowed_extensions_by_type($resource_type);
 
@@ -93,46 +94,100 @@ include "../../include/header.php";
 <input type="hidden" name="no_exif" value="<?php echo getval("no_exif","")?>">
 <input type="hidden" name="autorotate" value="<?php echo getval("autorotate","")?>">
 <input type="hidden" name="collection" value="<?php echo $collection_add?>">
+<input type="hidden" name="alternative" value="<?php echo $alternative?>">
 
 
 <div class="Question"><label><?php echo $use_local ? $lang["local_upload_path"] : $lang["ftp_upload_path"] ?></label><input name="folder" type="text" class="stdwidth" value="<?php echo $use_local ? $folder : getval("ftp_server","") . "/" . $folder?>" readonly="readonly"></div>
 
-<div class="Question"><label><?php echo $lang["foldercontent"] ?></label>
-<!--<div class="tickset">-->
-<select name="uploadfiles[]" multiple size=20>
-<?php 
-foreach ($files as $fn){
-       if (!$use_local) {
-               # FTP - split up path
-               $fs=explode("/",$fn);
-               if (count($fs)==1) {$fs=explode("\\",$fn);} # Support backslashes
-               $fn=$fs[count($fs)-1];
-               }
-	$show=true;
-	if (($fn=="..") || ($fn==".")) {$show=false;}
-	if (strpos($fn,".")===false) {$show=false;}
-	if ($fn=="pspbrwse.jbf") {$show=false;} # Ignore PSP browse files (often imported by mistake)
-	if ($fn==".DS_Store") {$show=false;} # Ignore .DS_Store file on the mac
+<?php
+if(!$local_upload_file_tree)
+	{
+	?>
+	<div class="Question">
+		<label><?php echo $lang["foldercontent"] ?></label>
+		<!--<div class="tickset">-->
+		<select name="uploadfiles[]" multiple size=20>
+		<?php 
+			foreach ($files as $fn){
+				echo "file:$fn<br/>";
+				   if (!$use_local) {
+						   # FTP - split up path
+						   $fs=explode("/",$fn);
+						   if (count($fs)==1) {$fs=explode("\\",$fn);} # Support backslashes
+						   $fn=$fs[count($fs)-1];
+						   }
+				$show=true;
+				if (($fn=="..") || ($fn==".")) {$show=false;}
+				if (strpos($fn,".")===false) {$show=false;}
+				if ($fn=="pspbrwse.jbf") {$show=false;} # Ignore PSP browse files (often imported by mistake)
+				if ($fn==".DS_Store") {$show=false;} # Ignore .DS_Store file on the mac
 	
-	# omit disallowed extensions
-	if ($allowed_extensions!=""){
-	    $extension=explode(".",$fn);
-		if(count($extension)>1){
-    	$extension=trim(strtolower($extension[count($extension)-1]));
-		} 
-		if (!strstr($allowed_extensions,$extension)){$show=false;}
+				# omit disallowed extensions
+				if ($allowed_extensions!=""){
+					$extension=explode(".",$fn);
+					if(count($extension)>1){
+					$extension=trim(strtolower($extension[count($extension)-1]));
+					} 
+					if (!strstr($allowed_extensions,$extension)){$show=false;}
+				}
+	
+				/* if ($show) { ?><div class="tick"><input type="checkbox" name="uploadfiles[]" value="<?php echo $fn?>" checked /><?php echo $fn?></div><?php } ?>
+				*/
+				if ($show) { ?><option value="<?php echo $fn?>" selected><?php echo $fn?></option><?php } ?>
+				<?php
+				}
+			?>
+			<!--</div>-->
+		</select>
+		<div class="clearerleft"> </div>
+	</div>
+	<?php
 	}
+else
+	{
+	# file picker
+	// folder path needs to be relative to web root
+	$filetree_path=str_replace($_SERVER['DOCUMENT_ROOT'],'',$folder);
+	?>
+	<script src="<?php echo $baseurl?>/lib/jqueryfiletree/jQueryFileTree.js?css_reload_key=<?php echo $css_reload_key?>" type="text/javascript"></script>
+	<link type="text/css" href="<?php echo $baseurl?>/lib/jqueryfiletree/jQueryFileTree.min.css?css_reload_key=<?php echo $css_reload_key?>" rel="stylesheet" />
 	
-	/* if ($show) { ?><div class="tick"><input type="checkbox" name="uploadfiles[]" value="<?php echo $fn?>" checked /><?php echo $fn?></div><?php } ?>
-	*/
-	if ($show) { ?><option value="<?php echo $fn?>" selected><?php echo $fn?></option><?php } ?>
+	<div class="filetreeselect"></div>
+
+
+	<script>
+		var filetree_path='<?php echo $filetree_path?>';
+		jQuery(document).ready( function() {
+			jQuery('.filetreeselect').fileTree({
+				script: baseurl + '/lib/jqueryfiletree/connectors/jqueryFileTree.php',
+				root: '<?php echo $filetree_path?>',
+				multiSelect: true,
+				selectOnlyFiles: true,
+				allowedExtensions: '<?php echo $allowed_extensions?>'
+			}, function(file) {
+				console.log(file);
+				// do something with file
+				alert("file:"+file);
+			});
+			
+			
+    		jQuery('form').submit(function() {
+        		// new hidden input for each selected file
+        		jQuery(".filetreeselect input:checkbox").each(function(){
+        			var sThisVal = (this.checked ? jQuery(this).next().attr('rel') : "");
+        			if(sThisVal!==''){
+        				newValPos=sThisVal.indexOf("<?php echo $filetree_path?>")+ filetree_path.length -1;// the -1 keeps the "/" there
+        				newVal = sThisVal.substr(newValPos);
+        				jQuery("form").append('<input type="hidden" name="uploadfiles[]" value="'+newVal+'"/>');
+        			}
+        		});
+        		return true;
+    		});
+		});
+	</script>
 	<?php
 	}
 ?>
-<!--</div>-->
-</select>
-<div class="clearerleft"> </div>
-</div>
 
 <div class="QuestionSubmit">
 <label for="buttons"> </label>
