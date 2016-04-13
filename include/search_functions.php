@@ -279,7 +279,7 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
                         }
                     elseif (!hook('customsearchkeywordfilter', null, array($kw)))
                         {
-                        $ckeywords=explode(";",$kw[1]);
+
 
                         # Fetch field info
                         global $fieldinfo_cache;
@@ -289,6 +289,16 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
                             $fieldinfo=sql_query("select ref,type from resource_type_field where name='" . escape_check($kw[0]) . "'",0);
                             $fieldinfo_cache[$kw[0]]=$fieldinfo;
                         }
+
+                        if ($fieldinfo[0]["type"] == 7)
+                            {
+                            $ckeywords=preg_split('/[\|;]/',$kw[1]);
+                            }
+                        else
+                            {
+                            $ckeywords=explode(";",$kw[1]);
+                            }
+
                         if (count($fieldinfo)==0)
                             {
                             debug("Field short name not found.");return false;
@@ -1432,7 +1442,10 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
         
         case 7: # ----- Category Tree
         $options=$field["options"];
-        $set=trim_array(explode(";",cleanse_string($value,true)));
+
+        //$set=trim_array(explode(";",cleanse_string($value,true)));
+        $set=preg_split('/[;\|]/',cleanse_string($value,true));
+
         if ($forsearchbar)
             {
             # On the search bar?
