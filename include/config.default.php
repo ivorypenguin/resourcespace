@@ -980,8 +980,10 @@ $prefix_resource_id_to_filename=true;
 # is a ResourceSpace resource ID.
 $prefix_filename_string="RS";
 
-# Display a 'new' flag next to new themes (added < 1 month ago)
-$flag_new_themes=true;
+# Display a 'new' flag next to new themes (by default themes created < 2 weeks ago)
+# Note: the age take days as parameter. Anything less than that would mean that a theme becomes old after a few hours which is highly unlikely.
+$flag_new_themes     = true;
+$flag_new_themes_age = 14;
 
 # Create file checksums?
 $file_checksums=false;

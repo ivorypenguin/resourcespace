@@ -4104,16 +4104,16 @@ function format_display_field($value){
 function format_string_more_link($string,$max_words_before_more=-1)
     {
     $words=preg_split('/\s/',$string);
+    if ($max_words_before_more==-1)
+        {
+        global $max_words_before_more;
+        }
     if (count($words) < $max_words_before_more)
         {
         return $string;
         }
     global $lang;
     $unique_id=uniqid();
-    if ($max_words_before_more==-1)
-        {
-        global $max_words_before_more;
-        }
     $return_value = "";
     for ($i=0; $i<count($words); $i++)
         {

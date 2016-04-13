@@ -7,7 +7,7 @@ function HookMeta_appendAllAddtopluploadurl()
 	$found_meta_append_field = getval("metaappend",false);	
 	if ($found_meta_append_field)
 		{		
-		echo "&metaappend=" . $found_meta_append_field;
+		return "&metaappend=" . $found_meta_append_field;
 		}		
 	}
 

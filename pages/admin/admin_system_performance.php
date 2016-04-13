@@ -62,6 +62,7 @@ while (microtime(true)<($timer+1)) // Run for one second
     fwrite($f,str_pad("",10000,"X"));
     $counter++;
     }
+fclose($f);
 unlink($tmp . "/performance_test.txt");
 ?>
 <div class="Question">
