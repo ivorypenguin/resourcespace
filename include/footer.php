@@ -352,7 +352,13 @@ if (isset($k) && $k!="" && isset($search) && !isset($usercollection))
 if (!hook("replacecdivrender"))
 	{
 	if ($collections_footer && !in_array($pagename,$omit_collectiondiv_load_pages) && !checkperm("b") && isset($usercollection)) 
-		{?>
+		{
+        // Footer requires restypes as a string because it is urlencoding them
+        if(isset($restypes) && is_array($restypes))
+            {
+            $restypes = implode(',', $restypes);
+            }
+            ?>
 		<div id="CollectionDiv" class="CollectBack AjaxCollect ui-layout-south"></div>
 
 		<script type="text/javascript">

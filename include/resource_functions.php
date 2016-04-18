@@ -1617,40 +1617,68 @@ function copy_resource($from,$resource_type=-1)
 	return $to;
 	}
 	
-function resource_log($resource,$type,$field,$notes="",$fromvalue="",$tovalue="",$usage=-1,$purchase_size="",$purchase_price=0)
+function resource_log($resource, $type, $field, $notes="", $fromvalue="", $tovalue="", $usage=-1, $purchase_size="", $purchase_price=0)
 	{
-	global $userref,$k,$lang;
-	
-	# Do not log edits to user templates.
-	if ($resource<0) {return false;}
-	
-	# Add difference to file.
-	$diff="";
-	if ($fromvalue !== $tovalue)
-		{
-		$diff=log_diff($fromvalue,$tovalue);
-		}
+	global $userref,$k,$lang,$resource_log_previous_ref;
 
-	if ($type=="s")
-		{
-		$diff=$lang["status" . $fromvalue] . " -> " . $lang["status" . $tovalue];
-		}
+    if(($resource===RESOURCE_LOG_APPEND_PREVIOUS && !isset($resource_log_previous_ref)) || ($resource!==RESOURCE_LOG_APPEND_PREVIOUS && $resource<0))
+        {
+        return false;
+        }
 
-	if ($type=="a")
+	if ($fromvalue===$tovalue)
 		{
-		$diff=$lang["access" . $fromvalue] . " -> " . $lang["access" . $tovalue];
+        $diff="";
 		}
+    else
+        {
+        switch ($type)
+            {
+            case LOG_CODE_STATUS_CHANGED:
+                $diff = $lang["status" . $fromvalue] . " -> " . $lang["status" . $tovalue];
+                break;
+
+            case LOG_CODE_ACCESS_CHANGED:
+                $diff = $lang["access" . $fromvalue] . " -> " . $lang["access" . $tovalue];
+                break;
+
+            // do not do a diff, just dump out whole new value (this is so we can cleanly append transform output)
+            case LOG_CODE_TRANSFORMED:
+                $diff = $tovalue;
+                break;
+
+            default:
+                $diff = log_diff($fromvalue, $tovalue);
+            }
+        }
 
 	$modifiedlogtype=hook("modifylogtype","",array($type));
-	if ($modifiedlogtype) {$type=$modifiedlogtype;}
+	if ($modifiedlogtype)
+        {
+        $type=$modifiedlogtype;
+        }
 	
 	$modifiedlognotes=hook("modifylognotes","",array($notes,$type,$resource));
-	if($modifiedlognotes){$notes=$modifiedlognotes;}
-	
-	sql_query("insert into resource_log(date,user,resource,type,resource_type_field,notes,diff,usageoption,purchase_size,purchase_price,access_key,previous_value) values (now()," . (($userref!="")?"'$userref'":"null") . ",'$resource','$type'," . (($field!="")?"'$field'":"null") . ",'" . escape_check($notes) . "','" . escape_check($diff) . "','$usage','$purchase_size','$purchase_price'," . (isset($k)?"'$k'":"null") . ",'" . escape_check($fromvalue) . "')");
-        $log_ref=sql_insert_id();
+	if($modifiedlognotes)
+        {
+        $notes=$modifiedlognotes;
+        }
 
+    if ($resource===RESOURCE_LOG_APPEND_PREVIOUS)
+        {
+        sql_query("UPDATE `resource_log` SET `diff`=concat(`diff`,'\n','" . escape_check($diff) . "') WHERE `ref`=" . $resource_log_previous_ref);
+        return $resource_log_previous_ref;
+        }
+    else
+        {
+        sql_query("INSERT INTO `resource_log` (`date`, `user`, `resource`, `type`, `resource_type_field`, `notes`, `diff`, `usageoption`, `purchase_size`, " .
+            "`purchase_price`, `access_key`, `previous_value`) VALUES (now()," .
+            (($userref != "") ? "'$userref'" : "null") . ",'{$resource}','{$type}'," . (($field=="") ? "null" : "'{$field}'") . ",'" . escape_check($notes) . "','" .
+            escape_check($diff) . "','{$usage}','{$purchase_size}','{$purchase_price}'," . (isset($k) ? "'{$k}'" : "null") . ",'" . escape_check($fromvalue) . "')");
+        $log_ref=sql_insert_id();
+        $resource_log_previous_ref=$log_ref;
         return $log_ref;
+        }
 	}
 
 function get_resource_log($resource, $fetchrows=-1)

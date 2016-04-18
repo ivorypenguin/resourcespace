@@ -168,7 +168,7 @@ $header_link=true;
 ## Defaults ##
 #This uses an img tag to display the header and will automatically include a link to the homepage. 
 $slimheader=false;
-# Custom source location for the header image (includes baseurl). Will default to the resourcespace logo if left blank. Recommended image size: 350px(X) x 80px(Y)
+# Custom source location for the header image (includes baseurl, requires leading "/"). Will default to the resourcespace logo if left blank. Recommended image size: 350px(X) x 80px(Y)
 $linkedheaderimgsrc="";
 ###### END SLIM HEADER #######
 

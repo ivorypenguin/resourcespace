@@ -96,4 +96,7 @@ define ('STATUS_DISABLED',				0);
 define ('STATUS_ACTIVE',				1);
 define ('STATUS_COMPLETE',				2);	
 define ('STATUS_ERROR',					5);
-					  
+
+// -------------------- General definitions --------------------
+
+define ('RESOURCE_LOG_APPEND_PREVIOUS', -1);    // used to specify that we want to append the previous resource_log entry
