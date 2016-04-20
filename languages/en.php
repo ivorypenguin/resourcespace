@@ -460,6 +460,7 @@ $lang["rotateanticlockwise"]="Rotate anti-clockwise";
 $lang["increasegamma"]="Brighten previews";
 $lang["decreasegamma"]="Darken previews";
 $lang["restoreoriginal"]="Restore original";
+$lang["createpreviews"]="Create previews";
 $lang["recreatepreviews"]="Recreate previews";
 $lang["retrypreviews"]="Retry preview creation";
 $lang["specifydefaultcontent"]="Specify default content for new resources";
@@ -2366,6 +2367,7 @@ $lang['systemconfig_max_login_attempts_per_username_label'] = 'How many failed l
 $lang['systemconfig_max_login_attempts_wait_minutes_label'] = 'Waiting time (in minutes) for temporary banned users due to failed login attempts';
 $lang['systemconfig_password_brute_force_delay_label'] = 'Delay (in seconds) after failed attempts';
 $lang['systemconfig_option_not_allowed_error'] = 'Option not allowed! Please contact system admin';
+$lang['systemconfig_comments'] = 'Resource comments';
 
 /* Error Messages */
 $lang['error_check_html_first'] = 'Please Check HTML! The text used does not contain valid HTML.';
@@ -2394,6 +2396,9 @@ $lang["message_type"]="Message type";
 $lang["message_url"]="Message URL";
 $lang["sendbulkmessage"]="Send bulk message";
 $lang["message_sent"]="Message sent";
+$lang['email_and_screen']="Email and screen";
+$lang["sendbulkmailandmessage"]="Send bulk email and message";
+$lang["emailandmessagesent"]="Email and message sent";
 
 $lang["confirm_remove_custom_usergroup_access"]="This will revoke all custom user group access. Are you sure?";
 $lang["applogo_does_not_exists"]="The uploaded logo is no longer available";

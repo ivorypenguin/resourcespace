@@ -32,7 +32,7 @@ else
 	if (!isset($_SERVER['argv'][7])) {exit("Alternative param missing");}
 	$alternative=$_SERVER['argv'][7];
 
-	debug ("Starting ffmpeg_processing.php async with parameters: ref=$ref, file=$file, target=$target, previewonly=$previewonly, snapshottime=$snapshottime, alternative=$alternative");
+	debug ("Starting ffmpeg_processing.php async with parameters: ref=$ref, file=$file, target=$target, previewonly=$previewonly, snapshottime=$snapshottime, alternative=$alternative",$ref);
 
 	# SQL Connection may have hit a timeout
 	sql_connect();
@@ -69,7 +69,8 @@ if ($ffmpeg_get_par) {
   	$shell_exec_cmd=get_temp_dir() . "/ffmpeg.bat";
   	}
 
-  $output=run_command($shell_exec_cmd);
+    $output=run_command($shell_exec_cmd);
+    resource_log(RESOURCE_LOG_APPEND_PREVIOUS,LOG_CODE_TRANSFORMED,'','','',$shell_exec_cmd . ":\n" . $output);
   
   preg_match('/PAR ([0-9]+):([0-9]+)/m', $output, $matches);
   if (@intval($matches[1]) > 0 && @intval($matches[2]) > 0) {
@@ -137,7 +138,8 @@ if (!hook("replacetranscode","",array($file,$targetfile,$ffmpeg_global_options,$
 		$shell_exec_cmd=get_temp_dir() . "/ffmpeg.bat";
 		}
 
-	$output=run_command($shell_exec_cmd);
+    $output=run_command($shell_exec_cmd);
+    resource_log(RESOURCE_LOG_APPEND_PREVIOUS,LOG_CODE_TRANSFORMED,'','','',$shell_exec_cmd . ":\n" . $output);
 
 
 if ($ffmpeg_get_par && (isset($snapshotcheck) && $snapshotcheck==false)) {
@@ -156,6 +158,7 @@ if ($ffmpeg_get_par && (isset($snapshotcheck) && $snapshotcheck==false)) {
     if ($height % 2) {$height++;}
     $shell_exec_cmd = $ffmpeg_fullpath . "  $ffmpeg_global_options -y -i " . escapeshellarg($file) . " -s {$width}x{$height} -f image2 -vframes 1 -ss ".$snapshottime." " . escapeshellarg($target);
     $output = run_command($shell_exec_cmd);
+    resource_log(RESOURCE_LOG_APPEND_PREVIOUS,LOG_CODE_TRANSFORMED,'','','',$shell_exec_cmd . ":\n" . $output);
   }
 }
 
@@ -168,7 +171,9 @@ if (isset($qtfaststart_path) && file_exists($qtfaststart_path . "/qt-faststart")
     {
 	$targetfiletmp=$targetfile.".tmp";
 	rename($targetfile, $targetfiletmp);
-    $output=run_command($qtfaststart_path . "/qt-faststart " . escapeshellarg($targetfiletmp) . " " . escapeshellarg($targetfile));
+    $shell_exec_cmd=$qtfaststart_path . "/qt-faststart " . escapeshellarg($targetfiletmp) . " " . escapeshellarg($targetfile);
+    $output=run_command($shell_exec_cmd);
+    resource_log(RESOURCE_LOG_APPEND_PREVIOUS,LOG_CODE_TRANSFORMED,'','','',$shell_exec_cmd . ":\n" . $output);
     unlink($targetfiletmp);
     }
 
@@ -225,13 +230,16 @@ if (isset($ffmpeg_alternatives))
             if($tmp) {$shell_exec_cmd = $tmp;}
             
             $output = run_command($shell_exec_cmd);
+            resource_log(RESOURCE_LOG_APPEND_PREVIOUS,LOG_CODE_TRANSFORMED,'','','',$shell_exec_cmd . ":\n" . $output);
 
 	    if(isset($qtfaststart_path))
 			{
 			if($qtfaststart_path && file_exists($qtfaststart_path . "/qt-faststart") && in_array($ffmpeg_alternatives[$n]["extension"], $qtfaststart_extensions) ){
 				$apathtmp=$apath.".tmp";
 				rename($apath, $apathtmp);
-				$output=run_command($qtfaststart_path . "/qt-faststart " . escapeshellarg($apathtmp) . " " . escapeshellarg($apath)." 2>&1");
+                $shell_exec_cmd=$qtfaststart_path . "/qt-faststart " . escapeshellarg($apathtmp) . " " . escapeshellarg($apath)." 2>&1";
+                $output=run_command($shell_exec_cmd);
+                resource_log(RESOURCE_LOG_APPEND_PREVIOUS,LOG_CODE_TRANSFORMED,'','','',$shell_exec_cmd . ":\n" . $output);
 				unlink($apathtmp);
 				}
 			}

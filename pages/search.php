@@ -230,7 +230,20 @@ if ($order_by=="")
 		}
 	}
 $per_page=getvalescaped("per_page",$default_perpage);rs_setcookie('per_page', $per_page);
-$archive=getvalescaped("archive",0);if (strpos($search,"!")===false) {rs_setcookie('saved_archive', $archive);}
+$archive = getvalescaped('archive', 0);
+
+// Disable search through all workflow states when an archive state is specifically requested
+// This prevents links like View deleted resources to show the user resources in all states
+if($search_all_workflow_states && 0 != $archive)
+    {
+    $search_all_workflow_states = false;
+    }
+
+if(false === strpos($search, '!'))
+    {
+    rs_setcookie('saved_archive', $archive);
+    }
+
 $jumpcount=0;
 
 if (getvalescaped("recentdaylimit","")!="") //set for recent search, don't set cookie
@@ -339,7 +352,7 @@ else
 	$result=array(); # Do not return resources (e.g. for collection searching only)
 	}
 
-if(($k=="" || $internal_share_access) && strpos($search,"!")===false && $archive==0){$collections=do_collections_search($search,$restypes);} // don't do this for external shares
+if(($k=="" || $internal_share_access) && strpos($search,"!")===false && $archive==0){$collections=do_collections_search($search,$restypes,0,$order_by,$sort);} // don't do this for external shares
 
 # Allow results to be processed by a plugin
 $hook_result=hook("process_search_results","search",array("result"=>$result,"search"=>$search));

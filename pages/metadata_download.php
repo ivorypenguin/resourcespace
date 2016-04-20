@@ -41,6 +41,8 @@ $filename           = $ref;
 $download           = getval('download', '') != '';
 $download_file_type = getval('fileType_option', '');
 $language           = getval('language', 'en');
+if($language=="en-US"){$language="en";} //html2pdf doesn't use 'en-US' 
+
 $data_only          = 'true' === trim(getval('data_only', ''));
 $pdf_template       = getvalescaped('pdf_template', '');
 

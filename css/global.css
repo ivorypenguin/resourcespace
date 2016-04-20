@@ -1085,8 +1085,6 @@ div.MessageBox a {
 	margin-right: 100px;
 	margin-top: 25px;
 	height: 150px;
-	overflow-y: hidden; 
-	overflow-x: hidden;
 }
 a.FeaturedSimpleLink:hover { 
 	border-radius:5px;  
@@ -1096,6 +1094,9 @@ a.FeaturedSimpleLink:hover {
 	display: table;
 	height: 150px;
 	width:250px;
+    position: relative;
+	padding: 0px; 
+	overflow: hidden; 
 }
 
 .FeaturedSimpleTileContents {
@@ -1105,12 +1106,16 @@ a.FeaturedSimpleLink:hover {
 
 .FeaturedSimpleTile .FeaturedSimpleTileContents h2{
   background: transparent;
+  float: none;
+  position: relative;
   text-align: center;
   padding-left: 0px;   
 	max-height: 100px;
 	max-width: 215px;
 	overflow-wrap: break-word;
 }
+
+
 .MessageUnread {
     font-weight: bold;
 }

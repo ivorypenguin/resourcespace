@@ -1509,8 +1509,15 @@ function get_resource_table_joins(){
 	return $return;
 	}
     
-function debug($text)
+function debug($text,$resource_log_resource_ref=null,$resource_log_code=LOG_CODE_TRANSFORMED)
 	{
+
+    # Update the resource log if resource reference passed.
+	if(!is_null($resource_log_resource_ref))
+        {
+        resource_log($resource_log_resource_ref,$resource_log_code,'','','',$text);
+        }
+
 	# Output some text to a debug file.
 	# For developers only
 	global $debug_log, $debug_log_override, $debug_log_location;

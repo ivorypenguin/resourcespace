@@ -16,7 +16,18 @@ if (getval("send","")!="")
 	$result=bulk_mail(getvalescaped("users",""),getvalescaped("subject",""),getvalescaped("text",""),getval("html","")=="yes",$message_type,getval("url",""));
 	if ($result=="")
 		{
-		$error=($message_type==MESSAGE_ENUM_NOTIFICATION_TYPE_EMAIL ? $lang["emailsent"] : $lang["message_sent"]);
+		switch($message_type)
+			{
+			case MESSAGE_ENUM_NOTIFICATION_TYPE_EMAIL | MESSAGE_ENUM_NOTIFICATION_TYPE_SCREEN:
+				$error=$lang["emailandmessagesent"];
+				break;
+			case MESSAGE_ENUM_NOTIFICATION_TYPE_EMAIL:
+				$error=$lang["emailsent"];
+				break;
+			case MESSAGE_ENUM_NOTIFICATION_TYPE_SCREEN:
+				$error=$lang["message_sent"];
+				break;
+			}
 		log_activity($error,LOG_CODE_SYSTEM);
 		}
 	else
@@ -36,10 +47,20 @@ jQuery(document).ready(function(){
 </script>";
 
 include "../../include/header.php";
-
+switch($message_type){
+	case MESSAGE_ENUM_NOTIFICATION_TYPE_EMAIL | MESSAGE_ENUM_NOTIFICATION_TYPE_SCREEN:
+		$title=$lang["sendbulkmailandmessage"];
+		break;
+	case MESSAGE_ENUM_NOTIFICATION_TYPE_EMAIL:
+		$title=$lang["sendbulkmail"];
+		break;
+	case MESSAGE_ENUM_NOTIFICATION_TYPE_SCREEN:
+		$title=$lang["sendbulkmessage"];
+		break;
+}
 ?>
 <div class="BasicsBox">
-<h1><?php echo ($message_type==MESSAGE_ENUM_NOTIFICATION_TYPE_EMAIL ? $lang["sendbulkmail"] : $lang["sendbulkmessage"]); ?></h1>
+<h1><?php echo $title; ?></h1>
 <form id="myform" method="post" action="<?php echo $baseurl_short?>pages/team/team_mail.php">
 
 <?php if (isset($error)) { ?><div class="FormError"><?php echo $error?></div><?php } ?>
@@ -58,15 +79,20 @@ include "../../include/header.php";
 		echo MESSAGE_ENUM_NOTIFICATION_TYPE_SCREEN; ?>" onclick="jQuery('h1').closest('h1').html('<?php echo $lang["sendbulkmessage"]; ?>');
 		jQuery('#message_email').slideUp(); jQuery('#message_screen').slideDown();"<?php
 			if($message_type==MESSAGE_ENUM_NOTIFICATION_TYPE_SCREEN) { ?> checked='checked'<?php }?>><?php echo $lang['screen']; ?>
+	
+	<input type="radio" id="message_type_<?php echo MESSAGE_ENUM_NOTIFICATION_TYPE_SCREEN | MESSAGE_ENUM_NOTIFICATION_TYPE_EMAIL; ?>" name="message_type" value="<?php
+		echo MESSAGE_ENUM_NOTIFICATION_TYPE_SCREEN | MESSAGE_ENUM_NOTIFICATION_TYPE_EMAIL; ?>" onclick="jQuery('h1').closest('h1').html('<?php echo $lang["sendbulkmailandmessage"]; ?>');
+		jQuery('#message_email').slideDown(); jQuery('#message_screen').slideDown();"<?php
+			if($message_type==(MESSAGE_ENUM_NOTIFICATION_TYPE_SCREEN | MESSAGE_ENUM_NOTIFICATION_TYPE_EMAIL)) { ?> checked='checked'<?php }?>><?php echo $lang['email_and_screen']; ?>
 
 	<div class="clearerleft"></div>
 </div>
 
-<div id="message_screen" style="<?php if($message_type!=MESSAGE_ENUM_NOTIFICATION_TYPE_SCREEN) {?>display:none;<?php } ?>">
+<div id="message_screen" style="<?php if($message_type!=MESSAGE_ENUM_NOTIFICATION_TYPE_SCREEN || $message_type!=MESSAGE_ENUM_NOTIFICATION_TYPE_EMAIL | MESSAGE_ENUM_NOTIFICATION_TYPE_SCREEN) {?>display:none;<?php } ?>">
 	<div class="Question"><label><?php echo $lang["message_url"]?></label><input name="url" type="text" class="stdwidth Inline required" value="<?php echo getval("url",""); ?>"><div class="clearerleft"></div></div>
 </div>
 
-<div id="message_email" style="<?php if($message_type!==MESSAGE_ENUM_NOTIFICATION_TYPE_EMAIL) {?>display:none;<?php } ?>">
+<div id="message_email" style="<?php if($message_type!==MESSAGE_ENUM_NOTIFICATION_TYPE_EMAIL || $message_type!=MESSAGE_ENUM_NOTIFICATION_TYPE_EMAIL | MESSAGE_ENUM_NOTIFICATION_TYPE_SCREEN) {?>display:none;<?php } ?>">
 	<div class="Question"><label><?php echo $lang["emailhtml"]?></label><input name="html" type="checkbox" value="yes" <?php if (getval("html","")=="yes") { ?>checked<?php } ?>><div class="clearerleft"> </div></div>
 	<div class="Question"><label><?php echo $lang["emailsubject"]?></label><input name="subject" type="text" class="stdwidth Inline required" value="<?php echo getval("subject",$applicationname)?>"><div class="clearerleft"> </div></div>
 </div>

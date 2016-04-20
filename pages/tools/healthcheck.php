@@ -52,4 +52,20 @@ if($debug_log)
 $last_cron=strtotime(sql_value("select value from sysvars where name='last_cron'",""));
 $diff_days=(time()-$last_cron) / (60 * 60 * 24);
 if ($diff_days>5) {exit("FAIL - cron was executed " . round($diff_days,0) . " days ago.");}
-exit("OK");
+
+
+
+// All is OK.
+// If the Subversion extension is installed, return the repo branch name and also the revision number after the OK message.
+$version="";
+if (function_exists("svn_info"))
+    {
+    $svn_info=@svn_info(dirname(__FILE__) . "/../../",false);
+    if (is_array($svn_info))
+        {
+        $svn_url=explode("/",$svn_info[0]["url"]);
+        $version.=" " . $svn_url[count($svn_url)-1] . "." . $svn_info[0]["revision"];
+        }
+    }
+
+exit("OK" . $version);

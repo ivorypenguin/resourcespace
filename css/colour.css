@@ -270,7 +270,8 @@ li.plupload_droptext {color:#999;}
 .HomePanel .clock-icon {background: url("../gfx/dash/non-clock.png") no-repeat;}
 
 /* Shadowy Styling */
-.HomePanelDynamicDash.TileContentShadow h2, .HomePanelDynamicDash.TileContentShadow p, .HomePanelDynamicDash.TileContentShadow  {
+.HomePanelDynamicDash.TileContentShadow h2, .HomePanelDynamicDash.TileContentShadow p, .HomePanelDynamicDash.TileContentShadow,
+.TileContentShadow {
 	text-shadow: 1px 1px 8px #090909;
 	color:#fff;
 }
@@ -370,3 +371,4 @@ div.MessageBox a {
 .highlighted {
 	border: 3px solid #F00 !important;
 }
+UL.jqueryFileTree A {color:#000;}

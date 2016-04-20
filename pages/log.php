@@ -141,9 +141,11 @@ for ($n=$offset;(($n<count($log)) && ($n<($offset+$per_page)));$n++)
 	<td nowrap><?php echo $log[$n]["access_key"]!=""?$lang["externalusersharing"] . ": " . $log[$n]["access_key"] . " " . $lang["viauser"] . " " . $log[$n]["shared_by"]:$log[$n]["fullname"]?></td>
 	<td><?php echo $lang["log-" . $log[$n]["type"]]." ".$log[$n]["notes"]?></td>
 	<td><?php echo htmlspecialchars($log[$n]["title"])?></td>
-	<td><?php echo ((($log[$n]["diff"])=="") ? "" :
-            format_string_more_link(nl2br(htmlspecialchars($log[$n]["diff"]))));
-
+	<td><?php
+    if($log[$n]["diff"]!=="")
+        {
+        echo nl2br(format_string_more_link(htmlspecialchars($log[$n]["diff"])));
+        }
     if ($log[$n]["usageoption"]!="-1")
         {
         // if usageoption is set to -1 when logging, you can avoid the usage description here

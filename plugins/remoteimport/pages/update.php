@@ -53,9 +53,9 @@ foreach ($resources as $resource)
 	$keyfields=get_nodes_by_tag("KEYFIELD",$resource["id"]);
 	if (count($keyfields)!==1) {exit("There must be exactly one 'keyfield' element for each resource.<br/>");}
 	$keyfield=$keyfields[0];
-	
+
 	# Search for a matching resource
-	$ref=sql_value("select resource value from resource_data where resource_type_field='" . escape_check($keyfield["attributes"]["REF"]) . "' and value='" . escape_check(trim($keyfield["value"])) . "'",0);
+    $ref = sql_value("SELECT resource `value` FROM resource_data WHERE resource_type_field = '" . escape_check($keyfield['attributes']['REF']) . "' AND value = '" . escape_check(trim($keyfield['value'])) . "' AND resource > 0", 0);
 	if ($ref==0)
 		{
 		# No matching resource found. Insert a new resource.
@@ -72,22 +72,27 @@ foreach ($resources as $resource)
 		}
 		
 	# Update metadata fields
-	$fields=get_nodes_by_tag("FIELD",$resource["id"]);		
-	foreach ($fields as $field)
-		{
-		echo "<br>" . $field["attributes"]["REF"] . "=" . $field["value"];
-		$fieldtype=sql_value("select type value from resource_type_field where ref='" . $field["attributes"]["REF"] . "'",1);
-		if($fieldtype==8)
-			{
-			// HTML type - value should have been encoded for submission
-			$value=htmlspecialchars_decode($field["value"]);
-			}
-		else
-			{
-			$value=$field["value"];
-			}
-		update_field($ref,$field["attributes"]["REF"],$value);
-		}
+    $fields=get_nodes_by_tag("FIELD",$resource["id"]);
+    foreach ($fields as $field)
+        {
+        $value = '';
+
+        $fieldtype = sql_value("SELECT type `value` FROM resource_type_field WHERE ref = '{$field['attributes']['REF']}'", 1);
+
+        if(isset($field['value']) && 8 == $fieldtype)
+            {
+            // HTML type - value should have been encoded for submission
+            $value = htmlspecialchars_decode($field['value']);
+            }
+        else if(isset($field['value']))
+            {
+            $value = $field['value'];
+            }
+
+        echo "<br>{$field['attributes']['REF']} = {$value}";
+
+        update_field($ref, $field['attributes']['REF'], $value);
+        }
         
      # Add to collections
     $fields=get_nodes_by_tag("COLLECTION",$resource["id"]);		

@@ -490,7 +490,7 @@ function search_public_collections($search="", $order_by="name", $sort="ASC", $e
 }
 
 
-function do_collections_search($search,$restypes,$archive=0)
+function do_collections_search($search,$restypes,$archive=0,$order_by,$sort)
     {
     global $search_includes_themes, $search_includes_public_collections, $search_includes_user_collections, $userref, $collection_search_includes_resource_metadata;
     $result=array();
@@ -522,7 +522,7 @@ function do_collections_search($search,$restypes,$archive=0)
 				. ($search_includes_user_collections_now?'U':'')
 				. ($search_includes_public_collections_now?'P':'')
 				. ($search_includes_themes_now?'T':'')
-				. " " . $search);
+				. " " . $search,"",$order_by,0,-1,$sort);
 		}
 	else
 		{
@@ -976,6 +976,7 @@ function get_smart_themes_nodes($field, $is_category_tree, $parent = null)
         $return[$c]['indent']    = $tree_node_depth;
         $return[$c]['node']      = $parent_node_to_use;
         $return[$c]['is_parent'] = $is_parent;
+        $return[$c]['ref'] = $nodes[$n]['ref'];
         }
 
     return $return;
@@ -1394,45 +1395,36 @@ function allow_multi_edit($collection)
 	}
 }	
 
-function get_theme_image($themes=array())
+function get_theme_image($themes=array(),$collection="")
 	{
 	# Returns an array of resource references that can be used as theme category images.
 	global $theme_images_number;
 	global $theme_category_levels;
-	# First try to find resources that have been specifically chosen using the option on the collection comments page.
-	$sql="select r.ref value from collection c join collection_resource cr on c.ref=cr.collection join resource r on cr.resource=r.ref where c.theme='" . escape_check($themes[0]) . "' ";
-	for ($n=2;$n<=count($themes)+1;$n++){
-		if (isset($themes[$n-1])){
-			$sql.=" and theme".$n."='" . escape_check($themes[$n-1]) . "' ";
-		} 
-		else {
-			if ($n<=$theme_category_levels){
-				$sql.=" and (theme".$n."='' or theme".$n." is null) ";
-			}
-		}
-	} 
-
-	$sql.=" and r.has_image=1 and cr.use_as_theme_thumbnail=1 order by r.ref desc";
-	$chosen=sql_array($sql,0);
-	if (count($chosen)>0) {return $chosen;}
+	# Resources that have been specifically chosen using the option on the collection comments page will be returned first based on order by.
 	
-	# No chosen images? Manually choose a single image based on hit counts.
-	$sql="select r.ref value from collection c join collection_resource cr on c.ref=cr.collection join resource r on cr.resource=r.ref where c.theme='" . escape_check($themes[0]) . "' ";
+	$sqlselect="select r.ref value from collection c join collection_resource cr on c.ref=cr.collection join resource r on cr.resource=r.ref where c.public=1 and c.theme='" . escape_check($themes[0]) . "' ";
+	$orderby=" order by cr.use_as_theme_thumbnail desc";
 	for ($n=2;$n<=count($themes)+1;$n++){
 		if (isset($themes[$n-1])){
-			$sql.=" and theme".$n."='" . escape_check($themes[$n-1]) . "' ";
+			$sqlselect.=" and theme".$n."='" . escape_check($themes[$n-1]) . "' ";
 		} 
 		else {
 			if ($n<=$theme_category_levels){
-			$sql.=" and (theme".$n."='' or theme".$n." is null) ";
+				# Resources in sub categories can be used but should be below those in the current category
+				$orderby.=", theme".$n . " ";
 			}
 		}
 	} 
-	$sql.=" and r.has_image=1 order by r.hit_count desc limit " . $theme_images_number;
-	$images=sql_array($sql,0);
 
-	$tmp = hook("getthemeimage", "", array($themes)); if($tmp!==false and is_array($tmp) and count($tmp)>0) $images = $tmp;
-
+	if($collection!="")
+		{
+		$sqlselect.=" and c.ref = '" . escape_check($collection) .  "'";
+		}
+	
+	$sqlselect.=" and r.has_image=1 ";
+	$orderby.=",r.hit_count desc,r.ref desc";
+	$sql = $sqlselect . $orderby . " limit " .$theme_images_number;
+	$images=sql_array($sql,0);	
 	if (count($images)>0) {return $images;}
 	return false;
 	}

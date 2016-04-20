@@ -1996,8 +1996,8 @@ function bulk_mail($userlist,$subject,$text,$html=false,$message_type=MESSAGE_EN
 
 	$templatevars['text']=stripslashes(str_replace("\\r\\n","\n",$text));
 	$body=$templatevars['text'];
-
-	if ($message_type==MESSAGE_ENUM_NOTIFICATION_TYPE_EMAIL)
+	
+	if ($message_type==MESSAGE_ENUM_NOTIFICATION_TYPE_EMAIL || $message_type==(MESSAGE_ENUM_NOTIFICATION_TYPE_EMAIL | MESSAGE_ENUM_NOTIFICATION_TYPE_SCREEN))
 		{
 		$emails=resolve_user_emails($ulist);
 		$emails=$emails['emails'];
@@ -2011,7 +2011,7 @@ function bulk_mail($userlist,$subject,$text,$html=false,$message_type=MESSAGE_EN
 				}
 			}
 		}
-	elseif ($message_type==MESSAGE_ENUM_NOTIFICATION_TYPE_SCREEN)
+	if ($message_type==MESSAGE_ENUM_NOTIFICATION_TYPE_SCREEN || $message_type==(MESSAGE_ENUM_NOTIFICATION_TYPE_EMAIL | MESSAGE_ENUM_NOTIFICATION_TYPE_SCREEN))
 		{
 		$user_refs = array();
 		foreach ($ulist as $user)
@@ -2021,6 +2021,11 @@ function bulk_mail($userlist,$subject,$text,$html=false,$message_type=MESSAGE_EN
 				{
 				array_push($user_refs,$user_ref);
 				}
+			}
+		if($message_type==(MESSAGE_ENUM_NOTIFICATION_TYPE_EMAIL | MESSAGE_ENUM_NOTIFICATION_TYPE_SCREEN) && $html)
+			{
+			# strip the tags out
+			$body=strip_tags($body);
 			}
 		message_add($user_refs,$body,$url);
 		}
@@ -4114,7 +4119,7 @@ function format_display_field($value){
 // formats a string with a collapsible more / less section
 function format_string_more_link($string,$max_words_before_more=-1)
     {
-    $words=preg_split('/\s/',$string);
+    $words=preg_split('/[\t\f ]/',$string);
     if ($max_words_before_more==-1)
         {
         global $max_words_before_more;
@@ -5061,7 +5066,7 @@ function job_queue_add($type="",$job_data=array(),$user="",$time="", $success_te
 	if($user==""){global $userref;$user=isset($userref)?$userref:0;}
     $job_data_json=json_encode($job_data,JSON_UNESCAPED_SLASHES); // JSON_UNESCAPED_SLASHES is needed so we can effectively compare jobs
     // Check for existing job matching
-    $existing_user_jobs=job_queue_get_jobs($type,"","",$job_code);
+    $existing_user_jobs=job_queue_get_jobs($type,STATUS_ACTIVE,"",$job_code);
 	if(count($existing_user_jobs)>0)
             {
             global $lang;

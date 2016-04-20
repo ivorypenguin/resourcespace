@@ -200,3 +200,4 @@ input[readonly] {color: #FFFFFF;}
 	background: rgba(73, 73, 73, 0.8);
 	border: 1px solid #d0d0d0;
 }
+UL.jqueryFileTree A {color:#ffffff;}
