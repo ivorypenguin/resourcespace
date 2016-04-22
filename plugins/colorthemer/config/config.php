@@ -1,2 +1,0 @@
-<?php 
-$userfixedtheme=1;
