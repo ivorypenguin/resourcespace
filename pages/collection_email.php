@@ -340,11 +340,11 @@ if(!$user_select_internal)
 	</select>
 	<div class="clearerleft"> </div>
 	</div>
-	<?php } ?>
-
-	<?php hook("collectionemailafterexternal");
+	<?php }
 	
 	} // End of section checking $user_select_internal
+	
+	hook("collectionemailafterexternal");
 	?>
 
 <?php if ($collection["user"]==$userref) { # Collection owner can request feedback.

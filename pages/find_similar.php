@@ -11,7 +11,7 @@ $context=getvalescaped("context","");
 $search=array();
 foreach ($_POST as $key=>$value)
 	{
-	if (substr($key,0,8)=="keyword_") {$search[]=rawurldecode(substr($key,8));}
+	if (substr($key,0,8)=="keyword_") {$search[]=urldecode(substr($key,8));}
 	}
 
 if (getval("countonly","")!="")

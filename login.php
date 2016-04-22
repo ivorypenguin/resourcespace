@@ -104,8 +104,14 @@ elseif (array_key_exists("username",$_POST) && getval("langupdate","")=="")
 		# the collection frame to appear full screen.
 		if (strpos($url,"pages/collections.php")!==false) {$url="index.php";}
 
-        $accepted=sql_value("select accepted_terms value from user where ref='" . $result["ref"] . "'",0);
-	if (($accepted==0) && ($terms_login) && !checkperm("p")) {redirect ("pages/terms.php?noredir=true&url=" . urlencode("pages/user/user_change_password.php"));} else {redirect($url);}
+        $accepted = sql_value("SELECT accepted_terms value FROM user WHERE ref = '{$result['ref']}'", 0);
+        if(0 == $accepted && $terms_login && !checkperm('p'))
+            {
+            redirect('pages/terms.php?noredir=true&url=' . urlencode('pages/user/user_change_password.php'));
+            }
+        else{
+            redirect($url);
+            }
         }
     else
         {

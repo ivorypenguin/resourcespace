@@ -1692,14 +1692,7 @@ if($enable_find_similar && checkperm('s') && ($k == '' || $internal_share_access
 
 <div class="RecordResouce">
 <div class="Title"><?php echo $lang["searchforsimilarresources"]?></div>
-<?php if ($resource["has_image"]==1) { ?>
 
-<!--
-<p>Find resources with a <a href="search.php?search=<?php echo urlencode("!rgb:" . $resource["image_red"] . "," . $resource["image_green"] . "," . $resource["image_blue"])?>">similar colour theme</a>.</p>
-<p>Find resources with a <a href="search.php?search=<?php echo urlencode("!colourkey" . $resource["colour_key"]) ?>">similar colour theme (2)</a>.</p>
--->
-
-<?php } ?>
 <script type="text/javascript">
 function <?php echo $context ?>UpdateFSResultCount()
 	{

@@ -136,13 +136,12 @@ if (array_key_exists("user",$_COOKIE) || array_key_exists("user",$_GET) || isset
 	if (isset($anonymous_login) && ($username==$anonymous_login)) {$user_select_sql="and u.username='$username'";} # Automatic anonymous login, do not require session hash.
 	hook('provideusercredentials');
 
-    $userdata=sql_query("select u.ref, u.username, g.permissions, g.fixed_theme, g.parent, u.usergroup, u.current_collection, u.last_active, timestampdiff(second,u.last_active,now()) idle_seconds,u.email, u.password, u.fullname, g.search_filter, g.edit_filter, g.ip_restrict ip_restrict_group, g.name groupname, u.ip_restrict ip_restrict_user, u.search_filter_override, resource_defaults, u.password_last_change,g.config_options,g.request_mode, g.derestrict_filter, u.hidden_collections from user u,usergroup g where u.usergroup=g.ref $user_select_sql and u.approved=1 and (u.account_expires is null or u.account_expires='0000-00-00 00:00:00' or u.account_expires>now())");//print_r($userdata);
-    if (count($userdata)>0)
-        {
-        $valid=true;
+    $userdata = sql_query("SELECT u.ref, u.username, g.permissions, g.fixed_theme, g.parent, u.usergroup, u.current_collection, u.last_active, timestampdiff(second, u.last_active, now()) idle_seconds, u.email, u.password, u.fullname, g.search_filter, g.edit_filter, g.ip_restrict ip_restrict_group, g.name groupname, u.ip_restrict ip_restrict_user, u.search_filter_override, resource_defaults, u.password_last_change, g.config_options, g.request_mode, g.derestrict_filter, u.hidden_collections, u.accepted_terms FROM user u, usergroup g WHERE u.usergroup = g.ref {$user_select_sql} AND u.approved = 1 AND (u.account_expires IS NULL OR u.account_expires = '0000-00-00 00:00:00' OR u.account_expires > now())");
 
-		
-	setup_user($userdata[0]);
+    if(0 < count($userdata))
+        {
+        $valid = true;
+        setup_user($userdata[0]);
 
         if ($password_expiry>0 && !checkperm("p") && $allow_password_change && $pagename!="user_change_password" && $pagename!="index" && $pagename!="collections" && strlen(trim($userdata[0]["password_last_change"]))>0 && getval("modal","")=="")
         	{
@@ -263,9 +262,21 @@ if (isset($ip_restrict_group)){
 		}
 	}
 }
+
 #update activity table
 global $pagename;
-$terms="";if (($pagename!="login") && ($pagename!="terms")) {$terms=",accepted_terms=1";} # Accepted terms
+
+/*
+Login terms have not been accepted? Redirect until user does so
+Note: it is considered safe to show the collection bar because even if we enable login terms
+      later on, when the user might have resources in it, they would not be able to do anything with them
+      unless they accept terms
+*/
+if($terms_login && 0 == $useracceptedterms && 'login' != $pagename && 'terms' != $pagename && 'collections' != $pagename)
+    {
+    redirect('pages/terms.php?noredir=true&url=' . urlencode("pages/{$default_home_page}"));
+    }
+
 if (!$api){
 	if (isset($_SERVER["HTTP_USER_AGENT"])){
 	$last_browser=escape_check(substr($_SERVER["HTTP_USER_AGENT"],0,250));
@@ -278,7 +289,7 @@ if (!$api){
 
 // don't update this table if the System is doing it's own operations
 if (!isset($system_login)){
-	sql_query("update user set lang='$language', last_active=now(),logged_in=1,last_ip='" . get_ip() . "',last_browser='" . $last_browser . "'$terms where ref='$userref'",false,-1,true,0);
+	sql_query("update user set lang='$language', last_active=now(),logged_in=1,last_ip='" . get_ip() . "',last_browser='" . $last_browser . "' where ref='$userref'",false,-1,true,0);
 }
 
 # Add group specific text (if any) when logged in.

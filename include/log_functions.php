@@ -18,7 +18,7 @@ function log_activity($note=null, $log_code=LOG_CODE_UNSPECIFIED, $value_new=nul
 	if (is_null($user))
 		{
 		global $userref;
-		$user = isset($userref) && !is_null($userref) ? $userref : "";
+		$user = isset($userref) && !is_null($userref) ? $userref : 0;
 		}
 
 	if (is_null($value_old) && !is_null($remote_table) && !is_null($remote_column) && !is_null($remote_ref))	// only try and get the old value if not explicitly set and we have table details
