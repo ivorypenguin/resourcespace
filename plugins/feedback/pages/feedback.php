@@ -1,12 +1,23 @@
 <?php
 include "../../../include/db.php";
+include_once "../../../include/general.php";
+
+# Make a folder for this
+if(!is_dir($storagedir . "/feedback"))
+    {
+    // If it does not exist, create it.
+    mkdir($storagedir . "/feedback", 0777);
+    }
+    
+# Load config
+if (file_exists($storagedir . '/feedback/config.php')) {include $storagedir . '/feedback/config.php';}
 
 
 if (array_key_exists("user",$_COOKIE))
    	{
 	# Check to see if this user is logged in.
 	$session_hash=$_COOKIE["user"];
-	$loggedin=sql_value("select count(*) value from user where session='$session_hash' and approved=1 and timestampdiff(second,last_active,now())<(30*60)",0);
+	$loggedin=sql_value("select count(*) value from user where session='" . escape_check($session_hash) . "' and approved=1 and timestampdiff(second,last_active,now())<(30*60)",0);
 	if ($loggedin>0 || $session_hash=="|") // Also checks for dummy cookie used in external authentication
         	{
 	        # User is logged in. Proceed to full authentication.
@@ -25,7 +36,6 @@ if (!isset($userref))
 	$plugins=array();
 	}
 	
-include "../../../include/general.php";
 
 $error="";
 $errorfields=array();
@@ -79,20 +89,20 @@ if (getval("send","")!="")
 		{
 		# Write results.
 		$sent=true;
-		$f=fopen("../data/results.csv","r+b");
+		$f=fopen($storagedir . "/feedback/results.csv","a+b");
 		
 		# avoid writing headers again
-		$line = file('../data/results.csv');
+		$line = file($storagedir . '/feedback/results.csv');
 		if (isset($line[0])){$line=$line[0];} 
 		if ($line==$csvheaders."\n"){$csvheaders="";} else {$csvheaders=$csvheaders."\n";}
 		
-		fwrite($f, $csvheaders .file_get_contents('../data/results.csv').$csvline."\n" );
+		fwrite($f, $csvheaders .file_get_contents($storagedir . '/feedback/results.csv').$csvline."\n" );
 		fclose($f);
 		
 		# install email template
 		//sql_query("delete from site_text where name='emailfeedback'");
 		$result=sql_query("select * from site_text where page='all' and name='emailfeedback'");
-		if (count($result)==0){$wait=sql_query('insert into site_text (page,name,text,language) values ("all","emailfeedback","[img_storagedir_/../gfx/whitegry/titles/title.gif] [message] [text_footer][attach_../data/results.csv]","en-US")');}
+		if (count($result)==0){$wait=sql_query('insert into site_text (page,name,text,language) values ("all","emailfeedback","[img_storagedir_/../gfx/whitegry/titles/title.gif] [message] [text_footer][attach_' . $storagedir . '/feedback/results.csv]","en-US")');}
 		
 		# send form results and results.csv to email_notify
 		if ($use_phpmailer){

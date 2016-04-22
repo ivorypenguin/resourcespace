@@ -1,6 +1,6 @@
 <?php
 include "../include/db.php";
-include "../include/general.php";
+include_once "../include/general.php";
 include "../include/resource_functions.php";
 include "../include/search_functions.php";
 
@@ -38,7 +38,8 @@ else
 			echo "Verified.";
 			
 			// Mark these items as bought.
-			payment_set_complete(getvalescaped("custom",""));
+			$emailconfirmation=getvalescaped("emailconfirmation","");
+			payment_set_complete(getvalescaped("custom",""),$emailconfirmation);
 			
 			hook("payment_complete");
 			} 

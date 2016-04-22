@@ -1,8 +1,8 @@
 <?php
 include "../include/db.php";
-include "../include/general.php";
+include_once "../include/general.php";
 
-include "../include/collections_functions.php";
+include_once "../include/collections_functions.php";
 # External access support (authenticate only if no key provided, or if invalid access key provided)
 $k=getvalescaped("k","");if (($k=="") || (!check_access_key_collection(getvalescaped("collection","",true),$k))) {include "../include/authenticate.php";}
 
@@ -17,7 +17,9 @@ $done=false;
 $cinfo=get_collection($collection);if ($cinfo===false) {exit("Collection not found.");}
 
 # Check access
+if (!collection_readable($collection)) {exit($lang["no_access_to_collection"]);}
 if (!$cinfo["request_feedback"]) {exit("Access denied.");}
+
 
 # Check that comments have been added.
 $comments=get_collection_comments($collection);
@@ -75,7 +77,7 @@ if ($errors!="")
 	{
 	?><h2><?php echo $lang["selectedresources"]?>:</h2><?php
 	# Show thumbnails and allow the user to select resources.
-	$result=do_search("!collection" . $collection);
+	$result=do_search("!collection" . $collection,"","resourceid",0,-1,"desc");
 	for ($n=0;$n<count($result);$n++)
 		{
 		$ref=$result[$n]["ref"];

@@ -1,6 +1,6 @@
 <?php
 include "../../include/db.php";
-include "../../include/general.php";
+include_once "../../include/general.php";
 include "../../include/authenticate.php";if (!checkperm("a")) {exit ("Permission denied.");}
 
 
@@ -116,20 +116,60 @@ if (substr($t[7],0,3)=="url")
     }    
     
 #handle posts
-if (array_key_exists("userfile",$_FILES))
-    { #file uploads
-    $extension=getval("extension","");
-    $filename="../assets/" . str_replace(array(":","-"),array("A","B"),$id) . "." . $extension;
-    #echo "<li>$filename<li>" . $_FILES['userfile']['tmp_name'];
-    #if (strpos($_FILES['userfile']['tmp_name'],".$extension")===false) {exit ("Wrong file type. Expected '$extension'.");}
-    $result=move_uploaded_file($_FILES['userfile']['tmp_name'], "$filename");
-    if ($result==false)
-        {
-        if (file_exists($filename)) {unlink($filename);} else {echo "<div class=propbox>" . $lang["file_too_large"] . "." . "</div><br><br>";}
-        }
-    }
-elseif (array_key_exists("submit",$_POST))
+
+if (array_key_exists("submit",$_POST))
     {
+
+    #Handle File Upload
+    if (array_key_exists("userfile",$_FILES) && array_key_exists("group_specific_logo",$_POST))
+        {
+        #Check/Set Directory
+        $logostorage=$storagedir."/admin/groupheaderimg/";
+        if(!(file_exists($logostorage) && is_dir($logostorage)))
+            {
+            mkdir($logostorage,0777,true);
+            }
+        #Create only if png or gif uploaded
+        if (preg_match("/(.png|png)$/", $_POST["group_specific_logo"]) && preg_match("/(.png|png)$/",$_FILES['userfile']['name'])) 
+            {
+            $extension= "png";
+            $filename=$logostorage."group".$ref . "." . $extension;
+            $result=move_uploaded_file($_FILES['userfile']['tmp_name'], "$filename");
+            if ($result==false)
+                {
+                if (file_exists($filename)) {unlink($filename);} else {echo "<div class=propbox>" . $lang["file_too_large"] . "." . "</div><br><br>";}
+                }
+            }
+        else if(preg_match("/(.gif|gif)$/", $_POST["group_specific_logo"]) && preg_match("/(.gif|gif)$/",$_FILES['userfile']['name'])) 
+            {
+            $extension= "gif";
+            $filename=$logostorage."group".$ref . "." . $extension;
+            $result=move_uploaded_file($_FILES['userfile']['tmp_name'], "$filename");
+            if ($result==false)
+                {
+                if (file_exists($filename)) {unlink($filename);} else {echo "<div class=propbox>" . $lang["file_too_large"] . "." . "</div><br><br>";}
+                }   
+            }
+        else
+            {
+            $_POST["group_specific_logo"]="";
+            echo "<div class=propbox>" . $lang["accept_png_gif_only"] . ". " . $lang["ensure_file_extension_match"]."."."</div><br><br>";
+            }
+        
+        }
+    # Clear The Group Specific Logo if Value is blank
+    if(array_key_exists("group_specific_logo",$_POST) && $_POST["group_specific_logo"]==="")
+    {   
+        $filename=$logostorage."group".$ref . ".png";
+        if (file_exists($filename)) {unlink($filename);}
+        else
+            {
+            $filename=$logostorage."group".$ref . ".gif";
+            if (file_exists($filename)) {unlink($filename);}
+            }
+    }
+
+
     #return history view to the present
     $historyview=-1;
     
@@ -294,7 +334,7 @@ if (substr($t[7],0,6)=="upload")
 else
     {
     ?>
-    <form method="post">
+    <form method="post" enctype="multipart/form-data">
     <?php
     #echo $t[7];
     $result=sql_query(str_replace($transfrom,$transto,$t[7]));
@@ -321,14 +361,13 @@ else
             }
 
         }
-        
+
     foreach ($result as $key=>$value)
         {
         if (substr($value,0,5)=="URL::") {header("Location: " . substr($value,5) . "&parent=" . $parent . "&gparent=" . getval("gparent",""));exit();}
 
         $value=str_replace("&","&AMP;",$value);
 
-        
         $type=substr($key,0,3);
         $key=str_replace($type . "_","",$key);
         
@@ -405,8 +444,11 @@ else
 	            case "upl":
 	            #In-line file uploader
 	            ?>
-	            <input type="text" style="width:100%;background-color:#eeeeee" id="<?php echo $key?>" name="<?php echo $key?>" value="<?php echo $value?>">
-	            <iframe width="100%" height="70" scrolling="no" src="upload.php?callback=<?php echo $key?>"></iframe>
+                <label style="width:100%;">File extension: (e.g: png)</label><br />
+	            <input type="text" style="width:100%" id="<?php echo $key?>" name="<?php echo $key?>" value="<?php echo $value?>">
+                <br />
+	            <input type="hidden" name="MAX_FILE_SIZE" value="2000000">
+                <input id="uploader" name="userfile" type="file" size=40>
 	            <?php
 	            break;
 	            #-------------------------------------------------------------------------

@@ -6,11 +6,11 @@
  * @subpackage Pages_Team
  */
 include "../../include/db.php";
+include_once "../../include/general.php";
 include "../../include/authenticate.php";
-include "../../include/general.php";
 include "../../include/resource_functions.php";
 include "../../include/search_functions.php";
-include "../../include/collections_functions.php";
+include_once "../../include/collections_functions.php";
 
 $offset=getvalescaped("offset",0);
 $ref=getvalescaped("ref","",true);
@@ -18,7 +18,7 @@ $userdata=get_user($ref);
 $backurl=getval("backurl","");
 
 # pager
-$per_page=getvalescaped("per_page_list_log",15);setcookie("per_page_list_log",$per_page);
+$per_page=getvalescaped("per_page_list_log",15);rs_setcookie('per_page_list_log', $per_page);
 
 include "../../include/header.php";
 $log=get_user_log($ref, $offset+$per_page);
@@ -26,7 +26,7 @@ $results=count($log);
 $totalpages=ceil($results/$per_page);
 $curpage=floor($offset/$per_page)+1;
 
-$url=$baseurl . "/pages/team/team_user_log.php?ref=" . $ref . "&backurl=" . urlencode($backurl);
+$url=$baseurl . "/pages/team/team_user_log.php?ref=" . urlencode($ref) . "&backurl=" . urlencode($backurl);
 $jumpcount=1;
 
 ?>
@@ -48,6 +48,7 @@ $jumpcount=1;
 <!--Title row-->	
 <tr class="ListviewTitleStyle">
 <td><?php echo $lang["date"]?></td>
+<?php hook("user_log_before_userid");?>
 <td><?php echo $lang["resourceid"]?></td>
 <?php if (!hook("replaceuserlogtitleheader")){?><td><?php $field=get_fields(array($view_title_field)); if(isset($field[0])){echo lang_or_i18n_get_translated($field[0]["title"], "fieldtitle-");}?></td><?php } ?>
 <td><?php echo $lang["action"]?></td>
@@ -64,7 +65,8 @@ for ($n=$offset;(($n<count($log))&& ($n<($offset+$per_page)));$n++)
 	<!--List Item-->
 	<tr>
 	<td><?php echo nicedate($log[$n]["date"],true,true)?></td>
-	<td><a onClick="return CentralSpaceLoad(this,true);" href='<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $log[$n]["resourceid"]?>'><?php echo $log[$n]["resourceid"]?></a></td>
+	<?php hook("user_log_before_userid_data")?>
+       <td><a onClick="return CentralSpaceLoad(this,true);" href='<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $log[$n]["resourceid"]?>'><?php echo $log[$n]["resourceid"]?></a></td>
 	<td><?php if(!hook("replaceuserlogtitlelink")) {?><a onClick="return CentralSpaceLoad(this,true);" href='<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $log[$n]["resourceid"]?>'><?php if(!hook("replaceuserlogtitle")) {echo i18n_get_translated($log[$n]["resourcetitle"]);}?></a><?php } ?></td>
 	
 	<td><?php echo $lang["log-" . $log[$n]["type"]];

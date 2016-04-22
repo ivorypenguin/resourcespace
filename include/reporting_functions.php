@@ -1,8 +1,18 @@
 <?php
 # Reporting functions
 
+function get_report_name($report)
+	{
+    # Translates or customizes the report name.
+	$customName = hook('customreportname', '', array($report));
+	if ($customName)
+		return $customName;
+
+	return lang_or_i18n_get_translated($report["name"], "report-");
+	}
+
 function get_reports()
-{
+	{
     # Returns an array of reports. The standard reports are translated using $lang. Custom reports are i18n translated.
     # The reports are always listed in the same order - regardless of the used language. 
 
@@ -11,12 +21,16 @@ function get_reports()
 
     # Translates report names in the newly created array.
     $return = array();
-    for ($n = 0;$n<count($r);$n++) {
-        $r[$n]["name"] = lang_or_i18n_get_translated($r[$n]["name"], "report-");
-        $return[] = $r[$n]; # Adds to return array.
-    }
+    for ($n = 0;$n<count($r);$n++)
+		{
+		if (!hook('ignorereport', '', array($r[$n])))
+			{
+	        $r[$n]["name"] = get_report_name($r[$n]);
+			$return[] = $r[$n]; # Adds to return array.
+			}
+		}
     return $return;
-}
+	}
 
 function do_report($ref,$from_y,$from_m,$from_d,$to_y,$to_m,$to_d,$download=true,$add_border=false)
 	{
@@ -24,9 +38,7 @@ function do_report($ref,$from_y,$from_m,$from_d,$to_y,$to_m,$to_d,$download=true
 	global $lang, $baseurl;
 
 	$report=sql_query("select * from report where ref='$ref'");$report=$report[0];
-
-    # Translates the report name.
-    $report["name"]=lang_or_i18n_get_translated($report["name"], "report-");
+	$report['name'] = get_report_name($report);
 
 	if ($download)
 		{
@@ -35,7 +47,7 @@ function do_report($ref,$from_y,$from_m,$from_d,$to_y,$to_m,$to_d,$download=true
 		header("Content-disposition: attachment; filename=" . $filename . "");
 		}
 
-	if($results = hook("customreport", "", array($ref,$from_y,$from_m,$from_d,$to_y,$to_m,$to_d,$download,$add_border))); else {
+	if($results = hook("customreport", "", array($ref,$from_y,$from_m,$from_d,$to_y,$to_m,$to_d,$download,$add_border, $report))); else {
 
 	$sql=$report["query"];
 	$sql=str_replace("[from-y]",$from_y,$sql);
@@ -81,7 +93,12 @@ function do_report($ref,$from_y,$from_m,$from_d,$to_y,$to_m,$to_d,$download=true
 				{
 				$f++;
 				if ($f>1) {echo ",";}
-				if ($key!="thumbnail")
+				$custom = hook('customreportfield', '', array($result, $key, $value, $download));
+				if ($custom !== false)
+					{
+					echo $custom;
+					}
+				else if ($key!="thumbnail")
 					{
 					$value=lang_or_i18n_get_translated($value, "usergroup-");
 					$value=str_replace('"','""',$value); # escape double quotes
@@ -98,7 +115,7 @@ function do_report($ref,$from_y,$from_m,$from_d,$to_y,$to_m,$to_d,$download=true
 		# Not downloading - output a table
 		$border="";
 		if ($add_border) {$border="border=\"1\"";}
-		$output="<br /><style>.InfoTable td {padding:5px;}</style><table $border class=\"InfoTable\">";
+		$output="<br /><h2>" . $report['name'] . "</h2><style>.InfoTable td {padding:5px;}</style><table $border class=\"InfoTable\">";
 		for ($n=0;$n<count($results);$n++)
 			{
 			$result=$results[$n];
@@ -138,7 +155,15 @@ function do_report($ref,$from_y,$from_m,$from_d,$to_y,$to_m,$to_d,$download=true
 					}
 				else
 					{
-					$output.="<td>" . lang_or_i18n_get_translated($value, "usergroup-") . "</td>\r\n";
+					$custom = hook('customreportfield', '', array($result, $key, $value, $download));
+					if ($custom !== false)
+						{
+						$output .= $custom;
+						}
+					else
+						{
+						$output.="<td>" . lang_or_i18n_get_translated($value, "usergroup-") . "</td>\r\n";
+						}
 					}
 				}
 			$output.="</tr>\r\n";
@@ -151,22 +176,61 @@ function do_report($ref,$from_y,$from_m,$from_d,$to_y,$to_m,$to_d,$download=true
 	exit();
 	}
 
-function create_periodic_email($user,$report,$period,$email_days,$send_all_users)
+/**
+* Creates a new automatic periodic e-mail report
+*
+*/
+function create_periodic_email($user, $report, $period, $email_days, $send_all_users, array $user_groups)
 	{
-	# Creates a new automatic periodic e-mail report.
-#	echo ("user=$user, report=$report, period=$period, email_days=$email_days");
-
 	# Delete any matching rows for this report/period.
-	sql_query("delete from report_periodic_emails where user='$user' and report='$report' and period='$period'");
+	$query = sprintf('
+			DELETE
+			  FROM report_periodic_emails
+			 WHERE user = \'%s\'
+			   AND report = \'%s\'
+			   AND period = \'%s\';
+		',
+		$user,
+		$report,
+		$period
+	);
+	sql_query($query);
 
 	# Insert a new row.
-	sql_query("insert into report_periodic_emails(user,report,period,email_days) values ('$user','$report','$period','$email_days')");
-	$ref=sql_insert_id();
+	$query = sprintf('
+			INSERT INTO report_periodic_emails (
+			                                       user,
+			                                       report,
+			                                       period,
+			                                       email_days
+			                                   )
+			     VALUES (
+			                \'%s\',  # user
+			                \'%s\',  # report
+			                \'%s\',  # period
+			                \'%s\'   # email_days
+			            );
+		',
+		$user,
+		$report,
+		$period,
+		$email_days
+	);
+	sql_query($query);
+	$ref = sql_insert_id();
 	
 	# Send to all users?
-	if (checkperm('m') && $send_all_users)
+	if (checkperm('m'))
 		{
-		sql_query("update report_periodic_emails set send_all_users=1 where ref='$ref'");
+		if($send_all_users)
+			{
+			sql_query('UPDATE report_periodic_emails SET send_all_users = 1 WHERE ref = "' . $ref . '";');
+			}
+
+		if(!empty($user_groups))
+			{
+			sql_query('UPDATE report_periodic_emails SET user_groups = "' . implode(',', $user_groups) . '" WHERE ref = "' . $ref . '";');
+			}
 		}
 
 	# Return
@@ -180,7 +244,17 @@ function send_periodic_report_emails()
 	global $lang,$baseurl;
 
 	# Query to return all 'pending' report e-mails, i.e. where we haven't sent one before OR one is now overdue.
-	$reports=sql_query("select pe.*,u.email,r.name,pe.send_all_users from report_periodic_emails pe join user u on pe.user=u.ref join report r on pe.report=r.ref where pe.last_sent is null or date_add(pe.last_sent,interval pe.email_days day)<=now()");
+	$query = "
+		SELECT pe.*,
+		       u.email,
+		       r.name
+		  FROM report_periodic_emails pe
+		  JOIN user u ON pe.user = u.ref
+		  JOIN report r ON pe.report = r.ref
+		 WHERE pe.last_sent IS NULL
+		    OR date_add(date(pe.last_sent), INTERVAL pe.email_days DAY) <= date(now());
+	";
+	$reports=sql_query($query);
 	foreach ($reports as $report)
 		{
 		$start=time()-(60*60*24*$report["period"]);
@@ -199,42 +273,139 @@ function send_periodic_report_emails()
 		# Generate remote HTML table.
 		$output=do_report($report["report"], $from_y, $from_m, $from_d, $to_y, $to_m, $to_d,false,true);
 
-
 		# Formulate a title
 		$title = $report["name"] . ": " . str_replace("?",$report["period"],$lang["lastndays"]);
 
 		# Send mail to original user - this contains the unsubscribe link
+		# Note: this is basically the only way at the moment to delete a periodic report
+		$delete_link = sprintf('<br />%s<br />%s/?dr=%s',
+			$lang['report_delete_periodic_email_link'],
+			$baseurl,
+			$report['ref']
+		);
+
 		$unsubscribe="<br>" . $lang["unsubscribereport"] . "<br>" . $baseurl . "/?ur=" . $report["ref"];
 		$email=$report["email"];
-		echo $lang["sendingreportto"] . " " . $email . "<br>" . $output . $unsubscribe . "<br>";
-		send_mail($email,$title,$output . $unsubscribe,"","","",null,"","",true);
 
-		# Send to all other active users, if configured.		
-		if ($report["send_all_users"])
+		// Check user unsubscribed from this report
+		$query = sprintf('
+				SELECT true as `value`
+				  FROM report_periodic_emails_unsubscribe
+				 WHERE user_id = "%s"
+				   AND periodic_email_id = "%s";
+			',
+			$report['user'],
+			$report['ref']
+		);
+		$unsubscribed_user = sql_value($query, false);
+
+		if(!$unsubscribed_user)
 			{
-			# Send the report to all active users.
-			$users=get_users();
-			foreach ($users as $user)
+			echo $lang["sendingreportto"] . " " . $email . "<br>" . $output . $delete_link . $unsubscribe . "<br>";
+			send_mail($email,$title,$output . $delete_link  . $unsubscribe);
+			}
+
+		// Jump to next report if this should only be sent to one user
+		if(!$report['send_all_users'] && empty($report['user_groups']))
+			{
+			# Mark as done.
+			sql_query('UPDATE report_periodic_emails set last_sent = now() where ref = "' . $report['ref'] . '";');
+			
+			continue;
+			}
+
+		# Send to all other active users, if configured.
+		# Send the report to all active users.
+		$users = get_users();
+
+		// Send e-mail reports to users belonging to the specific user groups
+		if(!empty($report['user_groups']))
+			{
+			$users = get_users($report['user_groups']);
+			}
+
+		foreach($users as $user)
+			{
+			$email = $user['email'];
+
+			# Do not send to original report user, as they receive the mail with the unsubscribe link above.
+			if(($user['approved'] && $email == $report['email']) || !$user['approved'])
 				{
-				$email=$user["email"];
-				if ($user["approved"] && $email!=$report["email"]) # Do not send to original report user, as they receive the mail with the unsubscribe link above.
-					{
-					echo $lang["sendingreportto"] . " " . $email . "<br>" . $output . "<br>";
-					send_mail($email,$title,$output,"","","",null,"","",true);
-					}
+				continue;
+				}
+
+			// Check user unsubscribed from this report
+			$query = sprintf('
+					SELECT true as `value`
+					  FROM report_periodic_emails_unsubscribe
+					 WHERE user_id = "%s"
+					   AND periodic_email_id = "%s";
+				',
+				$user['ref'],
+				$report['ref']
+			);
+			$unsubscribed_user = sql_value($query, false);
+
+			if(!$unsubscribed_user)
+				{
+				$unsubscribe_link = sprintf('<br />%s<br />%s/?ur=%s',
+					$lang['unsubscribereport'],
+					$baseurl,
+					$report['ref']
+				);
+
+				echo $lang["sendingreportto"] . " " . $email . "<br>" . $output . $unsubscribe_link . "<br>";
+				send_mail($email, $title, $output . $unsubscribe_link);
 				}
 			}
 
 		# Mark as done.
-		sql_query("update report_periodic_emails set last_sent=now() where ref='" . $report["ref"] . "'");
+		sql_query('UPDATE report_periodic_emails set last_sent = now() where ref = "' . $report['ref'] . '";');
 		}
 	}
 
-function unsubscribe_periodic_report($unsubscribe)
+function delete_periodic_report($ref)
 	{
 	global $userref;
-	sql_query("delete from report_periodic_emails where user='$userref' and ref='$unsubscribe'");
+	sql_query('DELETE FROM report_periodic_emails WHERE user = "' . $userref . '" AND ref = "' . $ref . '";');
+	sql_query('DELETE FROM report_periodic_emails_unsubscribe WHERE periodic_email_id = "' . $ref . '"');
+
+	return true;
 	}
 
+function unsubscribe_user_from_periodic_report($user_id, $periodic_email_id)
+	{
+	$query = sprintf('
+			INSERT INTO report_periodic_emails_unsubscribe (
+			                                                   user_id,
+			                                                   periodic_email_id
+			                                               )
+			     VALUES (
+			                "%s", # user_id
+			                "%s"  # periodic_email_id
+			            );
+		',
+		$user_id,
+		$periodic_email_id
+	);
+	sql_query($query);
+
+	return true;
+	}
+
+function get_translated_activity_type($activity_type)
+	{
+	# Activity types are stored in plain text english in daily_stat. This function will use language strings to resolve a translated value where one is set.
+	global $lang;
+	$key="stat-" . strtolower(str_replace(" ","",$activity_type));
+	if (!isset($lang[$key]))
+		{
+		return $activity_type;
+		}
+	else
+		{
+		return $lang[$key];
+		}
+	}
 
 ?>

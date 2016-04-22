@@ -1,7 +1,7 @@
 <?php
 include "../include/db.php";
+include_once "../include/general.php";
 include "../include/authenticate.php";
-include "../include/general.php";
 $type=getvalescaped("type","Keyword usage");
 
 function tag_cloud($year=-1,$type="Keyword usage")

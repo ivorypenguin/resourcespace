@@ -1,7 +1,7 @@
 <?php
 include "../../../include/db.php";
+include_once "../../../include/general.php";
 include "../../../include/authenticate.php"; if (!checkperm("u")) {exit ("Permission denied.");}
-include "../../../include/general.php";
 
 $delete_code=getval("delete_code","");
 if ($delete_code!="")
@@ -57,7 +57,7 @@ include "../../../include/header.php";
 <input type="submit" name="add" value="<?php echo $lang["add_code"] ?>">   
 </form>
 
-
+</div>	
 </div>	
 <?php
 include "../../../include/footer.php";

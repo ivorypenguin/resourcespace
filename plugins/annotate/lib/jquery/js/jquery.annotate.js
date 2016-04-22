@@ -144,7 +144,13 @@ function isInt(value) {
         ///		Loads the annotations from the "getUrl" property passed in on the
         ///     options object.
         ///	</summary>
-        $.getJSON(image.getUrl + '?ticks=' + $.fn.annotateImage.getTicks(), function(data) {
+        var append_separator = '?';
+        
+        if(image.getUrl.indexOf('?') > -1) {
+            append_separator = '&';
+        }
+        
+        $.getJSON(image.getUrl + append_separator + 'ticks=' + $.fn.annotateImage.getTicks(), function(data) {
             image.notes = data;
             $.fn.annotateImage.load(image);
         });

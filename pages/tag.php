@@ -1,7 +1,7 @@
 <?php
 include "../include/db.php";
+include_once "../include/general.php";
 include "../include/authenticate.php"; if (!checkperm("n")) {exit("Permission denied");}
-include "../include/general.php";
 include "../include/resource_functions.php";
 
 if (!$speedtagging) {exit("This function is not enabled.");}

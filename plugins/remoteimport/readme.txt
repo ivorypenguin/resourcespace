@@ -20,7 +20,7 @@ It uses the following XML format:
 		<field ref="18">My description of the picture</field>
 		<field ref="3">Uganda</field>
 
-		<collection>name of collection</collection> 
+		<collection>numeric ID of collection</collection> 
 
 		<filename>/dir/dir/filename_of_image.jpg</filename>
 	
@@ -33,7 +33,8 @@ It uses the following XML format:
 		<field ref="18">Example caption</field>
 		<field ref="3">Mexico</field>
 
-		<collection>name of collection</collection> 
+		<collection>numeric ID of collection</collection> 
+		<collection>numeric ID of additional collection</collection> 
 
 		<filename>/somewhere/New Bitmap Image.bmp</filename>
 		

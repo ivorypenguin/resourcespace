@@ -1,8 +1,8 @@
 <?php
 include "../include/db.php";
+include_once "../include/general.php";
 include "../include/authenticate.php"; #if (!checkperm("s")) {exit ("Permission denied.");}
-include "../include/general.php";
-include "../include/collections_functions.php";
+include_once "../include/collections_functions.php";
 include "../include/resource_functions.php";
 include "../include/search_functions.php"; 
 include "../include/image_processing.php";
@@ -16,7 +16,11 @@ $sort=getval("sort","ASC");
 $backto=getval("backto","");$backto=str_replace("\"","",$backto);#Prevent injection
 $done=false;
 
+# Check access
+if (!collection_writeable($ref)) {exit($lang["no_access_to_collection"]);}
+
 # Fetch collection data
+$collection_ref=$ref; // preserve collection id because tweaking resets $ref to resource ids
 $collection=get_collection($ref);if ($collection===false) {
 	$error=$lang['error-collectionnotfound'];
 	error_alert($error);
@@ -53,7 +57,11 @@ if (getval("tweak","")!="")
 		break;
 		case "restore":
 		foreach ($resources as $resource){
-			create_previews($resource['ref'],false,$resource["file_extension"]);
+			$ref=$resource['ref'];
+			if(!empty($resource['file_path'])){$ingested=false;}
+			else{$ingested=true;}
+			create_previews($resource['ref'],false,$resource["file_extension"],false,false,-1,true,$ingested);
+			$ref=$collection_ref; // restore collection id because tweaking resets $ref to resource ids
 		}
 		break;
 		}

@@ -1,0 +1,65 @@
+<?php
+#
+# German Language File for the ResourceSpace plugin ocrstream
+#
+$lang['ocrstream_title'] = 'OCR Stream';
+$lang['ocrstream_intro']= 'OCR Stream Plugin Konfiguration';
+$lang['ocrstream_language_select'] = 'Standardsprache für Texterkennung <br> (nur installierte Sprachen werden angezeigt)';
+$lang['tesseract_path_info'] = 'Pfad zu tesseract-ocr:';
+$lang['ocr_single_resource'] = 'Texterkennung durchführen';
+$lang['ocr_start'] = 'Starte OCR';
+$lang['tesseract_path_input'] = '<p style="color:red"><b> Tesseract-ocr nicht gefunden, bitte geben Sie den Pfad an. Bitte die Seite neu laden nachdem die Konfiguration gespeichert wurde!</b></p>';
+$lang['tesseract_old_version_info'] = 'Bitte aktualisieren Sie Tesseract mindestens auf Version 3.03 für die beste Performance und erweiterte Funktionalität.';
+$lang['ocr_input_formats'] = 'Erlaubte Dateitypen:';
+$lang['ocr_psm'] = 'Tesseract page segmentation mode';
+$lang['ocr_ftype_1'] = 'Feld in welches der extrahierte Text geschrieben werden soll:';
+$lang['ocr_rtype'] = 'Erlaubter Resourcentyp';
+$lang['ocr_db_filter'] = 'Text filtern bevor er in die Datenbank geschrieben wird.';
+$lang['ocr_db_filter_help'] = 'Zahlen und Sonderzeichen werden entfernt um bessere Schlüsselwörter zu generieren.';
+$lang['ocr_min_density'] = 'Mindestauflösung des Bildes für Texterkennung (dpi/ppi)';
+$lang['ocr_max_density'] = 'Maximalauflösung des Bildes für Texterkennung (dpi/ppi)';
+$lang['ocr_max_density_help'] = 'Bilder mit einer höheren Auflösung durchlaufen einen Bearbeitungsprozess vor der Texterkennung.';
+$lang['ocr_min_geometry'] = 'Minimale Bildabmessung (px)';
+$lang['ocr_min_geometry_help'] = 'Sets the minimum size of the shortest side for images to be OCR-processed.';
+$lang['ocr_max_geometry_help'] = 'Sets the maximum size of the shortest side for images, if it exceeds the value the image will processed with settings below.';
+$lang['ocr_max_geometry'] = 'Maximale Bildabmessung (px)';
+$lang["ocr_language_select"] = 'Sprache für Texterkennung';
+$lang["ocr_parameter_select"] = 'Parameter 1';
+$lang["ocr_error_1"] = 'Fehler: Keine gültige Resourcen ID!';
+$lang["ocr_error_2"] = 'Fehler: Für den Dateityp dieser Resource ist Texterkennung nicht erlaubt.';
+$lang["ocr_error_3"] = 'Fehler: Bildauflösung (dpi/ppi) zu niedrig für Texterkennung.';
+$lang["ocr_error_4"] = 'Fehler: Falscher Resourcentyp. Nur für den Resourcentyp Dokument ist die Texterkennung erlaubt.';
+$lang["ocr_error_5"] = 'Fehler: Bildbreite (px) zu gering für Texterkennung.';
+$lang["ocr_error_6"] = 'Fehler: Es wurden keine temporären Dateien erzeugt in Stage 2 (Bildbearbeitung).';
+$lang["ocr_error_7"] = 'Fehler: Es wurden keine temporären Dateien erzeugt in Stage 3 (Texterkennung).';
+$lang["ocr_error_8"] = 'Fehler: Im PDF Dokument ist kein Bild vorhanden und/oder es enthält bereits Text';
+$lang["ocr_error_9"] = 'Achtung: Resource gesperrt. Texterkennung läuft bereits oder es gab einen Fehler beim letzten Durchlauf. Sperre aktiv seit: ';
+$lang["ocr_error_10"] = 'Fehler: Das temporäre Bild ist fehlerhaft. Möglicherweise enthält das PDF Dokument kein (gescanntes) Bild.';
+$lang["ocr_error_stage_1"] = 'Fehler: Etwas lief falsch, Stage 1 wurde nicht abgeschlossen.';
+$lang["ocr_error_stage_2"] = 'Fehler: Etwas lief falsch, Stage 2 wurde nicht abgeschlossen.';
+$lang["ocr_error_stage_3"] = 'Fehler: Etwas lief falsch, Stage 3 wurde nicht abgeschlossen.';
+$lang['im_processing_header'] = '<div id= "im_processing_headerDIV">Bildbearbeitungseinstellungen</div>';
+$lang['im_processing_help'] = 'Bei einigen Resourcen muss ein zusätzlicher Bildbearbeitungsprozess durchgeführt werden, bevor die Texterkennung erfolgen kann. <br> Es wird eine temporäre Bilddatei erzeugt, die Originaldatei wird nicht verändert. <br> Die Einstellungen für den Prozess können hier angepasst werden.';
+$lang['im_preset_density'] = 'Auflösung (-density [dpi])';
+$lang['im_preset_density_help'] = 'Legt die Auflösung des temporären Bildes fest, auf welches die Texterkennung angewendet wird. <br> Kleinere Werte können den Rechenprozess beschleunigen, führen aber zu schlechteren Ergebnissen.';
+$lang['im_preset_geometry'] = 'Bildgröße (-geometry [px])';
+$lang['im_preset_geometry_help'] = 'Legt die maximale Breite des temporären Bildes fest. <br> Sehr große Werte können den Rechenprozess verlangsamen.';
+$lang['im_preset_quality'] = 'Qualität (-quality [Wert])';
+$lang['im_preset_quality_help'] = 'Legt das zlib Kompressionslevel und den Filtertyp für das PNG Format fest. <br> Wertebereich 0-100, Standard PNG Qualität ist 75. Größere Werte bedeuten bessere Ergebnisse auf Kosten der Rechenzeit.';
+$lang['im_preset_deskew'] = 'Begradigen (-deskew [%])';
+$lang['im_preset_deskew_help'] = 'Begradigt schiefe Scans. Funktioniert schlecht bei einem Winkel > 5%. <br> Ein Schwellenwert von 40% funktioniert für die meisten Bilder.';
+$lang['im_preset_sharpen_r'] = 'Scharfzeichen Radius <br> (-sharpen [radius]x[sigma])';
+$lang['im_preset_sharpen_r_help'] = 'Legt den Radius für den verwendeten Gauss-Filter fest.';
+$lang['im_preset_sharpen_s'] = 'Scharfzeichen Sigma <br> (-sharpen [radius]x[sigma])';
+$lang['im_preset_sharpen_s_help'] = 'Legt die Standardabweichung für den verwendeten Gauss-Filter fest. Standard ist 1.';
+$lang['im_advanced_options_header'] = '<div id= "im_advanced_options_headerDIV">Erweiterte Einstellungen';
+$lang['ocr_keep_tempfiles'] = 'Temporäre Dateien behalten (/tmp/ocrstream_plugin)';
+$lang["im_preset_select"] = 'Bildbearbeitung';
+$lang["ocr-upload-options"] = 'OCR Optionen';
+$lang['ocr_cronjob'] = 'Erstellt einen Cronjob für die Texterkennung.';
+$lang['ocr_cronjob_help'] = 'Markierte Resourcen (ocr_state = 1) werden mit Standardeinstellungen verarbeitet.';
+$lang["ocr_upload_cronjob"] = 'Cronjob mit globalen OCR Einstellungen erstellen';
+$lang['ocronjob_enabled'] = 'Cronjob gesetzt';
+$lang['ocr_in_progress'] = 'Texterkennung läuft...';
+$lang['purge_config'] = 'Konfiguration zurücksetzen';
+?>

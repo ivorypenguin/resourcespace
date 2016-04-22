@@ -1,0 +1,7 @@
+name: col-blue
+desc: Blue theme for ResourceSpace
+author: Montala Ltd
+version: 1.0
+default_priority: 1000
+category: User interface
+userpreferencegroup: colourtheme

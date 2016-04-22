@@ -1,0 +1,5 @@
+ref,int(11),NO,PRI,,auto_increment
+resource_type_field,int(11),YES,,NULL,
+name,text,YES,,NULL,
+parent,int(11),YES,,NULL,
+order_by,int(11),YES,,NULL,

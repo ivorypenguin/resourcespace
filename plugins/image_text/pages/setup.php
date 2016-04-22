@@ -4,8 +4,8 @@
 #
 
 include '../../../include/db.php';
+include_once '../../../include/general.php';
 include '../../../include/authenticate.php'; if (!checkperm('a')) {exit ($lang['error-permissiondenied']);}
-include '../../../include/general.php';
 
 $identify_fullpath = get_utility_path("im-identify");
 if ($identify_fullpath==false) {exit($lang['image_text_noim']);}
@@ -20,7 +20,7 @@ for($n=0;$n<$imfontcount;$n++)
 	{
 	$imfonts[$n]=trim_spaces(str_replace("Font: ","",$imfonts[$n]));
 	}
-sort($imfonts, SORT_NATURAL);
+natsort($imfonts);
 
 // Specify the name of this plugin and the heading to display for the page.
 $plugin_name = 'image_text';
@@ -36,8 +36,8 @@ $page_def[] = config_add_multi_group_select('image_text_override_groups',$lang['
 $page_def[] = config_add_text_input('image_text_default_text',$lang['image_text_default_text']);
 
 $page_def[] = config_add_single_select('image_text_font',$lang['image_text_font'], array_filter($imfonts), false);
-$page_def[] = config_add_single_select('image_text_position',$lang['image_text_position'], array("east","west","center"), false);
-$page_def[] = config_add_single_select('image_text_banner_position',$lang['image_text_banner_position'], array("top","bottom"), false);
+$page_def[] = config_add_single_select('image_text_position', $lang['image_text_position'], $lang['image_text_position_list']);
+$page_def[] = config_add_single_select('image_text_banner_position', $lang['image_text_banner_position'],  $lang['image_text_banner_position_list']);
 //$page_def[] = config_add_text_input('image_text_font',$lang['image_text_font']);
 
 $page_def[] = config_add_text_input('image_text_height_proportion',$lang['image_text_height_proportion']);

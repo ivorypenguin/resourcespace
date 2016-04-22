@@ -1,0 +1,2 @@
+ocr_state,int(11),YES,,0,
+ocr_lock_date,datetime,YES,,,

@@ -1,44 +1,18 @@
 <?php
 include "../../../include/db.php";
+include_once "../../../include/general.php";
 include "../../../include/authenticate.php"; if (!checkperm("u")) {exit ("Permission denied.");}
-include "../../../include/general.php";
 
 
-if (!isset($magictouch_account_id)) {$magictouch_account_id="";}
-if (!isset($magictouch_secure)) {$magictouch_secure="http";}
 
-if (getval("submit","")!="")
-	{
-	$resourcetype=getvalescaped("resourcetype","");
-	
-	$f=fopen("../config/config.php","w");
-	fwrite($f,"<?php \$embedvideo_resourcetype='$resourcetype'; ?>");
-	fclose($f);
-	redirect("pages/team/team_home.php");
-	}
+$plugin_name = 'embedvideo';
+$page_heading = $lang['embed_video_configuration'];
 
-$resource_types=get_resource_types();
+$page_def[]= config_add_single_rtype_select("embedvideo_resourcetype",$lang["video_resourcetype"]);
 
-include "../../../include/header.php";
-?>
-<div class="BasicsBox"> 
-  <h2>&nbsp;</h2>
-  <h1><?php echo $lang["embed_video_configuration"] ?></h1>
+// Do the page generation ritual
+$upload_status = config_gen_setup_post($page_def, $plugin_name);
+include '../../../include/header.php';
+config_gen_setup_html($page_def, $plugin_name, $upload_status, $page_heading);
+include '../../../include/footer.php';
 
-  <div class="VerticalNav">
- <form id="form1" name="form1" method="post" action="">
-
-<p><?php echo $lang["specify_resourcetype"] ?></p>
-   <p><label for="resourcetype"><?php echo $lang["video_resourcetype"] . ":" ?></label>
-   
-   <select name="resourcetype"?
-   <?php foreach ($resource_types as $rt) { ?>
-   <option value="<?php echo $rt["ref"] ?>" <?php if ($rt["ref"]==$embedvideo_resourcetype) {echo "selected"; } ?>><?php echo $rt["name"] ?></option>
-   <?php } ?>
-	</p>
-
-<input type="submit" name="submit" value="<?php echo $lang["save"]?>">   
-
-
-</form>
-</div>	

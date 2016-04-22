@@ -19,8 +19,12 @@ function generate_transform_preview($ref){
 	$transformsourcepath=get_resource_path($ref,true,'scr',false,'jpg'); //use screen size if available to save time
 	if(!file_exists($transformsourcepath)) // use original if screen not available
 		{$transformsourcepath= get_resource_path($ref,true,'',false,$orig_ext);}
-		
-	# Since this check is in get_temp_dir() omit: if(!is_dir($storagedir."/tmp")){mkdir($storagedir."/tmp",0777);}
+	
+	$modified_transformsourcepath=hook("modifytransformsourcepath");
+	if ($modified_transformsourcepath){
+		$transformsourcepath=$modified_transformsourcepath;
+	}
+	
 	if(!is_dir(get_temp_dir() . "/transform_plugin")){mkdir(get_temp_dir() . "/transform_plugin",0777);}
 
        if ($imversion[0]<6 || ($imversion[0] == 6 &&  $imversion[1]<7) || ($imversion[0] == 6 && $imversion[1] == 7 && $imversion[2]<5)){
@@ -31,9 +35,8 @@ function generate_transform_preview($ref){
                 $colorspace2 =  " -colorspace sRGB ";
         }
 
-        $command .= " \"$transformsourcepath\" +matte -delete 1--1 -flatten $colorspace1 -geometry 450 $colorspace2 \"$tmpdir/transform_plugin/pre_$ref.jpg\"";
+        $command .= " \"$transformsourcepath\"[0] +matte -flatten $colorspace1 -geometry 450 $colorspace2 \"$tmpdir/transform_plugin/pre_$ref.jpg\"";
         run_command($command);
-
 
 	// while we're here, clean up any old files still hanging around
 	$dp = opendir(get_temp_dir() . "/transform_plugin");

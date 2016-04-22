@@ -1,19 +1,19 @@
 <?php 
 include "../include/db.php";
+include_once "../include/general.php";
 include "../include/authenticate.php"; if (checkperm("b")){exit("Permission denied");}
 #if (!checkperm("s")) {exit ("Permission denied.");}
-include "../include/general.php";
-include "../include/collections_functions.php";
+include_once "../include/collections_functions.php";
 include "../include/search_functions.php";
 include "../include/resource_functions.php";
 
 $offset=getvalescaped("offset",0,true);
-$find=getvalescaped("find",getvalescaped("saved_find",""));setcookie("saved_find",$find);
-$col_order_by=getvalescaped("col_order_by",getvalescaped("saved_col_order_by","created"));setcookie("saved_col_order_by",$col_order_by);
-$sort=getvalescaped("sort",getvalescaped("saved_col_sort","ASC"));setcookie("saved_col_sort",$sort);
+$find=getvalescaped("find",getvalescaped("saved_find",""));rs_setcookie('saved_find', $find);
+$col_order_by=getvalescaped("col_order_by",getvalescaped("saved_col_order_by","created"));rs_setcookie('saved_col_order_by', $col_order_by);
+$sort=getvalescaped("sort",getvalescaped("saved_col_sort","ASC"));rs_setcookie('saved_col_sort', $sort);
 $revsort = ($sort=="ASC") ? "DESC" : "ASC";
 # pager
-$per_page=getvalescaped("per_page_list",$default_perpage_list,true);setcookie("per_page_list",$per_page);
+$per_page=getvalescaped("per_page_list",$default_perpage_list,true);rs_setcookie('per_page_list', $per_page);
 
 $collection_valid_order_bys=array("fullname","name","ref","count","public");
 $modified_collection_valid_order_bys=hook("modifycollectionvalidorderbys");
@@ -83,7 +83,6 @@ if ($reload!="")
 include "../include/header.php";
 ?>
   <div class="BasicsBox">
-    <h2>&nbsp;</h2>
     <h1><?php echo $lang["viewpurchases"]?></h1>
     <p class="tight"><?php echo $lang["viewpurchasesintro"]?></p><br>
 

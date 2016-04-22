@@ -1,0 +1,884 @@
+/* General */
+.RSelectedButton {
+    background:#d2d2d2;
+    color: #4E4646 !important;
+}
+.ResponsiveButton {
+    height: 45px;
+    display: inline-block;
+    line-height: 45px;
+    text-align: center;
+    border-radius: 6px;
+    vertical-align: top;
+    margin: 0;
+    padding: 0;
+    box-shadow: 1px 1px 8px -2px;
+}
+
+@media(max-width:1100px) {
+    #SearchBarContainer {
+        margin:0;
+        width:94%;
+        margin-left:3%;
+        margin-right:3%;
+        margin-top: 5px;
+        margin-bottom: 5px;
+    }
+    #CentralSpaceContainer {
+        width:94%;
+        margin-left:3%;
+        margin-right:3%;
+    }
+    #Footer {
+        width:94%;
+        margin-left:3%;
+        margin-right:3%;
+    }
+    #CentralSpace a, #Header a, #Footer a {
+        font-size:1em;
+    }
+    #CentralSpace a.HomePanel {
+        font-size:1em;
+    }
+}
+/* General Forms */
+@media(max-width:1100px) {   
+    .Question label {
+        width:100%;
+    }
+    .Question .stwidth, .stdwidth {
+        padding:5px;
+        font-size:1em;
+        border-radius:5px;
+    }
+    .QuestionSubmit label {
+        width:auto;
+    }
+    input[type=checkbox] {
+      -ms-transform: scale(1.5); /* IE */
+      -moz-transform: scale(1.5); /* FF */
+      -webkit-transform: scale(1.5); /* Safari and Chrome */
+      -o-transform: scale(1.5); /* Opera */
+      margin: 5px;
+      height:auto;
+    }
+    input[type="radio"] {
+        height:auto;
+        vertical-align: top;
+    }
+    input {
+        display: inline-block;
+        height: 25px;
+        padding: 3px;
+        border-radius: 5px;
+        line-height: 1em;
+        font-size: 1em;
+    }
+    input[type="submit"], input[type="button"], button {
+        height:35px;
+        padding: 3px 16px;
+        box-shadow: 1px 1px 8px -2px;
+        border:0;
+        margin:5px;
+    }
+    input[type="submit"]:hover, input[type="button"]:hover, button:hover {
+        background: #d2d2d2;
+        box-shadow: none;
+    }
+    .Inline input {
+        margin:0;
+    }
+    #CentralSpace .Question select {
+        margin: 3px 0px;
+        padding: 5px;
+        font-size: 1em;
+        border-radius: 5px;
+    }
+    #custom_access{
+        padding:5px;
+    }
+    .verticalcheckboxes, .editcheckboxes, .checkboxes, .radioblock {
+        padding-left:0px;
+        margin-top:1px;
+    }
+    .BasicsBox .Question {
+        overflow-x:auto;
+    }
+
+}
+@media(max-width:700px) {
+    .FormHelp {
+        margin:0 0 10px 0px;
+    }
+}
+@media(max-width:525px) {
+    .Question .stdwidth, .stdwidth {
+        width:100%;
+    }
+    .CategoryBox {
+        width:100%;
+    }
+    
+}
+/* Login Forms */
+@media(max-width:1100px) { 
+    #CentralSpaceLogin .Question label {
+        width:300px;
+    }
+}
+@media(max-width:750px) {
+    #CentralSpaceLogin {
+        width:94%;
+        margin-left:3%;
+        margin-right:3%;
+        padding:0;
+    }
+}
+/* Glyphs */
+.glyph {
+    height: 20px;
+    width: 20px;
+    display: inline-block;
+    vertical-align: middle;
+    margin-bottom:5px;
+    margin-left: 4px;
+}
+
+/* Header */
+#HeaderResponsive {
+    display: none;
+    text-align: center;
+}
+#HeaderImg {
+    max-width:320px;
+    width:90%;
+    clear:both;
+}
+.ResponsiveHeaderButton {
+    margin-bottom:5px;
+    width: 39%;
+}
+@media(max-width:1100px) {
+    #Header {
+    border: 0;
+    }
+    #HeaderNav2 {
+        margin-top:32px;
+    }
+    #HeaderNav2 li, #HeaderNav1 li {
+        padding: 5px;
+        display:inline-block;
+        margin-top:1px;
+    }
+    #Header .HorizontalNav ul {
+        padding:0;
+    }
+    .ResponsiveNav1Username {
+        display:none !important;
+    }
+    #Header #HeaderNav1 li {
+        border:none;
+    }
+}
+@media(max-width:700px) {
+    .headerlink {
+        display:none;
+    }
+    #HeaderImg{display:inline-block!important;}
+
+    .clearResponsiveBackground {
+        background:none!important;
+    }   
+    #HeaderResponsive {
+        display:block;
+    }
+    #Header {
+        margin-bottom:0px;
+        background-image:none !important;
+        padding:0;
+    }
+    #HeaderNav1 {
+        display:none;
+        margin:0;
+        height: auto;
+    }
+    #HeaderNav2 {
+        display:none;
+        margin:0;
+        height: auto;
+    }
+    #Header .HorizontalNav ul li {
+        width: 100%;
+        display: block;
+        padding:0;
+        border:0;
+    }
+    #Header .HorizontalNav ul li a{
+        color: #4E4646;
+        width: 100%;
+        display: block;
+        text-align: center;
+        padding: 12px 0;
+        background: #d2d2d2;   
+        border: 1px solid white;
+    }
+    #Header .HorizontalNav ul li:first-child a{
+        border-top-left-radius: 6px;
+        border-top-right-radius: 6px;
+    }
+    #Header .HorizontalNav ul li:last-child a{
+        border-bottom-left-radius: 6px;
+        border-bottom-right-radius: 6px;
+    }
+    #HeaderButtons {
+        display: inline-block !important;
+        vertical-align: top;
+        margin-top: 15px;
+        width:100%;
+    }
+}
+@media(max-width:515px) {
+    #HeaderButtons {
+        margin:0;
+    }
+    .ResponsiveHeaderButton {
+        margin-left:5px;
+    }    
+}
+@media(min-width:701px) {
+    #HeaderNav1 {
+        display:block !important;
+    }
+    #HeaderNav2 {
+        display:block !important;
+    }
+}
+
+/* Simple Search */
+#simplesearchbuttons #Rssearchexpand {
+    display:none!important;
+}
+#SearchBox #ssearchbox:focus {
+    outline:none;
+}
+@media(max-width:1100px) {
+    .ResponsiveSimpleSearch {
+        text-align: left;
+        display: inline-block;
+        margin: 10px;
+    }
+    #SearchBox {
+        float:none;
+        display:inline-block;
+        width:100%;
+        margin:0;
+    }
+    #searchbutton, #ssearchbox {
+        margin:0;
+    }
+    #SearchBoxPanel {
+        width: auto;
+        text-align: center;
+    }
+    #SearchBoxPanel .SearchItem, #SearchBoxPanel .ui-widget {
+        display:inline-block;
+        margin:0;
+    }
+    #searchspace {
+        padding:0;
+    }
+    #Rssearchexpand {
+        width:122px;
+    }
+    .ResponsiveSimpleSearch .searchbutton {
+        display: inline-block;
+        margin: 5px !important;
+        height: 35px;
+        width: 85px;
+    }
+    .ResponsiveSimpleSearch .tick {
+        display:inline-block;
+        margin-top:3px;
+    }
+    .ResponsiveSimpleSearch #ssearchbox {
+        display: inline-block;
+        margin: 5px;
+        height: 25px;
+        padding:3px;
+        border-radius: 5px;
+        line-height:1em;
+        font-size:1em;
+    }
+    #CentralSpaceContainer {
+        padding:0;
+    }
+    #SearchBarContainer br {
+        display:none;
+    }
+    #SearchBarContainer a {
+        font-size:1em;
+    }
+    .ResponsiveSimpleSearch p {
+        margin: 10px 0;
+    }
+    .ResponsiveSimpleSearch .StarRatings {
+        text-align: center;
+        display: inline-block;
+        width: 130px;
+    }
+    /* Show Responsive Bar */
+    #SearchBoxPanel input, #SearchBoxPanel label, #SearchBoxPanel h2, #SearchBoxPanel .SearchItem, #SearchBoxPanel .StarRatings, #SearchBoxPanel #searchbarrt, #SearchBoxPanel p {
+        display:none;
+    }
+    #SearchBoxPanel #ssearchbox, #SearchBoxPanel #simplesearchbuttons, #SearchBoxPanel #searchbutton, #SearchBoxPanel #Rssearchexpand {
+        display:inline-block!important;
+    }
+    /* Show Full Bar when clicked */
+    #SearchBoxPanel .ResponsiveSimpleSearch h2, #SearchBoxPanel .ResponsiveSimpleSearch .SearchItem, #SearchBoxPanel .ResponsiveSimpleSearch #searchbarrt {
+        display:block;
+    }
+    #SearchBoxPanel .ResponsiveSimpleSearch input, #SearchBoxPanel .ResponsiveSimpleSearch label, #SearchBoxPanel .ResponsiveSimpleSearch .StarRatings, #SearchBoxPanel .ResponsiveSimpleSearch p{
+        display:inline-block;
+    }
+    #SearchBarContainer .PanelShadow {
+        display:none;
+    }
+    /* LoginBoxPanel*/
+    #SearchBoxPanel.LoginBoxPanel input, #SearchBoxPanel.LoginBoxPanel label, #SearchBoxPanel.LoginBoxPanel h2, #SearchBoxPanel.LoginBoxPanel .SearchItem, #SearchBoxPanel.LoginBoxPanel .StarRatings, #SearchBoxPanel.LoginBoxPanel #searchbarrt, #SearchBoxPanel.LoginBoxPanel p {
+        display:none;
+    }
+    #SearchBoxPanel.LoginBoxPanel #ssearchbox, #SearchBoxPanel.LoginBoxPanel #simplesearchbuttons, #SearchBoxPanel.LoginBoxPanel #searchbutton, #SearchBoxPanel.LoginBoxPanel #Rssearchexpand {
+        display:inline-block!important;
+    }
+    .LoginBoxPanel {
+        margin-top:8px;   
+    }
+
+
+}
+@media(max-width:600px) {
+    .ResponsiveSimpleSearch .StarRatings {
+        width:100%;
+    }
+}
+@media(max-width:370px) {
+    .ResponsiveSimpleSearch #basicyear {
+        clear:left;
+        width: 46%;
+    }
+    .ResponsiveSimpleSearch #basicmonth {
+        width:46%;
+    }
+    .ResponsiveSimpleSearch #basicdate br {
+        display:block;
+    }
+}
+
+/* Footer */
+@media(max-width:1100px) {
+    #FooterNavLeft {
+        float:none;
+        text-align:center;
+    }
+    #FooterNavRightBottom {
+        clear: right;
+        text-align: center;
+        display: block;
+        float:none;
+    }
+    #FooterNavRight {
+        text-align: center;
+        float: none;
+    }
+}
+@media(max-width:1100px) {
+    #FooterThemes img {
+        width:20px;
+        height:20px;
+    }
+}
+@media(max-width:390px) {
+    #FooterLanguages {
+        margin:0;
+        width:100%;
+        display:inline-block;
+        margin-top: 10px;
+    }
+}
+
+/* Central & Home */
+@media(max-width:819px) {
+    .HomePicturePanel {
+        margin: 0px 0px 0px 0px;
+        text-align: center;
+        width: 100% !important;
+        overflow: hidden;
+    }
+    .HomePicturePanel a {
+        overflow: hidden;
+    }
+    #HomeSiteText {
+        width: 100%;
+        max-width: 100%;
+        padding:0;
+    }
+}
+@media(max-width:559px) {
+    .HomePicturePanel {
+        display:none;
+    }
+    #CentralSpace {
+        padding:0;
+    }
+    .BasicsBox {
+        margin:0;
+    }
+}
+@media(max-width:545px) {
+    .HomePanel {
+        width:250px;
+        margin-left:auto;
+        margin-right:auto;
+        min-height:145px;
+        height:auto;
+        float: none;
+        position: relative;
+        display: block;
+    }
+    .HomePanelIN {
+        min-height:145px;
+        height:auto;
+    }
+
+}
+/* Dash */
+@media(max-width:800px) {
+    #HomePanelContainer {
+    clear: both;
+    }
+}
+/* News */
+@media(max-width:1100px) {
+    #NewsBox {
+    width: auto;
+    height: auto;
+    float: none;
+    margin: 5px 0 0 0;
+    padding: 15px;
+    min-height:0px;
+    }
+}
+
+/* Search Results */
+ #ResponsiveResultCount {
+    display:none;
+ }
+ #Responsive_ResultDisplayOptions {
+    display:none;
+ }
+ @media(max-width:1500px) {
+    .BottomInpageNavRight .TopInpageNavRight {
+        position:relative;
+    }
+    .BottomInpageNavRight {
+        clear:left;
+        width: 100%;
+        float: none;
+        text-align: center;
+    }
+ }
+ @media(max-width:1300px) {
+    .TopInpageNavLeft {
+        padding: 0;
+        margin: 10px 0;
+    }
+    .TopInpageNav {
+        padding:0;
+    }
+    #Responsive_ResultDisplayOptions {
+        text-align: center;
+        margin-bottom: 10px;
+        display:inline-block !important;
+    }
+    #ResponsiveResultCount {
+        width: 95px;
+        display:inline-block;
+        box-shadow: none;
+        font-size: 1em;
+        margin-left: 10px;
+    }
+    #SearchResultFound {
+        display:none;
+    }
+    .TopInpageNav .InpageNavLeftBlock {
+        width: 95%;
+        display: none;
+        margin: 0 0 10px 0;
+        margin-left: 5%;
+    }
+    .TopInpageNav .InpageNavLeftBlock a, .InpageNavLeftBlock span {
+        display:inline-block;
+        float:none;
+        font-size: 1em;
+        vertical-align: middle;
+    }
+ }
+ @media(max-width:1200px) {
+    .BottomInpageNavRight {
+        margin-top:10px;
+    }
+    .BottomInpageNavLeft {
+        float:none;
+    }
+ }
+@media(max-width:1100px) {
+    .ResourcePanelIcons {
+        display: none;
+    }
+    .BottomInpageKey {
+        display:none;
+    }
+    .ResourcePanelInfo {
+        text-align:center;
+    }
+    .BottomInpageNav .InpageNavLeftBlock {
+        width:auto;
+    }
+    .largethumbsiconactive {
+        height:auto;
+    }
+    .TopInpageNavRight {
+        margin-top:1px;
+    }
+}
+@media(max-width:700px) {
+    .ResourcePanelShell .ResourcePanel {
+        display:inline-block;
+    }
+    .ResourcePanelShell {
+        padding: 0;
+        float: none;
+        display: inline-block;
+        margin: 0px;
+        width: 48%;
+        text-align: center;
+    }
+    .TopInpageNavLeft {
+        padding: 0;
+        margin: 10px 0 0 0;
+        width:360px;
+    }
+}
+@media(max-width:680px) {
+    .TopInpageNavRight {
+        margin-right:0;
+    }
+}
+@media(max-width:650px) {
+    .TopInpageNav {
+        text-align:center;
+    }
+    .TopInpageNavLeft {
+        width:100%;
+        float:none;
+    }
+    .TopInpageNavRight {
+        clear:left;
+        position:relative;
+        width:100%;
+        height:30px;
+    }
+    .TopInpageNavRight br {
+        display:none;
+    }
+}
+@media(max-width:600px) {
+    #searchspace #ssearchbox {
+        margin-top:5px;
+        display:block;
+    }
+    #Rssearchexpand {
+        margin-right:0;
+    }
+}
+@media(max-width:400px) {
+    .ResourcePanelShell {
+        width:90%;
+    }
+    .ResourcePanelShellLarge {
+        width:100%;
+    }
+    .ResourcePanelLarge {
+        width:100%;
+    }
+    .ResourcePanelLarge img {
+        width:98%;
+        height:auto;
+    }
+    .ResourceAlignLarge {
+        width:100%;
+        height:auto;
+    }
+    .ResourceAlign {
+        height:auto;
+    }
+    #Responsive_ResultDisplayOptions {
+        margin-bottom:0;
+    }
+    .TopInpageNavRight {
+        margin-top:10px;
+    }
+}
+@media(min-width:1301px) {
+    .InpageNavLeftBlock {
+        display:inline-block!important;
+    }
+    #Responsive_ResultDisplayOptions {
+        display:none;
+    }
+}
+
+/* Resource Preview */
+@media(max-width:1100px) {
+    #previewimage {
+        width:100%;
+    }
+    #RecordDownload {
+        width:100%;
+    }
+    .RecordBox {
+        margin:0;
+    }
+    .RecordPanel .RecordDownload table {
+        width:100%;
+    }
+    .RecordDownloadSpace ul a {
+        display: block;
+        font-size: 1em;
+        line-height: 30px;
+    }
+    .RecordPanel .RecordDownloadSpace ul li {
+        float:none;
+        display:inline-block;
+    }
+    .RecordHeader .backtoresults text {
+        display:none;
+    }
+    .RecordHeader .backtoresults a {
+        display: inline-block;
+        font-size: 1em;
+        float: none;
+    }
+    .RecordHeader h1 {
+        text-align:center;
+        margin: 5px 0 0 0;
+    }
+    .backtoresults {
+        float:none;
+        width:100%;
+        text-align:center;
+    }
+    #previewimagewrapper {
+        float: none;
+        text-align: center;
+        width: auto;
+        margin: 10px auto;
+    }
+    #previewimagewrapper .enterLink {
+        display:inline-block;
+    }
+    .annotate-view-preview-links {
+        float:left;
+    }
+    .image-annotate-canvas {
+        float: none;
+        margin-left: auto;
+        margin-right: auto;
+    }
+}
+@media(max-width:400px) {
+    .RecordPanel .RecordDownloadSpace ul li {
+        display: block;
+    }
+    .backtoresults a {
+        width:100%;
+    }
+    .RecordHeader .backtoresults a.upLink, 
+    .RecordHeader .backtoresults a.nextLink {
+        padding-left:0px;
+        margin-left:0px;
+        border-left: none;
+    }
+}
+
+/* My Collections */
+@media(max-width:700px) {
+    .BottomInpageNav .HorizontalWhiteNav span {
+        font-size: 1em;
+        line-height: 30px;
+    }
+    .CollectionTitleLinks a {
+        margin: 5px 6px;
+        display: inline-block;
+    }   
+}
+
+/* Themes */
+@media(max-width:800px) {
+    .RecordPanel .tools {
+        display:none;
+    }
+}
+/* Manage Collections Form */
+#collectionform .collectionin {
+    text-align:center;
+}
+@media(max-width:800px) {
+    #collectionform .Listview {
+        overflow-x:auto;
+    }
+    #collectionform .tools {
+        display:none;
+    }
+}
+@media(max-width:700px) {
+    #collectionform .fullname {
+        display:none;
+    }
+    #collectionform .ref{
+        display:none;
+    }
+    #collectionform .created{
+        display:none;
+    }
+    #collectionform .access{
+        display:none;
+    }
+    #collectionform .collectionin{
+        display:none;
+    }
+}
+
+/* Team Centre */
+@media(max-width:1100px) {
+    .VerticalNav li a{
+        font-size:1em;
+    }
+    #CentralSpaceContainer .iframe {
+    top:auto!important;
+    width:50%!important;
+    }
+    iframe.AdminRight {
+        left: 50%!important;
+    }
+    .Listview {
+        margin:0;
+        overflow-x: auto;
+    }
+    #submissionResponse {padding-left: 20px;}
+}
+/* Geographic Search */
+@media(max-width:1100px) {
+    #GeoDragMode {
+        margin: 0 0 20px 0;
+    }
+}
+@media(max-width:750px) {
+    #map_canvas {
+        height:300px!important;
+    }
+}
+
+/* PL Upload */
+@media(max-width:440px) {
+    .plupload_filelist_footer {
+        height:auto;
+    }
+    .plupload_file_size, .plupload_file_status, .plupload_progress {
+        float:none;
+    }
+    .pluploadform {
+        margin-bottom: 20px;
+    }
+}
+
+
+/* Collection Bar */
+.rotate {
+    -webkit-transform: rotate(90deg);
+    -moz-transform: rotate(90deg);
+    -ms-transform: rotate(90deg);
+    -o-transform: rotate(90deg);
+    filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=1); /* 0, 1, 2, or 3 which will rotate the element 0, 90, 180 or 270 degrees respectively */
+}
+@media (max-width:900px) {
+    #UICenter {
+        height: 100% !important;
+    }
+    #cover {
+        background: rgba(0, 0, 0, 0.6);
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        z-index: 10;
+        display: none;
+    }
+    .ui-layout-resizer.ui-layout-resizer-south.ui-layout-resizer-open.ui-layout-resizer-south-open {
+        display: none !important;
+    }
+    #responsive_collection_toggle {
+        height: 160px;
+        width: 40px;
+        position: absolute;
+        top: 160px;
+        right: 0px;
+        z-index: 999;
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+    }
+    #responsive_collection_toggle > a {
+        height: 40px;
+        width: 160px;
+        display: block;
+        position: relative;
+        top: 60px;
+        left: -70px;
+        text-decoration: none;
+        font-size: 1.3em;
+    }
+    .slide_btn {
+        right: 75% !important;
+    }
+    #CollectionDiv {
+        position: fixed;
+        height: 100% !important;
+        width: 75% !important;
+        top: 0 !important;
+        right: 0 !important;
+        left: auto !important;
+        bottom: initial !important;
+        z-index: 11 !important;
+    }
+    #CollectionMenu {
+        border-right: initial;
+        width: 97%;
+        left:3%;
+        position:relative;
+    }
+    #CollectionSpace {
+        top: 0;
+        position: relative;
+        left: 3%;
+        width: 97%;
+        clear: both;
+    }
+    .CollectionPanelInfo {
+        margin-left: 10px;
+    }
+    .CollectionPanelShell {
+        margin-top: 20px;
+    }
+    #CollectionDiv #toggleThumbsLink {
+        display:none;
+    }
+}

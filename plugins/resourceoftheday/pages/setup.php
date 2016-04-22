@@ -1,51 +1,25 @@
 <?php
 include "../../../include/db.php";
+include_once "../../../include/general.php";
 include "../../../include/authenticate.php"; if (!checkperm("u")) {exit ("Permission denied.");}
-include "../../../include/general.php";
 
 
-if (getval("submit","")!="")
-	{
-	$rotd_field=getvalescaped("rotd_field","");
-	$rotd_discount=getvalescaped("rotd_discount","");
-		
-	$f=fopen("../config/config.php","w");
-	fwrite($f,"<?php \$rotd_field='$rotd_field'; ?>");
-	fwrite($f,"<?php \$rotd_discount='$rotd_discount'; ?>");
-	fclose($f);
-	redirect("pages/team/team_home.php");
-	}
+// Specify the name of this plugin and the heading to display for the page.
+$plugin_name = 'resourceoftheday';
+$plugin_page_heading = $lang['rotd-configuration'];
 
-$rotd_fields=sql_query("select * from resource_type_field where type in(4,10) order by resource_type,order_by");
+// Build the $page_def array of descriptions of each configuration variable the plugin uses.
 
-include "../../../include/header.php";
-?>
-<div class="BasicsBox"> 
-  <h2>&nbsp;</h2>
-  <h1><?php echo $lang["rotd-configuraion"] ?></h1>
+$page_def[] = config_add_html("</br>" . $lang['specify-date-field'] . "</br></br>");
+$page_def[] = config_add_single_ftype_select('rotd_field',$lang['rotd-field'],300,false,array(4,10));
+$page_def[] = config_add_text_input('rotd_discount',$lang['rotd-discount']);
 
-  <div class="VerticalNav">
- <form id="form1" name="form1" method="post" action="">
-
-<p><?php echo $lang["intro-rotd-configuration"] ?></p>
-
-<p><?php echo $lang["specify-date-field"] ?></p>
-   <p><label for="rotd_field"><?php echo $lang["rotd-field"] . ":" ?></label>
-   
-   <select name="rotd_field">
-   <?php foreach ($rotd_fields as $field) { ?>
-   <option value="<?php echo $field["ref"] ?>" <?php if ($field["ref"]==$rotd_field) {echo "selected"; } ?>><?php echo lang_or_i18n_get_translated($field["title"],"fieldtitle-") ?></option>
-   <?php } ?>
-   </select>
-	</p>
-
-   <p><label for="$rotd_discount"><?php echo $lang["rotd-discount"] . ":" ?></label>
-   <input size="3" type="text" name="rotd_discount" value="<?php echo (isset($rotd_discount)?$rotd_discount:0) ?>">%
-	</p>
+// Do the page generation ritual -- don't change this section.
+$upload_status = config_gen_setup_post($page_def, $plugin_name);
+include '../../../include/header.php';
+config_gen_setup_html($page_def, $plugin_name, $upload_status, $plugin_page_heading, $lang['intro-rotd-configuration']);
 
 
-<input type="submit" name="submit" value="<?php echo $lang["save"]?>">   
+include '../../../include/footer.php';
 
 
-</form>
-</div>	

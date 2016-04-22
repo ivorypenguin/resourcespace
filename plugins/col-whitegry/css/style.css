@@ -1,0 +1,61 @@
+#Header {border-bottom: 1px solid #d0d0d0;background: #fff url(../gfx/whitegry/titles/title.gif) no-repeat 25px 12px;margin:0 0 25px 0;padding:5px 25px 0 25px;}
+.SlimHeader #Header.slimheader_darken{color: #FFF;background: #293340 linear-gradient(#41556C,#424859);}
+.SlimHeader #Header.slimheader_darken a:link, .SlimHeader #Header.slimheader_darken a:visited, .SlimHeader #Header.slimheader_darken a:active {color: #E1E8F0;}
+.SlimHeader #Header{color: #373737;background: #FFF;}
+.SlimHeader #Header a:link, .SlimHeader #Header a:visited, .SlimHeader #Header a:active {color: #373737;}
+
+#HomeSiteText.dashtext, 
+#SearchBoxPanel, 
+#ResearchBoxPanel, 
+.HomePanelIN
+{border: 1px solid #d0d0d0;	background: rgba(238, 238, 238, 0.8);}
+
+.HomePanel h2 {background: url(../gfx/whitegry/interface/HomeArrow.gif) no-repeat 1px 10px; color:#373737;}
+#HomeSiteText h2, #HomeSiteText h1, #HomeSiteText.dashtext h2, #HomeSiteText.dashtext h1 {color:#373737;}
+.HomePanel p, #HomeSiteText p,#HomeSiteText.dashtext p,.HomePanelIN {color:#373737;}
+.HomePanel a:link, 
+.HomePanel a:visited, 
+.HomePanel a:active, 
+.HomePanel a:hover,
+#HomeSiteText a:link, 
+#HomeSiteText a:visited, 
+#HomeSiteText a:active, 
+#HomeSiteText a:hover 
+{color: #373737;}
+
+.HomePanel h2 {background: url(../gfx/whitegry/interface/HomeArrow.gif) no-repeat 1px 10px;}
+.HomePanelThemes h2, .HomePanelMyCollections h2, .HomePanelHelp h2 {padding-left: 43px;}
+.HomePanelThemes h2 {background: url(../gfx/whitegry/interface/themes.png) no-repeat 0 0;}
+.HomePanelMyCollections h2 {background: url(../gfx/whitegry/interface/my_collections.png) no-repeat -2px 0;padding-left:36px;}
+.HomePanelHelp h2 {background: url(../gfx/whitegry/interface/help.png) no-repeat 0 0;}
+
+/* Black versions of the dash icons */
+.HomePanel .collection-icon { background: url("../../../gfx/dash/black-non-collection.png") no-repeat; }
+.HomePanel .theme-icon { background: url("../../../gfx/dash/black-non-theme.png") no-repeat; }
+.HomePanel .shopping-icon { background: url("../../../gfx/dash/black-non-my_collections.png") no-repeat; }
+.HomePanel .search-icon { background: url("../../../gfx/dash/black-non-search.png") no-repeat; }
+.HomePanel .help-icon { background: url("../../../gfx/dash/black-non-help.png") no-repeat; }
+.HomePanel .clock-icon { background: url("../../../gfx/dash/black-non-clock.png") no-repeat;}
+
+#SearchBoxPanel h2, #ThemeBoxPanel h2, #ResearchBoxPanel h2 {color: #373737;}
+#SearchBoxPanel,#ThemeBoxPanel,#ResearchBoxPanel{color:#373737;}
+#SearchBoxPanel a:link, 
+#SearchBoxPanel a:visited, 
+#SearchBoxPanel a:hover, 
+#SearchBoxPanel a:active, 
+#ResearchBoxPanel a:link, 
+#ResearchBoxPanel a:visited, 
+#ResearchBoxPanel a:hover, 
+#ResearchBoxPanel a:active 
+{color: #373737;}
+
+.CollectBack{background: #293340 linear-gradient(#41556C,#282C38);}
+
+#login_box {
+	background: rgba(238, 238, 238, 0.8);
+	border: 1px solid #d0d0d0;
+}
+
+#login_box, #login_box h1,  #login_box a{
+	color: #373737;
+}

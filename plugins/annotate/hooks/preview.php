@@ -6,9 +6,11 @@ function HookAnnotatePreviewReplacepreviewbacktoview(){
 } 
 
 function HookAnnotatePreviewPreviewimage2 (){
-global $ajax,$ext,$baseurl,$ref,$k,$search,$offset,$order_by,$sort,$archive,$lang,$download_multisize,$baseurl,$url,$path,$path_orig,$annotate_ext_exclude,$annotate_rt_exclude,$annotate_public_view,$annotate_pdf_output;
-if (getval("alternative","")!=""){return false;}
-
+global $ajax,$ext,$baseurl,$ref,$k,$search,$offset,$order_by,$sort,$archive,$lang,
+       $download_multisize,$baseurl_short,$url,$path,$path_orig,$annotate_ext_exclude,
+       $annotate_rt_exclude,$annotate_public_view,$annotate_pdf_output,$nextpage,
+       $previouspage, $alternative;
+    
 $resource=get_resource_data($ref);
 
 if (in_array($resource['file_extension'],$annotate_ext_exclude)){return false;}
@@ -42,8 +44,31 @@ $h = $sizes[1];
 </script>
 
 <div id="wrapper" style="display:block;clear:none;float:left;margin: 0px;">
+    <table cellpadding="0" cellspacing="0">
+    <tr>
+    <?php
+    if($resource['file_extension'] != "jpg" && $previouspage != -1 && resource_download_allowed($ref, "scr", $resource["resource_type"])) { ?>
+        <td valign="middle">
+            <a onClick="return CentralSpaceLoad(this);" href="<?php echo $baseurl_short?>pages/preview.php?ref=<?php echo urlencode($ref) ?>&alternative=<?php echo urlencode($alternative)?>&ext=<?php echo urlencode($ext)?>&k=<?php echo urlencode($k)?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>&page=<?php echo urlencode($previouspage)?>" class="PDFnav  pagePrev">&lt;</a>
+        </td>
+    <?php 
+    } else if($nextpage !=-1 && resource_download_allowed($ref, "scr", $resource["resource_type"])) { ?>
+        <td valign="middle">
+            <a href="#" class="PDFnav pagePrev">&nbsp;&nbsp;&nbsp;</a>
+        </td>
+    <?php
+    } ?>
 <div>
-		<img id="toAnnotate" onload="annotate(<?php echo $ref?>,'<?php echo $k?>','<?php echo $w?>','<?php echo $h?>',<?php echo getvalescaped("annotate_toggle",true)?>);" src="<?php echo $url?>" id="previewimage" class="Picture" GALLERYIMG="no" style="display:block;"   />
+		<td>
+            <img id="toAnnotate" onload="annotate(<?php echo $ref?>,'<?php echo $k?>','<?php echo $w?>','<?php echo $h?>',<?php echo getvalescaped("annotate_toggle",true)?>,<?php echo getvalescaped('page', 1); ?>);" src="<?php echo $url?>" id="previewimage" class="Picture" GALLERYIMG="no" style="display:block;"   />
+        </td>
+    <?php
+    if($nextpage != -1 && resource_download_allowed($ref, "scr", $resource["resource_type"])) { ?>
+        <td valign="middle">
+            <a onClick="return CentralSpaceLoad(this);" href="<?php echo $baseurl_short?>pages/preview.php?ref=<?php echo urlencode($ref) ?>&alternative=<?php echo urlencode($alternative)?>&ext=<?php echo urlencode($ext)?>&k=<?php echo urlencode($k)?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>&page=<?php echo urlencode($nextpage)?>" class="PDFnav pageNext">&gt;</a>
+        </td>
+    <?php 
+    } ?>
 	</div>
 
 <div style="padding-top:5px;">
@@ -61,7 +86,9 @@ $h = $sizes[1];
      <?php if ($annotate_pdf_output){?>
      &nbsp;&nbsp;<a style="display:inline;float:right;margin-right:10px;" href="<?php echo $baseurl?>/plugins/annotate/pages/annotate_pdf_config.php?ref=<?php echo $ref?>&ext=<?php echo $resource["preview_extension"]?>&k=<?php echo $k?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>" >&gt;&nbsp;<?php echo $lang["pdfwithnotes"]?></a> &nbsp;&nbsp;
      <?php } ?>
-     	</div></div>
+     	</div>
+    </tr></table>
+</div>
 
      
      

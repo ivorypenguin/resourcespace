@@ -1,0 +1,8 @@
+name: vimeo_publish
+desc: Publish resources to Vimeo using OAuth 2.0
+author: Alin Cota, Montala Limited
+version: 1.0
+info_url: http://www.montala.com
+default_priority: 100
+config_url: /plugins/vimeo_publish/pages/setup.php
+category: content sharing

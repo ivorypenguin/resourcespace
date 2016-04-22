@@ -1,0 +1,8 @@
+name: col-multi
+desc: Multi theme for ResourceSpace
+author: Montala Ltd
+version: 1.0
+default_priority: 1000
+category: User interface
+config_url: /plugins/col-multi/pages/setup.php
+userpreferencegroup: colourtheme

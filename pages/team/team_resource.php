@@ -6,15 +6,15 @@
  * @subpackage Pages_Team
  */
 include "../../include/db.php";
+include_once "../../include/general.php";
 include "../../include/authenticate.php";if (!checkperm("t")) {exit ("Permission denied.");}
-include "../../include/general.php";
 
 include "../../include/header.php";
 
 ?>
 
 <div class="BasicsBox"> 
-  <h2>&nbsp;</h2>
+
   <h1><?php echo $lang["manageresources"]?></h1>
   <p><?php echo text("introtext")?></p>
 
@@ -31,10 +31,6 @@ include "../../include/header.php";
                         <li><a href="<?php echo $baseurl_short?>pages/edit.php?ref=-<?php echo $userref?>&amp;uploader=plupload" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["addresourcebatchbrowser"]?></a></li>
                 <?php endif // Test if Add Resource Batch - In Browser is allowed. ?>
 
-		<?php if($upload_methods['in_browser_upload_java']): // Test if Add Resource Batch - In Browser - Java (Legacy) is allowed. ?>
-			<li><a href="<?php echo $baseurl_short?>pages/edit.php?ref=-<?php echo $userref?>&amp;uploader=java" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["addresourcebatchbrowserjava"]?></a></li>
-		<?php endif // Test if Add Resource Batch - In Browser - Java (Legacy) is allowed. ?>
-
 		<?php if($upload_methods['fetch_from_ftp']): // Test if Add Resource Batch - Fetch from FTP server is allowed. ?>
 			<li><a href="<?php echo $baseurl_short?>pages/edit.php?ref=-<?php echo $userref?>" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["addresourcebatchftp"]?></a></li>
 		<?php endif // Test if Add Resource Batch - Fetch from FTP server is allowed. ?>
@@ -43,9 +39,16 @@ include "../../include/header.php";
 			<li><a href="<?php echo $baseurl_short?>pages/edit.php?ref=-<?php echo $userref?>&amp;local=true" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["addresourcebatchlocalfolder"]?></a></li>
 		<?php endif // Test if Add Resource Batch - Fetch from local upload folder is allowed. ?>
 
-		<?php hook("addteamresourcetool");?>
+		<?php 
+		hook("addteamresourcetool");
+		
+		$no_exif = '';
+		if(!$metadata_read_default) {
+			$no_exif = '&no_exif=yes';
+		}
+		?>
 
-		<li><a href="<?php echo $baseurl_short?>pages/upload_plupload.php?replace=true" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["replaceresourcebatch"]?></a></li>    
+		<li><a href="<?php echo $baseurl_short?>pages/upload_replace_batch.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["replaceresourcebatch"]?></a></li>    
 
 		<li><a href="<?php echo $baseurl_short?>pages/team/team_copy.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["copyresource"]?></a></li>
 		
@@ -77,9 +80,11 @@ include "../../include/header.php";
 		<?php } // end if checksums and temp tables turned on ?>
 
 		<li><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!unused")?>" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["viewuncollectedresources"]?></a></li>
+		
+		<?php if (checkperm("i")) { ?><li><a href="<?php echo $baseurl?>/pages/team/team_archive.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["managearchiveresources"]?></a></li><?php } ?>
+			
 		<?php if (checkperm("k")): // Check if user can manage keywords and fields ?>
 			<li><a href="<?php echo $baseurl_short?>pages/team/team_related_keywords.php" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["managerelatedkeywords"]?></a></li>
-			<li><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/team/team_fields.php"><?php echo $lang["managefieldoptions"]?></a></li>
 		<?php endif // Check if user can manage keywords and fields ?>
 
 	<?php endif // Check if user can create resources ?>
@@ -87,7 +92,6 @@ include "../../include/header.php";
 	</ul>
 	</div>
 
-	<p><a href="<?php echo $baseurl_short?>pages/team/team_home.php" onClick="return CentralSpaceLoad(this,true);">&lt;&nbsp;<?php echo $lang["backtoteamhome"]?></a></p>
   </div>
 
 <?php

@@ -1,15 +1,9 @@
 <?php
 
-# Perform the search
-if (!isset($collections)){
-    $collections=search_public_collections($search,"theme","ASC",!$search_includes_themes,!$search_includes_public_collections,false);
-}
-
-if ((substr($search,0,11)!="!collection")&&($collections!="")) {
+if ((substr($search,0,11)!="!collection")&&($collections!="")&&is_array($collections)) {
     
 for ($n=0;$n<count($collections);$n++)
 	{
-	
 	$resources=do_search("!collection".$collections[$n]['ref'],"","relevance","",5);	
 	$hook_result=hook("process_search_results","",array("result"=>$resources,"search"=>"!collection".$collections[$n]['ref']));
 	if ($hook_result!==false) {$resources=$hook_result;}
@@ -32,8 +26,7 @@ for ($n=0;$n<count($collections);$n++)
             {
             $border=true;    
 			$ref=$resources[$m]['ref'];
-            $previewpath=get_resource_path($ref, true, "col", false, "jpg", -1, 1, false);
-            if (file_exists($previewpath)){
+            if ($resources[$m]['has_image']){
                 $previewpath=get_resource_path($ref,false,"col",false,"jpg",-1,1,false,$resources[$m]["file_modified"]);
             }
             else {
@@ -226,7 +219,8 @@ for ($n=0;$n<count($collections);$n++)
 			{
 			$collection_prefix = ""; # The prefix $lang['smartcollection'] . ": " is added in i18n_get_collection_name()
 			$collection_tag = $lang['smartcollection'];
-			}?>
+			}
+		if(!hook("replacelistviewcolresults")){?>
 		<td nowrap><div class="ListTitle"><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $pub_url?>" title="<?php echo str_replace(array("\"","'"),"", $collection_prefix . i18n_get_collection_name($collections[$n]))?>"><?php echo $collection_prefix . highlightkeywords(tidy_trim(i18n_get_collection_name($collections[$n]),45),$search)?></a></div></td>
 		<?php 
 		for ($x=0;$x<count($df)-1;$x++){
@@ -245,6 +239,7 @@ for ($n=0;$n<count($collections);$n++)
 		<a href="<?php echo $baseurl_short?>pages/collections.php?collection=<?php echo $collections[$n]["ref"]?>"  onClick="return CollectionDivLoad(this);">&gt;&nbsp;<?php echo $lang["action-select"]?></a>&nbsp;&nbsp;<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $pub_url?>">&gt;&nbsp;<?php echo $lang["viewall"]?></a>
 		<?php } ?>
 		</div></td>
+		<?php } ?>
 		</tr>
 	<?php } ?>		
 	

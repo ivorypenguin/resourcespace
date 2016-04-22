@@ -1,6 +1,6 @@
 <?php
 include "../include/db.php";
-include "../include/general.php";
+include_once "../include/general.php";
 include "../include/authenticate.php"; if (!checkperm("a")) {exit("Access denied.");}
 include "../include/header.php";
 
@@ -27,12 +27,32 @@ function ResolveKB($value)
 ?>
 
 <div class="BasicsBox"> 
-  <h2>&nbsp;</h2>
   <h1><?php echo $lang["installationcheck"]?></h1>
   <a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/check.php">&gt; <?php echo $lang["repeatinstallationcheck"]?></a>
   <br/><br/>
 <table class="InfoTable">
 <?php
+
+
+# Check ResourceSpace Build
+$build = '';
+if ($productversion == 'SVN'){
+ $p_version = 'Trunk (SVN)'; # Should not be translated as this information is sent to the bug tracker.
+ //Try to run svn info to determine revision number
+ $out = array();
+ exec('svn info ../', $out);
+ foreach($out as $outline){
+  $matches = array();
+  if (preg_match('/^Revision: (\d+)/i', $outline, $matches)!=0){
+   $build = "r" . $matches[1];
+  }
+ } 
+}
+
+# ResourceSpace version
+$p_version = $productversion == 'SVN'?'Subversion ' . $build:$productversion; # Should not be translated as this information is sent to the bug tracker.
+
+?><tr><td nowrap="true"><?php echo str_replace("?", "ResourceSpace", $lang["softwareversion"]); ?></td><td><?php echo $p_version?></td><td><br /></td></tr><?php
 
 # Check PHP version
 $phpversion=phpversion();
@@ -318,7 +338,7 @@ function get_utility_version($utilityname)
             else {$expected = true;}
             break;
         case "ffmpeg":
-            if (strpos(strtolower($version), "ffmpeg")===false) {$expected = false;}
+            if (strpos(strtolower($version), "ffmpeg")===false && strpos(strtolower($version), "avconv")===false ) {$expected = false;}
             else {$expected = true;}
             break;
         case "exiftool":

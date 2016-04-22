@@ -1,0 +1,14 @@
+#Header {border-bottom: solid 1px #d7d7d7;background: #fff url(../gfx/multi/titles/title.gif) no-repeat 25px 12px;}
+.SlimHeader #Header.slimheader_darken{color: #FFF;background: #293340 linear-gradient(#41556C,#424859);}
+.SlimHeader #Header.slimheader_darken a:link, .SlimHeader #Header.slimheader_darken a:visited, .SlimHeader #Header.slimheader_darken a:active {color: #E1E8F0;}
+.SlimHeader #Header{color: #373737;background: #FFF;border:none;}
+.SlimHeader #Header a:link, .SlimHeader #Header a:visited, .SlimHeader #Header a:active {color: #373737;}
+.HomePanelIN,#HomeSiteText.dashtext{background: rgba(244, 93, 24, 0.8);color: #fff;}
+#SearchBoxPanel, #ResearchBoxPanel{background: rgba(13, 164, 207, 0.8);color: #fff;}
+#SearchBoxPanel, #ResearchBoxPanel,#HomeSiteText,.HomePanelIN, #HomeSiteText.dashtext {border: none;}
+.CollectBack{background: #293340 linear-gradient(#41556C,#282C38);}
+
+#login_box {
+	background: rgba(244, 93, 24, 0.8);
+	border:  none;
+}

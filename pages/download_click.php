@@ -1,6 +1,6 @@
 <?php
 include "../include/db.php";
-include "../include/general.php";
+include_once "../include/general.php";
 
 $url=getval("url","");
 $url=str_replace(" ","%20",$url);

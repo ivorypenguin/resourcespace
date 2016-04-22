@@ -1,6 +1,6 @@
 <?php
 include "../../../include/db.php";
-include "../../../include/general.php";
+include_once "../../../include/general.php";
 include "../../../include/resource_functions.php";
 
 # Get variables and check key is valid.

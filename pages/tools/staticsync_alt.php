@@ -1,6 +1,6 @@
 <?php
 include dirname(__FILE__) . "/../../include/db.php";
-include dirname(__FILE__) . "/../../include/general.php";
+include_once dirname(__FILE__) . "/../../include/general.php";
 include dirname(__FILE__) . "/../../include/resource_functions.php";
 include dirname(__FILE__) . "/../../include/image_processing.php";
 
@@ -41,6 +41,27 @@ echo "Timestamp for this run is $staticsync_run_timestamp\n";
 
 set_time_limit(60*60*40);
 
+if ($argc == 2)
+    {
+    if ( in_array($argv[1], array('--help', '-help', '-h', '-?')) )
+        {
+        echo "To clear the lock after a failed run, ";
+        echo "pass in '--clearlock', '-clearlock', '-c' or '--c'." . PHP_EOL;
+        exit("Bye!");
+        }
+    else if ( in_array($argv[1], array('--clearlock', '-clearlock', '-c', '--c')) )
+        {
+        if ( is_process_lock("staticsync") )
+            {
+            clear_process_lock("staticsync");
+            }
+        }
+    else
+        {
+        exit("Unknown argv: " . $argv[1]);
+        }
+    }
+	
 # Check for a process lock
 if (is_process_lock("staticsync")) {
 echo date('Y-m-d H:i:s    ');
@@ -73,9 +94,10 @@ echo "...done. Looking for changes...";
 # Pre-load the category tree, if configured.
 if (isset($staticsync_mapped_category_tree))
 	{
-	$field=get_field($staticsync_mapped_category_tree);
-	$tree=explode("\n",trim($field["options"]));
-	}
+	$fielddata=get_resource_type_field($staticsync_mapped_category_tree);
+	migrate_resource_type_field_check($fielddata);
+	$tree = get_nodes($staticsync_mapped_category_tree, NULL, true);
+   	}
 
 
 function touch_category_tree_level($path_parts)
@@ -83,44 +105,46 @@ function touch_category_tree_level($path_parts)
 	# For each level of the mapped category tree field, ensure that the matching path_parts path exists
 	global $staticsync_mapped_category_tree,$tree;
 
-	$altered_tree=false;
-	$parent_search=0;
+	$parent_search='';
 	$nodename="";
+	$order_by =10;
 	
 	for ($n=0;$n<count($path_parts);$n++)
 		{
 		# The node name should contain all the subsequent parts of the path
-		if ($n>0) {$nodename.="~";}
-		$nodename.=$path_parts[$n];
+        if ($n > 0) { $nodename .= "~"; }
+        $nodename .= $path_parts[$n];
 		
 		# Look for this node in the tree.		
-		$found=false;
-		for ($m=0;$m<count($tree);$m++)
-			{
-			$s=explode(",",$tree[$m]);
-			if ((count($s)==3) && ($s[1]==$parent_search) && $s[2]==$nodename)
-				{
-				# A match!
-				$found=true;
-				$parent_search=$m+1; # Search for this as the parent node on the pass for the next level.
-				}
-			}
-		if (!$found)
-			{
-			echo date('Y-m-d H:i:s    ');
-			echo "Not found: " . $nodename . " @ level " . $n . "\n";
-			# Add this node
-
-			$tree[]=(count($tree)+1) . "," . $parent_search . "," . $nodename;
-			$altered_tree=true;
-			$parent_search=count($tree); # Search for this as the parent node on the pass for the next level.
-			}
-		}
-	if ($altered_tree)
-		{
-		# Save the updated tree.
-		sql_query("update resource_type_field set options='" . escape_check(join("\n",$tree)) . "' where ref='" . $staticsync_mapped_category_tree . "'");
-		}
+		$found = false;		
+        foreach($tree as $treenode)
+            {
+			if($treenode["parent"]==$parent_search)
+                {
+				if ($treenode["name"]==$nodename)
+					{
+					# A match!
+					$found = true;
+					$parent_search = $treenode["ref"]; # Search for this as the parent node on the pass for the next level.
+					}
+				else
+					{
+					if($order_by<=$treenode["order_by"])
+						{$order_by=$order_by+10;}
+					}
+                }			
+            }
+        if (!$found)
+            {
+            echo "Not found: " . $nodename . " @ level " . $n  . PHP_EOL;
+            # Add this node
+            $newnode=set_node(NULL, $staticsync_mapped_category_tree, $nodename, $parent_search, $order_by);
+			$tree[]=array("ref"=>$newnode,"parent"=>$parent_search,"name"=>$nodename,"order_by"=>$order_by);
+            $parent_search = $newnode; # Search for this as the parent node on the pass for the next level.
+            }
+		}	
+    // Return the last found node ref, we will use this in phase 2 of nodes work to save node ref instead of string
+    return $parent_search;
 	}
 
 
@@ -246,22 +270,25 @@ function ProcessFolder($folder)
 				if ($r!==false)
 					{
 					# Add to mapped category tree (if configured)
-					if (isset($staticsync_mapped_category_tree))
-						{
-						$basepath="";
-						# Save tree position to category tree field
-				
-						# For each node level, expand it back to the root so the full path is stored.
-						for ($n=0;$n<count($path_parts);$n++)
-							{
-							if ($basepath!="") {$basepath.="~";}
-							$basepath.=$path_parts[$n];
-							$path_parts[$n]=$basepath;
-							}
-						
-						update_field ($r,$staticsync_mapped_category_tree,"," . join(",",$path_parts));
-						#echo "update_field($r,$staticsync_mapped_category_tree," . "," . join(",",$path_parts) . ");\n";
-						}			
+                    if (isset($staticsync_mapped_category_tree))
+                        {
+                        $basepath = '';
+                        # Save tree position to category tree field
+
+                        # For each node level, expand it back to the root so the full path is stored.
+                        for ($n=0;$n<count($path_parts);$n++)
+                            {
+                            if ($basepath != '') 
+                                { 
+                                $basepath .= "~";
+                                }
+                            $basepath .= $path_parts[$n];
+                            $path_parts[$n] = $basepath;
+                            }
+
+                        # Save tree position to category tree field                        
+                        update_field($r, $staticsync_mapped_category_tree, "," . join(",", $path_parts));
+                        } 			
 					
 					# StaticSync path / metadata mapping
 					# Extract metadata from the file path as per $staticsync_mapfolders in config.php

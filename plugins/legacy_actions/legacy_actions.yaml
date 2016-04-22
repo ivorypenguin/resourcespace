@@ -1,0 +1,8 @@
+name: legacy_actions
+desc: Legacy actions used on collections and search pages
+author: Montala Limited
+version: 1.5
+info_url: http://www.montala.com
+default_priority: 100
+# config_url: /plugins/legacy_actions/pages/setup.php
+category: Legacy, User interface

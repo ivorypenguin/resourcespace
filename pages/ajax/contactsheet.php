@@ -7,11 +7,11 @@ foreach ($_POST as $key => $value) {$$key = stripslashes(utf8_decode(trim($value
 
 // create new PDF document
 include('../../include/db.php');
-include('../../include/general.php');
+include_once('../../include/general.php');
 include('../../include/authenticate.php');
 include('../../include/search_functions.php');
 include('../../include/resource_functions.php');
-include('../../include/collections_functions.php');
+include_once('../../include/collections_functions.php');
 include('../../include/image_processing.php');
 
 require_once('../../lib/tcpdf/tcpdf.php');
@@ -25,6 +25,9 @@ $order_by=getvalescaped("orderby","relevance");
 $sort=getvalescaped("sort","asc");
 $orientation=getvalescaped("orientation","");
 $sheetstyle=getvalescaped("sheetstyle","thumbnails");
+
+# Check access
+if (!collection_readable($collection)) {exit($lang["no_access_to_collection"]);}
 
 $logospace=0;
 $footerspace=0;
@@ -68,7 +71,6 @@ if (isset($print_contact_title)){
 function contact_sheet_add_fields($resourcedata)
 	{
 	global $pdf, $n, $getfields, $sheetstyle, $imagesize, $refnumberfontsize, $leading, $csf, $pageheight, $currentx, $currenty, $topx, $topy, $bottomx, $bottomy, $logospace, $deltay,$width,$config_sheetsingle_include_ref,$contactsheet_header,$cellsize,$ref,$pagewidth; 
-	//exit (print_r($getfields));
 
 	if ($sheetstyle=="single" && $config_sheetsingle_include_ref=="true"){
 		$pdf->SetY($bottomy);
@@ -91,24 +93,41 @@ function contact_sheet_add_fields($resourcedata)
 	
 		if ($sheetstyle=="thumbnails") 
 			{
-			$pdf->Cell($imagesize,(($refnumberfontsize+$leading)/72),$value,0,2,'L',0,'',1);
-			//if ($ff==2){echo print_r($getfields) . " " . $pdf->GetY();exit();}
-			
+			$pdf->Cell($imagesize,(($refnumberfontsize+$leading)/72),$value,0,2,'L',0,'',1);			
 			$bottomy=$pdf->GetY();
 			$bottomx=$pdf->GetX();
 			}
 		else if ($sheetstyle=="list")
 			{
-			
-			$pdf->Text($pdf->GetX()+$imagesize+0.1,$pdf->GetY()+(0.2*($ff+$deltay)),$value);
-			//$pdf->Text($pdf->GetX()+$imagesize+0.1,$pdf->GetY()+(0.2*($ff+2)),$value);	
-			
-			//$pdf->Text($pdf->GetX()+$imagesize+0.1,$pdf->GetY()+(0.2*($ff+2)+ 0.15),$value);					
+			$pdf->SetXY($pdf->GetX()+$imagesize+0.1,$pdf->GetY()+(0.2*($ff+$deltay)));
+			$pdf->MultiCell($pagewidth-3,0.15,$value,0,"L");
 			$pdf->SetXY($currentx,$currenty);
 			}
 		else if ($sheetstyle=="single")
-			{		
+			{
+			$query = sprintf(
+					   "SELECT rd.`value`, 
+					           rtf.`type` AS field_type
+					      FROM resource_data AS rd
+					INNER JOIN resource_type_field AS rtf ON rd.resource_type_field = rtf.ref AND rtf.ref = '%s'
+					     WHERE rd.resource = '%s';"
+				,
+				$getfields[$ff],
+				$resourcedata['ref']
+			);
+			$raw_value = sql_query($query);
+
+			// Default value:
+			if (isset($raw_value[0])){
+			$value = $raw_value[0]['value'];
+			// When values have been saved using CKEditor make sure to remove html tags and decode html entitities:
+			if($raw_value[0]['field_type'] == '8')
+				{
+				$value = strip_tags($raw_value[0]['value']);
+				$value = mb_convert_encoding($value, 'UTF-8', 'HTML-ENTITIES');
+				}
 			$pdf->MultiCell($pagewidth-2,0,$value,'','L',false,1);		
+			}
 			}
 			
 		}
@@ -134,8 +153,9 @@ function contact_sheet_add_image()
 		}
 	elseif ($sheetstyle=="list")
 		{
+		global $currenty;
 		$posx=$pdf->GetX();
-		$posy=$pdf->GetY()+0.025;
+		$posy=$currenty;
 		$align="";
 		}
 	elseif ($sheetstyle=="thumbnails")
@@ -161,12 +181,12 @@ function contact_sheet_add_image()
 		{
 		$pdf->Image($imgpath,$posx,$posy,$imagewidth,$imageheight,$preview_extension,'',$nextline,false,300,$align,false,false,0);
 		}	
-			
+	
 	$bottomy=$pdf->GetY();
 	# Add spacing cell
 	if ($sheetstyle=="list")
 		{		
-		$pdf->Cell($cellsize[0],$cellsize[1],'',0,0);		
+		$pdf->Cell($cellsize[0],$cellsize[1],'',0,0);    
 		}
 	/*else if ($sheetstyle=="single")
 		{		
@@ -180,65 +200,6 @@ function contact_sheet_add_image()
 		}
 	}
 
-## Sizing calculations
-function do_contactsheet_sizing_calculations(){
-global $sheetstyle,$deltay,$add_contactsheet_logo,$pageheight,$pagewidth,$column,$config_sheetthumb_fields,$config_sheetthumb_include_ref,$leading,$refnumberfontsize,$imagesize,$columns,$rowsperpage,$cellsize,$logospace,$page,$rowsperpage,$contact_sheet_logo_resize,$contact_sheet_custom_footerhtml,$footerspace,$contactsheet_header,$config_sheetsingle_fields,$config_sheetsingle_include_ref,$orientation;
-
-
-if ($sheetstyle=="thumbnails")
-	{
-	if ($add_contactsheet_logo && $contact_sheet_logo_resize)
-	{$logospace=$pageheight/9;}
-
-	$columns=$column;
-	#calculating sizes of cells, images, and number of rows:
-	$cellsize[0]=$cellsize[1]=($pagewidth-1.7)/$columns;
-	$imagesize=$cellsize[0]-.3;
-	# estimate rows per page based on config lines
-	$extralines=(count($config_sheetthumb_fields)!=0)?count($config_sheetthumb_fields):0;
-	if ($contact_sheet_custom_footerhtml!=''){$footerspace=$pageheight*.05;}
-	if ($config_sheetthumb_include_ref){$extralines++;}
-	$rowsperpage=($pageheight-.5-$logospace-$footerspace-($cellsize[1]+($extralines*(($refnumberfontsize+$leading)/72))))/($cellsize[1]+($extralines*(($refnumberfontsize+$leading)/72)));
-	$page=1;	
-	}
-else if ($sheetstyle=="list")
-	{ 
-	if ($add_contactsheet_logo && $contact_sheet_logo_resize)
-	{$logospace=$pageheight/9;}
-	#calculating sizes of cells, images, and number of rows:
-	$columns=1;
-	$imagesize=1.0;
-	$cellsize[0]=$pagewidth-1.7;
-	$cellsize[1]=1.2;
-	if ($contact_sheet_custom_footerhtml!=''){$footerspace=$pageheight*.05;}
-	$rowsperpage=($pageheight-1.2-$logospace-$footerspace-$cellsize[1])/$cellsize[1];
-	$page=1;
-	}
-else if ($sheetstyle=="single")
-	{
-	$extralines=(count($config_sheetsingle_fields)!=0)?count($config_sheetsingle_fields):0;
-	if ($add_contactsheet_logo && $contact_sheet_logo_resize)
-		{
-		if ($orientation=="L"){$logospace=$pageheight/11;if ($contactsheet_header){$extralines=$extralines + 2;}} else {$logospace=$pageheight/9;}
-		}
-	$columns=$column;	
-	if ($config_sheetsingle_include_ref){$extralines++;}
-	
-	# calculate size of single cell per page, allowing for extra lines. Needs to be smaller if landscape.
-	if ($orientation=="L")
-		{
-		$cellsize[0]=$cellsize[1]=($pageheight*0.65)-($extralines*(($refnumberfontsize+$leading)/72));
-		}
-	else 
-		{
-		$cellsize[0]=$cellsize[1]=($pagewidth*0.8);
-		}
-	$imagesize=$cellsize[0]-0.3;
-	$rowsperpage=1;
-	$page=1;
-	$columns=1;
-	}
-}
 $deltay=1;
 do_contactsheet_sizing_calculations();
 
@@ -356,7 +317,7 @@ class rsPDF extends MYPDF {
 $pdf = new rsPDF($orientation , 'in', $size, true, 'UTF-8', false); 
 
 $pdf->SetTitle(i18n_get_collection_name($collectiondata).' - '.nicedate($date, true, true));
-$pdf->SetAuthor($user['fullname'].' '.$user['email']);
+$pdf->SetAuthor($user['fullname']);
 $pdf->SetSubject($applicationname . " - " . $lang["contactsheet"]);
 $pdf->SetMargins(1,1.2,.7);
 $pdf->SetAutoPageBreak(false);
@@ -387,6 +348,7 @@ for ($n=0;$n<count($result);$n++){
 	if ($ref!==false){
 		# Find image
 		# Load access level
+		
 		$access=get_resource_access($result[$n]); // feed get_resource_access the resource array rather than the ref, since access is included.
 		$use_watermark=check_use_watermark();
 		$imgpath = get_resource_path($ref,true,$imgsize,false,$preview_extension,-1,1,$use_watermark);
@@ -437,7 +399,7 @@ for ($n=0;$n<count($result);$n++){
 				else if ($sheetstyle=="single")
 					{									
 					#Add image
-					contact_sheet_add_image();											
+					contact_sheet_add_image();
 					contact_sheet_add_fields($result[$n]);
 					}
 				}
@@ -519,13 +481,14 @@ for ($n=0;$n<count($result);$n++){
 		putenv("PATH=" . $ghostscript_path . ":" . $imagemagick_path); # Path 
 
         $ghostscript_fullpath = get_utility_path("ghostscript");
-        $command = $ghostscript_fullpath . " -sDEVICE=jpeg -dFirstPage=$previewpage -o -r100 -dLastPage=$previewpage -sOutputFile=" . escapeshellarg(get_temp_dir() . "/contactsheetrip.jpg") . " " . escapeshellarg(get_temp_dir() . "/contactsheet.pdf");
+        $command = $ghostscript_fullpath . " -sDEVICE=jpeg -dFirstPage=$previewpage -o -r100 -dLastPage=$previewpage -sOutputFile=" . escapeshellarg(get_temp_dir() . "/contactsheetrip.jpg") . " " . escapeshellarg(get_temp_dir() . "/contactsheet.pdf") . (($config_windows)?"":" 2>&1");
 		run_command($command);
 
         $convert_fullpath = get_utility_path("im-convert");
         if ($convert_fullpath==false) {exit("Could not find ImageMagick 'convert' utility at location '$imagemagick_path'");}
 
-        $command = $convert_fullpath . " -resize ".$contact_sheet_preview_size." -quality 90 -colorspace ".$imagemagick_colorspace." \"".get_temp_dir() . "/contactsheetrip.jpg\" \"".get_temp_dir() . "/contactsheet.jpg\"";
+        $command = $convert_fullpath . " -resize ".$contact_sheet_preview_size." -quality 90 -colorspace ".$imagemagick_colorspace." \"".get_temp_dir() . "/contactsheetrip.jpg\" \"".get_temp_dir() . "/contactsheet.jpg\"" . (($config_windows)?"":" 2>&1");
+
 		run_command($command);
 		exit();
 		}
@@ -560,3 +523,5 @@ else{
 	}
 $pdf->Output(i18n_get_collection_name($collectiondata).".pdf","D");
 }
+
+hook("endscript");

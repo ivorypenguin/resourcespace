@@ -1,5 +1,6 @@
 <?php
 include "../../include/db.php";
+include_once "../../include/general.php";
 include "../../include/authenticate.php"; if (!checkperm("a")) {exit("Permission denied");}
 # Specify whether you want to have table_* and index_* files created
 $createTableStructure=true;

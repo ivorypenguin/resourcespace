@@ -1,7 +1,7 @@
 <?php
 include "../include/db.php";
-include "../include/general.php";
-include "../include/collections_functions.php";
+include_once "../include/general.php";
+include_once "../include/collections_functions.php";
 if (getval("user","")!="" || isset($anonymous_login)) {include "../include/authenticate.php";} #Authenticate if already logged in, so the correct theme is displayed when using user group specific themes.
 
 if (getval("refreshcollection","")!="")
@@ -17,9 +17,9 @@ $restypes=getvalescaped("restypes","");
 if (strpos($search,"!")!==false) {$restypes="";}
 $archive=getvalescaped("archive",0,true);
 
-$default_sort="DESC";
-if (substr($order_by,0,5)=="field"){$default_sort="ASC";}
-$sort=getval("sort",$default_sort);
+$default_sort_direction="DESC";
+if (substr($order_by,0,5)=="field"){$default_sort_direction="ASC";}
+$sort=getval("sort",$default_sort_direction);
 
 include "../include/header.php";
 ?>
@@ -28,7 +28,7 @@ include "../include/header.php";
     <h1><?php echo $lang["complete"]?></h1>
     <p><?php echo text(htmlspecialchars(getvalescaped("text",""))) ?></p>
    
-    <?php if (getval("user","")!="" || getval("k","")!="" || isset($anonymous_login)) { # User logged in? ?>
+    <?php if ((getval("user","")!="" || getval("k","")!="" || isset($anonymous_login) || hook('checkuserloggedin')) && getval("notloggedin","")=="") { # User logged in? ?>
  
  	<?php
 	if(!hook("donebacktoresource")):

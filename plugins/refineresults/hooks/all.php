@@ -3,6 +3,14 @@
 function HookRefineresultsSearchBeforesearchresults()
 	{
 	global $baseurl_short,$result,$lang,$search,$k,$archive,$parameters_string, $collections;
+
+	// Only time when this would be needed is when legacy_actions is enabled otherwise we do it through dropdown actions
+	$query = 'SELECT inst_version AS `value` FROM plugins WHERE name = \'legacy_actions\';';
+	if(trim(sql_value($query, '')) === '')
+		{
+		return false;
+		}
+
 	$results=0;
 	if (is_array($result)) $results=count($result);
 	if (is_array($collections)) $results+=count($collections);
@@ -64,7 +72,7 @@ function HookRefineresultsSearchBeforesearchresultsexpandspace()
 	
 	<form method="post" action="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search) ?>&amp;k=<?php echo $k ?>" onSubmit="return CentralSpacePost (this,true);">
 	<div class="Question Inline" id="question_refine" style="border-top:none;">
-	<label id="label_refine" for="label_refine"><?php echo $lang["additionalkeywords"]?></label>
+	<label id="label_refine" for="refine_keywords"><?php echo $lang["additionalkeywords"]?></label>
 	<input class="medwidth Inline" type=text id="refine_keywords" name="refine_keywords" value="<?php echo $value ?>">
 	<input type=hidden name="archive" value="<?php echo $archive?>">
 	<input class="vshrtwidth Inline" name="save" type="submit" id="refine_submit" value="&nbsp;&nbsp;<?php echo $lang["refine"]?>&nbsp;&nbsp;" />

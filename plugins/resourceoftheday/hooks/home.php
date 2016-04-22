@@ -11,6 +11,13 @@ function HookResourceofthedayHomeReplaceslideshow ()
 
     # Get preview width
     $sizes = get_image_sizes($rotd, true);
+    
+    // No need to continue if we don't have any sizes
+    if(0 === count($sizes))
+        {
+        return false;
+        }
+
     foreach ($sizes as $size)
         {
         if ($size["id"]=="pre")

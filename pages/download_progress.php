@@ -1,6 +1,7 @@
 <?php
 include "../include/db.php";
-include "../include/general.php";
+include_once "../include/general.php";
+include "../include/search_functions.php";
 
 # External access support (authenticate only if no key provided, or if invalid access key provided)
 $k=getvalescaped("k","");if (($k=="") || (!check_access_key(getvalescaped("ref","",true),$k))) {include "../include/authenticate.php";}
@@ -30,9 +31,12 @@ if (!($url=hook("getdownloadurl", "", array($ref, $size, $ext, 1, $alternative))
 
 # For Opera and Internet Explorer 7 - redirected downloads are always blocked, so use the '$save_as' config option
 # to present a link instead.
-if (!$direct_download_allow_opera &&  strpos(strtolower($_SERVER["HTTP_USER_AGENT"]),"opera")!==false) {$save_as=true;}
-if (!$direct_download_allow_ie7 &&  strpos(strtolower($_SERVER["HTTP_USER_AGENT"]),"msie 7.")!==false) {$save_as=true;}
-if (!$direct_download_allow_ie8 &&  strpos(strtolower($_SERVER["HTTP_USER_AGENT"]),"msie 8.")!==false) {$save_as=true;}
+if (isset($_SERVER["HTTP_USER_AGENT"]))
+	{
+	if (!$direct_download_allow_opera &&  strpos(strtolower($_SERVER["HTTP_USER_AGENT"]),"opera")!==false) {$save_as=true;}
+	if (!$direct_download_allow_ie7 &&  strpos(strtolower($_SERVER["HTTP_USER_AGENT"]),"msie 7.")!==false) {$save_as=true;}
+	if (!$direct_download_allow_ie8 &&  strpos(strtolower($_SERVER["HTTP_USER_AGENT"]),"msie 8.")!==false) {$save_as=true;}
+	}
 
 include "../include/header.php";
 
@@ -51,16 +55,23 @@ if (!$save_as)
     
 	<?php if ($save_as) { 
 	# $save_as set or Opera browser? Provide a download link instead. Opera blocks any attempt to send it a download (meta/js redirect)	?>
+    <h2>&nbsp;<h2> 
     <h1><?php echo $lang["downloadresource"]?></h1>
     <p style="font-weight:bold;">&gt;&nbsp;<a href="<?php echo $url?>"><?php echo $lang["rightclicktodownload"]?></a></p>
 	<?php } else { 
 	# Any other browser - standard 'your download will start shortly' text.
 	?>
+	<h2>&nbsp;<h2>
     <h1><?php echo $lang["downloadinprogress"]?></h1>
     <p><?php echo text("introtext")?></p>
-	<?php } ?>
-    <p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo urlencode($ref) ?>&k=<?php echo urlencode($k) ?>&search=<?php echo urlencode(getval("search",""))?>&offset=<?php echo urlencode(getval("offset",""))?>&order_by=<?php echo urlencode(getval("order_by",""))?>&sort=<?php echo urlencode(getval("sort",""))?>&archive=<?php echo urlencode(getval("archive",""))?>">&lt;&nbsp;<?php echo $lang["backtoresourceview"]?></a></p>
-    <p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php?k=<?php echo urlencode($k) ?>&search=<?php echo urlencode(getval("search",""))?>&offset=<?php echo urlencode(getval("offset",""))?>&order_by=<?php echo urlencode(getval("order_by",""))?>&sort=<?php echo urlencode(getval("sort",""))?>&archive=<?php echo urlencode(getval("archive",""))?>">&lt;&nbsp;<?php echo $lang["backtoresults"]?></a></p>
+	<?php } 
+	$offset= getval("saved_offset",getval("offset",""));
+	$order_by= getval("saved_order_by",getval("order_by",""));
+	$sort= getval("saved_sort",getval("sort",""));
+	$archive= getval("saved_archive",getval("archive",""));
+	?>
+    <p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo urlencode($ref) ?>&k=<?php echo urlencode($k) ?>&search=<?php echo urlencode(getval("search",""))?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>">&lt;&nbsp;<?php echo $lang["backtoresourceview"]?></a></p>
+    <p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php?k=<?php echo urlencode($k) ?>&search=<?php echo urlencode(getval("search",""))?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>">&lt;&nbsp;<?php echo $lang["backtoresults"]?></a></p>
     
     <?php if ($k=="") { ?>
     <p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/home.php">&lt;&nbsp;<?php echo $lang["backtohome"]?></a></p>

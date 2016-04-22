@@ -1,17 +1,5 @@
 <?php /* -------- Category Tree ------------------- */ 
 
- if(!isset($options))
-	{
-	if (isset($n) && isset($fields))
-		{
-		$options=$fields[$n]["options"];
-		}
-	elseif(isset($field["options"]))
-		{
-		$options=$field["options"];
-		}
-	}
-	
 global $lang,$baseurl,$css_reload_key,$category_tree_show_status_window,$category_tree_open,$is_search;
 if (!isset($is_search)) {$is_search = false;}
 
@@ -34,7 +22,6 @@ if (!isset($is_search)) {$is_search = false;}
 
 <script type="text/javascript">
 
-
 TreeParents["<?php echo $name?>"]=new Array();
 TreeNames["<?php echo $name?>"]=new Array();
 TreeExpand["<?php echo $name?>"]=new Array();
@@ -44,32 +31,30 @@ TreeClickable["<?php echo $name?>"]=new Array();
 TreeChecked["<?php echo $name?>"]=new Array();
 TreeTickedDesc["<?php echo $name?>"]=new Array();
 TreeDynamic["<?php echo $name?>"]=false;
+branch_limit_field['field_<?php echo $field['ref']; ?>'] = branch_limit;
 
 nocategoriesmessage="<?php echo $lang["nocategoriesselected"] ?>";
 
 <?php
 
 # Load the tree
-$checked=explode(",",strtolower($value));
-For($c=0;$c<count($checked);$c++)
+//$checked=explode(",",strtolower($value));
+$checked=preg_split('/[,\|]/',strtolower($value));
+
+
+for($c=0;$c<count($checked);$c++)
 	{
 	$checked[$c] = trim($checked[$c]);
 	} 
-$class=explode("\n",$options);
 
-for ($t=0;$t<count($class);$t++)
-	{
-	if ($t % 50 == 0) { echo "\n</script><script>\n"; }
-	$s=explode(",",$class[$t]);
-	if (count($s)==3)
-		{
-		$nodefolder=1;
-		$nodechecked=0;if (in_array(trim(strtolower($s[2])),$checked)) {$nodechecked=1;}
-		$nodeexpand=0;if (($nodefolder==1) && ($nodechecked==1)) {$nodeexpand=1;}
-		# Add this node
-		?>AddNode("<?php echo $name?>",<?php echo $s[1]-1?>,<?php echo $s[0]-1?>,"<?php echo str_replace("\"","\\\"",trim($s[2]))?>",1,<?php echo $nodechecked?>,<?php echo $nodeexpand?>);<?php
-		}
+foreach ($field['nodes'] as $node)
+    {
+	$node_checked=in_array(trim(strtolower($node['name'])),$checked) ? 1 : 0;
+	# Add this node
+	?>AddNode("<?php echo $name; ?>",<?php echo $node['parent']-1; ?>,<?php echo $node['ref']-1; ?>,"<?php
+		echo str_replace('"','\"',trim($node['name']))?>",1,<?php echo $node_checked; ?>,<?php echo $node_checked; ?>);<?php
 	}
+
 ?>
 ResolveParents("<?php echo $name?>");
 DrawTree("<?php echo $name?>", <?php echo json_encode($is_search)?>);

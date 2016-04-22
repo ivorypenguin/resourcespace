@@ -15,7 +15,7 @@
 // 
 
 include dirname(__FILE__) . "/../../include/db.php";
-include dirname(__FILE__) . "/../../include/general.php";
+include_once dirname(__FILE__) . "/../../include/general.php";
 include dirname(__FILE__) . "/../../include/resource_functions.php";
 include dirname(__FILE__) . "/../../include/image_processing.php";
 

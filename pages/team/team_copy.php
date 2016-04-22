@@ -6,8 +6,8 @@
  * @subpackage Pages_Team
  */
 include "../../include/db.php";
+include_once "../../include/general.php";
 include "../../include/authenticate.php"; if (!checkperm("c")) {exit ("Permission denied.");}
-include "../../include/general.php";
 include "../../include/resource_functions.php";
 
 # Fetch user data

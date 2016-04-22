@@ -1,0 +1,6 @@
+﻿name: yt2rs
+author: Julio Melon (Ayuda en Accion)
+version: 2.0
+desc: Enables to publish videos from youtube.
+config_url: /plugins/yt2rs/pages/setup.php
+category: content sharing

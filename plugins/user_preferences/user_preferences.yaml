@@ -1,0 +1,6 @@
+name    : user_preferences
+author  : Axel Dörfler
+version : 1.0
+desc    : Offers additional user preferences
+config_url: /plugins/user_preferences/pages/setup.php
+category: User interface

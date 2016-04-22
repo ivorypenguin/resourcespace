@@ -7,7 +7,7 @@ function HookImagestreamUpload_pluploadInitialuploadprocessing()
 	global $config_windows, $id, $targetDir, $resource_type, $imagestream_restypes, $imagestream_transitiontime, $zipcommand, $use_zip_extension, $userref,  $session_hash, $filename, $filename_field, $collection_add, $archiver, $zipcommand, $ffmpeg_fullpath, $ffmpeg_preview_extension, $ffmpeg_preview_options, $ffmpeg_preview_min_height, $ffmpeg_preview_max_height, $ffmpeg_preview_min_width, $ffmpeg_preview_max_width,$lang,$collection_download_settings,$archiver_listfile_argument;
 	$ffmpeg_fullpath = get_utility_path("ffmpeg");
 			
-	debug ("DEBUG: Imagestream - checking restype: " . $resource_type . $imagestream_restypes);
+	debug ("DEBUG: Imagestream - checking restype: " . $resource_type);
 	
 	if (in_array($resource_type,$imagestream_restypes))
 		{

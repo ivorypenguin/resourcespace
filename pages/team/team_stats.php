@@ -6,8 +6,9 @@
  * @subpackage Pages_Team
  */
 include "../../include/db.php";
+include_once "../../include/general.php";
 include "../../include/authenticate.php";if (!checkperm("t")) {exit ("Permission denied.");}
-include "../../include/general.php";
+include "../../include/reporting_functions.php";
 
 $activity_type=getvalescaped("activity_type","User session");
 $year=getvalescaped("year",date("Y"));
@@ -47,7 +48,6 @@ if (getval("print","")!="") { # Launch printable page in an iframe
 <?php } ?>
 
 <div class="BasicsBox"> 
-  <h2>&nbsp;</h2>
   <h1><?php echo $lang["viewstatistics"]?></h1>
   <p><?php echo text("introtext")?></p>
   
@@ -57,9 +57,9 @@ if (getval("print","")!="") { # Launch printable page in an iframe
 <?php $types=get_stats_activity_types(); 
 for ($n=0;$n<count($types);$n++)
 	{ 
-	if (!isset($lang["stat-" . strtolower(str_replace(" ","",$types[$n]))])){$lang["stat-" . strtolower(str_replace(" ","",$types[$n]))]=str_replace("[type]",$types[$n],$lang["log-missinglang"]);}	
+	
 		
-	?><option <?php if ($activity_type==$types[$n]) { ?>selected<?php } ?> value="<?php echo $types[$n]?>"><?php echo $lang["stat-" . strtolower(str_replace(" ","",$types[$n]))]?></option><?php
+	?><option <?php if ($activity_type==$types[$n]) { ?>selected<?php } ?> value="<?php echo $types[$n]?>"><?php echo get_translated_activity_type($types[$n]) ?></option><?php
 	}
 ?>
 </select>
@@ -93,35 +93,7 @@ for ($n=1;$n<=12;$n++)
 </div>
 
 
-<div class="Question">
-<label for="groupselect"><?php echo $lang["group"]?></label><select id="groupselect" name="groupselect" class="shrtwidth"
-onchange="if (this.value=='viewall') {document.getElementById('groupselector').style.display='none';}
-else {document.getElementById('groupselector').style.display='block';}">
-<?php if (!checkperm("U")) { ?><option <?php if ($groupselect=="viewall") { ?>selected<?php } ?> value="viewall"><?php echo $lang["allgroups"]?></option><?php } ?>
-<option <?php if ($groupselect=="select") { ?>selected<?php } ?> value="select"><?php echo $lang["select"]?></option>
-</select>
-<div class="clearerleft"> </div>
-	<table id="groupselector" cellpadding=3 cellspacing=3 style="padding-left:150px;<?php if ($groupselect=="viewall") { ?>display:none;<?php } ?>">
-	<?php
-	$grouplist=get_usergroups(true);
-	for ($n=0;$n<count($grouplist);$n++)
-		{
-		?>
-		<tr>
-		<td valign=middle nowrap><?php echo htmlspecialchars($grouplist[$n]["name"])?>&nbsp;&nbsp;</td>
-		<td width=10 valign=middle><input type=checkbox name="groups[]" value="<?php echo $grouplist[$n]["ref"]?>" <?php if (in_array($grouplist[$n]["ref"],$groups)) { ?>checked<?php } ?>></td>
-		</tr>
-		<?php
-		}
-	?></table>
-	<div class="clearerleft"> </div>
-</div>
-
-<div class="Question" >
-<label for="groups">&nbsp;</label>
-
-<div class="clearerleft"> </div>
-</div>
+<?php include "../../include/usergroup_select.php" ?>
 
 
 <div class="Question">

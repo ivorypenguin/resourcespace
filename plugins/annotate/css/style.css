@@ -17,3 +17,13 @@
 .image-actions a {
    color:#eee;
 }
+.annotate-view-wrapper {
+	display:block;
+	clear:none;
+	float:left;
+	margin: 0px 10px 10px 0px;
+}
+.annotate-view-preview-links {
+	float:right;
+	padding-top:5px;
+}

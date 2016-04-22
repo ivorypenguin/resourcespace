@@ -1,19 +1,47 @@
 <?php
 include "../include/db.php";
-$k=getvalescaped("k","");if ($k=="") {include "../include/authenticate.php";}
-include "../include/general.php";
+include_once "../include/general.php";
+$k=getvalescaped("k","");if (($k=="") || (!check_access_key(getvalescaped("ref",""),$k))) {include_once "../include/authenticate.php";}
+
+if ($k!="" && (!isset($internal_share_access) || !$internal_share_access) && $prevent_external_requests)
+	{
+	echo "<script>window.location = '" .  $baseurl . "/login.php?error="  . (($allow_account_request)?"signin_required_request_account":"signin_required") . "'</script>";
+	exit();
+	}
+
 include "../include/request_functions.php";
-include "../include/collections_functions.php";
+include "../include/resource_functions.php";
+include_once "../include/collections_functions.php";
 
 $ref=getvalescaped("ref","",true);
 $error=false;
 hook("addcustomrequestfields");
 
-if (isset($anonymous_login) && $username == $anonymous_login){
+if ($k == "" && isset($anonymous_login) && $username == $anonymous_login){
 	$user_is_anon = true;
 } else {
 	$user_is_anon = false;
 }
+
+# Allow alternative configuration settings for this resource type.
+$resource            = get_resource_data($ref);
+$resource_field_data = get_resource_field_data($ref);
+
+resource_type_config_override($resource["resource_type"]);
+
+$resource_title = '';
+
+// Get any metadata fields we may want to show to the user on this page
+// Currently only title is showing
+foreach($resource_field_data as $resource_field)
+	{
+	if($view_title_field != $resource_field['ref'])
+		{
+		continue;
+		}
+
+	$resource_title = $resource_field['value'];
+	}
 
 if (getval("save","")!="")
 	{
@@ -41,27 +69,37 @@ if (getval("save","")!="")
 	
 	if ($result===false)
 		{
-		$error=$lang["requiredfields"];
+		$error=$lang["requiredfields-general"];
 		}
 	else
 		{
-		redirect("pages/done.php?text=resource_request&resource=" . $ref . "&k=" . $k);
+		redirect("pages/done.php?text=resource_request&resource=" . urlencode($ref) . "&k=" . urlencode($k));
 		}
 	}
 include "../include/header.php";
 ?>
 
-<div class="BasicsBox"> 
-  <h2>&nbsp;</h2>
+<div class="BasicsBox">
+	<p>
+		<a href="<?php echo $baseurl_short; ?>pages/view.php?ref=<?php echo urlencode($ref); ?>&k=<?php echo urlencode($k); ?>" onClick="return CentralSpaceLoad(this, true);">&lt;&nbsp;<?php echo $lang['backtoresourceview']; ?></a>
+	</p>
+
   <h1><?php echo $lang["requestresource"]?></h1>
   <p><?php echo text("introtext")?></p>
   
 	<form method="post" action="<?php echo $baseurl_short?>pages/resource_request.php">  
-	<input type=hidden name=ref value="<?php echo htmlspecialchars($ref)?>">
+	<input type="hidden" name="k" value="<?php echo htmlspecialchars($k); ?>">
+	<input type="hidden" name="ref" value="<?php echo htmlspecialchars($ref)?>">
 	
 	<div class="Question">
 	<label><?php echo $lang["resourceid"]?></label>
 	<div class="Fixed"><?php echo htmlspecialchars($ref)?></div>
+	<div class="clearerleft"> </div>
+	</div>
+	
+	<div class="Question">
+	<label><?php echo $lang['resourcetitle']; ?></label>
+	<div class="Fixed"><?php echo htmlspecialchars($resource_title); ?></div>
 	<div class="clearerleft"> </div>
 	</div>
 	
@@ -89,7 +127,7 @@ include "../include/header.php";
 	<?php } ?>
 
 	<div class="Question">
-	<label for="request"><?php echo $lang["requestreason"]?> <sup>*</sup></label>
+	<label for="request"><?php echo $lang["requestreason"]?> <?php if ($resource_request_reason_required) { ?><sup>*</sup><?php } ?></label>
 	<textarea class="stdwidth" name="request" id="request" rows=5 cols=50><?php echo htmlspecialchars(getvalescaped("request","")) ?></textarea>
 	<div class="clearerleft"> </div>
 	</div>

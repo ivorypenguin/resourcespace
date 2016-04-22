@@ -1,10 +1,10 @@
 <?php
 include "../include/db.php";
+include_once "../include/general.php";
 include "../include/authenticate.php"; 
-include "../include/general.php";
 include "../include/resource_functions.php";
 include "../include/search_functions.php";
-include "../include/collections_functions.php";
+include_once "../include/collections_functions.php";
 
 $collection=getvalescaped("collection","",true);
 
@@ -16,7 +16,6 @@ include "../include/header.php";
 
 ?>
 <div class="BasicsBox"> 
-<h2>&nbsp;</h2>
 <h1><?php echo $lang["downloadpurchaseitems"]?></h1>
 <?php
 

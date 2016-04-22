@@ -1,10 +1,19 @@
 <?php 
-function HookVideo_spliceAllCollectiontoolcompact1($collection, $count_result){
-	# Link in collections bar (minimised)
-	global $collection,$lang,$pagename;
-	if ($pagename=="collections" && $count_result!=0){
-	?>
-    <option value="<?php echo $collection?>|0|0|../plugins/video_splice/pages/splice.php?collection=<?php echo $collection ?>|main|false">&gt;&nbsp;<?php echo $lang["action-splice"]?>...</option>
-	<?php
+function HookVideo_spliceAllRender_actions_add_collection_option($top_actions,$options){
+	global $collection,$count_result,$lang,$pagename,$baseurl_short;
+	
+	$c=count($options);
+	
+	if ($pagename=="collections" && $count_result!=0)
+		{
+		$data_attribute['url'] = sprintf('%splugins/video_splice/pages/splice.php?collection=%s',
+            $baseurl_short,
+            urlencode($collection)
+        );
+        $options[$c]['value']='video_splice';
+		$options[$c]['label']=$lang["action-splice"];
+		$options[$c]['data_attr']=$data_attribute;
+		
+		return $options;
 	}
 }

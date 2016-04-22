@@ -2,9 +2,10 @@
 ob_start(); // we will use output buffering to prevent any included files 
             // from outputting stray characters that will mess up the binary download
             // we will clear the buffer and start over right before we download the file
-include "../include/db.php";
-include "../include/general.php";
-include "../include/resource_functions.php";
+include_once dirname(__FILE__)."/../include/db.php";
+include_once dirname(__FILE__)."/../include/general.php";
+include_once dirname(__FILE__)."/../include/resource_functions.php";
+include_once dirname(__FILE__)."/../include/search_functions.php";
 
 ob_end_clean(); 
 
@@ -15,7 +16,7 @@ if(strlen(getvalescaped('direct',''))>0){$direct = true;} else { $direct = false
 # if direct downloading without authentication is enabled, skip the authentication step entirely
 if (!($direct_download_noauth && $direct)){
 	# External access support (authenticate only if no key provided, or if invalid access key provided)
-	$k=getvalescaped("k","");if (($k=="") || (!check_access_key(getvalescaped("ref","",true),$k))) {include "../include/authenticate.php";}
+	$k=getvalescaped("k","");if (($k=="") || (!check_access_key(getvalescaped("ref","",true),$k))) {include dirname(__FILE__)."/../include/authenticate.php";}
 }
 
 $ref=getvalescaped("ref","",true);
@@ -29,48 +30,74 @@ $usage=getvalescaped("usage","-1");
 $usagecomment=getvalescaped("usagecomment","");
 
 
-$resource_data=get_resource_data($ref);
-
-if ($direct_download_noauth && $direct){
-	# if this is a direct download and direct downloads w/o authentication are enabled, allow regardless of permissions
-	$allowed = true;
-} else {
-	# Permissions check
-	$allowed=resource_download_allowed($ref,$size,$resource_data["resource_type"],$alternative);
-}
-
-if (!$allowed)
+// Is this a user specific download?
+$userfiledownload=getvalescaped("userfile","");
+if($userfiledownload!="")
 	{
-		# This download is not allowed. How did the user get here?
-		exit("Permission denied");
+	$noattach="";
+	$exiftool_write=false;
+	$filedetails=explode("_",$userfiledownload);
+	$ref=$filedetails[0];
+	$downloadkey=strip_extension($filedetails[1]);
+	$ext=substr($filedetails[1],strlen($downloadkey)+1);
+	$path=get_temp_dir(false,'user_downloads') . "/" . $ref . "_" . md5($username . $downloadkey . $scramble_key) . "." . $ext;
+	hook('modifydownloadpath');
+	}
+else
+	{
+	
+	$resource_data=get_resource_data($ref);
+	resource_type_config_override($resource_data["resource_type"]);
+	if ($direct_download_noauth && $direct){
+		# if this is a direct download and direct downloads w/o authentication are enabled, allow regardless of permissions
+		$allowed = true;
+	} else {
+		# Permissions check
+		$allowed=resource_download_allowed($ref,$size,$resource_data["resource_type"],$alternative);
 	}
 
-# additional access check, as the resource download may be allowed, but access restriction should force watermark.	
-$access=get_resource_access($ref);	
-$use_watermark=check_use_watermark($ref);
+	if (!$allowed)
+		{
+			# This download is not allowed. How did the user get here?
+			exit("Permission denied");
+		}
 
-# If no extension was provided, we fallback to JPG.
-if ($ext=="") {$ext="jpg";}
+	# additional access check, as the resource download may be allowed, but access restriction should force watermark.	
+	$access=get_resource_access($ref);	
+	$use_watermark=check_use_watermark($ref);
 
-$noattach=getval("noattach","");
-$path=get_resource_path($ref,true,$size,false,$ext,-1,$page,$use_watermark && $alternative==-1,"",$alternative);
+	# If no extension was provided, we fallback to JPG.
+	if ($ext=="") {$ext="jpg";}
 
-if (!file_exists($path)) {$path=get_resource_path($ref,true,"",false,$ext,-1,$page,false,"",$alternative);}
+	$noattach=getval("noattach","");
+	$path=get_resource_path($ref,true,$size,false,$ext,-1,$page,$use_watermark && $alternative==-1,"",$alternative);
+	
+	hook('modifydownloadpath');
 
-if (!file_exists($path) && $noattach!="")
-	{
-	# Return icon for file (for previews)
-	$info=get_resource_data($ref);
-	$path="../gfx/" . get_nopreview_icon($info["resource_type"],$ext,"thm");
+	if (!file_exists($path)) {$path=get_resource_path($ref,true,"",false,$ext,-1,$page,false,"",$alternative);}
+        
+	if (!file_exists($path) && $noattach!="")
+		{
+		# Return icon for file (for previews)
+		$info=get_resource_data($ref);
+		$path="../gfx/" . get_nopreview_icon($info["resource_type"],$ext,"thm");
+		}
+
+	# writing RS metadata to files: exiftool
+	if ($noattach=="" && $alternative==-1 && $exiftool_write) # Only for downloads (not previews)
+		{
+		$tmpfile=write_metadata($path,$ref);
+		if ($tmpfile!==false && file_exists($tmpfile)){$path=$tmpfile;}
+		}
 	}
 
-# writing RS metadata to files: exiftool
-if ($noattach=="" && $alternative==-1) # Only for downloads (not previews)
-	{
-	$tmpfile=write_metadata($path,$ref);
-	if ($tmpfile!==false && file_exists($tmpfile)){$path=$tmpfile;}
-	}
 
+if (!file_exists($path))
+    {
+    //include dirname(__FILE__)."/../include/header.php";
+    error_alert($lang["downloadfile_nofile"], true);
+    exit();
+    }
 hook('modifydownloadfile');	
 $filesize=filesize_unlimited($path);
 header("Content-Length: " . $filesize);
@@ -90,63 +117,7 @@ if ($noattach=="")
 	} 
 	
 	# We compute a file name for the download.
-	$filename=$ref . $size . ($alternative>0?"_" . $alternative:"") . "." . $ext;
-	
-	if ($original_filenames_when_downloading)
-		{
-		# Use the original filename.
-		if ($alternative>0)
-			{
-			# Fetch from the resource_alt_files alternatives table (this is an alternative file)
-			$origfile=get_alternative_file($ref,$alternative);
-			$origfile=get_data_by_field($ref,$filename_field)."-".$origfile["file_name"];
-			}
-		else
-			{
-				
-			# Fetch from field data or standard table		
-
-			$origfile=get_data_by_field($ref,$filename_field);	
-				
-			}
-		if (strlen($origfile)>0)
-			{
-			# do an extra check to see if the original filename might have uppercase extension that can be preserved.	
-			$pathparts=pathinfo($origfile);
-			if (isset($pathparts['extension'])){
-				if (strtolower($pathparts['extension'])==$ext){$ext=$pathparts['extension'];}	
-			} 
-			
-			# Use the original filename if one has been set.
-			# Strip any path information (e.g. if the staticsync.php is used).
-			# append preview size to base name if not the original
-			if ($size!=""){$filename=strip_extension(mb_basename($origfile))."-".$size.".".$ext;}
-			else {$filename = strip_extension(mb_basename($origfile)).".".$ext;}
-
-			if ($prefix_resource_id_to_filename) { $filename = $prefix_filename_string . $ref . "_" . $filename; }
-			}
-		}
-
-	if ($download_filename_id_only){$filename=$ref . "." . $ext;}
-
-	if (isset($download_filename_field))
-		{
-		$newfilename=get_data_by_field($ref,$download_filename_field);
-		if ($newfilename)
-			{
-			$filename = trim(nl2br(strip_tags($newfilename)));
-			if ($size!=""){$filename=substr($filename,0,200)."-".$size.".".$ext;}
-			else{$filename=substr($filename,0,200) . "." . $ext;}
-			if ($prefix_resource_id_to_filename) { $filename = $prefix_filename_string . $ref . "_" . $filename; }
-			}
-		}
-
-	# Remove critical characters from filename
-	$altfilename=hook("downloadfilenamealt");
-	if(!($altfilename)) $filename = preg_replace('/:/', '_', $filename);
-	else $filename=$altfilename;
-
-    	hook("downloadfilename");
+	$filename=get_download_filename($ref,$size,$alternative,$ext);
 
 	if (!$direct)
 		{
@@ -168,33 +139,26 @@ header("Content-Type: $mime");
 
 set_time_limit(0);
 
-#echo file_get_contents($path);
-# The above required that the downloaded file was read into PHP's memory space first.
-# Perhaps this is not the case for readfile().
-
-# Old method
-#readfile($path);
-
-# New method
-$sent = 0;
-$handle = fopen($path, "r");
-
-// Now we need to loop through the file and echo out chunks of file data
-while($sent < $filesize)
+if (!hook("replacefileoutput"))
 	{
-	echo fread($handle, $download_chunk_size);
-	ob_flush();
-	$sent += $download_chunk_size;
+	# New method
+	$sent = 0;
+	$handle = fopen($path, "r");
+
+	// Now we need to loop through the file and echo out chunks of file data
+	while($sent < $filesize)
+		{
+		echo fread($handle, $download_chunk_size);
+		ob_flush();
+		$sent += $download_chunk_size;
+		}
 	}
-
-
-
 
 #Deleting Exiftool temp File:
 if ($noattach=="" && $alternative==-1) # Only for downloads (not previews)
 	{
 	if (file_exists($tmpfile)){delete_exif_tmpfile($tmpfile);}
 	}
-
+hook('beforedownloadresourceexit');
 exit();
 

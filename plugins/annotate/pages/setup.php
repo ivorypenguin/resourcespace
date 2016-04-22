@@ -5,8 +5,8 @@
 
 // Do the include and authorization checking ritual -- don't change this section.
 include '../../../include/db.php';
+include_once '../../../include/general.php';
 include '../../../include/authenticate.php'; if (!checkperm('a')) {exit ($lang['error-permissiondenied']);}
-include '../../../include/general.php';
 
 // Specify the name of this plugin and the heading to display for the page.
 $plugin_name = 'annotate';
@@ -22,6 +22,7 @@ $page_def[] = config_add_boolean_select('annotate_public_view', $lang['annotate_
 $page_def[] = config_add_boolean_select('annotate_show_author', $lang['annotate_show_author']);
 $page_def[] = config_add_boolean_select('annotate_pdf_output', $lang["annotate_pdf_output"]);
 $page_def[] = config_add_boolean_select('annotate_pdf_output_only_annotated', $lang["annotate_pdf_output_only_annotated"]);
+$page_def[] = config_add_multi_group_select('annotate_admin_edit_access', $lang["annotate_admin_edit_access"]);
 
 // Do the page generation ritual -- don't change this section.
 $upload_status = config_gen_setup_post($page_def, $plugin_name);

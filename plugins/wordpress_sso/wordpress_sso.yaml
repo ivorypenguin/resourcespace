@@ -1,0 +1,7 @@
+name: wordpress_sso
+desc: Allows Single Sign On with Wordpress installation
+author: Montala Limited
+version: 1.0
+config_url: /plugins/wordpress_sso/pages/setup.php
+info_url: /plugins/wordpress_sso/pages/readme.txt
+category: advanced

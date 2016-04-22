@@ -1,6 +1,7 @@
 <?php
-include "../../include/security.php";
 include "../../include/db.php";
+include_once "../../include/general.php";
+include "../../include/authenticate.php";
 
 #handle posts
 if (array_key_exists("userfile",$_FILES))
@@ -32,8 +33,7 @@ if (array_key_exists("userfile",$_FILES))
 <html><body bgcolor="#dddddd">
 <form enctype="multipart/form-data" method="post">
 <input type="hidden" name="MAX_FILE_SIZE" value="2000000">
-<input type="hidden" name="extension" value="<?php echo $extension?>">
-<label for="uploader" style="font-family:verdana,arial,sans-serif;font-size:12px;">Upload file</label>
+<label for="uploader">Upload file</label>
 <input id="uploader" name="userfile" type="file" size=30>
 <div align=right style="margin-top:10px;margin-bottom:0px;"><input type="submit" name="upload" value="Upload File"></div>
 </form>

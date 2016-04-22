@@ -1,7 +1,7 @@
 <?php
 include "../../../include/db.php";
+include_once "../../../include/general.php";
 include "../../../include/authenticate.php"; if (!checkperm("r")) {exit ("Permission denied.");}
-include "../../../include/general.php";
 include "../../../include/resource_functions.php";
 
 $ref=getvalescaped("ref","");

@@ -20,6 +20,11 @@ $youtube_publish_client_id="";
 $youtube_publish_client_secret="";
 $youtube_publish_callback_url="/plugins/youtube_publish/pages/youtube_upload.php";
 
+$youtube_publish_add_anchor=false;
+
+#Ability to configure chunk size used when uploading to YouTube (in MB)
+$youtube_chunk_size=10;
+
 
 
 ?>

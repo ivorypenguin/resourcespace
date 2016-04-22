@@ -6,8 +6,8 @@ if (file_exists("../include/config.php")){
 }
 */
 include_once "../../../include/db.php";
-include_once "../../../include/authenticate.php";
 include_once "../../../include/general.php";
+include_once "../../../include/authenticate.php";
 include_once "../../../include/resource_functions.php";
 include_once "../../../include/collections_functions.php";
 include_once "../../../include/image_processing.php";
@@ -100,9 +100,9 @@ if (count($resources) == 0){
 			// strategy = we will transform to new path, check file, then replace the original.
 			$newpath = $path."_btr.$new_ext";
 
-			$command = $basecommand .  " \"$path\"";
+			$command = $basecommand .  " \"$path\"[0]";
 
-			$command .= " -delete 1--1 -flatten "; // make sure we're only operating on first layer; fixes embedded preview weirdness
+			$command .= " -flatten "; // make sure we're only operating on first layer; fixes embedded preview weirdness
 
 			if ($rotation > 0){
 				$command .= " -rotate $rotation ";

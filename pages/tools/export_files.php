@@ -19,8 +19,8 @@ set_time_limit(60*60*5);
 
 
 include "../../include/db.php";
+include_once "../../include/general.php";
 include "../../include/authenticate.php"; if (!checkperm("a")) {exit("Permission denied");}
-include "../../include/general.php";
 include "../../include/resource_functions.php";
 
 // create a text file for the report

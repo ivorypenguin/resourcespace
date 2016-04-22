@@ -9,7 +9,7 @@ function HookAction_datesPagestoolscron_copy_hitcountAddplugincronjob()
 	# Check that this is a valid date field to use
 	if(in_array($action_dates_restrictfield, $allowable_fields))
 		{
-		$restrict_resources=sql_query("select resource, value from resource_data where resource_type_field = '$action_dates_restrictfield'");
+		$restrict_resources=sql_query("select rd.resource, rd.value from resource_data rd left join resource r on r.ref=rd.resource where r.access=0 and rd.resource_type_field = '$action_dates_restrictfield' and rd.value <>'' and rd.value is not null");
 			
 		$emailrefs=array();
 		foreach ($restrict_resources as $resource)
@@ -23,8 +23,9 @@ function HookAction_datesPagestoolscron_copy_hitcountAddplugincronjob()
 					$emailrefs[]=$ref;		
 					}
 				}
+			
 			if (time()>=strtotime($resource["value"]))		
-				{
+				{		
 				# Restrict access to the resource as date has been reached
 				$existing_access=sql_value("select access as value from resource where ref='$ref'","");
 				if($existing_access==0) # Only apply to resources that are currently open
@@ -35,6 +36,7 @@ function HookAction_datesPagestoolscron_copy_hitcountAddplugincronjob()
 					}
 				}
 			}
+			
 		if(count($emailrefs)>0)
 			{
 			global $baseurl;
@@ -42,15 +44,51 @@ function HookAction_datesPagestoolscron_copy_hitcountAddplugincronjob()
 			
 			$subject=$lang['action_dates_email_subject'];
 			$message=str_replace("%%DAYS",$action_dates_email_admin_days,$lang['action_dates_email_text']) . "\r\n";
-			$message.=$baseurl . "?r=" . implode("\r\n" . $baseurl . "?r=",$emailrefs) . "\r\n";
+			$notification_message = $message; 
+			$message.= $baseurl . "?r=" . implode("\r\n" . $baseurl . "?r=",$emailrefs) . "\r\n";
+			$url = $baseurl . "/pages/search.php?search=!list" . implode(":",$emailrefs);
 			$templatevars['message']=$message;
-			echo "Sending email to " . $email_notify . "\r\n";
-			send_mail($email_notify,$subject,$message,$applicationname,$email_from,"emailexpiredresources",$templatevars,$applicationname);            
+			$admin_notify_emails = array();
+			$admin_notify_users = array();
+			$notify_users=get_notification_users("RESOURCE_ADMIN");
+			foreach($notify_users as $notify_user)
+				{
+				get_config_option($notify_user['ref'],'user_pref_resource_notifications', $send_message);		  
+				if($send_message==false){$continue;}		
+				get_config_option($notify_user['ref'],'email_user_notifications', $send_email);    
+				if($send_email && $notify_user["email"]!="")
+					{
+					echo "Sending email to " . $notify_user["email"] . "\r\n";
+					$admin_notify_emails[] = $notify_user['email'];				
+					}        
+				else
+					{
+					$admin_notify_users[]=$notify_user["ref"];
+					}
+				}
+			foreach($admin_notify_emails as $admin_notify_email)
+						{
+						send_mail($admin_notify_email,$applicationname . ": " . $lang["propose_changes_proposed_changes_submitted"],$message,"","","emailproposedchanges",$templatevars);    
+						}
+					
+					if (count($admin_notify_users)>0)
+						{
+						echo "Sending notification to user refs: " . implode(",",$admin_notify_users) . "\r\n";
+						message_add($admin_notify_users,$notification_message,$url,0);
+						}
 			}
 		}
 	if(in_array($action_dates_deletefield, $allowable_fields))
 		{
-		$delete_resources=sql_query("select resource, value from resource_data where resource_type_field = '$action_dates_deletefield'");
+		if ($action_dates_reallydelete)
+                	{
+			$delete_resources=sql_query("select resource, value from resource_data where resource_type_field = '$action_dates_deletefield' and value <>'' and value is not null");
+			}
+		else
+			{
+            if (!isset($resource_deletion_state)){$resource_deletion_state=3;}
+			$delete_resources=sql_query("select rd.resource, rd.value from resource r left join resource_data rd on r.ref=rd.resource and r.archive!='" . $resource_deletion_state  . "' where rd.resource_type_field = '$action_dates_deletefield' and value <>'' and rd.value is not null");
+			}
 		foreach ($delete_resources as $resource)
 			{
 			$ref=$resource["resource"];                       
@@ -61,10 +99,9 @@ function HookAction_datesPagestoolscron_copy_hitcountAddplugincronjob()
                             if ($action_dates_reallydelete)
                                 {
                                 delete_resource($ref);
-                                }
+				}
                             else
                                 {
-                                if (!isset($resource_deletion_state)){$resource_deletion_state=3;}
                                 sql_query("update resource set archive='" . $resource_deletion_state . "' where ref='" . $ref . "'");
                                 }
                             # Remove the resource from any collections
@@ -75,7 +112,7 @@ function HookAction_datesPagestoolscron_copy_hitcountAddplugincronjob()
 		}
 	}
 function HookAction_datesCron_copy_hitcountAddplugincronjob()
-	{	
+	{
 	HookAction_datesPagestoolscron_copy_hitcountAddplugincronjob();
 	}
 			

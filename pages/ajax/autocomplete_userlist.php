@@ -2,8 +2,8 @@
 # Feeder page for userlist names
 
 include "../../include/db.php";
+include_once "../../include/general.php";
 include "../../include/authenticate.php";
-include "../../include/general.php";
 
 $find=getvalescaped("term","  ");
 $userlists=sql_query("select userlist_name from user_userlist where user=$userref and userlist_name like '%$find%'");
