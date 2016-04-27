@@ -1829,7 +1829,7 @@ function write_metadata($path, $ref, $uniqid="")
 	{
 	// copys the file to tmp and runs exiftool on it	
 	// uniqid tells the tmp file to be placed in an isolated folder within tmp
-	global $exiftool_remove_existing,$storagedir,$exiftool_write,$exiftool_no_process,$mysql_charset,$exiftool_write_omit_utf8_conversion;
+	global $exiftool_remove_existing, $storagedir, $exiftool_write, $exiftool_write_option, $exiftool_no_process, $mysql_charset, $exiftool_write_omit_utf8_conversion;
 
     # Fetch file extension and resource type.
 	$resource_data=get_resource_data($ref);
@@ -1839,7 +1839,7 @@ function write_metadata($path, $ref, $uniqid="")
 	$exiftool_fullpath = get_utility_path("exiftool");
 
     # Check if an attempt to write the metadata shall be performed.
-	if (($exiftool_fullpath!=false) && ($exiftool_write) && !in_array($extension,$exiftool_no_process))
+	if(false != $exiftool_fullpath && $exiftool_write && $exiftool_write_option && !in_array($extension, $exiftool_no_process))
 		{
 		# Trust Exiftool's list of writable formats	
 		$command=$exiftool_fullpath . " -listwf";

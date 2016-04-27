@@ -41,9 +41,11 @@ if (!can_share_resource($ref,$minaccess))
 $internal_share_only=checkperm("noex");
         
 # Process deletion of access keys
-if (getval("deleteaccess","") != "")
+$deleteaccess = getvalescaped('deleteaccess', '');
+if ('' != $deleteaccess)
     {
-    delete_resource_access_key($ref, getvalescaped("deleteaccess", ""));
+    delete_resource_access_key($ref, $deleteaccess);
+    resource_log($ref, LOG_CODE_SYSTEM, '', '', '', str_replace('%access_key', $deleteaccess, $lang['access_key_deleted']));
     }
 
 include "../include/header.php";

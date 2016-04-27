@@ -338,7 +338,7 @@ else { ?>
 	<body class="CollectBack" id="collectbody">
 <div style="display:none;" id="currentusercollection"><?php echo $usercollection?></div>
 
-<script>usercollection='<?php echo htmlspecialchars($collection) ?>';</script>
+<script>usercollection='<?php echo htmlspecialchars($usercollection) ?>';</script>
 <?php 
 
 $add=getvalescaped("add","");

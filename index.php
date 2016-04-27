@@ -18,7 +18,7 @@ $k=getvalescaped("k","");if (($k=="") || (!check_access_key_collection(getvalesc
 
 if (!hook("replacetopurl"))
 	{ 
-	$topurl="pages/" . $default_home_page;
+	$topurl="pages/" . $default_home_page . "?login=true";
 	if ($use_theme_as_home) {$topurl="pages/themes.php";}
 	if ($use_recent_as_home) {$topurl="pages/search.php?search=" . urlencode("!last".$recent_search_quantity);}
 	} /* end hook replacetopurl */ 

@@ -92,6 +92,13 @@ button[type="submit"] { font-size: 1em; }
 .SlimHeader .RecordBox {margin: 10px 20px 10px 0;}
 .SlimHeader h2#CollectionsPanelHeader {display:none;}
 
+/* Slim header with fixed top bar */
+div#Header.SlimHeaderFixedPosition { width: 100%; position:fixed; top: 0px; z-index: 100; }
+div#Header.SlimHeaderFixedPosition #HeaderNav1 { margin-right: 25px; }
+div#Header.SlimHeaderFixedPosition #HeaderNav2 li:last-child { margin-right: 40px; }
+div#CentralSpaceContainer.SlimHeaderFixedPosition { margin-top: 100px; }
+div#SearchBox.SlimHeaderFixedPosition { margin-top: 80px; }
+
 #Footer {clear: both; margin:20px 25px;padding:0;text-align:left;}
 #FooterNavRight {float:right;text-align:right;margin-top: 10px;clear: right;}
 #FooterNavRightBottom {float:right;text-align:right;margin-top: 10px;clear: right;}

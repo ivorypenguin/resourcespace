@@ -117,7 +117,12 @@ if ($display_user_rating_stars && $star_search){ ?>
 	<?php } // end hook replacesearchbarstarjs ?>
 <?php } ?>
 
-<div id="SearchBox">
+<div id="SearchBox" <?php
+    if(isset($slimheader) && $slimheader && isset($slimheader_fixed_position) && $slimheader_fixed_position)
+        {
+        ?> class="SlimHeaderFixedPosition"<?php
+        }
+?>>
 
 <?php hook("searchbarbeforeboxpanel"); ?>
 

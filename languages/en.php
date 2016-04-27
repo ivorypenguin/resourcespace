@@ -891,6 +891,7 @@ $lang["notapprovedsharecollection"]="One or more resources in this collection ar
 $lang["notapprovedsharetheme"]="Sharing is prohibited for at least one collection, because one or more resources is not active.";
 $lang["notapprovedresources"]="The following resources are not active and cannot be added to a shared collection: ";
 $lang['error_generating_access_key'] = 'Could not generate an access key';
+$lang['access_key_deleted'] = "Access key '%access_key' deleted";
 
 
 # New for 1.3
@@ -2113,6 +2114,7 @@ $lang["all__footer"]="Powered by <a target=\"_blank\" href=\"http://www.resource
 $lang["all__researchrequest"]="Let our resources team find the resources you need.";
 $lang["all__searchpanel"]="Search using descriptions, keywords and resource numbers";
 $lang["change_language__introtext"]="Please select your language below.";
+$lang['collection_download__write_metadata_on_download_label'] = 'Embed resource metadata in the downloaded file(s)?';
 $lang["collection_edit__introtext"]="Organise and manage your work by grouping resources together. Create 'Collections' to suit your way of working.\n\n<br />\n\nAll the collections in your list appear in the 'My Collections' panel at the bottom of the screen\n\n<br /><br />\n\n<strong>Private Access</strong> allows only you and and selected users to see the collection. Ideal for grouping resources under projects that you are working on independently and share resources amongst a project team.\n\n<br /><br />\n\n<strong>Public Access</strong> allows all users of the system to search and see the collection. Useful if you wish to share collections of resources that you think others would benefit from using.\n\n<br /><br />\n\nYou can choose whether you allow other users (public or users you have added to your private collection) to add and remove resources or simply view them for reference.";
 $lang["collection_email__introtext"]="Please complete the form below. The recipients will receive an email containing links to the collections rather than file attachments so they can choose and download the appropriate resources.";
 $lang["collection_email__introtextthemeshare"]="Complete the form below to e-mail the featured collections in this featured collection category. The recipients will receive an email containing links to each of the featured collections.";
@@ -2328,6 +2330,7 @@ $lang['userpreference_system_management_notifications'] = "Send me messages abou
 $lang['userpreference_user_management_notifications'] = "Send me user administration messages e.g. new user acount requests";
 $lang['userpreference_resource_access_notifications'] = "Send me messages about resource access e.g. resource requests";
 $lang['userpreference_resource_notifications'] = "Send me resource messages about resource management e.g. resource state changes, metadata changes";
+$lang['userpreference_exiftool_write_metadata_label'] = 'Write embedded metadata on download (provides option to choose this only on collection download)';
 
 /* System Config */
 $lang['systemconfig'] = 'System configuration';

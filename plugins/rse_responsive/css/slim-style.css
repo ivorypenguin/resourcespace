@@ -47,6 +47,10 @@
     #CentralSpace a.HomePanel {
         font-size:1em;
     }
+
+    div#Header.SlimHeaderFixedPosition #HeaderNav1Click { margin-right: 30px; }
+    div#CentralSpaceContainer.SlimHeaderFixedPosition { margin-top: 16px; }
+    div#SearchBox.SlimHeaderFixedPosition { margin-top: 46px; }
 }
 /* General Forms */
 @media(max-width:1100px) {   

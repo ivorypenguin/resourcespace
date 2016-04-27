@@ -1,0 +1,6 @@
+name    : simpleldap
+author  : David Dwiggins, Montala Ltd.
+version : 1.2
+desc    : Simpler implementation of ldap authentication, targeted at Active Directory but also supports Oracle directory
+config_url: /plugins/simpleldap/pages/setup.php
+category: advanced

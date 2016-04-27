@@ -325,7 +325,10 @@ $linkUrl=isset($header_link_url) ? $header_link_url : $homepage_url;
 if($slimheader)
     {
     ?>
-    <div id="Header" <?php echo (isset($slimheader_darken) && $slimheader_darken) ? "class='slimheader_darken'":"";
+    <div id="Header" class="<?php
+        echo ((isset($slimheader_darken) && $slimheader_darken) ? 'slimheader_darken' : '');
+        echo ((isset($slimheader_fixed_position) && $slimheader_fixed_position) ? ' SlimHeaderFixedPosition' : '');
+    ?>"<?php
     if (isset($header_colour_style_override) && $header_colour_style_override!='') { ?> style="background: <?php echo $header_colour_style_override; ?>;"<?php } ?>>
     <?php hook("responsiveheader");
     if($header_text_title) 
@@ -508,7 +511,12 @@ if (($pagename=="login") || ($pagename=="user_password") || ($pagename=="user_re
 else {$div="CentralSpace";}
 ?>
 <!--Main Part of the page-->
-<?php if (($pagename!="login") && ($pagename!="user_password") && ($pagename!="user_request")) { ?><div id="CentralSpaceContainer"><?php }
+        <?php if (($pagename!="login") && ($pagename!="user_password") && ($pagename!="user_request")) { ?><div id="CentralSpaceContainer"<?php
+        if(isset($slimheader) && $slimheader && isset($slimheader_fixed_position) && $slimheader_fixed_position)
+            {
+            ?> class="SlimHeaderFixedPosition"<?php
+            }
+        ?>><?php }
 
 hook("aftercentralspacecontainer");
 ?>

@@ -628,5 +628,19 @@ if (!hook("replaceslideshow"))
 
 } // End of ReplaceHome hook
 
+
+// Launch KB modal if just logged in?
+if (in_array($usergroup,$launch_kb_on_login_for_groups) && getval("login","")!="")
+	{
+	?>
+	<script>
+	window.setTimeout("ModalLoad('<?php echo $baseurl ?>/pages/help.php?initial=true',true);",2000);
+	</script>
+	<?php
+	}
+
+
+
+
 include "../include/footer.php";
 ?>

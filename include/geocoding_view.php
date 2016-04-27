@@ -97,6 +97,9 @@
 			    markers.addMarker(new OpenLayers.Marker(lonLat));
 		    <?php } ?>
     
+        setTimeout(function() {
+            map.updateSize();
+        }, 200);
 		map.setCenter (lonLat, Math.min(<?php echo $zoom ?>, map.getNumZoomLevels() - 1));
 	
 	      </script>

@@ -263,7 +263,7 @@ include "../../include/header.php";
         true
     );
     $page_def[] = config_add_single_select('default_perpage', $lang['userpreference_default_perpage_label'], array(24, 48, 72, 120, 240), false, 300, '', true);
-    
+
     // Default Display
     $default_display_array = array();
     if($smallthumbs || $GLOBALS['default_display'] == 'smallthumbs')
@@ -293,14 +293,14 @@ include "../../include/header.php";
     $page_def[] = config_add_boolean_select('use_checkboxes_for_selection', $lang['userpreference_use_checkboxes_for_selection_label'], $enable_disable_options, 300, '', true);
     $page_def[] = config_add_boolean_select('resource_view_modal', $lang['userpreference_resource_view_modal_label'], $enable_disable_options, 300, '', true);
     $page_def[] = config_add_html('</div>');
-    ?>
 
-    <?php
+
     // User interface section
     $page_def[] = config_add_html('<h2 class="CollapsibleSectionHead">' . $lang['userpreference_user_interface'] . '</h2><div id="UserPreferenceUserInterfaceSection" class="CollapsibleSection">');
     $page_def[] = config_add_single_select('thumbs_default', $lang['userpreference_thumbs_default_label'], array('show' => $lang['showthumbnails'], 'hide' => $lang['hidethumbnails']), true, 300, '', true);
     $page_def[] = config_add_boolean_select('basic_simple_search', $lang['userpreference_basic_simple_search_label'], $enable_disable_options, 300, '', true);
     $page_def[] = config_add_html('</div>');
+
 
     // Email section, only show if user has got an email address
 	if ($useremail!="")
@@ -314,7 +314,8 @@ include "../../include/header.php";
 		//$page_def[] = config_add_boolean_select('email_user_daily_digest', $lang['userpreference_email_digest_label'], $enable_disable_options, 300, '', true);
 		$page_def[] = config_add_html('</div>');
 		}
-	
+
+
 	// System notifications section - used to disable system generated messages 
 	$page_def[] = config_add_html('<h2 class="CollapsibleSectionHead">' . $lang['mymessages'] . '</h2><div id="UserPreferenceAdminSection" class="CollapsibleSection">');
 	$page_def[] = config_add_boolean_select('user_pref_show_notifications', $lang['user_pref_show_notifications'], $enable_disable_options, 300, '', true);
@@ -332,10 +333,20 @@ include "../../include/header.php";
 		{	
 		$page_def[] = config_add_boolean_select('user_pref_resource_access_notifications', $lang['userpreference_resource_access_notifications'], $enable_disable_options, 300, '', true);
 		}
-		
+
 	$page_def[] = config_add_html('</div>');
-	
-	
+
+
+    // Metadata section
+    if(!$force_exiftool_write_metadata)
+        {
+        $page_def[] = config_add_html('<h2 class="CollapsibleSectionHead">' . $lang['metadata'] . '</h2><div id="UserPreferenceMetadataSection" class="CollapsibleSection">');
+        $page_def[] = config_add_boolean_select('exiftool_write_option', $lang['userpreference_exiftool_write_metadata_label'], $enable_disable_options, 300, '', true);
+        $page_def[] = config_add_html('</div>');
+        }
+
+
+
     // Let plugins hook onto page definition and add their own configs if needed
     // or manipulate the list
     $plugin_specific_definition = hook('add_user_preference_page_def', '', array($page_def));

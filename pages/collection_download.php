@@ -272,7 +272,19 @@ if ($submitted != "")
 				{
 				$used_resources[]=$ref;
 				# when writing metadata, we take an extra security measure by copying the files to tmp
-				$tmpfile=write_metadata($p,$ref,$id); // copies file
+                $tmpfile = false;
+
+                if($exiftool_write && !$force_exiftool_write_metadata)
+                    {
+                    $exiftool_write_option = false;
+                    if('yes' == getvalescaped('write_metadata_on_download', ''))
+                        {
+                        $exiftool_write_option = true;
+                        }
+                    }
+
+				$tmpfile = write_metadata($p, $ref, $id); // copies file
+
 				if($tmpfile!==false && file_exists($tmpfile)){
 					$p=$tmpfile; // file already in tmp, just rename it
 				} else if (!$replaced_file) {
@@ -869,7 +881,29 @@ if ($archiver)
 	<label for="include_csv_file"><?php echo $lang['csvAddMetadataCSVToArchive']; ?></label>
 	<input type="checkbox" id="include_csv_file" name="include_csv_file" value="yes">
 </div>
-<div class="clearerleft"></div></div>
+<div class="clearerleft"></div>
+
+<?php
+if($exiftool_write && !$force_exiftool_write_metadata)
+    {
+    // From a data security point of view, by default we should not write the metadata as it may contain confidential information
+    $write_metadata_on_download_ticked = false;
+    if($exiftool_write_option)
+        {
+        $write_metadata_on_download_ticked = true;
+        }
+    ?>
+    <!-- Let user say (if allowed - ie. not enforced by system admin) whether metadata should be written to the file or not -->
+    <div class="Question">
+        <label for="write_metadata_on_download"><?php echo $lang['collection_download__write_metadata_on_download_label']; ?></label>
+        <input type="checkbox" id="write_metadata_on_download" name="write_metadata_on_download" value="yes"<?php echo ($write_metadata_on_download_ticked ? ' checked' : ''); ?>>
+    </div>
+    <div class="clearerleft"></div>
+    <?php
+    }
+    ?>
+
+</div>
 
 <div class="QuestionSubmit" id="downloadbuttondiv"> 
 <label for="download"> </label>

@@ -3,7 +3,9 @@ include "../include/db.php";
 include_once "../include/general.php";
 include_once "../include/collections_functions.php";
 $ref=getval("ref","",true);
-$k=getvalescaped("k","");if ($k=="" || !check_access_key_collection($ref,$k)) {include "../include/authenticate.php";} 
+$k=getvalescaped("k","");if ($k=="" || !check_access_key_collection($ref,$k)) {include "../include/authenticate.php";}
+
+if (!checkperm('q')){exit($lang["error-permissiondenied"]);}
 
 include "../include/request_functions.php";
 

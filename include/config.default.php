@@ -169,6 +169,10 @@ $header_link=true;
 #This uses an img tag to display the header and will automatically include a link to the homepage. 
 $slimheader=false;
 # Custom source location for the header image (includes baseurl, requires leading "/"). Will default to the resourcespace logo if left blank. Recommended image size: 350px(X) x 80px(Y)
+
+# Set this to true in order for the top bar to remain present when scrolling down the page
+$slimheader_fixed_position=false;
+
 $linkedheaderimgsrc="";
 ###### END SLIM HEADER #######
 
@@ -392,6 +396,21 @@ $exiftool_remove_existing=false;
 $exiftool_write=true;
 # Omit conversion to utf8 when exiftool writes (this happens when $mysql_charset is not set, or $mysql_charset!="utf8")
 $exiftool_write_omit_utf8_conversion=false;
+
+/*
+These two options allow the user to choose whether they want to write metadata on downloaded files.
+
+$force_exiftool_write_metadata should be used by system admins to force writing or not writing metadata on a file on download
+$exiftool_write_option will be used on both resource and collection download. On collection download, an extra option (check box)
+will be available so the user can specify whether they want to write metadata on the downloaded files
+example use:
+$force_exiftool_write_metadata = false; $exiftool_write_option = true; means ResourceSpace will write to the files
+$force_exiftool_write_metadata = true; $exiftool_write_option = false; means ResourceSpace will force users to not write metadata to the files
+
+Note: this honours $exiftool_write so if that option is false, this will not work
+*/
+$force_exiftool_write_metadata = false;
+$exiftool_write_option         = false;
 
 # Set metadata_read to false to omit the option to extract metadata.
 $metadata_read=true;
@@ -3013,4 +3032,7 @@ $collection_search_includes_resource_metadata=false;
 # Specify field references for fields that you do not wish the blank default entry to appear for, so the first keyword node is selected by default.
 # e.g. array(3,12);
 $default_to_first_node_for_fields=array();
+
+# A list of groups for which the knowledge base will launch on login, until dismissed.
+$launch_kb_on_login_for_groups=array();
 
