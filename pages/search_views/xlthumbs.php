@@ -399,7 +399,7 @@ if (!hook("renderresultlargethumb"))
 							<span class="IconComment">
 								<a 
 									href="<?php echo $baseurl_short?>pages/collection_comment.php?ref=<?php echo urlencode($ref)?>&amp;collection=<?php echo urlencode(substr($search,11))?>"  
-									onClick="return CentralSpaceLoad(this,true);" 
+									onClick="return ModalLoad(this,true);" 
 									title="<?php echo $lang["addorviewcomments"]?>"
 								>
 									<img 

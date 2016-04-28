@@ -2027,7 +2027,7 @@ function bulk_mail($userlist,$subject,$text,$html=false,$message_type=MESSAGE_EN
 			# strip the tags out
 			$body=strip_tags($body);
 			}
-		message_add($user_refs,$body,$url);
+		message_add($user_refs,$body,$url,null,$message_type);
 		}
 
     # Return an empty string (all OK).

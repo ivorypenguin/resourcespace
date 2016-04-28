@@ -31,7 +31,7 @@ function message_get(&$messages,$user,$get_all=false,$sort_desc=false)
 // add a message.
 function message_add($users,$text,$url="",$owner=null,$notification_type=MESSAGE_ENUM_NOTIFICATION_TYPE_SCREEN,$ttl_seconds=MESSAGE_DEFAULT_TTL_SECONDS, $related_activity=0, $related_ref=0)
 	{
-	global $userref;
+	global $userref,$applicationname,$lang;
 
 	$text = escape_check($text);
 	$url = escape_check($url);
@@ -52,6 +52,20 @@ function message_add($users,$text,$url="",$owner=null,$notification_type=MESSAGE
 	foreach($users as $user)
 		{
 		sql_query("INSERT INTO `user_message` (`user`, `message`) VALUES ($user,$message_ref)");
+		
+		// send an email if the user has notifications and emails setting and the message hasn't already been sent via email
+		if($notification_type!=MESSAGE_ENUM_NOTIFICATION_TYPE_EMAIL && $notification_type!=(MESSAGE_ENUM_NOTIFICATION_TYPE_EMAIL | MESSAGE_ENUM_NOTIFICATION_TYPE_SCREEN))
+			{
+			get_config_option($user,'email_and_user_notifications', $send_email);
+			if($send_email)
+				{
+				$email_to=sql_value("select email value from user where ref={$user}","");
+				if($email_to!=='')
+					{
+					send_mail($email_to,$applicationname . ": " . $lang['notification_email_subject'],$text . "<br/><br/>" . $url);
+					}
+				}
+			}
 		}
 
 	}
