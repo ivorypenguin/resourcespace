@@ -44,14 +44,16 @@ function DisplayTheme($themes=array(), $simpleview=false)
 				}
 			?>				
 			<a href="<?php echo $baseurl_short?>pages/search.php?search=!collection<?php echo $getthemes[$m]["ref"]?>" onclick="return CentralSpaceLoad(this,true);" class="FeaturedSimplePanel FeaturedSimpleLink HomePanel DashTile" id="featured_tile_<?php echo $getthemes[$m]["ref"]; ?>">
-				<div id="contents_feature_tile_<?php echo $getthemes[$m]["ref"]; ?>" class="HomePanelIN TileContentShadow FeaturedSimpleTile ">
-				<?php if($theme_image_path!="")
+				<div id="contents_feature_tile_<?php echo $getthemes[$m]["ref"]; ?>" class="HomePanelIN TileContentShadow FeaturedSimpleTile"
+				contenteditable=<?php if($theme_image_path!="")
 							{	
 							?>
-							<img src="<?php echo $theme_image_path; ?>" style="<?php if($theme_image_detail["thumb_width"]/$theme_image_detail["thumb_height"]>250/150){echo "height:100%;";}else{echo "width:100%;";} ?> position:absolute;top:0;left:0;" class="thmbs_tile_img">
+							style="background: url(<?php echo $theme_image_path; ?>);
+							background-size: cover;"							
 							<?php
 							}
-							?>	
+							?>
+							>
 				<div id="FeaturedSimpleTileContents_<?php echo $getthemes[$m]["ref"] ; ?>"  class="HomePanelIN FeaturedSimpleTileContents TileContentShadow">
 				<h2><?php echo i18n_get_collection_name($getthemes[$m])?></h2>
 				</div>
@@ -429,14 +431,15 @@ elseif ($themes_category_split_pages && !$theme_direct_jump)
 					?>		
 					
 				<a href="<?php echo $link; ?>" onclick="return CentralSpaceLoad(this,true);"  class="FeaturedSimplePanel FeaturedSimpleLink HomePanel DashTile" id="category_tile_<?php echo htmlspecialchars($headers[$n]);?>">
-					<div id="contents_user_tile<?php echo htmlspecialchars($headers[$n]);?>" class="HomePanelIN TileContentShadow FeaturedSimpleTile" style="">
+					<div id="contents_user_tile<?php echo htmlspecialchars($headers[$n]);?>" class="HomePanelIN TileContentShadow FeaturedSimpleTile"
 						<?php if($theme_image_path!="")
 							{	
 							?>
-							<img src="<?php echo $theme_image_path; ?>" style="<?php if($theme_image_detail["thumb_width"]/$theme_image_detail["thumb_height"]>250/150){echo "height:100%;";}else{echo "width:100%;";} ?> position:absolute;top:0;left:0;" class="thmbs_tile_img">
+							style="background: url(<?php echo $theme_image_path; ?>);background-size: cover;"						
 							<?php
 							}
-							?>	
+							?>
+							>
 					<div id="FeaturedSimpleTileContents_<?php echo htmlspecialchars($headers[$n]) ; ?>"  class="HomePanelIN FeaturedSimpleTileContents TileContentShadow">
 					<h2><?php echo htmlspecialchars(i18n_get_translated(str_replace("*","",$headers[$n])))?></h2>
 					</div>
@@ -672,7 +675,7 @@ if ($header=="" && !isset($themes[0]))
 					?>
 					
 					<a href="<?php echo $baseurl_short?>pages/themes.php?smart_theme=<?php echo $headers[$n]["ref"] ?>&node=<?php echo urlencode(getval("parentnode",0)) ?>&nodename=<?php echo urlencode(getval("parentnodename","")) ?>&simpleview=true" onclick="return CentralSpaceLoad(this,true);" class="FeaturedSimplePanel HomePanel DashTile FeaturedSimpleLink" id="featured_tile_smart<?php echo $n ;?>&simpleview=true">
-					<div class="FeaturedSimpleTile">										
+					<div class="HomePanelIN TileContentShadow FeaturedSimpleTile">										
 					<div id="FeaturedSimpleTileContents_smart<?php echo $n ; ?>"  class="HomePanelIN FeaturedSimpleTileContents" >	
 								<h2><?php echo str_replace("*","",i18n_get_translated($headers[$n]["smart_theme_name"])); ?></h2>
 							</div>			

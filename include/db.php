@@ -855,6 +855,8 @@ function CheckDBStruct($path,$verbose=false)
 										(count($matchbase)==3 && count($matchexisting)==3 && $matchbase[1] == $matchexisting[1] && $matchbase[2] > $matchexisting[2])
 										 ||
 										(stripos($basecoltype,"text")!==false && stripos($existingcoltype,"text")===false)
+										||
+										(stripos($basecoltype,"BIGINT")!==false && stripos($existingcoltype,"INT")!==false)
 									       )
 										{        
 										debug("DBSTRUCT - updating column " . $col[0] . " in table " . $table . " from " . $existing[$n]["Type"] . " to " . str_replace("§",",",$col[1]) );
