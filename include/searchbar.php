@@ -15,6 +15,7 @@ else
 	}
 
 include_once("search_functions.php");
+include_once("render_functions.php");
 
 if(!isset($internal_share_access))
 	{
@@ -281,8 +282,12 @@ if (!$basic_simple_search)
 	if (!$searchbar_buttons_at_bottom){ echo $searchbuttons."<br/>"; }
 	if (!$basic_simple_search) {
 	// Include simple search items (if any)
+	global $clear_function;
+	
 	$optionfields=array();
 	$rendered_names=array();
+	$has_value=array();
+	//global $fields;
 	for ($n=0;$n<count($fields);$n++)
 		{
 		$render=true;
@@ -291,177 +296,38 @@ if (!$basic_simple_search)
 			{
 			$rendered_names[]=$fields[$n]["name"];
 			
-		hook("modifysearchfieldtitle");?>
-		<div class="SearchItem" id="simplesearch_<?php echo $fields[$n]["ref"] ?>" <?php if (strlen($fields[$n]["tooltip_text"])>=1){echo "title=\"" . htmlspecialchars(lang_or_i18n_get_translated($fields[$n]["tooltip_text"], "fieldtooltip-")) . "\"";}?>><?php echo htmlspecialchars($fields[$n]["title"]) ?><br />
-		<?php
-		
-		# Fetch current value
-		$value="";
-		if (isset($set_fields[$fields[$n]["name"]])) {$value=$set_fields[$fields[$n]["name"]];}
-		
-	#hook to modify field type in special case. Returning zero (to get a standard text box) doesn't work, so return 1 for type 0, 2 for type 1, etc.
-	if(hook("modifyfieldtype")){$fields[$n]["type"]=hook("modifyfieldtype")-1;}
-
-		switch (TRUE)
-			{
-			case ($fields[$n]["type"]==0): # -------- Text boxes?><?php
-			case ($fields[$n]["type"]==1):
-			case ($fields[$n]["type"]==5):
-			case ($fields[$n]["type"]==9 && !$simple_search_show_dynamic_as_dropdown):
-			?>
-			<input class="SearchWidth" type=text name="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>" id="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>" value="<?php echo htmlspecialchars($value)?>"><?php
-			if ($autocomplete_search) { 
-				# Auto-complete search functionality
-				?></div>
-				<script type="text/javascript">
-				
-				jQuery(document).ready(function () { 
-				
-					jQuery("#field_<?php echo htmlspecialchars($fields[$n]["name"])?>").autocomplete( { source: "<?php echo $baseurl?>/pages/ajax/autocomplete_search.php?field=<?php echo htmlspecialchars($fields[$n]["name"]) ?>&fieldref=<?php echo $fields[$n]["ref"]?>"} );
-					})
-				
-				</script>
-				<div class="SearchItem">
-			<?php } 
-			# Add to the clear function so clicking 'clear' clears this box.
-			$clear_function.="document.getElementById('field_" . $fields[$n]["name"] . "').value='';";
-			
-			break;
-		
-			case ($fields[$n]["type"]==2):
-			case ($fields[$n]["type"]==3):
-			case ($fields[$n]["type"]==9 && $simple_search_show_dynamic_as_dropdown):
-			// Dropdown and checkbox types - display a dropdown for both - also for dynamic dropdowns when configured
-			$options=get_field_options($fields[$n]["ref"]);
-			$adjusted_dropdownoptions=hook("adjustdropdownoptions");
-			if ($adjusted_dropdownoptions){$options=$adjusted_dropdownoptions;}
-			
-			$optionfields[]=$fields[$n]["name"]; # Append to the option fields array, used by the AJAX dropdown filtering
-			?>
-			<select id="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>" name="field_drop_<?php echo htmlspecialchars($fields[$n]["name"]) ?>" class="SearchWidth" onChange="FilterBasicSearchOptions('<?php echo htmlspecialchars($fields[$n]["name"]) ?>',<?php echo htmlspecialchars($fields[$n]["resource_type"]) ?>);">
-			  <option selected="selected" value="">&nbsp;</option>
-			  <?php
-			  for ($m=0;$m<count($options);$m++)
+			# Fetch current value
+			$value="";
+			if (isset($set_fields[$fields[$n]["name"]])) {$value=$set_fields[$fields[$n]["name"]];}
+			$fields[$n]['value']=$value;
+			if($value!=='')
 				{
-				$c=i18n_get_translated($options[$m]);
-				if ($c!="")
-					{
-					if (!hook('modifysearchfieldvalues')) 
-						{
-						?><option <?php if (cleanse_string($c,false)==$value) { ?>selected<?php } ?>><?php echo htmlspecialchars($c) ?></option><?php
-                        }
-                    }
+				$has_value[]=$fields[$n]['ref'];
 				}
-			  ?>
-	  		</select>
-			<?php
+			render_search_field($fields[$n],$value,false,"SearchWidth",true);
 
-			# Add to the clear function so clicking 'clear' clears this box.
-			$clear_function.="document.getElementById('field_" . $fields[$n]["name"] . "').selectedIndex=0;";
-			break;
-			
-			case ($fields[$n]["type"]==4):
-			case ($fields[$n]["type"]==10):
-			case ($fields[$n]["type"]==6):
-			// Date types
-			$d_year='';$d_month='';$d_day='';
-			$s=explode("|",$value);
-	
-			if (count($s)>=1) {$d_year=$s[0];}
-			if (count($s)>=2) {$d_month=$s[1];}
-			if (count($s)>=3) {$d_day=$s[2];}
-			?>
-			<select id="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>_year" class="SearchWidth" name="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>_year">
-			  <option selected="selected" value=""><?php echo $lang["anyyear"]?></option>
-			  <?php
-			  $y=date("Y");
-			  for ($d=$y;$d>=$minyear;$d--)
-				{
-				?><option <?php if ($d==$d_year) { ?>selected<?php } ?>><?php echo $d?></option><?php
-				}
-			  ?>
-			</select>
-			<?php if ($searchbyday) { ?><br /><?php } ?>	
-			<select id="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>_month" name="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>_month" class="SearchWidth">
-			  <option selected="selected" value=""><?php echo $lang["anymonth"]?></option>
-			  <?php
-			  for ($d=1;$d<=12;$d++)
-				{
-				$m=str_pad($d,2,"0",STR_PAD_LEFT);
-				?><option <?php if ($d==$d_month) { ?>selected<?php } ?> value="<?php echo $m?>"><?php echo $lang["months"][$d-1]?></option><?php
-				}
-			  ?>		
-			</select>
-		    <?php if ($searchbyday) { ?>
-			<select id="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>_day" name="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>_day" class="SearchWidth">
-			  <option selected="selected" value=""><?php echo $lang["anyday"]?></option>
-			  <?php
-			  for ($d=1;$d<=31;$d++)
-				{
-				$m=str_pad($d,2,"0",STR_PAD_LEFT);
-				?><option <?php if ($d==$d_day) { ?>selected<?php } ?> value="<?php echo $m?>"><?php echo $m?></option><?php
-				}
-			  ?>
-			</select>
-			<?php } ?>
-			<?php
-			# Add to the clear function so clicking 'clear' clears this box.
-			$clear_function.="
-				document.getElementById('field_" . $fields[$n]["name"] . "_year').selectedIndex=0;
-				document.getElementById('field_" . $fields[$n]["name"] . "_month').selectedIndex=0;
-				document.getElementById('field_" . $fields[$n]["name"] . "_day').selectedIndex=0;
-				";
-			break;
-			case ($fields[$n]["type"]==7):
-			 
-			
-			
-			
-			#-------------------- Category Tree (launches popup window)
-			
-			# Show a smaller version of the selected node box, plus the hidden value that submits the form.
-			
-			# Reprocess provided value into expected format.
-            $value=preg_replace('/[;\|]/',',',$value);
-
-			?>
-			<div id="field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>" >
-			<div id="<?php echo htmlspecialchars($fields[$n]["name"]) ?>_statusbox" class="MiniCategoryBox">
-                <script>UpdateStatusBox("<?php echo htmlspecialchars($fields[$n]["name"]) ?>", false);</script>
-            </div>
-			<input type="hidden" name="field_cat_<?php echo htmlspecialchars($fields[$n]["name"]) ?>" id="<?php echo htmlspecialchars($fields[$n]["name"]) ?>_category" value="<?php echo htmlspecialchars($value) ?>">
-			
-			
-			<?php
-            if (!isset($extrafooterhtml))
-                {
-                $extrafooterhtml='';
-                }
-			# Add floating frame HTML. This must go in the footer otherwise it appears in the wrong place in IE due to it existing within a floated parent (the search bar).
-			$extrafooterhtml.="
-			<div class=\"RecordPanel\" style=\"display:none;position:fixed;top:100px;left:200px;text-align:left;\" id=\"cattree_" . $fields[$n]["name"] . "\">" . $lang["pleasewait"] . "</div>
-			<script type=\"text/javascript\">
-			// Load Category Tree
-			jQuery(document).ready(function () {
-				jQuery('#cattree_" . $fields[$n]["name"] . "').load('" . $baseurl_short . "pages/ajax/category_tree_popup.php?field=" . $fields[$n]["ref"] . "&value=" . urlencode($value) . "&nc=" . time() . "');
-				})
-			</script>
-			";
-			
-			echo "<a href=\"#\" onClick=\"jQuery('#cattree_" . $fields[$n]["name"] . "').css('top', (jQuery(this).position().top)-200);jQuery('#cattree_" . $fields[$n]["name"] . "').css('left', (jQuery(this).position().left)-400);jQuery('#cattree_" . $fields[$n]["name"] . "').css('position', 'fixed');jQuery('#cattree_" . $fields[$n]["name"] . "').show();jQuery('#cattree_" . $fields[$n]["name"] . "').draggable();return false;\">" . $lang["select"] . "</a></div>";
-
-			# Add to clear function
-			$clear_function.="DeselectAll('" . $fields[$n]["name"] ."', true);";
-			
-			break;			
-			
-			
 			}
+		}
+	
+	if(!empty($has_value))
+		{
 		?>
-		</div>	
+		<script>
+			jQuery(document).ready(function(){
+				<?php
+				// we need to trigger a change event
+				foreach($has_value as $trigger_field)
+					{
+					?>
+					jQuery("#field_<?php echo $trigger_field?>").trigger('change');
+					<?php
+				}
+				?>
+			});
+		</script>
 		<?php
 		}
-		}
+	
 	?>
 	<script type="text/javascript">
 	function FilterBasicSearchOptions(clickedfield,resourcetype)

@@ -1420,6 +1420,8 @@ $default_user_select="";
 # limit the options available in the other dropdowns automatically? This adds a performance penalty so is off by default.
 $simple_search_dropdown_filtering=false;
 
+# Honor display condition settings on simple search for the included fields.
+$simple_search_display_condition=array();
 
 # When searching, also include themes/public collections at the top?
 $search_includes_themes=false;
@@ -2989,6 +2991,9 @@ $external_share_view_as_internal=false;
 /*When sharing externally as a specific user group (permission x), limit the user groups shown only if
 they are allowed*/
 $allowed_external_share_groups = array();
+
+# When sharing externally as a specific user group (permission x), honor group config options (meant to respect settings like $collection_download).
+$external_share_groups_config_options=false;
 
 // CSV Download - add original URL column
 $csv_export_add_original_size_url_column = false;

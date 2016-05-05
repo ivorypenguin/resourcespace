@@ -71,7 +71,7 @@ if (isset($collectiondata["theme"]) && strlen($collectiondata["theme"])>0)
 		{
 		$colaccessmode = $lang["themes"];
 		$is_theme=true;						
-		$theme_link="<a onClick='return CentralSpaceLoad(this,true);' href='" . $baseurl . "/pages/themes.php'>".$lang['themes']."</a> &gt; <a onClick='return CentralSpaceLoad(this,true);' href='".$baseurl . "/pages/themes.php?theme1=" . urlencode($collectiondata["theme"]) . "'>" . i18n_get_translated($collectiondata["theme"]) . "</a>";
+		$theme_link="<a onClick='return CentralSpaceLoad(this,true);' href='" . $baseurl . "/pages/themes.php'>".$lang['themes']."</a> &gt; <a onClick='return CentralSpaceLoad(this,true);' href='".$baseurl . "/pages/themes.php?theme1=" . urlencode($collectiondata["theme"]) . "'>" . str_replace("*","",i18n_get_translated($collectiondata["theme"])) . "</a>";
 		global $theme_category_levels;
 		for($x=2;$x<=$theme_category_levels;$x++)
 			{					
@@ -82,7 +82,7 @@ if (isset($collectiondata["theme"]) && strlen($collectiondata["theme"])>0)
 					{
 					$theme_link_url .= "&theme" . $l . "=" . urlencode($collectiondata['theme' . $l]);
 					}
-				$theme_link .= " &gt; <a onClick='return CentralSpaceLoad(this, true);' href='" . $theme_link_url . "'>" . i18n_get_translated($collectiondata['theme' . $x]) . "</a>";
+				$theme_link .= " &gt; <a onClick='return CentralSpaceLoad(this, true);' href='" . $theme_link_url . "'>" . str_replace("*","",i18n_get_translated($collectiondata['theme' . $x])) . "</a>";
 				}
 			}			
 		}

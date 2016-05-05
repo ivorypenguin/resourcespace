@@ -45,7 +45,7 @@ function DisplayTheme($themes=array(), $simpleview=false)
 			?>				
 			<a href="<?php echo $baseurl_short?>pages/search.php?search=!collection<?php echo $getthemes[$m]["ref"]?>" onclick="return CentralSpaceLoad(this,true);" class="FeaturedSimplePanel FeaturedSimpleLink HomePanel DashTile" id="featured_tile_<?php echo $getthemes[$m]["ref"]; ?>">
 				<div id="contents_feature_tile_<?php echo $getthemes[$m]["ref"]; ?>" class="HomePanelIN TileContentShadow FeaturedSimpleTile"
-				contenteditable=<?php if($theme_image_path!="")
+				<?php if($theme_image_path!="")
 							{	
 							?>
 							style="background: url(<?php echo $theme_image_path; ?>);

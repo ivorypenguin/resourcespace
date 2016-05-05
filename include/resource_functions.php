@@ -783,20 +783,39 @@ function save_resource_data_multi($collection)
 			}
 		}
 		
-	# Also save related resources field
-	if (getval("editthis_related","")!="")
-		{
-		$related=explode(",",getvalescaped("related",""));
-		# Make sure all submitted values are numeric
-		$ok=array();for ($n=0;$n<count($related);$n++) {if (is_numeric(trim($related[$n]))) {$ok[]=trim($related[$n]);}}
+    // Also save related resources field
+    if(getval("editthis_related","")!="")
+        {
+        $related = explode(',', getvalescaped('related', ''));
 
-		for ($m=0;$m<count($list);$m++)
-			{
-			$ref=$list[$m];
-			sql_query("delete from resource_related where resource='$ref' or related='$ref'"); # remove existing related items
-			if (count($ok)>0) {sql_query("insert into resource_related(resource,related) values ($ref," . join("),(" . $ref . ",",$ok) . ")");}
-			}
-		}
+        // Make sure all submitted values are numeric
+        $ok = array();
+        for($n = 0; $n < count($related); $n++)
+            {
+            if(is_numeric(trim($related[$n])))
+                {
+                $ok[] = trim($related[$n]);
+                }
+            }
+
+        // Clear out all relationships between related resources in this collection
+        sql_query("
+                DELETE rr
+                  FROM resource_related AS rr
+            INNER JOIN collection_resource AS cr ON rr.resource = cr.resource
+                 WHERE cr.collection = '{$collection}'
+        ");
+
+        for($m = 0; $m < count($list); $m++)
+            {
+            $ref = $list[$m];
+
+            if(0 < count($ok))
+                {
+                sql_query("INSERT INTO resource_related(resource, related) VALUES ($ref, " . join("),(" . $ref . ",",$ok) . ")");
+                }
+            }
+        }
 	
 	# Also update archive status
 	global $user_resources_approved_email,$email_notify;	
