@@ -14,7 +14,11 @@ if (getval("rp","")!="")
 	}
         
 # External access support (authenticate only if no key provided, or if invalid access key provided)
-$k=getvalescaped("k","");if (($k=="") || (!check_access_key_collection(getvalescaped("c",""),$k) && !check_access_key(getvalescaped("r",""),$k))) {include "include/authenticate.php";}
+$k = getvalescaped('k', '');
+if('' == $k || (!check_access_key_collection(getvalescaped('c', ''), $k) && !check_access_key(getvalescaped('r', ''), $k)))
+    {
+    include 'include/authenticate.php';
+    }
 
 if (!hook("replacetopurl"))
 	{ 

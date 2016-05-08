@@ -3429,26 +3429,56 @@ function check_access_key($resource,$key)
 		}
 	}
 
-function check_access_key_collection($collection,$key)
-	{
-	if ($collection=="" || !is_numeric($collection)) {return false;}
+
+/**
+* Check access key for a collection
+* 
+* @param integer $collection        Collection ID
+* @param string  $key               Access key
+* 
+* @return boolean
+*/
+function check_access_key_collection($collection, $key)
+    {
+    if('' == $collection || !is_numeric($collection))
+        {
+        return false;
+        }
     
     global $external_share_view_as_internal;
-    if($external_share_view_as_internal && isset($_COOKIE["user"])){return false;} // We want to authenticate the user so we can show the page as internal
-    
-	$r=get_collection_resources($collection);
-	if (count($r)==0){return false;}
-	
-	for ($n=0;$n<count($r);$n++)
-		{
-		# Verify a supplied external access key for all resources in a collection
-		if (!check_access_key($r[$n],$key)) {return false;}
-		}	
+    if($external_share_view_as_internal && isset($_COOKIE["user"]))
+        {
+        // We want to authenticate the user so we can show the page as internal
+        return false;
+        }
 
-	# Set the 'last used' date for this key
-	sql_query("update external_access_keys set lastused=now() where collection='$collection' and access_key='$key'");
-	return true;
-	}
+    $resources = get_collection_resources($collection);
+
+    if(0 == count($resources))
+        {
+        return false;
+        }
+
+    $invalid_resources = array();
+    foreach($resources as $resource_id)
+        {
+        // Verify a supplied external access key for all resources in a collection
+        if(!check_access_key($resource_id, $key))
+            {
+            $invalid_resources[] = $resource_id;
+            }
+        }
+
+    if(count($resources) === count($invalid_resources))
+        {
+        return false;
+        }
+
+    // Set the 'last used' date for this key
+    sql_query("UPDATE external_access_keys SET lastused = now() WHERE collection = '{$collection}' AND access_key = '{$key}'");
+
+    return true;
+    }
 
 function make_username($name)
 	{

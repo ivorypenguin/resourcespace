@@ -286,8 +286,14 @@ if($slimheader)
 <body lang="<?php echo $language ?>" class="<?php echo implode(' ', $body_classes); ?>" <?php if (isset($bodyattribs)) { ?><?php echo $bodyattribs?><?php } ?>>
 
 <!-- Loading graphic -->
-<div id="LoadingBox"><?php echo $lang["pleasewait"] ?><img src="<?php echo $baseurl_short ?>gfx/interface/loading.gif"></div>
-
+<?php
+if(!hook("customloadinggraphic"))
+	{
+	?>
+	<div id="LoadingBox"><?php echo $lang["pleasewait"] ?><img src="<?php echo $baseurl_short ?>gfx/interface/loading.gif"></div>
+	<?php
+	}
+?>
 
 <?php hook("bodystart"); ?>
 

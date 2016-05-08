@@ -258,7 +258,7 @@ include "../include/user_select.php"; ?>
 </div>
 <?php } ?>
 
-<?php if($useraccess==0)
+<?php if($useraccess==0 && !hook("replaceemailopenaccess"))
 	{
 	$resourcedata=get_resource_data($ref,true);
 	if(get_edit_access($ref,$resource['archive'],false,$resource))

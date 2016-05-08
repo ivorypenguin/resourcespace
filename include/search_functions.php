@@ -327,8 +327,15 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
                         if ($fieldinfo[0]["type"] == 7 && $category_tree_search_use_and)
                             {
                             for ($m=0;$m<count($ckeywords);$m++) {
+
+                                // node implementation will eventually replace this fix
+                                if (trim($ckeywords[$m])=='')
+                                    {
+                                    continue;
+                                    }
+
                                 $keyref=resolve_keyword($ckeywords[$m]);
-                                if (!($keyref===false)) 
+                                if (!($keyref===false))
                                     {
                                     $c++;
 
@@ -1154,12 +1161,12 @@ function search_form_to_search_query($fields,$fromsearchbar=false)
                         }
                     else
                         {
-                        $datepart.="-01";
+                        $datepart.="";
                         }
                     }
                 else
                     {
-                    $datepart.="-01-01";
+                    $datepart.="";
                     }
                 }           
                 

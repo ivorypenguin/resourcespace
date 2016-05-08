@@ -33,6 +33,11 @@ function message_add($users,$text,$url="",$owner=null,$notification_type=MESSAGE
 	{
 	global $userref,$applicationname,$lang;
 	
+	if(!is_int($notification_type))
+		{
+		$notification_type=intval($notification_type); // make sure this in an integer
+		}
+	
 	$orig_text=$text;
 	$text = escape_check($text);
 	$url = escape_check($url);
@@ -55,16 +60,16 @@ function message_add($users,$text,$url="",$owner=null,$notification_type=MESSAGE
 		sql_query("INSERT INTO `user_message` (`user`, `message`) VALUES ($user,$message_ref)");
 		
 		// send an email if the user has notifications and emails setting and the message hasn't already been sent via email
-		if($notification_type!=MESSAGE_ENUM_NOTIFICATION_TYPE_EMAIL && $notification_type!=(MESSAGE_ENUM_NOTIFICATION_TYPE_EMAIL | MESSAGE_ENUM_NOTIFICATION_TYPE_SCREEN))
+		if(~$notification_type & MESSAGE_ENUM_NOTIFICATION_TYPE_EMAIL)
 			{
-			get_config_option($user,'email_and_user_notifications', $send_email);
-			if($send_email)
+			get_config_option($user,'email_and_user_notifications', $notifications_always_email);
+			if($notifications_always_email)
 				{
 				$email_to=sql_value("select email value from user where ref={$user}","");
 				if($email_to!=='')
 					{
 					$message_text=nl2br($orig_text);
-					send_mail($email_to,$applicationname . ": " . $lang['notification_email_subject'],$message_text . "<br/><br/>" . $url,'','');
+					send_mail($email_to,$applicationname . ": " . $lang['notification_email_subject'],$message_text . "<br/><br/>" . $url);
 					}
 				}
 			}

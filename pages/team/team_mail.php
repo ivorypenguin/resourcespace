@@ -9,7 +9,7 @@ include "../../include/db.php";
 include_once "../../include/general.php";
 include "../../include/authenticate.php"; if (!checkperm("m")) {exit ("Permission denied.");}
 
-$message_type = getval("message_type",MESSAGE_ENUM_NOTIFICATION_TYPE_EMAIL);
+$message_type = intval(getval("message_type",MESSAGE_ENUM_NOTIFICATION_TYPE_EMAIL));
 
 if (getval("send","")!="")
 	{
