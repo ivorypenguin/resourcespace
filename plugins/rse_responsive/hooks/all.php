@@ -21,7 +21,7 @@ function serveHeader() {
         }
     else 
         {
-        $header_img_src = $baseurl.'/gfx/titles/title.png';
+        $header_img_src = $baseurl.'/gfx/titles/title.svg';
         }
 
     // Set via System Config page?

@@ -194,7 +194,7 @@ if($relate_on_upload && $enable_related_resources && getval("uploaded_refs","")!
     }
     if($stringlist!=="") 
         {
-        exec($php_path . "/php " . dirname(__FILE__)."/tools/relate_resources.php \"" . $stringlist. "\" > /dev/null 2>&1 &");
+        exec($php_path . "/php " . dirname(__FILE__)."/tools/relate_resources.php \"" . $stringlist. "\" \"" . $_SERVER["HTTP_HOST"] . "\" > /dev/null 2>&1 &");
         exit("Resource Relation Started: ".$stringlist);
         }
 }

@@ -534,6 +534,7 @@ function managed_collection_request($ref,$details,$ref_is_resource=false)
                     {
                     // No specific user allocated, get all users, adding $email_notify address if this does not belong to a system user
                     $assigned_to_users=get_notification_users("RESOURCE_ACCESS"); 
+                    $email_notify_is_user=false;
                     foreach ($assigned_to_users as $assigned_to_user)
                         {
                         if($assigned_to_user['email']==$email_notify)
@@ -543,7 +544,6 @@ function managed_collection_request($ref,$details,$ref_is_resource=false)
                         }
                     if(!$email_notify_is_user){$assigned_to_user_emails[] = $email_notify;}                        
                     }
-
                 if(trim($assigned_to) != '')
                     {
                     $request_query = sprintf("
@@ -604,10 +604,10 @@ function managed_collection_request($ref,$details,$ref_is_resource=false)
                 
                 // Send the mail
                 $email_message = $lang['requestassignedtoyoumail'] . "\n\n" . $baseurl . "/?q=" . $request . "\n";
-                
+                $assigned_to_notify_users=array();
                 foreach ($assigned_to_users as $assigned_to_user)
-                    {
-                    get_config_option($assigned_to_user,'email_user_notifications', $send_email);
+                    {            
+                    get_config_option($assigned_to_user["ref"],'email_user_notifications', $send_email);                    
                     if($send_email)
                         {  
                         $assigned_to_user_emails[] = $assigned_to_user['email'];

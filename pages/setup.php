@@ -244,7 +244,6 @@ if(get_post_bool('ajax'))
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 <link href="../css/global.css?csr=5" rel="stylesheet" type="text/css" /> 
 <link href="../css/colour.css?csr=5" rel="stylesheet" type="text/css" /> 
-<link href="../css/Col-multi.css" rel="stylesheet" type="text/css" id="colourcss" /> 
 <script type="text/javascript" src="../lib/js/jquery-1.7.2.min.js"></script> 
 
 <script type="text/javascript"> 
@@ -454,7 +453,7 @@ h2#dbaseconfig{  min-height: 32px;}
 <body class="SlimHeader">
 <div id="Header" class="slimheader_darken" style="height: 40px;margin-bottom: 20px;">
     <a href="#" onclick="return CentralSpaceLoad(this,true);" class="HeaderImgLink">
-    	<img src="../gfx/titles/title.png" id="HeaderImg" />
+    	<img src="../gfx/titles/title.svg" id="HeaderImg" />
     </a>
     <div id="HeaderNav1" class="HorizontalNav "><ul></ul></div>
 	<div id="HeaderNav2" class="HorizontalNav HorizontalWhiteNav"><ul></ul></div> 
@@ -545,20 +544,20 @@ h2#dbaseconfig{  min-height: 32px;}
 		$mysql_password = get_post('mysql_password');
 		$mysql_db = get_post('mysql_db');
 		//Make a connection to the database using the supplied credentials and see if we can create and drop a table.
-		if (@mysql_connect($mysql_server, $mysql_username, $mysql_password)){
-			$mysqlversion=mysql_get_server_info();
-		
+		$mysqli_connection = mysqli_connect($mysql_server, $mysql_username, $mysql_password);
+		if ($mysqli_connection){
+			$mysqlversion=mysqli_get_server_info($mysqli_connection);
 			if ($mysqlversion<'5') 
 				{
 				$errors['databaseversion'] = true;
 				}
 			else 
 				{
-				if (@mysql_select_db($mysql_db))
+				if (@mysqli_select_db($mysqli_connection, $mysql_db))	
 					{
-					if (@mysql_query("CREATE table configtest(test varchar(30))"))
+					if (@mysqli_query($mysqli_connection, "CREATE table configtest(test varchar(30))"))	
 						{
-						@mysql_query("DROP table configtest");
+						@mysqli_query($mysqli_connection, "DROP table configtest");
 						}
 					else 
 						{
@@ -571,7 +570,7 @@ h2#dbaseconfig{  min-height: 32px;}
 		}
 		else 
 			{
-			switch (mysql_errno())
+			switch (mysqli_errno($mysqli_connection))
 				{
 				case 1045:  //User login failure.
 					$errors['databaselogin'] = true;
@@ -583,7 +582,7 @@ h2#dbaseconfig{  min-height: 32px;}
 			}
 		if (isset($errors))
 			{
-			$errors['database'] = mysql_error();
+			$errors['database'] = mysqli_error($mysqli_connection);
 			}
 		else 
 			{

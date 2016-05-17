@@ -123,6 +123,13 @@ foreach ($tests as $test)
     if ($result===false)
         {
         echo "FAIL\n";
+
+	if (isset($email_test_fails_to))
+		{
+                $svnrevision=trim(shell_exec("svnversion .")); 
+		send_mail($email_test_fails_to,"Test $test has failed as of r" . $svnrevision,"Hi,\n\nAs of revision " . $svnrevision. " the test '" . $test . "' is failing.\n\nThis e-mail was sent from the installation at $baseurl.");
+		}
+
         exit();
         }
     echo "OK\n";ob_flush();

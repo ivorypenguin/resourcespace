@@ -23,9 +23,9 @@ function set_node($ref, $resource_type_field, $name, $parent, $order_by)
 		return false;
 		}
 
-    if(is_null($ref) && ($order_by==""))
+    if(is_null($ref) && '' == $order_by)
         {
-        $order_by  = get_node_order_by($resource_type_field,!($parent==""),$parent);
+        $order_by = get_node_order_by($resource_type_field, (is_null($parent) || '' == $parent), $parent);            
         }
 
     $query  = 'INSERT INTO node (`resource_type_field`, `name`, `parent`, `order_by`)';
@@ -66,7 +66,7 @@ function set_node($ref, $resource_type_field, $name, $parent, $order_by)
 
         // Order by can be changed asynchronously, so when we save a node we can pass null or an empty
         // order_by value and this will mean we can use the current order
-        if(!is_null($ref) && ($order_by==""))
+        if(!is_null($ref) && '' == $order_by)
             {
             $order_by = $current_node['order_by'];
             }

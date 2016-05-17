@@ -315,7 +315,16 @@ else
 if (!array_key_exists("search",$_GET) && !array_key_exists("search",$_POST))
 	{
 	$offset=getvalescaped("saved_offset",0,true);rs_setcookie('saved_offset', $offset);
-	$order_by=getvalescaped("saved_order_by","relevance");rs_setcookie('saved_order_by', $order_by);
+	$order_by=getvalescaped("saved_order_by","relevance");
+	if ($collectionsearch) // We want the default collection order to be applied
+		{
+		$order_by=$default_collection_sort;
+		}
+	else
+		{
+		$order_by=$default_sort;
+		}
+	rs_setcookie('saved_order_by', $order_by);
 	$sort=getvalescaped("saved_sort","");rs_setcookie('saved_sort', $sort);
 	$archive=getvalescaped("saved_archive",0);rs_setcookie('saved_archive', $archive);
 	}

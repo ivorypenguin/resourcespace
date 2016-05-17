@@ -25,6 +25,7 @@ $field_sort=getvalescaped("field_sort","asc");
 
 $url_params = array("ref"=>$ref,
 		    "restypefilter"=>$restypefilter,
+		    "$field_order_by"=>$field_order_by,
 		    "field_sort"=>$field_sort,
 		    "find" =>$find);
 $url=generateURL($baseurl . "/pages/admin/admin_resource_type_field_edit.php",$url_params);

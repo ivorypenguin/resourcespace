@@ -21,8 +21,9 @@ if ($_REQUEST['mysqlusername']==''){
 	exit();
 }
 if ((isset($_REQUEST['mysqlserver']))&&(isset($_REQUEST['mysqlusername']))&&(isset($_REQUEST['mysqlpassword']))){
-	if (mysql_connect(filter_var($_REQUEST['mysqlserver'],FILTER_SANITIZE_STRING),filter_var($_REQUEST['mysqlusername'],FILTER_SANITIZE_STRING),filter_var($_REQUEST['mysqlpassword'],FILTER_SANITIZE_STRING))==FALSE){
-		if(mysql_errno()==1045){
+	$dbtest_connection = mysqli_connect(filter_var($_REQUEST['mysqlserver'],FILTER_SANITIZE_STRING),filter_var($_REQUEST['mysqlusername'],FILTER_SANITIZE_STRING),filter_var($_REQUEST['mysqlpassword'],FILTER_SANITIZE_STRING));
+	if (!$dbtest_connection){
+		if(mysqli_errno($dbtest_connection)==1045){
 			echo '201';
 		}
 		else {
@@ -30,7 +31,7 @@ if ((isset($_REQUEST['mysqlserver']))&&(isset($_REQUEST['mysqlusername']))&&(iss
 		}
 	}
 	else{
-		if(mysql_select_db(filter_var($_REQUEST['mysqldb'],FILTER_SANITIZE_STRING))){
+		if(mysqli_select_db($dbtest_connection, (filter_var($_REQUEST['mysqldb'],FILTER_SANITIZE_STRING)))){	
 			echo '200';
 		}
 		else {

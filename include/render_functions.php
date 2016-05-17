@@ -22,7 +22,8 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
     {
     node_field_options_override($field);
     
-    global $auto_order_checkbox, $auto_order_checkbox_case_insensitive, $lang, $category_tree_open, $minyear, $daterange_search, $is_search, $values, $n, $simple_search_show_dynamic_as_dropdown, $clear_function, $simple_search_display_condition, $autocomplete_search, $baseurl;
+    global $auto_order_checkbox, $auto_order_checkbox_case_insensitive, $lang, $category_tree_open, $minyear, $daterange_search, $searchbyday, $is_search, $values, $n, $simple_search_show_dynamic_as_dropdown, $clear_function, $simple_search_display_condition, $autocomplete_search, $baseurl, $fields, $baseurl_short, $extrafooterhtml;
+    
     $name="field_" . ($forsearchbar ? htmlspecialchars($field["name"]) : $field["ref"]);
     $id="field_" . $field["ref"];
     
@@ -47,6 +48,8 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
                 {
                 if ($s[0]==$fields[$cf]["name"] && ($fields[$cf]["resource_type"]==0 || $fields[$cf]["resource_type"]==$field["resource_type"])) # this field needs to be checked
                     {
+                    $display_condition_js_prepend=($forsearchbar ? "#simplesearch_".$fields[$cf]["ref"]." " : "");
+                    
                     $scriptconditions[$condref]["field"] = $fields[$cf]["ref"];  # add new jQuery code to check value
                     $scriptconditions[$condref]['type'] = $fields[$cf]['type'];
 
@@ -85,7 +88,7 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
                                     {
                                     $checkname=($forsearchbar ? $fields[$cf]["name"] : $fields[$cf]["ref"]) . "_" . md5($options[$m]);
                                     echo "
-                                    jQuery('input[name=\"" . $checkname . "\"]').change(function (){
+                                    jQuery('<?php echo $display_condition_js_prepend ?>input[name=\"" . $checkname . "\"]').change(function (){
                                         checkDisplayCondition" . $field["ref"] . "();
                                         });";
                                     }
@@ -99,8 +102,8 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
                             <script type="text/javascript">
                             jQuery(document).ready(function() {
                                 // Check for radio buttons (default behaviour)
-                                jQuery('input[name=field_<?php echo ($forsearchbar ? $fields[$cf]["name"] : $fields[$cf]["ref"])  ?>]:radio').change(function() {
-                                    checkDisplayCondition<?php echo $field["ref"];?>();
+                                jQuery('<?php echo $display_condition_js_prepend ?>input[name=field_<?php echo ($forsearchbar ? $fields[$cf]["name"] : $fields[$cf]["ref"])  ?>]:radio').change(function() {
+                                    checkSearchDisplayCondition<?php echo $field["ref"];?>();
                                 });
 
                                 <?php
@@ -114,8 +117,8 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
                                     $name = 'field_' . ($forsearchbar ? $fields[$cf]["name"] : $fields[$cf]["ref"]) . '_' . sha1($option); ?>
                                     
                                     // Check for checkboxes (advanced search behaviour)
-                                    jQuery('input[name=<?php echo $name; ?>]:checkbox').change(function() {
-                                        checkDisplayCondition<?php echo $field['ref']; ?>();
+                                    jQuery('<?php echo $display_condition_js_prepend ?>input[name=<?php echo $name; ?>]:checkbox').change(function() {
+                                        checkSearchDisplayCondition<?php echo $field['ref']; ?>();
                                     });
 
                                 <?php
@@ -131,8 +134,8 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
                             ?>
                             <script type="text/javascript">
                             jQuery(document).ready(function() {
-                                jQuery('#field_<?php echo $fields[$cf]["ref"];?>').change(function (){
-                                checkDisplayCondition<?php echo $field["ref"];?>();
+                                jQuery('<?php echo $display_condition_js_prepend ?>#field_<?php echo $fields[$cf]["ref"];?>').change(function (){
+                                checkSearchDisplayCondition<?php echo $field["ref"];?>();
                                 });
                             });
                             </script>
@@ -147,7 +150,7 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
         ?>
         <script type="text/javascript">
         
-        function checkDisplayCondition<?php echo $field["ref"];?>() {
+        function checkSearchDisplayCondition<?php echo $field["ref"];?>() {
             var questionField          = jQuery('#<?php echo ($forsearchbar ? "simplesearch_" . $field["ref"] : "question_" . $n );?>');
             var fieldInput			   = jQuery('#<?php echo ($forsearchbar ? "simplesearch_" . $field["ref"] : "question_" . $n );?> #field_<?php echo $field["ref"]?>');
             var fieldStatus            = questionField.css('display');
@@ -241,7 +244,12 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
             }
         }
         </script>
-    <?php
+    	<?php
+    	if($forsearchbar)
+    		{
+    		// add the display condition check to the clear function
+    		$clear_function.="checkDisplayCondition".$field['ref']."();";
+    		}
         }
 
     $is_search = true;
@@ -277,7 +285,7 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
         case 5:
         case 8:
         case ($forsearchbar && $field["type"]==9 && !$simple_search_show_dynamic_as_dropdown):
-        ?><input class="<?php echo $class ?>" type=text name="<?php echo $name ?>" id="<?php echo $id ?>" value="<?php echo htmlspecialchars($value)?>" <?php if($forsearchbar && !$displaycondition) { ?> disabled <?php } ?> <?php if ($autoupdate) { ?>onChange="UpdateResultCount();"<?php } ?> onKeyPress="if (!(updating)) {setTimeout('UpdateResultCount()',2000);updating=true;}"><?php
+        ?><input class="<?php echo $class ?>" type=text name="<?php echo $name ?>" id="<?php echo $id ?>" value="<?php echo htmlspecialchars($value)?>" <?php if($forsearchbar && !$displaycondition) { ?> disabled <?php } ?> <?php if ($autoupdate) { ?>onChange="UpdateResultCount();"<?php } if(!$forsearchbar){ ?> onKeyPress="if (!(updating)) {setTimeout('UpdateResultCount()',2000);updating=true;}" <?php } ?> ><?php 
         
         if ($forsearchbar && $autocomplete_search) { 
 				# Auto-complete search functionality
@@ -293,7 +301,7 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
 				<div class="SearchItem">
 			<?php } 
 			# Add to the clear function so clicking 'clear' clears this box.
-			$clear_function.="document.getElementById('field_" . $field["name"] . "').value='';";
+			$clear_function.="document.getElementById('field_" . ($forsearchbar? $field["ref"] : $field["name"]) . "').value='';";
         break;
     
         case 2: 
@@ -350,7 +358,7 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
                 if($forsearchbar)
                 	{
                 	# Add to the clear function so clicking 'clear' clears this box.
-					$clear_function.="document.getElementById('field_" . $field["name"] . "').selectedIndex=0;";
+					$clear_function.="document.getElementById('field_" . ($forsearchbar ? $field["ref"] : $field["name"]) . "').selectedIndex=0;";
                 	}
                 }
             else
@@ -551,7 +559,7 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
             
             <?php if ($forsearchbar && $searchbyday) { ?><br /><?php } ?>
             
-            <select name="<?php echo $name?>_month" class="SearchWidth" style="width:100px;" <?php if ($autoupdate) { ?>onChange="UpdateResultCount();"<?php } ?>>
+            <select name="<?php echo $name?>_month" id="<?php echo $id?>_month" class="SearchWidth" style="width:100px;" <?php if ($autoupdate) { ?>onChange="UpdateResultCount();"<?php } ?>>
               <option value=""><?php echo $lang["anymonth"]?></option>
               <?php
               for ($d=1;$d<=12;$d++)
@@ -565,7 +573,7 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
             <?php if (!$forsearchbar || ($forsearchbar && $searchbyday)) 
             	{ 
             	?>
-				<select name="<?php echo $name?>_day" class="SearchWidth" style="width:100px;" <?php if ($autoupdate) { ?>onChange="UpdateResultCount();"<?php } ?>>
+				<select name="<?php echo $name?>_day" id="<?php echo $id?>_day" class="SearchWidth" style="width:100px;" <?php if ($autoupdate) { ?>onChange="UpdateResultCount();"<?php } ?>>
 				  <option value=""><?php echo $lang["anyday"]?></option>
 				  <?php
 				  for ($d=1;$d<=31;$d++)
@@ -581,10 +589,13 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
             	{
             	# Add to the clear function so clicking 'clear' clears this box.
 				$clear_function.="
-					document.getElementById('field_" . $field["name"] . "_year').selectedIndex=0;
-					document.getElementById('field_" . $field["name"] . "_month').selectedIndex=0;
-					document.getElementById('field_" . $field["name"] . "_day').selectedIndex=0;
+					document.getElementById('field_" . $field["ref"] . "_year').selectedIndex=0;
+					document.getElementById('field_" . $field["ref"] . "_month').selectedIndex=0;
 					";
+				if($searchbyday)
+					{
+					$clear_function.="document.getElementById('field_" . $field["ref"] . "_day').selectedIndex=0;";
+					}
 				}
             }
                     
@@ -605,7 +616,7 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
 			<div id="<?php echo htmlspecialchars($field["name"]) ?>_statusbox" class="MiniCategoryBox">
                 <script>UpdateStatusBox("<?php echo htmlspecialchars($field["name"]) ?>", false);</script>
             </div>
-			<input type="hidden" name="field_cat_<?php echo htmlspecialchars($field["name"]) ?>" id="<?php echo htmlspecialchars($field["name"]) ?>_category" value="<?php echo htmlspecialchars($set) ?>">
+			<input type="hidden" name="field_cat_<?php echo htmlspecialchars($field["name"]) ?>" id="<?php echo htmlspecialchars($field["name"]) ?>_category" value="<?php echo htmlspecialchars(implode('|',$set)); ?>">
 			
 			
 			<?php
@@ -699,6 +710,7 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
 
 /**
 * Renders sort order functionality as a dropdown box
+* Renders sort order functionality as a dropdown box
 *
 */
 if (!function_exists("render_sort_order")){
@@ -724,7 +736,7 @@ function render_sort_order(array $order_fields)
 			}
 		
         $fixed_order = $name == 'relevance';
-        $selected    = $order_by == $name; echo "selected=$selected - name=$name<br/>";
+        $selected    = ($order_by == $name || ($name=='date' && $order_by=='field'.$date_field));
 		
         // Build the option:
         $option = '<option value="' . $name . '"';

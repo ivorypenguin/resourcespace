@@ -24,7 +24,8 @@ if ($auto_order_checkbox && !hook("ajust_auto_order_checkbox","",array($field)))
 }
 $field['node_options']=array_keys($option_trans); # Set the options array to the keys, so it is now effectively sorted by translated string	
 $field['node_options']=array_diff($field['node_options'], array(''));
-$set=trim_array(explode(",",$value));
+//$set=trim_array(explode(",",$value));
+$set=array_unique(preg_split('/,|\~\w+\:/',$value));        // this will remove language variants such as "~en:my option in english"
 $wrap=0;
 
 # Work out an appropriate number of columns based on the average length of the options.

@@ -1150,7 +1150,7 @@ a.FeaturedSimpleLink:hover {
 	padding: 10px 15px 0px 15px;
 	border-radius: 5px;
 	position: absolute;
-    top: -300px;
+    top: -150px;
 }
 
 /* Manage External Shares */
@@ -1187,4 +1187,8 @@ form.FormFilter button {
     display: block;
     margin-top: 20px;
     float: right;
+}
+
+.HiddenTile {
+    border: 1px solid red !important;
 }

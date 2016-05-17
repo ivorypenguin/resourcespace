@@ -296,6 +296,7 @@ function get_alluser_available_tiles($tile="null")
 				dash_tile.all_users,
 				dash_tile.allow_delete,
 				dash_tile.default_order_by,
+                dash_tile.default_order_by AS `order_by`, # needed for get_default_dash()
 				(IF(ref IN (select distinct dash_tile FROM user_dash_tile),1,0)) as 'dash_tile'
 			FROM
 				dash_tile
@@ -315,11 +316,32 @@ function get_alluser_available_tiles($tile="null")
  * Retrieves the default dash which only display all_user tiles.
  * This should only be accessible to thos with Dash Tile Admin permissions
  */
-function get_default_dash($user_group_id = null)
+function get_default_dash($user_group_id = null, $edit_mode = false)
 	{
 	global $baseurl,$baseurl_short,$lang,$anonymous_login,$username,$dash_tile_shadows, $dash_tile_colour, $dash_tile_colour_options;
+
 	#Build Tile Templates
 	$tiles = sql_query("SELECT dash_tile.ref AS 'tile',dash_tile.title,dash_tile.url,dash_tile.reload_interval_secs,dash_tile.link,dash_tile.default_order_by as 'order_by',dash_tile.allow_delete FROM dash_tile WHERE dash_tile.all_users = 1 AND dash_tile.ref NOT IN (SELECT dash_tile FROM usergroup_dash_tile) AND (dash_tile.allow_delete=1 OR (dash_tile.allow_delete=0 AND dash_tile.ref IN (SELECT DISTINCT user_dash_tile.dash_tile FROM user_dash_tile))) ORDER BY default_order_by");
+
+    // In edit_mode, as a super admin, we want to see all user dash tiles otherwise re-ordering will be broken
+    // due to tiles that are not visible but still being taken into account
+    $hidden_tiles      = array();
+    $hidden_tile_class = '';
+
+    if($edit_mode)
+        {
+        $managed_tiles      = $tiles;
+        $tiles              = get_alluser_available_tiles();
+        $hidden_tile_class  = ' HiddenTile';
+
+        foreach($tiles as $all_user_available_tile)
+            {
+            if(false === array_search($all_user_available_tile['ref'], array_column($managed_tiles, 'tile')))
+                {
+                $hidden_tiles[] = $all_user_available_tile['ref'];
+                }
+            }
+        }
     
     if(!is_null($user_group_id))
         {
@@ -330,6 +352,8 @@ function get_default_dash($user_group_id = null)
 	if(count($tiles)==0){echo $lang["nodashtilefound"];exit;}
 	foreach($tiles as $tile)
 		{
+        $contents_tile_class = '';
+
         if(($order != $tile["order_by"] || ($tile["order_by"] % 10) > 0) && is_null($user_group_id))
             {
             update_default_dash_tile_order($tile["tile"],$order);
@@ -353,6 +377,11 @@ function get_default_dash($user_group_id = null)
                 $tile_custom_style .= get_tile_custom_style($buildstring);
                 }
             }
+
+        if(in_array($tile['tile'], $hidden_tiles))
+            {
+            $contents_tile_class .= $hidden_tile_class;
+            }
             ?>
 		<a 
 			<?php 
@@ -373,12 +402,16 @@ function get_default_dash($user_group_id = null)
 			class="HomePanel DashTile DashTileDraggable <?php echo $tile["allow_delete"]? "":"conftile";?>" 
 			id="tile<?php echo htmlspecialchars($tile["tile"]);?>"
 		>
-			<div id="contents_tile<?php echo htmlspecialchars($tile["tile"]);?>" class="HomePanelIN HomePanelDynamicDash <?php echo ($dash_tile_shadows)? "TileContentShadow":"";?>" style="<?php echo $tile_custom_style; ?>">
-				<?php if (strpos($tile["url"],"dash_tile.php")!==false) {
-                                # Only pre-render the title if using a "standard" tile and therefore we know the H2 will be in the target data.
-                                ?>
-                                <h2 class="title"><?php echo htmlspecialchars($tile["title"]);?></h2>
-                                <?php } ?>
+			<div id="contents_tile<?php echo htmlspecialchars($tile["tile"]);?>" class="HomePanelIN HomePanelDynamicDash <?php echo $contents_tile_class; ?> <?php echo ($dash_tile_shadows)? "TileContentShadow":"";?>" style="<?php echo $tile_custom_style; ?>">
+				<?php
+                if (strpos($tile["url"],"dash_tile.php")!==false)
+                    {
+                    # Only pre-render the title if using a "standard" tile and therefore we know the H2 will be in the target data.
+                    ?>
+                    <h2 class="title"><?php echo htmlspecialchars($tile["title"]);?></h2>
+                    <?php 
+                    }
+                    ?>
 				<p>Loading...</p>
 				<script>
 					height = jQuery("#contents_tile<?php echo htmlspecialchars($tile["tile"]);?>").height();
@@ -421,7 +454,7 @@ function get_default_dash($user_group_id = null)
 				  	  },
 			          update: function(event, ui) {
 			          	nonDraggableTiles = jQuery(".HomePanel").length - jQuery(".DashTileDraggable").length;
-			          	newIndex = (ui.item.index() - nonDraggableTiles)+1;
+			          	newIndex = (ui.item.index() - nonDraggableTiles);
 			          	var id=jQuery(ui.item).attr("id").replace("tile","");
 			          	updateDashTileOrder(newIndex,id);
 			          }

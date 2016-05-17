@@ -57,7 +57,10 @@ if(!$show_usergroups_dash)
         }
     else
         {
-        get_default_dash();
+        ?>
+        <p><?php echo $lang['manage_all_user_dash_tiles_note']; ?></p>
+        <?php
+        get_default_dash(null, true);
         }
 	?>
 	</div>

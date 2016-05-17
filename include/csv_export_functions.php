@@ -89,3 +89,45 @@ function generateResourcesMetadataCSV(array $resources)
 
     return $return;
 }
+
+
+/**
+* Generates the file content when exporting nodes
+* 
+* @param array   $field        Array containing field information (as retrieved by get_field)
+* @param boolean $send_headers If true, function sends headers used for downloading content. Default is set to false
+* 
+* @return mixed
+*/
+function generateNodesExport(array $field, $parent = null, $send_headers = false)
+    {
+    global $lang;
+
+    if(0 === count($field) || !isset($field['ref']) || !isset($field['type']))
+        {
+        trigger_error('Field array cannot be empty. generateNodesExport() requires at least "ref" and "type" indexes!');
+        }
+
+    $return = '';
+    $nodes  = get_nodes($field['ref'], $parent);
+
+    foreach($nodes as $node)
+        {
+        $return .= "{$node['name']}\r\n";
+        }
+
+    log_activity("{$lang['export']} metadata field options - field {$field['ref']}", LOG_CODE_DOWNLOADED);
+    
+    if($send_headers)
+        {
+        header('Content-type: application/octet-stream');
+        header("Content-disposition: attachment; filename=field{$field['ref']}_nodes_export.txt");
+
+        echo $return;
+
+        ob_flush();
+        exit();
+        }
+
+    return $return;
+    }

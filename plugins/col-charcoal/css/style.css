@@ -81,6 +81,8 @@ a.ResourcePanel:visited, a.ResourcePanel:active, a.ResourcePanel:link {color:#E0
 .Listview td {border-bottom: 1px solid #d2d2d2;}
 .Listview tbody tr:hover {background: #383838;}
 .Listview tbody tr:hover a,.Listview tbody tr:hover a:link,.Listview tbody tr:hover a:visited{color: #3c3c3c;}
+.Listview tbody .ListviewTitleStyle td a:link,.Listview tbody .ListviewTitleStyle td a:visited{color: #E0E0E0;}
+.Listview tbody .ListviewTitleStyle td a:hover {color: #FFF;}
 .ListviewStyle tr.ListviewTitleStyle:hover td {background: #383838}
 .RecordPanel .Listview tbody tr:hover {background: #E0E0E0;color: #383838;}
 .RecordPanel .Listview tbody tr:hover a,.RecordPanel .Listview tbody tr:hover a:link,.RecordPanel .Listview tbody tr:hover a:visited{color: #383838;text-decoration: underline;}

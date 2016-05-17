@@ -394,7 +394,7 @@ function hook($name,$pagename="",$params=array(),$last_hook_value_wins=false)
 					// We merge the cached result with the new result from the plugin and remove any duplicates
 					// Note: in custom plugins developers should work with the full array (ie. superset) rather than just a sub-set of the array.
 					//       If your plugin needs to know if the array has been modified previously by other plugins use the global variable "hook_return_value"
-					$GLOBALS['hook_return_value'] = array_unique(array_merge_recursive($GLOBALS['hook_return_value'], $function_return_value), SORT_REGULAR);
+					$GLOBALS['hook_return_value'] = array_values(array_unique(array_merge_recursive($GLOBALS['hook_return_value'], $function_return_value), SORT_REGULAR));
 					}
 				elseif (is_string($function_return_value))
 					{
@@ -1012,7 +1012,7 @@ function nicedate($date,$time=false,$wordy=true)
 	{
 		$y = substr($y, 2, 2);
 	}
-	if (($y=="") || ($y=="0000")) return "-";
+	if ( $y=="" ) return "-";
 	$m = @$lang["months"][substr($date,5,2)-1];
 	if ($m=="") return $y;
 	$d = substr($date,8, 2);

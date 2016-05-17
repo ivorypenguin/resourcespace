@@ -19,7 +19,7 @@ if (array_key_exists("find",$_POST)) {$offset=0;} # reset page counter when post
     
 $restypefilter=getvalescaped("restypefilter","",true);
 $restypesfilter=($restypefilter!="")?array($restypefilter):"";
-$field_order_by=getvalescaped("field_order_by","order_by");
+$field_order_by=getvalescaped("field_order_by","ref");
 $field_sort=getvalescaped("field_sort","asc");
 
 //$url_params="ref=" . $ref . "&find=" . $find . "&restypefilter=" . $restypefilter . "&field_order_by=" . $field_order_by . "&field_sort=" . $field_sort;

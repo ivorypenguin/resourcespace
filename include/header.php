@@ -373,7 +373,7 @@ if($slimheader)
             }
         else 
             {
-            $header_img_src = $baseurl.'/gfx/titles/title.png';
+            $header_img_src = $baseurl.'/gfx/titles/title.svg';
             }
         if($header_link && ($k=="" || $internal_share_access))
 	    {?>

@@ -459,6 +459,7 @@ $nef_thumb_extract=false;
 $dng_thumb_extract=false;
 $rw2_thumb_extract=true;
 $raf_thumb_extract=false;
+$arw_thumb_extract = false;
 
 # Turn on creation of a miff file for Photoshop EPS.
 # Off by default because it is 4x slower than just ripping with ghostscript, and bloats filestore.
@@ -3043,4 +3044,8 @@ $default_to_first_node_for_fields=array();
 
 # A list of groups for which the knowledge base will launch on login, until dismissed.
 $launch_kb_on_login_for_groups=array();
+
+# E-mail address to send a report to if any of the automated tests (tests/test.php) fail.
+# This is used by Montala to automatically test the RS trunk on a nightly basis.
+# $email_test_fails_to="example@example.com";
 

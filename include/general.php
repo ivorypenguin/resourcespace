@@ -1378,7 +1378,10 @@ function auto_create_user_account()
 			{
 			global $rs_session;
 			$rs_session=get_rs_session_id();
-			if($rs_session==false){continue;}
+			if($rs_session==false)
+				{
+				exit("No rs_session id found");
+				}
 			# Copy any anonymous session collections to the new user account 
 			if (!function_exists("get_session_collections"))
 				{
@@ -3080,7 +3083,7 @@ function check_display_condition($n, $field)
                        {
                          $checkname=$fields[$cf]["ref"] . "_" . md5($options[$m]);
                          echo "
-                         jQuery('input[name=\"" . $checkname . "\"]').change(function (){
+                         jQuery('.Question input[name=\"" . $checkname . "\"]').change(function (){
                            checkDisplayCondition" . $field["ref"] . "();
                         });";
                   }
@@ -3120,7 +3123,7 @@ function check_display_condition($n, $field)
                   ?>
                   <script type="text/javascript">
                   jQuery(document).ready(function() {
-                    jQuery('#field_<?php echo $fields[$cf]["ref"];?>').change(function (){
+                    jQuery('.Question #field_<?php echo $fields[$cf]["ref"];?>').change(function (){
 
                        checkDisplayCondition<?php echo $field["ref"];?>();
 
@@ -3149,7 +3152,7 @@ function check_display_condition($n, $field)
 				{
 				?>
 				newfield<?php echo $field["ref"]?>provisionaltest=false;
-				if (jQuery('#field_<?php echo $scriptcondition["field"]?>').length!=0)
+				if (jQuery('.Question #field_<?php echo $scriptcondition["field"]?>').length!=0)
 					{
 					<?php
 					if($scriptcondition['type'] == 12) {
@@ -3161,9 +3164,9 @@ function check_display_condition($n, $field)
 						
 						for(var i=0; i < field<?php echo $scriptcondition["field"]; ?>_options.length; i++)
 							{
-							if(jQuery('#field_<?php echo $scriptcondition["field"]; ?>_' + field<?php echo $scriptcondition["field"]; ?>_options[i]).is(':checked')) 
+							if(jQuery('.Question #field_<?php echo $scriptcondition["field"]; ?>_' + field<?php echo $scriptcondition["field"]; ?>_options[i]).is(':checked')) 
 								{
-								checked = jQuery('#field_<?php echo $scriptcondition["field"]; ?>_' + field<?php echo $scriptcondition["field"]; ?>_options[i] + ':checked').val();
+								checked = jQuery('.Question #field_<?php echo $scriptcondition["field"]; ?>_' + field<?php echo $scriptcondition["field"]; ?>_options[i] + ':checked').val();
 								checked = checked.toUpperCase();
 								}
 							}
@@ -3180,7 +3183,7 @@ function check_display_condition($n, $field)
 					else
 						{
 						?>
-						fieldcheck<?php echo $scriptcondition["field"]?>=jQuery('#field_<?php echo $scriptcondition["field"]?>').val().toUpperCase();
+						fieldcheck<?php echo $scriptcondition["field"]?>=jQuery('.Question #field_<?php echo $scriptcondition["field"]?>').val().toUpperCase();
 						fieldvalues<?php echo $scriptcondition["field"]?>=fieldcheck<?php echo $scriptcondition["field"]?>.split(',');
 						//alert(fieldvalues<?php echo $scriptcondition["field"]?>);
 						<?php
@@ -3210,9 +3213,9 @@ function check_display_condition($n, $field)
 						
 						for(var i=0; i < field<?php echo $scriptcondition["field"]; ?>_options.length; i++)
 							{
-							if(jQuery('#field_<?php echo $scriptcondition["field"]; ?>_' + field<?php echo $scriptcondition["field"]; ?>_options[i]).is(':checked')) 
+							if(jQuery('.Question #field_<?php echo $scriptcondition["field"]; ?>_' + field<?php echo $scriptcondition["field"]; ?>_options[i]).is(':checked')) 
 								{
-								checked = jQuery('#field_<?php echo $scriptcondition["field"]; ?>_' + field<?php echo $scriptcondition["field"]; ?>_options[i] + ':checked').val();
+								checked = jQuery('.Question #field_<?php echo $scriptcondition["field"]; ?>_' + field<?php echo $scriptcondition["field"]; ?>_options[i] + ':checked').val();
 								checked = checked.toUpperCase();
 								}
 							}
@@ -3227,7 +3230,7 @@ function check_display_condition($n, $field)
 						}
 					?>
 					fieldvalues<?php echo $scriptcondition["field"]?>=new Array();
-					checkedvals<?php echo $scriptcondition["field"]?>=jQuery('input[name^=<?php echo $scriptcondition["field"]?>_]');
+					checkedvals<?php echo $scriptcondition["field"]?>=jQuery('.Question input[name^=<?php echo $scriptcondition["field"]?>_]');
       
 					jQuery.each(checkedvals<?php echo $scriptcondition["field"]?>,function()
 						{

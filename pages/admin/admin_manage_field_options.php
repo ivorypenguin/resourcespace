@@ -11,16 +11,20 @@ if(!checkperm('k'))
 
 include_once '../../include/resource_functions.php';
 include_once '../../include/node_functions.php';
+include_once '../../include/render_functions.php';
 
 
 // Initialize
 $ajax       = getvalescaped('ajax', '');
+$action     = getvalescaped('action', '');
 
 $field      = getvalescaped('field', '');
 $field_data = get_field($field);
 
 $node_ref   = getvalescaped('node_ref', '');
 $nodes      = array();
+
+$import_export_parent = getvalescaped('import_export_parent', null);
 
 $chosencsslink ='<link type="text/css" rel="stylesheet" href="' . $baseurl_short . 'lib/chosen/chosen.min.css"></link>';
 $chosenjslink = '<script type="text/javascript" src="' . $baseurl_short . 'lib/chosen/chosen.jquery.min.js"></script>';
@@ -203,6 +207,88 @@ if('true' === $ajax && !(trim($submit_new_option)=="") && 'add_new' === $submit_
             }
         draw_tree_node_table($new_record_ref, $field, $new_option_name, $new_option_parent, $new_option_order_by);
         }
+
+    exit();
+    }
+
+// [Import nodes]
+if('' !== getval('upload_import_nodes', '') && isset($_FILES['import_nodes']['tmp_name']) && is_uploaded_file($_FILES['import_nodes']['tmp_name']))
+    {
+    $uploaded_file_pathinfo  = pathinfo($_FILES['import_nodes']['name']);
+    $uploaded_file_extension = $uploaded_file_pathinfo['extension'];
+
+    if(in_array($uploaded_file_extension, $banned_extensions))
+        {
+        trigger_error('You are not allowed to upload "' . $uploaded_file_extension . '" files to the system!');
+        }
+
+    $uploaded_tmp_filename   = $_FILES['import_nodes']['tmp_name'];
+    
+    // Get each line from file into an array
+    $file_handle  = fopen($uploaded_tmp_filename, 'rb');
+    $file_content = fread($file_handle, filesize($uploaded_tmp_filename));
+    fclose($file_handle);
+
+    // Setup needed vars for this process
+    $import_options = getval('import_options', '');
+
+    $import_nodes   = array_filter(explode("\r\n", $file_content));
+    $existing_nodes = get_nodes($field, $import_export_parent);
+
+
+    // Phase 1 - add new nodes, without creating duplicates
+    foreach($import_nodes as $import_node_name)
+        {
+        $existing_node_key = array_search($import_node_name, array_column($existing_nodes, 'name'));
+
+        // Node doesn't exist so we can create it now.
+        if(false === $existing_node_key)
+            {
+            set_node(null, $field, $import_node_name, $import_export_parent, '');
+
+            log_activity("{$lang['import']} metadata field options - field {$field}", LOG_CODE_CREATED, $import_node_name, 'node', 'name');
+            }
+        }
+
+    // Phase 2 - Remove any nodes that don't exist in the imported file
+    // Note: only for "Replace options" option
+    $reorder_required = false;
+    foreach($existing_nodes as $existing_node)
+        {
+        if('replace_nodes' != $import_options)
+            {
+            break;
+            }
+
+        if(!in_array($existing_node['name'], $import_nodes))
+            {
+            delete_node($existing_node['ref']);
+
+            log_activity("{$lang['import']} metadata field options - field {$field}", LOG_CODE_DELETED, null, 'node', 'name', $existing_node['ref'], null, $existing_node['name']);
+
+            $reorder_required = true;
+            }
+        }
+
+    if($reorder_required)
+        {
+        $new_nodes_order = array();
+
+        foreach(get_nodes($field, $import_export_parent) as $node)
+            {
+            $new_nodes_order[] = $node['ref'];
+            }
+
+        reorder_node($new_nodes_order);
+        }
+    }
+
+// [Export nodes]
+if('true' === $ajax && 'export' === $action)
+    {
+    include_once '../../include/csv_export_functions.php';
+
+    generateNodesExport($field_data, $import_export_parent, true);
 
     exit();
     }
@@ -508,5 +594,69 @@ function ToggleTreeNode(ref, field_ref)
 
 jQuery('.node_parent_chosen_selector').chosen({});
 </script>
+
+<div class="BasicsBox">
+    <h3><?php echo $lang['import_export']; ?></h3>
+
+    <?php 
+    // Select a parent node to import for
+    if(7 == $field_data['type'])
+        {
+        $import_export_parent_nodes = array('' => '');
+        foreach(get_nodes($field, null, true) as $import_export_parent_node)
+            {
+            $import_export_parent_nodes[$import_export_parent_node['ref']] = $import_export_parent_node['name'];
+            }
+
+        render_dropdown_question(
+            $lang['property-parent'],
+            'import_export_parent',
+            $import_export_parent_nodes,
+            '',
+            'form="import_nodes_form"'
+        );
+        }
+
+    render_dropdown_question(
+        $lang['manage_metadata_field_options_import_options'],
+        'import_options',
+        array(
+            'append_nodes'  => $lang['appendtext'],
+            'replace_nodes' => $lang['replacealltext']
+        ),
+        '',
+        'form="import_nodes_form"'
+    );
+    ?>
+
+    <div class="Question">
+        <form id="import_nodes_form" method="POST" action="<?php echo $baseurl; ?>/pages/admin/admin_manage_field_options.php?field=<?php echo $field; ?>" enctype="multipart/form-data">
+            <label for="import_nodes"><?php echo $lang['import']; ?></label>
+            <input type="file" name="import_nodes">
+            <input type="submit" name="upload_import_nodes" value="<?php echo $lang['import']; ?>">
+        </form>
+        <div class="clearerleft"></div>
+    </div>
+
+    <div class="Question">
+        <label><?php echo $lang['export']; ?></label>
+        <button type="submit" onclick="ExportNodes();"><?php echo $lang['export']; ?></button>
+        <script>
+        function ExportNodes()
+            {
+            var import_export_parent = jQuery('#import_export_parent').val();
+            if(typeof import_export_parent === 'undefined')
+                {
+                import_export_parent = '';
+                }
+
+            window.location.href = '<?php echo $baseurl; ?>/pages/admin/admin_manage_field_options.php?ajax=true&field=<?php echo $field; ?>&action=export&import_export_parent=' + import_export_parent;
+
+            return false;
+            }
+        </script>
+        <div class="clearerleft"></div>
+    </div>
+</div> <!-- end of BasicBox -->
 <?php
 include '../../include/footer.php';
