@@ -1,7 +1,7 @@
 <?php
 
 /** Configuration file for ResourceSpace plugin "ocrstream"
- * 
+ *
  * These are the default values. They can be overridden by using /plugins/ocrstream/pages/setup.php
  * which is invoked by choosing Team Centre > Manage Plugins and then clicking on Options for the
  * ocrstream plugin once it has been activated.
@@ -26,7 +26,7 @@ $ocr_keep_tempfiles = false;
 
 /**
  * Additional configuration
- * 
+ *
  * These default values can only be changed here and not via the ocrstream options page
  */
 $ocr_im_ext = 'jpg';
@@ -62,5 +62,5 @@ $force_on_preview = false;
 ## Disabled for now, not properly implemented yet!
 $ocr_cronjob_enabled = false;
 
-## Max time for a resource to be locked (default: 30 minutes)
-$ocr_locks_max_seconds = 60*30;
+## Max time for a resource to be locked (default: 10 minutes)
+$ocr_locks_max_seconds = 60*10;

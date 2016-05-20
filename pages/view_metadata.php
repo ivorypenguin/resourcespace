@@ -86,8 +86,8 @@ if((isset($fields_tab_names) && !empty($fields_tab_names)) && count($fields) > 0
 	<?php
 		foreach ($fields_tab_names as $tabname) { ?>
 
-			<div id="tabswitch<?php echo $tabcount; ?>" class="Tab<?php if($tabcount == 0) { ?> TabSelected<?php } ?>">
-				<a href="#" onclick="SelectTab(<?php echo $tabcount; ?>);return false;"><?php echo i18n_get_translated($tabname)?></a>
+			<div id="<?php echo ($modal ? "Modal" : "")?>tabswitch<?php echo $tabcount; ?>" class="Tab<?php if($tabcount == 0) { ?> TabSelected<?php } ?>">
+				<a href="#" onclick="Select<?php echo ($modal ? "Modal" : "")?>Tab(<?php echo $tabcount; ?>);return false;"><?php echo i18n_get_translated($tabname)?></a>
 			</div>
 		
 		<?php 
@@ -96,21 +96,21 @@ if((isset($fields_tab_names) && !empty($fields_tab_names)) && count($fields) > 0
 
 	</div> <!-- end of TabBar -->
 	<script type="text/javascript">
-	function SelectTab(tab) {
+	function Select<?php echo ($modal ? "Modal" : "")?>Tab(tab) {
 		// Deselect all tabs
 		<?php for($n = 0; $n < $tabcount; $n++) { ?>
-		document.getElementById("tab<?php echo $n; ?>").style.display="none";
-		document.getElementById("tabswitch<?php echo $n; ?>").className="Tab";
+		document.getElementById("<?php echo ($modal ? "Modal" : "")?>tab<?php echo $n; ?>").style.display="none";
+		document.getElementById("<?php echo ($modal ? "Modal" : "")?>tabswitch<?php echo $n; ?>").className="Tab";
 		<?php } ?>
-		document.getElementById("tab" + tab).style.display="block";
-		document.getElementById("tabswitch" + tab).className="Tab TabSelected";
+		document.getElementById("<?php echo ($modal ? "Modal" : "")?>tab" + tab).style.display="block";
+		document.getElementById("<?php echo ($modal ? "Modal" : "")?>tabswitch" + tab).className="Tab TabSelected";
 	}
 	</script>
 
 <?php
 } ?>
 
-<div id="tab0" class="TabbedPanel<?php if ($tabcount>0) { ?> StyledTabbedPanel<?php } ?>">
+<div id="<?php echo ($modal ? "Modal" : "")?>tab0" class="TabbedPanel<?php if ($tabcount>0) { ?> StyledTabbedPanel<?php } ?>">
 <div class="clearerleft"> </div>
 <div>
 <?php 
@@ -172,7 +172,7 @@ foreach ($fields_tab_names as $tabname) {
 		<div class="clearerleft"></div>
 		</div>
 		</div>
-		<div class="TabbedPanel StyledTabbedPanel" style="display:none;" id="tab<?php echo $tabcount?>"><div>
+		<div class="TabbedPanel StyledTabbedPanel" style="display:none;" id="<?php echo ($modal ? "Modal" : "")?>tab<?php echo $tabcount?>"><div>
 	<?php
 	}
 

@@ -83,10 +83,17 @@ include "../../include/header.php";
 ?>
 <div class="BasicsBox">
 
-<h1><?php echo $titleh1 ?></h1>
-<h2><?php echo $titleh2 ?></h2>
-<p><?php echo $use_local ? $lang["intro-local_upload"] : $lang["intro-ftp_upload"] ?></p>
+<?php
+if(!hook("replace_tbs_heading"))
+	{
+	?>
+	<h1><?php echo $titleh1 ?></h1>
+	<h2><?php echo $titleh2 ?></h2>
+	<p><?php echo $use_local ? $lang["intro-local_upload"] : $lang["intro-ftp_upload"] ?></p>
+	<?php
+	}
 
+?>
 <form method="post" action="<?php echo $baseurl_short?>pages/team/team_batch_upload.php">
 <input type="hidden" name="ftp_server" value="<?php echo getval("ftp_server","")?>">
 <input type="hidden" name="ftp_username" value="<?php echo getval("ftp_username","")?>">
@@ -97,7 +104,9 @@ include "../../include/header.php";
 <input type="hidden" name="autorotate" value="<?php echo getval("autorotate","")?>">
 <input type="hidden" name="collection" value="<?php echo $collection_add?>">
 <input type="hidden" name="alternative" value="<?php echo $alternative?>">
-
+<?php
+hook("additional_tbs_hiddens");
+?>
 
 <div class="Question"><label><?php echo $use_local ? $lang["local_upload_path"] : $lang["ftp_upload_path"] ?></label><input name="folder" type="text" class="stdwidth" value="<?php echo $use_local ? $folder : getval("ftp_server","") . "/" . $folder?>" readonly="readonly"></div>
 
@@ -163,26 +172,36 @@ else
 			jQuery('.filetreeselect').fileTree({
 				script: baseurl + '/lib/jqueryfiletree/connectors/jqueryFileTree.php',
 				root: '<?php echo $filetree_path?>',
-				multiSelect: true,
-				selectOnlyFiles: true,
-				allowedExtensions: '<?php echo $allowed_extensions?>'
-			}, function(file) {
-				console.log(file);
-				// do something with file
-				alert("file:"+file);
+				<?php
+				if(!hook("custom_filetree_settings"))
+					{
+					?>
+					multiSelect: true,
+					selectOnlyFiles: true,
+					allowedExtensions: '<?php echo $allowed_extensions?>'
+					<?php
+					}
+				?>
 			});
 			
 			
     		jQuery('form').submit(function() {
         		// new hidden input for each selected file
-        		jQuery(".filetreeselect input:checkbox").each(function(){
-        			var sThisVal = (this.checked ? jQuery(this).next().attr('rel') : "");
-        			if(sThisVal!==''){
-        				newValPos=sThisVal.indexOf("<?php echo $filetree_path?>")+ filetree_path.length;
-        				newVal = sThisVal.substr(newValPos);
-        				jQuery("form").append('<input type="hidden" name="uploadfiles[]" value="'+newVal+'"/>');
-        			}
-        		});
+        		<?php
+        		if(!hook("custom_filetree_settings_submit"))
+        			{
+        			?>
+					jQuery(".filetreeselect input:checkbox").each(function(){
+						var sThisVal = (this.checked ? jQuery(this).next().attr('rel') : "");
+						if(sThisVal!==''){
+							newValPos=sThisVal.indexOf("<?php echo $filetree_path?>")+ filetree_path.length;
+							newVal = sThisVal.substr(newValPos);
+							jQuery("form").append('<input type="hidden" name="uploadfiles[]" value="'+newVal+'"/>');
+						}
+					});
+					<?php
+					}
+				?>
         		return true;
     		});
 		});

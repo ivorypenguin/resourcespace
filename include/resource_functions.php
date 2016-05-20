@@ -148,15 +148,27 @@ function save_resource_data($ref,$multi,$autosave_field="")
 							$val.=" " . $field . ":";
 							if (($field=getvalescaped("field_" . $fields[$n]["ref"] . "-i",""))!="") 
 								{
-									$val.=$field;
+								$val.=$field;
 								} 
 							else 
 								{
-									$val.="00";
+								$val.="00";
 								}
 							}
+                        else 
+                            {
+                            $val.=" 00:00";
+                            }
 						}
+                     else 
+                        {
+                        $val.="-00 00:00";
+                        }
 					}
+                else 
+                    {
+                    $val.="-00-00 00:00";
+                    }
 				}
 			elseif ($multilingual_text_fields && ($fields[$n]["type"]==0 || $fields[$n]["type"]==1 || $fields[$n]["type"]==5))
 				{
@@ -220,8 +232,7 @@ function save_resource_data($ref,$multi,$autosave_field="")
 				$submittedvals=explode("|",$submittedval);
                 $newvals=array();
                 foreach($fields[$n]["nodes"] as $noderef => $nodedata)
-                    {
-               
+                    {               
                     $addnode=false;
                     foreach($submittedvals as $checkval)
                         {
@@ -576,8 +587,20 @@ function save_resource_data_multi($collection)
 									$val.="00";
 								}
 							}
+                        else 
+                            {
+                            $val.=" 00:00";
+                            }
 						}
+                    else 
+                        {
+                        $val.="-00 00:00";
+                        }
 					}
+                else 
+                    {
+                    $val.="-00-00 00:00";
+                    }
 				}
 			elseif ($fields[$n]["type"] == 3)
 				{

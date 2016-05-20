@@ -846,12 +846,12 @@ function config_process_file_input(array $page_def, $file_location, $redirect_lo
                 {
                 $delete_filename = str_replace('[storage_url]' . '/' . $file_location, $file_server_location, $delete_filename);
 
-                if(file_exists($delete_filename) && unlink($delete_filename))
+                if(file_exists($delete_filename))
                     {
-                    set_config_option(null, $config_name, '');
-
-                    $redirect = true;
+                    unlink($delete_filename);
                     }
+                set_config_option(null, $config_name, '');
+                $redirect = true;
                 }
             }
         // CLEAR

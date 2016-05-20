@@ -43,6 +43,7 @@ foreach($argv as $arg)
 
 $mysql_db = "rs_test_db";
 $test_user_name = "admin";
+$inst_plugins = sql_query('SELECT name FROM plugins WHERE inst_version>=0 order by name');
 
 if(array_search('nosetup',$argv)===false)
     {
@@ -90,9 +91,9 @@ if (!file_exists($storagedir))
     }
 echo "Filestore is now at $storagedir\n";
 
-# Get a list of tests
-$tests = scandir("test_list");
-$tests = array_filter($tests, function ($string)
+# Get a list of core tests
+$core_tests = scandir("test_list");
+$core_tests = array_filter($core_tests, function ($string)
     {
     global $specific_tests;
     if (strpos($string, ".php")===false)
@@ -112,29 +113,78 @@ $tests = array_filter($tests, function ($string)
         }
     return false;
     }); # PHP files only
-asort($tests);
+asort($core_tests);
+
+$core_tests = array('test_list' => $core_tests);
+
+# Get a list of plugin tests
+$plugin_tests = array();
+foreach ($inst_plugins as $plugin)
+	{
+	if (file_exists('../plugins/' . $plugin['name'] . '/tests'))
+		{	
+		$plugin_tests['../plugins/' . $plugin['name'] . '/tests'] = scandir('../plugins/' . $plugin['name'] . '/tests');
+		}
+	}
+foreach ($plugin_tests as $key => $tests)
+	{
+	$plugin_tests[$key] = array_filter($tests, function ($string)
+		{
+		global $specific_tests;
+		if (strpos($string, ".php")===false)
+			{
+			return false;
+			}
+		if (count($specific_tests)==0)
+			{
+			return true;
+			}
+		return false;
+		});
+	asort($tests);
+	}
+	
+$plugin_tests = array_filter($plugin_tests); # Remove empty sub arrays
+
+if (!empty($plugin_tests))
+    {
+    $tests = array_merge($core_tests, $plugin_tests);	
+    }
+else
+	{
+	$tests = $core_tests;	
+	}		
 
 # Run tests
-echo "-----\n";
-foreach ($tests as $test)
+echo "-----\n";ob_flush();
+foreach ($tests as $key => $test_stack)
     {
-    echo "Running test " . str_pad($test,45," ") . " ";ob_flush();
-    $result = include "test_list/" . $test;
-    if ($result===false)
-        {
-        echo "FAIL\n";
-
-	if (isset($email_test_fails_to))
-		{
-                $svnrevision=trim(shell_exec("svnversion .")); 
-		send_mail($email_test_fails_to,"Test $test has failed as of r" . $svnrevision,"Hi,\n\nAs of revision " . $svnrevision. " the test '" . $test . "' is failing.\n\nThis e-mail was sent from the installation at $baseurl.");
+	foreach ($test_stack as $test)
+	    {
+		echo "Running test " . str_pad($test,45," ") . " ";ob_flush();
+		$result = include $key . '/'. $test;
+		if ($result===false)
+		    {
+			echo "FAIL\n";ob_flush();
+			if (isset($email_test_fails_to))
+			    {
+				$svnrevision=trim(shell_exec("svnversion .")); 
+				send_mail($email_test_fails_to,"Test $test has failed as of r" . $svnrevision,"Hi,\n\nAs of revision " . $svnrevision. " the test '" . $test . "' is failing.\n\nThis e-mail was sent from the installation at $baseurl.");
+				}
+			if ($key=="test_list")
+				{
+				exit();	# If a core test fails cancel all other tests
+				}
+			else
+				{
+				break;	# If a plugin test fails abort tests for this plugin but continue
+				}					
+			}
+		echo "OK\n";ob_flush();
 		}
-
-        exit();
-        }
-    echo "OK\n";ob_flush();
-    }
-echo "-----\nAll tests complete.\n";
+	echo "-----\n";ob_flush();
+	}
+echo "All tests complete.\n";
 
 if(array_search('noteardown',$argv)===false)
     {

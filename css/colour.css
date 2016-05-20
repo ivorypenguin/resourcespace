@@ -371,4 +371,5 @@ div.MessageBox a {
 .highlighted {
 	border: 3px solid #F00 !important;
 }
-UL.jqueryFileTree A {color:#000;}
+UL.jqueryFileTree A {color:#000;background-color:initial;}
+UL.jqueryFileTree A:hover {background-color:initial !important;}

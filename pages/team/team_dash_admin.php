@@ -151,6 +151,7 @@ if($show_usergroups_dash)
 	  </tbody>
   	</table>
   	<div id="confirm_dialog" style="display:none;text-align:left;"></div>
+	<div id="delete_permanent_dialog" style="display:none;text-align:left;"><?php echo $lang['confirmdeleteconfigtile'];?></div>
 	</form>
 	<style>
 	.ListviewStyle tr.positiveglow td,.ListviewStyle tr.positiveglow:hover td{background: rgba(45, 154, 0, 0.38);}
@@ -174,7 +175,27 @@ if($show_usergroups_dash)
 		}
 		function changeTile(tile,all_users) {
 			if(!jQuery("#tile"+tile+" .tilecheck").attr("checked")) {
-				jQuery("#confirm_dialog").dialog({
+				if(jQuery("#tile"+tile).hasClass("conftile")) {
+					jQuery("#delete_permanent_dialog").dialog({
+						title:'<?php echo $lang["dashtiledelete"]; ?>',
+						modal: true,
+						resizable: false,
+						dialogClass: 'delete-dialog no-close',
+						buttons: {
+							"<?php echo $lang['confirmdefaultdashtiledelete'] ?>": function() {
+									jQuery(this).dialog("close");
+									deleteDefaultDashTile(tile);
+								},    
+							"<?php echo $lang['cancel'] ?>": function() {
+								    jQuery(".tilecheck[value="+tile+"]").attr('checked', true);
+									jQuery(this).dialog('close');
+								}
+						}
+					});
+					return;
+				}
+				else {
+					jQuery("#confirm_dialog").dialog({
 		        	title:'<?php echo $lang["dashtiledelete"]; ?>',
 		        	modal: true,
     				resizable: false,
@@ -183,11 +204,15 @@ if($show_usergroups_dash)
 						"<?php echo $lang['confirmdefaultdashtiledelete']; ?>": function() {processTileChange(tile,true); jQuery(this).dialog( "close" );CentralSpaceLoad(window.location.href);},
                         "<?php echo $lang['cancel'] ?>":  function() { jQuery(".tilecheck[value="+tile+"]").attr('checked', true); jQuery(this).dialog('close'); }
                     }
-                });
+					});
+				}
 			} else {
 				processTileChange(tile);
 			}
 		}
+		function deleteDefaultDashTile(tileid) {
+				jQuery.post( "<?php echo $baseurl?>/pages/ajax/dash_tile.php",{"tile":tileid,"delete":"true"});
+			}
 	</script>
 </div>
 <?php

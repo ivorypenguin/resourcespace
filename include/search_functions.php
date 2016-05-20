@@ -179,17 +179,25 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
     # Fetch a list of fields that are not available to the user - these must be omitted from the search.
     $hidden_indexed_fields=get_hidden_indexed_fields();
 
-	# This is a performance enhancement that will discard any keyword matches for fields that are not supposed to be indexed.
-	$sql_restrict_by_field_types="";
-	global $search_sql_force_field_index_check;
-	if (isset($search_sql_force_field_index_check) && $search_sql_force_field_index_check && $restypes!="")
-		{
-		$sql_restrict_by_field_types = sql_value("select group_concat(ref) as value from resource_type_field where keywords_index=1 and resource_type in ({$restypes})","");
-		if ($sql_restrict_by_field_types != "")
-			{
-			$sql_restrict_by_field_types = "-1," . $sql_restrict_by_field_types;  // -1 needed for global search
-			}
-		}
+    // This is a performance enhancement that will discard any keyword matches for fields that are not supposed to be indexed.
+    $sql_restrict_by_field_types = '';
+    global $search_sql_force_field_index_check;
+    if(isset($search_sql_force_field_index_check) && $search_sql_force_field_index_check && '' != $restypes)
+        {
+        if('Global' == substr($restypes, 0, 6))
+            {
+            // remove "Global," from the list
+            $restypes = substr($restypes, 7);
+            }
+
+        $sql_restrict_by_field_types = sql_value("SELECT group_concat(ref) AS `value` FROM resource_type_field WHERE keywords_index = 1 AND resource_type IN ({$restypes})", '');
+
+        if('' != $sql_restrict_by_field_types)
+            {
+            // -1 needed for global search
+            $sql_restrict_by_field_types = '-1,' . $sql_restrict_by_field_types;
+            }
+        }
 
     if ($keysearch)
         {
@@ -265,9 +273,11 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
                         $rangestring=substr($kw[1],5);
                         if (strpos($rangestring,"start")!==FALSE )
                             {
-                            $rangestart=str_replace(" ","-",$rangestring);
+                            $rangestartpos=strpos($rangestring,"start")+5;
+                            $rangestart=str_replace(" ","-",substr($rangestring,$rangestartpos,strpos($rangestring,"end")?strpos($rangestring,"end")-$rangestartpos:10));
+                                                        
                             if ($sql_filter!="") {$sql_filter.=" and ";}
-                            $sql_filter.="rd" . $c . ".value >= '" . substr($rangestart,strpos($rangestart,"start")+5,10) . "'";
+                            $sql_filter.="rd" . $c . ".value >= '" . $rangestart . "'";
                             }
                         if (strpos($kw[1],"end")!==FALSE )
                             {

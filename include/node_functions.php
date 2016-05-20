@@ -106,6 +106,8 @@ function set_node($ref, $resource_type_field, $name, $parent, $order_by)
 		}
 	else
 		{
+        log_activity("Set metadata field option for field {$resource_type_field}", LOG_CODE_CREATED, $name, 'node', 'name');
+
         // Handle node indexing for new nodes
         add_node_keyword_mappings(array('ref' => $new_ref, 'resource_type_field' => $resource_type_field, 'name' => $name), NULL);
 
@@ -684,7 +686,7 @@ function add_node_keyword($node, $keyword, $position, $normalized = false)
     sql_query("INSERT INTO node_keyword (node, keyword, position) VALUES ('" . escape_check($node) . "', '" . escape_check($keyword_ref) . "', '" . escape_check($position) . "')");
     sql_query("UPDATE keyword SET hit_count = hit_count + 1 WHERE ref = '" . escape_check($keyword_ref) . "'");
 
-    daily_stat('Keyword ' . $keyword_ref . ' added for node ID #' . $node, $keyword_ref);
+    log_activity("Keyword {$keyword_ref} added for node ID #{$node}", LOG_CODE_CREATED, $keyword, 'node_keyword');
 
     return true;
     }
@@ -727,7 +729,7 @@ function remove_node_keyword($node, $keyword, $position, $normalized = false)
     sql_query("DELETE FROM node_keyword WHERE node = '" . escape_check($node) . "' AND keyword = '" . escape_check($keyword_ref) . "' $position_sql");
     sql_query("UPDATE keyword SET hit_count = hit_count - 1 WHERE ref = '" . escape_check($keyword_ref) . "'");
 
-    daily_stat('Keyword ID: ' . $keyword_ref . ' removed for node ID #' . $node, $keyword_ref);
+    log_activity("Keyword ID {$keyword_ref} removed for node ID #{$node}", LOG_CODE_DELETED, null, 'node_keyword', null, null, null, $keyword);
 
     return;
     }

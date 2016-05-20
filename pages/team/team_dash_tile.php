@@ -48,17 +48,18 @@ if(!$show_usergroups_dash)
     </p>
     <?php
     }
-    ?>
-    <div id="HomePanelContainer" class="manage-all-user-tiles">
-	<?php
+   
     if($show_usergroups_dash)
-        {
+        { ?>
+	<div id="HomePanelContainer" class="manage-all-user-tiles">
+	<?php
         get_default_dash($selected_user_group);
         }
     else
         {
-        ?>
+	?>
         <p><?php echo $lang['manage_all_user_dash_tiles_note']; ?></p>
+	<div id="HomePanelContainer" class="manage-all-user-tiles">
         <?php
         get_default_dash(null, true);
         }

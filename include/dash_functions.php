@@ -454,7 +454,7 @@ function get_default_dash($user_group_id = null, $edit_mode = false)
 				  	  },
 			          update: function(event, ui) {
 			          	nonDraggableTiles = jQuery(".HomePanel").length - jQuery(".DashTileDraggable").length;
-			          	newIndex = (ui.item.index() - nonDraggableTiles);
+			          	newIndex = (ui.item.index() - nonDraggableTiles) + 1;
 			          	var id=jQuery(ui.item).attr("id").replace("tile","");
 			          	updateDashTileOrder(newIndex,id);
 			          }
@@ -1183,7 +1183,7 @@ function build_dash_tile_list($dtiles_available)
   		$buildstring = explode('?',$tile["url"]);
 		parse_str(str_replace("&amp;","&",$buildstring[1]),$buildstring);
   		?>
-  		<tr id="tile<?php echo $tile["ref"];?>">
+  		<tr id="tile<?php echo $tile["ref"];?>" <?php if(isset($buildstring["tltype"]) && $buildstring["tltype"]=="conf") {echo "class=\"conftile\"";} ?>>
   			<td>
   				<input 
   					type="checkbox" 
