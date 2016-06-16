@@ -19,7 +19,7 @@ function HookTransformViewAfterresourceactions (){
 	if ($access==0 && $resource['has_image']==1 && in_array(strtoupper($resource['file_extension']),$cropper_allowed_extensions)){
 		?>
 		<li><a onClick='return CentralSpaceLoad(this,true);' href='<?php echo $baseurl_short;?>plugins/transform/pages/crop.php?ref=<?php echo $ref?>'>
-		<?php echo ($resourcetoolsGT?"&gt; ":"").$lang['transform'];?>
+		<?php echo "<i class='fa fa-crop'></i>&nbsp;" .$lang['transform'];?>
 		</a></li>
 		<?php
 		return true;

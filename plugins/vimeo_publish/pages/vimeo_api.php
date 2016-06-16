@@ -96,7 +96,7 @@ if(0 < $vimeo_publish_video_tags_field)
 
 include '../../../include/header.php';
 ?>
-<a href="<?php echo $baseurl_short; ?>pages/view.php?ref=<?php echo $ref; ?>" onClick="return CentralSpaceLoad(this, true);">&lt;&nbsp;<?php echo $lang['backtoresourceview']; ?></a></p>
+<a href="<?php echo $baseurl_short; ?>pages/view.php?ref=<?php echo $ref; ?>" onClick="return CentralSpaceLoad(this, true);"><?php echo LINK_CARET_BACK ?><?php echo $lang['backtoresourceview']; ?></a></p>
 
 <?php
 if('' != $error)

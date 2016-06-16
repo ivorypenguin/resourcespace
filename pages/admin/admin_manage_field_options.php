@@ -304,7 +304,7 @@ if($ajax)
 ?>
 <div class="BasicsBox">
     <p>
-        <a href="<?php echo $baseurl_short; ?>pages/admin/admin_resource_type_field_edit.php?ref=<?php echo $field; ?>" onClick="return CentralSpaceLoad(this, true);">&lt;&nbsp;<?php echo $lang['back']?></a>
+        <a href="<?php echo $baseurl_short; ?>pages/admin/admin_resource_type_field_edit.php?ref=<?php echo $field; ?>" onClick="return CentralSpaceLoad(this, true);"><?php echo LINK_CARET_BACK ?><?php echo $lang['back']?></a>
     </p>
     <h1><?php echo $lang['manage_metadata_field_options'] . (isset($field_data['title']) ? ' - ' . $field_data['title'] : ''); ?></h1>
 

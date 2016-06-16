@@ -245,9 +245,15 @@ if (($extension=="cr2" || $extension=="nef" || $extension=="dng" || $extension==
 				$bin_tag = " -previewimage ";
 				}
 
-			// attempt
-            $cmd=$exiftool_fullpath.' -b '.$bin_tag.' '.escapeshellarg($file).' > '.$target;
-            $wait=run_command($cmd);
+				// Attempt extraction. Replaced ">" with -w since this has been seen to fail on some Windows servers
+            $cmd=$exiftool_fullpath.' -b '.$bin_tag.' '.escapeshellarg($file).' -w %d%f.jpg';
+	    $extractedpreview=preg_replace('"\.' . $extension . '$"', '.jpg', $file);
+	    if($target!=$extractedpreview && file_exists($extractedpreview))
+		{
+		rename($extractedpreview, $target);
+		}
+            
+	    $wait=run_command($cmd);
             resource_log(RESOURCE_LOG_APPEND_PREVIOUS,LOG_CODE_TRANSFORMED,'','','',$cmd . ":\n" . $wait);
 
 			// check for nef -otherimage failure
@@ -256,9 +262,14 @@ if (($extension=="cr2" || $extension=="nef" || $extension=="dng" || $extension==
 				unlink($target);	
 				$bin_tag=" -previewimage ";
 				//2nd attempt
-				$cmd=$exiftool_fullpath.' -b '.$bin_tag.' '.escapeshellarg($file).' > '.$target;
-                $wait=run_command($cmd);
-                resource_log(RESOURCE_LOG_APPEND_PREVIOUS,LOG_CODE_TRANSFORMED,'','','',$cmd . ":\n" . $wait);
+				$cmd=$exiftool_fullpath.' -b '.$bin_tag.' '.escapeshellarg($file).' -w %d%f.jpg';
+				$wait=run_command($cmd);
+				$extractedpreview=preg_replace('"\.' . $extension . '$"', '.jpg', $file);
+				if($target!=$extractedpreview && file_exists($extractedpreview))
+					{
+					rename($extractedpreview, $target);
+					}
+				resource_log(RESOURCE_LOG_APPEND_PREVIOUS,LOG_CODE_TRANSFORMED,'','','',$cmd . ":\n" . $wait);
 				}
 				
 			// NOTE: in case of failures, other suboptimal possibilities 
@@ -287,7 +298,7 @@ if (($extension=="cr2" || $extension=="nef" || $extension=="dng" || $extension==
 					}
 				$newfile = $target;$keep_for_hpr=true;
 				}
-			else
+			elseif(file_exists($target))
 				{
 				unlink($target);
 				}	

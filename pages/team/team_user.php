@@ -87,7 +87,7 @@ include "../../include/header.php";
 	if($backlink!="")
 		{
 ?>	<p>
-		<a href='<?php echo rawurldecode($backlink); ?>'>&lt;&nbsp;<?php echo $lang['back']; ?></a>
+		<a href='<?php echo rawurldecode($backlink); ?>'><?php echo LINK_CARET_BACK ?><?php echo $lang['back']; ?></a>
 	</p>
 <?php
 		}
@@ -135,9 +135,6 @@ $atoz.="</div>";
 	<?php } ?>
 	<?php if ($per_page==99999){?><span class="Selected"><?php echo $lang["all"]?></span><?php } else { ?><a href="<?php echo $url; ?>&per_page_list=99999" onClick="return CentralSpaceLoad(this);"><?php echo $lang["all"]?></a><?php } ?>
 	</div></div> <?php pager(false); ?><div class="clearerleft"></div></div>
-
-<strong><?php echo $lang["total"] . ": " . count($users); ?> </strong><?php echo $lang["users"]; ?>
-<br />
 
 <div class="Listview">
 <?php if(!hook('overrideuserlist')):
@@ -199,9 +196,9 @@ for ($n=$offset;(($n<count($users)) && ($n<($offset+$per_page)));$n++)
 	<td><?php echo nicedate($users[$n]["last_active"],true) ?></td>
 	<?php hook("additional_user_column");?>
 	<td><?php if (($usergroup==3) || ($users[$n]["usergroup"]!=3)) { ?><div class="ListTools">
-	<a href="<?php echo $baseurl ?>/pages/admin/admin_system_log.php?actasuser=<?php echo $users[$n]["ref"]?>&backurl=<?php echo urlencode($url . "&offset=" . $offset)?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["log"]?></a>
+	<a href="<?php echo $baseurl ?>/pages/admin/admin_system_log.php?actasuser=<?php echo $users[$n]["ref"]?>&backurl=<?php echo urlencode($url . "&offset=" . $offset)?>" onClick="return CentralSpaceLoad(this,true);"><?php echo LINK_CARET ?><?php echo $lang["log"]?></a>
 	&nbsp;
-	<a href="<?php echo $baseurl ?>/pages/team/team_user_edit.php?ref=<?php echo $users[$n]["ref"]?>&backurl=<?php echo urlencode($url . "&offset=" . $offset)?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["action-edit"]?></a>
+	<a href="<?php echo $baseurl ?>/pages/team/team_user_edit.php?ref=<?php echo $users[$n]["ref"]?>&backurl=<?php echo urlencode($url . "&offset=" . $offset)?>" onClick="return CentralSpaceLoad(this,true);"><?php echo LINK_CARET ?><?php echo $lang["action-edit"]?></a>
 	<?php hook("usertool")?>
 	</div><?php } ?>
 	</td>
@@ -213,8 +210,16 @@ for ($n=$offset;(($n<count($users)) && ($n<($offset+$per_page)));$n++)
 </table>
 <?php endif; // hook overrideuserlist ?>
 </div>
-<div class="BottomInpageNav"><?php pager(false); ?></div>
+<div class="BottomInpageNav">
+<div class="BottomInpageNavLeft">
+<strong><?php echo $lang["total"] . ": " . count($users); ?> </strong><?php echo $lang["users"]; ?>
 </div>
+
+<?php pager(false); ?></div>
+</div>
+
+
+
 
 <?php if(!$team_user_filter_top){show_team_user_filter_search();}?>
 
@@ -244,7 +249,7 @@ if ($user_purge)
 	?>
 	<div class="BasicsBox">
 	<div class="Question"><label><?php echo $lang["purgeusers"]?></label>
-	<div class="Fixed"><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl ?>/pages/team/team_user_purge.php">&gt;&nbsp;<?php echo $lang["purgeusers"]?></a></div>
+	<div class="Fixed"><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl ?>/pages/team/team_user_purge.php"><?php echo LINK_CARET ?><?php echo $lang["purgeusers"]?></a></div>
 	<div class="clearerleft"> </div></div>
 	</div>
 	<?php

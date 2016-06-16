@@ -111,7 +111,7 @@ if (getval("save",false))
 			log_activity(null,null,null,'usergroup','group_specific_logo',$ref);
 			}
 
-	foreach (array("name","permissions","fixed_theme","parent","search_filter","edit_filter","derestrict_filter",
+	foreach (array("name","permissions","parent","search_filter","edit_filter","derestrict_filter",
 					"resource_defaults","config_options","welcome_message","ip_restrict","request_mode","allow_registration_selection") as $column)		
 		
 		{
@@ -194,7 +194,7 @@ include "../../include/header.php";
 	<div class="BasicsBox">
 
 	<p>
-		<a href="" onclick="return CentralSpaceLoad('<?php echo $baseurl_short; ?>pages/admin/admin_group_management.php?<?php echo $url_params; ?>',true);">&lt;&nbsp;<?php echo $lang['page-title_user_group_management']; ?></a>
+		<a href="" onclick="return CentralSpaceLoad('<?php echo $baseurl_short; ?>pages/admin/admin_group_management.php?<?php echo $url_params; ?>',true);"><?php echo LINK_CARET_BACK ?><?php echo $lang['page-title_user_group_management']; ?></a>
 	</p>
 
 	<h1><?php echo $lang['page-title_user_group_management_edit'] ?></h1>
@@ -260,11 +260,6 @@ include "../../include/header.php";
 
 		<p><?php echo $lang["action-title_see_wiki_for_advanced_options"]; ?></p>
 
-		<div class="Question">
-			<label for="fixed_theme"><?php echo $lang["property-fixed_theme"]; ?></label>
-			<input name="fixed_theme" type="text" class="stdwidth" value="<?php echo $record['fixed_theme']; ?>">
-			<div class="clearerleft"></div>
-		</div>
 
 		<div class="Question">
 			<label for="search_filter"><?php echo $lang["property-search_filter"]; ?></label>

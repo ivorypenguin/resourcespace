@@ -19,8 +19,7 @@ include "../../include/header.php";
 
 <div class="BasicsBox"> 
   <h1><?php echo $lang["managerequestsorders"]?></h1>
-  <p><?php echo text("introtext")?></p>
- 
+
 <?php 
 $requests=get_requests();
 
@@ -32,7 +31,9 @@ $curpage=floor($offset/$per_page)+1;
 $url="team_request.php?";
 $jumpcount=1;
 
-?><div class="TopInpageNav"><?php pager();	?></div>
+?><div class="TopInpageNav"><?php pager();	?> <br style="clear:left" /><br />
+</div>
+
 
 <div class="Listview">
 <table border="0" cellspacing="0" cellpadding="0" class="ListviewStyle">
@@ -67,7 +68,7 @@ for ($n=$offset;(($n<count($requests)) && ($n<($offset+$per_page)));$n++)
 	<td><?php echo $lang["resourcerequesttype" . $requests[$n]["request_mode"]] ?></td>
 	<td><?php echo $requests[$n]["assigned_to_username"] ?></td>
 	<td><?php echo $lang["resourcerequeststatus" . $requests[$n]["status"]] ?></td>
-	<td><div class="ListTools"><a href="<?php echo $baseurl_short?>pages/team/team_request_edit.php?ref=<?php echo $requests[$n]["ref"]?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["action-edit"]?></a></a></div></td>
+	<td><div class="ListTools"><a href="<?php echo $baseurl_short?>pages/team/team_request_edit.php?ref=<?php echo $requests[$n]["ref"]?>" onClick="return CentralSpaceLoad(this,true);"><?php echo LINK_CARET ?><?php echo $lang["action-edit"]?></a></a></div></td>
 <?php endif; ?>
 	</tr>
 	<?php

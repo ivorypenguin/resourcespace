@@ -96,7 +96,7 @@ include "../../../include/header.php";
 ?>
 
 <div class="BasicsBox">
-<p><a href="<?php echo $baseurl_short ?>pages/log.php?ref=<?php echo $resource ?>" onClick="CentralSpaceLoad(this,true);return false;">&lt;&nbsp;<?php echo $lang["back"] ?></a></p>
+<p><a href="<?php echo $baseurl_short ?>pages/log.php?ref=<?php echo $resource ?>" onClick="CentralSpaceLoad(this,true);return false;"><?php echo LINK_CARET_BACK ?><?php echo $lang["back"] ?></a></p>
 
 <h1><?php echo $lang["revert"]?></h1>
 

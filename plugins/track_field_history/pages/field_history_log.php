@@ -23,7 +23,7 @@ if(empty($field_log_records)) {
 
 ?>
 <p>
-    <a href="<?php echo $baseurl_short; ?>pages/view.php?ref=<?php echo $resource_id; ?>" onClick="return CentralSpaceLoad(this,true);"><?php echo '&lt;&nbsp;' . $lang['backtoresourceview']; ?></a>
+    <a href="<?php echo $baseurl_short; ?>pages/view.php?ref=<?php echo $resource_id; ?>" onClick="return CentralSpaceLoad(this,true);"><?php echo '<?php echo LINK_CARET_BACK ?>' . $lang['backtoresourceview']; ?></a>
 </p>
 <div class="BasicsBox">
     <h1><?php echo str_replace('%fieldtitle%', $field_title, $lang['track_field_history_field_history_page_title']); ?></h1>

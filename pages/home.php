@@ -223,7 +223,7 @@ if (!hook("replaceslideshow"))
 			?>">
 			</div>
 			</a>
-			<div class="PanelShadow"></div>
+			
 			<?php
 			hook("homebeforehomepicpanelend");
 			?>
@@ -288,10 +288,10 @@ if (!hook("replaceslideshow"))
 						<?php
 						} ?>
 					</select>
-					<a id="themeviewall" onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/themes.php">&gt;&nbsp;<?php echo $lang["viewall"] ?></a>
+					<a id="themeviewall" onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/themes.php"><?php echo LINK_CARET ?><?php echo $lang["viewall"] ?></a>
 				</p>
 				</div>
-				<div class="PanelShadow"></div>
+				
 			</div>
 			<?php
 			}		
@@ -320,7 +320,7 @@ if (!hook("replaceslideshow"))
 					<h2 style="padding: 0px 15px 0 44px;margin-top: 26px;margin-left: 15px;"><?php echo $lang["themes"]?></h2>
 					<span style="margin:15px;display:block;"><?php echo text("themes")?></span>
 				</div>
-				<div class="PanelShadow"></div>
+				
 			</a>
 			<?php 
 			}
@@ -350,7 +350,7 @@ if (!hook("replaceslideshow"))
 			<h2><?php echo $lang["mycollections"]?></h2>
 			<span><?php echo text("mycollections")?></span>
 			</div>
-			<div class="PanelShadow"></div>
+			
 			</a>
 			<?php 
 			}
@@ -381,7 +381,7 @@ if (!hook("replaceslideshow"))
 			<h2><?php echo $lang["advancedsearch"]?></h2>
 			<span><?php echo text("advancedsearch")?></span>
 			</div>
-			<div class="PanelShadow"></div>
+			
 			</a>
 			<?php 
 			}
@@ -411,7 +411,7 @@ if (!hook("replaceslideshow"))
 			<h2><?php echo $lang["mycontributions"]?></h2>
 			<span><?php echo text("mycontributions")?></span>
 			</div>
-			<div class="PanelShadow"></div>
+			
 			</a>
 			<?php 
 			}
@@ -441,7 +441,7 @@ if (!hook("replaceslideshow"))
 			<h2><?php echo $lang["helpandadvice"]?></h2>
 			<span><?php echo text("help")?></span>
 			</div>
-			<div class="PanelShadow"></div>
+			
 			</a>
 			<?php 
 			}
@@ -487,7 +487,7 @@ if (!hook("replaceslideshow"))
 					<h2> <?php echo i18n_get_translated($custom_home_panels[$n]["title"]) ?></h2>
 					<span><?php echo i18n_get_translated($custom_home_panels[$n]["text"]) ?></span>
 					</div> 
-					<div class="PanelShadow"></div>
+					
 					</a>
 					<?php
 					} // end hook 'panelperm'
@@ -603,7 +603,7 @@ if (!hook("replaceslideshow"))
 								<?php
 								} ?>
 					</div>
-				<div class="PanelShadow"></div>
+				
 				</a>
 				<?php
 				}

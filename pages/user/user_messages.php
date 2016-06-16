@@ -86,13 +86,13 @@ for ($n=0;$n<count($messages);$n++)
 			<td>
 				<div class="ListTools">
 				<?php if ($messages[$n]["url"]!="") { ?>
-					<a href="<?php echo $messages[$n]["url"]; ?>">&gt;&nbsp;<?php echo $lang["link"]; ?></a>
+					<a href="<?php echo $messages[$n]["url"]; ?>"><?php echo LINK_CARET ?><?php echo $lang["link"]; ?></a>
 				<?php } ?>
 				    
 				    <a href="<?php echo $baseurl_short?>pages/user/user_messages.php" onclick="jQuery.get('<?php
 							echo $baseurl; ?>/pages/ajax/message.php?<?php echo (($messages[$n]["seen"]==0)?"seen":"unseen") . "=" . $messages[$n]['ref'] ; ?>',function() { message_poll(); });
 							return CentralSpaceLoad(this,true);
-							">&gt;&nbsp;<?php echo (($messages[$n]["seen"]==0)?$lang["mymessages_markread"]:$lang["mymessages_markunread"]);?>
+							"><?php echo LINK_CARET ?><?php echo (($messages[$n]["seen"]==0)?$lang["mymessages_markread"]:$lang["mymessages_markunread"]);?>
 					</a>
 						  
 				</div>

@@ -109,7 +109,7 @@ if($restype_order_by=="order_by"){$allow_reorder=true;}
 
 if(!$allow_reorder)
   {?>
-  <a href="<?php echo $baseurl . "/pages/admin/admin_resource_types.php?restype_order_by=order_by&restype_sort=asc" ?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["admin_resource_type_reorder_mode"]?></a></p>  
+  <a href="<?php echo $baseurl . "/pages/admin/admin_resource_types.php?restype_order_by=order_by&restype_sort=asc" ?>" onClick="return CentralSpaceLoad(this,true);"><?php echo LINK_CARET ?><?php echo $lang["admin_resource_type_reorder_mode"]?></a></p>  
   <?php
   }
   ?>
@@ -191,8 +191,8 @@ for ($n=0;$n<count($resource_types);$n++)
 				if($restype_order_by=="order_by" && !in_array($resource_types[$n]["rt"],array(0,999)))
 				     {
 				     ?>		
-				     <a href="javascript:void(0)" class="movelink movedownlink" <?php if($n==count($resource_types)-1){ ?> disabled <?php } ?>>&gt;&nbsp;Move down</a>
-				     <a href="javascript:void(0)" class="movelink moveuplink" <?php if($n==0){ ?> disabled <?php } ?>>&gt;&nbsp;Move up	</a>
+				     <a href="javascript:void(0)" class="movelink movedownlink" <?php if($n==count($resource_types)-1){ ?> disabled <?php } ?>><?php echo LINK_CARET ?>Move down</a>
+				     <a href="javascript:void(0)" class="movelink moveuplink" <?php if($n==0){ ?> disabled <?php } ?>><?php echo LINK_CARET ?>Move up	</a>
 				     <?php
 				     }
 				    ?>
@@ -200,11 +200,11 @@ for ($n=0;$n<count($resource_types);$n++)
 				if(!in_array($resource_types[$n]["rt"],array(0,999)))
 				  {
 				  ?>
-				  <a href="<?php echo $baseurl ?>/pages/admin/admin_resource_type_edit.php?ref=<?php echo $resource_types[$n]["rt"]?>&backurl=<?php echo urlencode($url) ?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["action-edit"]?> </a>
+				  <a href="<?php echo $baseurl ?>/pages/admin/admin_resource_type_edit.php?ref=<?php echo $resource_types[$n]["rt"]?>&backurl=<?php echo urlencode($url) ?>" onClick="return CentralSpaceLoad(this,true);"><?php echo LINK_CARET ?><?php echo $lang["action-edit"]?> </a>
 				  <?php
 				  }
 				  ?>
-				  <a href="<?php echo $baseurl ?>/pages/admin/admin_resource_type_fields.php?restypefilter=<?php echo $resource_types[$n]["rt"] . "&backurl=" . urlencode($url) ?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["metadatafields"]?> </a>
+				  <a href="<?php echo $baseurl ?>/pages/admin/admin_resource_type_fields.php?restypefilter=<?php echo $resource_types[$n]["rt"] . "&backurl=" . urlencode($url) ?>" onClick="return CentralSpaceLoad(this,true);"><?php echo LINK_CARET ?><?php echo $lang["metadatafields"]?> </a>
 				
 			</div>
 		</td>

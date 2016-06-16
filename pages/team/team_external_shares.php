@@ -66,7 +66,7 @@ include '../../include/header.php';
 ?>
 <div class="BasicsBox">
     <p>
-        <a href="<?php echo $baseurl; ?>/pages/team/team_home.php" onclick="return CentralSpaceLoad(this, true);">&lt;&nbsp;<?php echo $lang['backtoteamhome']; ?></a>
+        <a href="<?php echo $baseurl; ?>/pages/team/team_home.php" onclick="return CentralSpaceLoad(this, true);"><?php echo LINK_CARET_BACK ?><?php echo $lang['backtoteamhome']; ?></a>
     </p>
     <h1><?php echo $lang['manage_external_shares']; ?></h1>
 

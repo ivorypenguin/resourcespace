@@ -73,8 +73,6 @@ else
 	$path=get_resource_path($ref,true,$size,false,$ext,-1,$page,$use_watermark && $alternative==-1,"",$alternative);
 	
 	hook('modifydownloadpath');
-
-	if (!file_exists($path)) {$path=get_resource_path($ref,true,"",false,$ext,-1,$page,false,"",$alternative);}
         
 	if (!file_exists($path) && $noattach!="")
 		{

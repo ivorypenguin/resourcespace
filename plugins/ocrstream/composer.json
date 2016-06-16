@@ -1,7 +1,0 @@
-{
-    "require": {
-        "symfony/process": "v2.8.0",
-        "monstrum/jcrop": "v2.0.1",
-        "components/jqueryui": "1.11.4"
-    }
-}

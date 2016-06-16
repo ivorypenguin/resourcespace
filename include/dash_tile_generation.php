@@ -74,8 +74,7 @@ function tile_config_theme($tile,$tile_id,$tile_width,$tile_height)
 	global $lang,$pagename;
 	$pagename="home";
 	?>
-	<span class='theme-icon'></span>
-	<h2><?php echo $lang["themes"]?></h2>
+	<h2><span class='fa fa-th-large'></span><?php echo $lang["themes"]?></h2>
 	<p><?php echo text("themes")?></p>
 	<?php
 	}
@@ -104,7 +103,7 @@ function tile_config_themeselector($tile,$tile_id,$tile_width,$tile_height)
 				if($theme_category_levels == 1 || !$theme_direct_jump)
 					{
 					?>
-					<a id="themeviewall" onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/themes.php">&gt;&nbsp;<?php echo $lang["viewall"] ?></a>
+					<a id="themeviewall" onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/themes.php"><?php echo LINK_CARET ?><?php echo $lang["viewall"] ?></a>
 					<?php
 					}
 					?>
@@ -121,8 +120,7 @@ function tile_config_mycollection($tile,$tile_id,$tile_width,$tile_height)
 	global $lang,$pagename;
 	$pagename="home";
 	?>
-	<span class='shopping-icon'></span>
-	<h2><?php echo $lang["mycollections"]?></h2>
+	<h2><span class='fa fa-shopping-bag'></span><?php echo $lang["mycollections"]?></h2>
 	<p><?php echo text("mycollections")?></p>
 	<?php
 	}
@@ -131,8 +129,7 @@ function tile_config_advancedsearch($tile,$tile_id,$tile_width,$tile_height)
 	global $lang,$pagename;
 	$pagename="home";
 	?>
-	<span class='search-icon'></span>
-	<h2><?php echo $lang["advancedsearch"]?></h2>
+	<h2><span class='fa fa-search'></span><?php echo $lang["advancedsearch"]?></h2>
 	<p><?php echo text("advancedsearch")?></p>
 	<?php
 	}
@@ -141,8 +138,7 @@ function tile_config_mycontributions($tile,$tile_id,$tile_width,$tile_height)
 	global $lang,$pagename;
 	$pagename="home";
 	?>
-	<span class='clock-icon'></span>
-	<h2><?php echo $lang["mycontributions"]?></h2>
+	<h2><span class='fa fa-user'></span><?php echo $lang["mycontributions"]?></h2>
 	<p><?php echo text("mycontributions")?></p>
 	<?php
 	}
@@ -151,8 +147,7 @@ function tile_config_helpandadvice($tile,$tile_id,$tile_width,$tile_height)
 	global $lang,$pagename;
 	$pagename="home";
 	?>
-	<span class='help-icon'></span>
-	<h2><?php echo $lang["helpandadvice"]?></h2>
+	<h2><span class='fa fa-book'></span><?php echo $lang["helpandadvice"]?></h2>
 	<p><?php echo text("help")?></p>
 	<?php
 	}
@@ -242,7 +237,7 @@ function tile_config_pending($tile,$tile_id,$tile_width,$tile_height)
 	?>
 	<!-- <h2 class="title notitle"> <?php echo $lang[strtolower($tile["txt"])]; ?></h2> -->
 	<p class="tile_corner_box">
-		<span class="count-icon"></span>
+		<span class="fa fa-clone"></span>
 		<?php echo $count; ?>
 	</p>
 	<?php
@@ -349,22 +344,22 @@ function tile_search_thumbs($tile,$tile_id,$tile_width,$tile_height,$promoted_im
 		}
 	$icon = ""; 
 	if(substr($search_string["search"],0,11)=="!collection")
-		{$icon="collection";}
+		{$icon="th-large";}
 	else if(substr($search_string["search"],0,7)=="!recent" || substr($search_string["search"],0,5)=="!last")
-		{$icon="clock";}
+		{$icon="clock-o";}
 	else{$icon="search";}
-	echo "<span class='".$icon."-icon'></span>";
 
 	if(!empty($tile["title"]))
 		{ ?>
-		<h2 class="title thmbs_tile">
+		<h2>
+		<span class='fa fa-<?php echo $icon ?>'></span>
 		<?php echo htmlspecialchars(i18n_get_translated($tile["title"]));?>
 		</h2>
 		<?php
 		}
 	else if(!empty($tile["txt"]))
 		{ ?>
-		<h2 class="title notitle thmbs_tile">
+		<h2>
 		<?php echo htmlspecialchars(i18n_get_translated($tile["txt"]));?>
 		</h2>
 		<?php
@@ -385,7 +380,7 @@ function tile_search_thumbs($tile,$tile_id,$tile_width,$tile_height,$promoted_im
 	if($tile["resource_count"])
 		{?>
 		<p class="tile_corner_box">
-		<span class="count-icon"></span>
+		<span class="fa fa-clone"></span>
 		<?php echo $count; ?>
 		</p>
 		<?php
@@ -443,23 +438,24 @@ function tile_search_multi($tile,$tile_id,$tile_width,$tile_height)
 	
 	$icon = ""; 
 	if(substr($search_string["search"],0,11)=="!collection")
-		{$icon="collection";}
+		{$icon="th-large";}
 	else if(substr($search_string["search"],0,7)=="!recent" || substr($search_string["search"],0,5)=="!last")
-		{$icon="clock";}
+		{$icon="clock-o";}
 	else
 		{$icon="search";}
-	echo "<span class='".$icon."-icon'></span>";
 	
 	if(!empty($tile["title"]))
 		{ ?>
-		<h2 class="title thmbs_tile">
+		<h2>
+		<span class='fa fa-<?php echo $icon ?>'></span>
 		<?php echo htmlspecialchars(i18n_get_translated($tile["title"]));?>
 		</h2>
 		<?php
 		}
 	else if(!empty($tile["txt"]))
 		{ ?>
-		<h2 class="title notitle thmbs_tile">
+		<h2>
+		<span class='fa fa-<?php echo $icon ?>'></span>
 		<?php echo htmlspecialchars(i18n_get_translated($tile["txt"]));?>
 		</h2>
 		<?php
@@ -476,7 +472,7 @@ function tile_search_multi($tile,$tile_id,$tile_width,$tile_height)
 	if($tile["resource_count"])
 		{?>
 		<p class="tile_corner_box">
-		<span class="count-icon"></span>
+		<span class="fa fa-clone"></span>
 		<?php echo count($resources); ?>
 		</p>
 		<?php
@@ -512,22 +508,23 @@ function tile_search_blank($tile,$tile_id,$tile_width,$tile_height)
 	
 	$icon = ""; 
 	if(substr($search_string["search"],0,11)=="!collection")
-		{$icon="collection";}
+		{$icon="th-large";}
 	else if(substr($search_string["search"],0,7)=="!recent" || substr($search_string["search"],0,5)=="!last")
-		{$icon="clock";}
+		{$icon="clock-o";}
 	else{$icon="search";}
-	echo "<span class='".$icon."-icon'></span>";
 
 	if(!empty($tile["title"]))
 		{ ?>
-		<h2 class="title thmbs_tile">
+		<h2>
+		<span class='fa fa-<?php echo $icon ?>'></span>
 		<?php echo htmlspecialchars(i18n_get_translated($tile["title"]));?>
 		</h2>
 		<?php
 		}
 	else if(!empty($tile["txt"]))
 		{ ?>
-		<h2 class="title notitle thmbs_tile">
+		<h2>
+		<span class='fa fa-<?php echo $icon ?>'></span>
 		<?php echo htmlspecialchars(i18n_get_translated($tile["txt"]));?>
 		</h2>
 		<?php
@@ -548,7 +545,7 @@ function tile_search_blank($tile,$tile_id,$tile_width,$tile_height)
 	if($tile["resource_count"])
 		{?>
 		<p class="tile_corner_box">
-		<span class="count-icon"></span>
+		<span class="fa fa-clone"></span>
 		<?php echo $count; ?>
 		</p>
 		<?php

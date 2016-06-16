@@ -121,7 +121,7 @@ $results=count($fields);
 if(!$allow_reorder && ($use_order_by_tab_view || $restypefilter!="" || $field_order_by!="order_by" ))
   {
  ?>
-  <a href="<?php echo $baseurl . "/pages/admin/admin_resource_type_fields.php?restypefilter=" . (($use_order_by_tab_view)?"":$restypefilter) . "&field_order_by=order_by&field_sort=asc" ?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php if($use_order_by_tab_view){echo $lang["admin_resource_type_field_reorder_mode_all"];}else{echo $lang["admin_resource_type_field_reorder_mode"];}?></a></p>  
+  <a href="<?php echo $baseurl . "/pages/admin/admin_resource_type_fields.php?restypefilter=" . (($use_order_by_tab_view)?"":$restypefilter) . "&field_order_by=order_by&field_sort=asc" ?>" onClick="return CentralSpaceLoad(this,true);"><?php echo LINK_CARET ?><?php if($use_order_by_tab_view){echo $lang["admin_resource_type_field_reorder_mode_all"];}else{echo $lang["admin_resource_type_field_reorder_mode"];}?></a></p>  
   <?php
   }
 else
@@ -217,16 +217,16 @@ for ($n=0;$n<count($fields);$n++)
 			if($field_order_by=="order_by")
 				{
 				?>		
-				<a href="javascript:void(0)" class="movelink movedownlink" <?php if($n==count($fields)-1){ ?> disabled <?php } ?>>&gt;&nbsp;<?php echo $lang['action-move-down'] ?></a>
-				<a href="javascript:void(0)" class="movelink moveuplink" <?php if($n==0){ ?> disabled <?php } ?>>&gt;&nbsp;<?php echo $lang['action-move-up'] ?></a>
+				<a href="javascript:void(0)" class="movelink movedownlink" <?php if($n==count($fields)-1){ ?> disabled <?php } ?>><?php echo LINK_CARET ?><?php echo $lang['action-move-down'] ?></a>
+				<a href="javascript:void(0)" class="movelink moveuplink" <?php if($n==0){ ?> disabled <?php } ?>><?php echo LINK_CARET ?><?php echo $lang['action-move-up'] ?></a>
 				<?php
 				}
 				?>
 			
 			
-				<a href="<?php echo $baseurl . "/pages/admin/admin_copy_field.php?ref=" . $fields[$n]["ref"] . "&backurl=" . $url?>" onClick="CentralSpaceLoad(this,true)" >&gt;&nbsp;<?php echo $lang["copy"] ?></a>
-				<a href="<?php echo $baseurl . "/pages/admin/admin_resource_type_field_edit.php?ref=" . $fields[$n]["ref"] . "&backurl=" . $url?>" onClick="jQuery('#resource_type_field_table_body').sortable('cancel');return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["action-edit"]?> </a>
-				<a href="<?php echo $baseurl . "/pages/admin/admin_resource_type_field_edit.php?ref=" . $fields[$n]["ref"] . "&delete=yes&backurl=" . $url?>" onClick="if(confirm('<?php echo $lang["confirm-deletion"] ?>')){CentralSpaceLoad(this,true);return false;}else{return false;}" >&gt;&nbsp;<?php echo $lang["action-delete"] ?></a>
+				<a href="<?php echo $baseurl . "/pages/admin/admin_copy_field.php?ref=" . $fields[$n]["ref"] . "&backurl=" . $url?>" onClick="CentralSpaceLoad(this,true)" ><?php echo LINK_CARET ?><?php echo $lang["copy"] ?></a>
+				<a href="<?php echo $baseurl . "/pages/admin/admin_resource_type_field_edit.php?ref=" . $fields[$n]["ref"] . "&backurl=" . $url?>" onClick="jQuery('#resource_type_field_table_body').sortable('cancel');return CentralSpaceLoad(this,true);"><?php echo LINK_CARET ?><?php echo $lang["action-edit"]?> </a>
+				<a href="<?php echo $baseurl . "/pages/admin/admin_resource_type_field_edit.php?ref=" . $fields[$n]["ref"] . "&delete=yes&backurl=" . $url?>" onClick="if(confirm('<?php echo $lang["confirm-deletion"] ?>')){CentralSpaceLoad(this,true);return false;}else{return false;}" ><?php echo LINK_CARET ?><?php echo $lang["action-delete"] ?></a>
 				 
 			</div>
 		</td>

@@ -1,4 +1,5 @@
 <?php 
+ini_set('zlib.output_compression','off'); // disable PHP output compression since it breaks collection downloading
 include "../include/db.php";
 include_once "../include/general.php";
 include_once "../include/collections_functions.php";

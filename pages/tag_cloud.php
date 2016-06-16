@@ -40,7 +40,7 @@ foreach($tags as $tag=>$count)
 ?>
 </div>
 </div>
-<div class="PanelShadow"></div>
+
 </div>
 
 <?php

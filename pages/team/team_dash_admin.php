@@ -81,17 +81,17 @@ include "../../include/header.php";
 <div class="BasicsBox"> 
     <h1><?php echo ($show_usergroups_dash ? $lang['manage_user_group_dash_tiles'] : $lang['managedefaultdash']); ?></h1>
     <p>
-        <a href="<?php echo $baseurl_short?>pages/team/team_home.php" onClick="return CentralSpaceLoad(this,true);">&lt;&nbsp;<?php echo $lang['backtoteamhome']; ?></a>
+        <a href="<?php echo $baseurl_short?>pages/team/team_home.php" onClick="return CentralSpaceLoad(this,true);"><?php echo LINK_CARET_BACK ?><?php echo $lang['backtoteamhome']; ?></a>
     </p>
 <?php
 if(!$show_usergroups_dash)
     {
     ?>
     <p>
-        <a href="<?php echo $baseurl_short?>pages/team/team_dash_tile.php" onClick="return CentralSpaceLoad(this,true);">&lt;&nbsp;<?php echo $lang['managedefaultdash']; ?></a>
+        <a href="<?php echo $baseurl_short?>pages/team/team_dash_tile.php" onClick="return CentralSpaceLoad(this,true);"><?php echo LINK_CARET_BACK ?><?php echo $lang['managedefaultdash']; ?></a>
     </p>
     <p>
-        <a href="<?php echo $baseurl_short?>pages/team/team_dash_tile_special.php" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang['specialdashtiles']; ?></a>
+        <a href="<?php echo $baseurl_short?>pages/team/team_dash_tile_special.php" onClick="return CentralSpaceLoad(this,true);"><?php echo LINK_CARET ?><?php echo $lang['specialdashtiles']; ?></a>
     </p>
     <?php
     }
@@ -105,7 +105,7 @@ else
         }
     ?>
     <p>
-        <a href="<?php echo $href; ?>" onClick="return CentralSpaceLoad(this, true);">&lt;&nbsp;<?php echo $lang['manage_user_group_dash_tiles']; ?></a>
+        <a href="<?php echo $href; ?>" onClick="return CentralSpaceLoad(this, true);"><?php echo LINK_CARET_BACK ?><?php echo $lang['manage_user_group_dash_tiles']; ?></a>
     </p>
     <?php
     }
@@ -201,7 +201,7 @@ if($show_usergroups_dash)
     				resizable: false,
 					dialogClass: 'confirm-dialog no-close',
                     buttons: {
-						"<?php echo $lang['confirmdefaultdashtiledelete']; ?>": function() {processTileChange(tile,true); jQuery(this).dialog( "close" );CentralSpaceLoad(window.location.href);},
+						"<?php echo $lang['confirmdefaultdashtiledelete']; ?>": function() {processTileChange(tile,true); jQuery(this).dialog( "close" );},
                         "<?php echo $lang['cancel'] ?>":  function() { jQuery(".tilecheck[value="+tile+"]").attr('checked', true); jQuery(this).dialog('close'); }
                     }
 					});

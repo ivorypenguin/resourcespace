@@ -64,7 +64,7 @@
 	    {
 		    ?>
 	    <?php if ($edit_access) { ?>
-	    <p>&gt;&nbsp;<a href="<?php echo $baseurl_short?>pages/geo_edit.php?ref=<?php echo urlencode($ref); ?>" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang['location-edit']; ?></a></p><?php } ?>
+	    <p><?php echo LINK_CARET ?><a href="<?php echo $baseurl_short?>pages/geo_edit.php?ref=<?php echo urlencode($ref); ?>" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang['location-edit']; ?></a></p><?php } ?>
 	    
 		    <?php $mapheight=$view_mapheight; include dirname(__FILE__) . "/geo_map.php";
 		    $zoom = $resource["mapzoom"];
@@ -105,7 +105,7 @@
 	      </script>
 		<?php     
 		    } else {?>
-		<a href="<?php echo $baseurl_short?>pages/geo_edit.php?ref=<?php echo urlencode($ref); ?>" onClick="return CentralSpaceLoad(this,true);">&gt; <?php echo $lang['location-add'];?></a>
+		<a href="<?php echo $baseurl_short?>pages/geo_edit.php?ref=<?php echo urlencode($ref); ?>" onClick="return CentralSpaceLoad(this,true);"><?php echo LINK_CARET ?><?php echo $lang['location-add'];?></a>
 	
 		<?php }?>
 		<?php if ($view_panels) { ?>
@@ -127,7 +127,7 @@
  if (!isset($geolocation_panel_only))
 	{?>
 	</div> <!-- End of RecordPanel  -->
-	 <div class="PanelShadow"></div>
+	 
 	 </div> <!-- End of RecordBox -->
 	<!-- End Geolocation Section -->
 	<?php }

@@ -249,7 +249,7 @@ if ($enable_related_resources && $show_default_related_resources)
 							echo "<td class=\"link\"><a href=\"" . $baseurl_short . "pages/view.php?ref=" . $relatedresource["ref"] . "\">" . htmlspecialchars($relatedtitle) . "</a></td>";                                    
 							echo "<td>";
 							if($edit_access)
-								{echo "<div class=\"ListTools\" ><a href=\"#\" onClick=\"if(confirm('" . $lang["related_resource_confirm_delete"] . "')){relateresources(" . $ref . "," . $relatedresource["ref"] . ",'remove');}return false;\" >&gt;&nbsp;" . $lang["action-remove"] . "</a></div>";
+								{echo "<div class=\"ListTools\" ><a href=\"#\" onClick=\"if(confirm('" . $lang["related_resource_confirm_delete"] . "')){relateresources(" . $ref . "," . $relatedresource["ref"] . ",'remove');}return false;\" ><?php echo LINK_CARET ?>" . $lang["action-remove"] . "</a></div>";
 								}
 							echo "</td>";	
 							echo "</tr>";	
@@ -259,7 +259,7 @@ if ($enable_related_resources && $show_default_related_resources)
 					
 					if($related_type_upload_link && $edit_access)
 						{
-						echo "<tr><td></td><td><div class=\"ListTools\"><a href=\"" . $baseurl_short . "pages/edit.php?ref=-" . $userref . "&uploader=plupload&resource_type=" . $rtype ."&submitted=true&relateto=" . $ref . "&collection_add=&redirecturl=" . urlencode($baseurl . "/?r=" . $ref) . "\">&gt;&nbsp;" . $lang["upload"] . "</a></div></td>";
+						echo "<tr><td></td><td><div class=\"ListTools\"><a href=\"" . $baseurl_short . "pages/edit.php?ref=-" . $userref . "&uploader=plupload&resource_type=" . $rtype ."&submitted=true&relateto=" . $ref . "&collection_add=&redirecturl=" . urlencode($baseurl . "/?r=" . $ref) . "\"><?php echo LINK_CARET ?>" . $lang["upload"] . "</a></div></td>";
 						}			
 			
 					?>

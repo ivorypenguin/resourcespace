@@ -14,7 +14,7 @@ include "../include/header.php";
 
 ?>
 <div class="BasicsBox">
-<p><a href="<?php echo $baseurl_short?>pages/collection_manage.php" onClick="return CentralSpaceLoad(this,true);">&lt;&nbsp;<?php echo $lang["managecollectionslink"]?></a></p>	
+<p><a href="<?php echo $baseurl_short?>pages/collection_manage.php" onClick="return CentralSpaceLoad(this,true);"><?php echo LINK_CARET_BACK ?><?php echo $lang["managecollectionslink"]?></a></p>	
 <h1><?php echo $lang["shared_collections"]?></h1>
 <?php
 
@@ -73,7 +73,7 @@ for ($n=$offset;(($n<count($collections)) && ($n<($offset+$per_page)));$n++)
 					echo "<td>" . "External " . "</td>";
 					echo "<td>" . (($extshare["access"]==0)?$lang["access0"]:$lang["access1"]) . "</td>";
 					echo "<td>" .  str_replace("%date%",(($extshare["expires"]!="")?nicedate($extshare["expires"]):$lang["never"]),$lang["expires-date"]) . "</td>";
-					echo "<td><div class=\"ListTools\"><a onclick=\"return CentralSpaceLoad(this,true);\" href=\"" . $baseurl . "/pages/collection_share.php?ref=" . $collections[$n]["ref"] . "\">&gt;&nbsp;" . $lang["action-edit"] . "</a></div></td>";
+					echo "<td><div class=\"ListTools\"><a onclick=\"return CentralSpaceLoad(this,true);\" href=\"" . $baseurl . "/pages/collection_share.php?ref=" . $collections[$n]["ref"] . "\"><?php echo LINK_CARET ?>" . $lang["action-edit"] . "</a></div></td>";
 					echo "</tr>";
 					}					
 				}
@@ -91,7 +91,7 @@ for ($n=$offset;(($n<count($collections)) && ($n<($offset+$per_page)));$n++)
 					echo (($coluser["fullname"]!="")?$coluser["fullname"]:$coluser["username"]) . "<br>";											
 					}
 				echo "</td>";
-				echo "<td><div class=\"ListTools\"><a onclick=\"return CentralSpaceLoad(this,true);\" href=\"" . $baseurl . "/pages/collection_edit.php?ref=" . $collections[$n]["ref"] . "\">&gt;&nbsp;" . $lang["action-edit"] . "</a></div></td>";
+				echo "<td><div class=\"ListTools\"><a onclick=\"return CentralSpaceLoad(this,true);\" href=\"" . $baseurl . "/pages/collection_edit.php?ref=" . $collections[$n]["ref"] . "\"><?php echo LINK_CARET ?>" . $lang["action-edit"] . "</a></div></td>";
 				echo "</tr>";
 				}
 				
@@ -103,7 +103,7 @@ for ($n=$offset;(($n<count($collections)) && ($n<($offset+$per_page)));$n++)
 					echo "<td>" . $lang["theme"] . "</td>";
 					echo "<td>" . (($collections[$n]["allow_changes"]==0)?$lang["view"]:$lang["addremove"])  . "</td>";
 					echo "<td>" . $lang["notavailableshort"] . "</td>";
-					echo "<td><div class=\"ListTools\"><a onclick=\"return CentralSpaceLoad(this,true);\" href=\"" . $baseurl . "/pages/collection_edit.php?ref=" . $collections[$n]["ref"] . "\">&gt;&nbsp;" . $lang["action-edit"] . "</a></div></td>";
+					echo "<td><div class=\"ListTools\"><a onclick=\"return CentralSpaceLoad(this,true);\" href=\"" . $baseurl . "/pages/collection_edit.php?ref=" . $collections[$n]["ref"] . "\"><?php echo LINK_CARET ?>" . $lang["action-edit"] . "</a></div></td>";
 					echo "</tr>";
 					}
 				else
@@ -112,7 +112,7 @@ for ($n=$offset;(($n<count($collections)) && ($n<($offset+$per_page)));$n++)
 					echo "<td>" . $lang["public"] . "</td>";
 					echo "<td>" . (($collections[$n]["allow_changes"]==0)?$lang["view"]:$lang["addremove"])  . "</td>";
 					echo "<td>" . $lang["notavailableshort"] . "</td>";
-					echo "<td><div class=\"ListTools\"><a onclick=\"return CentralSpaceLoad(this,true);\" href=\"" . $baseurl . "/pages/collection_edit.php?ref=" . $collections[$n]["ref"] . "\">&gt;&nbsp;" . $lang["action-edit"] . "</a></div></td>";
+					echo "<td><div class=\"ListTools\"><a onclick=\"return CentralSpaceLoad(this,true);\" href=\"" . $baseurl . "/pages/collection_edit.php?ref=" . $collections[$n]["ref"] . "\"><?php echo LINK_CARET ?>" . $lang["action-edit"] . "</a></div></td>";
 					echo "</tr>";			
 					}
 				}

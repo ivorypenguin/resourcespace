@@ -2,7 +2,7 @@
 
 function HookEmbeddocumentViewAfterresourceactions2()
 	{
-	global $embeddocument_resourcetype,$resource,$resource_data,$ref,$baseurl,$lang,$scramble_key,$access,$resourcetoolsGT;
+	global $embeddocument_resourcetype,$resource,$resource_data,$ref,$baseurl,$lang,$scramble_key,$access;
 	
 	if ($resource["resource_type"]!=$embeddocument_resourcetype) {return false;} # Not the right type.
 
@@ -69,7 +69,7 @@ if ($thumbwidth==0)	{return false;} # The resource has no preview.
 <li><a href="#" onClick="
 if (document.getElementById('embeddocument').style.display=='block') {document.getElementById('embeddocument').style.display='none';} else {document.getElementById('embeddocument').style.display='block';}
 if (document.getElementById('embeddocument2').style.display=='block') {document.getElementById('embeddocument2').style.display='none';} else {document.getElementById('embeddocument2').style.display='block';}
- return false;"><?php echo ($resourcetoolsGT?"&gt; ":"").$lang["embeddocument_embed"]?></a></li>
+ return false;"><?php echo "<i class='fa fa-share-alt'></i>&nbsp;" .$lang["embeddocument_embed"]?></a></li>
 <p id="embeddocument2" style="display:none;padding:10px 0 3px 0;"><?php echo $lang["embeddocument_help"] ?><br/>
 	<br/>
 

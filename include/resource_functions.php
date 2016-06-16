@@ -3445,7 +3445,7 @@ function reindex_resource($ref)
 	# Reindex a resource. Delete all resource_keyword rows and create new ones.
 	
 	# Delete existing keywords
-	sql_query("delete from resource_keyword where resource='$ref'");
+	sql_query("DELETE FROM resource_keyword WHERE resource = '{$ref}'");
 
 	# Index fields
 	$data=get_resource_field_data($ref,false,false); # Fetch all fields and do not use permissions.

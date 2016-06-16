@@ -245,93 +245,15 @@ if (!hook("renderresultsmallthumb"))
 				} /* end hook replaceresourcepaneliconssmall */
 			hook("smallsearchicon");
 			if (!hook("replaceresourcetoolssmall"))
-				{ ?>
-				<!-- Preview icon -->
-				<?php 
-				if (!hook("replacefullscreenpreviewicon"))
-					{
-					if ($result[$n]["has_image"]==1)
-						{ ?>
-						<span class="IconPreview">
-						<a 
-							onClick="return CentralSpaceLoad(this,true);" 
-							href="<?php echo $baseurl_short?>pages/preview.php?from=search&amp;ref=<?php echo urlencode($ref)?>&amp;ext=<?php echo $result[$n]["preview_extension"]?>&amp;search=<?php echo urlencode($search)?>&amp;offset=<?php echo urlencode($offset)?>&amp;order_by=<?php echo urlencode($order_by)?>&amp;sort=<?php echo urlencode($sort)?>&amp;archive=<?php echo urlencode($archive)?>&amp;k=<?php echo urlencode($k)?>"  
-							title="<?php echo $lang["fullscreenpreview"]?>"
-						>
-							<img 
-								src="<?php echo $baseurl_short?>gfx/interface/sp.gif" 
-								alt="<?php echo $lang["fullscreenpreview"]?>" 
-								width="22" 
-								height="12" 
-							/>
-						</a>
-						</span>
-						<?php 
-						$showkeypreview = true;
-						}
-					} /* end hook replacefullscreenpreviewicon */ ?>
-				<!-- Add to collection icon -->
-				<?php 
-				if (!checkperm("b") && $k=="") 
-					{ ?>
-					<span class="IconCollect">
-						<?php echo add_to_collection_link($ref,$search)?>
-							<img src="<?php echo $baseurl_short?>gfx/interface/sp.gif" alt="" width="22" height="12" />
-						</a>
-					</span>
-					<?php 
-					$showkeycollect = true; 
-					} ?>
-				<!-- Remove from collection icon -->
-				<?php 
-				if (!checkperm("b") && substr($search,0,11)=="!collection" && $k=="") 
-					{
-					if ($search=="!collection".$usercollection)
-						{ ?>
-						<span class="IconCollectOut">
-							<?php echo remove_from_collection_link($ref,$search)?>
-								<img src="<?php echo $baseurl_short?>gfx/interface/sp.gif" alt="" width="22" height="12" />
-							</a>
-						</span>
-						<?php 
-						$showkeycollectout = true; 
-						}
-					}?>
-					
-							<!-- Edit icon -->
-			<?php
-			// The permissions check here is intentionally more basic. It doesn't check edit_filter as this would be computationally intensive
-			// when displaying many resources. As such this is a convenience feature for users that have system-wide edit access to the given
-			// access level.
-			if($search_results_edit_icon && checkperm("e" . $result[$n]["archive"]) && !hook("iconedit")) 
-				{ 
-				if ($allow_share && $k=="") 
-					{ ?>
-					<span class="IconEdit">
-						<a 
-							href="<?php echo str_replace("view.php","edit.php",$url) ?>"  
-							onClick="return <?php echo ($resource_view_modal?"Modal":"CentralSpace") ?>Load(this,true);" 
-							title="<?php echo $lang["editresource"]?>"
-						>
-							<img 
-								src="<?php echo $baseurl_short?>gfx/interface/sp.gif" 
-								alt="" 
-								width="16" 
-								height="12" 
-							/>
-						</a>
-					</span>
-					<?php
-					$showkeyedit = true;
-					}
-				} 	
+				{
+				include "resource_tools.php";
 				} // end hook replaceresourcetoolssmall ?>
 				
 			</div>
 			<?php hook("smallthumbicon"); ?>
 		<div class="clearer"></div>
 		</div>	
-	<div class="PanelShadow"></div>
+	
 	</div>
 	<?php 
 	} # end hook renderresultsmallthumb

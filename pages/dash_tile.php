@@ -224,7 +224,7 @@ if($submitdashtile)
 		</p>
 		<?php
 		}?>
-	<a href="<?php echo $link;?>">&gt;&nbsp;<?php echo $lang["returntopreviouspage"];?></a>
+	<a href="<?php echo $link;?>"><?php echo LINK_CARET ?><?php echo $lang["returntopreviouspage"];?></a>
 	<?php
 	include "../include/footer.php";
 	exit();

@@ -336,7 +336,7 @@ include "../../include/header.php";
     
     <p>
 	
-	<a href="<?php echo $backurl ?>" onClick="return CentralSpaceLoad(this,true);">&lt;&nbsp;<?php echo $lang["back"]?></a>
+	<a href="<?php echo $backurl ?>" onClick="return CentralSpaceLoad(this,true);"><?php echo LINK_CARET_BACK ?><?php echo $lang["back"]?></a>
     </p>
     
     <h1><?php echo $lang["admin_resource_type_field"] . ": " . i18n_get_translated($fielddata["title"]) ?></h1>

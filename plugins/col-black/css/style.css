@@ -89,7 +89,6 @@ input[readonly] {color: #FFFFFF;}
 .RecordStory h1{color: #000000;}
 .RecordStory a:hover{color: #000000;}
 .BasicsBox .HorizontalNav li {border-right:1px solid #B5C3D4;border-top-style: none;border-bottom-style: none;border-left-style: none;}
-.BasicsBox .VerticalNav li, .ThemeBox li {list-style: url(../gfx/black/interface/bullet.gif) none inside;}
 .ThemeBox {border-bottom: 1px solid #5A7599;}
 
 .HomePanel h2 {background: url(../gfx/black/interface/HomeArrow.gif) no-repeat 1px 10px;padding-left:42px;}

@@ -74,7 +74,7 @@ function HookLicensemanagerViewCustompanels()
 
     
     </div>
-    <div class="PanelShadow"></div>
+    
     </div>
     <?php
 	return false; # Allow further custom panels

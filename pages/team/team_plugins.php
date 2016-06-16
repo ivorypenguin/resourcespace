@@ -289,31 +289,31 @@ if (count($inst_plugins)>0)
             echo '<td><div class="ListTools">';
             if (isset($p['legacy_inst']))
                {
-               echo '<a class="nowrap" href="#">&gt;&nbsp;'.$lang['plugins-legacyinst'].'</a> '; # TODO: Update this link to point to a help page on the wiki
+               echo '<a class="nowrap" href="#">' . LINK_CARET . $lang['plugins-legacyinst'].'</a> '; # TODO: Update this link to point to a help page on the wiki
                }
             else
                {
-               echo '<a href="#'.$p['name'].'" class="p-deactivate">&gt;&nbsp;'.$lang['plugins-deactivate'].'</a> ';
+               echo '<a href="#'.$p['name'].'" class="p-deactivate">' .  LINK_CARET . $lang['plugins-deactivate'].'</a> ';
                }
             if ($p['info_url']!='')
                {
-               echo '<a class="nowrap" href="'.$p['info_url'].'" target="_blank">&gt;&nbsp;'.$lang['plugins-moreinfo'].'</a> ';
+               echo '<a class="nowrap" href="'.$p['info_url'].'" target="_blank">' . LINK_CARET . $lang['plugins-moreinfo'].'</a> ';
                }
-            echo '<a onClick="return CentralSpaceLoad(this,true);" class="nowrap" href="'.$baseurl_short.'pages/team/team_plugins_groups.php?plugin=' . urlencode($p['name']) . '">&gt;&nbsp;'.$lang['groupaccess'].'</a> ';
+            echo '<a onClick="return CentralSpaceLoad(this,true);" class="nowrap" href="'.$baseurl_short.'pages/team/team_plugins_groups.php?plugin=' . urlencode($p['name']) . '">' . LINK_CARET . $lang['groupaccess'].'</a> ';
             $p['enabled_groups'] = array($p['enabled_groups']);
             if ($p['config_url']!='')        
                {
                if(($p['enabled_groups'][0]=='' ||  in_array($userdata[0]['usergroup'],explode(",",$p['enabled_groups'][0]))))
                   {
-                  echo '<a onClick="return CentralSpaceLoad(this,true);" class="nowrap" href="'.$baseurl.$p['config_url'].'">&gt;&nbsp;'.$lang['options'].'</a> ';        
+                  echo '<a onClick="return CentralSpaceLoad(this,true);" class="nowrap" href="'.$baseurl.$p['config_url'].'">' . LINK_CARET .$lang['options'].'</a> ';        
                   if (sql_value("SELECT config_json as value from plugins where name='".$p['name']."'",'')!='' && function_exists('json_decode'))
                      {
-                     echo '<a class="nowrap" href="'.$baseurl_short.'pages/team/team_download_plugin_config.php?pin='.$p['name'].'">&gt;&nbsp;'.$lang['plugins-download'].'</a> ';
+                     echo '<a class="nowrap" href="'.$baseurl_short.'pages/team/team_download_plugin_config.php?pin='.$p['name'].'">' . LINK_CARET .$lang['plugins-download'].'</a> ';
                      }
                   }
                else
                   {
-                  echo '&gt;&nbsp;<span class="nowrap" style="text-decoration: line-through;cursor:not-allowed;">'.$lang['options'].'</span> '; 
+                  echo LINK_CARET . '<span class="nowrap" style="text-decoration: line-through;cursor:not-allowed;">'.$lang['options'].'</span> '; 
                   }
                }
             echo '</div></td></tr>';
@@ -348,14 +348,14 @@ if (count($plugins_avail)>0)
          $plugin_row .= '<td>'.$p['version'].'</td>';
          }
       $plugin_row .= '<td><div class="ListTools">';
-      $plugin_row .= '<a href="#'.$p['name'].'" class="p-activate">&gt;&nbsp;'.$lang['plugins-activate'].'</a> ';
+      $plugin_row .= '<a href="#'.$p['name'].'" class="p-activate">' . LINK_CARET .$lang['plugins-activate'].'</a> ';
       if ($p['info_url']!='')
          {
-         $plugin_row .= '<a class="nowrap" href="'.$p['info_url'].'" target="_blank">&gt;&nbsp;'.$lang['plugins-moreinfo'].'</a> ';
+         $plugin_row .= '<a class="nowrap" href="'.$p['info_url'].'" target="_blank">' . LINK_CARET . $lang['plugins-moreinfo'].'</a> ';
          }
       if ($p['config'])
          {
-         $plugin_row .= '<a href="#'.$p['name'].'" class="p-purge">&gt;&nbsp;'.$lang['plugins-purge'].'</a> ';
+         $plugin_row .= '<a href="#'.$p['name'].'" class="p-purge">' .  LINK_CARET . $lang['plugins-purge'].'</a> ';
          }
       $plugin_row .= '</div></td></tr>';  
       if(isset($p["category"]))

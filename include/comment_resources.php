@@ -12,20 +12,20 @@
     					<?php
     						if (isset ($comments_policy_external_url) &&  $comments_policy_external_url!="") 
     							{
-    							echo "<a href='$comments_policy_external_url' target='_blank'>&gt;&nbsp;${lang['comments_box-policy']}</a>";
+    							echo "<a href='$comments_policy_external_url' target='_blank'>" . LINK_CARET . "${lang['comments_box-policy']}</a>";
     							}
     						else
     							{
     							if (text("comments_policy")!="") 
     								{								
-    								echo "<a href='content.php?content=comments_policy' target='_blank'>&gt;&nbsp;${lang['comments_box-policy']}</a>";
+    								echo "<a href='content.php?content=comments_policy' target='_blank'>" . LINK_CARET . "${lang['comments_box-policy']}</a>";
     								}
     							else
     								{
     								// show placeholder only if user has permission to change site text to sort it							
     								if (checkPerm("o"))
     									{							
-    									echo "<a href=\"javascript: void(0)\" onclick=\"alert ('${lang['comments_box-policy-placeholder']}');\">&gt;&nbsp;${lang['comments_box-policy']}</a>";									
+    									echo "<a href=\"javascript: void(0)\" onclick=\"alert ('${lang['comments_box-policy-placeholder']}');\">" . LINK_CARET . "${lang['comments_box-policy']}</a>";									
     									}							
     								}
     						}

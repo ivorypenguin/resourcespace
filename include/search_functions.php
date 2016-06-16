@@ -6,7 +6,7 @@
 include_once 'node_functions.php';
 
 if (!function_exists("do_search")) {
-function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchrows=-1,$sort="desc",$access_override=false,$starsearch=0,$ignore_filters=false,$return_disk_usage=false,$recent_search_daylimit="", $go=false, $stats_logging=true)
+function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchrows=-1,$sort="desc",$access_override=false,$starsearch=0,$ignore_filters=false,$return_disk_usage=false,$recent_search_daylimit="", $go=false, $stats_logging=true, $return_refs_only=false)
     {
     debug("search=$search $go $fetchrows restypes=$restypes archive=$archive daylimit=$recent_search_daylimit");
 
@@ -66,7 +66,7 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
 
     # Extract search parameters and split to keywords.
     $search_params=$search;
-    if (substr($search,0,1)=="!")
+    if (substr($search,0,1)=="!" && substr($search,0,6)!="!empty")
         {
         # Special search, discard the special search identifier when splitting keywords and extract the search paramaters
         $s=strpos($search," ");
@@ -152,8 +152,8 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
         $select.=",null group_access, null user_access ";
         }
     
-    # add 'joins' to select (adding them 
-    $joins=get_resource_table_joins();
+    # add 'joins' to select (only add fields if not returning the refs only)
+    $joins=$return_refs_only===false ? get_resource_table_joins() : array();
     foreach( $joins as $datajoin)
         {
         $select.=",r.field".$datajoin." ";
@@ -190,7 +190,8 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
             $restypes = substr($restypes, 7);
             }
 
-        $sql_restrict_by_field_types = sql_value("SELECT group_concat(ref) AS `value` FROM resource_type_field WHERE keywords_index = 1 AND resource_type IN ({$restypes})", '');
+        // 0 is for global fields which need to be added here as well
+        $sql_restrict_by_field_types = sql_value("SELECT group_concat(ref) AS `value` FROM resource_type_field WHERE keywords_index = 1 AND resource_type IN (0, {$restypes})", '');
 
         if('' != $sql_restrict_by_field_types)
             {
@@ -300,6 +301,12 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
                             $fieldinfo_cache[$kw[0]]=$fieldinfo;
                         }
 
+                        if(0 === count($fieldinfo))
+                            {
+                            debug('Field short name not found.');
+                            return false;
+                            }
+
                         if ($fieldinfo[0]["type"] == 7)
                             {
                             $ckeywords=preg_split('/[\|;]/',$kw[1]);
@@ -307,11 +314,6 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
                         else
                             {
                             $ckeywords=explode(";",$kw[1]);
-                            }
-
-                        if (count($fieldinfo)==0)
-                            {
-                            debug("Field short name not found.");return false;
                             }
                         
                         # Create an array of matching field IDs.
@@ -782,7 +784,7 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
     # --------------------------------------------------------------------------------
     # Special Searches (start with an exclamation mark)
     # --------------------------------------------------------------------------------
-    $special_results=search_special($search,$sql_join,$fetchrows,$sql_prefix,$sql_suffix,$order_by,$orig_order,$select,$sql_filter,$archive,$return_disk_usage);
+    $special_results=search_special($search,$sql_join,$fetchrows,$sql_prefix,$sql_suffix,$order_by,$orig_order,$select,$sql_filter,$archive,$return_disk_usage,$return_refs_only);
     if ($special_results!==false) {return $special_results;}
 
     # -------------------------------------------------------------------------------------
@@ -817,8 +819,21 @@ function do_search($search,$restypes="",$order_by="relevance",$archive=0,$fetchr
     # Debug
     debug('$results_sql=' . $results_sql);
 
-    # Execute query
-    $result=sql_query($results_sql,false,$fetchrows);
+    if($return_refs_only)
+        {
+        # Execute query but only ask for ref columns back from mysql_query();
+        # We force verbatim query mode on (and restore it afterwards) as there is no point trying to strip slashes etc. just for a ref column
+        global $mysql_verbatim_queries;
+        $mysql_vq=$mysql_verbatim_queries;
+        $mysql_verbatim_queries=true;
+        $result=sql_query($results_sql,false,$fetchrows,true,2,true,array('ref'));
+        $mysql_verbatim_queries=$mysql_vq;
+        }
+    else
+        {
+        # Execute query as normal
+        $result=sql_query($results_sql,false,$fetchrows);
+        }
 
     # Performance improvement - perform a second count-only query and pad the result array as necessary
     if ($search_sql_double_pass_mode && count($result)>=$max_results)
@@ -1538,7 +1553,7 @@ function compile_search_actions($top_actions)
     			$o++;
                 }
 
-            if($show_searchitemsdiskusage) 
+            if(0 != $resources_count && $show_searchitemsdiskusage) 
                 {
                 $extra_tag_attributes = sprintf('
                         data-url="%spages/search_disk_usage.php?search=%s&restypes=%s&offset=%s&order_by=%s&sort=%s&archive=%s&daylimit=%s&k=%s"
@@ -1775,7 +1790,7 @@ function search_filter($search,$archive,$restypes,$starsearch,$recent_search_day
 	return $sql_filter;
 	}
 
-function search_special($search,$sql_join,$fetchrows,$sql_prefix,$sql_suffix,$order_by,$orig_order,$select,$sql_filter,$archive,$return_disk_usage)
+function search_special($search,$sql_join,$fetchrows,$sql_prefix,$sql_suffix,$order_by,$orig_order,$select,$sql_filter,$archive,$return_disk_usage,$return_refs_only=false)
 	{
 	# Process special searches. These return early with results.
 
@@ -1940,14 +1955,25 @@ function search_special($search,$sql_join,$fetchrows,$sql_prefix,$sql_suffix,$or
             }   
         $searchsql = $sql_prefix . "select distinct c.date_added,c.comment,c.purchase_size,c.purchase_complete,r.hit_count score,length(c.comment) commentset, $select from resource r  join collection_resource c on r.ref=c.resource $colcustperm  where c.collection='" . $collection . "' and $colcustfilter group by r.ref order by $order_by" . $sql_suffix;
         $collectionsearchsql=hook('modifycollectionsearchsql','',array($searchsql));
+
         if($collectionsearchsql)
-            {$searchsql=$collectionsearchsql;}
-        $result = sql_query($searchsql,false,$fetchrows);
-        hook('beforereturnresults', '', array($result, $archive)); 
-        
+            {
+            $searchsql=$collectionsearchsql;
+            }
+        if($return_refs_only)
+            {
+            $result = sql_query($searchsql,false,$fetchrows,true,2,true,array('ref','archive'));    // note that we actually include archive column too as often used to work out permission to edit collection
+            }
+        else
+            {
+            $result = sql_query($searchsql,false,$fetchrows);
+            }
+
+        hook('beforereturnresults', '', array($result, $archive));
+
         return $result;
         }
-    
+
     # View Related - Pushed Metadata (for the view page)
     if (substr($search,0,14)=="!relatedpushed")
         {

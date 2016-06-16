@@ -55,7 +55,7 @@ include "../include/header.php";
   if($backlink!="")
 	{
 	?><p>
-	  <a href='<?php echo rawurldecode($backlink); ?>'>&lt;&nbsp;<?php echo $lang['back']; ?></a>
+	  <a href='<?php echo rawurldecode($backlink); ?>'><?php echo LINK_CARET_BACK ?><?php echo $lang['back']; ?></a>
 	</p>
 	<?php
 	}?>

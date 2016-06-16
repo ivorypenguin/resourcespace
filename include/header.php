@@ -1,92 +1,5 @@
 <?php 
 global $ctheme,$userfixedtheme,$defaulttheme;
-
-$lastresorttheme = "";
-if(isset($userfixedtheme) && $userfixedtheme!="")
-    {
-    if(!in_array("col-".$ctheme,$plugins))
-        {
-        $lastresorttheme = $userfixedtheme;
-        }
-    else
-        {
-        $lastresorttheme="";
-        }
-    }
-else if($ctheme!="" && sql_value("SELECT name as value FROM plugins WHERE inst_version>=0 and name='col-".$ctheme."'",'')!="")
-    {
-    if(!in_array("col-".$ctheme,$plugins))
-        {
-        $lastresorttheme = $ctheme;
-        }
-    else
-        {
-        $lastresorttheme="";
-        }
-    }
-// check for a cookie...useful on the login page where no authentication happens
-else if(array_key_exists('colour_theme',$_COOKIE))
-    {
-	if(!in_array("col-".$_COOKIE['colour_theme'],$plugins))
-        {
-		$lastresorttheme = $_COOKIE['colour_theme'];
-		}
-	else
-        {
-        $lastresorttheme="";
-        }
-    }
-else if(!isset($defaulttheme) || $defaulttheme=="")
-    {
-    #If only one plugin enabled
-    $cplugins = sql_query("SELECT name FROM plugins WHERE inst_version>=0 AND name like'"."col-%' ORDER BY priority");
-    if(count($cplugins)==1 && isset($cplugins[0]["name"]))
-        {
-        $lastresorttheme = preg_replace("/^col-/","",$cplugins[0]["name"]);
-        }
-    else
-        {
-        $lastresorttheme = "";
-        }
-    }
-else if(isset($defaulttheme) && $defaulttheme!="")
-    {
-    $lastresorttheme = $defaulttheme;
-    }
-else
-    {
-    $lastresorttheme = "";
-    }
-
-# Process if required the colour theme.
-if($lastresorttheme)
-    {
-    global $plugins;
-    $lastresorttheme = preg_replace("/^col-/","", $lastresorttheme);
-    switch($lastresorttheme)
-            {
-            case "blue":
-            case "greyblu": $lastresorttheme = "blue"; break;
-            case "charcoal":
-            case "slimcharcoal": $lastresorttheme = "charcoal"; break;
-            }
-    if(!in_array("col-".$lastresorttheme,$plugins))
-        {
-        if(!function_exists("activate_plugin"))
-            {include dirname(__FILE__). "/plugin_functions.php";}
-        activate_plugin("col-".$lastresorttheme);
-        $cplugin = (sql_query("SELECT name,enabled_groups, config, config_json FROM plugins WHERE inst_version>=0 AND name='"."col-".escape_check($lastresorttheme)."' ORDER BY priority"));
-        if(isset($cplugin[0]))
-            {
-            $cplugin=$cplugin[0];
-            include_plugin_config($cplugin['name'],$cplugin['config'],$cplugin['config_json']);
-            register_plugin($cplugin['name']);
-            register_plugin_language($cplugin['name']);
-            $plugins[]=$cplugin['name'];
-            $ctheme = "col-".$lastresorttheme;
-            }
-        }
-    }
 hook ("preheaderoutput");
  
 $k=getvalescaped("k","");
@@ -225,6 +138,12 @@ if($videojs && ($pagename=='search' && $keyboard_navigation_video_search) || ($p
     }
 ?>
 
+<!-- FLOT for graphs -->
+<script language="javascript" type="text/javascript" src="<?php echo $baseurl_short; ?>lib/flot/jquery.flot.js"></script> 
+<script language="javascript" type="text/javascript" src="<?php echo $baseurl_short; ?>lib/flot/jquery.flot.time.js"></script> 
+<script language="javascript" type="text/javascript" src="<?php echo $baseurl_short; ?>lib/flot/jquery.flot.pie.js"></script>
+<script language="javascript" type="text/javascript" src="<?php echo $baseurl_short; ?>lib/flot/jquery.flot.tooltip.min.js"></script>
+    
 <script type="text/javascript">
 var baseurl_short="<?php echo $baseurl_short?>";
 var baseurl="<?php echo $baseurl?>";
@@ -262,6 +181,8 @@ $extrafooterhtml="";
 <link href="<?php echo $baseurl?>/css/global.css?css_reload_key=<?php echo $css_reload_key?>" rel="stylesheet" type="text/css" media="screen,projection,print" />
 <!-- Colour stylesheet -->
 <link href="<?php echo $baseurl?>/css/colour.css?css_reload_key=<?php echo $css_reload_key?>" rel="stylesheet" type="text/css" media="screen,projection,print" />
+<!--- FontAwesome for icons-->
+<link rel="stylesheet" href="<?php echo $baseurl?>/lib/fontawesome/css/font-awesome.min.css">
 
 <?php if ($pagename!="preview_all"){?><!--[if lte IE 7]> <link href="<?php echo $baseurl?>/css/globalIE.css?css_reload_key=<?php echo $css_reload_key?>" rel="stylesheet" type="text/css"  media="screen,projection,print" /> <![endif]--><?php } ?>
 <!--[if lte IE 5.6]> <link href="<?php echo $baseurl?>/css/globalIE5.css?css_reload_key=<?php echo $css_reload_key?>" rel="stylesheet" type="text/css"  media="screen,projection,print" /> <![endif]-->
@@ -290,7 +211,7 @@ if($slimheader)
 if(!hook("customloadinggraphic"))
 	{
 	?>
-	<div id="LoadingBox"><?php echo $lang["pleasewait"] ?><img src="<?php echo $baseurl_short ?>gfx/interface/loading.gif"></div>
+	<div id="LoadingBox"><?php echo $lang["pleasewait"] ?>&nbsp;<i class="fa fa-spinner fa-pulse fa-2x fa-fw"></i></div>
 	<?php
 	}
 ?>
@@ -443,24 +364,30 @@ else
 	?>
 	<ul>
 	<?php if (!hook("replaceheaderfullnamelink")){?>
-	<li>
-	<a href="<?php echo $baseurl?>/pages/user/user_home.php"  onClick="ModalClose();return ModalLoad(this,true,true,'right');"><?php echo htmlspecialchars(($userfullname=="" ? $username : $userfullname)) ?></a>
-		<span style="display: none;" class="MessageCountPill"></span>
+	<li><a href="<?php echo $baseurl?>/pages/user/user_home.php"  onClick="ModalClose();return ModalLoad(this,true,true,'right');"><i class="fa fa-user fa-fw"></i>&nbsp;<?php echo htmlspecialchars(($userfullname=="" ? $username : $userfullname)) ?></a>
+		<span style="display: none;" class="MessageCountPill Pill"></span>
 		<div id="MessageContainer" style="position:absolute; "></div>
 	<?php } ?></li>
 	
 	<!-- Team centre link -->
-	<?php if (checkperm("t")) { ?><li><a href="<?php echo $baseurl?>/pages/team/team_home.php" onClick="ModalClose();return ModalLoad(this,true,true,'right');"><?php echo $lang["teamcentre"]?></a>
-	<?php if ($team_centre_alert_icon && (checkperm("R")||checkperm("r")) &&  (sql_value("select sum(thecount) value from (select count(*) thecount from request where status = 0 union select count(*) thecount from research_request where status = 0) as theunion",0) > 0)){
-			echo '<img src="' . $baseurl . '/gfx/images/attention_16.png" width="16" height="16" alt="Alert" class="TeamCentreAlertIcon" />';
-	} ?>
+	<?php if (checkperm("t")) { ?><li><a href="<?php echo $baseurl?>/pages/team/team_home.php" onClick="ModalClose();return ModalLoad(this,true,true,'right');"><i class="fa fa-bars fa-fw"></i>&nbsp;<?php echo $lang["teamcentre"]?></a>
+	<?php if ($team_centre_alert_icon && (checkperm("R")||checkperm("r")))
+			{
+			# Show pill count if there are any pending requests
+			$pending=sql_value("select sum(thecount) value from (select count(*) thecount from request where status = 0 union select count(*) thecount from research_request where status = 0) as theunion",0);
+			if ($pending>0)
+				{
+				?><span class="Pill"><?php echo $pending ?></span><?php
+				}
+			}
+		?>
 	</li><?php } ?>
 	<!-- End of team centre link -->
 	
 	<?php hook("addtoplinks");
 	if(!isset($password_reset_mode) || !$password_reset_mode)
 		{?>
-		<li><a href="<?php echo $baseurl?>/login.php?logout=true&amp;nc=<?php echo time()?>"><?php echo $lang["logout"]?></a></li>
+		<li><a href="<?php echo $baseurl?>/login.php?logout=true&amp;nc=<?php echo time()?>"><i class="fa fa-sign-out fa-fw"></i>&nbsp;<?php echo $lang["logout"]?></a></li>
 		<?php
 		}
 	hook("addtologintoolbarmiddle");?>

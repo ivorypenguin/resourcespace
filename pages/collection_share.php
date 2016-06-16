@@ -116,7 +116,7 @@ include "../include/header.php";
 	
 	if(!$editing || $editexternalurl)
 		{?>
-		<?php if ($email_sharing) { ?><li><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_email.php?ref=<?php echo urlencode($ref) ?>"><?php echo $lang["emailcollectiontitle"]?></a></li><?php } ?>
+		<?php if ($email_sharing) { ?><li><i class="fa fa-fw fa-envelope"></i>&nbsp;<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_email.php?ref=<?php echo urlencode($ref) ?>"><?php echo $lang["emailcollectiontitle"]?></a></li><?php } ?>
 
 		<?php
 		# Share as a dash tile.
@@ -124,7 +124,7 @@ include "../include/header.php";
 
 		if($home_dash && checkPermission_dashcreate())
 			{?>
-			<li><a href="<?php echo $baseurl_short;?>pages/dash_tile.php?create=true&tltype=srch&promoted_resource=true&freetext=true&all_users=1&link=/pages/search.php?search=!collection<?php echo $ref?>&order_by=relevance&sort=DESC"  onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["createnewdashtile"];?></a></li>
+			<li><i class="fa fa-fw fa-th"></i>&nbsp;<a href="<?php echo $baseurl_short;?>pages/dash_tile.php?create=true&tltype=srch&promoted_resource=true&freetext=true&all_users=1&link=/pages/search.php?search=!collection<?php echo $ref?>&order_by=relevance&sort=DESC"  onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["createnewdashtile"];?></a></li>
 			<?php
 		}
 		?>
@@ -132,7 +132,7 @@ include "../include/header.php";
 		<?php 
 		if(!$internal_share_only && $hide_collection_share_generate_url==false)
 			{ ?>
-			<li><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_share.php?ref=<?php echo urlencode($ref) ?>&generateurl=true"><?php echo $lang["generateurl"]?></a></li> <?php 
+			<li><i class="fa fa-fw fa-link"></i>&nbsp;<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_share.php?ref=<?php echo urlencode($ref) ?>&generateurl=true"><?php echo $lang["generateurl"]?></a></li> <?php 
 			} 
 		else // Just show the internal share URL straight away as there is no generate link
 			{ ?>
@@ -295,7 +295,7 @@ include "../include/header.php";
 		<div class="Question">
 		<label for="users"><?php echo $lang["attachedusers"]?></label>
 		<div class="Fixed"><?php echo (($collection["users"]=="")?$lang["noattachedusers"]:htmlspecialchars($collection["users"])); ?><br /><br />
-		<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_edit.php?ref=<?php echo urlencode($ref); ?>">&gt;&nbsp;<?php echo $lang["action-edit"];?></a>
+		<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_edit.php?ref=<?php echo urlencode($ref); ?>"><?php echo LINK_CARET ?><?php echo $lang["action-edit"];?></a>
 		</div>
 		<div class="clearerleft"> </div>
 		</div>
@@ -346,8 +346,8 @@ include "../include/header.php";
 				<td><?php echo htmlspecialchars(($keys[$n]["access"]==-1)?"":$lang["access" . $keys[$n]["access"]]); ?></td>
 				<?php hook("additionalcolexternalsharerecord");?>
 				<td><div class="ListTools">
-				<a href="#" onClick="if (confirm('<?php echo $lang["confirmdeleteaccess"]?>')) {document.getElementById('deleteaccess').value='<?php echo htmlspecialchars($keys[$n]["access_key"]) ?>';document.getElementById('collectionform').submit(); return false;}">&gt;&nbsp;<?php echo $lang["action-delete"]?></a>
-				<a href="#" onClick="document.getElementById('editaccess').value='<?php echo htmlspecialchars($keys[$n]["access_key"]) ?>';document.getElementById('editexpiration').value='<?php echo htmlspecialchars($keys[$n]["expires"]) ?>';document.getElementById('editaccesslevel').value='<?php echo htmlspecialchars($keys[$n]["access"]) ?>';document.getElementById('editgroup').value='<?php echo htmlspecialchars($keys[$n]["usergroup"]) ?>';CentralSpacePost(document.getElementById('collectionform'),true);return false;">&gt;&nbsp;<?php echo $lang["action-edit"]?></a>
+				<a href="#" onClick="if (confirm('<?php echo $lang["confirmdeleteaccess"]?>')) {document.getElementById('deleteaccess').value='<?php echo htmlspecialchars($keys[$n]["access_key"]) ?>';document.getElementById('collectionform').submit(); return false;}"><?php echo LINK_CARET ?><?php echo $lang["action-delete"]?></a>
+				<a href="#" onClick="document.getElementById('editaccess').value='<?php echo htmlspecialchars($keys[$n]["access_key"]) ?>';document.getElementById('editexpiration').value='<?php echo htmlspecialchars($keys[$n]["expires"]) ?>';document.getElementById('editaccesslevel').value='<?php echo htmlspecialchars($keys[$n]["access"]) ?>';document.getElementById('editgroup').value='<?php echo htmlspecialchars($keys[$n]["usergroup"]) ?>';CentralSpacePost(document.getElementById('collectionform'),true);return false;"><?php echo LINK_CARET ?><?php echo $lang["action-edit"]?></a>
 				</div></td>
 				</tr>
 				<?php

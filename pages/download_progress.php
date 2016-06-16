@@ -57,7 +57,7 @@ if (!$save_as)
 	# $save_as set or Opera browser? Provide a download link instead. Opera blocks any attempt to send it a download (meta/js redirect)	?>
     <h2>&nbsp;<h2> 
     <h1><?php echo $lang["downloadresource"]?></h1>
-    <p style="font-weight:bold;">&gt;&nbsp;<a href="<?php echo $url?>"><?php echo $lang["rightclicktodownload"]?></a></p>
+    <p style="font-weight:bold;"><?php echo LINK_CARET ?><a href="<?php echo $url?>"><?php echo $lang["rightclicktodownload"]?></a></p>
 	<?php } else { 
 	# Any other browser - standard 'your download will start shortly' text.
 	?>
@@ -70,11 +70,11 @@ if (!$save_as)
 	$sort= getval("saved_sort",getval("sort",""));
 	$archive= getval("saved_archive",getval("archive",""));
 	?>
-    <p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo urlencode($ref) ?>&k=<?php echo urlencode($k) ?>&search=<?php echo urlencode(getval("search",""))?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>">&lt;&nbsp;<?php echo $lang["backtoresourceview"]?></a></p>
-    <p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php?k=<?php echo urlencode($k) ?>&search=<?php echo urlencode(getval("search",""))?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>">&lt;&nbsp;<?php echo $lang["backtoresults"]?></a></p>
+    <p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo urlencode($ref) ?>&k=<?php echo urlencode($k) ?>&search=<?php echo urlencode(getval("search",""))?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>"><?php echo LINK_CARET_BACK ?><?php echo $lang["backtoresourceview"]?></a></p>
+    <p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php?k=<?php echo urlencode($k) ?>&search=<?php echo urlencode(getval("search",""))?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>"><?php echo LINK_CARET_BACK ?><?php echo $lang["backtoresults"]?></a></p>
     
     <?php if ($k=="") { ?>
-    <p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/home.php">&lt;&nbsp;<?php echo $lang["backtohome"]?></a></p>
+    <p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/home.php"><?php echo LINK_CARET_BACK ?><?php echo $lang["backtohome"]?></a></p>
     <?php } ?>
 </div>
 

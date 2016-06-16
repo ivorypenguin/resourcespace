@@ -99,7 +99,7 @@ else if($process_csv && file_exists($csv_file))
 else
     {
     ?>
-    <p><a href="<?php echo $_SERVER['SCRIPT_NAME']; ?>" onclick="return CentralSpaceLoad(this, true);">&lt;&nbsp;<?php echo $lang['back']; ?></a></p>
+    <p><a href="<?php echo $_SERVER['SCRIPT_NAME']; ?>" onclick="return CentralSpaceLoad(this, true);"><?php echo LINK_CARET_BACK ?><?php echo $lang['back']; ?></a></p>
     <p><b><?php echo $_FILES[$fd]['name']; ?></b></p>
 
     <?php

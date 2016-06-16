@@ -18,7 +18,7 @@ $reports=sql_query("select ref, name from report" . ($find=="" ? "" : " where re
 
 ?><div class="BasicsBox"> 
 	
-	<p><a href="<?php echo $baseurl . "/pages/admin/admin_home.php" ?>" onClick="return CentralSpaceLoad(this,true);">&lt;&nbsp;<?php echo $lang["systemsetup"]?></a></p>
+	<p><a href="<?php echo $baseurl . "/pages/admin/admin_home.php" ?>" onClick="return CentralSpaceLoad(this,true);"><?php echo LINK_CARET_BACK ?><?php echo $lang["systemsetup"]?></a></p>
 	
 	<h1><?php echo $lang['page-title_report_management']; ?></h1>
 	<p><?php echo $lang['page-subtitle_report_management_edit'] ?></p>
@@ -66,9 +66,9 @@ function addColumnHeader($orderName, $labelKey)
 				</td>
 				<td>
 					<div class="ListTools">
-						&gt;&nbsp;<a href="<?php echo $view_url; ?>" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["action-view"]?></a>
-						&gt;&nbsp;<a href="<?php echo $edit_url; ?>" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["action-edit"]?></a>
-						&gt;&nbsp;<a href="<?php echo $edit_url; ?>&copyreport=true" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["copy"]?></a>
+						<?php echo LINK_CARET ?><a href="<?php echo $view_url; ?>" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["action-view"]?></a>
+						<?php echo LINK_CARET ?><a href="<?php echo $edit_url; ?>" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["action-edit"]?></a>
+						<?php echo LINK_CARET ?><a href="<?php echo $edit_url; ?>&copyreport=true" onClick="return CentralSpaceLoad(this,true);"><?php echo $lang["copy"]?></a>
 					</div>
 				</td>
 			</tr>

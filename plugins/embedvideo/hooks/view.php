@@ -34,7 +34,7 @@ if ($theme=="greyblu") {$colour="446693";}
 <li><a href="#" onClick="
 if (document.getElementById('embedvideo').style.display=='block') {document.getElementById('embedvideo').style.display='none';} else {document.getElementById('embedvideo').style.display='block';}
 if (document.getElementById('embedvideo2').style.display=='block') {document.getElementById('embedvideo2').style.display='none';} else {document.getElementById('embedvideo2').style.display='block';}
- return false;"><?php echo ($resourcetoolsGT?"&gt; ":"").$lang["embed"]?></a></li>
+ return false;"><?php echo "<i class='fa fa-share-alt'></i>&nbsp;" . $lang["embed"]?></a></li>
 <p id="embedvideo2" style="display:none;float:left;padding:10px 0 3px 0;"><?php echo $lang["embed_help"] ?></p>
 <textarea id="embedvideo" style="width:335px;height:200px;display:none;"><?php if (!hook("replaceembedcode")){
 

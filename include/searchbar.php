@@ -434,15 +434,6 @@ if (!$basic_simple_search)
 					<?php
 					switch($fields[$n]['type'])
 						{
-						case '0':# -------- Text boxes
-						case '1':
-						case '5':
-						case '8':
-						case ($fields[$n]["type"]==9 && !$simple_search_show_dynamic_as_dropdown):
-							?>
-							document.getElementById('field_<?php echo htmlspecialchars($fields[$n]["ref"]) ?>').value='';
-							<?php
-							break;
 						case '4':
 						case '6':
 						case '10':
@@ -457,16 +448,14 @@ if (!$basic_simple_search)
 								<?php
 								}
 							break;
-						case 2: 
-        				case 3:
-						case ($fields[$n]["type"]==9 && $simple_search_show_dynamic_as_dropdown):
+						case '7':
 							?>
-							document.getElementById('field_<?php echo htmlspecialchars($fields[$n]["ref"]) ?>').value='';
+							document.getElementById('field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>').value='';
 							<?php
 							break;
 						default:
 							?>
-							document.getElementById('field_<?php echo htmlspecialchars($fields[$n]["name"]) ?>').value='';
+							document.getElementById('field_<?php echo htmlspecialchars($fields[$n]["ref"]) ?>').value='';
 							<?php
 						}
 					?>
@@ -609,8 +598,8 @@ if (!$basic_simple_search)
   </form>
   <br />
   <?php hook("searchbarbeforebottomlinks"); ?>
-  <?php if (! $disable_geocoding) { ?><p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl?>/pages/geo_search.php">&gt; <?php echo $lang["geographicsearch"]?></a></p><?php } ?>
-  <?php if (! $advancedsearch_disabled && !hook("advancedsearchlink")) { ?><p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl?>/pages/search_advanced.php">&gt; <?php echo $lang["gotoadvancedsearch"]?></a></p><?php } ?>
+  <?php if (! $disable_geocoding) { ?><p><i class="fa fa-fw fa-globe"></i>&nbsp;<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl?>/pages/geo_search.php"><?php echo $lang["geographicsearch"]?></a></p><?php } ?>
+  <?php if (! $advancedsearch_disabled && !hook("advancedsearchlink")) { ?><p><i class="fa fa-fw fa-search-plus"></i>&nbsp;<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl?>/pages/search_advanced.php"><?php echo $lang["gotoadvancedsearch"]?></a></p><?php } ?>
 
   <?php hook("searchbarafterbuttons"); ?>
 
@@ -619,7 +608,7 @@ if (!$basic_simple_search)
 	<?php } ?> <!-- END of Searchbarreplace hook -->
 	</div>
 	</div>
-	<div class="PanelShadow"></div>
+	
 <?php } ?>	
 	
 	<?php if ($show_anonymous_login_panel && isset($anonymous_login) && (isset($username)) && ($username==$anonymous_login))
@@ -645,7 +634,7 @@ if (!$basic_simple_search)
 	</div>
  
 	</div>
-	<div class="PanelShadow"></div>
+	
 	<?php
 	}
 ?>
@@ -662,7 +651,7 @@ if (!$basic_simple_search)
 	</div><br />
 	<?php } /* end replaceresearchrequestboxcontent */ ?>
 	</div>
-	<div class="PanelShadow"></div>
+	
 	<?php } /* end replaceresearchrequestbox */ ?>
 	<?php } ?>
 

@@ -63,8 +63,13 @@ if (function_exists("svn_info"))
     $svn_info=@svn_info(dirname(__FILE__) . "/../../",false);
     if (is_array($svn_info))
         {
+	// Fetch the SVN revision. Unfortunately this needs to use the command line 
+	// "svnversion" utility as the revision provided by svn_info()
+	// is the latest revision of the repo itselfand not the local checkout - probably a bug.
+        $svnrevision=trim(shell_exec("svnversion ". dirname(__FILE__)));      
+
         $svn_url=explode("/",$svn_info[0]["url"]);
-        $version.=" " . $svn_url[count($svn_url)-1] . "." . $svn_info[0]["revision"];
+        $version.=" " . $svn_url[count($svn_url)-1] . "." . $svnrevision;
         }
     }
 

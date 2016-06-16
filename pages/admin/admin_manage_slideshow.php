@@ -113,11 +113,11 @@ if('true' === $ajax && getval("static","")!="")
     {
     if(getval("static","")=="true")
         {
-        set_config_option($userref, 'static_slideshow_image', true);
+        set_config_option(null, 'static_slideshow_image', true);
         }
     else
         {
-        set_config_option($userref, 'static_slideshow_image', false);       
+        set_config_option(null, 'static_slideshow_image', false);       
         }
     }
     
@@ -125,7 +125,7 @@ include '../../include/header.php';
 ?>
 <div class="BasicsBox">
     <p>
-        <a href="<?php echo $baseurl_short; ?>pages/admin/admin_home.php" onClick="return CentralSpaceLoad(this, true);">&lt;&nbsp;<?php echo $lang['back']; ?></a>
+        <a href="<?php echo $baseurl_short; ?>pages/admin/admin_home.php" onClick="return CentralSpaceLoad(this, true);"><?php echo LINK_CARET_BACK ?><?php echo $lang['back']; ?></a>
     </p>
     <h1><?php echo $lang['manage_slideshow']; ?></h1>
 

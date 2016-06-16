@@ -12,34 +12,40 @@ include_once "../../include/general.php";
 include "../../include/resource_functions.php";
 include "../../include/image_processing.php";
 
-$sql="";
-if (getval("ref","")!="") {$sql="where r.ref='" . getvalescaped("ref","",true) . "'";}
+$sql = '';
+if('' != getval('ref', ''))
+    {
+    $sql = "WHERE r.ref = '" . getvalescaped('ref', '', true) . "'";
+    }
 
 set_time_limit(60*60*10);
 echo "<pre>";
 
-$start = getval('start','0');
-if (!is_numeric($start)){ $start = 0; }
+$start = getvalescaped('start', '0');
+if(!is_numeric($start))
+    {
+    $start = 0;
+    }
 
-$resources=sql_query("select r.ref,u.username,u.fullname from resource r left outer join user u on r.created_by=u.ref $sql order by ref");
-
+$resources = sql_query("SELECT r.ref, u.username, u.fullname FROM resource AS r LEFT OUTER JOIN user AS u ON r.created_by = u.ref {$sql} ORDER BY ref");
 
 $time_start = microtime(true);
 
+for($n = $start; $n < count($resources); $n++)
+    {
+    $ref = $resources[$n]['ref'];
 
-for ($n=$start;$n<count($resources);$n++)
-	{
-	$ref=$resources[$n]["ref"];
+    reindex_resource($ref);
 
-	reindex_resource($ref);
-	
-	$words=sql_value("select count(*) value from resource_keyword where resource='$ref'",0);
-	echo "Done $ref ($n/" . count($resources) . ") - $words words<br />\n";
-	@flush();@ob_flush();
-	}
+    $words = sql_value("SELECT count(*) `value` FROM resource_keyword WHERE resource = '{$ref}'", 0);
 
+    echo "Done {$ref} ({$n}/" . count($resources) . ") - $words words<br />\n";
+
+    @flush();
+    @ob_flush();
+    }
 
 $time_end = microtime(true);
-$time = $time_end - $time_start;
+$time     = $time_end - $time_start;
 
 echo "Reindex took $time seconds\n";

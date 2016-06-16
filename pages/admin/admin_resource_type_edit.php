@@ -106,7 +106,7 @@ include "../../include/header.php";
 ?>
 <div class="BasicsBox">
 <p>    
-<a href="<?php echo $backurl ?>" onClick="return CentralSpaceLoad(this,true);">&lt;&nbsp;<?php echo $lang["back"]?></a>
+<a href="<?php echo $backurl ?>" onClick="return CentralSpaceLoad(this,true);"><?php echo LINK_CARET_BACK ?><?php echo $lang["back"]?></a>
 </p>
 <h1><?php echo i18n_get_translated($restypedata["name"]) ?></h1>
 <?php if (isset($error_text)) { ?><div class="FormError"><?php echo $error_text?></div><?php } ?>

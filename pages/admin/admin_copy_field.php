@@ -109,9 +109,9 @@ include "../../include/header.php";
 <div class="BasicsBox">
     
 <p>
-    <a href="<?php echo $baseurl; ?>/pages/admin/admin_home.php" onClick="return CentralSpaceLoad(this, true);">&lt;&nbsp;<?php echo $lang['systemsetup']; ?></a><br>
-    <a href="<?php echo $baseurl; ?>/pages/admin/admin_resource_type_fields.php" onClick="return CentralSpaceLoad(this, true);">&lt;&nbsp;<?php echo $lang['admin_resource_type_fields']; ?></a><br>
-    <a href="<?php echo "{$baseurl}/pages/admin/admin_resource_type_field_edit.php?ref={$ref}"; ?>" onClick="return CentralSpaceLoad(this, true);">&lt;&nbsp;<?php echo $lang['admin_resource_type_field'] . ': ' . i18n_get_translated($title); ?></a>
+    <a href="<?php echo $baseurl; ?>/pages/admin/admin_home.php" onClick="return CentralSpaceLoad(this, true);"><?php echo LINK_CARET_BACK ?><?php echo $lang['systemsetup']; ?></a><br>
+    <a href="<?php echo $baseurl; ?>/pages/admin/admin_resource_type_fields.php" onClick="return CentralSpaceLoad(this, true);"><?php echo LINK_CARET_BACK ?><?php echo $lang['admin_resource_type_fields']; ?></a><br>
+    <a href="<?php echo "{$baseurl}/pages/admin/admin_resource_type_field_edit.php?ref={$ref}"; ?>" onClick="return CentralSpaceLoad(this, true);"><?php echo LINK_CARET_BACK ?><?php echo $lang['admin_resource_type_field'] . ': ' . i18n_get_translated($title); ?></a>
 </p>
 
 <h1><?php echo $lang['copy-field'] . ":&nbsp;" . i18n_get_translated($title); ?></h1>

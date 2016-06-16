@@ -174,7 +174,7 @@ function render_text_option($fieldname, $value, $size=20, $units=''){
 /**
 * Save/ Update config option
 *
-* @param  integer  $user_id      Current user ID
+* @param  integer  $user_id      Current user ID. Use NULL for system wide config options
 * @param  string   $param_name   Parameter name
 * @param  string   $param_value  Parameter value
 *
@@ -247,10 +247,12 @@ function set_config_option($user_id, $param_name, $param_value)
 * @param  string   $name            Parameter name
 * @param  string   $returned_value  If a value does exist it will be returned through
 *                                   this parameter which is passed by reference
+* @param  mixed    $default         Optionally used to set a default that may not be the current
+*                                   global setting e.g. for checking admin resource preferences
+*
 * @return boolean
-* @param  			default			Optionally used to set a default that may not be the current global setting e.g. for checking admin resource preferences
 */
-function get_config_option($user_id, $name, &$returned_value, $default=null)
+function get_config_option($user_id, $name, &$returned_value, $default = null)
     {
     if(trim($name) === '')
         {
@@ -268,16 +270,16 @@ function get_config_option($user_id, $name, &$returned_value, $default=null)
     );
     $config_option = sql_value($query, null);
 
-	 if(is_null($default) && isset($GLOBALS[$name]))
+    if(is_null($default) && isset($GLOBALS[$name]))
         {
         $default = $GLOBALS[$name];
         }
 
      if(is_null($config_option))
         {
-		$returned_value = isset($default) ? $default : null;
+        $returned_value = isset($default) ? $default : null;
         return false;
-		}
+        }
 
     $returned_value = unescape($config_option);
     return true;

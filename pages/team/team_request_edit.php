@@ -33,7 +33,7 @@ if ($request === false)
     
 include "../../include/header.php";
 ?>
-<p><a href="<?php echo $baseurl_short?>pages/team/team_request.php"  onClick="return CentralSpaceLoad(this,true);">&lt;&nbsp;<?php echo $lang["back"] ?></a></p>
+<p><a href="<?php echo $baseurl_short?>pages/team/team_request.php"  onClick="return CentralSpaceLoad(this,true);"><?php echo LINK_CARET_BACK ?><?php echo $lang["back"] ?></a></p>
 <div class="BasicsBox">
     <h1><?php echo $lang["editrequestorder"]?></h1>
 
@@ -74,7 +74,7 @@ include "../../include/header.php";
         <?php if(!hook("disprequesteditems")): ?>
         <div class="Question">
             <label><?php echo $lang["requesteditems"]?></label>
-            <div class="Fixed"><a href="#" onclick="ChangeCollection(<?php echo $request["collection"]?>,'');">&gt;&nbsp;<?php echo $lang["action-select"]?></a></div>
+            <div class="Fixed"><a href="#" onclick="ChangeCollection(<?php echo $request["collection"]?>,'');"><?php echo LINK_CARET ?><?php echo $lang["action-select"]?></a></div>
             <div class="clearerleft"></div>
         </div>
         <?php endif; ?>

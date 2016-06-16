@@ -60,7 +60,7 @@ foreach($plugins as $plugin){
 		?>
        <tr class="ListviewTitleStyle">
        <td width="10%"><?php echo $plugin?></td>
-       <td width="10%"><a href="#" onClick="jQuery.ajax('<?php echo $baseurl?>/plugins/<?php echo $plugin?>/readme.txt',{complete:function(data) {jQuery('#CentralSpace').html('<a onClick=\'return CentralSpaceLoad(this,true);\' href=\'<?php echo $baseurl_short?>plugins/api_core/index.php\'>&lt;&nbsp;<?php echo $lang['back']?></a><pre>'+ jQuery('<span>').text(data.responseText).html() +'</pre>');}});">readme.txt</a></td>
+       <td width="10%"><a href="#" onClick="jQuery.ajax('<?php echo $baseurl?>/plugins/<?php echo $plugin?>/readme.txt',{complete:function(data) {jQuery('#CentralSpace').html('<a onClick=\'return CentralSpaceLoad(this,true);\' href=\'<?php echo $baseurl_short?>plugins/api_core/index.php\'><?php echo LINK_CARET_BACK ?><?php echo $lang['back']?></a><pre>'+ jQuery('<span>').text(data.responseText).html() +'</pre>');}});">readme.txt</a></td>
        <td width="10%"><?php if (${$plugin}['signed']){
            echo "Signed Request: ";
            ?><a target="_blank" href="<?php echo $baseurl_short?>plugins/<?php echo $plugin?>/?key=<?php echo $apikey;?>&skey=<?php echo md5($hashkey.'key='.$apikey)?>" target="_blank"><?php echo $baseurl_short?>plugins/<?php echo $plugin?>/?key=<?php echo $apikey;?>&skey=<?php echo md5($hashkey.'key='.$apikey)?></a>

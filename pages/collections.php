@@ -525,10 +525,12 @@ hook("processusercommand");
 <?php 
 $searches=get_saved_searches($usercollection);
 
-// Note that the full search is done initially. The time saved is due to content drawing and transfer.
-$result=do_search("!collection" . $usercollection,"","relevance",0);
-$count_result=count($result);
+// Do an initial count of how many resources there are in the collection (only returning ref and archive)
+$results_all=do_search("!collection" . $usercollection,"","relevance",0,-1,"desc",false,0,false,false,"",false,true,true);
+$count_result=count($results_all);
 
+// Then do another pass getting all data for the maximum allowed collection thumbs
+$result=do_search("!collection" . $usercollection,"","relevance",0,$max_collection_thumbs,"desc");
 
 $hook_count=hook("countresult","",array($usercollection,$count_result));if (is_numeric($hook_count)) {$count_result=$hook_count;} # Allow count display to be overridden by a plugin (e.g. that adds it's own resources from elsewhere e.g. ResourceConnect).
 $feedback=$cinfo["request_feedback"];
@@ -627,9 +629,9 @@ else if ($basket)
 	<p style="padding-bottom:10px;"><input type="submit" name="buy" value="&nbsp;&nbsp;&nbsp;<?php echo $lang["buynow"] ?>&nbsp;&nbsp;&nbsp;" /></p>
 	<?php } ?>
 	<?php if (!$disable_collection_toggle) { ?>
-    <a id="toggleThumbsLink" href="#" onClick="ToggleThumbs();return false;">&gt; <?php echo $lang["hidethumbnails"]?></a>
+    <a id="toggleThumbsLink" href="#" onClick="ToggleThumbs();return false;"><?php echo LINK_CARET ?><?php echo $lang["hidethumbnails"]?></a>
   <?php } ?>
-	<a href="<?php echo $baseurl_short?>pages/purchases.php" onclick="return CentralSpaceLoad(this,true);">&gt; <?php echo $lang["viewpurchases"]?></a>
+	<a href="<?php echo $baseurl_short?>pages/purchases.php" onclick="return CentralSpaceLoad(this,true);"><?php echo LINK_CARET ?><?php echo $lang["viewpurchases"]?></a>
 
 
 	</form>
@@ -650,11 +652,11 @@ elseif ($k!="" && !$internal_share_access)
   	</div>
     <?php
 	if ($download_usage && ((isset($zipcommand) || $collection_download) && $count_result>0)) { ?>
-		<a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/terms.php?k=<?php echo urlencode($k) ?>&url=<?php echo urlencode("pages/download_usage.php?collection=" .  $usercollection . "&k=" . $k)?>">&gt; <?php echo $lang["action-download"]?></a>
+		<a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/terms.php?k=<?php echo urlencode($k) ?>&url=<?php echo urlencode("pages/download_usage.php?collection=" .  $usercollection . "&k=" . $k)?>"><?php echo LINK_CARET ?><?php echo $lang["action-download"]?></a>
 	<?php } else if ((isset($zipcommand) || $collection_download) && $count_result>0) { ?>
-	<a href="<?php echo $baseurl_short?>pages/terms.php?k=<?php echo urlencode($k) ?>&url=<?php echo urlencode("pages/collection_download.php?collection=" .  $usercollection . "&k=" . $k)?>" onclick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["action-download"]?></a>
+	<a href="<?php echo $baseurl_short?>pages/terms.php?k=<?php echo urlencode($k) ?>&url=<?php echo urlencode("pages/collection_download.php?collection=" .  $usercollection . "&k=" . $k)?>" onclick="return CentralSpaceLoad(this,true);"><?php echo LINK_CARET ?><?php echo $lang["action-download"]?></a>
 	<?php }
-     if ($feedback) {?><br /><br /><a onclick="return CentralSpaceLoad(this);" href="<?php echo $baseurl_short?>pages/collection_feedback.php?collection=<?php echo urlencode($usercollection) ?>&k=<?php echo urlencode($k) ?>">&gt;&nbsp;<?php echo $lang["sendfeedback"]?></a><?php } ?>
+     if ($feedback) {?><br /><br /><a onclick="return CentralSpaceLoad(this);" href="<?php echo $baseurl_short?>pages/collection_feedback.php?collection=<?php echo urlencode($usercollection) ?>&k=<?php echo urlencode($k) ?>"><?php echo LINK_CARET ?><?php echo $lang["sendfeedback"]?></a><?php } ?>
     <?php if ($count_result>0 && checkperm("q"))
     	{ 
 		# Ability to request a whole collection (only if user has restricted access to any of these resources)
@@ -662,7 +664,7 @@ elseif ($k!="" && !$internal_share_access)
 		if ($min_access!=0)
 			{
 		    ?>
-		    <br/><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_request.php?ref=<?php echo urlencode($usercollection) ?>&k=<?php echo urlencode($k) ?>">&gt; <?php echo $lang["requestall"]?></a>
+		    <br/><a onclick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/collection_request.php?ref=<?php echo urlencode($usercollection) ?>&k=<?php echo urlencode($k) ?>"><?php echo LINK_CARET ?><?php echo $lang["requestall"]?></a>
 		    <?php
 		    }
 	    }
@@ -748,8 +750,10 @@ elseif ($k!="" && !$internal_share_access)
 	<?php
 	// Render dropdown actions
 	hook("beforecollectiontoolscolumn");
-	render_actions($cinfo, false);
-	hook("aftercollectionsrenderactions");
+
+    $resources_count = $count_result;
+	render_actions($cinfo, false,true,'',$results_all);
+    hook("aftercollectionsrenderactions");
 	?>
  	<ul>
 	<?php
@@ -875,7 +879,7 @@ if ($count_result>0)
 		<?php if (!isset($cinfo['savedsearch'])||(isset($cinfo['savedsearch'])&&$cinfo['savedsearch']==null)){ // add 'remove' link only if this is not a smart collection 
 			?>
 		<?php if (!hook("replaceremovelink")){?>
-		<a class="CollectionResourceRemove" onclick="return CollectionDivLoad(this);" href="<?php echo $baseurl_short?>pages/collections.php?remove=<?php echo urlencode($ref) ?>&nc=<?php echo time()?>">x <?php echo $lang["action-remove"]?></a>
+		<a class="CollectionResourceRemove" onclick="return CollectionDivLoad(this);" href="<?php echo $baseurl_short?>pages/collections.php?remove=<?php echo urlencode($ref) ?>&nc=<?php echo time()?>"><i class="fa fa-minus-circle"></i> <?php echo $lang["action-remove"]?></a>
 		<?php
 				} //end hook replaceremovelink 
 			} # End of remove link condition 
@@ -1013,7 +1017,7 @@ hook("thumblistextra");
     	hook('aftertogglethumbs');
 
 	    // Render dropdown actions
-		render_actions($cinfo, false, false, "min");
+		render_actions($cinfo, false, false, "min",$results_all);
 		?>
 		</div>
 

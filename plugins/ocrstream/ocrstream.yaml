@@ -1,7 +1,0 @@
-name: ocrstream
-author: Robert Damrau
-version: 0.6
-desc: OCR Plugin using tesseract-ocr
-info_url: https://github.com/winkelement/ocrstream
-config_url: /plugins/ocrstream/pages/setup.php
-category: Asset processing

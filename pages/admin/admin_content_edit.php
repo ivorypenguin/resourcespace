@@ -87,7 +87,7 @@ include "../../include/header.php";
 ?>
 <div class="BasicsBox">
 	<p>
-		<a href="<?php echo $baseurl_short; ?>pages/admin/admin_content.php?nc=<?php echo time()?>&findpage=<?php echo $findpage?>&findname=<?php echo $findname?>&findtext=<?php echo $findtext?>&offset=<?php echo $offset?>" onClick="return CentralSpaceLoad(this,true);">&lt;&nbsp;<?php echo $lang["backtomanagecontent"]?></a>
+		<a href="<?php echo $baseurl_short; ?>pages/admin/admin_content.php?nc=<?php echo time()?>&findpage=<?php echo $findpage?>&findname=<?php echo $findname?>&findtext=<?php echo $findtext?>&offset=<?php echo $offset?>" onClick="return CentralSpaceLoad(this,true);"><?php echo LINK_CARET_BACK ?><?php echo $lang["backtomanagecontent"]?></a>
 	</p>
 	<h1><?php echo $lang["editcontent"]; ?></h1>
 

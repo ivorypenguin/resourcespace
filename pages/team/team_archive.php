@@ -11,7 +11,7 @@ include "../../include/header.php";
   <h1><?php echo $lang["managearchiveresources"]?></h1>
   <p><?php echo text("introtext")?></p>
   
-  <p><a href="<?php echo $baseurl_short?>pages/team/team_home.php" onClick="return CentralSpaceLoad(this,true);">&lt;&nbsp;<?php echo $lang["backtoteamhome"]?></a></p>
+  <p><a href="<?php echo $baseurl_short?>pages/team/team_home.php" onClick="return CentralSpaceLoad(this,true);"><?php echo LINK_CARET_BACK ?><?php echo $lang["backtoteamhome"]?></a></p>
   
 	<div class="VerticalNav">
 	<ul>

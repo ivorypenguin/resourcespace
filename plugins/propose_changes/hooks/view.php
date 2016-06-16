@@ -3,7 +3,7 @@
 
 function HookPropose_changesViewAfterresourceactions()
     {
-    global $ref, $search,$offset,$archive,$sort, $order_by, $userref, $edit_access, $access, $propose_changes_always_allow,$resourcetoolsGT, $propose_changes_allow_open;
+    global $ref, $search,$offset,$archive,$sort, $order_by, $userref, $edit_access, $access, $propose_changes_always_allow, $propose_changes_allow_open;
     
 	if($edit_access)
 		{
@@ -13,7 +13,7 @@ function HookPropose_changesViewAfterresourceactions()
 			{
 			global $baseurl, $lang;
 			?>
-			<li><a href="<?php echo $baseurl ?>/plugins/propose_changes/pages/propose_changes.php?ref=<?php echo urlencode($ref)?>&amp;search=<?php echo urlencode($search)?>&amp;search_offset=<?php echo urlencode($offset)?>&amp;order_by=<?php echo urlencode($order_by)?>&amp;sort=<?php echo urlencode($sort)?>&amp;archive=<?php echo urlencode($archive)?>" onClick="return CentralSpaceLoad(this,true);"><?php echo ($resourcetoolsGT?"&gt; ":"").$lang["propose_changes_review_proposed_changes"]?></a></li>
+			<li><a href="<?php echo $baseurl ?>/plugins/propose_changes/pages/propose_changes.php?ref=<?php echo urlencode($ref)?>&amp;search=<?php echo urlencode($search)?>&amp;search_offset=<?php echo urlencode($offset)?>&amp;order_by=<?php echo urlencode($order_by)?>&amp;sort=<?php echo urlencode($sort)?>&amp;archive=<?php echo urlencode($archive)?>" onClick="return CentralSpaceLoad(this,true);"><?php echo "<i class='fa fa-idea'></i>&nbsp;" . $lang["propose_changes_review_proposed_changes"]?></a></li>
 			<?php 
 			}
 		}
@@ -48,7 +48,7 @@ function HookPropose_changesViewAfterresourceactions()
 			{
 			global $baseurl, $lang;
 			?>
-			<li><a href="<?php echo $baseurl ?>/plugins/propose_changes/pages/propose_changes.php?ref=<?php echo urlencode($ref)?>&amp;search=<?php echo urlencode($search)?>&amp;search_offset=<?php echo urlencode($offset)?>&amp;order_by=<?php echo urlencode($order_by)?>&amp;sort=<?php echo urlencode($sort)?>&amp;archive=<?php echo urlencode($archive)?>" onClick="return CentralSpaceLoad(this,true);"><?php echo ($resourcetoolsGT?"&gt; ":"").$lang["propose_changes_short"]?></a></li>
+			<li><a href="<?php echo $baseurl ?>/plugins/propose_changes/pages/propose_changes.php?ref=<?php echo urlencode($ref)?>&amp;search=<?php echo urlencode($search)?>&amp;search_offset=<?php echo urlencode($offset)?>&amp;order_by=<?php echo urlencode($order_by)?>&amp;sort=<?php echo urlencode($sort)?>&amp;archive=<?php echo urlencode($archive)?>" onClick="return CentralSpaceLoad(this,true);"><?php echo "<i class='fa fa-idea'></i>&nbsp;".$lang["propose_changes_short"]?></a></li>
 			<?php            
 			}
 		}

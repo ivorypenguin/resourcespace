@@ -73,7 +73,7 @@ include "../../include/header.php";
 	<div class="BasicsBox">
 
 	<p>
-		<a href="" onclick="return CentralSpaceLoad('<?php echo $baseurl_short; ?>pages/admin/admin_report_management.php?<?php echo $url_params; ?>',true);">&lt;&nbsp;<?php echo $lang['page-title_report_management']; ?></a>
+		<a href="" onclick="return CentralSpaceLoad('<?php echo $baseurl_short; ?>pages/admin/admin_report_management.php?<?php echo $url_params; ?>',true);"><?php echo LINK_CARET_BACK ?><?php echo $lang['page-title_report_management']; ?></a>
 	</p>
 
 	<h1><?php echo $lang['page-title_report_management_edit']; ?></h1>

@@ -81,6 +81,6 @@ else
 </table></div>
         </div>
         </div>
-        <div class="PanelShadow"></div>
+        
         </div>
 <?php } ?>

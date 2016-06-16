@@ -136,7 +136,7 @@ if (array_key_exists("user",$_COOKIE) || array_key_exists("user",$_GET) || isset
 	if (isset($anonymous_login) && ($username==$anonymous_login)) {$user_select_sql="and u.username='$username'";} # Automatic anonymous login, do not require session hash.
 	hook('provideusercredentials');
 
-    $userdata = sql_query("SELECT u.ref, u.username, g.permissions, g.fixed_theme, g.parent, u.usergroup, u.current_collection, u.last_active, timestampdiff(second, u.last_active, now()) idle_seconds, u.email, u.password, u.fullname, g.search_filter, g.edit_filter, g.ip_restrict ip_restrict_group, g.name groupname, u.ip_restrict ip_restrict_user, u.search_filter_override, resource_defaults, u.password_last_change, g.config_options, g.request_mode, g.derestrict_filter, u.hidden_collections, u.accepted_terms FROM user u, usergroup g WHERE u.usergroup = g.ref {$user_select_sql} AND u.approved = 1 AND (u.account_expires IS NULL OR u.account_expires = '0000-00-00 00:00:00' OR u.account_expires > now())");
+    $userdata = sql_query("SELECT u.ref, u.username, g.permissions, g.parent, u.usergroup, u.current_collection, u.last_active, timestampdiff(second, u.last_active, now()) idle_seconds, u.email, u.password, u.fullname, g.search_filter, g.edit_filter, g.ip_restrict ip_restrict_group, g.name groupname, u.ip_restrict ip_restrict_user, u.search_filter_override, resource_defaults, u.password_last_change, g.config_options, g.request_mode, g.derestrict_filter, u.hidden_collections, u.accepted_terms FROM user u, usergroup g WHERE u.usergroup = g.ref {$user_select_sql} AND u.approved = 1 AND (u.account_expires IS NULL OR u.account_expires = '0000-00-00 00:00:00' OR u.account_expires > now())");
 
     if(0 < count($userdata))
         {
@@ -337,28 +337,6 @@ else
 $plugins= array();
 $active_plugins = (sql_query("SELECT name,enabled_groups, config, config_json FROM plugins WHERE inst_version>=0 ORDER BY priority"));
 
-/* Process User Preferences
-Check Colour Theme for this user:
-1) Userfixedtheme = system/group fixed option
-2) defaulttheme = system/group & user configurable from user_preferences
-*/
-global $userfixedtheme,$defaulttheme;
-if(isset($userfixedtheme) && $userfixedtheme!="")
-    {
-    $ctheme = $userfixedtheme;
-    }
-else
-    {
-    $ctheme = (isset($userpreferences["colour_theme"]) && $userpreferences["colour_theme"]!="") ? $userpreferences["colour_theme"]: $defaulttheme;
-    }
-$ctheme = preg_replace("/^col-/","", $ctheme);
-switch($ctheme)
-    {
-    case "blue":
-    case "greyblu": $ctheme = "blue"; break;
-    case "charcoal":
-    case "slimcharcoal": $ctheme = "charcoal"; break;
-    }
 
 foreach($active_plugins as $plugin)
 	{
@@ -367,21 +345,8 @@ foreach($active_plugins as $plugin)
 	$py="";
 	$py = get_plugin_yaml($plugin_yaml_path, false);
 
-	# Check 
-	if((!isset($userfixedtheme) || $userfixedtheme=="") && (isset($py["userpreferencegroup"]) && preg_replace("/^col-/","",$py["name"])==$ctheme))
-		{
-		$exists = sql_value("SELECT name as value FROM plugins WHERE name='".$plugin["name"]."'",'');
-		if($exists)
-			{
-			include_plugin_config($plugin['name'],$plugin['config'],$plugin['config_json']);
-			register_plugin($plugin['name']);
-			register_plugin_language($plugin['name']);
-			$plugins[]=$plugin['name'];
-			}
-		}
-
 	# Check group access and applicable for this user in the group
-	if(!isset($py["userpreferencegroup"]) && $plugin['enabled_groups']!='')
+	if($plugin['enabled_groups']!='')
 		{
 		$s=explode(",",$plugin['enabled_groups']);
 		if (isset($usergroup) && in_array($usergroup,$s))
@@ -392,7 +357,7 @@ foreach($active_plugins as $plugin)
 			$plugins[]=$plugin['name'];
 			}
 		}
-	else if(!isset($py["userpreferencegroup"]) && $plugin['enabled_groups']=='')
+	elseif($plugin['enabled_groups']=='')
 		{
 		$plugins[]=$plugin['name'];
 		}

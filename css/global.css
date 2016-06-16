@@ -10,7 +10,7 @@ td, textarea {font-size:1em;}
 
 /*Basic tag setup for creating standards across platforms and browsers*/
 p, h1, h2, h3, h4, h5 {padding:0; margin:0; vertical-align:top;}
-p {padding:0 0 1.75em; margin:0; font-size:1em; line-height:1.25em;}
+p {padding:0 0 1em; margin:0; font-size:1em; line-height:1.25em;}
 p.tight {padding:0 0 0.75em;}
 h1 {padding:0.1em 0 0.5em;margin:0;font-weight: normal;font-size: 1.5em;}
 h2 {padding:0.1em 0;margin:0;font-weight: normal;font-size:1.5em;}
@@ -111,7 +111,7 @@ div#SearchBox.SlimHeaderFixedPosition { margin-top: 80px; }
 #CentralSpace {text-align:left;position:relative;}
 
 .TopInpageNav {clear: left;padding-bottom: 5px;margin-bottom:10px;margin-right: 15px;position:relative;}
-.BottomInpageNav {clear: left;padding-top: 5px;margin: 20px 15px 0px 0px; position:relative;}
+.BottomInpageNav {clear: left;padding-top: 5px;margin: 20px 15px 20px 0px; position:relative;}
 .BottomInpageKey {margin-right: 15px; clear: left; text-align: left;}
 .TopInpageNavLeft{float:left;padding-right:240px;}
 .TopInpageNavRight{position:absolute;right:0;top:0;width:280px;text-align:right;}
@@ -123,9 +123,6 @@ div#SearchBox.SlimHeaderFixedPosition { margin-top: 80px; }
 .TopInpageNav a:link, .TopInpageNav a:visited, .BottomInpageNav a:link, .BottomInpageNav a:visited , #CentralSpaceLogin a:link, #CentralSpaceLogin a:visited {text-decoration:none;}
 .TopInpageNav a:hover, .TopInpageNav a:active, .BottomInpageNav a:hover, .BottomInpageNav a:active, #CentralSpaceLogin a:hover, #CentralSpaceLogin a:active {text-decoration:underline;}
 .Selected {font-weight: bold;}
-#jumppanel1{margin-top:45px !important;padding: 10px;}
-#jumppanel3{margin-top: 20px !important;text-align: right;}
-.TopInpageNav #jumppanel2{margin-top: 35px !important;text-align: right;float: right;}
 
 .HorizontalNav ul {padding:0.2em 0;margin:0;list-style:none;}
 .HorizontalNav li {display:inline;padding:0 0.35em 0 0.5em;margin:0px;}
@@ -191,7 +188,7 @@ div#SearchBox.SlimHeaderFixedPosition { margin-top: 80px; }
 .ResourcePanelPreview {height: 156px;width: 156px;margin: 3px;}
 .ResourcePanelInfo {margin-right: 5px;margin-left: 5px;margin-bottom: 4px;overflow:hidden;white-space:nowrap;padding:0;margin-top:0;}	
 .ResourcePanelCountry {margin-right: 5px;margin-left: 5px;margin-bottom: 0px;float: left;clear: left;display:inline;}	
-.ResourcePanelIcons {padding-left: 5px;}	
+.ResourcePanelIcons {padding: 5px;}	
 .ResourcePanelSmallIcons {padding-left: 5px;}	
 
 .ResourceAlign {width:172px;height:177px;text-align: center;vertical-align: middle;}
@@ -212,36 +209,29 @@ div#SearchBox.SlimHeaderFixedPosition { margin-top: 80px; }
 .ResourcePanelShellLarge {padding:0 0 10px; float: left;margin: 0px 15px 0px 0px;width: 365px;}
 .ResourcePanelShellLarge.ui-draggable {text-align: left;}
 .ResourcePanelLarge {padding:0;margin:0;width: 365px;padding-bottom:5px;}
+.ResourcePanelLarge .ResourcePanelIcons {font-size:1.5em;}
+.ResourcePanelSmall .ResourcePanelIcons {font-size:0.8em;}
 .ResourceAlignLarge {width:365px;height:365px;text-align: center;vertical-align: middle;}
 
-.IconCollect	{width: 22px;height:12px;padding: 0;display: block;float: right;margin-right: 5px;}
-.IconCollectOut	{width: 22px;height:12px;padding: 0;display: block;float: right;margin-right: 5px;}
-.IconEmail,.IconPreview,.IconEdit	{width:16px;height:12px;padding: 0;display: block;float: right;margin-right: 5px;}
-.IconStar	{width:11px;height:12px;padding: 0;display: block;float: right;}
-.IconRemove		{width:14px;height:12px;padding: 0;display: block;float: right;}
-.IconComment	{width:16px;height:12px;padding: 0;display: block;float: right;}
+.ResourcePanelIcons a	{float: right;margin-right: 0.5em;text-decoration:none;}
+.ListTools a	{float: right;margin-left: 5px;text-decoration:none;}
+.ResourcePanelIcons a:hover	{text-decoration:none;}
+.ListTools a:hover	{text-decoration:none;}
+a:hover .fa,.fa:hover {text-decoration:none !important;} /* Never underline a FontAwesome icon */
+
 .ResourceSelect {display:block;float:right;}
 .IconUserRatingStar	{width:13px;height:15px;padding: 0;margin-bottom:6px;display: block;}
 .IconUserRatingSpace	{width:7px;height:10px;padding: 0;margin-bottom:6px;display: block;float: left;}
-.KeyComment {margin: 0px 5px 10px;display: inline;padding-left: 19px;}
-.KeyStar {margin: 0px 5px 10px;display: inline;padding-left: 14px;}
-.KeyEmail {margin: 0px 5px 10px;display: inline;padding-left: 19px;}
-.KeyEdit {margin: 0px 5px 10px;display: inline;padding-left: 19px;}
-.KeyPreview {margin: 0px 5px 10px;display: inline;padding-left: 19px;}
-.KeyCollect {margin: 0px 5px 10px;display: inline;padding-left: 25px;}
-.KeyCollectOut {margin: 0px 5px 10px;display: inline;padding-left: 25px;}
 .ASC {display: inline;padding-right: 10px;}
 .DESC {display: inline;padding-right: 10px;}
 
 /*Resource Panel layout*/
-.Listview {overflow-x:auto;	margin: 25px 10px 25px 0;}
+.Listview {overflow-x:auto;	margin: 0 10px 25px 0;}
 .ListviewTight {margin: 5px 10px 5px 0;}
 .Listview table{ width:100%;}
 .Listview td {padding: 5px 5px 5px 5px;}
 .ListTools {text-align: right;}
 .ListTitle {font-weight: bold;}
-.ListTools a:link, .ListTools a:visited, .ListTitle a:link, .ListTitle a:visited {text-decoration:none;}
-.ListTools a:hover, .ListTools a:active, .ListTitle a:hover, .ListTitle a:active {text-decoration:underline;}
 .Listview .IconStar	{width:11px;height:12px;padding: 0;display: block;float:left;}
 
 /*Search Panel layout*/
@@ -301,15 +291,17 @@ div#SearchBox.SlimHeaderFixedPosition { margin-top: 80px; }
 .RecordBox {margin: 20px 15px 15px 0px;}
 .RecordPanel {padding: 15px 20px 15px 20px;}
 .backtoresults {float: right;margin: 0.4em 0 0 0.25em;}
-.backtoresults .upLink, .backtoresults .nextLink {
-	padding-left:8px;padding-right:6px;
+.backtoresults .upLink, .backtoresults .nextLink,.backtoresults .prevLink {
+	padding-left:4px;padding-right:4px;
 	margin-left:2px;
-	border-left: 1px solid;
+	border-left: none;
 }
-.backtoresults .prevLink {
-	padding-left:8px;padding-right:6px;
-	}
-	
+.backtoresults .nextLink,.backtoresults .prevLink,.backtoresults .maxLink {font-size:1.1em;}
+.backtoresults .maxLink {padding-left:20px;}
+.backtoresults .closeLink {padding-left:5px;font-size:1.3em;}
+
+.backtoresults .prevLink:hover,.backtoresults .nextLink:hover,.backtoresults .closeLink:hover,.backtoresults .maxLink:hover {text-decoration:none;}
+
 .RecordPanel .RecordResouce {position:relative;clear: left;} 
 .RecordPanel .Picture {float: left;margin: 0px 0px 0px 0px;}
 #previewimagewrapper {float:left;margin: 0px 20px 15px 0px;}
@@ -337,7 +329,9 @@ div#SearchBox.SlimHeaderFixedPosition { margin-top: 80px; }
 .RecordPanel .RecordDownload .DownloadDBlend td {margin: 0;vertical-align: middle;}
 .RecordPanel .RecordDownloadSpace {padding: 6px;}
 .RecordPanel .RecordDownloadSpace ul {padding:0.2em 0;margin:0;margin-top: 10px;list-style:none;}
-.RecordPanel .RecordDownloadSpace li {padding:0;margin:0 8px 1px 0;float:left;}
+.RecordPanel .RecordDownloadSpace li {padding:0;margin:0 12px 5px 0;float:left;min-width:208px;}
+.RecordPanel .RecordDownloadSpace li a:hover {text-decoration:none;}
+
 .RecordPanel .RecordDownloadSpace .DownloadDBlend .DownloadButton {text-align: center;font-weight: bold;}
 .RecordPanel .RecordDownloadSpace .DownloadDBlend h2 {margin:0;padding:0;font-size: 1em;	text-align: left;}
 .RecordPanel .RecordDownloadSpace .DownloadDBlend p {margin:0;padding:0;	text-align: left;}
@@ -366,7 +360,7 @@ div#SearchBox.SlimHeaderFixedPosition { margin-top: 80px; }
 /*Home styling */
 .HomePanel {margin:0px 15px 15px 0px;width: 250px;float: left;} 
 .HomePanelIN {padding: 15px;min-height: 150px;}
-.HomePanel h2 {padding-left: 42px;display:block;margin: 5px 0px;}
+.HomePanel h2 {display:block;margin: 5px 0px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;}
 .HomePanel p {margin: 0; padding: 5px 0 4px 0;}
 .HomePicturePanel {    margin:0px 15px 10px 0px;float: left;width: 517px;}
 .HomePicturePanelIN img {width:517px; height:350px;}
@@ -564,19 +558,13 @@ li.plupload_droptext {font-size: 1.1em;}
     {
     height: 8px;
     }
-.BasicsBox h1.CollapsibleSectionHead  
-    {
-    padding-left: 17px;
-    cursor: pointer;
-    }
 .CollapsibleSectionHead 
     {
-    padding-left: 17px;
     cursor: pointer;
     }
 
 h2.CollapsibleSectionHead {
-	padding: 0.1em 0 0.5em 17px;
+	padding: 0.1em 0 0.5em 0;
 }
 
 .CollapsibleSection 
@@ -756,14 +744,7 @@ width: 90px;
 	float:left;
 }
 #HomePanelContainer a {-webkit-user-drag: none;}
-.HomePanelDynamicDash h2, .HomePanelDynamicDash h3 {
-float: none;
-position: relative;
-padding-left: 60px;
-padding-right: 15px;
-padding-top: 18px;
-text-transform: capitalize;
-}
+
 .HomePanelPromotedIN h3 {
 	padding-top:20px;
 }
@@ -793,7 +774,6 @@ a.HomePanel:hover {
   	font-size:50px;
   	min-width:100%;
 }
-#HomePanelContainer .HomePanel .PanelShadow{display:none;}
 .HomePanelDynamicDash p.tile_corner_box {
 	position: absolute;
   	bottom: 0;
@@ -803,67 +783,6 @@ a.HomePanel:hover {
 }
 .DashTileDraggable {
 	cursor:pointer;
-}
-.HomePanel .tile_corner_box .count-icon {
-	width: 20px;
-	height: 15px;
-	display: block;
-	float: left;
-	margin-top: 8px;
-}
-.HomePanel .collection-icon {
-	width: 56px;
-	height: 60px;
-	display: block;
-	float: left;
-	position: relative;
-	margin-left: 3px;
-	margin-top: 6px;
-}
-.HomePanel .theme-icon {
-	width: 56px;
-	height: 60px;
-	display: block;
-	float: left;
-	position: relative;
-	margin-left: 3px;
-	margin-top: 6px;
-}
-.HomePanel .shopping-icon {
-	width: 56px;
-	height: 60px;
-	display: block;
-	float: left;
-	position: relative;
-	margin-left: 3px;
-	margin-top: 6px;
-}
-.HomePanel .search-icon {
-	width: 54px;
-	height: 60px;
-	display: block;
-	float: left;
-	position: relative;
-	margin-left: 3px;
-	margin-top: 6px;
-}
-.HomePanel .help-icon {
-	width: 54px;
-	height: 60px;
-	display: block;
-	float: left;
-	position: relative;
-	margin-left: 3px;
-	margin-top: 6px;
-}
-.HomePanel .clock-icon {
-  width: 54px;
-  height: 60px;
-  display: block;
-  float: left;
-  position: relative;
-  margin-left: 3px;
-  margin-top: 9px;
 }
 .HomePanelDynamicDash, .HomePanelThemes {
 	padding: 0;
@@ -876,10 +795,14 @@ a.HomePanel:hover {
 .HomePanelDynamicDash h2, .HomePanelThemes h2 {
 	float: none;
 	position: relative;
-	padding-left: 60px;
-	padding-right: 15px;
-	padding-top: 12px;
+	padding: 12px 15px 0 15px;
 	margin-bottom: 0;
+	font-size: 1.2em;
+	
+}
+.HomePanelDynamicDash h2 span, .HomePanelThemes h2 span {
+	padding-right:8px;font-size:1.2em;
+	
 }
 .HomePanelDynamicDash p, .HomePanelThemes p {
 	float: none;
@@ -888,10 +811,9 @@ a.HomePanel:hover {
 	padding-right: 15px;
 	margin-top: 5px;
 	clear: left;
+	font-size:1em;
 }
-.HomePanelDynamicDash h2.notitle {
-	font-size: 1.25em;
-}
+
 
 .tools a{white-space: nowrap;}
 #delete_dialog {display:none !important;}
@@ -902,7 +824,6 @@ a.HomePanel:hover {
 	margin-left:10px;
 	margin-bottom: 0;
 	padding-bottom: 0;
-	padding-left: 20px;
 	cursor: pointer;
 	padding-top: 5px;
 	text-transform: capitalize;
@@ -1053,7 +974,7 @@ div.video-js {margin:auto;}
 .DropdownActionsLabel {display:inline-block;}
 
 /* Messaging */
-span.MessageCountPill {
+span.Pill {
     margin-left: 5px;
     border-radius: 5px;
     padding: 2px 5px 2px 5px;
@@ -1080,53 +1001,77 @@ div.MessageBox a {
 }
 
 
-
-
 .FeaturedSimpleLinks {
 	display: table;
 	width:100%;
 }
 
-.FeaturedSimpleLink {
+.FeaturedSimpleTile {
+	position: relative;
 	margin-left: 100px;
 	margin-right: 100px;
 	margin-top: 25px;
 	height: 150px;
+	border-radius:5px;
+	overflow: hidden;
+}
+
+
+.FeaturedSimpleTileImage .HomePanelIN {
+	background: none;  
 }
 
 .FeaturedSimpleLinks .FeaturedSimpleTileContents {
-    background: transparent;  
-}
-
-a.FeaturedSimpleLink:hover { 
-	border-radius:5px;  
-}
-
-.FeaturedSimpleTile {
+	width:100%;
+	height:100%;
 	display: table;
-	height: 150px;
-	width:250px;
-    position: relative;
-	padding: 0px; 
-	overflow: hidden; 
 }
 
-.FeaturedSimpleTileContents {
-	display: table-cell; 
+.FeaturedSimpleTileText {
 	vertical-align: middle;
+	display: table-cell;
 }
+   
+.FeaturedSimpleLink{
+    position: absolute;
+    padding: 0px;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+ 
+ 
+a.FeaturedSimpleLink:hover, a.FeaturedSimpleLink:active  { 
+	text-decoration:none;
+}
+
 
 .FeaturedSimpleTile .FeaturedSimpleTileContents h2{
-  background: transparent;
-  float: none;
-  position: relative;
-  text-align: center;
-  padding-left: 0px;   
-	max-height: 100px;
-	max-width: 215px;
-	overflow-wrap: break-word;
+	background: transparent;
+	text-align: center;
+	margin: auto;  
+	max-width: 215px;    
+	white-space: normal;
 }
 
+.FeaturedSimpleTileActions {
+    position: absolute;
+    color: #fff;
+    left: 0;
+    bottom: 0;
+    width: 250px;
+    background: #000;
+    height: 20px;
+    text-align: right;
+    z-index:2;
+}
+
+.FeaturedSimpleTileActions .tool {
+    margin-left: 8px;
+    vertical-align: middle;
+    display: inline-block;
+    padding-right: 5px;    
+}
 
 .MessageUnread {
     font-weight: bold;
@@ -1147,6 +1092,7 @@ a.FeaturedSimpleLink:hover {
 }
 
 #CentralSpaceLogin #login_box {
+	margin-bottom: 100px;
 	padding: 10px 15px 0px 15px;
 	border-radius: 5px;
 	position: absolute;
@@ -1195,3 +1141,17 @@ form.FormFilter button {
 }
 
 UL.jqueryFileTree A:hover {font-weight:bold;}
+
+.CollectBack .CollectionResourceRemove, .CollectBack .CollectionResourceRemove:hover {text-decoration:none;}
+
+.JumpPanel input
+	{
+	width:35px;
+	}
+
+/* Collapsible sections - using FontAwesome */
+.collapsed:before {content: "\f0da";    font: normal normal normal 22px FontAwesome;padding-right:5px; display: inline-block; width:0.6em;}
+.expanded:before {content: "\f0d7";    font: normal normal normal 22px FontAwesome;padding-right:5px; display: inline-block; width:0.6em;}
+
+/* Subtext */
+.sub {font-size:0.8em;}

@@ -32,6 +32,7 @@ input[readonly] {color: #000000;}
 #TextHeader, #TextHeader a {color:#616161;}
 #TextDesc{color:#616161;}
 .TopInpageNav {border-bottom: 1px solid #BBBBBB;}
+
 .FormError {color: #FF0000;}
 .FormIncorrect {color: #FF0000;border: 1px solid #BBBBBB;background: #FFFFFF;}
 .PageInformal {color: #FF0000;border: 1px solid #BBBBBB;background: #FFFFFF;}
@@ -75,7 +76,7 @@ input[readonly] {color: #000000;}
 .ui-layout-resizer {background-color: #383838;background: linear-gradient(#A5A5A5,#000000); }
 .ui-layout-toggler-open-hover{border-radius:2px;background-color:#E0E0E0;background: linear-gradient(#E0E0E0,#383838);}
 .CollectBack {color:#E0E0E0;background: linear-gradient(#2E2E2E , #1B1B1B);}
-#CollectionMenu {border-right: 1px solid #E0E0E0;}
+#CollectionMenu {border-right: 1px solid #737373;}
 #CollectionMinRightNav li {border-left:1px solid #E0E0E0;}
 .CollectBack a:link, .CollectBack a:visited, .CollectBack a:active,.CollectBack h2 {color:#E0E0E0;}
 .CollectBack a:hover{color:#FFF;}
@@ -91,14 +92,9 @@ input[readonly] {color: #000000;}
 .HomePanel a:hover
 	{color:#FFF;}
 .HomePanel h2{color:#FFF;}
-.HomePanel h2 {background: url(../gfx/interface/HomeArrow.gif) no-repeat 1px 10px;}
-.HomePanelThemes h2 {background: url(../gfx/interface/themes.png) no-repeat 0 0;}
-.HomePanelMyCollections h2 {background: url(../gfx/interface/my_collections.png) no-repeat -2px 0;}
-.HomePanelHelp h2 {background: url(../gfx/interface/help.png) no-repeat 0 0;}
 
 #SearchBoxPanel, #ResearchBoxPanel,#HomeSiteText.dashtext,.HomePanelIN {
 	background: rgba(30, 30, 30, 0.70);
-	border: 1px solid #b0b0b0;
 	color:#FFF;
 }
 #HomeSiteText{padding:10px;}
@@ -110,14 +106,6 @@ input[readonly] {color: #000000;}
 
 .ImageBorder, .Picture, .VideoBorder {border: 1px solid #000000;}	
 .CollectImageBorder {border: 1px solid #000000;}	
-
-.IconCollect, .KeyCollect	{background: url(../gfx/interface/IcCol.gif) no-repeat;}
-.IconCollectOut, .KeyCollectOut	{background: url(../gfx/interface/IcColOut.gif) no-repeat;}
-.IconEmail, .KeyEmail	{background: url(../gfx/interface/IcEml.gif) no-repeat;}
-.IconEdit, .KeyEdit	{background: url(../gfx/interface/IcEdit.gif) no-repeat;}
-.IconPreview, .KeyPreview	{background: url(../gfx/interface/IcPre.gif) no-repeat;}
-.IconStar, .KeyStar	{	background: url(../gfx/interface/IcStar.gif) no-repeat;}
-.IconComment, .KeyComment	{	background: url(../gfx/interface/IcComment.gif) no-repeat;}
 .ASC	{	background: url(../gfx/interface/ASC.gif) no-repeat;background-position:center;}
 .DESC	{	background: url(../gfx/interface/DESC.gif) no-repeat;background-position:center;}
 .IconUserRatingStar	{	background: url(../gfx/interface/RatingStarRed.gif) no-repeat;}
@@ -161,7 +149,6 @@ div.autocomplete ul li {color: #000;}
 .RecordStory a:hover{color: #000000;}
 .RecordStory .highlight {color:black;}
 .BasicsBox .HorizontalNav li {border-right:1px solid #B5C3D4;border-top-style: none;border-bottom-style: none;border-left-style: none;}
-.BasicsBox .VerticalNav li, .ThemeBox li {list-style: url(../gfx/interface/bullet.gif) none inside;}
 .ThemeBox {border-bottom: 1px solid #BBBBBB;}
 .CategoryBox {border:1px solid #999999;background-color:#ffffff;color: black;font-weight: normal;}
 .MiniCategoryBox {border:1px solid #999999;background-color:#ffffff;color: black;font-weight: normal;}
@@ -239,9 +226,8 @@ li.plupload_droptext {color:#999;}
 .permissionstable tr td.permheader{color: #000000;background: rgb(221,221,221)}
 .permissionstable tbody{color: #000000;}
 .CodeMirror-wrapping{color: #000000;background: #FFFFFF;}
-.PanelShadow{background: none;}
-.collapsed{background: url(../gfx/interface/HomeArrow.gif) no-repeat top left; background-position:3px 8px; }
-.expanded{background: url(../gfx/interface/HomeArrowDown.gif) no-repeat top left; background-position:0px 12px;}
+
+
 .CommentFlag { background-image: url('../gfx/interface/FlagOff.png'); }
 .CommentEntryInfoCommenterName { color: #3070bf; }
 .CommentBody { color: #000000}
@@ -261,13 +247,6 @@ li.plupload_droptext {color:#999;}
   	border: 1px solid #d0d0d0;
 }
 .dash_tile_bin_text {color: #fff;}
-.HomePanel .tile_corner_box .count-icon {background: url("../gfx/dash/count.gif") no-repeat;}
-.HomePanel .collection-icon {background: url("../gfx/dash/non-collection.png") no-repeat;}
-.HomePanel .theme-icon {background: url("../gfx/dash/non-theme.png") no-repeat;}
-.HomePanel .shopping-icon {background: url("../gfx/dash/non-my_collections.png") no-repeat;}
-.HomePanel .search-icon {background: url("../gfx/dash/non-search.png") no-repeat;}
-.HomePanel .help-icon {background: url("../gfx/dash/non-help.png") no-repeat;}
-.HomePanel .clock-icon {background: url("../gfx/dash/non-clock.png") no-repeat;}
 
 /* Shadowy Styling */
 .HomePanelDynamicDash.TileContentShadow h2, .HomePanelDynamicDash.TileContentShadow p, .HomePanelDynamicDash.TileContentShadow,
@@ -275,12 +254,6 @@ li.plupload_droptext {color:#999;}
 	text-shadow: 1px 1px 8px #090909;
 	color:#fff;
 }
-.HomePanelDynamicDash.TileContentShadow .collection-icon {background: url("../gfx/dash/collection.png") no-repeat;}
-.HomePanelDynamicDash.TileContentShadow .theme-icon {background: url("../gfx/dash/theme.png") no-repeat;}
-.HomePanelDynamicDash.TileContentShadow .shopping-icon {background: url("../gfx/dash/my_collections.png") no-repeat;}
-.HomePanelDynamicDash.TileContentShadow .search-icon {background: url("../gfx/dash/search.png") no-repeat;}
-.HomePanelDynamicDash.TileContentShadow .help-icon {background: url("../gfx/dash/help.png") no-repeat;}
-.HomePanelDynamicDash.TileContentShadow .clock-icon {background: url("../gfx/dash/clock.png") no-repeat;}
 .HomePanel h2.title {background: transparent;color:#fff;}
 .HomePanel .HomePanelDynamicDash h2{background:transparent;}
 .HomePanelDynamicDash p.tile_corner_box {background: rgba(19, 19, 19, 0.67);border-top-left-radius: 5px;color:#fff;}
@@ -346,7 +319,7 @@ li.plupload_droptext {color:#999;}
   }
 
 /* Messaging */
-span.MessageCountPill {
+span.Pill {
     color: white;
     background: red;
 }

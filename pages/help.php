@@ -50,7 +50,7 @@ else
     ?>
   <h1><?php echo htmlspecialchars($section)?></h1>
   <p><?php echo text($section)?></p>
-  <p><a onClick="<?php echo $onClick; ?>" href="<?php echo $baseurl_short?>pages/help.php">&lt;&nbsp;<?php echo $lang["backtohelphome"]?></a></p>
+  <p><a onClick="<?php echo $onClick; ?>" href="<?php echo $baseurl_short?>pages/help.php"><?php echo LINK_CARET_BACK ?><?php echo $lang["backtohelphome"]?></a></p>
 <?php } ?>
 <?php } // end hook replacehelp?>
 

@@ -119,7 +119,7 @@ hook("beforepermissionscheck");
 # check permissions (error message is not pretty but they shouldn't ever arrive at this page unless entering a URL manually)
 if($access == 2) 
 	{
-	if(isset($anonymous_login))
+	if(isset($anonymous_login) && (!isset($is_authenticated) || (isset($is_authenticated) && !$is_authenticated)))
 		{
 		redirect('login.php');
 		}
@@ -477,7 +477,7 @@ $urlparams= array(
 # Check if actually coming from a search, but not if a numeric search and config_search_for_number is set or if this is a direct request e.g. ?r=1234.
 if (isset($_GET["search"]) && !($config_search_for_number && is_numeric($usearch))) { ?>
 <div class="backtoresults">
-<a class="prevLink" href="<?php echo generateURL($baseurl_short . "pages/view.php",$urlparams, array("go"=>"previous")) . "&amp;" .  hook("nextpreviousextraurl") ?>" onClick="return <?php echo ($modal?"Modal":"CentralSpace") ?>Load(this);"><?php echo $lang["previousresult"]?></a>
+<a class="prevLink fa fa-arrow-left" href="<?php echo generateURL($baseurl_short . "pages/view.php",$urlparams, array("go"=>"previous")) . "&amp;" .  hook("nextpreviousextraurl") ?>" onClick="return <?php echo ($modal?"Modal":"CentralSpace") ?>Load(this);" title="<?php echo $lang["previousresult"]?>"></a>
 <?php 
 if (!hook("viewallresults")) 
 	{
@@ -485,14 +485,14 @@ if (!hook("viewallresults"))
 	<a class="upLink" href="<?php echo generateURL($baseurl_short . "pages/search.php",$urlparams,array("go"=>"up")) . (($search_anchors)?"&place=" . $ref:"") ?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["viewallresults"]?></a>
 	<?php 
 	} ?>
-<a class="nextLink" href="<?php echo generateURL($baseurl_short . "pages/view.php",$urlparams, array("go"=>"next")) . "&amp;" .  hook("nextpreviousextraurl") ?>" onClick="return <?php echo ($modal?"Modal":"CentralSpace") ?>Load(this);"><?php echo $lang["nextresult"]?></a>
+<a class="nextLink fa fa-arrow-right" href="<?php echo generateURL($baseurl_short . "pages/view.php",$urlparams, array("go"=>"next")) . "&amp;" .  hook("nextpreviousextraurl") ?>" onClick="return <?php echo ($modal?"Modal":"CentralSpace") ?>Load(this);" title="<?php echo $lang["nextresult"]?>"></a>
 
 <?php
 	if($modal)
 		{
 		?>
-		&nbsp;&nbsp;&nbsp;&nbsp;<a href="<?php echo generateURL($baseurl_short . "pages/view.php",$urlparams) ?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["maximise"]?></a>
-		&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onClick="ModalClose();"><?php echo $lang["close"] ?></a>
+		<a href="<?php echo generateURL($baseurl_short . "pages/view.php",$urlparams) ?>" onClick="return CentralSpaceLoad(this);" class="maxLink fa fa-expand" title="<?php echo $lang["maximise"]?>"></a>
+		<a href="#" onClick="ModalClose();" class="closeLink fa fa-times" title="<?php echo $lang["close"] ?>"></a>
 		<?php
 		}
 	?>
@@ -503,8 +503,8 @@ else if($modal)
 	{
 	?>
 	<div class="backtoresults">
-		&nbsp;&nbsp;&nbsp;&nbsp;<a href="<?php echo generateURL($baseurl_short . "pages/view.php",$urlparams) ?>" onClick="return CentralSpaceLoad(this);"><?php echo $lang["maximise"]?></a>
-		&nbsp;&nbsp;&nbsp;&nbsp;<a href="#" onClick="ModalClose();"><?php echo $lang["close"] ?></a>
+		<a href="<?php echo generateURL($baseurl_short . "pages/view.php",$urlparams) ?>" onClick="return CentralSpaceLoad(this);" class="maxLink fa fa-expand" title="<?php echo $lang["maximise"]?>"></a>
+		<a href="#" onClick="ModalClose();" class="closeLink fa fa-times" title="<?php echo $lang["close"] ?>"></a>
 	</div>
 	<?php
 	}
@@ -530,7 +530,7 @@ if (!hook("replacetitleprefix","",array($resource["archive"]))) { switch ($resou
 	?><span class="DeletedResourceTitle"><?php echo $lang["status3"]?>:</span>&nbsp;<?php
 	break;
 	} }
-if (!hook("replaceviewtitle")){ echo highlightkeywords(htmlspecialchars(i18n_get_translated(get_data_by_field($resource['ref'],$title_field))),$search); } /* end hook replaceviewtitle */  
+if (!hook("replaceviewtitle")){ echo highlightkeywords(htmlspecialchars(tidylist(i18n_get_translated(get_data_by_field($resource['ref'],$title_field)))),$search); } /* end hook replaceviewtitle */  
 ?>&nbsp;</h1>
 <?php } /* End of renderinnerresourceheader hook */ ?>
 </div>
@@ -1177,13 +1177,12 @@ if(!hook("replaceactionslistopen")){?>
 hook ("resourceactions") ?>
 <?php if ($k=="" || $internal_share_access) { ?>
 <?php if (!hook("replaceresourceactions")) {
-	global $resourcetoolsGT;
 	hook("resourceactionstitle");
 	 if ($resource_contact_link)	
 	 	{ ?>
 		<li>
 		<a href="<?php echo $baseurl_short?>pages/ajax/contactadmin.php?ref=<?php echo urlencode($ref)?>&amp;search=<?php echo urlencode($search)?>&amp;offset=<?php echo urlencode($offset)?>&amp;order_by=<?php echo urlencode($order_by)?>&amp;sort=<?php echo urlencode($sort)?>&amp;archive=<?php echo urlencode($archive)?>" onClick="showContactBox();return false;" >
-		<?php echo ($resourcetoolsGT?"&gt; ":"").$lang["contactadmin"]?>
+		<?php echo "<i class='fa fa-user'></i>&nbsp;" . $lang["contactadmin"]?>
 		</a>
 		</li>
 		<?php 
@@ -1195,7 +1194,7 @@ hook ("resourceactions") ?>
 		<li>
 			<?php 
 			echo add_to_collection_link($ref,$search);
-			echo ($resourcetoolsGT?"&gt; ":"").$lang["action-addtocollection"];
+			echo "<i class='fa fa-plus-circle'></i>&nbsp;" .$lang["action-addtocollection"];
 			?>
 			</a>
 		</li>
@@ -1206,7 +1205,7 @@ hook ("resourceactions") ?>
 			<li>
 			<?php 
 			echo remove_from_collection_link($ref,$search);
-			echo ($resourcetoolsGT?"&gt; ":"").$lang["action-removefromcollection"]?>
+			echo "<i class='fa fa-minus-circle'></i>&nbsp;" .$lang["action-removefromcollection"]?>
 			</a>
 			</li>
 			<?php 
@@ -1216,7 +1215,7 @@ hook ("resourceactions") ?>
 		{ 
 		?>
 		<li><a href="<?php echo $baseurl_short?>pages/resource_share.php?ref=<?php echo urlencode($ref) ?>&amp;search=<?php echo urlencode($search)?>&amp;offset=<?php echo urlencode($offset)?>&amp;order_by=<?php echo urlencode($order_by)?>&amp;sort=<?php echo urlencode($sort)?>&amp;archive=<?php echo urlencode($archive)?>" onClick="return CentralSpaceLoad(this,true);" >
-		<?php echo ($resourcetoolsGT?"&gt; ":"").$lang["share"];?>
+		<?php echo "<i class='fa fa-share-alt'></i>&nbsp;" . $lang["share"];?>
 		</a></li>
 		<?php 
 		hook('aftersharelink', '', array($ref, $search, $offset, $order_by, $sort, $archive));
@@ -1224,7 +1223,7 @@ hook ("resourceactions") ?>
 	if ($edit_access) 
 		{ ?>
 		<li><a href="<?php echo $baseurl_short?>pages/edit.php?ref=<?php echo urlencode($ref)?>&amp;search=<?php echo urlencode($search)?>&amp;offset=<?php echo urlencode($offset)?>&amp;order_by=<?php echo urlencode($order_by)?>&amp;sort=<?php echo urlencode($sort)?>&amp;archive=<?php echo urlencode($archive)?>"    onClick="return CentralSpaceLoad(this,true);">
-			<?php echo ($resourcetoolsGT?"&gt; ":"").$lang["action-edit"]?>
+			<?php echo "<i class='fa fa-pencil'></i>&nbsp;" .$lang["action-edit"]?>
 		</a></li>
 		<?php 
 		if ((!checkperm("D") || hook('check_single_delete')) && !(isset($allow_resource_deletion) && !$allow_resource_deletion))
@@ -1235,11 +1234,11 @@ hook ("resourceactions") ?>
 			<?php 
 			if ($resource["archive"]==3)
 				{
-				echo ($resourcetoolsGT?"&gt; ":"").$lang["action-delete_permanently"];
+				echo "<i class='fa fa-trash'></i>&nbsp;" .$lang["action-delete_permanently"];
 				} 
 			else 
 				{
-				echo ($resourcetoolsGT?"&gt; ":"") . $lang["action-delete"];
+				echo "<i class='fa fa-trash'></i>&nbsp;" . $lang["action-delete"];
 				}?>
 			</a>
 			</li>
@@ -1248,7 +1247,7 @@ hook ("resourceactions") ?>
 		if (!$disable_alternative_files && !checkperm('A')) 
 			{ ?>
 			<li><a href="<?php echo $baseurl_short?>pages/alternative_files.php?ref=<?php echo urlencode($ref)?>&amp;search=<?php echo urlencode($search)?>&amp;offset=<?php echo urlencode($offset)?>&amp;order_by=<?php echo urlencode($order_by)?>&amp;sort=<?php echo urlencode($sort)?>&amp;archive=<?php echo urlencode($archive)?>" onClick="return CentralSpaceLoad(this,true);">
-			<?php echo ($resourcetoolsGT?"&gt; ":"").$lang["managealternativefiles"]?>
+			<?php echo "<i class='fa fa-files-o'></i>&nbsp;" . $lang["managealternativefiles"]?>
 			</a></li>
 			<?php 
 			}
@@ -1266,19 +1265,19 @@ hook ("resourceactions") ?>
 	if ($metadata_download && (checkperm('f*') || $can_see_fields_individually))	
 		{ ?>
 		<li><a href="<?php echo $baseurl_short?>pages/metadata_download.php?ref=<?php echo urlencode($ref)?>" onClick="return CentralSpaceLoad(this,true);" >
-		<?php echo ($resourcetoolsGT?"&gt; ":"").$lang["downloadmetadata"]?>
+		<?php echo "<i class='fa fa-history'></i>&nbsp;" .$lang["downloadmetadata"]?>
 		</a></li><?php 
 		} 
 	if (checkperm('v')) 
 		{ ?>
 		<li><a href="<?php echo $baseurl_short?>pages/log.php?ref=<?php echo urlencode($ref)?>&amp;search=<?php echo urlencode($search)?>&amp;search_offset=<?php echo urlencode($offset)?>&amp;order_by=<?php echo urlencode($order_by)?>&amp;sort=<?php echo urlencode($sort)?>&amp;archive=<?php echo urlencode($archive)?>" onClick="return CentralSpaceLoad(this,true);">
-		<?php echo ($resourcetoolsGT?"&gt; ":"").$lang["log"]?>
+		<?php echo "<i class='fa fa-history'></i>&nbsp;" .$lang["log"]?>
 		</a></li><?php 
 		}
 	if (checkperm("R") && $display_request_log_link) 
 		{ ?>
 		<li><a href="<?php echo $baseurl_short?>pages/request_log.php?ref=<?php echo urlencode($ref)?>&amp;search=<?php echo urlencode($search)?>&amp;offset=<?php echo urlencode($offset)?>&amp;order_by=<?php echo urlencode($order_by)?>&amp;sort=<?php echo urlencode($sort)?>&amp;archive=<?php echo urlencode($archive)?>" onClick="return CentralSpaceLoad(this,true);">
-		<?php echo ($resourcetoolsGT?"&gt; ":"").$lang["requestlog"]?>
+		<?php echo "<i class='fa fa-history'></i>&nbsp;" .$lang["requestlog"]?>
 		</a></li><?php 
 		}
     } /* End replaceresourceactions */ 
@@ -1323,7 +1322,7 @@ if ($user_rating && ($k=="" || $internal_share_access)) { include "../include/us
 </div>
 <?php include "view_metadata.php"; ?>
 </div></div>
-<div class="PanelShadow"></div>
+
 </div>
 
 <?php
@@ -1351,7 +1350,7 @@ function RenderPushedMetadata($resource)
         <div class="Title"><?php echo $resource["resource_type_name"] . " : " . $resource["field" . $view_title_field] ?></div>
         <?php include "view_metadata.php"; ?>
         </div>
-        <div class="PanelShadow"></div>
+        
         </div>
 	<?php
 	}
@@ -1371,7 +1370,7 @@ End of pushed metadata support
             <div id="Titles2" class="ViewPanelTitles"></div>
         </div>
     </div>
-    <div class="PanelShadow"></div>
+    
 </div>
 <?php if ($view_resource_collections){
 	# only render this box when needed
@@ -1382,7 +1381,7 @@ End of pushed metadata support
             <div id="Titles3" class="ViewPanelTitles"></div>
         </div>
     </div>
-    <div class="PanelShadow"></div>
+    
 </div>
 <?php } ?>
 <?php } 
@@ -1454,7 +1453,7 @@ if ($metadata_report && isset($exiftool_path) && ($k=="" || $internal_share_acce
         <div class="Title"><?php echo $lang['metadata-report']?></div>
         <div id="<?php echo $context ?>metadata_report"><a onclick="metadataReport(<?php echo htmlspecialchars($ref)?>,'<?php echo $context ?>');document.getElementById('<?php echo $context ?>metadata_report').innerHTML='<?php echo $lang['pleasewait']?>';return false;" class="itemNarrow" href="#">&gt; <?php echo $lang['viewreport'];?></a><br></div>
         </div>
-        <div class="PanelShadow"></div>
+        
         </div>
 
 <?php } ?>
@@ -1525,11 +1524,11 @@ if (count($result)>0)
 			}
 		?>
 		<div class="clearerleft"> </div>
-		<?php $count_extensions++; if ($count_extensions==count($related_file_extensions)){?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!related" . $ref) ?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["clicktoviewasresultset"]?></a><?php }?>
+		<?php $count_extensions++; if ($count_extensions==count($related_file_extensions)){?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!related" . $ref) ?>" onClick="return CentralSpaceLoad(this,true);"><?php echo LINK_CARET ?><?php echo $lang["clicktoviewasresultset"]?></a><?php }?>
 		</div>
 		</div>
 		</div>
-		<div class="PanelShadow"></div>
+		
 		</div><?php
 		} #end of display loop by resource extension
 	} #end of IF sorted relations
@@ -1584,11 +1583,11 @@ if (count($result)>0)
 			}
 		?>
 		<div class="clearerleft"> </div>
-		<?php $count_restypes++; if ($count_restypes==count($related_restypes)){?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!related" . $ref) ?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["clicktoviewasresultset"]?></a><?php }?>
+		<?php $count_restypes++; if ($count_restypes==count($related_restypes)){?><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!related" . $ref) ?>" onClick="return CentralSpaceLoad(this,true);"><?php echo LINK_CARET ?><?php echo $lang["clicktoviewasresultset"]?></a><?php }?>
 		</div>
 		</div>
 		</div>
-		<div class="PanelShadow"></div>
+		
 		</div><?php
 		} #end of display loop by resource extension
 	} #end of IF sorted relations	
@@ -1640,12 +1639,12 @@ if (count($result)>0)
         }
     ?>
     <div class="clearerleft"> </div>
-        <a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!related" . $ref) ?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["clicktoviewasresultset"]?></a>
+        <a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!related" . $ref) ?>" onClick="return CentralSpaceLoad(this,true);"><?php echo LINK_CARET ?><?php echo $lang["clicktoviewasresultset"]?></a>
 
     </div>
     </div>
     </div>
-    <div class="PanelShadow"></div>
+    
     </div><?php
 		}# end related resources display
 	} 
@@ -1671,7 +1670,7 @@ if (count($result)>0)
 		for ($n=0;$n<count($result);$n++)			
 			{
 			?>
-			<a href="<?php echo $baseurl_short?>pages/search.php?search=!collection<?php echo $result[$n]["ref"]?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo (strlen($result[$n]["theme"])>0)?htmlspecialchars(str_replace("*","",i18n_get_translated($result[$n]["theme"])) . " / "):$lang["public"] . " : "; ?><?php if (!$collection_public_hide_owner) {echo htmlspecialchars($result[$n]["fullname"] . " / ");} ?><?php echo i18n_get_collection_name($result[$n]); ?></a><br />
+			<a href="<?php echo $baseurl_short?>pages/search.php?search=!collection<?php echo $result[$n]["ref"]?>" onClick="return CentralSpaceLoad(this,true);"><?php echo LINK_CARET ?><?php echo (strlen($result[$n]["theme"])>0)?htmlspecialchars(str_replace("*","",i18n_get_translated($result[$n]["theme"])) . " / "):$lang["public"] . " : "; ?><?php if (!$collection_public_hide_owner) {echo htmlspecialchars($result[$n]["fullname"] . " / ");} ?><?php echo i18n_get_collection_name($result[$n]); ?></a><br />
 			<?php		
 			}
 		?>
@@ -1679,7 +1678,7 @@ if (count($result)>0)
 	</div>
 	</div>
 	</div>
-	<div class="PanelShadow"></div>
+	
 	</div><?php
 	}} 
 
@@ -1733,7 +1732,7 @@ for ($n=0;$n<count($keywords);$n++)
 </div>
 </div>
 </div>
-<div class="PanelShadow"></div>
+
 </div>
 <?php 
 	hook("afterviewfindsimilar");

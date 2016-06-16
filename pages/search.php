@@ -229,7 +229,14 @@ if ($order_by=="")
 		$order_by=$default_sort;
 		}
 	}
-$per_page=getvalescaped("per_page",$default_perpage);rs_setcookie('per_page', $per_page);
+
+$per_page=getvalescaped("per_page",$default_perpage);
+if(empty($per_page))
+    {
+    $per_page=$default_perpage;
+    }
+rs_setcookie('per_page', $per_page);
+
 $archive = getvalescaped('archive', 0);
 
 // Disable search through all workflow states when an archive state is specifically requested
@@ -666,7 +673,7 @@ if (isset($result_title_height))
 if(!$search_titles && isset($theme_link))
 	{
 	// Show the themes breadcrumbs if they exist, but not if we are using the search_titles
-	echo "<div class='SearchBreadcrumbs'>" . $theme_link . '&nbsp;&gt;&nbsp;<span id="coltitle'.$collection.'"><a  href="'.$baseurl_short.'pages/search.php?search=!collection' . $collection . '" onClick="return CentralSpaceLoad(this,true);">'.i18n_get_collection_name($collectiondata). '</a></span>' . "</div>" ;
+	echo "<div class='SearchBreadcrumbs'>" . $theme_link . '&nbsp;<?php echo LINK_CARET ?><span id="coltitle'.$collection.'"><a  href="'.$baseurl_short.'pages/search.php?search=!collection' . $collection . '" onClick="return CentralSpaceLoad(this,true);">'.i18n_get_collection_name($collectiondata). '</a></span>' . "</div>" ;
 	}
 
 if (!hook("replacesearchheader")) # Always show search header now.
@@ -955,13 +962,13 @@ if (!hook("replacesearchheader")) # Always show search header now.
 		if ($arcresults>0) 
 			{
 			?>
-			<div class="SearchOptionNav"><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&amp;archive=2" onClick="return CentralSpaceLoad(this);">&gt;&nbsp;<?php echo $lang["view"]?> <span class="Selected"><?php echo number_format($arcresults)?></span> <?php echo ($arcresults==1)?$lang["match"]:$lang["matches"]?> <?php echo $lang["inthearchive"]?></a></div>
+			<div class="SearchOptionNav"><a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode($search)?>&amp;archive=2" onClick="return CentralSpaceLoad(this);"><?php echo LINK_CARET ?><?php echo $lang["view"]?> <span class="Selected"><?php echo number_format($arcresults)?></span> <?php echo ($arcresults==1)?$lang["match"]:$lang["matches"]?> <?php echo $lang["inthearchive"]?></a></div>
 			<?php 
 			}
 		else
 			{
 			?>
-			<div class="InpageNavLeftBlock">&gt;&nbsp;<?php echo $lang["nomatchesinthearchive"]?></div>
+			<div class="InpageNavLeftBlock"><?php echo LINK_CARET ?><?php echo $lang["nomatchesinthearchive"]?></div>
 			<?php 
 			}
 		}
@@ -1167,27 +1174,7 @@ if (!hook("replacesearchheader")) # Always show search header now.
         </div>
         <?php
         }
-    else
-        {
-        # Display keys (only keys used in the current search view).
-        if (!hook("replacesearchkey"))
-            {
-            if (is_array($result) && count($result)>0 && $search_includes_resources)
-                { ?>
-                <div class="BottomInpageKey"><?php
-                    echo $lang["key"] . " ";
-                    if ($showkeystar) { ?><div class="KeyStar"><?php echo $lang["verybestresources"]?></div><?php }
-                    if ($showkeycomment) { ?><div class="KeyComment"><?php echo $lang["addorviewcomments"]?></div><?php }
-                    if ($showkeyedit) { ?><div class="KeyEdit"><?php echo $lang["editresource"]?></div><?php }
-		    if ($showkeyemail) { ?><div class="KeyEmail"><?php echo $lang["share-resource"]?></div><?php }
-                    if ($showkeycollectout) { ?><div class="KeyCollectOut"><?php echo $lang["removefromcurrentcollection"]?></div><?php }
-                    if ($showkeycollect) { ?><div class="KeyCollect"><?php echo $lang["addtocurrentcollection"]?></div><?php }
-                    if ($showkeypreview) { ?><div class="KeyPreview"><?php echo $lang["fullscreenpreview"]?></div><?php }
-                    hook("searchkey"); ?>
-                </div><?php
-                }
-            } /* end hook replacesearchkey */
-        }        
+    
 $url=$baseurl_short."pages/search.php?search=" . urlencode($search) . "&amp;order_by=" . urlencode($order_by) . "&amp;sort=" . urlencode($sort) . "&amp;archive=" . urlencode($archive) . "&amp;daylimit=" . urlencode($daylimit) . "&amp;k=" . urlencode($k) . "&amp;restypes=" . urlencode($restypes);	
 ?>
 </div> <!-- end of CentralSpaceResources -->

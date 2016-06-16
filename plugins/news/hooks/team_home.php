@@ -7,7 +7,7 @@ function HookNewsTeam_homeCustomteamfunction()
     if (checkperm("o"))
 		{
 		
-		?><li><a href="<?php echo $baseurl ?>/plugins/news/pages/news_edit.php"><?php echo $lang["news_manage"]?></a></li>
+		?><li><i class="fa fa-fw fa-newspaper-o"></i>&nbsp;<a href="<?php echo $baseurl ?>/plugins/news/pages/news_edit.php"><?php echo $lang["news_manage"]?></a></li>
 		<?php
 		}
 		?>

@@ -35,9 +35,9 @@ if($alternative!=='')
 	{
 	?>
 	<p>
-		<a href="<?php echo $baseurl_short?>pages/alternative_files.php?ref=<?php echo urlencode($alternative)?>" onClick="return CentralSpaceLoad(this,true);">&lt;&nbsp;<?php echo $lang["backtomanagealternativefiles"]?></a>
+		<a href="<?php echo $baseurl_short?>pages/alternative_files.php?ref=<?php echo urlencode($alternative)?>" onClick="return CentralSpaceLoad(this,true);"><?php echo LINK_CARET_BACK ?><?php echo $lang["backtomanagealternativefiles"]?></a>
 		<br / >
-		<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo urlencode($alternative)?>">&lt;&nbsp;<?php echo $lang["backtoresourceview"]?></a>
+		<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo urlencode($alternative)?>"><?php echo LINK_CARET_BACK ?><?php echo $lang["backtoresourceview"]?></a>
 	</p>
 	<?php
 	}
@@ -54,7 +54,7 @@ if($alternative!=='')
 <div class="clearerleft"> </div>
 </div>
 </div>
-<div class="PanelShadow"></div>
+
 </div>
 
 <?php

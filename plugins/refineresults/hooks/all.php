@@ -82,7 +82,7 @@ function HookRefineresultsSearchBeforesearchresultsexpandspace()
 	</form>
 	
 	</div>
-	<div class="PanelShadow"></div>
+	
 	</div>
 	<?php
 	

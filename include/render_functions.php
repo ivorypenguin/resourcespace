@@ -677,7 +677,7 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
         else
             {
             # For advanced search and elsewhere, include the category tree.
-            include "../pages/edit_fields/7.php";
+            include __DIR__ . "/../pages/edit_fields/7.php";
             }
         break;
         
@@ -694,12 +694,18 @@ function render_search_field($field,$value="",$autoupdate,$class="stdwidth",$for
             $display_as_radiobuttons = FALSE;
             $display_as_checkbox = TRUE;
 
-            if($field['display_as_dropdown']) {
+            if($field['display_as_dropdown'] || $forsearchbar) {
                 $display_as_dropdown = TRUE;
                 $display_as_checkbox = FALSE;
             }
             
-            include '../pages/edit_fields/12.php';
+            include __DIR__ . '/../pages/edit_fields/12.php';
+            // need to adjust the field's name value
+            ?>
+        	<script type="text/javascript">
+        		jQuery("#field_<?php echo $field['ref']?>").attr('name', 'field_<?php echo $field["name"]?>');
+        	</script>
+            <?php
         break;
         }
     ?>
@@ -864,7 +870,7 @@ function render_dropdown_option($value, $label, array $data_attr = array(), $ext
 * 
 */
 if (!function_exists("render_actions")){
-function render_actions(array $collection_data, $top_actions = true, $two_line = true, $id = '')
+function render_actions(array $collection_data, $top_actions = true, $two_line = true, $id = '',$resource_data=array())
     {
     if(hook('prevent_running_render_actions'))
         {
@@ -909,15 +915,23 @@ function render_actions(array $collection_data, $top_actions = true, $two_line =
             <?php
 
             // Collection Actions
-            $collection_actions_array = compile_collection_actions($collection_data, $top_actions);
-			
+            $collection_actions_array = compile_collection_actions($collection_data, $top_actions, $resource_data);
+
             // Usual search actions
             $search_actions_array = compile_search_actions($top_actions);
-            
+
+            // Remove certain actions that apply only to searches
+            if(!$top_actions)
+                {
+                $action_index_to_remove = array_search('search_items_disk_usage', array_column($search_actions_array, 'value'));
+                unset($search_actions_array[$action_index_to_remove]);
+                $search_actions_array = array_values($search_actions_array);
+                }
+    
             $actions_array = array_merge($collection_actions_array, $search_actions_array);
             
             $modify_actions_array = hook('modify_unified_dropdown_actions_options', '', array($actions_array,$top_actions));
-            
+
 	if(!empty($modify_actions_array))
                 {
                 $actions_array = $modify_actions_array;
@@ -960,7 +974,7 @@ function render_actions(array $collection_data, $top_actions = true, $two_line =
             switch(v)
                 {
             <?php
-            if(!empty($collection_data))
+            if(0 !== count($collection_data) && collection_readable($collection_data['ref']))
                 {
                 ?>
                 case 'select_collection':
@@ -1350,8 +1364,8 @@ function render_access_key_tr(array $record)
         <td><?php echo htmlspecialchars((-1 == $record['access']) ? '' : $lang['access' . $record['access']]); ?></td>
         <td>
             <div class="ListTools">
-                <a href="#" onClick="delete_access_key('<?php echo $record['access_key']; ?>', '<?php echo $record['resource']; ?>', '<?php echo $record['collection']; ?>');">&gt;&nbsp;<?php echo $lang['action-delete']; ?></a>
-                <a href="<?php echo $edit_link; ?>">&gt;&nbsp;<?php echo $lang['action-edit']; ?></a>
+                <a href="#" onClick="delete_access_key('<?php echo $record['access_key']; ?>', '<?php echo $record['resource']; ?>', '<?php echo $record['collection']; ?>');"><?php echo LINK_CARET ?><?php echo $lang['action-delete']; ?></a>
+                <a href="<?php echo $edit_link; ?>"><?php echo LINK_CARET ?><?php echo $lang['action-edit']; ?></a>
             </div>
         </td>
     </tr>

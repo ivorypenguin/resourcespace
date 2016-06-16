@@ -11,10 +11,6 @@ This provides a mechanism for enabling new features for new installations withou
 
 */
                                 
-$thumbs_display_fields = array(8,3);
-$list_display_fields = array(8,3,12);
-$sort_fields = array(12);
-
 // Set imagemagick default for new installs to expect the newer version with the sRGB bug fixed.
 $imagemagick_colorspace = "sRGB";
 

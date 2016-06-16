@@ -1,7 +1,7 @@
 <?php
 function HookAnnotatePreviewReplacepreviewbacktoview(){
 	global $baseurl,$lang,$ref,$search,$offset,$order_by,$sort,$archive,$k;?>
-<p style="margin:7px 0 7px 0;padding:0;"><a class="enterLink" href="<?php echo $baseurl?>/pages/view.php?<?php if (getval("annotate","")=="true"){?>annotate=true&<?php } ?>ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&k=<?php echo $k?>">&lt;&nbsp;<?php echo $lang["backtoresourceview"]?></a>
+<p style="margin:7px 0 7px 0;padding:0;"><a class="enterLink" href="<?php echo $baseurl?>/pages/view.php?<?php if (getval("annotate","")=="true"){?>annotate=true&<?php } ?>ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&k=<?php echo $k?>"><?php echo LINK_CARET_BACK ?><?php echo $lang["backtoresourceview"]?></a>
 <?php return true;
 } 
 

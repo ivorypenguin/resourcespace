@@ -391,9 +391,6 @@
     #SearchBoxPanel .ResponsiveSimpleSearch input, #SearchBoxPanel .ResponsiveSimpleSearch label, #SearchBoxPanel .ResponsiveSimpleSearch .StarRatings, #SearchBoxPanel .ResponsiveSimpleSearch p{
         display:inline-block;
     }
-    #SearchBarContainer .PanelShadow {
-        display:none;
-    }
     /* LoginBoxPanel*/
     #SearchBoxPanel.LoginBoxPanel input, #SearchBoxPanel.LoginBoxPanel .SearchItem, #SearchBoxPanel.LoginBoxPanel p {
         display:inline-block;
