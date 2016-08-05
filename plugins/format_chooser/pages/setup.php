@@ -1,8 +1,8 @@
 <?php
 
 include '../../../include/db.php';
+include_once '../../../include/general.php';
 include '../../../include/authenticate.php';
-include '../../../include/general.php';
 
 if (!checkperm('a'))
 	exit($lang['error-permissiondenied']);
@@ -18,4 +18,6 @@ $page_def[] = config_add_text_list_input('format_chooser_output_formats', $lang[
 $upload_status = config_gen_setup_post($page_def, $plugin_name);
 include '../../../include/header.php';
 config_gen_setup_html($page_def, $plugin_name, $upload_status, $page_heading);
+echo '<p>Please consult config.php directly in order to change the color profile settings.</p>';
+
 include '../../../include/footer.php';

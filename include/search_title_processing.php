@@ -5,15 +5,21 @@ $search_title = "";
 $search_title_links = "";
 $display_user_and_access=false;
 $is_theme=false;
-global $baseurl_short;
+global $baseurl_short,$filename_field;
 # Display a title of the search (if there is a title)
 $searchcrumbs="";
 if ($search_titles_searchcrumbs && $use_refine_searchstring){
-$refinements=str_replace(" -",",-",urldecode($search));
+$refinements=str_replace(" -",",-",rawurldecode($search));
 $refinements=explode(",",$search);
 if (substr($search,0,1)=="!" && substr($search,0,6)!="!empty"){$startsearchcrumbs=1;} else {$startsearchcrumbs=0;}
 if ($refinements[0]!=""){
 	for ($n=$startsearchcrumbs;$n<count($refinements);$n++){
+		# strip the first semi-colon so it's not swapped with an " OR "
+		$semi_pos = strpos($refinements[$n],":;");
+		if ($semi_pos !== false) {
+			$refinements[$n] = substr_replace($refinements[$n],": ",$semi_pos,strlen(":;"));
+		}
+		
 		$search_title_element=str_replace(";"," OR ",$refinements[$n]);
 		if ($n!=0 || $archive!=0){$searchcrumbs.=" > </count> </count> </count> ";}
 		$searchcrumbs.="<a href=\"".$baseurl_short."pages/search.php?search=";
@@ -40,7 +46,7 @@ if ($refinements[0]!=""){
 		}
 		if (substr(trim($search_title_element),0,6)=="!empty")
         {   // superspecial !empty search  
-			$search_title_elementq=trim(str_replace("!empty","",urldecode($search_title_element)));
+			$search_title_elementq=trim(str_replace("!empty","",rawurldecode($search_title_element)));
 			if (is_numeric($search_title_elementq)){
 				$fref=$search_title_elementq;
 				$ftitle=sql_value("select title value from resource_type_field where ref='" .$search_title_elementq . "'","");
@@ -56,15 +62,36 @@ if ($refinements[0]!=""){
 		}
 		
 		
-		$searchcrumbs.="&amp;order_by=" . $order_by . "&amp;sort=".$sort."&amp;offset=" . $offset . "&amp;archive=" . $archive."&amp;sort=".$sort."\" onClick='return CentralSpaceLoad(this,true);'>".$search_title_element."</a>";
+		$searchcrumbs.="&amp;order_by=" . htmlspecialchars($order_by) . "&amp;sort=" . htmlspecialchars($sort) . "&amp;offset=" . htmlspecialchars($offset) . "&amp;archive=" . htmlspecialchars($archive) . "&amp;sort=" . htmlspecialchars($sort) . "\" onClick='return CentralSpaceLoad(this,true);'>".$search_title_element."</a>";
 	}
 }
 }
 
+if (isset($collectiondata["theme"]) && strlen($collectiondata["theme"])>0)
+		{
+		$colaccessmode = $lang["themes"];
+		$is_theme=true;						
+		$theme_link="<a onClick='return CentralSpaceLoad(this,true);' href='" . $baseurl . "/pages/themes.php'>".$lang['themes']."</a> &gt; <a onClick='return CentralSpaceLoad(this,true);' href='".$baseurl . "/pages/themes.php?theme1=" . urlencode($collectiondata["theme"]) . "'>" . str_replace("*","",i18n_get_translated($collectiondata["theme"])) . "</a>";
+		global $theme_category_levels;
+		for($x=2;$x<=$theme_category_levels;$x++)
+			{					
+			if(isset($collectiondata['theme' . $x]) && strlen($collectiondata['theme' . $x]) > 0)
+				{
+				$theme_link_url = $baseurl . "/pages/themes.php?lastlevelchange=" . $x . "&theme1=" . urlencode($collectiondata["theme"]);
+				for($l=2;$l<=$x;$l++)
+					{
+					$theme_link_url .= "&theme" . $l . "=" . urlencode($collectiondata['theme' . $l]);
+					}
+				$theme_link .= " &gt; <a onClick='return CentralSpaceLoad(this, true);' href='" . $theme_link_url . "'>" . str_replace("*","",i18n_get_translated($collectiondata['theme' . $x])) . "</a>";
+				}
+			}			
+		}
+
+
 if ($search_titles)
     {
 
-    $parameters_string = '&amp;order_by=' . $order_by . '&amp;sort='.$sort.'&amp;offset=' . $offset . '&amp;archive=' . $archive.'&amp;sort='.$sort . '&amp;k=' . $k;
+    $parameters_string = '&amp;order_by=' . urlencode($order_by) . '&amp;sort=' . urlencode($sort) . '&amp;offset=' . urlencode($offset) . '&amp;archive=' . urlencode($archive) . '&amp;sort=' . urlencode($sort) . '&amp;k=' . urlencode($k);
 
     if (substr($search,0,11)=="!collection")
         {
@@ -90,15 +117,8 @@ if ($search_titles)
                 
                 }
             }
-       if (strlen($collectiondata["theme"])>0)
-            {
-            $colaccessmode = $lang["themes"];
-            $is_theme=true;
-            $theme_link="<a onClick='return CentralSpaceLoad(this,true);' href='".$baseurl_short."pages/themes.php'>".$lang['themes']."</a> &gt; <a onClick='return CentralSpaceLoad(this,true);' href='".$baseurl_short."pages/themes.php?theme1=".urlencode($collectiondata["theme"])."'>".i18n_get_translated($collectiondata["theme"])."</a>";
-            if (strlen($collectiondata["theme2"])>0) $theme_link.=" &gt; <a onClick='return CentralSpaceLoad(this,true);' href='".$baseurl_short."pages/themes.php?theme1=".urlencode($collectiondata["theme"])."&theme2=".urlencode($collectiondata["theme2"])."'>".i18n_get_translated($collectiondata["theme2"])."</a>";
-            if (strlen($collectiondata["theme3"])>0) $theme_link.=" &gt; <a onClick='return CentralSpaceLoad(this,true);' href='".$baseurl_short."pages/themes.php?theme1=".urlencode($collectiondata["theme"])."&theme2=".urlencode($collectiondata["theme2"])."&theme3=".urlencode($collectiondata["theme3"])."'>".i18n_get_translated($collectiondata["theme3"])."</a>";
-            }
 			
+     			
         // add a tooltip to Smart Collection titles (which provides a more detailed view of the searchstring.    
         $alt_text = '';
         if ($pagename=="search" && isset($collectiondata['savedsearch']) && $collectiondata['savedsearch']!='')
@@ -110,7 +130,7 @@ if ($search_titles)
                 }
             } 
         hook("collectionsearchtitlemod");
-        $search_title.= '<div align="left"><h1><div class="searchcrumbs">'.($is_theme?$theme_link." > ":"").'<span id="coltitle'.$collection.'"><a '.$alt_text.' href="'.$baseurl_short.'pages/search.php?search=!collection'.$collection.$parameters_string.'" onClick="return CentralSpaceLoad(this,true);">'.i18n_get_collection_name($collectiondata).($display_user_and_access?" (".$colusername.$colaccessmode.")":"").'</a></span>'.$searchcrumbs.'</div></h1> ';
+        $search_title.= '<div align="left"><h1><div class="searchcrumbs">'.($is_theme?$theme_link." > ":"").'<span id="coltitle'.$collection.'"><a '.$alt_text.' href="'.$baseurl_short.'pages/search.php?search=!collection'.$collection.$parameters_string.'" onClick="return CentralSpaceLoad(this,true);">'.i18n_get_collection_name($collectiondata).($display_user_and_access?" <span class='CollectionUser'>(".$colusername.$colaccessmode.")</span>":"").'</a></span>'.$searchcrumbs.'</div></h1></div>';
         }
     elseif ($search=="" && $archive==0)
         {
@@ -198,7 +218,11 @@ if ($search_titles)
         $resource=substr($search,8);
 		$resource=explode(",",$resource);
 		$resource=$resource[0];
-        $search_title = '<h1 class="searchcrumbs"><a href="'.$baseurl_short.'pages/search.php?search=!related'.$resource.$parameters_string.'" onClick="return CentralSpaceLoad(this,true);">'.str_replace('%id%', $resource, $lang["relatedresources-id"]).'</a>'.$searchcrumbs.'</h1> ';
+		$displayfield=get_data_by_field($resource,$related_search_searchcrumb_field);
+		if($displayfield==''){
+			$displayfield=get_data_by_field($resource,$filename_field);
+		}
+        $search_title = '<h1 class="searchcrumbs"><a href="'.$baseurl_short.'pages/search.php?search=!related'.$resource.$parameters_string.'" onClick="return CentralSpaceLoad(this,true);">'.str_replace('%id%', $displayfield, $lang["relatedresources-id"]).'</a>'.$searchcrumbs.'</h1> ';
         }
     elseif (substr($search,0,7)=="!unused")
         {
@@ -207,7 +231,16 @@ if ($search_titles)
         }
     elseif (substr($search,0,11)=="!duplicates")
         {
-        $search_title = '<h1 class="searchcrumbs"><a href="'.$baseurl_short.'pages/search.php?search=!duplicates'.$parameters_string.'" onClick="return CentralSpaceLoad(this,true);">'.$lang["duplicateresources"].'</a>'.$searchcrumbs.'</h1> ';
+        $ref=explode(" ",$search);$ref=str_replace("!duplicates","",$ref[0]);
+		$ref=explode(",",$ref);// just get the number
+		$ref=escape_check($ref[0]);
+		$filename=get_data_by_field($ref,$filename_field);
+		if ($ref!="") {
+			$search_title = '<h1 class="searchcrumbs"><a href='.$baseurl_short.'pages/search.php?search=!duplicates'.$ref.$parameters_string.' onClick="return CentralSpaceLoad(this,true);">'.$lang["duplicateresourcesfor"].$filename.'</a>'.$searchcrumbs.'</h1> ';
+        	}
+        else {
+        	$search_title = '<h1 class="searchcrumbs"><a href='.$baseurl_short.'pages/search.php?search=!duplicates'.$parameters_string.' onClick="return CentralSpaceLoad(this,true);">'.$lang["duplicateresources"].'</a>'.$searchcrumbs.'</h1> ';
+        	}
         }
     elseif (substr($search,0,5)=="!list")
         {
@@ -227,6 +260,10 @@ if ($search_titles)
 	elseif (substr($search,0,10)=="!nopreview")
 		{
 		$search_title = '<h1 class="searchcrumbs"><a href="'.$baseurl_short.'pages/search.php?search=!nopreview'.$parameters_string.'" onClick="return CentralSpaceLoad(this,true);">'.$lang["nopreviewresources"].'</a>'.$searchcrumbs.'</h1> ';
+		}
+	elseif (substr($search,0,4)=="!geo")
+		{
+		$search_title = '<h1 class="searchcrumbs"><a href="'.$baseurl_short.'pages/search.php?search=!geo'.$parameters_string.'" onClick="return CentralSpaceLoad(this,true);">'.$lang["geographicsearchresults"].'</a>'.$searchcrumbs.'</h1> ';
 		}	
     elseif (substr($search,0,14)=="!contributions")
         {
@@ -257,6 +294,14 @@ if ($search_titles)
             $search_title = '<h1 class="searchcrumbs"><a href="'.$baseurl_short.'pages/search.php?search=!contributions'.$cuser.$parameters_string.'" onClick="return CentralSpaceLoad(this,true);">'.$lang["contributedby"]." ".$displayname." - ".$lang["status".intval($archive)].'</a>'.$searchcrumbs.'</h1> ';
             }
         }
+	 elseif (substr($search,0,8)=="!hasdata")
+        {		
+		$fieldref=intval(trim(substr($search,8)));        
+		$fieldinfo=get_resource_type_field($fieldref);
+		$displayname=i18n_get_translated($fieldinfo["title"]);
+		if (trim($displayname)=="") $displayname=$fieldinfo["ref"];
+		$search_title = '<h1 class="searchcrumbs"><a href="'.$baseurl_short.'pages/search.php?search=!hasdata'.$fieldref.$parameters_string.'" onClick="return CentralSpaceLoad(this,true);">'.$lang["search_title_hasdata"]." ".$displayname." - ".$lang["status".intval($archive)].'</a>'.$searchcrumbs.'</h1> ';            
+        }
     else if ($archive!=0)
         {
         switch ($archive)
@@ -281,12 +326,12 @@ if ($search_titles)
 		}   
 	
 	hook("addspecialsearchtitle");
-	
-	// extra collection title links
-	if (substr($search,0,11)=="!collection"){
-		if ($k=="" && !checkperm("b") && ($userrequestmode!=2 && $userrequestmode!=3)){$search_title_links='<a href="#" onclick="ChangeCollection(' . $collectiondata["ref"] . ', \'\');">&gt;&nbsp;'.$lang["selectcollection"].'</a>&nbsp;&nbsp;';}
-		if (count($result)!=0 && $k==""&&$preview_all){$search_title_links.='<a href="'.$baseurl_short.'pages/preview_all.php?ref='.$collectiondata["ref"].'&amp;order_by='.$order_by.'&amp;sort='.$sort.'&amp;archive='.$archive.'&amp;k='.$k.'">&gt;&nbsp;'.$lang['preview_all'].'</a>';}
-		$search_title.='</div>';
-		if ($display!="list"){$search_title_links.= '<br /><br />';}
 	}
+
+    hook('add_search_title_links');
+
+    if (!hook("replacenoresourcesfoundsearchtitle")){
+    	if (!is_array($result) && empty($collections) && getvalescaped("addsmartcollection","") == '') {
+    		$search_title = '<h1 class="searchcrumbs"><a href="' . $baseurl_short . 'pages/search.php">'.$lang["noresourcesfound"].'</a></h1>';
+    	}
 }  

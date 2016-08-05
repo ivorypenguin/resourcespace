@@ -1,16 +1,23 @@
-<?php include "../include/db.php";
+<?php
+include "../include/db.php";
+include_once "../include/general.php";
 include "../include/authenticate.php"; #if (!checkperm("s")) {exit ("Permission denied.");}
-include "../include/general.php";
-include "../include/collections_functions.php";
+include_once "../include/collections_functions.php";
 include "../include/resource_functions.php";
 include "../include/search_functions.php";
-
 
 $themeshare=getvalescaped("catshare","false");
 $themecount=0;
 if(getvalescaped("subthemes","false")!="false"){$subthemes=true;}else{$subthemes=false;}
 $linksuffix="?";
-$ref=getvalescaped("ref","",true);
+$ref=getvalescaped("ref","");
+$refArray[]=$ref;
+
+
+# Check access
+if (!$themeshare && !collection_readable($ref)) {exit($lang["no_access_to_collection"]);}
+
+
 if ($themeshare!="false")
 	{
 	$themeshare=true;
@@ -21,7 +28,7 @@ if ($themeshare!="false")
 		{
 		// only set necessary vars
 		if (substr($key,0,5)=="theme" && $value!=""){
-			$themes[$themecount]=urldecode($value);
+			$themes[$themecount]=rawurldecode($value);
 			$themecount++;
 			}
 		}
@@ -37,7 +44,8 @@ if ($themeshare!="false")
 		if ($ref!=""){$ref.=", ";}
 		$ref.=$collection["ref"];
 		}		
-	$ref=explode(", ",$ref);$ref=array_unique($ref);$ref=implode(", ",$ref);
+	$ref=explode(", ",$ref);$ref=array_unique($ref);$ref=implode(",",$ref);
+	$refArray = explode(',',$ref);
 	}
 else
 	{
@@ -59,16 +67,23 @@ if (!$allow_share) {
         $show_error=true;
         $error=$lang["error-permissiondenied"];
         }
+		
+
+$user_select_internal=checkperm("noex");
 	
-#Check if any resources are not approved
-if (!$collection_allow_not_approved_share && !is_collection_approved($ref))
+#Check if any resources are not in the active state
+foreach ($refArray as $colref){
+if (!$collection_allow_not_approved_share && !is_collection_approved(trim($colref)))
 	{	
 	$show_error=true;
     $error=$lang["notapprovedsharecollection"];
 	}
+}
 	
 # Get min access to this collection
-$minaccess=collection_min_access($ref);
+foreach ($refArray as $colref){
+$minaccess=collection_min_access(trim($colref));
+}
 
 if ($minaccess>=1 && !$restricted_share) # Minimum access is restricted or lower and sharing of restricted resources is not allowed. The user cannot share this collection.
 	{
@@ -91,15 +106,18 @@ if (getval("save","")!="")
 	$users=getvalescaped("users","");
 	$message=getvalescaped("message","");
 	$access=getvalescaped("access",-1);
+	$add_internal_access=(getvalescaped("grant_internal_access","")!="");
 	$expires=getvalescaped("expires","");	
 	$feedback=getvalescaped("request_feedback","");	if ($feedback=="") {$feedback=false;} else {$feedback=true;}
+	$list_recipients=getvalescaped("list_recipients",""); if ($list_recipients=="") {$list_recipients=false;} else {$list_recipients=true;}
+	$group=getvalescaped("usergroup","");
 	
 	$use_user_email=getvalescaped("use_user_email",false);
 	if ($use_user_email){$user_email=$useremail;} else {$user_email="";} // if use_user_email, set reply-to address
 	if (!$use_user_email){$from_name=$applicationname;} else {$from_name=$userfullname;} // make sure from_name matches email
 	
 	if (getval("ccme",false)){ $cc=$useremail;} else {$cc="";}
-	$errors=email_collection($ref,i18n_get_collection_name($collection),$userfullname,$users,$message,$feedback,$access,$expires,$user_email,$from_name,$cc,$themeshare,$themename,$linksuffix);
+	$errors=email_collection($ref,i18n_get_collection_name($collection),$userfullname,$users,$message,$feedback,$access,$expires,$user_email,$from_name,$cc,$themeshare,$themename,$linksuffix,$list_recipients,$add_internal_access,$group);
 
 	if ($errors=="")
 		{
@@ -123,7 +141,7 @@ $users=get_users();
 include "../include/header.php";
 ?>
 <div class="BasicsBox">
-<h1><?php if ($themeshare){echo $lang["email_theme_category"];} else {echo $lang["emailcollection"];}?></h1>
+<h1><?php if ($themeshare){echo $lang["email_theme_category"];} else {echo $lang["emailcollectiontitle"];}?></h1>
 
 <p><?php 
 if ($themeshare && text("introtextthemeshare")!="")
@@ -134,7 +152,8 @@ else
 
 <form name="collectionform" method=post id="collectionform" action="<?php echo $baseurl_short?>pages/collection_email.php<?php echo $linksuffix ?>&catshare=<?php if($themeshare==true){echo "true";}else{echo "false";}?>">
 <input type=hidden name=redirect id=redirect value=yes>
-<input type=hidden name=ref value="<?php echo urlencode($ref) ?>">
+<input type=hidden name=ref id="ref" value="<?php echo htmlspecialchars(trim($refArray[0])) ?>">
+
 <?php if ($email_multi_collections && !$themeshare) { ?>
 <script type="text/javascript">
    function getSelected(opt) {
@@ -173,7 +192,7 @@ else
 			
 			?>		
 			<select name="collection" multiple="multiple" size="10" class="SearchWidthExt" style="width:365px;" 
-				onchange="document.getElementById('refDiv').innerHTML = getSelected(this); " >
+				onchange="document.getElementById('ref').value = getSelected(this); " >
 			<?php
 			
 			$list=get_user_collections($userref);
@@ -231,42 +250,102 @@ else
 
 <?php if(!hook("replaceemailtousers")){?>
 <div class="Question">
-<label for="users"><?php echo $lang["emailtousers"]?></label><?php $userstring=getval("users","");include "../include/user_select.php"; ?>
+
+<label for="users">
+<?php echo ($user_select_internal)?$lang["emailtousers_internal"]:$lang["emailtousers"]; ?>
+</label><?php $userstring=getval("users","");include "../include/user_select.php"; ?>
 <div class="clearerleft"> </div>
 <?php if ($errors!="") { ?><div class="FormError">!! <?php echo $errors?> !!</div><?php } ?>
 </div>
 <?php } #end hook replaceemailtousers ?>
 
-<?php if(!hook("replaceemailaccessselector")){?>
-<div class="Question" id="question_access">
-<label for="archive"><?php echo $lang["externalselectresourceaccess"]?></label>
-<select class="stdwidth" name="access" id="access">
-<?php
-# List available access levels. The highest level must be the minimum user access level.
-for ($n=$minaccess;$n<=1;$n++) { ?>
-<option value="<?php echo $n?>"><?php echo $lang["access" . $n]?></option>
-<?php } ?>
-</select>
-<div class="clearerleft"> </div>
-</div>
-<?php } # end hook replaceemailaccessselector ?>
-
-<?php if(!hook("replaceemailexpiryselector")){?>
+<?php if ($list_recipients){?>
 <div class="Question">
-<label><?php echo $lang["externalselectresourceexpires"]?></label>
-<select name="expires" class="stdwidth">
-<option value=""><?php echo $lang["never"]?></option>
-<?php for ($n=1;$n<=150;$n++)
-	{
-	$date=time()+(60*60*24*$n);
-	?><option <?php $d=date("D",$date);if (($d=="Sun") || ($d=="Sat")) { ?>style="background-color:#cccccc"<?php } ?> value="<?php echo date("Y-m-d",$date)?>"><?php echo nicedate(date("Y-m-d",$date),false,true)?></option>
-	<?php
-	}
-?>
-</select>
+<label for="list_recipients"><?php echo $lang["list-recipients-label"]; ?></label><input type=checkbox id="list_recipients" name="list_recipients">
 <div class="clearerleft"> </div>
 </div>
-<?php } # end hook replaceemailexpiryselector ?>
+<?php } ?>
+
+<?php
+$allow_edit=allow_multi_edit($ref);
+if($allow_edit)
+	{ ?>
+	<div class="Question">
+	<label for="grant_internal_access"><?php echo $lang["internal_share_grant_access"] ?></label>
+	<input type=checkbox id="grant_internal_access" name="grant_internal_access" onClick="if(this.checked){jQuery('#question_internal_access').slideDown();}else{jQuery('#question_internal_access').slideUp()};">
+	<div class="clearerleft"> </div>
+	</div>	
+	<?php } ?>
+<?php
+if(!$user_select_internal)
+	{
+	if(!hook("replaceemailaccessselector")){?>
+	<div class="Question" id="question_access">
+	<label for="archive"><?php echo $lang["externalselectresourceaccess"]?></label>
+	<select class="stdwidth" name="access" id="access">
+	<?php
+	# List available access levels. The highest level must be the minimum user access level.
+	for ($n=$minaccess;$n<=1;$n++) { ?>
+	<option value="<?php echo $n?>"><?php echo $lang["access" . $n]?></option>
+	<?php } ?>
+	</select>
+	<div class="clearerleft"> </div>
+	</div>
+	<?php } # end hook replaceemailaccessselector 
+	
+	if(!hook("replaceemailexpiryselector")){?>
+	<div class="Question">
+	<label><?php echo $lang["externalselectresourceexpires"]?></label>
+	<select name="expires" class="stdwidth">
+		<?php 
+		global $collection_share_expire_days, $collection_share_expire_never;
+		if($collection_share_expire_never){?><option value=""><?php echo $lang["never"]?></option><?php }?>
+		<?php 
+		for ($n=1;$n<=150;$n++)
+			{
+			$date = time()+(60*60*24*$n);
+			$d    = date("D",$date);
+			$option_class = '';
+			if (($d == "Sun") || ($d == "Sat"))
+				{
+				$option_class = 'optionWeekend';
+				} ?>
+			<option class="<?php echo $option_class ?>" value="<?php echo date("Y-m-d",$date)?>"><?php echo nicedate(date("Y-m-d",$date),false,true)?></option>
+			<?php
+			} ?>
+	</select>
+	<div class="clearerleft"> </div>
+	</div>
+	<?php } # end hook replaceemailexpiryselector 
+
+	if (checkperm("x")) {
+	# Allow the selection of a user group to inherit permissions from for this share (the default is to use the current user's user group).
+	?>
+	<div class="Question">
+	<label for="groupselect"><?php echo $lang["externalshare_using_permissions_from_user_group"] ?></label>
+	<select id="groupselect" name="usergroup" class="stdwidth">
+    <?php
+    $grouplist = get_usergroups(true);
+    foreach($grouplist as $group)
+        {
+        if(!empty($allowed_external_share_groups) && !in_array($group['ref'], $allowed_external_share_groups))
+            {
+            continue;
+            }
+        ?>
+        <option value="<?php echo $group["ref"] ?>" <?php if ($usergroup==$group["ref"]) { ?>selected<?php } ?>><?php echo $group["name"] ?></option>
+        <?php
+        }
+        ?>
+	</select>
+	<div class="clearerleft"> </div>
+	</div>
+	<?php }
+	
+	} // End of section checking $user_select_internal
+	
+	hook("collectionemailafterexternal");
+	?>
 
 <?php if ($collection["user"]==$userref) { # Collection owner can request feedback.
 ?>
@@ -300,7 +379,7 @@ for ($n=$minaccess;$n<=1;$n++) { ?>
 <?php if(!hook("replaceemailsubmitbutton")){?>
 <div class="QuestionSubmit">
 <label for="buttons"> </label>			
-<input name="save" type="submit" value="&nbsp;&nbsp;<?php if ($themeshare){echo $lang["email_theme_category"];} else {echo $lang["emailcollection"];}?>&nbsp;&nbsp;" />
+<input name="save" type="submit" value="&nbsp;&nbsp;<?php if ($themeshare){echo $lang["email_theme_category"];} else {echo $lang["emailcollectiontitle"];}?>&nbsp;&nbsp;" />
 </div>
 <?php } # end hook replaceemailsubmitbutton ?>
 

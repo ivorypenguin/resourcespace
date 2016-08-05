@@ -6,10 +6,11 @@
  * @subpackage Pages_Team
  */
 include "../../include/db.php";
-include "../../include/authenticate.php";if (!checkperm("t")) {exit ("Permission denied.");}
-include "../../include/general.php";
+include_once "../../include/general.php";
+include "../../include/authenticate.php";if (getvalescaped('unsubscribe', '') == '' && !checkperm("t")) {exit ("Permission denied.");}
 include "../../include/reporting_functions.php";
-
+include_once '../../include/render_functions.php';
+set_time_limit(0);
 $report=getvalescaped("report","");
 $period=getvalescaped("period",$reporting_periods_default[0]);
 $period_init=$period;
@@ -60,28 +61,101 @@ if ($report!="" && (getval("createemail","")==""))
 
 include "../../include/header.php";	
 	
-if (getval("createemail","")!="")
+if(getval('createemail', '') != '')
 	{
+	$send_all_users       = false;
+	$report_receiver      = getval('report_receiver', '');
+	$user_group_selection = array();
+
+	switch($report_receiver)
+		{
+		case 'all_users':
+			$send_all_users       = true;
+			break;
+
+		case 'specific_user_groups':
+			$user_group_selection = getval('user_group_selection', array());
+			break;
+		}
+
 	# Create a new periodic e-mail report
-	create_periodic_email($userref,$report,$period,getval("email_days",""),getval("send_all_users","")=="yes");
+	create_periodic_email($userref, $report, $period, getval('email_days', ''), $send_all_users, $user_group_selection);
 	?>
 	<script type="text/javascript">
 	alert("<?php echo $lang["newemailreportcreated"] ?>");
 	</script>
 	<?php
 	}
-	
-$unsubscribe=getvalescaped("unsubscribe","");
-if ($unsubscribe!="")
+
+$delete = getvalescaped('delete', '');
+if($delete != '')
 	{
-	unsubscribe_periodic_report($unsubscribe);
-	?>
-	<div class="BasicsBox"> 
-	  <h2>&nbsp;</h2>
-	  <h1><?php echo $lang["unsubscribed"]?></h1>
-	  <p><?php echo $lang["youhaveunsubscribedreport"]?></p>
-	</div>
-	<?php
+	if('yes' == getvalescaped('delete_confirmed', ''))
+		{
+		delete_periodic_report($delete);
+		?>
+		<div class="BasicsBox">
+			<h1><?php echo $lang['deleted']?></h1>
+			<p><?php echo $lang['report_periodic_email_deletion_confirmed']?></p>
+		</div>
+		<?php
+		}
+	else
+		{
+		?>
+		<div class="BasicsBox">
+			<h2><?php echo $lang['report_periodic_email_delete_title']; ?></h2>
+			<form method="post" action="<?php echo $baseurl_short; ?>pages/team/team_report.php?delete=<?php echo urlencode($delete); ?>">
+				<div class="Question">
+					<label for="delete_confirmed"><?php echo $lang['report_periodic_email_delete_confirmation']; ?></label>
+					<input id="delete_confirmed" type="checkbox" name="delete_confirmed" value="yes" />
+					<div class="clearerleft"></div>
+				</div>
+				<div class="QuestionSubmit">
+					<label for="buttons"> </label>
+					<input name="save" type="submit" value="<?php echo $lang['comments_submit-button-label']; ?>" />
+				</div>
+			</form>
+		</div>
+		<?php
+		}
+
+	include '../../include/footer.php';
+	exit();
+	}
+	
+$unsubscribe = getvalescaped('unsubscribe', '');
+if($unsubscribe != '')
+	{
+	if('yes' == getvalescaped('unsubscription_confirmed', ''))
+		{
+		unsubscribe_user_from_periodic_report($userref, $unsubscribe);
+		?>
+		<div class="BasicsBox">
+			<h1><?php echo $lang["unsubscribed"]?></h1>
+			<p><?php echo $lang["youhaveunsubscribedreport"]?></p>
+		</div>
+		<?php
+		}
+	else
+		{
+		?>
+		<div class="BasicsBox">
+			<h2><?php echo $lang['report_periodic_email_unsubscribe_title']; ?></h2>
+			<form method="post" action="<?php echo $baseurl_short; ?>pages/team/team_report.php?unsubscribe=<?php echo urlencode($unsubscribe); ?>">
+				<div class="Question">
+					<label for="unsubscription_confirmed"><?php echo $lang['report_periodic_email_unsubscribe_confirmation']; ?></label>
+					<input id="unsubscription_confirmed" type="checkbox" name="unsubscription_confirmed" value="yes" />
+					<div class="clearerleft"></div>
+				</div>
+				<div class="QuestionSubmit">
+					<label for="buttons"> </label>
+					<input name="save" type="submit" value="<?php echo $lang['comments_submit-button-label']; ?>" />
+				</div>
+			</form>
+		</div>
+		<?php
+		}
 	}
 else
 	{
@@ -89,7 +163,6 @@ else
 ?>
 
 <div class="BasicsBox"> 
-  <h2>&nbsp;</h2>
   <h1><?php echo $lang["viewreports"]?></h1>
   <p><?php echo text("introtext")?></p>
   
@@ -97,170 +170,94 @@ else
 <div class="Question">
 <label for="report"><?php echo $lang["viewreport"]?></label><select id="report" name="report" class="stdwidth">
 <?php
-$reports=get_reports(); 
-for ($n=0;$n<count($reports);$n++)
+$reports=get_reports();
+
+$ref=getval("ref","");
+
+for($n=0;$n<count($reports);$n++)
 	{
-	?><option value="<?php echo $reports[$n]["ref"]?>" <?php if ($report==$reports[$n]["ref"]) { ?>selected<?php } ?>><?php echo $reports[$n]["name"]?></option><?php
+	?>
+	<option value="<?php echo $reports[$n]['ref']; ?>"<?php if($reports[$n]['ref'] == $report) { ?> selected="selected"<?php } ?>><?php echo $reports[$n]['name']; ?></option>
+	<?php
 	}
-?>
+	?>
 </select>
 <div class="clearerleft"> </div>
 </div>
 
-
-<!-- Period select -->
-<div class="Question">
-<label for="period"><?php echo $lang["period"]?></label><select id="period" name="period" class="stdwidth" onChange="
-if (this.value==-1) {document.getElementById('DateRange').style.display='block';} else {document.getElementById('DateRange').style.display='none';}
-if (this.value==0) {document.getElementById('SpecificDays').style.display='block';} else {document.getElementById('SpecificDays').style.display='none';}
-if (this.value!=-1) {document.getElementById('EmailMe').style.display='block';} else {document.getElementById('EmailMe').style.display='none';}
-// Copy reporting period to e-mail period
-if (document.getElementById('period').value==0)
-	{
-	// Copy from specific day box
-	document.getElementById('email_days').value=document.getElementById('period_days').value;
-	}
-else
-	{
-	document.getElementById('email_days').value=document.getElementById('period').value;		
-	}
-">
-<?php
-foreach ($reporting_periods_default as $period_default)
-	{
-	?><option value="<?php echo $period_default?>" <?php if ($period_init==$period_default) { ?>selected<?php } ?>><?php echo str_replace("?",$period_default,$lang["lastndays"])?></option><?php
-	}
-?>
-<option value="0" <?php if ($period_init==0) { ?>selected<?php } ?>><?php echo $lang["specificdays"]?></option>
-<option value="-1" <?php if ($period_init==-1) { ?>selected<?php } ?>><?php echo $lang["specificdaterange"]?></option>
-</select>
-<div class="clearerleft"> </div>
-</div>
-
-
-
-<!-- Specific Days Selector -->
-<div id="SpecificDays" <?php if ($period_init!=0) { ?>style="display:none;"<?php } ?>>
-<div class="Question">
-<label for="period_days"><?php echo $lang["specificdays"]?></label>
-<?php
-$textbox="<input type=\"text\" id=\"period_days\" name=\"period_days\" size=\"4\" value=\"" . getval("period_days","") . "\">";
-echo str_replace("?",$textbox,$lang["lastndays"]);
-?>
-<div class="clearerleft"> </div>
-</div>
-</div>
-
-
-<!-- Specific Date Range Selector -->
-<div id="DateRange" <?php if ($period_init!=-1) { ?>style="display:none;"<?php } ?>>
-<div class="Question">
-<label><?php echo $lang["fromdate"]?><br/><?php echo $lang["inclusive"]?></label>
-<?php
-$name="from";
-$dy=getval($name . "-y",2000);
-$dm=getval($name . "-m",1);
-$dd=getval($name . "-d",1);
-?>
-<select name="<?php echo $name?>-d">
-<?php for ($m=1;$m<=31;$m++) {?><option <?php if($m==$dd){echo " selected";}?>><?php echo sprintf("%02d",$m)?></option><?php } ?>
-</select>
-<select name="<?php echo $name?>-m">
-<?php for ($m=1;$m<=12;$m++) {?><option <?php if($m==$dm){echo " selected";}?> value="<?php echo sprintf("%02d",$m)?>"><?php echo $lang["months"][$m-1]?></option><?php } ?>
-</select>
-<input type=text size=5 name="<?php echo $name?>-y" value="<?php echo $dy?>">
-<div class="clearerleft"> </div>
-</div>
-
-<div class="Question">
-<label><?php echo $lang["todate"]?><br/><?php echo $lang["inclusive"]?></label>
-<?php
-$name="to";
-$dy=getval($name . "-y",date("Y"));
-$dm=getval($name . "-m",date("m"));
-$dd=getval($name . "-d",date("d"));
-?>
-<select name="<?php echo $name?>-d">
-<?php for ($m=1;$m<=31;$m++) {?><option <?php if($m==$dd){echo " selected";}?>><?php echo sprintf("%02d",$m)?></option><?php } ?>
-</select>
-<select name="<?php echo $name?>-m">
-<?php for ($m=1;$m<=12;$m++) {?><option <?php if($m==$dm){echo " selected";}?> value="<?php echo sprintf("%02d",$m)?>"><?php echo $lang["months"][$m-1]?></option><?php } ?>
-</select>
-<input type=text size=5 name="<?php echo $name?>-y" value="<?php echo $dy?>">
-<div class="clearerleft"> </div>
-</div>
-</div>
-<!-- end of Date Range Selector -->
-
-
-
-
-
-
-
+<?php include "../../include/date_range_selector.php" ?>
 
 
 <!-- E-mail Me function -->
 <div id="EmailMe" <?php if ($period_init==-1) { ?>style="display:none;"<?php } ?>>
-<div class="Question">
-<label for="email"><?php echo $lang["emailperiodically"]?></label>
-<input type="checkbox" onClick="
-if (this.checked)
-	{
-	document.getElementById('EmailSetup').style.display='block';
-	
-	// Copy reporting period to e-mail period
-	if (document.getElementById('period').value==0)
-		{
-		// Copy from specific day box
-		document.getElementById('email_days').value=document.getElementById('period_days').value;
-		}
-	else
-		{
-		document.getElementById('email_days').value=document.getElementById('period').value;		
-		}
-	}
-else
-	{
-	document.getElementById('EmailSetup').style.display='none';
-	}
-	">
-<div class="clearerleft"> </div>
-</div>
+	<div class="Question">
+		<label for="email"><?php echo $lang['emailperiodically']; ?></label>
+		<input type="checkbox" onClick="
+		if (this.checked)
+			{
+			document.getElementById('EmailSetup').style.display='block';
+			
+			// Copy reporting period to e-mail period
+			if (document.getElementById('period').value==0)
+				{
+				// Copy from specific day box
+				document.getElementById('email_days').value=document.getElementById('period_days').value;
+				}
+			else
+				{
+				document.getElementById('email_days').value=document.getElementById('period').value;		
+				}
+			}
+		else
+			{
+			document.getElementById('EmailSetup').style.display='none';
+			}
+			">
+		<div class="clearerleft"></div>
+	</div>
 
-<div id="EmailSetup" style="display:none;">
-
-<!-- E-mail Period select -->
-<div class="Question">
-<label for="email_days">&nbsp;</label>
-<div class="Fixed">
-<?php
-$textbox="<input type=\"text\" id=\"email_days\" name=\"email_days\" size=\"4\" value=\"7\">";
-echo str_replace("?",$textbox,$lang["emaileveryndays"]);
-
-if (checkperm("m"))
-	{
-	# Option to send to all active users
-	echo "<br/>" . $lang["report-send-all-users"];
-	?><input type="checkbox" name="send_all_users" value="yes" /><br /><br /><?php
-	}
-
-?>
-&nbsp;&nbsp;<input name="createemail" type="submit" onClick="do_download=true;" value="&nbsp;&nbsp;<?php echo $lang["create"] ?>&nbsp;&nbsp;" />
-</div>
-<div class="clearerleft"> </div>
-</div>
-<!-- End of E-mail Period Select -->
-
-</div>
+	<div id="EmailSetup" style="display:none;">
+		<!-- E-mail Period select -->
+		<div class="Question">
+			<label for="email_days"></label>
+			<div class="Fixed" style="width: 400px;">
+			<?php
+			$textbox="<input type=\"text\" id=\"email_days\" name=\"email_days\" size=\"4\" value=\"7\">";
+			echo str_replace("?",$textbox,$lang["emaileveryndays"]);
+			?>
+	       <br />
+	       <br />
+	       <label for="report_for_me_only">
+				<input id="report_for_me_only" type="radio" name="report_receiver" value="user_only" onClick="document.getElementById('user_group_selection').style.display = 'none';" checked /> <?php echo $lang['report_periodic_email_option_me']; ?>
+	       </label>
+	       <?php
+			if (checkperm('m'))
+				{
+				?>
+				<br />
+				<label for="send_all_users">
+					<input id="send_all_users" type="radio" name="report_receiver" value="all_users" onClick="document.getElementById('user_group_selection').style.display = 'none';" /> <?php echo $lang['report_periodic_email_option_all_users']; ?>
+				</label>
+				<br />
+				<label for="selected_user_groups">
+					<input id="selected_user_groups" type="radio" name="report_receiver" value="specific_user_groups" onClick="document.getElementById('user_group_selection').style.display = 'block';" /> <?php echo $lang['report_periodic_email_option_selected_user_groups']; ?>
+				</label>
+				<?php
+				render_user_group_multi_select('user_group_selection', array(), 10, 'display: none;');
+				}
+			?>
+			<div class="clearerleft"></div>
+			<br />
+			<input name="createemail" type="submit" onClick="do_download=true;" value="&nbsp;&nbsp;<?php echo $lang["create"] ?>&nbsp;&nbsp;" />
+			</div>
+			<div class="clearerleft"></div>
+		</div>
+		<!-- End of E-mail Period Select -->
+	</div><!-- End of EmailSetup -->
 </div>
 <!-- End of E-mail Me function -->
 
-
-
-
-
-
+<?php hook('customreportform', '', array($report)); ?>
 
 <script language="text/javascript">
 var do_download=false;

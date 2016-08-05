@@ -1,0 +1,5 @@
+name: csv_upload
+author: Montala Limited
+version: 1.0
+desc: Upload meta data using a CSV file.
+category: advanced

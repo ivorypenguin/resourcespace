@@ -4,8 +4,8 @@
 ## hit counts and want to switch to tracking hit counts as downloads, rather than views.
 
 include "../../include/db.php";
+include_once "../../include/general.php";
 include "../../include/authenticate.php"; if (!checkperm("a")) {exit("Permission denied");}
-include "../../include/general.php";
 
 set_time_limit(60*60*40);
 

@@ -52,7 +52,7 @@ function comments_submit()
 				// (preg_match ("/${regex_email}/", $comments_email_notification_address) === false)		// TODO: make this regex better
 			) ? $email_notify : $comments_email_notification_address;
 		
-		setcookie("comment${comment_flag_ref}flagged", "true");				
+		rs_setcookie("comment${comment_flag_ref}flagged", "true");				
 		$_POST["comment${comment_flag_ref}flagged"] = "true";		// we set this so that the subsequent getval() function will pick up this comment flagged in the show comments function (headers have already been sent before cookie set)
 		
 		send_mail ($email_to, $email_subject, $email_body);
@@ -192,8 +192,9 @@ EOT;
 		echo<<<EOT
 				<br />				
 				<input class="CommentFormSubmit" type="submit" value="${lang['comments_submit-button-label']}" onClick="${validateFunction} { submitForm(this.parentNode) } else { alert ('${lang['comments_validation-fields-failed']}'); } ;"></input>
-			</form>			
-		</div>	<!-- end of comments_container -->
+			</form>	
+		</div> 	<!-- end of comment_form -->	
+		
 EOT;
 	
 		$sql .= $bcollection_mode ? "where c.collection_ref=${ref}" : "where c.resource_ref=${ref}";  // first level will look for either collection or resource comments		
@@ -222,7 +223,7 @@ EOT;
 			echo "<div class='CommentEntryInfoCommenter'>";						
 			
 			if (empty($comment['name'])) $comment['name'] = $comment['username'];
-			
+			if (!hook("commentername", "all",array("ref"=>$comment["ref"])))
 			echo "<div class='CommentEntryInfoCommenterName'>" . htmlspecialchars($comment['name']) . "</div>";		
 			
 			if ($comments_show_anonymous_email_address && !empty($comment['email']))
@@ -235,14 +236,11 @@ EOT;
 				}								
 			echo "</div>";			
 			
-			$createdDate = new DateTime($comment["created"]);
-			
-			echo "<div class='CommentEntryInfoDetails'>" . strftime('%a',$createdDate->getTimestamp()) . " " . nicedate($comment["created"],true). " ";			
+			echo "<div class='CommentEntryInfoDetails'>" . strftime('%a',strtotime($comment["created"])) . " " . nicedate($comment["created"],true). " ";			
 			if ($comment['responseToDateTime']!="")
 				{
 				$responseToName = htmlspecialchars ($comment['responseToName']);
-				$responseToDate = new DateTime($comment["responseToDateTime"]);				
-				$responseToDateTime =  strftime('%a',$responseToDate->getTimestamp()) . " " . nicedate($comment['responseToDateTime'], true);						
+				$responseToDateTime =  strftime('%a',strtotime($comment["responseToDateTime"])) . " " . nicedate($comment['responseToDateTime'], true);						
 				$jumpAnchorID = "comment" . $comment['ref_parent'];								
 				echo $lang['comments_in-response-to'] . "<br /><a class='.smoothscroll' rel='' href='#${jumpAnchorID}'>${responseToName} " . $lang['comments_in-response-to-on'] . " ${responseToDateTime}</a>";				
 				}						
@@ -342,7 +340,7 @@ EOT;
 
 			
 		}			
-		echo "</div>";  // end of comments_container
+		if ($level == 1)  echo "</div>";  // end of comments_container
 	}
 	
 ?>

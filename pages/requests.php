@@ -5,10 +5,10 @@
  * @package ResourceSpace
  */
 include "../include/db.php";
+include_once "../include/general.php";
 include "../include/authenticate.php";
-include "../include/general.php";
 include "../include/request_functions.php";
-include "../include/collections_functions.php";
+include_once "../include/collections_functions.php";
 
 $offset=getvalescaped("offset",0);
 
@@ -17,7 +17,6 @@ include "../include/header.php";
 
 
 <div class="BasicsBox"> 
-  <h2>&nbsp;</h2>
   <h1><?php echo $lang["myrequests"]?></h1>
   <p><?php echo text("introtext")?></p>
  
@@ -62,10 +61,10 @@ for ($n=$offset;(($n<count($requests)) && ($n<($offset+$per_page)));$n++)
 	<div class="ListTools">
 	<?php if ($requests[$n]["collection_id"] > 0) // only show tools if the collection still exists
         {?>
-        <a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $requests[$n]["collection"])?>" onClick="return CentralSpaceLoad(this,true);">&gt;&nbsp;<?php echo $lang["action-view"]?></a>
+        <a href="<?php echo $baseurl_short?>pages/search.php?search=<?php echo urlencode("!collection" . $requests[$n]["collection"])?>" onClick="return CentralSpaceLoad(this,true);"><?php echo LINK_CARET ?><?php echo $lang["action-view"]?></a>
         <?php if (!checkperm("b"))
             {?>
-            &nbsp;<a href="<?php echo $baseurl_short?>pages/collections.php?collection=<?php echo $requests[$n]["collection"]; if ($autoshow_thumbs) {echo "&amp;thumbs=show";}?>" onClick="return CollectionDivLoad(this);">&gt;&nbsp;<?php echo $lang["action-select"]?></a><?php
+            &nbsp;<a href="<?php echo $baseurl_short?>pages/collections.php?collection=<?php echo $requests[$n]["collection"]; if ($autoshow_thumbs) {echo "&amp;thumbs=show";}?>" onClick="return CollectionDivLoad(this);"><?php echo LINK_CARET ?><?php echo $lang["action-select"]?></a><?php
             }
         } // end of if collection still exists ?>
 	</div>

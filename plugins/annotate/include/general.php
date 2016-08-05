@@ -24,7 +24,6 @@ function get_annotate_file_path($ref,$getfilepath,$extension){
 	if ($uniqid!=""){$uniqfolder="/".$uniqid;} else {$uniqfolder="";}
 	
 	$tmpfolder=get_temp_dir(!$getfilepath,"annotate$uniqfolder");
-
 	$file=$tmpfolder."/$uniqid-annotations.".$extension;
 
 	return  $file;
@@ -96,7 +95,7 @@ function create_annotated_pdf($ref,$is_collection=false,$size="letter",$cleanup=
 		$resourcedata=get_resource_data($ref);
 		$resources= do_search("!list$ref");
 	}
-	
+
 	// prune unnannotated resources if necessary
 	if ($annotate_pdf_output_only_annotated){
 		$resources_modified=array();
@@ -132,73 +131,99 @@ function create_annotated_pdf($ref,$is_collection=false,$size="letter",$cleanup=
 	$pdf->setPrintHeader(false);
 	$pdf->setPrintFooter(false);
 	$pdf->setMargins(.5,.5,.5);
-
-
-	// add a page
-	for ($n=0;$n<count($resources);$n++){
-		$pdf->AddPage();
-		
-		$resourcedata= $resources[$n];
-		$ref=$resources[$n]['ref'];
-		$access=get_resource_access($resources[$n]['ref']); // feed get_resource_access the resource array rather than the ref, since access is included.
-		$use_watermark=check_use_watermark();
-
-		$imgpath = get_resource_path($ref,true,"hpr",false,"jpg",-1,1,$use_watermark);
-		if (!file_exists($imgpath)){$imgpath=get_resource_path($ref,true,"lpr",false,"jpg",-1,1,$use_watermark);}
-		if (!file_exists($imgpath)){$imgpath=get_resource_path($ref,true,"scr",false,"jpg",-1,1,$use_watermark);}
-		if (!file_exists($imgpath)){$imgpath=get_resource_path($ref,true,"",false,"jpg",-1,1,$use_watermark);}
-		if (!file_exists($imgpath)){$imgpath=get_resource_path($ref,true,"pre",false,"jpg",-1,1,$use_watermark);}
-		if (!file_exists($imgpath))continue;
-		$imagesize=getimagesize($imgpath);
-		
-		$whratio=$imagesize[0]/$imagesize[1];
-		$hwratio=$imagesize[1]/$imagesize[0];
-
-		if ($whratio<1){
-		$imageheight=$height-4; // vertical images can take up half the page
-		$whratio=$imagesize[0]/$imagesize[1];
-		$imagewidth=$imageheight*$whratio;}
-		if ($whratio>=1 || $imagewidth>$width+1){
-		$imagewidth=$width-1; // horizontal images are scaled to width - 1 in
-		$hwratio=$imagesize[1]/$imagesize[0];
-		$imageheight=$imagewidth*$hwratio;}
 	
-		$pdf->Text(.5,.5,i18n_get_translated($resourcedata['field'.$view_title_field]).' '.$date);
-		$pdf->Image($imgpath,((($width-1)/2)-($imagewidth-1)/2),1,$imagewidth,$imageheight,"jpg",$baseurl. '/?r=' . $ref);	
-
-		// set color for background
-		$pdf->SetFillColor(255, 255, 200);
-
-		$style= array('width' => 0.01, 'cap' => 'butt', 'join' => 'round' ,'dash' => '0', 'color' => array(100,100,100));
-		$style1 = array('width' => 0.04, 'cap' => 'butt', 'join' => 'round', 'dash' => '0', 'color' => array(255, 255, 0));
-		$style2 = array('width' => 0.02, 'cap' => 'butt', 'join' => 'round', 'dash' => '3', 'color' => array(255, 0, 0));
-		$ypos=$imageheight+1.5;$pdf->SetY($ypos);
-		$m=1;
-		unset($notes);
-		if ($resources[$n]['annotation_count']!=0){
-		$notes=sql_query("select * from annotate_notes where ref='$ref'");
-		foreach ($notes as $note){
-			$ratio=$imagewidth/$note['preview_width'];
-			$note_y=$note['top_pos']*$ratio;
-			$note_x=$note['left_pos']*$ratio;
-			$note_width=$note['width']*$ratio;
-			$note_height=$note['height']*$ratio;
-			$pdf->SetLineStyle($style1);
-			$pdf->Rect(((($width-1)/2)-($imagewidth-1)/2)+$note_x,$note_y+1,$note_width,$note_height);
-			$pdf->Rect(((($width-1)/2)-($imagewidth-1)/2)+$note_x,$note_y+1,.1,.1,'DF',$style1,array(255,255,0));
-			$ypos=$pdf->GetY();
-			$pdf->Text(((($width-1)/2)-($imagewidth-1)/2)+$note_x-.01,$note_y+.99,$m,false,false,true,0,0,'L');
-			//$pdf->SetLineStyle($style2);
-			//$pdf->Rect(((($width-1)/2)-($imagewidth-1)/2)+$note_x,$note_y+1,$note_width,$note_height);
-			$pdf->SetY($ypos);
-			$note_user=get_user($note['user']);
-			$pdf->SetLineStyle($style);
-			$noteparts=explode(":",$note['note'],2);
-			$pdf->MultiRow($m,trim($noteparts[1])." - ".$note_user['fullname']);
-			$ypos=$ypos+.5;$m++;
-		}	
+	$page=1;
+	$totalpages=1;
+	$m=1;
+	do // Do the following for each pdf page
+		{
+		// Add a page for each resource
+		for ($n=0;$n<count($resources);$n++)
+			{
+			$pdf->AddPage();
+			$currentpdfpage=$pdf->getPage();
+			$resourcedata= $resources[$n];
+			$ref=$resources[$n]['ref'];
+			$access=get_resource_access($resources[$n]['ref']); // feed get_resource_access the resource array rather than the ref, since access is included.
+			$use_watermark=check_use_watermark();
+	
+			$imgpath = get_resource_path($ref,true,"hpr",false,"jpg",-1,$page,$use_watermark);
+			if (!file_exists($imgpath)){$imgpath=get_resource_path($ref,true,"lpr",false,"jpg",-1,$page,$use_watermark);}
+			if (!file_exists($imgpath)){$imgpath=get_resource_path($ref,true,"scr",false,"jpg",-1,$page,$use_watermark);}
+			if (!file_exists($imgpath)){$imgpath=get_resource_path($ref,true,"",false,"jpg",-1,$page,$use_watermark);}
+			if (!file_exists($imgpath)){$imgpath=get_resource_path($ref,true,"pre",false,"jpg",-1,$page,$use_watermark);}
+			if (!file_exists($imgpath))continue;
+			$imagesize=getimagesize($imgpath);
+			
+			$whratio=$imagesize[0]/$imagesize[1];
+			$hwratio=$imagesize[1]/$imagesize[0];
+	
+			if ($whratio<1){
+			$imageheight=$height-4; // vertical images can take up half the page
+			$whratio=$imagesize[0]/$imagesize[1];
+			$imagewidth=$imageheight*$whratio;}
+			if ($whratio>=1 || $imagewidth>$width+1){
+			$imagewidth=$width-1; // horizontal images are scaled to width - 1 in
+			$hwratio=$imagesize[1]/$imagesize[0];
+			$imageheight=$imagewidth*$hwratio;}
+		
+			$pdf->Text(.5,.5,i18n_get_translated($resourcedata['field'.$view_title_field]).' '.$date);
+			$pdf->Image($imgpath,((($width-1)/2)-($imagewidth-1)/2),1,$imagewidth,$imageheight,"jpg",$baseurl. '/?r=' . $ref);	
+	
+			// set color for background
+			$pdf->SetFillColor(255, 255, 200);
+	
+			$style= array('width' => 0.01, 'cap' => 'butt', 'join' => 'round' ,'dash' => '0', 'color' => array(100,100,100));
+			$style1 = array('width' => 0.04, 'cap' => 'butt', 'join' => 'round', 'dash' => '0', 'color' => array(255, 255, 0));
+			$style2 = array('width' => 0.02, 'cap' => 'butt', 'join' => 'round', 'dash' => '3', 'color' => array(255, 0, 0));
+			$ypos=$imageheight+1.5;$pdf->SetY($ypos);
+			unset($notes);
+			if ($resources[$n]['annotation_count']!=0)
+				{
+				$notes=sql_query("select * from annotate_notes where ref='$ref' and page='$page'");
+				$notepages=1; // Normally notes will all fit on one page, but may not
+				foreach ($notes as $note)
+					{
+					// If the notes took us to a new page, return to the image page before marking annotation
+					if($notepages>1){$pdf->setPage($currentpdfpage);}
+					
+					$ratio=$imagewidth/$note['preview_width'];
+					$note_y=$note['top_pos']*$ratio;
+					$note_x=$note['left_pos']*$ratio;
+					$note_width=$note['width']*$ratio;
+					$note_height=$note['height']*$ratio;
+					$pdf->SetLineStyle($style1);
+					$pdf->Rect(((($width-1)/2)-($imagewidth-1)/2)+$note_x,$note_y+1,$note_width,$note_height);
+					$pdf->Rect(((($width-1)/2)-($imagewidth-1)/2)+$note_x,$note_y+1,.1,.1,'DF',$style1,array(255,255,0));					
+					$ypos=$pdf->GetY();			
+					$pdf->Text(((($width-1)/2)-($imagewidth-1)/2)+$note_x-.01,$note_y+.99,$m,false,false,true,0,0,'L');
+					
+					//$pdf->SetLineStyle($style2);
+					//$pdf->Rect(((($width-1)/2)-($imagewidth-1)/2)+$note_x,$note_y+1,$note_width,$note_height);					
+					$pdf->SetY($ypos);
+					$note_user=get_user($note['user']);
+					$pdf->SetLineStyle($style);
+					$noteparts=explode(":",$note['note'],2);
+					// If the notes went over the page, we  went back to image for annotation, so we need to return to the page with the last row of the table before adding next row
+					if($notepages>1){$pdf->setPage($currentpdfpage+($notepages-1));}
+					
+					$pdf->MultiRow($m,trim($noteparts[1])." - ".$note_user['fullname']);
+					// Check if this new table row has moved us to a new page, in which case we need to record this and go back to image page before the next annotation
+					if(isset($notepos)){$lastnotepos=$notepos;}
+					$notepos=$pdf->GetY();						
+					if(isset($lastnotepos) && $notepos<$lastnotepos){unset($lastnotepos);$notepages++;}
+					$ypos=$ypos+.5;$m++;				
+					
+					}	
+				}
+			}
+		// Check if there is another page?
+		if (file_exists(get_resource_path($ref,true,"scr",false,"jpg",-1,$page+1,$use_watermark,""))) {unset($notepos);unset($lastnotepos);$totalpages++;}
+		
+		$page++;
 		}
-	}
+		while
+			($page<=$totalpages);
 
 	// reset pointer to the last page
 	$pdf->lastPage();
@@ -216,7 +241,9 @@ function create_annotated_pdf($ref,$is_collection=false,$size="letter",$cleanup=
 		putenv("PATH=" . $ghostscript_path . ":" . $imagemagick_path); # Path 
 
         $ghostscript_fullpath = get_utility_path("ghostscript");
-        $command = $ghostscript_fullpath . " -sDEVICE=jpeg -dFirstPage=$previewpage -o -r100 -dLastPage=$previewpage -sOutputFile=" . escapeshellarg($jpgstoragepath) . " " . escapeshellarg($pdfstoragepath);
+		
+
+        $command = $ghostscript_fullpath . " -sDEVICE=jpeg -dFirstPage=" . $previewpage . " -o -r100 -dLastPage=" . $previewpage . " -sOutputFile=" . escapeshellarg($jpgstoragepath) . " " . escapeshellarg($pdfstoragepath);
 		run_command($command);
 		
 		$command=$imagemagick_path . "/bin/convert";

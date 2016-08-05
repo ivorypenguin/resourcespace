@@ -3,7 +3,7 @@
 $suppress_headers = true;
 
 include "../include/db.php";
-include "../include/general.php";
+include_once "../include/general.php";
 include "../include/authenticate.php";
 
 $path = $_SERVER['REDIRECT_URL'];

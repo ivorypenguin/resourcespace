@@ -1,7 +1,7 @@
 <?php
 include "../include/db.php";
+include_once "../include/general.php";
 include "../include/authenticate.php"; if ($disable_upload_preview || checkperm("F*")) {exit ("Permission denied.");}
-include "../include/general.php";
 include "../include/image_processing.php";
 include "../include/resource_functions.php";
 
@@ -24,9 +24,9 @@ $restypes=getvalescaped("restypes","");
 if (strpos($search,"!")!==false) {$restypes="";}
 $archive=getvalescaped("archive",0,true);
 
-$default_sort="DESC";
-if (substr($order_by,0,5)=="field"){$default_sort="ASC";}
-$sort=getval("sort",$default_sort);
+$default_sort_direction="DESC";
+if (substr($order_by,0,5)=="field"){$default_sort_direction="ASC";}
+$sort=getval("sort",$default_sort_direction);
 
 $maxsize="200000000"; #200MB
 #ini_set("upload_max_filesize","200M");
@@ -43,7 +43,6 @@ include "../include/header.php";
 ?>
 
 <div class="BasicsBox"> 
-<h2>&nbsp;</h2>
 <h1><?php echo $lang["uploadpreview"]?></h1>
 <p><?php echo text("introtext")?></p>
 <script language="JavaScript">
@@ -72,7 +71,7 @@ function check(filename) {
 <input name="save" type="submit" onclick="if (!check(this.form.userfile.value)){document.getElementById('invalid').style.display='block';return false;}else {document.getElementById('invalid').style.display='none';}" value="&nbsp;&nbsp;<?php echo $lang["upload_file"]?>&nbsp;&nbsp;" />
 </div>
 
-<p><a onClick="return CentralSpaceLoad(this,true);" href="edit.php?ref=<?php echo urlencode($ref)?>">&lt;&nbsp;<?php echo $lang["backtoeditresource"]?></a></p>
+<p><a onClick="return CentralSpaceLoad(this,true);" href="edit.php?ref=<?php echo urlencode($ref)?>"><?php echo LINK_CARET_BACK ?><?php echo $lang["backtoeditresource"]?></a></p>
 
 </form>
 </div>

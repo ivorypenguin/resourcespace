@@ -26,7 +26,7 @@
 # En första version av översättningen skapades av Henrik Frizén (förnamn.efternamn utan accenttecken i e-postboxen.Sveriges landskod) 20110124 för version 2295
 #
 # Senast uppdaterad av [Namn] [Datum] för version [svn-version], [kommentar]
-# Senast uppdaterad av Henrik Frizén 20131118 för version 5104
+# Senast uppdaterad av Henrik Frizén 20140312 för version 5361
 
 #
 #
@@ -176,7 +176,9 @@ $lang["property-omit_when_copying"]="Utelämna vid kopiering";
 $lang["property-sync_with_field"]="Synkronisera med fält";
 $lang["information-copy_field"]="<a href=field_copy.php?ref=%ref>Kopiera fält</a>";
 $lang["property-display_condition"]="Visningsvillkor";
-$lang["information-display_condition"]="Visningsvillkor: Det här fältet visas endast om angivna villkor är uppfyllda. Samma format som för sökfilter för grupper används, det vill säga shortname=value1|value2, shortnamea=validoptiona;shortnameb=validoptionb1|validoptionb2";
+$lang["information-display_condition"]="Visningsvillkor: Det här fältet visas endast om angivna villkor är uppfyllda. Samma format som för sökfilter för grupper används, det vill säga kortnamn=värde1|värde2, kortnamnA=giltigtalternativA;kortnamnB=giltigtalternativB1|giltigtalternativB2";
+$lang["property-onchange_macro"]="Makro vid ändring";
+$lang["information-onchange_macro"]="Makro vid ändring: Kod som ska exekveras när fältets värde ändras. FÖRSIKTIGHET REKOMMENDERAS!";
 
 $lang["property-query"]="Fråga";
 
@@ -227,9 +229,13 @@ $lang["anyday"]="Alla dagar";
 $lang["anycountry"]="Alla länder";
 $lang["resultsdisplay"]="Resultatvisning";
 $lang["xlthumbs"]="Extrastora";
+$lang["xlthumbstitle"]="Extrastora miniatyrbilder";
 $lang["largethumbs"]="Stora";
+$lang["largethumbstitle"]="Stora miniatyrbilder";
 $lang["smallthumbs"]="Små";
+$lang["smallthumbstitle"]="Små miniatyrbilder";
 $lang["list"]="Lista";
+$lang["listtitle"]="Lista";
 $lang["perpage"]="per sida";
 
 $lang["gotoadvancedsearch"]="Avancerad sökning";
@@ -338,7 +344,7 @@ $lang["resetarchivestatus"]="Uppdatera status för alla material i samlingen";
 $lang["editallresources"]="Redigera alla material i samlingen";
 $lang["editresources"]="Redigera material";
 $lang["multieditnotallowed"]="Materialen är inte möjliga att redigera i grupp – alla material har inte samma status eller är inte av samma typ.";
-$lang["emailcollection"]="Dela samling via e-post";
+$lang["emailcollectiontitle"]="Dela samling via e-post";
 $lang["collectionname"]="Samlingsnamn";
 $lang["collection-name"]="Samling: %collectionname%"; # %collectionname will be replaced, e.g. Collection: Cars
 $lang["collectionid"]="Samlingsnr";
@@ -447,7 +453,7 @@ $lang["clearform"]="Rensa formulär";
 $lang["similarresources"]="liknande material"; # e.g. 17 similar resources
 $lang["similarresource"]="liknande material"; # e.g. 1 similar resource
 $lang["nosimilarresources"]="Inget liknande material";
-$lang["emailresource"]="E-posta";
+$lang["emailresourcetitle"]="E-posta material";
 $lang["resourcetitle"]="Materialtitel";
 $lang["requestresource"]="Begär material";
 $lang["action-viewmatchingresources"]="Visa matchande material";
@@ -519,6 +525,9 @@ $lang["mustspecifyonekeyword"]="Du måste ange minst ett sökord.";
 $lang["hasemailedyouaresource"]="har skickat ett material till dig per e-post."; # Suffixed to user name, e.g. Fred has e-mailed you a resource
 $lang["clicktoviewresource"]="Klicka på länken nedan om du vill visa materialet.";
 $lang["statuscode"]="Statuskod";
+$lang["unoconv_pdf"]="genererad av Open office";
+$lang['calibre_pdf']="genererad av Calibre";
+$lang["resourcenotfound"]="Materialet hittades inte.";
 
 # Resource log - actions
 $lang["resourcelog"]="Materiallogg";
@@ -806,8 +815,10 @@ $lang["lastupdated"]="Senast uppdaterad";
 $lang["lastused"]="Senast använd";
 $lang["noattachedusers"]="Ingen tillknuten användare.";
 $lang["confirmdeleteaccess"]="Vill du ta bort den här åtkomstnyckeln? Om du väljer att fortsätta kommer användare som har fått tillgång till samlingen med hjälp av denna nyckel inte längre att kunna komma åt samlingen.";
+$lang["confirmdeleteaccessresource"]="Vill du ta bort den här åtkomstnyckeln? Om du väljer att fortsätta kommer användare som har fått tillgång till materialet med hjälp av denna nyckel inte längre att kunna komma åt materialet.";
 $lang["noexternalsharing"]="Ingen extern delning.";
 $lang["sharedcollectionaddwarning"]="Varning! Denna samling delas med externa användare. Det material som du har lagt till har därmed gjorts tillgängligt för dessa användare. Klicka på Dela samling om du vill hantera den externa åtkomsten för denna samling.";
+$lang["sharedcollectionaddwarningupload"]="Varning! Den valda samlingen delas med externa användare. De material som du lägger till kommer därmed att göras tillgängliga för dessa användare. Klicka på Dela samling i samlingspanelen om du vill hantera den externa åtkomsten för denna samling.";
 $lang["restrictedsharecollection"]="Delning är inte tillåten eftersom du har begränsad åtkomst till minst ett material i den här samlingen.";
 $lang["selectgenerateurlexternal"]="Om du vill skapa en extern webbadress som fungerar för användare utan användarkonto, anger du först den åtkomstnivå som du finner lämplig.";
 $lang["selectgenerateurlexternalthemecat"]="Om du vill skapa externa webbadresser som fungerar för användare utan användarkonto, anger du först den åtkomstnivå som du finner lämplig.";
@@ -996,7 +1007,7 @@ $lang["setup-successheader"]="Gratulerar!";
 $lang["setup-successdetails"]="Den grundläggande delen av installationen av ResourceSpace är nu slutförd. Gå igenom filen ’include/default.config.php’ om du vill se fler konfigurationsmöjligheter.";
 $lang["setup-successnextsteps"]="Nästa steg:";
 $lang["setup-successremovewrite"]="Du bör nu avlägsna skrivrättigheten till katalogen ’include/’.";
-$lang["setup-visitwiki"]='Besök <a target="_blank" href="http://wiki.resourcespace.org/index.php/Main_Page">ResourceSpace Documentation Wiki</a> (engelskspråkig wiki) om du vill hitta mer information om hur du anpassar din installation.';
+$lang["setup-visitwiki"]='Besök <a target="_blank" href="http://wiki.resourcespace.org/index.php/?title=main_Page">ResourceSpace Documentation Wiki</a> (engelskspråkig wiki) om du vill hitta mer information om hur du anpassar din installation.';
 $lang["php-config-file"]="Konfiguration för php: '%phpinifile'"; # %phpinifile will be replaced, e.g. PHP config: '/etc/php5/apache2/php.ini'
 $lang["setup-checkconfigwrite"]="Skrivrättighet till konfigurationskatalog:";
 $lang["setup-checkstoragewrite"]="Skrivrättighet till lagringskatalog:";
@@ -1297,6 +1308,7 @@ $lang["field_ref_and_name"]="%ref% – %name%"; # %ref% and %name% will be repla
 
 $lang["indicateusage"]="Beskriv hur du planerar att använda detta material.";
 $lang["usage"]="Användning";
+$lang["usagecomments"]="Användning";
 $lang["indicateusagemedium"]="Användningsmedia";
 $lang["usageincorrect"]="Du måste ange hur du planerar att använda materialet samt välja ett media";
 
@@ -1727,7 +1739,7 @@ $lang["contact_sheet-single_select_size"]="Bildkvalitet";
 
 $lang["caps-lock-on"]="Varning! Versallåset är aktiverat.";
 $lang["collectionnames"]="Samlingsnamn";
-$lang["findcollectionthemes"]="Samlingar i teman";
+$lang["findcollectionthemes"]="Teman";
 $lang["upload-options"]="Överföringsinställningar";
 $lang["user-preferences"]="Användarinställningar";
 $lang["allresources"]="Alla material";
@@ -1789,3 +1801,80 @@ $lang["no_resourcetypes-collections"] = "Alla %collectiontypes%"; # Use %COLLECT
 $lang["resourcetypes-collections"] = "Alla %resourcetypes% och alla %collectiontypes%"; # Please find the comments for $lang["resourcetypes-no_collections"] and $lang["no_resourcetypes-collections"]!
 $lang["resourcetypes_separator"] = ", "; # The separator to be used when converting the array of searched resourcetype to a string. E.g. ", " -> "photos, documents"
 $lang["collectiontypes_separator"] = ", "; # The separator to be used when converting the array of searched collections to a string. E.g. ", " -> "public collections, themes"
+$lang["hide_view_access_to_workflow_state"]="Blockera åtkomst till status";
+$lang["collection_share_status_warning"]="Varning! Denna samling har material med följande status, kontrollera att dessa material kommer att vara tillgängliga för andra användare";
+$lang["contactadmin"]="Kontakta administratör";
+$lang["contactadminintro"]="Skriv ett meddelande och klicka på <b>Skicka</b>.";
+$lang["contactadminemailtext"]=" har skickat dig ett e-postmeddelande om ett material";
+$lang["showgeolocationpanel"]="Visa platsinformation";
+$lang["hidegeolocationpanel"]="Dölj platsinformation";
+$lang["download_usage_option_blocked"]="Detta användningsalternativ är inte tillgängligt. Kontakta vid behov systemets administratör.";
+
+$lang["tagcloudtext"]="Med vilken metadata har materialen taggats? Ju oftare en tagg har använts desto större storlek har den i molnet.<br /><br />Klicka på valfri tagg om du vill göra en sökning.";
+$lang["tagcloud"]="Taggmoln";
+
+
+
+$lang["about__about"]="Din egen text för ’Om oss’ …";
+$lang["all__footer"]="<a target=\"_blank\" href=\"http://www.resourcespace.org/\">ResourceSpace</a>: Digital materialförvaltning (dam) med öppen källkod";
+$lang["all__researchrequest"]="Låt vårt team hitta materialen du är ute efter.";
+$lang["all__searchpanel"]="Sök efter material genom att ange beskrivning, nyckelord eller materialnr.";
+$lang["change_language__introtext"]="Välj ditt önskade språk nedan.";
+$lang["change_password__introtext"]="Skriv in ett nytt lösenord nedan om du vill byta lösenord.";
+$lang["collection_edit__introtext"]="Organisera och hantera dina material genom att dela upp dem i samlingar.\n\n<br />\n\nDu når alla dina samlingar från panelen <b>Mina&nbsp;samlingar</b> i nederkant av skärmen.\n\n<br /><br />\n\n<strong>Privat åtkomst</strong> tillåter endast dig och dina utvalda användare att se samlingen. Idealiskt om du vill samla material i projekt som du jobbar med enskilt eller i en grupp.\n\n<br /><br />\n\n<strong>Gemensam åtkomst</strong> tillåter alla interna användare att söka efter och se samlingen. Användbart om du vill dela materialet med andra som skulle kunna ha nytta av det. \n\n<br /><br />\n\nDu kan välja om du vill att de andra användarna ska kunna lägga till och ta bort material eller bara kunna visa materialen.";
+$lang["collection_email__introtext"]="Dela snabbt och enkelt materialet i denna samling med andra. Ett e-postmeddelande innehållande en webblänk till samlingarna skapas och skickas automatiskt. Du kan även lägga till ett eget meddelande.";
+$lang["collection_email__introtextthemeshare"]="Dela snabbt och enkelt alla teman i denna temakategori med andra. Ett e-postmeddelande innehållande en webblänk till respektive tema skapas och skickas automatiskt. Du kan även lägga till ett eget meddelande.";
+$lang["collection_manage__findpublic"]="Gemensamma samlingar är grupper av material som har gjorts allmänt tillgängliga av användare i systemet. Skriv in ett samlingsnr, hela eller delar av samlingsnamnet, eller ett användarnamn när du vill söka efter en gemensam samling. Lägg till den hittade samlingen till din lista över samlingar om du vill kunna nå materialen enkelt.";
+$lang["collection_manage__introtext"]="Organisera och hantera ditt material genom att dela upp det i samlingar. Skapa samlingar för ett eget projekt, om du vill underlätta samarbetet i en projektgrupp eller om du vill samla dina favoriter på ett ställe. Du når alla dina samlingar från panelen <b>Mina&nbsp;samlingar</b> i nederkant av skärmen.";
+$lang["collection_manage__newcollection"]="Fyll i ett samlingsnamn om du vill skapa en ny samling.";
+$lang["collection_public__introtext"]="Gemensamma samlingar är skapade av andra användare.";
+$lang["contact__contact"]="Dina kontaktuppgifter …";
+$lang["contribute__introtext"]="Du kan bidra med eget material. När du först skapar materialet får det statusen ’Under registrering’. Överför en eller flera filer och fyll i fälten med relevant metadata. Sätt statusen till ’Väntande på granskning’ när du är klar.";
+$lang["delete__introtext"]="Du måste ange ditt lösenord för att bekräfta att du vill ta bort det här materialet.";
+$lang["done__collection_email"]="Ett e-postmeddelande innehållande en webblänk har skickats till användarna du specificerade. Samlingen har lagts till i respektive användares panel <b>Mina&nbsp;samlingar</b>.";
+$lang["done__deleted"]="Materialet har tagits bort.";
+$lang["done__research_request"]="En medlem av researchteamet kommer att få i uppdrag att besvara din researchförfrågan. Vi kommer att hålla kontakt genom e-post under arbetets gång. När vi har slutfört arbetet kommer du att få ett e-postmeddelande med en webblänk till alla material vi rekommenderar.";
+$lang["done__resource_email"]="Ett e-postmeddelande innehållande en webblänk till materialen har skickats till användarna du specificerade.";
+$lang["done__resource_request"]="Din begäran har mottagits och vi kommer att höra av oss inom kort.";
+$lang["done__user_password"]="Ett e-postmeddelande innehållande ditt användarnamn och lösenord har skickats.";
+$lang["done__user_request"]="Din ansökan om ett användarkonto har skickats. Dina inloggningsuppgifter kommer att skickas till dig inom kort.";
+$lang["download_click__introtext"]="Högerklicka på länken nedan och välj <b>Spara&nbsp;som</b> om du vill hämta materialet. Du kommer att få frågan var du vill spara filen. Öppna filen i din webbläsare genom att klicka på webblänken.";
+$lang["download_progress__introtext"]="Din hämtning startas inom kort. När hämtningen är klar kan du fortsätta genom att klicka på länkarna nedan.";
+$lang["edit__batch"]="";
+$lang["edit__multiple"]="Markera de fält du vill uppdatera med ny information. Omarkerade fält lämnas oförändrade.";
+$lang["help__introtext"]="Få ut det mesta möjliga av ResourceSpace. Instruktionerna nedan hjälper dig att använda systemet och materialen effektivare.</p>\n\n<p>Använd Teman om du vill bläddra bland material per tema eller använd Enkel sökning om du vill söka efter specifikt material.</p>\n\n<p><a target=\"_blank\" href=\"http://www.montala.net/downloads/resourcespace-GettingStarted.pdf\">Hämta den engelska användarhandboken (pdf-fil)</a>\n\n<p><a target=\"_blank\" href=\"http://wiki.resourcespace.org/index.php/?title=main_Page\">Dokumentation på webben (engelskspråkig wiki)</a>";
+$lang["home__help"]="Hjälp och tips som ser till att du får ut det mesta möjliga av ResourceSpace.";
+$lang["home__mycollections"]="Organisera dina material och samarbeta med andra. De här verktygen hjälper dig att arbeta mer effektivt.";
+$lang["home__restrictedtext"]="Klicka på webblänken som skickades till dig om du vill komma åt materialen som är utvalda för dig.";
+$lang["home__restrictedtitle"]="<h1>Välkommen till ResourceSpace</h1>";
+$lang["home__themes"]="De bästa materialen, speciellt utvalda och sorterade.";
+$lang["home__welcometext"]="Skriv en introduktion här …";
+$lang["home__welcometitle"]="Välkommen till ResourceSpace";
+$lang["login__welcomelogin"]="Välkommen till ResourceSpace";
+$lang["research_request__introtext"]="Researchteamet hjälper dig att finna de bästa materialen till dina projekt. Fyll i formuläret nedan så noggrant som möjligt så att vi kan ge dig ett relevant svar. <br /><br />En medlem av teamet kommer att få i uppdrag att besvara din researchförfrågan. Vi kommer att hålla kontakt genom e-post under arbetets gång. När vi har slutfört arbetet kommer du att få ett e-postmeddelande med en webblänk till alla material vi rekommenderar.";
+$lang["resource_email__introtext"]="Dela snabbt och enkelt material med andra. Ett e-postmeddelande innehållande en webblänk till materialen skapas och skickas automatiskt. Du kan även lägga till ett eget meddelande.";
+$lang["resource_request__introtext"]="Din begäran är nästan slutförd. Ange anledningen till din begäran så att vi kan besvara den snabbt och effektivt.";
+$lang["search_advanced__introtext"]="<strong>Söktips</strong><br />Ett avsnitt som du lämnar tomt eller omarkerat medför att <i>allt</i> inkluderas i sökningen. Om du till exempel lämnar alla länders kryssrutor omarkerade, begränsas sökningen inte med avseende på land. Om du däremot sedan markerar kryssrutan ’Sverige’ ger sökningen endast material från just Sverige.";
+$lang["tag__introtext"]="Hjälp till att förbättra framtida sökresultat genom att förse materialen med relevant metadata. Ange till exempel nyckelord som beskrivning av vad du ser på en bild: kanin, hus, boll, födelsedagstårta. Separera nyckelorden med kommatecken eller mellanslag. Ange fullständiga namn på alla personer som förekommer på ett fotografi. Ange platsen för ett fotografi om den är känd.";
+$lang["team_archive__introtext"]="Om du vill redigera ett arkiverat material gör du det enklast genom att söka efter det här och sedan klicka på <b>Redigera</b> på sidan som visar materialet. Alla material som väntar på arkivering kan enkelt nås från länken nedan. Lägg till eventuell relevant information innan du flyttar materialet till arkivet.";
+$lang["team_batch__introtext"]="";
+$lang["team_batch_select__introtext"]="";
+$lang["team_batch_upload__introtext"]="";
+$lang["team_copy__introtext"]="Ange numret för materialet du vill kopiera. Endast materialets metadata kommer att kopieras – eventuella filer kommer inte att kopieras.";
+$lang["team_home__introtext"]="Välkommen till sidan Administration. Använd länkarna nedan om du vill administrera material, svara på förfrågningar, hantera teman och ändra systeminställningar.";
+$lang["team_report__introtext"]="Välj en rapport och en period. Rapporten kan öppnas i till exempel MS Excel eller LibreOffice Calc.";
+$lang["team_research__introtext"]="Organisera och hantera researchförfrågningar.<br /><br />Välj verktyget <b>Redigera researchförfrågan</b> om du vill granska förfrågan och tilldela en medlem i researchteamet uppdraget att besvara förfrågan. Med samma verktyg kan du lägga till en befintlig samling till researchen genom att ange samlingens nummer.<br /><br />När en medlem har tilldelats researchen blir den tillgänglig för medlemmen i panelen <b>Mina&nbsp;samlingar</b>. Använd de vanliga verktygen om du vill lägga till material till researchen.<br /><br />När researchen är slutförd väljer du återigen verktyget <b>Redigera researchförfrågan</b> och ändrar status till ’Besvarad’. När du klickar på <b>Spara</b> skickas automatiskt ett e-postmeddelande till användaren som skickade researchförfrågan. Meddelandet innehåller en webblänk som leder till researchen och den läggs också till i användarens panel<b>Mina&nbsp;samlingar</b>.";
+$lang["team_resource__introtext"]="Lägg till material ett och ett eller i grupp. Om du vill redigera ett material kan du enklast söka efter det och sedan klicka på <b>Redigera</b> på sidan som visar materialet.";
+$lang["team_stats__introtext"]="En statistikrapport kan skapas vid behov, baserad på aktuell data. Markera kryssrutan om du vill skriva ut all statistik för det valda året.";
+$lang["team_user__introtext"]="Använd den här delen om du vill lägga till, ta bort eller redigera användare.";
+$lang["terms__introtext"]="Innan du kan fortsätta måste du acceptera reglerna och villkoren.";
+$lang["terms__terms"]="Dina regler …";
+$lang["terms and conditions__terms and conditions"]="Dina regler och villkor …";
+$lang["themes__findpublic"]="Gemensamma samlingar är samlingar med material som har delats ut av andra användare.";
+$lang["themes__introtext"]="Teman är grupper av material som har valts ut av administratörerna som exempel på vilka material som finns i systemet.";
+$lang["themes__manage"]="Organisera och redigera tillgängliga teman. Teman är grupper av material som har valts ut av administratörerna som exempel på vilka material som finns i systemet.<br /><br /><strong>Skapa teman</strong><br /><Om du vill skapa ett nytt tema måste du först skapa en samling.<br />Gå till <b>Mina&nbsp;samlingar</b> och skapa en ny <strong>gemensam samling</strong>. Välj en temakategori från listan om du vill lägga till samlingen i en existerande temakategori eller ange ett nytt namn om du vill skapa en ny temakategori. Tillåt inte användare att lägga till/ta bort material från teman.<br /><br /><strong>Redigera teman</strong><br />Om du vill redigera materialen i ett existerande tema väljer du verktyget <strong>Välj samling</strong>. Materialen i samlingen blir då åtkomliga i panelen <b>Mina&nbsp;samlingar</b> i nederkanten av skärmen. Använd de vanliga verktygen om du vill redigera, lägga till eller ta bort material.<br /><br /><strong>Byta namn på teman och flytta samlingar</strong><br />Välj verktyget <strong>Redigera samling</strong>. Ange ett nytt namn i fältet Namn om du vill byta namn på temat. Välj en temakategori från listan om du vill flytta samlingen till en existerande temakategori eller ange ett nytt namn om du vill skapa en ny temakategori och flytta samlingen dit.<br /><br /><strong>Ta bort en samling från ett tema</strong><br />Välj verktyget <strong>Redigera samling</strong> och rensa fältet Temakategori och fältet där nya temakategorinamn anges.";
+$lang["upload__introtext"]="";
+$lang["upload_swf__introtext"]="";
+$lang["user_password__introtext"]="Fyll i din e-postadress och ditt användarnamn så kommer ett nytt lösenord att skickas till dig.";
+$lang["user_request__introtext"]="Fyll i formuläret nedan om du vill ansöka om ett användarkonto.";
+$lang["view__storyextract"]="Textutdrag:";

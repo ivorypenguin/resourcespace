@@ -5,6 +5,9 @@
  * @package ResourceSpace
  * @subpackage Pages_Misc
  */
+include_once '../include/file_functions.php';
+include_once '../include/general.php';
+include_once '../include/collections_functions.php';
 if (!function_exists('filter_var')){  //If running on PHP without filter_var, define a do-fer function, otherwise use php's filter_var (PHP > 5.2.0)
 echo "!!!";
     define(FILTER_SANITIZE_STRING, 1);
@@ -163,6 +166,7 @@ function url_exists($url)
     fclose($fp);
     return false;
 }   
+
 /**
  * Sets the language to be used.
  *
@@ -174,6 +178,7 @@ function set_language($defaultlanguage)
 {
 	global $languages;
 	global $storagedir, $applicationname, $homeanim_folder; # Used in the language files.
+	$defaultlanguage = safe_file_name($defaultlanguage);
 	if (file_exists("../languages/en.php")) {include "../languages/en.php";}
 	if ($defaultlanguage==''){ 
 		//See if we can auto-detect the most likely language.  The user can override this.
@@ -186,6 +191,7 @@ function set_language($defaultlanguage)
 	}
 	if ($defaultlanguage!='en'){
 		if (file_exists("../languages/".$defaultlanguage.".php")){
+
 			include "../languages/".$defaultlanguage.".php";
 		}
 	}
@@ -205,17 +211,39 @@ $configstoragelocations=false;
 $storageurl="";
 $storagedir=""; # This variable is used in the language files.
 
-if (file_exists("../include/config.default.php")) {include "../include/config.default.php";}
+include '../include/config.default.php';
 $defaultlanguage = get_post('defaultlanguage');
 $lang = set_language($defaultlanguage);
 
+
+/* Process AJAX request to check password */
+if(get_post_bool('ajax'))
+    {
+    $response['success'] = false;
+    $response['error']   = '';
+
+    $admin_password             = get_post('admin_password');
+    $password_validation_result = check_password($admin_password);
+
+    if('' !== $admin_password && true === $password_validation_result)
+        {
+        $response['success'] = true;
+        }
+    else if('' !== $admin_password && is_string($password_validation_result) && '' !== $password_validation_result)
+        {
+        $response['error'] = $password_validation_result;
+        }
+
+    echo json_encode($response);
+    exit();
+    }
 ?>
 <html>
 <head>
 <title><?php echo $lang["setup-rs_initial_configuration"];?></title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link href="../css/global.css" rel="stylesheet" type="text/css" media="screen,projection,print" /> 
-<link href="../css/Col-greyblu.css" rel="stylesheet" type="text/css" media="screen,projection,print" id="colourcss" /> 
+<link href="../css/global.css?csr=5" rel="stylesheet" type="text/css" /> 
+<link href="../css/colour.css?csr=5" rel="stylesheet" type="text/css" /> 
 <script type="text/javascript" src="../lib/js/jquery-1.7.2.min.js"></script> 
 
 <script type="text/javascript"> 
@@ -318,6 +346,38 @@ $('.mysqlconn').keyup(function(){
 		}});
 	});
 });
+
+// Check admin password security requirements/ policy -- client side
+$('#admin_password').keyup(function() {
+    $('#admin_test').fadeIn('slow', function() {
+        var post_url  = 'setup.php';
+        var post_data = {
+            ajax: true,
+            admin_password: $('#admin_password').val()
+        };
+
+        $.post(post_url, post_data, function(response) {
+
+            $('#admin_password').removeClass('ok');
+            $('#admin_password').addClass('warn');
+
+            if(response.success === true)
+                {
+                $('#admin_password').addClass('ok');
+                $('#admin_password_error').hide();
+                }
+            else if(response.success === false && response.error !== '')
+                {
+                $('#admin_password_error').text(response.error);
+                $('#admin_password_error').show();
+                }
+
+            $('#admin_test').hide();
+
+        }, 'json');
+    });
+});
+
 $('a.iflink	').click(function(){
 	$('p.iteminfo').hide("slow");
 	var currentItemInfo = $(this).attr('href');
@@ -333,38 +393,46 @@ $('#mysqlserver').keyup();
  
 <!--
 #wrapper{ margin:0 auto;width:600px; }
- #intro {  margin-bottom: 40px; font-size:100%; background: #333333; text-align: left; padding: 40px; }
-#intro a{ color: #fff; }
+ #intro {  margin-bottom: 40px; font-size:100%; background: #F7F7F7; text-align: left; padding: 40px; }
 #introbottom { padding: 10px; clear: both; text-align:center;}
-#preconfig {  float:right; background: #555555; padding: 25px;}
+#preconfig {  float: right;background: #F1F1F1; padding: 25px;border-radius: 10px;box-shadow: #d7d7d7 1px 1px 9px;}
 #preconfig h2 { border-bottom: 1px solid #ccc;	width: 100%;}
 #preconfig p { font-size:110%; padding:0; margin:0; margin-top: 5px;}
 #preconfig p.failure{ color: #f00; font-weight: bold; }
 
-#tabs { font-size: 100%;}
-#tabs > ul { float: right; width: 600px; margin:0; padding:0; border-bottom:5px solid #333333; }
+#structural_plugins {margin-bottom: 40px;font-size: 100%;background: #F7F7F7;text-align: left;padding: 20px;}
+#structural_plugins h2{margin-bottom: 10px;}
+.templateitem{padding:10px; padding-left:40px;}
+.templateitem label{width: 220px;display: block;float: left;}
+.templateitem input{display: block;float: left;}
+.templateitem .desc{padding:0 10px;display: block;float: left;clear:left; padding-left:28px;}
+.templateitem a.moreinfo{color:#72A939;padding-left: 0;}
+.structurepluginradio{margin-right:10px;}
+
+#tabs {font-size: 100%;}
+#tabs > ul {float: left;margin: 0;padding: 0;border-bottom: 5px solid #F7F7F7;}
 #tabs > ul >li { margin: 0; padding:0; margin-left: 8px; list-style: none; background: #777777; }
 * html #tabs li { display: inline; /* ie6 double float margin bug */ }
-#tabs > ul > li, #tabs  > ul > li a { float: left; }
+#tabs > ul > li, #tabs  > ul > li a { float: left; border-top-left-radius: 10px; border-top-right-radius: 10px;}
 #tabs > ul > li a { text-decoration: none; padding: 8px; color: #CCCCCC; font-weight: bold; }
-#tabs > ul > li.active { background: #CEE1EF; }
-#tabs > ul > li.active a { color: #333333; }
-#tabs div.tabs { background: #333; clear: both; padding: 20px; text-align: left; }
-#tabs div h1 { text-transform: uppercase; margin-bottom: 10px; letter-spacing: 1px; }
+#tabs > ul > li.active { background: #72A939; }
+#tabs > ul > li.active a { color: #FFF }
+#tabs div.tabs { background: #F7F7F7; clear: both; padding: 20px; text-align: left;}
 
 p.iteminfo{ background: #e3fefa; width: 60%; color: #000; padding: 4px; margin: 10px; clear:both; }
 strong { padding:0 5px; color: #F00; font-weight: bold; }
 a.iflink { color: #F00; padding: 2px; border: 1px solid #444; margin-left: 4px; } 
-
-input { margin-left: 10px; border: 1px solid #000; }
+#defaultlanguage{font-size: 1em;padding: 1px;}
 
 input.warn { border: 2px solid #f00; }
 input.ok{ border:2px solid #0f0; }
 input#submit { margin: 30px; font-size:120%; }
 
-div.configitem { padding-top:10px; padding-left:40px; padding-bottom: 5px; border-bottom: 1px solid #555555; }
-
+div.configitem { padding-top:10px; padding-left:40px; padding-bottom: 5px; border-bottom: 1px solid #555555; clear:left;}
 label { padding-right: 10px; width: 30%; font-weight: bold; }
+
+div.configitem label { width:400px; display:block; float:left;}
+
 div.advsection{ margin-bottom: 20px; }
 .ajloadicon { padding-left:4px; }
 h2#dbaseconfig{  min-height: 32px;}
@@ -382,22 +450,24 @@ h2#dbaseconfig{  min-height: 32px;}
  
 </style> 
 </head>
-<body>
-<div id="Header">
-	<div id="HeaderNav1" class="HorizontalNav ">&nbsp;</div>
-	<div id="HeaderNav2" class="HorizontalNav HorizontalWhiteNav">&nbsp;</div>
+<body class="SlimHeader">
+<div id="Header" class="slimheader_darken" style="height: 40px;margin-bottom: 20px;">
+    <a href="#" onclick="return CentralSpaceLoad(this,true);" class="HeaderImgLink">
+    	<img src="../gfx/titles/title.svg" id="HeaderImg" />
+    </a>
+    <div id="HeaderNav1" class="HorizontalNav "><ul></ul></div>
+	<div id="HeaderNav2" class="HorizontalNav HorizontalWhiteNav"><ul></ul></div> 
+	<div class="clearer"></div>
 </div>
-<div id="wrapper">
 <?php
-
-
 	//Check if config file already exists and die with an error if it does.
-	if (file_exists($outputfile)){
-?>
+	if (file_exists($outputfile))
+	{
+	?>
 	<div id="errorheader"><?php echo $lang["setup-alreadyconfigured"];?></div> 
-</body>
-</html>
-<?php
+	</body>
+	</html>
+	<?php
 	die(0);
 	}
 	if (!(isset($_REQUEST['submit']))){ //No Form Submission, lets setup some defaults
@@ -411,11 +481,7 @@ h2#dbaseconfig{  min-height: 32px;}
 		else
 			$baseurl = 'http://'.php_uname('n'); //Set the baseurl to the machine hostname. 
 
-		//Generate default random keys.
-		$scramble_key = generatePassword();
-		$spider_password = generatePassword();
-        $api_scramble_key = generatePassword();
-		//Setup search paths (Currently only Linux/Mac OS X)
+                // Setup search paths (Currently only Linux/Mac OS X)
 		$os=php_uname('s');
 		if($os=='Linux' || $os=="Darwin"){
 			$search_paths[]='/usr/bin';
@@ -434,7 +500,7 @@ h2#dbaseconfig{  min-height: 32px;}
 					$imagemagick_path = $path;
 				if (file_exists($path.'/gs'))
 					$ghostscript_path = $path;
-				if (file_exists($path.'/ffmpeg'))
+				if (file_exists($path.'/ffmpeg') || file_exists($path.'/avconv'))
 					$ffmpeg_path = $path;
 				if (file_exists($path.'/exiftool'))
 					$exiftool_path = $path;
@@ -444,6 +510,11 @@ h2#dbaseconfig{  min-height: 32px;}
 					$pdftotext_path = $path;
 			}
 		}
+
+        $admin_fullname = 'Admin user';
+        $admin_email    = '';
+        $admin_username = 'admin';
+        $admin_password = '';
 
 	}
 	else { //Form was submitted, lets do it!
@@ -459,43 +530,62 @@ h2#dbaseconfig{  min-height: 32px;}
 		$config_output .= "###############################\r\n\r\n";
 		$config_output .= "# All custom settings should be entered in this file.\r\n";  
 		$config_output .= "# Options may be copied from config.default.php and configured here.\r\n\r\n";
-			
+		
+		// Structural plugin
+        $structural_plugin = get_post('structureplugin');
+        if(!empty($structural_plugin))
+        	{
+        	$config_output.= "\r\n# Initial Structural Plugin used: ".$structural_plugin."\r\n\r\n\r\n";
+        	}
+
 		//Grab MySQL settings
 		$mysql_server = get_post('mysql_server');
 		$mysql_username = get_post('mysql_username');
 		$mysql_password = get_post('mysql_password');
 		$mysql_db = get_post('mysql_db');
 		//Make a connection to the database using the supplied credentials and see if we can create and drop a table.
-		if (@mysql_connect($mysql_server, $mysql_username, $mysql_password)){
-			$mysqlversion=mysql_get_server_info();
-		
-			if ($mysqlversion<'5') {
+		$mysqli_connection = mysqli_connect($mysql_server, $mysql_username, $mysql_password);
+		if ($mysqli_connection){
+			$mysqlversion=mysqli_get_server_info($mysqli_connection);
+			if ($mysqlversion<'5') 
+				{
 				$errors['databaseversion'] = true;
-			}
-			else {
-				if (@mysql_select_db($mysql_db)){
-					if (@mysql_query("CREATE table configtest(test varchar(30))")){
-						@mysql_query("DROP table configtest");
-					}
-					else {$errors['databaseperms'] = true;}
 				}
-				else {$errors['databasedb'] = true;}
+			else 
+				{
+				if (@mysqli_select_db($mysqli_connection, $mysql_db))	
+					{
+					if (@mysqli_query($mysqli_connection, "CREATE table configtest(test varchar(30))"))	
+						{
+						@mysqli_query($mysqli_connection, "DROP table configtest");
+						}
+					else 
+						{
+						$errors['databaseperms'] = true;
+						}
+					}
+				else 
+					{$errors['databasedb'] = true;}
 			}
 		}
-		else {
-			switch (mysql_errno()){
+		else 
+			{
+			switch (mysqli_errno($mysqli_connection))
+				{
 				case 1045:  //User login failure.
 					$errors['databaselogin'] = true;
 					break;
 				default: //Must be a server problem.
 					$errors['databaseserver'] = true;
 					break;
+				}
 			}
-		}
-		if (isset($errors)){
-			$errors['database'] = mysql_error();
-		}
-		else {
+		if (isset($errors))
+			{
+			$errors['database'] = mysqli_error($mysqli_connection);
+			}
+		else 
+			{
 			//Test passed: Output MySQL config section
 			$config_output .= "# MySQL database settings\r\n";
 			$config_output .= "\$mysql_server = '$mysql_server';\r\n";
@@ -503,7 +593,7 @@ h2#dbaseconfig{  min-height: 32px;}
 			$config_output .= "\$mysql_password = '$mysql_password';\r\n";
 			$config_output .= "\$mysql_db = '$mysql_db';\r\n";
 			$config_output .= "\r\n";
-		}
+			}
 		
 		//Check MySQL bin path (not required)
 		$mysql_bin_path = sslash(get_post('mysql_bin_path'));
@@ -546,41 +636,66 @@ h2#dbaseconfig{  min-height: 32px;}
 		else {
 			$errors['baseurl'] = true;
 		}
-		
+
+        $admin_fullname = get_post('admin_fullname');
+        $admin_email    = get_post('admin_email');
+        $admin_username = get_post('admin_username');
+        $admin_password = get_post('admin_password');
+
+        if('' === trim($admin_fullname))
+            {
+            $errors['admin_fullname'] = true;
+            }
+
+
+        if('' === trim($admin_email) || ('' !== trim($admin_email) && !filter_var($admin_email, FILTER_VALIDATE_EMAIL)))
+            {
+            $errors['admin_email'] = true;
+            }
+        else
+            {
+            // Email_notify is not used much now so we default it to the admin e-mail address.
+            $config_output .= "# Email settings\r\n";
+            $config_output .= "\$email_notify = '$admin_email';\r\n";
+            }
+
+        // Check password
+        $password_validation_result = check_password($admin_password);
+        if('' === $admin_password)
+            {
+            $errors['admin_password'] = 'Super Admin password cannot be empty!';
+            }
+        else if('' !== $admin_password && is_string($password_validation_result) && '' !== $password_validation_result)
+            {
+            $errors['admin_password'] = $password_validation_result;
+            }
+
 		//Verify email addresses are valid
-		$config_output .= "# Email settings\r\n";
+
+
 		$email_from = get_post('email_from');
-		if ($email_from != ''){
-			if (filter_var($email_from, FILTER_VALIDATE_EMAIL) && ($email_from!='resourcespace@my.site'))
-				$config_output .= "\$email_from = '$email_from';\r\n";
-			else
-				$errors['email_from']=true;
-		}
-		$email_notify = get_post('email_notify');
-		if ($email_notify !=''){
-			if (filter_var($email_notify, FILTER_VALIDATE_EMAIL) && ($email_notify!='resourcespace@my.site'))
-				$config_output .= "\$email_notify = '$email_notify';\r\n\r\n";
-			else
-				$errors['email_notify']=true;
-		}
+        if('' != $email_from)
+            {
+            if(filter_var($email_from, FILTER_VALIDATE_EMAIL) && ('resourcespace@my.site' !== $email_from))
+                {
+                $config_output .= "\$email_from = '$email_from';\r\n";
+                }
+            else
+                {
+                $errors['email_from'] = true;
+                }
+            }
+        else
+            {
+            $errors['email_from'] = true;
+            }
+
+		// Set random keys. These used to be requested on the setup form but there was no reason to ask the user for these.
+                $config_output .= "# Secure keys\r\n";
+                $config_output .= "\$spider_password = '" . generatePassword() . "';\r\n";
+                $config_output .= "\$scramble_key = '" . generatePassword() . "';\r\n";
+                $config_output .= "\$api_scramble_key = '" . generatePassword() . "';\r\n\r\n";
 		
-		//Check the spider_password (required) and scramble_key (optional)
-		$spider_password = get_post('spider_password');
-		if ($spider_password!='')
-			$config_output .= "\$spider_password = '$spider_password';\r\n";
-		else
-			$errors['spider_password']=true;
-		$scramble_key = get_post('scramble_key');
-		if ($scramble_key!='')
-			$config_output .= "\$scramble_key = '$scramble_key';\r\n\r\n";
-		else
-			$warnings['scramble_key']=true;
-        $api_scramble_key = get_post('api_scramble_key');    
-        if ($api_scramble_key!='')
-			$config_output .= "\$api_scramble_key = '$api_scramble_key';\r\n\r\n";
-		else
-			$warnings['api_scramble_key']=true;    
-			
 		$config_output .= "# Paths\r\n";
 		//Verify paths actually point to a useable binary
 		$imagemagick_path = sslash(get_post('imagemagick_path'));
@@ -598,7 +713,7 @@ h2#dbaseconfig{  min-height: 32px;}
 				$errors['ghostscript_path'] = true;
 			else $config_output .= "\$ghostscript_path = '$ghostscript_path';\r\n";
 		if ($ffmpeg_path!='')
-			if (!file_exists($ffmpeg_path.'/ffmpeg'.$exe_ext))
+			if (!file_exists($ffmpeg_path.'/ffmpeg'.$exe_ext) && !file_exists($ffmpeg_path.'/avconv'.$exe_ext))
 				$errors['ffmpeg_path'] = true;
 			else $config_output .= "\$ffmpeg_path = '$ffmpeg_path';\r\n";
 		if ($exiftool_path!='')
@@ -648,6 +763,7 @@ h2#dbaseconfig{  min-height: 32px;}
 			$storagedir = dirname(__FILE__)."/../filestore";
 			$configstoragelocations = false;
 		}
+		/*
 		$ftp_server = get_post('ftp_server');
 		$ftp_username = get_post('ftp_username');
 		$ftp_password = get_post('ftp_password');
@@ -656,26 +772,187 @@ h2#dbaseconfig{  min-height: 32px;}
 		$config_output .= "\$ftp_username = '$ftp_username';\r\n";
 		$config_output .= "\$ftp_password = '$ftp_password';\r\n";
 		$config_output .= "\$ftp_defaultfolder = '$ftp_defaultfolder';\r\n";
+		*/
+		$use_smtp=get_post('use_smtp');
+		if($use_smtp)
+			{
+			$smtp_secure= get_post('smtp_secure');
+			$smtp_host= get_post('smtp_host');
+			$smtp_port= get_post('smtp_port');
+			$smtp_auth= get_post('smtp_auth');
+			$smtp_username= get_post('smtp_username');
+			$smtp_password= get_post('smtp_password');
+			$config_output .= "#SMTP settings\r\n";
+			$config_output .= "\$use_smtp = true;\r\n";
+			$config_output .= "\$use_phpmailer = true;\r\n";
+			$config_output .= "\$smtp_secure = '$smtp_secure';\r\n";
+			$config_output .= "\$smtp_host = '$smtp_host';\r\n";
+			$config_output .= "\$smtp_port = $smtp_port;\r\n";
+			if($smtp_auth)
+				{
+				$config_output .= "\$smtp_auth = true;\r\n";
+				$config_output .= "\$smtp_username = '$smtp_username';\r\n";
+				$config_output .= "\$smtp_password = '$smtp_password';\r\n";
+				}
+			$config_output .= " \r\n";
+			}
 
-		// set display defaults for new installs
-		$config_output .= "\$thumbs_display_fields = array(8,3);\r\n";
-		$config_output .= "\$list_display_fields = array(8,3,12);\r\n";
-		$config_output .= "\$sort_fields = array(12);\r\n";
 
-                // Set imagemagick default for new installs to expect the newer version with the sRGB bug fixed.
-                $config_output .= "\$imagemagick_colorspace = \"sRGB\";\r\n";
+
+        //Design Configuration
+        $slimtheme=get_post_bool('slim-theme');
+        if($slimtheme)
+        	{ 
+        	$config_output.= "\r\n#Design Changes\r\n\$slimheader=true;\r\n";
+        	#$config_output.= "\$available_themes=array('slimcharcoal', 'multi', 'whitegry','greyblu','black');\r\n\$defaulttheme='slimcharcoal';\r\n";
+        	}
                 
+        # Append defaults for new systems.
+        $config_output.=file_get_contents(dirname(__FILE__) . "/../include/config.new_installs.php");
 	}
 ?>
 <?php //Output Section
 
-if ((isset($_REQUEST['submit'])) && (!isset($errors))){
+if ((isset($_REQUEST['submit'])) && (!isset($errors)))
+	{
 	//Form submission was a success.  Output the config file and refrain from redisplaying the form.
 	$fhandle = fopen($outputfile, 'w') or die ("Error opening output file.  (This should never happen, we should have caught this before we got here)");
 	fwrite($fhandle, "<?php\r\n".$config_output); //NOTE: php opening tag is prepended to the output.
 	fclose($fhandle);
+
+    // Check database structure now
+    $suppress_headers = true;
+	include_once '../include/db.php';
+	check_db_structs();
+
+	if(!empty($structural_plugin) && !$develmode)
+		{
+		$suppress_headers=true;
+		include_once "../include/db.php";
+		//BUILD Data from plugin
+		global $mysql_db, $resource_field_column_limit;
 	
-	?>
+		# Check for path
+		$path="../plugins/".$structural_plugin."/dbstruct/";
+		
+		# Tables first.
+		# Load existing tables list
+		$ts=sql_query("show tables",false,-1,false);
+		$tables=array();
+		for ($n=0;$n<count($ts);$n++)
+			{
+			$tables[]=$ts[$n]["Tables_in_" . $mysql_db];
+			}
+		$dh=opendir($path);
+		while (($file = readdir($dh)) !== false)
+			{
+			if (substr($file,0,5)=="data_")
+				{
+				$table=str_replace(".txt","",substr($file,5));
+				sql_query("TRUNCATE $table");
+				# Add initial data
+				$data=$file;
+				if (file_exists($path . "/" . $data))
+					{
+					$f=fopen($path . "/" . $data,"r");
+					while (($row = fgetcsv($f,5000)) !== false)
+						{
+						# Escape values
+						for ($n=0;$n<count($row);$n++)
+							{
+							$row[$n]=escape_check($row[$n]);
+							$row[$n]="'" . $row[$n] . "'";
+							if ($row[$n]=="''") {$row[$n]="null";}
+							}
+						sql_query("insert into $table values (" . join (",",$row) . ")",false,-1,false);
+						}
+					}
+
+				# Check all indices exist
+				# Load existing indexes
+				$existing=sql_query("show index from $table",false,-1,false);
+						
+				$file=str_replace("data_","index_",$file);
+				if (file_exists($path . "/" . $file))
+					{
+					$done=array(); # List of indices already processed.
+					$f=fopen($path . "/" . $file,"r");
+					while (($col = fgetcsv($f,5000)) !== false)
+						{
+						# Look for this index in the existing indices.
+						$found=false;
+						for ($n=0;$n<count($existing);$n++)
+							{
+							if ($existing[$n]["Key_name"]==$col[2]) {$found=true;}
+							}
+						if (!$found && !in_array($col[2],$done))
+							{
+							# Add this index.
+							
+							# Fetch list of columns for this index
+							$cols=array();
+							$f2=fopen($path . "/" . $file,"r");
+							while (($col2 = fgetcsv($f2,5000)) !== false)
+								{
+								if ($col2[2]==$col[2]) {$cols[]=$col2[4];}
+								}
+							$sql="create index " . $col[2] . " on $table (" . join(",",$cols) . ")";
+							sql_query($sql,false,-1,false);
+							$done[]=$col[2];
+							}
+						}
+					}
+				}
+			}
+		}
+
+
+    // Copy slideshow images under filestore in order to avoid
+    // overwriting them when doing svn update
+    $homeanim_folder = 'gfx/homeanim';
+    $slideshow_files = get_slideshow_files_data();
+
+    foreach($slideshow_files as $id => $file_info)
+        {
+        $to_folder = $storagedir . '/system/slideshow';
+        $to_file   = $to_folder . '/' . basename($file_info['file_path']);
+
+        // Make sure there is a target location
+        if(!(file_exists($to_folder) && is_dir($to_folder)))
+            {
+            mkdir($to_folder, 0777, true);
+            }
+
+        if(file_exists($file_info['file_path']) && copy($file_info['file_path'], $to_file))
+            {
+            debug("AT SETUP: Copied slideshow image {$id} from \"{$file_info['file_path']}\" to \"{$to_file}\".");
+            }
+        }
+
+    // Create user
+    $credentials_username = '';
+    $credentials_password = '';
+
+    $user_count = sql_value("SELECT count(*) value FROM user WHERE username = '{$admin_username}'", 0);
+    if(0 == $user_count)
+        {
+        $password_hash = hash('sha256', md5('RS' . $admin_username . $admin_password));
+
+        // Note: First user should always be part of Super Admin, hence user group is set to 3
+        $sql_query = "INSERT INTO user(username, password, fullname, email, usergroup) VALUES('" . escape_check($admin_username) . "', '" . $password_hash . "', '" . escape_check($admin_fullname) . "', '" . escape_check($admin_email) . "', 3)";
+
+        $credentials_username = $admin_username;
+        $credentials_password = $admin_password;
+
+        sql_query($sql_query);
+        }
+
+    // We got so far but if somehow we didn't create a user so far, trigger error now and let user be aware of it
+    if('' == $credentials_username)
+        {
+        trigger_error('Unexpected error! ResourceSpace could not set your credentials or username doesn\'t have a value!');
+        }
+        ?>
 	<div id="intro">
 		<h1><?php echo $lang["setup-successheader"]; ?></h1>
 		<p><?php echo $lang["setup-successdetails"]; ?></p>
@@ -685,15 +962,24 @@ if ((isset($_REQUEST['submit'])) && (!isset($errors))){
 			<li><?php echo $lang["setup-visitwiki"]; ?></li>
 			<li><a href="<?php echo $baseurl;?>/login.php"><?php echo $lang["setup-login_to"] . " " . $applicationname; ?></a>
 				<ul>
-					<li><?php echo $lang["username"] . ": admin"; ?></li>
-					<li><?php echo $lang["password"] . ": admin"; ?></li>
+					<li><?php echo $lang["username"] . ': ' . $credentials_username; ?></li>
+					<li><?php echo $lang["password"] . ': ' . $credentials_password; ?></li>
 				</ul>
 			</li>
 		</ul>
+    <?php
+    if('' == $credentials_password)
+        {
+        ?>
+        <p>Warning! for some unknown reason your password is being seen as not having a value. Please log in and change the password!</p>
+        <?php
+        }
+    ?>
 	</div>
 	<?php
-}
-else{
+	}
+else
+{
 ?>
 <form action="setup.php" method="POST">
 <?php echo $config_windows==true?'<input type="hidden" name="config_windows" value="true"/>':'' ?>
@@ -702,11 +988,11 @@ else{
 				<h2><?php echo $lang["installationcheck"]; ?></h2>
 				<?php 
 					$continue = true;
-					$phpversion = phpversion();
-					if ($phpversion<'4.4')
+					$phpversion = PHP_VERSION;
+					if(version_compare($phpversion, '5.3.0', '<='))
 						{
-						$result = $lang["status-fail"] . ": " . str_replace("?", "4.4", $lang["shouldbeversion"]);
-						$pass = false;
+						$result   = $lang["status-fail"] . ": " . str_replace('?', '5.3.0', $lang['shouldbeversion']);
+						$pass     = false;
 						$continue = false;
 						} 
 					else
@@ -718,14 +1004,17 @@ else{
 				<p class="<?php echo ($pass==true?'':'failure'); ?>"><?php echo str_replace("?", "PHP", $lang["softwareversion"]) . ": " . $phpversion . ($pass==false?'<br>':' ') . "(" . $result . ")"; ?></p>
 				<p><?php echo str_replace("%phpinifile", php_ini_loaded_file(), $lang["php-config-file"]); ?></p>
 				<?php
-					if (function_exists('gd_info'))
+					if(function_exists('gd_info'))
+                        {
 						$gdinfo = gd_info();
-					if (is_array($gdinfo))
-						{
-						$version = $gdinfo["GD Version"];
-						$result = $lang["status-ok"];
-						$pass = true;
-						}
+
+    					if (is_array($gdinfo))
+    						{
+    						$version = $gdinfo["GD Version"];
+    						$result = $lang["status-ok"];
+    						$pass = true;
+    						}
+                        }
 					else
 						{
 						$version = $lang["status-notinstalled"];
@@ -809,9 +1098,9 @@ else{
 					<p class="<?php echo ($pass==true?'':'failure'); ?>"><?php echo $lang["setup-checkstoragewrite"] . ($pass==false?'<br>':' ') . "(" . $result . ")"; ?></p>
 			</div>
 			<h1><?php echo $lang["setup-welcome"];?></h1>
-			<p><?php echo $lang["setup-introtext"];?><p>
+			<p><?php echo $lang["setup-introtext"];?></p>
 			<p><?php echo $lang["setup-visitwiki"];?></p>
-			<div class="language">
+			<div class="language" style="clear: none;text-align: left;padding: 0px;">
 					<label for="defaultlanguage"><?php echo $lang["language"];?>:</label><select id="defaultlanguage" name="defaultlanguage">
 						<?php
 							foreach($languages as $code => $text){
@@ -836,13 +1125,89 @@ else{
 			<?php } ?>
 			</div>
 	</div>
+	<?php
+	include "../include/plugin_functions.php";
+	$plugins_dir = dirname(__FILE__)."/../plugins/";
+	# Build an array of available plugins.
+	$dirh = opendir($plugins_dir);
+	$plugins_avail = array();
+
+	while (false !== ($file = readdir($dirh))) 
+	   {
+	   if (is_dir($plugins_dir.$file)&&$file[0]!='.')
+	      	{
+	        # Look for a <pluginname>.yaml file.
+	        $plugin_yaml = get_plugin_yaml($plugins_dir.$file.'/'.$file.'.yaml', false);
+	        if(isset($plugin_yaml["category"]) 
+	         		&& $plugin_yaml["category"]=="structural"
+	         		&& isset($plugin_yaml["info_url"])
+	         		&& isset($plugin_yaml["setup_desc"])
+	         		&& isset($plugin_yaml["name"])
+	         	)
+	         	{
+	         	foreach ($plugin_yaml as $key=>$value)
+		            {
+		            $plugins_avail[$file][$key] = $value ;
+		            }
+	         	}    
+	      	}
+	   }
+	closedir($dirh);
+	if(!empty($plugins_avail))
+		{
+		ksort ($plugins_avail);
+		?>
+		<div id="structural_plugins">
+			<h2><?php echo $lang["setup-structuralplugins"]; ?></h2>
+			<?php
+			$default= (isset($structural_plugin) && !empty($structural_plugin)) ? $structural_plugin : "general_structure";
+			foreach($plugins_avail as $plugin)
+				{ ?>
+				<div class="templateitem">
+					<input 
+						class="structurepluginradio" 
+						type="radio" 
+						id="structureplugin-<?php echo $plugin["name"]; ?>" 
+						name="structureplugin" 
+						<?php
+						if($plugin["name"]==$default){echo "checked";}
+						?>
+						value="<?php echo $plugin["name"];?>"
+					/>
+					<label for="structureplugin-<?php echo $plugin["name"]; ?>"><?php echo ucfirst(preg_replace("/(_|-)/"," ",$plugin["name"]));?></label>
+					<span class="desc">
+						<?php 
+						echo $plugin["setup_desc"];
+						if(substr($plugin["setup_desc"], -1)!="."){echo ".";}
+						if(isset($plugin["info_url"]) && !empty($plugin["info_url"]))
+						{ ?>
+						<a 
+							class="moreinfo" 
+							target="_blank" 
+							href="<?php echo $plugin["info_url"]?>"
+						>
+							<?php echo $lang["more-information"]."..."; ?>
+						</a>
+						<?php
+						} ?>
+					</span>					
+					<div style="clear:both;"></div>		
+				</div>
+				<?php
+				} ?>
+			<div style="clear:both;"></div>
+		</div>
+		<?php
+		}
+	?>
+	
 	<?php if (isset($errors)){ ?>	
 		<div id="errorheader"><?php echo $lang["setup-errorheader"];?></div>
 	<?php } ?>	
 	<?php if (isset($warnings)){ ?>	
 		<div id="warnheader"><?php echo $lang["setup-warnheader"];?></div>
 	<?php } ?>	
-	<div id="tabs" class="starthidden">
+	<div id="tabs" class="starthidden" style="width:90%;margin:0 auto 0 auto;">
 		<ul>
 			<li><a href="#tab-1"><?php echo $lang["setup-basicsettings"];?></a></li>
 			<li><a href="#tab-2"><?php echo $lang["setup-advancedsettings"];?></a></li>
@@ -850,20 +1215,21 @@ else{
 		<div class="tabs" id="tab-1">
 			<h1><?php echo $lang["setup-basicsettings"];?></h1>
 			<p><?php echo $lang["setup-basicsettingsdetails"];?></p>
-			<p class="configsection">
 				<h2 id="dbaseconfig"><?php echo $lang["setup-dbaseconfig"];?><img class="starthidden ajloadicon" id="al-testconn" src="../gfx/ajax-loader.gif"/></h2>
 				<?php if(isset($errors['database'])){?>
 					<div class="erroritem"><?php echo $lang["setup-mysqlerror"];?>
-						<?php if(isset($errors['databaseversion'])) 
-							echo $lang["setup-mysqlerrorversion"]; 
+						<?php 
+						if(isset($errors['databaseversion'])) 
+							{echo $lang["setup-mysqlerrorversion"];}
 						if(isset($errors['databaseserver']))
-							echo $lang["setup-mysqlerrorserver"]; 
+							{echo $lang["setup-mysqlerrorserver"];} 
 						if(isset($errors['databaselogin']))
-							echo $lang["setup-mysqlerrorlogin"];
+							{echo $lang["setup-mysqlerrorlogin"];}
 						if(isset($errors['databasedb']))
-							echo $lang["setup-mysqlerrordbase"];
+							{echo $lang["setup-mysqlerrordbase"];}
 						if(isset($errors['databaseperms']))
-							echo $lang["setup-mysqlerrorperms"]; ?>
+							{echo $lang["setup-mysqlerrorperms"];} 
+						?>
 						
 						<p><?php echo $errors['database'];?></p>
 					</div>
@@ -895,7 +1261,7 @@ else{
 				</div>
 			</p>
 			<p class="configsection">
-				<h2><?php echo $lang["setup-generalsettings"];?></h2>
+				<h2><?php echo $lang["setup-generalsettings"];?><img id="admin_test" class="starthidden ajloadicon" src="../gfx/ajax-loader.gif"/></h2>
 				<div class="configitem">
 					<label for="applicationname"><?php echo $lang["setup-applicationname"];?></label><input id="applicationname" type="text" name="applicationname" value="<?php echo $applicationname;?>"/><a class="iflink" href="#if-applicationname">?</a>
 					<p class="iteminfo" id="if-applicationname"><?php echo $lang["setup-if_applicationname"];?></p>
@@ -910,40 +1276,52 @@ else{
 					<label for="baseurl"><?php echo $lang["setup-baseurl"];?></label><input id="baseurl" type="text" name="baseurl" value="<?php echo $baseurl;?>"/><strong>*</strong><a class="iflink" href="#if-baseurl">?</a>
 					<p class="iteminfo" id="if-baseurl"><?php echo $lang["setup-if_baseurl"];?></p>
 				</div>
-				<div class="configitem">
-					<?php if(isset($errors['email_from'])){?>
-						<div class="erroritem"><?php echo $lang["setup-emailerr"];?></div>
-					<?php } ?>
-					<label for="emailfrom"><?php echo $lang["setup-emailfrom"];?></label><input id="emailfrom" type="text" name="email_from" value="<?php echo $email_from;?>"/><a class="iflink" href="#if-emailfrom">?</a>
-					<p id="if-emailfrom" class="iteminfo"><?php echo $lang["setup-if_emailfrom"];?></p>
-				</div>
-				<div class="configitem">
-					<?php if(isset($errors['email_notify'])){?>
-						<div class="erroritem"><?php echo $lang["setup-emailerr"];?></div>
-					<?php } ?>
-					<label for="emailnotify"><?php echo $lang["setup-emailnotify"];?></label><input id="emailnotify" type="text" name="email_notify" value="<?php echo $email_notify;?>"/><a class="iflink" href="#if-emailnotify">?</a>
-					<p id="if-emailnotify" class="iteminfo"><?php echo $lang["setup-if_emailnotify"];?></p>
-				</div>
-				<div class="configitem">
-				<?php if(isset($errors['spider_password'])){?>
-						<div class="erroritem"><?php echo $lang["setup-if_spiderpassword"];?></div>
-					<?php } ?>
-					<label for="spiderpassword"><?php echo $lang["setup-spiderpassword"];?></label><input id="spiderpassword" type="text" name="spider_password" value="<?php echo $spider_password;?>"/><strong>*</strong><a class="iflink" href="#if-spiderpassword">?</a>
-					<p id="if-spiderpassword" class="iteminfo"><?php echo $lang["setup-err_spiderpassword"];?></p>
-				</div>
-				<div class="configitem">
-					<?php if(isset($warnings['scramble_key'])){?>
-						<div class="warnitem"><?php echo $lang["setup-err_scramblekey"];?></div>
-					<?php } ?>
-					<label for="scramblekey"><?php echo $lang["setup-scramblekey"];?></label><input id="scramblekey" type="text" name="scramble_key" value="<?php echo $scramble_key;?>"/><a class="iflink" href="#if-scramblekey">?</a>
-					<p id="if-scramblekey" class="iteminfo"><?php echo $lang["setup-if_scramblekey"];?></p>
-				</div>
                 <div class="configitem">
-					<?php if(isset($warnings['api_scramble_key'])){?>
-						<div class="warnitem"><?php echo $lang["setup-err_apiscramblekey"];?></div>
-					<?php } ?>
-					<label for="scramblekey"><?php echo $lang["setup-apiscramblekey"];?></label><input id="apiscramblekey" type="text" name="api_scramble_key" value="<?php echo $api_scramble_key;?>"/><a class="iflink" href="#if-apiscramblekey">?</a>
-					<p id="if-apiscramblekey" class="iteminfo"><?php echo $lang["setup-if_apiscramblekey"];?></p>
+                    <?php
+                if(isset($errors['admin_fullname']))
+                    {
+                    ?>
+                    <div class="erroritem"><?php echo $lang['setup-admin_fullname_error']; ?></div>
+                    <?php
+                    }
+                    ?>
+                    <label for="admin_fullname"><?php echo $lang['setup-admin_fullname']; ?></label>
+                    <input id="admin_fullname" class="admin_credentials" type="text" name="admin_fullname" value="<?php echo $admin_fullname; ?>"/>
+                </div>
+                <div class="configitem">
+                <?php
+                if(isset($errors['admin_email']))
+                    {
+                    ?>
+                    <div class="erroritem"><?php echo $lang['setup-emailerr']; ?></div>
+                    <?php
+                    }
+                    ?>
+                    <label for="admin_email"><?php echo $lang['setup-admin_email']; ?></label>
+                    <input id="admin_email" class="admin_credentials" type="text" name="admin_email" value="<?php echo $admin_email; ?>"/><strong>*</strong>
+                </div>
+                <div class="configitem">
+                    <label for="admin_username"><?php echo $lang['setup-admin_username']; ?></label>
+                    <input id="admin_username" class="admin_credentials" type="text" name="admin_username" value="<?php echo $admin_username; ?>"/><strong>*</strong><a class="iflink" href="#if-admin-username">?</a>
+                    <p id="if-admin-username" class="iteminfo"><?php echo $lang['setup-if_admin_username']; ?></p>
+                </div>
+                <div class="configitem">
+                    <div id="admin_password_error" class="erroritem" <?php echo !isset($errors['admin_password']) ? 'style="display: none;"' : ''; ?>><?php echo isset($errors['admin_password']) ? $errors['admin_password'] : ''; ?></div>
+                    <label for="admin_password"><?php echo $lang['setup-admin_password']; ?></label>
+                    <input id="admin_password" class="admin_credentials" type="password" name="admin_password" value="<?php echo $admin_password; ?>"/><strong>*</strong><a class="iflink" href="#if-admin-password">?</a>
+                    <p id="if-admin-password" class="iteminfo"><?php echo $lang['setup-if_admin_password']; ?></p>
+                </div>
+				<div class="configitem">
+                <?php
+                if(isset($errors['email_from']))
+                    {
+                    ?>
+                    <div class="erroritem"><?php echo $lang["setup-emailerr"];?></div>
+                    <?php
+                    }
+                    ?>
+					<label for="emailfrom"><?php echo $lang["setup-emailfrom"];?></label><input id="emailfrom" type="text" name="email_from" value="<?php echo $email_from;?>"/><strong>*</strong><a class="iflink" href="#if-emailfrom">?</a>
+					<p id="if-emailfrom" class="iteminfo"><?php echo $lang["setup-if_emailfrom"];?></p>
 				</div>
 
 			</p>
@@ -966,7 +1344,7 @@ else{
 					<?php if(isset($errors['ffmpeg_path'])){?>
 						<div class="erroritem"><?php echo $lang["setup-err_path"];?> 'ffmpeg'.</div>
 					<?php } ?>
-					<label for="ffmpegpath"><?php echo str_replace("%bin", "FFMpeg", $lang["setup-binpath"]) . ":"; ?></label><input id="ffmpegpath" type="text" name="ffmpeg_path" value="<?php echo @$ffmpeg_path; ?>"/>
+					<label for="ffmpegpath"><?php echo str_replace("%bin", "FFMpeg/libav", $lang["setup-binpath"]) . ":"; ?></label><input id="ffmpegpath" type="text" name="ffmpeg_path" value="<?php echo @$ffmpeg_path; ?>"/>
 				</div>
 				<div class="configitem">
 					<?php if(isset($errors['exiftool_path'])){?>
@@ -1031,7 +1409,8 @@ else{
 					</div>
 				</div>
 			</div>
-			
+			<?php
+			/* Remove FTP Settings
 			<h2><?php echo $lang["setup-ftp_settings"];?></h2>
 			<div class="advsection" id="ftpsettings">
 				<div class="configitem">
@@ -1048,17 +1427,88 @@ else{
 					<label for="ftp_defaultfolder"><?php echo $lang["ftpfolder"] . ":"; ?></label><input id="ftp_defaultfolder" name="ftp_defaultfolder" type="text" value="<?php echo $ftp_defaultfolder;?>"/>
 				</div>
 			</div>
+			*/?>
+
+			<h2><?php echo $lang["setup-smtp-settings"]; ?></h2>
+			<div class="advsection" id="smtpsettings">
+				<div class="configitem">
+					<label for="use_smtp"><?php echo $lang["usesmtp"] . ":"; ?></label>
+					<input id="use_smtp" name="use_smtp" type="checkbox"  <?php echo $use_smtp?"checked":"";?>/>
+					<a class="iflink" href="#if-usesmtp">?</a>
+					<p class="iteminfo" id="if-usesmtp"><?php echo $lang["setup-if-usesmtp"];?></p>
+				</div>
+				<div id="use-SMTP-settings">
+					<div class="configitem">
+						<label for="smtp_secure"><?php echo $lang["smtpsecure"] . ":"; ?></label>
+						<input id="smtp_secure" name="smtp_secure" type="text" value="<?php echo $smtp_secure;?>" />
+						<a class="iflink" href="#if-smtpsecure">?</a>
+						<p class="iteminfo" id="if-smtpsecure"><?php echo $lang["setup-if-smtpsecure"];?></p>
+					</div>
+					<div class="configitem">
+						<label for="smtp_host"><?php echo $lang["smtphost"] . ":"; ?></label>
+						<input id="smtp_host" name="smtp_host" type="text" value="<?php echo $smtp_host;?>"/>
+						<a class="iflink" href="#if-smtphost">?</a>
+						<p class="iteminfo" id="if-smtphost"><?php echo $lang["setup-if-smtphost"];?></p>
+					</div>
+					<div class="configitem">
+						<label for="smtp_port"><?php echo $lang["smtpport"] . ":"; ?></label>
+						<input id="smtp_port" name="smtp_port" type="text" value="<?php echo $smtp_port;?>"/>
+						<a class="iflink" href="#if-smtpport">?</a>
+						<p class="iteminfo" id="if-smtpport"><?php echo $lang["setup-if-smtpport"];?></p>
+					</div>
+					<div class="configitem">
+						<label for="smtp_auth"><?php echo $lang["smtpauth"] . ":"; ?></label>
+						<input id="smtp_auth" name="smtp_auth" type="checkbox" checked />
+						<a class="iflink" href="#if-smtpauth">?</a>
+						<p class="iteminfo" id="if-smtpauth"><?php echo $lang["setup-if-smtpauth"];?></p>
+					</div>
+					<div class="configitem">
+						<label for="smtp_username"><?php echo $lang["smtpusername"] . ":"; ?></label>
+						<input id="smtp_username" name="smtp_username" type="text" value="<?php echo $smtp_username;?>"/>
+						<a class="iflink" href="#if-smtpusername">?</a>
+						<p class="iteminfo" id="if-smtpusername"><?php echo $lang["setup-if-smtpusername"];?></p>
+					</div>
+					<div class="configitem">
+						<label for="smtp_password"><?php echo $lang["smtppassword"] . ":"; ?></label>
+						<input id="smtp_password" name="smtp_password" type="password" value="<?php echo $smtp_password;?>"/>
+						<a class="iflink" href="#if-smtppassword">?</a>
+						<p class="iteminfo" id="if-smtppassword"><?php echo $lang["setup-if-smtppassword"];?></p>
+					</div>
+				</div>
+			</div>
+
+			<h2><?php echo $lang["design-options"];?></h2>
+			<div class="advsection" id="designsettings">
+				<div class="configitem">
+					<label for="slim-theme"><?php echo $lang["use-slim-theme"] . ":"; ?></label>
+					<input id="slim-theme" name="slim-theme" type="checkbox" checked /><a class="iflink" href="#if-slimtheme">?</a>
+					<p class="iteminfo" id="if-slimtheme"><?php echo $lang["setup-if_slimtheme"];?></p>
+				</div>
+			</div>
 		</div>
 		<input type="submit" id="submit" name="submit" value="<?php echo $lang["setup-begin_installation"];?>"/>
 	</div>
 </form>
-<?php } ?>
-<?php if (($develmode)&& isset($config_output)){?>
-		<div id="configoutput">
-			<h1><?php echo $lang["setup-configuration_file_output"] . ":"; ?></h1>
-			<pre><?php echo $config_output; ?></pre>
-		</div>
-	<?php } ?>	
-</div>
+<script>
+	jQuery("#use_smtp").click(function(){
+		if(jQuery(this).prop("checked")) {
+			jQuery("#use-SMTP-settings").show(300);
+		} else {
+			jQuery("#use-SMTP-settings").hide(300);
+		}
+	});
+	if(!jQuery("#use_smtp").prop("checked")) {
+		jQuery("#use-SMTP-settings").hide();
+	}
+</script>
+<?php }
+if (($develmode)&& isset($config_output))
+	{ ?>
+	<div id="configoutput">
+		<h1><?php echo $lang["setup-configuration_file_output"] . ":"; ?></h1>
+		<pre><?php echo $config_output; ?></pre>
+	</div>
+	<?php 
+	} ?>
 </body>
 </html>	

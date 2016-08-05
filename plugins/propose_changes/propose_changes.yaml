@@ -1,0 +1,5 @@
+name: propose_changes
+desc: Adds option to allow users to propose metadata changes without edit access
+version: 1.0
+config_url: /plugins/propose_changes/pages/setup.php
+category: Workflow and access

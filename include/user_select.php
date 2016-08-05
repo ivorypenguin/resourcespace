@@ -10,16 +10,73 @@ if ($userstring=="") {$userstring=$default_user_select;}
 <table cellpadding="0" cellspacing="0" width="300">
 
 <!-- autocomplete -->
-<tr><td><input type="text" class="medwidth" placeholder="<?php echo $lang["starttypingusername"]?>" id="autocomplete" name="autocomplete_parameter" onClick="this.value='';" /></td>
-<td><input type=button value="+" class="medcomplementwidth" onClick="addUser();" /></td></tr>
+
+<?php
+if(isset($user_select_internal) && $user_select_internal)
+	{?>
+	<tr>
+		<td>
+			<input type="text" class="stdwidth" value="<?php echo $lang["starttypingusername"]?>" id="autocomplete" name="autocomplete_parameter" onFocus="if(this.value == '<?php echo $lang['starttypingusername']; ?>') {this.value = ''}" onBlur="if(this.value == '') {this.value = '<?php echo $lang['starttypingusername']; ?>';}" />
+		</td>			
+	</tr>
+	<?php
+	}
+else
+	{?>
+	<tr>
+		<td>
+			<input type="text" class="medwidth" value="<?php echo $lang["starttypingusername"]?>" id="autocomplete" name="autocomplete_parameter" onFocus="if(this.value == '<?php echo $lang['starttypingusername']; ?>') {this.value = ''}" onBlur="if(this.value == '') {this.value = '<?php echo $lang['starttypingusername']; ?>';}" />
+		</td>
+		<td>
+			<input id="adduserbutton" type=button value="+" class="medcomplementwidth" onClick="addUser();" />
+		</td>
+	</tr>
+	<?php
+	}?>
+
 <!-- -->
 
-<!-- user string -->
-<tr><td colspan="2" align="left"><textarea rows=6 class="stdwidth" name="users" id="users" <?php if (!$sharing_userlists){?>onChange="this.value=this.value.replace(/[^,] /g,function replacespaces(str) {return str.substring(0,1) + ', ';});"<?php } else { ?>onChange="addUser();checkUserlist();updateUserSelect();"<?php } ?>><?php echo htmlspecialchars($userstring); ?></textarea></td></tr>
-<!-- -->
+    <?php
+    if (isset($single_user_select_field_id))
+        {
+        ?>
+        <tr>
+            <td colspan="2" align="left">
+                <input type="text" readonly="readonly" class="stdwidth" name="users" id="users" value="<?php
+                    if(isset($single_user_select_field_value))
+                        {
+                        $found_single_user_select_field_value=sql_value("select username as value from user where ref='{$single_user_select_field_value}'",'');
+                        echo $found_single_user_select_field_value;
+                        }
 
+                ?>" />
+                <?php
+                    if ($found_single_user_select_field_value!='')
+                        {
+                        ?><script>jQuery("#adduserbutton").attr('value', '<?php echo $lang["clearbutton"]; ?>');</script><?php
+                        }
+                ?>
+                <input type="hidden" id="<?php echo $single_user_select_field_id; ?>" name="<?php echo $single_user_select_field_id; ?>" value="<?php
+                    if(isset($single_user_select_field_value)) { echo $single_user_select_field_value; } ?>" />
+            </td>
+        </tr>
+        <?php
+        }
+    else
+        {
+        ?>
+        <!-- user string -->
+        <tr>
+            <td colspan="2" align="left"><textarea rows=6 class="stdwidth" name="users" id="users"
+                                                   <?php if (!$sharing_userlists){ ?>onChange="this.value=this.value.replace(/[^,] /g,function replacespaces(str) {return str.substring(0,1) + ', ';});"
+                                                   <?php } else { ?>onChange="addUser();checkUserlist();updateUserSelect();"<?php } ?>><?php echo htmlspecialchars($userstring); ?></textarea>
+            </td>
+        </tr>
+        <!-- -->
+    <?php
+        }
 
-<?php if ($sharing_userlists){?>
+    if ($sharing_userlists){?>
 	<tr><td>
 	<div id="userlist_name_div" style="display:none;">
 		<input type="text" class="medwidth" value="<?php echo $lang['typeauserlistname']?>"  id="userlist_name_value" name="userlist_parameter" onClick="this.value='';" /></div>
@@ -48,15 +105,58 @@ if ($userstring=="") {$userstring=$default_user_select;}
 function addUser(event,ui)
 	{
 	var username=document.getElementById("autocomplete").value;
-	var users=document.getElementById("users");
+    var users=document.getElementById("users");
+    var attachUserSmartGroups='<?php global $attach_user_smart_groups;echo $attach_user_smart_groups?>';
 
 	if (typeof ui!=='undefined') {username=ui.item.value;}
 	
-	if (username.indexOf("<?php echo $lang["group"]?>")!=-1)
+	if (username.indexOf("<?php echo $lang["group"]?>")!=-1 && (!attachUserSmartGroups || (attachUserSmartGroups && username.indexOf("<?php echo $lang["groupsmart"]?>")==-1)))
 		{
 		if ((confirm("<?php echo $lang["confirmaddgroup"]?>"))==false) {return false;}
 		}
-		
+	if (attachUserSmartGroups)
+		{
+		if (username.indexOf("<?php echo $lang["groupsmart"]?>")!=-1)
+			{
+			if ((confirm("<?php echo $lang["confirmaddgroupsmart"]?>"))==false) {return false;}
+			}
+		}
+
+    <?php
+    if(isset($single_user_select_field_id))
+        {
+        ?>
+        var user_ref='';
+        jQuery.ajax({
+            url: '<?php echo $baseurl; ?>/pages/ajax/autocomplete_user.php?getuserref=' + username,
+            type: 'GET',
+            async: false,
+            success: function(ref, textStatus, xhr) {
+                if(xhr.status==200 && ref>0) {
+                    user_ref=ref;
+                }
+            }
+        });
+        var single_user_field=document.getElementById("<?php echo $single_user_select_field_id; ?>");
+        single_user_field.value=user_ref;
+        users.value='';
+        if (user_ref=='')
+            {
+            username='';
+            jQuery("#adduserbutton").attr('value', '+');
+            }
+        else
+            {
+            jQuery("#adduserbutton").attr('value', '<?php echo $lang["clearbutton"]; ?>');
+            }
+        <?php
+            if (isset($single_user_select_field_onchange))
+                {
+                echo $single_user_select_field_onchange;
+                }
+        }
+    ?>
+
 	if (username!="") 
 		{
 		if (users.value.length!=0) {users.value+=", ";}
@@ -82,8 +182,8 @@ function addUser(event,ui)
 jQuery(document).ready(function () {
 	jQuery('#autocomplete').autocomplete(
 		{
-		source: "<?php echo $baseurl?>/pages/ajax/autocomplete_user.php",
-		select: addUser
+		source: "<?php echo $baseurl?>/pages/ajax/autocomplete_user.php<?php if(isset($single_user_select_field_id)) { ?>?nogroups=true<?php } ?>",
+            select: addUser
 		} );
 })
 

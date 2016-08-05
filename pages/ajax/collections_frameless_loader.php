@@ -1,7 +1,7 @@
 <?php
 include "../../include/db.php";
-include "../../include/general.php";
-include "../../include/collections_functions.php";
+include_once "../../include/general.php";
+include_once "../../include/collections_functions.php";
 # External access support (authenticate only if no key provided, or if invalid access key provided)
 $k=getvalescaped("k","");if (($k=="") || (!check_access_key_collection(getvalescaped("collection","",true),$k))) {include "../../include/authenticate.php";}
 

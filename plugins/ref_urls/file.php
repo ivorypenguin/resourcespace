@@ -3,15 +3,27 @@
 $suppress_headers = true;
 
 include "../../include/db.php";
-include "../../include/general.php";
+include_once "../../include/general.php";
 
-# Check if we need to authorize this access
 $size = getvalescaped('size', '');
-if (!is_array($unauthenticated_image_sizes) || !in_array($size, $unauthenticated_image_sizes))
-	include "../../include/authenticate.php";
-
 $ref = getvalescaped('ref', 0, true);
 $extension = getvalescaped('ext', 'jpg');
+$k = getvalescaped('k', '');
+
+# Check if we need to authorize this access
+if (!empty($k))
+	{
+	# External access - check how this was shared.
+	$externalAccess = sql_value("select access value from external_access_keys where resource="
+			. $ref . " and access_key='" . escape_check($k) . "'", -1);
+	if ($externalAccess != 0)
+		{
+		http_response_code(403);
+		exit;
+		}
+	}
+else if (!is_array($unauthenticated_image_sizes) || !in_array($size, $unauthenticated_image_sizes))
+	include "../../include/authenticate.php";
 
 if ($ref == 0 || $extension == 'php')
 	{

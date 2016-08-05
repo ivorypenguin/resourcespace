@@ -188,7 +188,7 @@ $lang["resetarchivestatus"]="Tilbakestill arkivstatusen for alt materiale i lysb
 $lang["editallresources"]="Rediger alt materiale i lysbordet";
 $lang["editresources"]="Rediger materiale";
 $lang["multieditnotallowed"]="Batchredigering ikke tillatt - alle filene har ikke samme status eller samme type.";
-$lang["emailcollection"]="Send lysbordet som e-post";
+$lang["emailcollectiontitle"]="Send lysbordet som e-post";
 $lang["collectionname"]="Lysbordnavn";
 $lang["collectionid"]="lysbord-ID";
 $lang["collectionidprefix"]="Lys_ID";
@@ -267,7 +267,7 @@ $lang["clearform"]="Nullstill skjema";
 $lang["similarresources"]="lignende materiell"; # e.g. 17 similar resources
 $lang["similarresource"]="lignende materiale"; # e.g. 1 similar resource
 $lang["nosimilarresources"]="Ikke noe lignende materiell";
-$lang["emailresource"]="Send materiale via e-post";
+$lang["emailresourcetitle"]="Send materiale via e-post";
 $lang["resourcetitle"]="Materialtittel";
 $lang["requestresource"]="Bildeforespørsel";
 $lang["action-viewmatchingresources"]="Vis lignende treff";
@@ -761,7 +761,7 @@ $lang["setup-successheader"]="Gratulerer!";
 $lang["setup-successdetails"]="Din innledende installasjon av ResourceSpace er ferdig. Gå gjennom 'include/default.config.php' for øvrige konfigurasjonsvalg.";
 $lang["setup-successnextsteps"]="Neste skritt:";
 $lang["setup-successremovewrite"]="Du kan nå fjerne skrivetilgangen for 'include/'.";
-$lang["setup-visitwiki"]='Besøk <a target="_blank" href="http://wiki.resourcespace.org/index.php/Main_Page">ResourceSpace Documentation Wiki</a> for mer informasjon om hvordan du kan tilpasse din ResourceSpace-installasjon.';
+$lang["setup-visitwiki"]='Besøk <a target="_blank" href="http://wiki.resourcespace.org/index.php/?title=main_Page">ResourceSpace Documentation Wiki</a> for mer informasjon om hvordan du kan tilpasse din ResourceSpace-installasjon.';
 $lang["setup-checkconfigwrite"]="Skrivetilgang til config-katalogen:";
 $lang["setup-checkstoragewrite"]="Skrivetilgang til storage-katalogen:";
 $lang["setup-welcome"]="Velkommen til ResourceSpace";

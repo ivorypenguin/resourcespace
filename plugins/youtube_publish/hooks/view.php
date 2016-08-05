@@ -8,7 +8,7 @@ function HookYoutube_publishViewAfterresourceactions()
 	if ($access==0 && in_array($resource["resource_type"],$youtube_publish_restypes))
 		{
 		?>
-		<li><a href="<?php echo $baseurl?>/plugins/youtube_publish/pages/youtube_upload.php?resource=<?php echo $ref?>">&gt;&nbsp;<?php echo $lang["youtube_publish_linktext"]; ?></a></li>
+		<li><a href="<?php echo $baseurl?>/plugins/youtube_publish/pages/youtube_upload.php?resource=<?php echo $ref?>"><?php echo "<i class='fa fa-youtube-square'></i>&nbsp;" .$lang["youtube_publish_linktext"]; ?></a></li>
 		<?php
 		}
 	}

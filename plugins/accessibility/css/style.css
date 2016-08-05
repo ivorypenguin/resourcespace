@@ -1,0 +1,35 @@
+html,body{font-size:18px;color:#000;}
+
+/* Text color change for all elements which do not inherit from body: */
+.plupload_filelist_header, .plupload_filelist_footer,
+.plupload_file_status span {color: #000; font-weight: bold;}
+
+/* Font-size change for most important elements: */
+.treetext {font-size: 16px !important;}
+input, select, td,
+#CollectionMinDrop .SearchWidth,
+.CollectBack .SearchWidth,
+.SearchSpace .SearchWidthHalf,
+.SearchSpace .SearchWidth,
+.Question .stdwidth, .stdwidth,
+.Question .shrtwidth, .shrtwidth,
+.plupload_wrapper,
+#CentralSpace .SearchWidth { font-size: 16px;}
+#HomePanelContainer{font-size:15px;}
+#CollectionMenu li {clear: left;}
+a:link, 
+a:visited, 
+a:active, 
+a:hover
+{color:#000;}
+.HorizontalWhiteNav a:link, .HorizontalWhiteNav a:visited, .HorizontalWhiteNav a:active, .BasicsBox .VerticalNav a:link, .BasicsBox .VerticalNav a:visited, .BasicsBox .VerticalNav a:active, .ListTitle a:link, .ListTitle a:visited, .ListTitle a:active {
+  color: #000;
+}
+/*.SearchSpace {font-size: 18px;}*/
+
+@media(max-width: 850px) {
+	div.HomePicturePanel
+	{    
+		display: none;
+	}
+}

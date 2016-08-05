@@ -2,23 +2,21 @@
 # Popup category tree for use with the simple search.
 
 include "../../include/db.php";
+include_once "../../include/general.php";
 include "../../include/authenticate.php";
-include "../../include/general.php";
 
 $field=getvalescaped("field","");
 $value=getvalescaped("value","");
 
 # Set the expected options
-$fdata=get_resource_type_field($field);
-$name=$fdata["name"];
-$options=$fdata["options"];
+$field=get_resource_type_field($field);
+$name=$field["name"];
+node_field_options_override($field);
 
-#echo $options;
 ?>
 
 <p align="right"><a href="#" onClick="document.getElementById('cattree_<?php echo $name ?>').style.display='none';return false;"><?php echo $lang["close"] ?></a></p>
 <?php
-
 
 # Show the category tree
 $category_tree_open=true;

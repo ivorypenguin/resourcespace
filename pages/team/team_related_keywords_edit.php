@@ -6,8 +6,8 @@
  * @subpackage Pages_Team
  */
 include "../../include/db.php";
+include_once "../../include/general.php";
 include "../../include/authenticate.php"; if (!checkperm("k")) {exit ("Permission denied.");}
-include "../../include/general.php";
 include "../../include/research_functions.php";
 
 $keyword=strtolower(getvalescaped("keyword",""));

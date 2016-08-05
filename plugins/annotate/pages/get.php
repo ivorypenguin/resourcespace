@@ -9,8 +9,16 @@ $ref=getval("ref","");
 if ($ref==""){die("no");}
 $preview_width=getval("pw",0);
 $preview_height=getval("ph",0);
+$page = getval('page', 1);
 
-$notes=sql_query("select * from annotate_notes where ref='$ref'");
+// Get notes based on page:
+$sql_and = '';
+
+if($page >= 1) {
+	$sql_and = ' AND page = ' . $page;
+}
+
+$notes=sql_query("select * from annotate_notes where ref='$ref'" . $sql_and);
 sql_query("update resource set annotation_count=".count($notes)." where ref=$ref");
 // check if display size is different from original preview size, and if so, modify coordinates
 
@@ -36,17 +44,20 @@ for ($x=0;$x<count($notes);$x++){
 	
 	if ($x>0){$json.=",";}
 	$json.="{";
-	$json.='"top":'.$notes[$x]['top_pos'].', ';
-	$json.='"left":'.$notes[$x]['left_pos'].', ';
-	$json.='"width":'.$notes[$x]['width'].', ';
-	$json.='"height":'.$notes[$x]['height'].', ';
-	$json.='"text":"'.str_replace('"','\"',$notes[$x]['note']).'", ';
+	$json.='"top":'.round($notes[$x]['top_pos']).', ';
+	$json.='"left":'.round($notes[$x]['left_pos']).', ';
+	$json.='"width":'.round($notes[$x]['width']).', ';
+	$json.='"height":'.round($notes[$x]['height']).', ';
+	$json.='"text":"'.config_encode($notes[$x]['note']).'", ';
 	$json.='"id":"'.$notes[$x]['note_id'].'", ';
-	if (isset($userref) && ($notes[$x]['user']==$userref)){
-	$json.='"editable":true';
-	} else {
-	$json.='"editable":false';	
-}
+	if (isset($userref) && (($notes[$x]['user']==$userref) || in_array($usergroup,$annotate_admin_edit_access)))
+		{
+		$json.='"editable":true';
+		} 
+	else 
+		{
+		$json.='"editable":false';	
+		}
 	$json.="}";
 }
 $json.="]";

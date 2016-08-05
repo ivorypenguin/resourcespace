@@ -2,8 +2,8 @@
 # Feeder page for AJAX search auto-completion.
 
 include "../../include/db.php";
+include_once "../../include/general.php";
 include "../../include/authenticate.php";
-include "../../include/general.php";
 
 $field=getval("field",""); # get field name if doing a simple search completion (to get it easily from $_GET)
 $ref=getvalescaped("fieldref","",true); #get field ref if doing simple search completion (for get_suggested_keywords())
@@ -29,7 +29,7 @@ if (strlen($last)>=2) # Activate when last entered keyword >=3 chars long
 		{
 		if ($n>0) {echo ", ";}
 		?>
-		"<?php echo (($otherwords!="")?$otherwords . " ":"") . $keywords[$n]?>"
+		"<?php echo (($otherwords!="")?htmlspecialchars($otherwords) . " ":"") . htmlspecialchars($keywords[$n]) ?>"
 		<?php
 		}
 	?>

@@ -20,14 +20,14 @@ $lang["sslrecommended"]="Vi rekommenderar att denna webbserver säkras med ssl. 
 
 
 $lang["apicore_apiwhitelisting"]="Api-vitlistning";
-$lang["apicore_apiwhitelistingdesc"]="Använd detta gränssnitt för att lägga till ip-adresser eller domäner till vitlistan och knyta dem till ett användarkonto och ett specifikt api.";
-$lang["apicore_ip"]="Ip-adress (eller domän)";
+$lang["apicore_apiwhitelistingdesc"]="Använd detta gränssnitt för att lägga till ip-adresser till vitlistan och knyta dem till ett användarkonto och ett specifikt api.";
+$lang["apicore_ip"]="Ip-adress";
 $lang["apicore_account"]="Användarkonto";
 $lang["apicore_apis"]="Tillåtna api:er";
 $lang["apicore_deletesure"]="Vill du ta bort denna post i vitlistan?";
 $lang["apicore_delete"]="Ta bort";
 $lang["apicore_newentry"]="Skapa en ny post i vitlistan";
-$lang["apicore_whitelistnew"]="Ny vitlista (ip-adress eller domän)";
+$lang["apicore_whitelistnew"]="Ny vitlista (ip-adress)";
 $lang["apicore_associateaccount"]="Tillknyt ett användarkonto";
 $lang["apicore_selectaccount"]="Välj ett användarkonto…";
 $lang["apicore_selectapis"]="Välj tillåtna api:er";

@@ -14,6 +14,8 @@
 # Updated by Stefan Wild 20110730 for version 2852, translated the missing $lang keys from the en.php.
 # Updated by Stefan Wild 20130124 for version 4220, translated the missing $lang keys from the en.php.
 # Updated by Stefan Wild 20140220 for version 5313, translated the missing $lang keys from the en.php.
+# Updated by Stefan Wild 20140619 for version 5550, translated the missing $lang keys from the en.php.
+# Updated by Stefan Wild 20141215 for version 6127, translated the missing $lang keys from the en.php.
 
 # User group names (for the default user groups)
 $lang["usergroup-administrators"]="Administratoren";
@@ -118,6 +120,7 @@ $lang["property-allow_registration_selection"]="In der Registrierungsauswahl anz
 $lang["property-resource_type_id"]="Ressourcen-Typ ID";
 $lang["information-allowed_extensions"]="Wenn gesetzt, können nur die angegebenen Dateierweiterungen hochgeladen werden, z.B. jpg,gif";
 $lang["property-allowed_extensions"]="Erlaubte Dateierweiterungen";
+$lang["information-resource_type_config_override"]="Erlaubt individuelle Konfigurationsoptionen für jeden Ressourcen-Typ. Beeinflusst Suchresultate, Ressourcenansicht und -bearbeitung. Bitte vergessen Sie nicht, Ihre Änderungen hier ggf. bei den anderen Ressourcen-Typen wieder zu überschreiben.";
 
 $lang["property-field_id"]="Feld ID";
 $lang["property-title"]="Titel";
@@ -162,6 +165,9 @@ $lang["property-sync_with_field"]="Abgleichen mit Feld";
 $lang["information-copy_field"]="<a href=field_copy.php?ref=%ref>Feld kopieren</a>";
 $lang["property-display_condition"]="Voraussetzung zur Anzeige";
 $lang["information-display_condition"]="Voraussetzung zur Anzeige: Dieses Feld wird nur angezeigt, wenn die folgenden Voraussetzungen erfüllt sind. Verwenden Sie das gleiche Format wie bei Suchfiltern, z.B. kurzname=wert1|wert2, kurznamea=optiona;kurznameb=optionb1|optionb2";
+$lang["property-onchange_macro"]="Makro bei Veränderung";
+$lang["information-onchange_macro"]="Makro bei Veränderung: wird ausgeführt, wenn der Wert des Feldes sich ändert. VORSICHT";
+$lang["information-derestrict_filter"]="Einschränkung aufheben. Kann zusammen mit der g Berechtigung genutzt werden, so dass alle Ressourcen eingeschränkt sind, es sei denn die hier angegebenen Kriterien sind erfüllt";
 
 $lang["property-query"]="Abfrage";
 
@@ -199,6 +205,7 @@ $lang["teamcentre"]="Administration";
 # footer link
 $lang["aboutus"]="Über uns";
 $lang["interface"]="Darstellung";
+$lang["changethemeto"] = "Darstellung wechseln zu";
 
 # Search bar
 $lang["simplesearch"]="Einfache Suche";
@@ -327,7 +334,7 @@ $lang["resetarchivestatus"]="Archivierungsstatus für alle Ressourcen einer Koll
 $lang["editallresources"]="Alle Ressourcen in der Kollektion bearbeiten";
 $lang["editresources"]="Ressourcen bearbeiten";
 $lang["multieditnotallowed"]="Mehrfache Bearbeitung nicht erlaubt - die Ressourcen sind nicht vom selben Typ bzw. Status.";
-$lang["emailcollection"]="Kollektion als E-Mail senden";
+$lang["emailcollectiontitle"]="Kollektion als E-Mail senden";
 $lang["collectionname"]="Name der Kollektion";
 $lang["collection-name"]="Kollektion: %collectionname%"; # %collectionname will be replaced, e.g. Collection: Cars
 $lang["collectionid"]="Kollektion (ID)";
@@ -416,6 +423,8 @@ $lang["action-upload"]="Upload";
 $lang["action-upload-to-collection"]="Hochladen in diese Kollektion";
 $lang["uploadafile"]="Datei hochladen";
 $lang["replacefile"]="Datei ersetzen";
+$lang["showwatermark"]="Wasserzeichen zeigen";
+$lang["hidewatermark"]="Wasserzeichen nicht zeigen";
 $lang["imagecorrection"]="Bild-Korrekturen";
 $lang["previewthumbonly"]="(nur Vorschaubild anzeigen)";
 $lang["rotateclockwise"]="im Uhrzeigersinn drehen"; # Verkehrte Zuordnung in der Funktion, daher hier vertauscht
@@ -431,12 +440,13 @@ $lang["relatedresources"]="Verwandte Ressourcen";
 $lang["relatedresources-filename_extension"]="Verwandte Ressourcen &ndash; %EXTENSION"; # Use %EXTENSION, %extension or %Extension as a placeholder. The placeholder will be replaced with the filename extension, using the same case. E.g. "Related Resources - %EXTENSION" -> "Related Resources - JPG"
 $lang["relatedresources-id"]="Verwandte Ressourcen - ID%id%"; # %id% will be replaced, e.g. Related Resources - ID57
 $lang["relatedresources-restype"]="Verwandte Ressourcen - %Restype%"; # Use %RESTYPE%, %restype% or %Restype% as a placeholder. The placeholder will be replaced with the resource type in plural, using the same case. E.g. "Related resources - %restype%" -> "Related resources - photos"
+$lang["relatedresources_onupload"]="Ressourcen beim Upload verknüpfen";
 $lang["indexedsearchable"]="Indexierte, durchsuchbare Felder";
 $lang["clearform"]="Formular zurücksetzen";
 $lang["similarresources"]="ähnliche Ressourcen"; # e.g. 17 similar resources
 $lang["similarresource"]="ähnliche Ressource"; # e.g. 1 similar resource
 $lang["nosimilarresources"]="keine ähnlichen Ressourcen";
-$lang["emailresource"]="Ressource senden (E-Mail)";
+$lang["emailresourcetitle"]="Ressource senden (E-Mail)";
 $lang["resourcetitle"]="Ressourcen-Titel";
 $lang["requestresource"]="Ressource anfordern";
 $lang["action-viewmatchingresources"]="Passende Ressourcen anzeigen";
@@ -505,7 +515,7 @@ $lang["inthearchive"]="im Archiv";
 $lang["nomatchesinthearchive"]="Keine passenden Archiv-Einträge";
 $lang["savethissearchtocollection"]="Suchanfrage in der aktuellen Kollektion speichern";
 $lang["mustspecifyonekeyword"]="Sie müssen mindestens einen Suchbegriff angeben.";
-$lang["hasemailedyouaresource"]="hat Ihnen eine Ressource gesendet"; # Suffixed to user name, e.g. Fred has e-mailed you a resource
+$lang["hasemailedyouaresource"]="hat Ihnen eine Ressource gesendet."; # Suffixed to user name, e.g. Fred has e-mailed you a resource
 $lang["clicktoviewresource"]="Klicken Sie untenstehenden Link um die Ressource anzuzeigen.";
 $lang["statuscode"]="Statuscode";
 $lang["unoconv_pdf"]="erzeugt durch Open Office";
@@ -820,7 +830,7 @@ $lang["removeallresourcesfromcollection"]="Alle Ressourcen aus dieser Kollektion
 $lang["deleteallresourcesfromcollection"]="Alle Ressourcen dieser Kollektion löschen";
 $lang["deleteallsure"]="Sind Sie sicher, dass Sie diese Ressourcen LÖSCHEN möchten? Die Ressourcen werden gelöscht und nicht (nur) aus dieser Kollektion entfernt.";
 $lang["batchdonotaddcollection"]="(keiner Kollektion hinzufügen)";
-$lang["collectionsthemes"]="Verwandte Themen und öffenliche Kollektionen";
+$lang["collectionsthemes"]="Verwandte Themen und öffentliche Kollektionen";
 $lang["recent"]="Neueste";
 $lang["n_recent"]="%qty neueste";
 $lang["batchcopyfrom"]="Daten von der Ressource (ID) kopieren";
@@ -875,9 +885,12 @@ $lang["contactsheetintrotext"]="Bitte wählen Sie die Blattgröße und die Spalt
 $lang["size"]="Größe";
 $lang["orientation"]="Ausrichtung";
 $lang["requiredfield"]="Das ist ein Pflichtfeld";
-$lang["requiredfields"]="Einige Felder wurden nicht komplett ausgefüllt. Bitte überprüfen Sie das Formular und versuchen Sie es erneut.";
+$lang["requiredfields"]="Bitte überprüfen Sie das Formular. Die folgenden Felder wurden noch nicht ausgefüllt: ";
+$lang["requiredantispam"]="Der Anti-Spam Code wurde nicht korrekt eingegeben, bitte versuchen Sie es erneut";
 $lang["viewduplicates"]="Doppelte Ressourcen anzeigen";
 $lang["duplicateresources"]="Doppelte Ressourcen";
+$lang["duplicateresourcesfor"]="Doppelte Ressourcen für ";
+$lang["noresourcesfound"]="Keine Ergebnisse gefunden";
 $lang["userlog"]="Benutzer-Statistik";
 $lang["ipaddressrestriction"]="IP-Adressen Beschränkung (optional)";
 $lang["wildcardpermittedeg"]="Wildcard erlaubt; z.B.";
@@ -991,7 +1004,7 @@ $lang["setup-successheader"]="Glückwunsch!";
 $lang["setup-successdetails"]="Ihre ResourceSpace Installation ist abgeschlossen. Weitere Konfigurationsoptionen finden Sie in der Datei 'include/default.config.php'.";
 $lang["setup-successnextsteps"]="Nächste Schritte:";
 $lang["setup-successremovewrite"]="Sie können nun den Schreibzugriff auf den Ordner 'include/' entfernen.";
-$lang["setup-visitwiki"]='Besuchen Sie das <a target="_blank" href="http://wiki.resourcespace.org/index.php/Main_Page">ResourceSpace Documentation Wiki</a> für weitere Informationen über die Anpassung Ihrer Installation';
+$lang["setup-visitwiki"]='Besuchen Sie das <a target="_blank" href="http://wiki.resourcespace.org/index.php/?title=main_Page">ResourceSpace Documentation Wiki</a> für weitere Informationen über die Anpassung Ihrer Installation';
 $lang["php-config-file"]="PHP config: '%phpinifile'"; # %phpinifile will be replaced, e.g. PHP config: '/etc/php5/apache2/php.ini'
 $lang["setup-checkconfigwrite"]="Schreibzugriff auf Konfigurationsverzeichnis:";
 $lang["setup-checkstoragewrite"]="Schreibzugriff auf Datenverzeichnis:";
@@ -1070,6 +1083,9 @@ $lang["setup-storage_url"]="Storage URL";
 $lang["setup-if_storageurl"]="Wie kann per HTTP auf das Storage Verzeichnis zugegriffen werden? Kann absolut sein (http://files.example.com) oder relativ zur RS Installation. HINWEIS: Kein / am Ende.";
 $lang["setup-ftp_settings"]="FTP Einstellungen";
 $lang["setup-if_ftpserver"]="Nur notwendig, wenn Sie planen, die FTP Upload Funktion zu nutzen.";
+$lang["design-options"]="Design Optionen";
+$lang["use-slim-theme"]="SlimHeader Design verwenden";
+$lang["setup-if_slimtheme"]="SlimHeader Design verwenden für einen schmaleren Header mit verlinktem Logo.";
 $lang["setup-login_to"]="Login zu";
 $lang["setup-configuration_file_output"]="Ausgabe der Konfigurationsdatei";
 
@@ -1490,6 +1506,8 @@ $lang["columnheader-last_seen"]="Zuletzt gesehen";
  $lang["on_date"]="am";
  $lang["launchpermissionsmanager"]="Berechtigungs-Manager öffnen";
  $lang["confirm-deletion"]="Sind Sie sicher?";
+$lang["accept_png_gif_only"]="Nur .png oder .gif Erweiterung akzeptiert";
+$lang["ensure_file_extension_match"]="Sicherstellen, dass Datei und Erweiterung übereinstimmen";
 
 # Permissions Manager
 $lang["permissionsmanager"]="Berechtigungsmanager";
@@ -1547,6 +1565,7 @@ $lang["done"]="Fertig.";
 
 $lang["latlong"]="Breite / Länge";
 $lang["geographicsearch"]="Geographische Suche";
+$lang["geographicsearchresults"]="Ergebnisse der geographischen Suche";
 
 $lang["geographicsearch_help"]="Ziehen, um einen Suchbereich zu erstellen.";
 
@@ -1563,6 +1582,7 @@ $lang["editresourcetypewarning"]="Warnung: Durch das Ändern des Ressourcen-Typs
 
 $lang["geodragmode"]="Zieh-Modus";
 $lang["geodragmodearea"]="Auswahl";
+$lang["geodragmodeareaselect"]="Suchbereich auswählen";
 $lang["geodragmodepan"]="schwenken";
 
 $lang["substituted_original"] = "ersetztes Original";
@@ -1586,6 +1606,8 @@ $lang["horizontal"] = "Horizontal";
 $lang["vertical"] = "Vertikal";
 
 $lang["cc-emailaddress"] = "CC %emailaddress"; # %emailaddress will be replaced, e.g. CC [your email address]
+$lang["list-recipients-label"] = "Alle Empfänger in der E-Mail auflisten?";
+$lang["list-recipients"] = "Diese Nachricht wurde an die folgenden E-Mail Adressen versendet:";
 
 $lang["sort"] = "Sortieren";
 $lang["sortcollection"] = "Kollektion sortieren";
@@ -1750,7 +1772,7 @@ $lang["textfile"]="Textdatei";
 # Comments field titles, prompts and default placeholders
 $lang['comments_box-title']="Kommentare";
 $lang['comments_box-policy']="Kommentar Regelung";
-$lang['comments_box-policy-placeholder']="Bitte ergänzen Sie Ihren Text unter comments_policy bei den Seitenhinhalten";		# only shown if Admin User and no policy set
+$lang['comments_box-policy-placeholder']="Bitte ergänzen Sie Ihren Text unter comments_policy bei den Seitenhinhalten";		# only shown if Admin User and no policy set"
 $lang['comments_in-response-to']="Antwort auf";
 $lang['comments_respond-to-this-comment']="Antwort";
 $lang['comments_in-response-to-on']="auf";
@@ -1793,7 +1815,172 @@ $lang["contactadminemailtext"]=" hat Ihnen eine Ressource gesendet";
 $lang["showgeolocationpanel"]="Geodaten anzeigen";
 $lang["hidegeolocationpanel"]="Geodaten ausblenden";
 $lang["download_usage_option_blocked"]="Diese Nutzungsoption ist nicht verfügbar. Bitte kontaktieren Sie Ihren Administrator";
-$lang["information-onchange_macro"]="Makro bei Veränderung: Auszuführender Code bei Veränderungen. VORSICHT";
 
 $lang["tagcloudtext"]="Mit welchen Begriffen haben die Benutzer Ressourcen versehen? Je häufiger ein Begriff vorkommt, desto größer wird er angezeigt.<br /><br />Sie können außerdem jeden Begriff anklicken, um eine Suche auszuführen.";
 $lang["tagcloud"]="Tagwolke";
+
+$lang["email_link_expires_never"]="Dieser Link wird niemals ablaufen";
+$lang['email_link_expires_date']="Dieser Link läuft ab am ";
+$lang['email_link_expires_days']="Link läuft ab: ";
+$lang['expire_days']='Tage';
+$lang['expire_day']='Tag';
+$lang["collection_order_description"]="Kollektionssortierung";
+$lang["view_shared_collections"]="Weitergegebene Kollektionen anzeigen";
+$lang["shared_collections"]="Weitergegebene Kollektionen";
+$lang["internal"]="Intern";
+$lang["managecollectionslink"]="Kollektionen verwalten";
+$lang["showcollectionindropdown"]="Kollektionen in Dropdown Menü anzeigen";
+$lang["sharerelatedresources"]="Verwandte Ressourcen einschließen.<br>Eine neue Kollektion wird erstellt und weitergegeben, wenn eine dieser Ressourcen ausgewählt wird.";
+$lang["sharerelatedresourcesaddremove"]="Wenn verwandte Ressourcen weitergegeben werden, anderen Benutzern erlauben, Ressourcen aus der neuen Kollektion zu entfernen bzw. hinzuzufügen.";
+$lang["create_empty_resource"]="Upload überspringen und eine neue Ressource ohne zugeordneter Datei erstellen";
+$lang["entercollectionname"]="Namen eingeben, dann Return drücken";
+$lang["embedded_metadata"]="Eingebettete Metadaten";
+$lang["embedded_metadata_extract_option"]="Extrahieren";
+$lang["embedded_metadata_donot_extract_option"]="Nicht extrahieren";
+$lang["embedded_metadata_append_option"]="Am Ende einfügen";
+$lang["embedded_metadata_prepend_option"]="Am Anfang einfügen";
+$lang["embedded_metadata_custom_option"]="Benutzerdefiniert";
+$lang["related_resource_confirm_delete"]="This will remove the relationship but will not delete the resource. ";
+$lang["batch_replace_filename_intro"]="Um eine Reihe von Ressourcen zu ersetzen, können Sie Dateien hochladen, deren Namen den eindeutigen Ressourcen-IDs entspricht. Alternativ können Sie ein Metadatenfeld auswählen, welches den Dateinamen enthält und das System vergleicht die Dateinamen mit denen der hochgeladenen Dateien zum Ersetzen";
+$lang["batch_replace_use_resourceid"]="Dateinamen mit Ressourcen-IDs vergleichen";
+$lang["batch_replace_filename_field_select"]="Bitte wählen Sie das Feld aus, welches den Dateinamen enthält.";
+$lang["plupload_log_intro"] ="Upload Zusammenfassung - Serverzeit: ";
+$lang["no_access_to_collection"]="Sie haben leider keinen Zugriff auf diese Kollektion.";
+$lang["internal_share_grant_access"]="Offenen Zugriff für ausgewählte Benutzer gewähren?";
+$lang["internal_share_grant_access_collection"]="Offenen Zugriff für ausgewählte Benutzer gewähren (für Ressourcen, auf die Sie Bearbeitungszugriff haben)?";
+
+# For merging filename with title functionality:
+$lang['merge_filename_title_question'] = 'Dateinamen im Titel verwenden (wenn kein eingebetteter Titel gefunden wird)?';
+$lang['merge_filename_title_do_not_use'] = 'Nicht verwenden';
+$lang['merge_filename_title_replace'] = 'Ersetzen';
+$lang['merge_filename_title_prefix'] = 'Voranstellen';
+$lang['merge_filename_title_suffix'] = 'Anhängen';
+$lang['merge_filename_title_include_extensions'] = 'Dateierweiterungen verwenden?';
+$lang['merge_filename_title_spacer'] = 'Abstand';
+
+# For sending a collection with all the resources uploaded at one time:
+$lang['send_collection_to_admin_emailedcollectionname'] = 'Kollektion per E-Mail gesendet';
+$lang['send_collection_to_admin_emailsubject'] = 'Kollektion hochgeladen durch ';
+$lang['send_collection_to_admin_usercontributedcollection'] = ' hat diese Ressourcen in einer Kollektion hochgeladen';
+$lang['send_collection_to_admin_additionalinformation'] = 'Zusätzliche Informationen';
+$lang['send_collection_to_admin_collectionname'] = 'Name der Kollektion: ';
+$lang['send_collection_to_admin_numberofresources'] = 'Anzahl der Ressourcen: ';
+
+# User group management
+$lang['page-title_user_group_management'] = "Benutzergruppen verwalten";
+$lang['page-subtitle_user_group_management'] = "In diesem Bereich können Sie Benutzergruppen hinzufügen, ändern und entfernen.";
+$lang['action-title_create_user_group_called'] = "Benutzergruppe mit Namen erstellen...";
+$lang['action-title_filter_by_parent_group'] = "Filter für übergeordnete Benutzergruppe";
+$lang['action-title_filter_by_permissions'] = "Berechtigungsfilter";
+$lang["fieldhelp-permissions_filter"]="Sie können eine einzelne Berechtigung oder eine mit Komma getrennte Liste eingeben. Teilnamen und Muster sind nicht erlaubt. Groß- und Kleinschreibung wird unterschieden!";
+
+# User group management edit
+$lang['page-title_user_group_management_edit'] = "Benutzergruppe ändern";
+$lang['page-subtitle_user_group_management_edit'] = "In diesem Bereich können Sie die Eigenschaften einer Benutzergruppe ändern.";
+$lang["action-title_remove_user_group_logo"]="Anwählen um das Benutzergruppenlogo zu entfernen";
+$lang["action-title_see_wiki_for_advanced_options"]="Im <a href='http://wiki.resourcespace.org/index.php?title=Main_Page#System_Administrator.27s_Guide'>WIKI</a> finden Sie Informationen für weiterführende Optionen.";
+
+# Report management
+$lang['page-title_report_management'] = "Reporte verwalten";
+$lang['page-subtitle_report_management'] = "In diesem Bereich können Sie Reporte hinzufügen, ändern und löschen.";
+$lang['action-title_create_report_called'] = "Report mit Namen erstellen...";
+
+# Report management edit
+$lang['page-title_report_management_edit'] = "Report ändern";
+$lang['page-subtitle_report_management_edit'] = "In diesem Bereich können Sie den Inhalt eines Reports festlegen.";
+$lang["fieldtitle-tick_to_delete_report"] = "Anwählen um diesen Report zu entfernen";
+
+# size management
+$lang['page-title_size_management'] = "Bildgrößen verwalten";
+$lang['page-subtitle_size_management'] = "In diesem Bereich können Sie die Bildgrößen für Vorschau und zum Herunterladen verändern.";
+$lang['action-title_create_size_with_id'] = "Größe mit " . $lang['property-id'] . " erstellen...";
+
+# size management edit
+$lang['page-title_size_management_edit'] = "Bildgröße ändern";
+$lang['page-subtitle_size_management_edit'] = "In diesem Bereich können Sie die Details zu einer Bildgröße festlegen.";
+$lang["fieldtitle-tick_to_delete_size"] = "Anwählen um diese Größe zu entfernen";
+
+##########################################################################################
+# Non page-specific items that need to be merged above when system admin project completed
+##########################################################################################
+
+$lang["admin_resource_type_field"]="Metadatenfeld verwalten";
+$lang["admin_resource_type_field_count"]="Metadatenfelder";
+$lang["admin_resource_type_field_create"]="Metadatenfeld mit Namen erstellen...";
+$lang["admin_resource_type_field_reorder_information"]="Um die Anzeigereihenfolge der Felder zu ändern, können Sie die Zeilen per Drag&Drop verschieben.";
+$lang["admin_resource_type_field_reorder_select_restype"]="Wählen Sie einen Ressourcetypen oder globale Felder aus, um das Umordnen von Feldern zu erlauben.";
+$lang["admin_resource_type_fields"]="Metadatenfelder verwalten";
+$lang["fieldhelp-tick_to_delete_group"]="Sie können keine Benutzergruppen löschen, die noch Benutzer enthalten oder einer anderen Gruppe übergeordnet sind";
+$lang["fieldtitle-tick_to_delete_group"]="Anwählen um diese Gruppe zu entfernen";
+$lang["property-contains"]="Enthält";
+$lang["property-groups"]="Gruppen";
+$lang["property-user_group"]="Benutzergruppe";
+$lang["property-user_group_parent"]="Übergeordnete Benutzergruppe";
+$lang["property-user_group_remove_parent"]="(übergeordnete Gruppe entfernen)";
+$lang['action-move-up'] = 'Nach oben';
+$lang['action-move-down'] = 'Nach unten';
+
+
+
+$lang["about__about"]="Ihr Text zu \"Über uns\" hier.";
+$lang["all__researchrequest"]="Lassen Sie unser Team nach den benötigten Resourcen suchen.";
+$lang["all__searchpanel"]="Suche nach Beschreibung, Schlagworten und Ressourcen IDs";
+$lang["change_language__introtext"]="Bitte wählen Sie Ihre Sprache aus:";
+$lang["change_password__introtext"]="Neues Passwort unten eingeben, um es zu ändern.";
+$lang["collection_edit__introtext"]="Organisieren und verwalten Sie Ihre Arbeit, indem Sie Ressourcen in Gruppen zusammenstellen. Erstellen Sie Kollektionen wie Sie sie benötigen.\n\n<br />\n\nAlle Kollektionen in Ihrer Liste erscheinen im \"Meine Kollektionen\" Menü am unteren Ende des Fensters.\n\n<br /><br />\n\n<strong>Privater Zugriff</strong> erlaubt nur Ihnen und ausgewählten Benutzern, die Kollektion zu anzusehen. Ideal, um Ressourcen für die eigene Arbeit zusammenzustellen und im Team weiterzugeben.\n\n<br /><br />\n\n<strong>Öffentlicher Zugriff</strong> erlaubt allen Benutzern, die Kollektion zu finden und anzusehen.\n\n<br /><br />\n\nSie können aussuchen, ob Sie anderen Benutzern (öffentlicher Zugriff oder ausgewählte Benutzer beim privaten Zugriff) erlauben, Ressourcen hinzuzufügen oder zu löschen.";
+$lang["collection_email__introtext"]="Bitte füllen Sie das untenstehende Formular aus, um die Kollektion per E-Mail weiterzugeben. Der/die Benutzer werden statt eines Dateianhangs einen Link zu dieser Kollektion erhalten und können dann die passenden Ressourcen auswählen und herunterladen.";
+$lang["collection_manage__findpublic"]="Öffentliche Kollektionen sind für alle Benutzer zugängliche Gruppen von Ressourcen. Um öffentliche Kollektionen zu finden, geben Sie die ID, oder einen Teil des Kollektions- bzw. Benutzernamens ein. Fügen Sie dann die Kollektion zu Ihren Kollektionen hinzu, um auf die Ressourcen zuzugreifen.";
+$lang["collection_manage__introtext"]="Organisieren und verwalten Sie Ihre Arbeit, indem Sie Ressourcen in Gruppen zusammenstellen. Erstellen Sie Kollektionen wie Sie sie benötigen. Sie können Kollektionen an andere weitergeben oder einfach Gruppen von Ressourcen zusammen halten. Alle Kollektionen in Ihrer Liste finden Sie im \"Meine Kollektionen\" Menü am unteren Ende des Fensters.";
+$lang["collection_manage__newcollection"]="Um eine neue Kollektion zu erstellen, geben Sie bitte einen Kurznamen an.";
+$lang["collection_public__introtext"]="Öffentliche Kollektionen werden von anderen Benutzern erstellt und freigegeben.";
+$lang["contact__contact"]="Ihre Kontaktdaten hier.";
+$lang["contribute__introtext"]="Sie können Ihre eigenen Ressourcen hochladen. Wenn Sie eine Ressource erstellen, wird diese zunächst durch uns geprüft. Nachdem Sie die Datei hochgeladen und die Felder ausgefüllt haben, setzen Sie bitte den Status auf \"Benutzer-Beiträge: Überprüfung noch nicht erledigt\".";
+$lang["delete__introtext"]="Bitte geben Sie Ihr Passwort ein, um zu bestätigen, dass Sie diese Ressource löschen wollen.";
+$lang["done__collection_email"]="Eine E-Mail mit Link zur Kollektion wurde an die angegebenen Benutzer gesendet. Die Kollektion wurde zur Liste Ihrer Kollektionen hinzugefügt.";
+$lang["done__deleted"]="Die Ressource wurde gelöscht.";
+$lang["done__research_request"]="Ein Mitglied unseres Teams wird sich um Ihre Anfrage kümmern. Wir werden Sie per e-mail über den aktuellen Stand informieren. Wenn Ihre Anfrage bearbeitet ist, erhalten Sie eine e-mail mit einem Link zu den Ressourcen, die wir für Ihre Anfrage empfehlen.";
+$lang["done__resource_email"]="Eine E-Mail mit Link zur Ressource wurde an die angegebenen Benutzer gesendet.";
+$lang["done__resource_request"]="Ihre Anfrage wurde abgeschickt und wird in Kürze bearbeitet.";
+$lang["done__user_password"]="Eine E-Mail mit Ihrem Benutzernamen und Passwort wurde an Sie gesendet.";
+$lang["done__user_request"]="Ihre Anfrage nach einem Zugang wurde abgeschickt und wird in Kürze bearbeitet.";
+$lang["download_click__introtext"]="Um die Datei herunterzuladen, klicken Sie bitte mit der rechten Maustaste auf den untenstehenden Link und wählen Sie \"Speichern unter...\". Sie können dann auswählen an welchem Ort Sie die Datei abspeichern wollen. Um die Datei im Browser zu öffnen, klicken Sie den Link bitte mit der linken Maustaste.";
+$lang["download_progress__introtext"]="Ihr Download wird in Kürze starten. Nachdem der Download abgeschlossen ist, wählen Sie bitte einen der folgenden Links.";
+$lang["edit__batch"]="";
+$lang["edit__multiple"]="Bitte wählen Sie die Felder aus, die Sie verändern wollen. Felder, die Sie nicht anwählen, werden nicht verändert.";
+$lang["help__introtext"]="Diese Anleitungen helfen Ihnen, ResourceSpace und Ihre Medien effektiv zu nutzen.</p>\n<p>Benutzen Sie \"Themen\", um Ressourcen nach Themen zu erkunden oder nutzen Sie die Suche um spezifische Ressourcen zu finden.</p>\n<p><a href=\"http://www.montala.net/downloads/resourcespace-GettingStarted.pdf\">User Guide</a> (PDF, englisch)<br /><a target=\"_blank\" href=\"http://wiki.resourcespace.org/index.php/?title=main_Page\">Online Dokumentation</a> (Wiki)</p>";
+$lang["home__help"]="Hilfe für die Arbeit mit ResourceSpace";
+$lang["home__mycollections"]="Hier können Sie Ihre Kollektionen organisieren, verwalten und weitergeben.";
+$lang["home__restrictedtext"]="Bitte klicken Sie auf den Link, den Sie per E-Mail erhalten haben, um auf die für Sie ausgesuchten Ressourcen zuzugreifen.";
+$lang["home__restrictedtitle"]="Willkommen bei ResourceSpace";
+$lang["home__themes"]="Von unserem Team vorausgewählte Bilder";
+$lang["home__welcometext"]="Ihr Einleitungstext hier";
+$lang["home__welcometitle"]="Willkommen bei ResourceSpace";
+$lang["login__welcomelogin"]="Willkommen bei ResourceSpace. Bitte loggen Sie sich ein...";
+$lang["research_request__introtext"]="Unser Team unterstützt Sie dabei, die optimalen Ressourcen für Ihre Projekte zu finden. Füllen Sie dieses Formular bitte möglichst vollständig aus, damit wir Ihre Anforderungen erfüllen können.\n<br /><br />\nWir werden Sie kontinuierlich informieren. Sobald wir Ihre Anfrage bearbeitet haben, werden Sie eine E-Mail mit einem Link zu den von uns empfohlenen Bildern erhalten.";
+$lang["resource_email__introtext"]="Geben Sie dieses Bild per E-Mail weiter. Es wird ein Link versendet. Sie können außerdem eine persönliche Nachricht in die E-Mail einfügen.";
+$lang["resource_request__introtext"]="Die Ressource, die Sie herunterladen möchten, ist nicht online verfügbar. Die Informationen zur Ressource werden automatisch per E-Mail versendet. Zusätzlich können Sie weitere Bemerkungen hinzufügen.";
+$lang["search_advanced__introtext"]="<strong>Suchtipp</strong><br />\nJeder Bereich, den Sie nicht ausfüllen / anklicken, liefert alle Ergebnisse aus dem Bereich.";
+$lang["tag__introtext"]="Verbessern Sie die Suchergebnisse, indem Sie Ressourcen taggen. Sagen Sie, was Sie sehen, getrennt durch Leerzeichen oder Komma... z.B.: Hund, Haus, Ball, Geburtstag, Kuchen. Geben Sie den vollen Namen von Personen in Fotos und die Ort der Aufnahme an, wenn bekannt.";
+$lang["team_archive__introtext"]="Um einzelne Ressourcen im Archiv zu bearbeiten, suchen Sie einfach nach den Ressourcen und klicken auf \"bearbeiten\" unter \"Ressourcen-Werkzeuge\". Alle Ressourcen, die archiviert werden sollen, werden in der Liste \"Archivierung noch nicht erledigt\" angezeigt. Von dieser Liste aus können Sie weitere Informationen ergänzen und die Ressource ins Archiv verschieben.";
+$lang["team_batch__introtext"]="";
+$lang["team_batch_select__introtext"]="";
+$lang["team_batch_upload__introtext"]="";
+$lang["team_copy__introtext"]="Geben Sie die ID der Ressource ein, die Sie kopieren möchten. Nur die Metadaten der Ressource werden kopiert – hochgeladene Dateien werden nicht kopiert.";
+$lang["team_home__introtext"]="Willkommen in der Administration. Bitte benutzen Sie die untenstehenden Links, um die Ressourcen zu verwalten, auf Ressourcenanfragen zu antworten, Themen zu verwalten und die Systemeinstellungen zu bearbeiten.";
+$lang["team_report__introtext"]="Bitte wählen Sie einen Bericht und einen Zeitraum. Der Bericht kann in Microsoft Excel oder einer anderen Tabellenkalkulation geöffnet werden.";
+$lang["team_research__introtext"]="Organisieren und verwalten Sie Ihre \"Ressourcenanfragen\".<br /><br />Wählen Sie \"Anfrage bearbeiten\", um die Details der Anfrage zu sehen und sie einem Teammitglied zuzuweisen. Es ist möglich, eine Antwort auf einer existierenden Kollektion aufzubauen. Geben Sie dazu die Kollektions-ID in der Ansicht zur Bearbeitung ein.<br /><br />Wenn die Ressourcenanfrage zugewiesen ist, wählen Sie \"Kollektion bearbeiten\", um die Anfrage zu Ihren Kollektionen hinzuzufügen. So können Sie Ressourcen zu dieser Kollektion hinzufügen.<br /><br />Wenn die Kollektion vollständig ist, wählen Sie \"Anfrage bearbeiten\", stellen Sie den Status auf \"abgeschlossen\" und eine E-Mail wird automatisch an den Anfrager geschickt. Diese E-Mail enthält einen Link zur erstellten Kollektion, welche außerdem automatisch zu den Kollektionen des Benutzers hinzugefügt wird.";
+$lang["team_resource__introtext"]="Fügen Sie einzelne Ressourcen hinzu oder nutzen Sie den Stapelupload. Um einzelne Ressourcen zu bearbeiten, suchen Sie nach der Ressource und wählen Sie \"bearbeiten\" unter den \"Ressourcen-Werkzeugen\".";
+$lang["team_stats__introtext"]="Statistiken werden auf Basis der aktuellsten Daten erstellt. Aktivieren Sie die Checkbox, um alle Statistiken für das gewählte Jahr auszugeben.";
+$lang["team_user__introtext"]="In diesem Bereich können Sie Benutzer hinzufügen, löschen und verändern.";
+$lang["terms__introtext"]="Sie müssen zuerst die Nutzungsbedingungen akzeptieren.\n\n";
+$lang["terms__terms"]="Ihre Nutzungsbedingungen hier.";
+$lang["terms and conditions__terms and conditions"]="Ihre Nutzungsbedingungen hier.";
+$lang["themes__findpublic"]="Öffentliche Kollektionen sind Kollektionen, die von anderen Benutzern freigegeben wurden.";
+$lang["themes__introtext"]="Themen sind von unserem Team zusammengestellte Gruppen von Ressourcen.";
+$lang["themes__manage"]="Organisieren und bearbeiten Sie Ihre Themen. Themen sind besonders hervorgehobene Kollektionen. <br /><br /><strong>1 Um einen neuen Eintrag in einem Thema anzulegen, müssen Sie zuerst eine neue Kollektion anlegen</strong><br />Wählen Sie <strong>Meine Kollektionen</strong> aus der oberen Navigation und legen Sie eine neue <strong>öffentliche</strong> Kollektion an. Stellen Sie sicher, dass Sie einen Namen für Ihr Thema eingeben. Um die aktuelle Kollektion einem bestehenden Thema zuzuordnen, nutzen Sie einen bestehenden Themennamen. Wenn Sie einen noch nicht vergebenen Themennamen angeben, erstellen Sie ein neues Thema. <br /><br /><strong>2 Um den Inhalt eines bestehenden Themas zu ändern, </strong><br />wählen Sie <strong>\'Kollektion bearbeiten\'</strong>. Die Ressourcen in dieser Kollektion erscheinen unten im <strong>\'Meine Kollektionen\'</strong> Bereich. Nutzen Sie die Standardwerkzeuge um Resourcen zu bearbeiten, hizuzufügen oder zu löschen.<br /><br /><strong>3 Um eine Kollektion umzubenennen oder unter einem anderen Thema anzuzeigen,</strong><br />wählen Sie <strong>\'bearbeiten\'</strong> und bearbeiten Sie die Themenkategorie oder die Kollektionsnamen. <br /><br /><strong>4 Um eine Kollektion aus einem Thema zu entfernen,</strong><br />wählen Sie<strong> \'bearbeiten\'</strong> und löschen Sie den Eintrag im Feld \"Themen-Kategorie\".";
+$lang["upload__introtext"]="";
+$lang["upload_swf__introtext"]="";
+$lang["user_password__introtext"]="Bitte geben Sie Ihre E-Mail Adresse ein. Ihre Zugangsdaten werden dann an per E-Mail an Sie versendet.";
+$lang["user_request__introtext"]="Um einen Zugang anzufordern, füllen Sie bitte das untenstehende Formular aus.";
+$lang["view__storyextract"]="Story:";
+

@@ -119,7 +119,7 @@ $lang["resetarchivestatus"]="Reset status arsip untuk semua asset dalam koleksi"
 $lang["editallresources"]="Ubah semua asset dalam koleksi";
 $lang["editresources"]="Ubah Aset";
 $lang["multieditnotallowed"]="Ubah-masal tidak diijinkan - tidak semua aset mempunyai status yang sama atau tipe yang serupa.";
-$lang["emailcollection"]="Koleksi E-mail";
+$lang["emailcollectiontitle"]="Koleksi E-mail";
 $lang["collectionname"]="Nama Koleksi";
 $lang["collectionid"]="ID Koleksi";
 $lang["emailtousers"]="E-mail ke pengguna<br />(gunakan alamat email dari bukan pengguna)";
@@ -181,7 +181,7 @@ $lang["clearform"]="Hapus Isi";
 $lang["similarresources"]="aset serupa"; # contoh 17 aset serupa
 $lang["similarresource"]="aset serupa"; # contoh. 1 aset serupa
 $lang["nosimilarresources"]="Tidak ada aset serupa";
-$lang["emailresource"]="E-mail";
+$lang["emailresourcetitle"]="E-mail";
 $lang["resourcetitle"]="Judul Aset";
 $lang["filename"]="Nama File Asal";
 $lang["requestresource"]="Minta Aset";
@@ -622,7 +622,7 @@ $lang["setup-successheader"]="Selamat!";
 $lang["setup-successdetails"]="Setup awal ResourceSpace anda telah selesai.  Silahkan periksa  'include/default.config.php' untuk pilihan konfigurasi lain.";
 $lang["setup-successnextsteps"]="Langkah Berikutnya:";
 $lang["setup-successremovewrite"]="Sekarang anda bisa menyingkirkan akses pengisian untuk memasukkan  'include/'.";
-$lang["setup-visitwiki"]='Silahkan kunjungi <a target="_blank" href="http://wiki.resourcespace.org/index.php/Main_Page">ResourceSpace Documentation Wiki</a> untuk informasi lebih lanjut tentang setup instalasi anda';
+$lang["setup-visitwiki"]='Silahkan kunjungi <a target="_blank" href="http://wiki.resourcespace.org/index.php/?title=main_Page">ResourceSpace Documentation Wiki</a> untuk informasi lebih lanjut tentang setup instalasi anda';
 $lang["setup-checkconfigwrite"]="Akses isi untuk direktori config:";
 $lang["setup-checkstoragewrite"]="Akses isi untuk direktori storage:";
 $lang["setup-welcome"]="Selamat Datang di ResourceSpace";

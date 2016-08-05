@@ -1,0 +1,6 @@
+name: accessibility
+desc: An accessible display for users with limited vision
+author: Montala Limited
+version: 1.02
+default_priority: 100
+category: User interface

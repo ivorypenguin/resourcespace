@@ -1,0 +1,5 @@
+name    : tms_link
+author  : Montala Ltd.
+version : 1.0
+desc    : Allows resource metadata to be extracted from TMS database. 
+config_url: /plugins/tms_link/pages/setup.php

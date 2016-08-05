@@ -2,7 +2,9 @@
 
 function HookLicensemanagerViewCustompanels()
 	{
-	global $lang,$baseurl_short,$ref,$edit_access;
+	global $lang,$baseurl_short,$ref,$edit_access,$k;
+	
+	if($k!=""){return false;}
 	
 	$licenses=sql_query("select ref,outbound,holder,license_usage,description,expires from resource_license where resource='$ref' order by ref");
 	?>
@@ -72,7 +74,7 @@ function HookLicensemanagerViewCustompanels()
 
     
     </div>
-    <div class="PanelShadow"></div>
+    
     </div>
     <?php
 	return false; # Allow further custom panels

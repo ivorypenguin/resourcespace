@@ -10,7 +10,7 @@
 $cwd = dirname(__FILE__);
 include "$cwd/../../include/db.php";
 //include "../../include/authenticate.php"; if (!checkperm("a")) {exit("Permission denied");}
-include "$cwd/../../include/general.php";
+include_once "$cwd/../../include/general.php";
 include "$cwd/../../include/image_processing.php";
 include "$cwd/../../include/resource_functions.php";
 

@@ -1,5 +1,6 @@
 name: posixldapauth
 author: Brian Adams, Guenter Bartsch, David White
-version: 0.95
-desc: LDAP authentication for AD & LDAP with Updated Language Support
+version: 0.99
+desc: Deprecated LDAP plugin for AD & LDAP. Use simpleldap for AD integration.
 config_url: /plugins/posixldapauth/pages/setup.php
+category: advanced, deprecated

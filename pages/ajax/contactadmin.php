@@ -1,8 +1,8 @@
 <?php
 include "../../include/db.php";
+include_once "../../include/general.php";
 include "../../include/authenticate.php"; #if (!checkperm("s")) {exit ("Permission denied.");}
-include "../../include/general.php";
-include "../../include/collections_functions.php";
+include_once "../../include/collections_functions.php";
 include "../../include/resource_functions.php";
 include "../../include/search_functions.php";
 
@@ -34,17 +34,45 @@ if (getval("send","")!="")
 	$templatevars['emailfrom']=$useremail;
 	$subject=$templatevars['fromusername'] . $lang["contactadminemailtext"];
 	$templatevars['message']=$messagetext;
-	$message=$templatevars['fromusername'] . ($useremail!="" ? " (" . $useremail . ")" : "") . $lang["contactadminemailtext"] . "\n\n" . $messagetext . "\n\n" . $lang["clicktoviewresource"] . "\n\n" . $templatevars['url'];
+	$message=$templatevars['fromusername'] . ($useremail!="" ? " (" . $useremail . ")" : "") . $lang["contactadminemailtext"] . "\n\n" . $messagetext . "\n\n" . $lang["clicktoviewresource"] . "\n\n" . $templatevars['url'];	
+	$notification_message = $templatevars['fromusername'] . ($useremail!="" ? " (" . $useremail . ")" : "") . $lang["contactadminemailtext"] . "\n\n" . $messagetext . "\n\n" . $lang["clicktoviewresource"];
 	
-		
 	global $watermark; 
 	$templatevars['thumbnail']=get_resource_path($ref,true,"thm",false,"jpg",$scramble=-1,$page=1,($watermark)?(($access==1)?true:false):false);
 	if (!file_exists($templatevars['thumbnail'])){
-			$templatevars['thumbnail']="../gfx/".get_nopreview_icon($resourcedata["resource_type"],$resourcedata["file_extension"],false);
+			$templatevars['thumbnail']="../gfx/".get_nopreview_icon($resource["resource_type"],$resource["file_extension"],false);
 		}	
 	
-	# Build message and send.
-	send_mail($email_notify,$subject,$message,$applicationname,$email_from,"emailcontactadmin",$templatevars,$applicationname);
+	# Build message and send.	
+	$admin_notify_emails = array();
+	$admin_notify_users = array();
+	$notify_users=get_notification_users("RESOURCE_ADMIN");
+	foreach($notify_users as $notify_user)
+		{
+		get_config_option($notify_user['ref'],'user_pref_resource_notifications', $send_message);		  
+		if($send_message==false){$continue;}		
+		get_config_option($notify_user['ref'],'email_user_notifications', $send_email);    
+		if($send_email && $notify_user["email"]!="")
+			{
+			$admin_notify_emails[] = $notify_user['email'];				
+			}        
+		else
+			{
+			$admin_notify_users[]=$notify_user["ref"];
+			}
+		}
+	foreach($admin_notify_emails as $admin_notify_email)
+		{
+		send_mail($admin_notify_email,$subject,$message,$applicationname,$email_from,"emailcontactadmin",$templatevars,$applicationname);
+    	}
+	
+	if (count($admin_notify_users)>0)
+		{
+        message_add($admin_notify_users,$notification_message,$templatevars['url']);
+		}
+	
+	
+	
 	exit("SUCCESS");	
 	}
 
@@ -54,14 +82,14 @@ if ($insert=="")
 	$search=getvalescaped("search","");
 	$order_by=getvalescaped("order_by","relevance");
 	$offset=getvalescaped("offset",0,true);
-	$default_sort="DESC";
-	if (substr($order_by,0,5)=="field"){$default_sort="ASC";}
-	$sort=getval("sort",$default_sort);
+	$default_sort_direction="DESC";
+	if (substr($order_by,0,5)=="field"){$default_sort_direction="ASC";}
+	$sort=getval("sort",$default_sort_direction);
 	$archive=getvalescaped("archive",0,true);
 
 	include "../../include/header.php";		
 	?>
-	<p><a href="<?php echo $baseurl ?>/pages/view.php?ref=<?php echo urlencode($ref) ?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset) ?>&order_by=<?php echo urlencode($order_by) ?>&sort=<?php echo urlencode($sort) ?>&archive=<?php echo urlencode($archive) ?>" onClick="return CentralSpaceLoad(this,true);">&lt;&nbsp;<?php echo $lang["backtoresourceview"]?></a></p>
+	<p><a href="<?php echo $baseurl ?>/pages/view.php?ref=<?php echo urlencode($ref) ?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset) ?>&order_by=<?php echo urlencode($order_by) ?>&sort=<?php echo urlencode($sort) ?>&archive=<?php echo urlencode($archive) ?>" onClick="return CentralSpaceLoad(this,true);"><?php echo LINK_CARET_BACK ?><?php echo $lang["backtoresourceview"]?></a></p>
 	<h1><?php echo $lang["contactadmin"]?></h1>				
 	<div>		
 		

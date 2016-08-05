@@ -1,12 +1,19 @@
 <?php
 include "../include/db.php";
+include_once "../include/general.php";
 include "../include/authenticate.php";
-include "../include/general.php";
 include "../include/resource_functions.php";
 include "../include/search_functions.php";
+include "../include/collections_functions.php";
 
 $ref=getvalescaped("ref","",true);
 $k=getvalescaped("k","");
+
+// Logs can sometimes contain confidential information and the user looking at them must have admin permissions set
+if(!checkperm('v'))
+{
+	die($lang['log-adminpermissionsrequired']);
+}
 
 # fetch the current search (for finding simlar matches)
 $search=getvalescaped("search","");
@@ -16,12 +23,12 @@ $restypes=getvalescaped("restypes","");
 if (strpos($search,"!")!==false) {$restypes="";}
 $archive=getvalescaped("archive",0,true);
 $starsearch=getvalescaped("starsearch","");
-$default_sort="DESC";
-if (substr($order_by,0,5)=="field"){$default_sort="ASC";}
-$sort=getval("sort",$default_sort);
+$default_sort_direction="DESC";
+if (substr($order_by,0,5)=="field"){$default_sort_direction="ASC";}
+$sort=getval("sort",$default_sort_direction);
 
 $offset=getvalescaped("offset",0);
-$per_page=getvalescaped("per_page_list",15);setcookie("per_page_list",$per_page);
+$per_page=getvalescaped("per_page_list",15);rs_setcookie('per_page_list', $per_page);
 
 
 
@@ -70,11 +77,11 @@ if ($go!="")
 include "../include/header.php";
 ?>
 <div class="BasicsBox">
-<p><a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo urlencode($ref)?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($search_offset)?>&order_by=<?php echo urlencode($order_by) ?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>"  onClick="return CentralSpaceLoad(this,true);">&lt;&nbsp;<?php echo $lang["backtoresourceview"]?></a></p>
+<p><a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo urlencode($ref)?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($search_offset)?>&order_by=<?php echo urlencode($order_by) ?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>"  onClick="return CentralSpaceLoad(this,true);"><?php echo LINK_CARET_BACK ?><?php echo $lang["backtoresourceview"]?></a></p>
 
 
 <div class="backtoresults">
-<a href="<?php echo $baseurl_short?>pages/log.php?ref=<?php echo urlencode($ref) ?>&search=<?php echo urlencode($search)?>&search_offset=<?php echo urlencode($search_offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>&k=<?php echo urlencode($k) ?>&search_go=previous&<?php echo hook("nextpreviousextraurl") ?>" onClick="return CentralSpaceLoad(this,true);">&lt;&nbsp;<?php echo $lang["previousresult"]?></a>
+<a href="<?php echo $baseurl_short?>pages/log.php?ref=<?php echo urlencode($ref) ?>&search=<?php echo urlencode($search)?>&search_offset=<?php echo urlencode($search_offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>&k=<?php echo urlencode($k) ?>&search_go=previous&<?php echo hook("nextpreviousextraurl") ?>" onClick="return CentralSpaceLoad(this,true);"><?php echo LINK_CARET_BACK ?><?php echo $lang["previousresult"]?></a>
 <?php 
 hook("viewallresults");
 if ($k=="") { ?>
@@ -134,17 +141,31 @@ for ($n=$offset;(($n<count($log)) && ($n<($offset+$per_page)));$n++)
 	<td nowrap><?php echo $log[$n]["access_key"]!=""?$lang["externalusersharing"] . ": " . $log[$n]["access_key"] . " " . $lang["viauser"] . " " . $log[$n]["shared_by"]:$log[$n]["fullname"]?></td>
 	<td><?php echo $lang["log-" . $log[$n]["type"]]." ".$log[$n]["notes"]?></td>
 	<td><?php echo htmlspecialchars($log[$n]["title"])?></td>
-	<td><?php echo ((($log[$n]["diff"])=="")?"":nl2br(htmlspecialchars($log[$n]["diff"])));
-	if ($log[$n]["usageoption"]!="-1"){
+	<td><?php
+    if($log[$n]["diff"]!=="")
+        {
+        echo nl2br(format_string_more_link(htmlspecialchars($log[$n]["diff"])));
+        }
+    if ($log[$n]["usageoption"]!="-1")
+        {
         // if usageoption is set to -1 when logging, you can avoid the usage description here
-        echo (($log[$n]["notes"]=="" || $log[$n]["notes"]=="-1")?"":$lang["usage"] . ": " . nl2br(htmlspecialchars($log[$n]["notes"])) . "<br>" . $lang["indicateusagemedium"] . ": " . @$download_usage_options[$log[$n]["usageoption"]]);
-	}
+        echo (($log[$n]["notes"]=="" || $log[$n]["notes"]=="-1")? "" :
+            $lang["usage"] . ": " . nl2br(htmlspecialchars($log[$n]["notes"])) . "<br>" . $lang["indicateusagemedium"] . ": " . @$download_usage_options[$log[$n]["usageoption"]]);
+	    }
+
 	# For purchases, append size and price
-	if ($log[$n]["type"]=="p") {echo " (" . ($log[$n]["purchase_size"]==""?$lang["collection_download_original"]:$log[$n]["purchase_size"]) . ", " . $currency_symbol . number_format($log[$n]["purchase_price"],2) . ")";}
+	if ($log[$n]["type"]=="p")
+        {
+        echo " (" . ($log[$n]["purchase_size"]==""?$lang["collection_download_original"]:$log[$n]["purchase_size"]) . ", " . $currency_symbol . number_format($log[$n]["purchase_price"],2) . ")";
+        }
 	
 	# For downloads, add size 
-	if ($log[$n]["type"]=="d") {echo " (" . ($log[$n]["size"]==""?$lang["collection_download_original"]:$log[$n]["size"]) . ")";}
-	hook("log_diff_td_extra","",array($ref));
+	if ($log[$n]["type"]=="d")
+        {
+        echo " (" . ($log[$n]["size"]==""?$lang["collection_download_original"]:$log[$n]["size"]) . ")";
+        }
+
+        hook("log_diff_td_extra","",array($ref));
 	?></td>
 	<?php hook("log_extra_columns_row") ?>
 	</tr>

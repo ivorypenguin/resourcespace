@@ -1,14 +1,17 @@
 <?php
 include "../include/db.php";
+include_once "../include/general.php";
 include "../include/authenticate.php";
-include "../include/general.php";
-include "../include/collections_functions.php";
+include_once "../include/collections_functions.php";
 
 $offset=getvalescaped("offset",0);
 $ref=getvalescaped("ref","",true);
 
+# Check access
+if (!collection_readable($ref)) {exit($lang["no_access_to_collection"]);}
+
 # pager
-$per_page=getvalescaped("per_page_list_log",15);setcookie("per_page_list_log",$per_page);
+$per_page=getvalescaped("per_page_list_log",15);rs_setcookie('per_page_list_log', $per_page);
 
 include "../include/header.php";
 $log=get_collection_log($ref, $offset+$per_page);
@@ -53,12 +56,13 @@ if (!checkperm("b"))
 <td><?php echo $lang["user"]?></td>
 <td><?php echo $lang["action"]?></td>
 <td><?php echo $lang["resourceid"]?></td>
-<td><?php $field=get_fields(array($view_title_field)); echo lang_or_i18n_get_translated($field[0]["title"], "fieldtitle-");?></td>
+<td><?php $field=get_fields(array($view_title_field));echo lang_or_i18n_get_translated($field[0]["title"], "fieldtitle-");?></td>
 </tr>
 
 <?php
 for ($n=$offset;(($n<count($log)) && ($n<($offset+$per_page)));$n++)
 	{
+	if (!isset($lang["collectionlog-".$log[$n]["type"]])){$lang["collectionlog-".$log[$n]["type"]]="";}	
 	?>
 	<!--List Item-->
 	<tr>

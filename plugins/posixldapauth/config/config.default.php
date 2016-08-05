@@ -21,7 +21,7 @@ but support for other LDAP implementations could be easily added.  Contact the
 author if this development is of interest to you.
 
 As of current, this version requires at least revision 568 from the subversion
-respository.  This should be fixed with the next official release.
+repository.  This should be fixed with the next official release.
 
  * Configuration options
 
