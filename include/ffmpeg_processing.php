@@ -9,7 +9,7 @@ if (!RUNNING_ASYNC)
 else
 	{
 	require dirname(__FILE__)."/db.php";
-	require_once dirname(__FILE__)."/general.php";
+	require dirname(__FILE__)."/general.php";
 	require dirname(__FILE__)."/resource_functions.php";
 	
 	if (empty($_SERVER['argv'][1]) || $scramble_key!==$_SERVER['argv'][1]) {exit("Incorrect scramble_key");}
@@ -32,7 +32,7 @@ else
 	if (!isset($_SERVER['argv'][7])) {exit("Alternative param missing");}
 	$alternative=$_SERVER['argv'][7];
 
-	debug ("Starting ffmpeg_processing.php async with parameters: ref=$ref, file=$file, target=$target, previewonly=$previewonly, snapshottime=$snapshottime, alternative=$alternative",$ref);
+	debug ("Starting ffmpeg_processing.php async with parameters: ref=$ref, file=$file, target=$target, previewonly=$previewonly, snapshottime=$snapshottime, alternative=$alternative");
 
 	# SQL Connection may have hit a timeout
 	sql_connect();
@@ -69,8 +69,7 @@ if ($ffmpeg_get_par) {
   	$shell_exec_cmd=get_temp_dir() . "/ffmpeg.bat";
   	}
 
-    $output=run_command($shell_exec_cmd);
-    resource_log(RESOURCE_LOG_APPEND_PREVIOUS,LOG_CODE_TRANSFORMED,'','','',$shell_exec_cmd . ":\n" . $output);
+  $output=run_command($shell_exec_cmd);
   
   preg_match('/PAR ([0-9]+):([0-9]+)/m', $output, $matches);
   if (@intval($matches[1]) > 0 && @intval($matches[2]) > 0) {
@@ -116,33 +115,24 @@ if ($height % 2) {$height++;}
 $tmp = hook("ffmpegbeforeexec", "", array($ffmpeg_fullpath, $file));
 if (is_array($tmp) and $tmp) {list($width, $height) = $tmp;}
 
-if (!hook("replacetranscode","",array($file,$targetfile,$ffmpeg_global_options,$ffmpeg_preview_options,$width,$height))){
-	
-} else { 
-	exit(); // Do not proceed, replacetranscode hook intends to avoid everything below
-	}	
-	
-	$shell_exec_cmd = $ffmpeg_fullpath . " $ffmpeg_global_options -y -i " . escapeshellarg($file) . " $ffmpeg_preview_options -t $ffmpeg_preview_seconds -s {$width}x{$height} " . escapeshellarg($targetfile);
+$shell_exec_cmd = $ffmpeg_fullpath . " $ffmpeg_global_options -y -t $ffmpeg_preview_seconds -i " . escapeshellarg($file) . " $ffmpeg_preview_options -s {$width}x{$height} " . escapeshellarg($targetfile);
 
+if (isset($ffmpeg_command_prefix))
+    {$shell_exec_cmd = $ffmpeg_command_prefix . " " . $shell_exec_cmd;}
 
-	if (isset($ffmpeg_command_prefix))
-		{$shell_exec_cmd = $ffmpeg_command_prefix . " " . $shell_exec_cmd;}
+$tmp = hook("ffmpegmodpreparams", "", array($shell_exec_cmd, $ffmpeg_fullpath, $file));
+if ($tmp) {$shell_exec_cmd = $tmp;}
 
-	$tmp = hook("ffmpegmodpreparams", "", array($shell_exec_cmd, $ffmpeg_fullpath, $file));
-	if ($tmp) {$shell_exec_cmd = $tmp;}
+if ($config_windows)
+	{
+	# Windows systems have a hard time with the long paths used for video generation. This work-around creates a batch file containing the command, then executes that.
+	file_put_contents(get_temp_dir() . "/ffmpeg.bat",$shell_exec_cmd);
+	$shell_exec_cmd=get_temp_dir() . "/ffmpeg.bat";
+	}
 
-	if ($config_windows)
-		{
-		# Windows systems have a hard time with the long paths used for video generation. This work-around creates a batch file containing the command, then executes that.
-		file_put_contents(get_temp_dir() . "/ffmpeg.bat",$shell_exec_cmd);
-		$shell_exec_cmd=get_temp_dir() . "/ffmpeg.bat";
-		}
+$output=run_command($shell_exec_cmd);
 
-    $output=run_command($shell_exec_cmd);
-    resource_log(RESOURCE_LOG_APPEND_PREVIOUS,LOG_CODE_TRANSFORMED,'','','',$shell_exec_cmd . ":\n" . $output);
-
-
-if ($ffmpeg_get_par && (isset($snapshotcheck) && $snapshotcheck==false)) {
+if ($ffmpeg_get_par) {
   if ($par > 0 && $par <> 1) {
     # recreate snapshot with correct PAR
     $width=$sourcewidth;
@@ -158,7 +148,6 @@ if ($ffmpeg_get_par && (isset($snapshotcheck) && $snapshotcheck==false)) {
     if ($height % 2) {$height++;}
     $shell_exec_cmd = $ffmpeg_fullpath . "  $ffmpeg_global_options -y -i " . escapeshellarg($file) . " -s {$width}x{$height} -f image2 -vframes 1 -ss ".$snapshottime." " . escapeshellarg($target);
     $output = run_command($shell_exec_cmd);
-    resource_log(RESOURCE_LOG_APPEND_PREVIOUS,LOG_CODE_TRANSFORMED,'','','',$shell_exec_cmd . ":\n" . $output);
   }
 }
 
@@ -171,9 +160,7 @@ if (isset($qtfaststart_path) && file_exists($qtfaststart_path . "/qt-faststart")
     {
 	$targetfiletmp=$targetfile.".tmp";
 	rename($targetfile, $targetfiletmp);
-    $shell_exec_cmd=$qtfaststart_path . "/qt-faststart " . escapeshellarg($targetfiletmp) . " " . escapeshellarg($targetfile);
-    $output=run_command($shell_exec_cmd);
-    resource_log(RESOURCE_LOG_APPEND_PREVIOUS,LOG_CODE_TRANSFORMED,'','','',$shell_exec_cmd . ":\n" . $output);
+    $output=run_command($qtfaststart_path . "/qt-faststart " . escapeshellarg($targetfiletmp) . " " . escapeshellarg($targetfile));
     unlink($targetfiletmp);
     }
 
@@ -214,13 +201,8 @@ if (isset($ffmpeg_alternatives))
 			
 			endif;
 
-			$alt_type = '';
-			if(isset($ffmpeg_alternatives[$n]['alt_type'])) {
-				$alt_type = $ffmpeg_alternatives[$n]["alt_type"];
-			}
-
 			# Create the alternative file.
-			$aref=add_alternative_file($ref,$ffmpeg_alternatives[$n]["name"],'', '', '', 0, $alt_type);
+			$aref=add_alternative_file($ref,$ffmpeg_alternatives[$n]["name"]);
 			$apath=get_resource_path($ref,true,"",true,$ffmpeg_alternatives[$n]["extension"],-1,1,false,"",$aref);
 			
 			# Process the video 
@@ -228,20 +210,15 @@ if (isset($ffmpeg_alternatives))
 
             $tmp = hook("ffmpegmodaltparams", "", array($shell_exec_cmd, $ffmpeg_fullpath, $file, $n, $aref));
             if($tmp) {$shell_exec_cmd = $tmp;}
-            
-            // $output = run_command($shell_exec_cmd);  // this was failing to return when standard out was producing too much output
-            $output = run_external($shell_exec_cmd,$return_code);
 
-            resource_log(RESOURCE_LOG_APPEND_PREVIOUS,LOG_CODE_TRANSFORMED,'','','',$shell_exec_cmd . ":\n" . $output);
+            $output = run_command($shell_exec_cmd);
 
 	    if(isset($qtfaststart_path))
 			{
 			if($qtfaststart_path && file_exists($qtfaststart_path . "/qt-faststart") && in_array($ffmpeg_alternatives[$n]["extension"], $qtfaststart_extensions) ){
 				$apathtmp=$apath.".tmp";
 				rename($apath, $apathtmp);
-                $shell_exec_cmd=$qtfaststart_path . "/qt-faststart " . escapeshellarg($apathtmp) . " " . escapeshellarg($apath)." 2>&1";
-                $output=run_command($shell_exec_cmd);
-                resource_log(RESOURCE_LOG_APPEND_PREVIOUS,LOG_CODE_TRANSFORMED,'','','',$shell_exec_cmd . ":\n" . $output);
+				$output=run_command($qtfaststart_path . "/qt-faststart " . escapeshellarg($apathtmp) . " " . escapeshellarg($apath)." 2>&1");
 				unlink($apathtmp);
 				}
 			}
@@ -256,14 +233,6 @@ if (isset($ffmpeg_alternatives))
 				if (isset($ffmpeg_alternatives[$n]['alt_preview']) && $ffmpeg_alternatives[$n]['alt_preview']==true){
 					$ffmpeg_alt_previews[]=basename($apath);
 					}
-				}
-
-				if(!file_exists($apath) && file_exists($targetfile) && RUNNING_ASYNC) {
-					error_log('FFmpeg alternative failed: ' . $shell_exec_cmd);
-					# SQL Connection may have hit a timeout
-					sql_connect();
-					# Change flag as the preview was created and that is the most important of them all
-					sql_query("UPDATE resource SET is_transcoding = 0 WHERE ref = '" . escape_check($ref) . "'");
 				}
 			}
 		/*// update the resource table with any ffmpeg_alt_previews	

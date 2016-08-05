@@ -21,10 +21,6 @@ $lang["slideshowpreview"]="Slideshow preview";
 $lang["embedslideshow_notavailable"]="Sorry, this slideshow is no longer available.";
 $lang["embedslideshow_alreadyonpage"]="Enter a page number into the box on the right to jump to a specific page.";
 
-$lang["embedslideshowconfig"]="Embed Slideshow Configuration";
-$lang['embedslideshow_textfield']="Display Additional Caption Text?";
-$lang['embedslideshow_resourcedatatextfield']="Metadata Field to store caption?";
-
 $lang["embedslideshow_maximise_option"]="Maximise option?";
 
 $lang["embedslideshow_seconds"]="? seconds";
@@ -34,4 +30,3 @@ $lang["embedslideshow_directlink"]="Non-embedded direct URL";
 $lang["embedslideshow_directlinkopen"]="Open direct link (new page)";
 
 $lang["jump"]="jump";
-$lang['embedslideshow_dynamic_size'] = 'Dynamic resize of preview based on player size?';

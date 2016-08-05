@@ -6,8 +6,8 @@
  * @subpackage Pages_Team
  */
 include "../../include/db.php";
-include_once "../../include/general.php";
 include "../../include/authenticate.php"; if (!checkperm("r")) {exit ("Permission denied.");}
+include "../../include/general.php";
 include "../../include/research_functions.php";
 
 $ref=getvalescaped("ref","",true);
@@ -29,7 +29,7 @@ include "../../include/header.php";
 
 <form method="post" action="<?php echo $baseurl_short?>pages/team/team_research_edit.php" onSubmit="return CentralSpacePost(this,true);">
 <input type=hidden name="submitted" value="true">
-<input type=hidden name="ref" value="<?php echo htmlspecialchars($ref) ?>">
+<input type=hidden name="ref" value="<?php echo $ref?>">
 
 <div class="Question"><label><?php echo $lang["nameofproject"]?></label><div class="Fixed"><?php echo htmlspecialchars($research["name"])?></div>
 <div class="clearerleft"> </div></div>
@@ -104,8 +104,6 @@ for ($n=0;$n<count($users);$n++)
 <div class="Question"><label><?php echo $lang["ticktodeletethisresearchrequest"]?></label>
 <input name="delete" type="checkbox" value="yes">
 <div class="clearerleft"> </div></div>
-
-<?php hook('research_request_extra_fields'); ?>
 
 <div class="QuestionSubmit">
 <label for="buttons"> </label>			

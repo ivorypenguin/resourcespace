@@ -6,10 +6,10 @@
  * @subpackage Pages_Team
  */
 include "../../include/db.php";
-include_once "../../include/general.php";
 include "../../include/authenticate.php";if (!checkperm("a")) {exit ("Permission denied.");}
+include "../../include/general.php";
 include "../../include/reporting_functions.php";
-set_time_limit(0);
+
 $type=getvalescaped("type","");
 
 if ($type!="")
@@ -28,17 +28,15 @@ if ($type!="")
 	# Send them the export.
 	header("Content-type: application/octet-stream");
 	header("Content-disposition: attachment; filename=".$mysql_db."_" . date("d_M_Y_h-iA") . "." . $extension . "");
-	passthru('"' . $path . '" -h ' . $mysql_server . ' -u ' . $mysql_username . ($mysql_password == '' ? '' : ' -p' . $mysql_password) . ' ' . $param . ' ' . $mysql_db);
-
-	log_activity($lang["exportdata"],LOG_CODE_SYSTEM);
-
+	passthru($path . " -h $mysql_server -u $mysql_username " . ($mysql_password==""?"":"-p'" . $mysql_password . "'") . " $param $mysql_db");
+	
 	exit();
 	}
 include "../../include/header.php";
 ?>
 
 <div class="BasicsBox"> 
-
+  <h2>&nbsp;</h2>
   <h1><?php echo $lang["exportdata"]?></h1>
   
 <form method="post" action="<?php echo $baseurl_short?>pages/team/team_export.php">

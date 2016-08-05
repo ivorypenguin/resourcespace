@@ -1,13 +1,14 @@
 <?php
 require_once "../include/db.php";
-require_once "../include/general.php";
 require_once "../include/authenticate.php";if (!checkperm("d")&&!(checkperm('c') && checkperm('e0'))) {exit ("Permission denied.");}
+require_once "../include/general.php";
 
 include "../include/header.php";
 ?>
 
 
 <div class="BasicsBox"> 
+  <h2>&nbsp;</h2>
   <h1><?php echo $lang["mycontributions"]?></h1>
   <p><?php echo text("introtext")?></p>
 
@@ -28,7 +29,6 @@ include "../include/header.php";
 	<li><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/search.php?search=!contributions<?php echo urlencode($userref) ?>&archive=0"><?php echo $lang["viewcontributedsubittedl"]?></a></li>
 	<?php } ?>
 	
-	<?php hook('custommycontributionlink'); ?>
 	</ul>
 	</div>
 	

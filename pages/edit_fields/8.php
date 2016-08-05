@@ -3,11 +3,8 @@
 
 <?php hook("befckeditortextarea"); ?>
 
-<textarea class="stdwidth" rows=10 cols=80 name="<?php echo $name?>" id="<?php echo $name?>" <?php echo $help_js; ?>
-><?php if($value == strip_tags($value)){
-	$value=nl2br($value);
-}
-echo htmlspecialchars($value)?></textarea><?php
+<textarea class="stdwidth" rows=20 cols=80 name="<?php echo $name?>" id="<?php echo $name?>" <?php echo $help_js; ?>
+><?php echo htmlspecialchars($value)?></textarea><?php
 
 switch (strtolower($language))
     {
@@ -27,7 +24,7 @@ switch (strtolower($language))
 <script type="text/javascript">
 
 // Replace the <textarea id=$name> with an CKEditor instance.
-<?php if(!hook("ckeditorinit","",array($name))): ?>
+<?php if(!hook("ckeditorinit")): ?>
 var editor = CKEDITOR.instances['<?php echo $name?>'];
 if (editor) { editor.destroy(true); }
 CKEDITOR.replace('<?php echo $name ?>',
@@ -35,7 +32,7 @@ CKEDITOR.replace('<?php echo $name ?>',
     language: '<?php echo $ckeditor_language ?>',
     // Define the toolbar to be used.
     toolbar : [ [ <?php global $ckeditor_toolbars;echo $ckeditor_toolbars; ?> ] ],
-    height: "150",
+    height: "350"
     });
 var editor = CKEDITOR.instances['<?php echo $name?>'];
 <?php endif; ?>

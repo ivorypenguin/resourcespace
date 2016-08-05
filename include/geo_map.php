@@ -1,6 +1,6 @@
 
 
-<div id="map_canvas" style="width: 100%; height: <?php echo isset($mapheight)?$mapheight:"500" ?>px; display:block; float:none;overflow: hidden;" class="Picture" ></div>
+<div id="map_canvas" style="width: *; height: <?php echo isset($mapheight)?$mapheight:"500" ?>px; display:block; float:none;" class="Picture" ></div>
 
 
 <script>
@@ -18,7 +18,7 @@ var osm = new OpenLayers.Layer.OSM("<?php echo $lang["openstreetmap"]?>"
                 chmod($tilecache,0777);
         }
 	?>
-		,"<?php echo $baseurl?>/pages/ajax/tiles.php?z=${z}&x=${x}&y=${y}&r=mapnik",{transitionEffect: 'resize'}
+		,"<?php echo $baseurl?>/include/tiles.php?z=${z}&x=${x}&y=${y}&r=mapnik",{transitionEffect: 'resize'}
 	
 	<?php } else { ?>
 	

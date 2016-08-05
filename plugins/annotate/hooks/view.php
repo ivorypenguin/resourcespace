@@ -48,24 +48,17 @@ if ($resource["has_image"]==1)
 	$h = $sizes[1];	
 
 	if (file_exists($imagepath))
-		{ 	
-			$page_count = get_page_count($resource);
-
-			$multipage_document = FALSE;
-
-			if($page_count > 1) {
-				$multipage_document = TRUE;
-			}	
+		{ 
 		?>	
 
 
-<div id="wrapper" class="annotate-view-wrapper">
+<div id="wrapper" style="display:block;clear:none;float:left;margin: 0px 10px 10px 0px;">
 <div>
 <img id="toAnnotate" onload="annotate(<?php echo $ref?>,'<?php echo $k?>','<?php echo $w?>','<?php echo $h?>',<?php echo getvalescaped("annotate_toggle",true)?>);" src="<?php echo $imageurl?>" id="previewimage" class="Picture" GALLERYIMG="no" style="display:block;"   />
 </div>
 	
-<div class="annotate-view-preview-links" >
-<a class="enterLink" href="<?php echo $baseurl_short?>pages/preview.php?<?php if (getval("annotate","")!=""){?>annotate=true&<?php } ?>ref=<?php echo $ref?>&amp;ext=<?php echo $resource["preview_extension"]?>&amp;k=<?php echo $k?>&amp;search=<?php echo urlencode($search)?>&amp;offset=<?php echo $offset?>&amp;order_by=<?php echo $order_by?>&amp;sort=<?php echo $sort?>&amp;archive=<?php echo $archive?><?php if($multipage_document) { echo '&amp;page=1'; } ?>" title="<?php echo $lang["fullscreenpreview"]?>">&gt;&nbsp;<?php echo $lang["fullscreenpreview"]?></a>
+<div style="float:right;padding-top:5px;">
+<a class="enterLink" href="<?php echo $baseurl_short?>pages/preview.php?<?php if (getval("annotate","")!=""){?>annotate=true&<?php } ?>ref=<?php echo $ref?>&ext=<?php echo $resource["preview_extension"]?>&k=<?php echo $k?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>" title="<?php echo $lang["fullscreenpreview"]?>">&gt;&nbsp;<?php echo $lang["fullscreenpreview"]?></a>
     
      <?php
      // MAGICTOUCH PLUGIN COMPATIBILITY

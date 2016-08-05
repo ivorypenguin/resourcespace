@@ -47,18 +47,7 @@ function HookEmbedslideshowCollection_shareExtra_share_options()
 		<label><?php echo $lang["embedslideshow_maximise_option"] ?></label>
 		<input type="checkbox" value="1" name="maximise" <?php if (isset($_POST["maximise"]) && $_POST["maximise"]=="1") { ?>checked<?php } ?>>
 		<div class="clearerleft"></div>
-		</div>	
-
-		<?php 
-		global $embedslideshow_textfield;
-		if($embedslideshow_textfield) 
-			{?>
-			<div class="Question">		
-			<label><?php echo $lang['embedslideshow_textfield'] ?></label>
-			<input type="checkbox" name="showtext" <?php if (isset($_POST["showtext"]) && $_POST["showtext"]=="1") { ?>checked<?php } ?>>
-			<div class="clearerleft"></div>
-			</div>	<?php 
-			} ?>
+		</div>		
 
 		<div class="QuestionSubmit" style="padding-top:0;margin-top:0;">
 		<label for="buttons"> </label>
@@ -100,7 +89,7 @@ function HookEmbedslideshowCollection_shareExtra_share_options()
 			ed.style.position='relative';
 			ed.style.top='0';
 			ed.style.left='0';
-			ed.src='" . $baseurl . "/plugins/embedslideshow/pages/viewer.php?ref=$ref&k=$key&size=" . getval("size","") . "&transition=" . getval("transition","") . "&width=" . $width . "&height=" . $height . "&showtext=".getval("showtext","0")."';
+			ed.src='" . $baseurl . "/plugins/embedslideshow/pages/viewer.php?ref=$ref&key=$key&size=" . getval("size","") . "&transition=" . getval("transition","") . "&width=" . $width . "&height=" . $height . "';
 			document.getElementById('embedslideshow_minimise_" . $ref . "').style.display='none';
 			document.getElementById('embedslideshow_maximise_" . $ref . "').style.display='block';	
 			document.getElementById('embedslideshow_back_" . $ref . "').style.display='none';
@@ -112,47 +101,19 @@ function HookEmbedslideshowCollection_shareExtra_share_options()
 			ed.style.position='absolute';
 			ed.style.top='20px';
 			ed.style.left='20px';
-			ed.src='" . $baseurl . "/plugins/embedslideshow/pages/viewer.php?ref=$ref&k=$key&size=scr&width=850&transition=" . getval("transition","") . "';
+			ed.src='" . $baseurl . "/plugins/embedslideshow/pages/viewer.php?ref=$ref&key=$key&size=scr&width=850&transition=" . getval("transition","") . "';
 			ed.style.zIndex=999;
 			document.getElementById('embedslideshow_minimise_" . $ref . "').style.display='block';
 			document.getElementById('embedslideshow_maximise_" . $ref . "').style.display='none';	
 			document.getElementById('embedslideshow_back_" . $ref . "').style.display='block';	
 			\">" . $lang["embedslideshow_maximise"] . "</a></div>";
 			}
-		$embed.="<iframe id=\"embedslideshow_" . $ref . "\" Style=\"background-color:#fff;cursor: pointer;\" width=\"$width_w_border\" height=\"$height\" src=\"" . $baseurl . "/plugins/embedslideshow/pages/viewer.php?ref=$ref&k=$key&size=" . getval("size","") . "&transition=" . getval("transition","") . "&width=$width&height=$height&showtext=".getval("showtext","0")."\" frameborder=0 scrolling=no>Your browser does not support frames.</iframe>";
-
+		$embed.="<iframe id=\"embedslideshow_" . $ref . "\" Style=\"background-color:#fff;cursor: pointer;\" width=\"$width_w_border\" height=\"$height\" src=\"" . $baseurl . "/plugins/embedslideshow/pages/viewer.php?ref=$ref&key=$key&size=" . getval("size","") . "&transition=" . getval("transition","") . "&width=$width&height=$height\" frameborder=0 scrolling=no>Your browser does not support frames.</iframe>";
+		
 		# Compress embed HTML.
 		$embed=str_replace("\n"," ",$embed);
 		$embed=str_replace("\t"," ",$embed);
 		while (strpos($embed,"  ")!==false) {$embed=str_replace("  "," ",$embed);}
-
-        global $embedslideshow_dynamic_size;
-        if($embedslideshow_dynamic_size) 
-            {
-            $embed .= sprintf("
-                <script>
-                jQuery(document).ready(function() {
-                    function change_src_size()
-                        {
-                        var embedded_iframe = document.getElementById('embedslideshow_%s');
-                        var embedded_src    = embedded_iframe.src;
-
-                        // Set resource preview size to iFrame source size
-                        embedded_src = ReplaceUrlParameter(embedded_src, 'width', embedded_iframe.width);
-                        embedded_src = ReplaceUrlParameter(embedded_src, 'height', embedded_iframe.height);
-                        // Let ResourceSpace know this should be dynamic
-                        embedded_src += '&dynamic=true';
-                        embedded_iframe.setAttribute('src', embedded_src);
-
-                        return true;
-                        }
-                    change_src_size();
-                });
-                </script>
-                ",
-                $ref
-            );
-            }
 		?>
 		<div class="Question">		
 		<label><?php echo $lang["slideshowhtml"] ?></label>
@@ -162,7 +123,7 @@ function HookEmbedslideshowCollection_shareExtra_share_options()
 
 		<div class="Question">		
 		<label><?php echo $lang["embedslideshow_directlink"] ?></label>
-		<div class="Fixed"><a href="<?php echo $baseurl ?>/plugins/embedslideshow/pages/viewer.php?ref=<?php echo $ref ?>&k=<?php echo $key ?>&size=<?php echo getval("size","") ?>&transition=<?php echo getval("transition","") ?>&width=<?php echo $width ?>&height=<?php echo $height ?>&showtext=<?php echo getval("showtext","0");?>" target="_blank"><?php echo $lang["embedslideshow_directlinkopen"] ?></a></div>
+		<div class="Fixed"><a href="<?php echo $baseurl ?>/plugins/embedslideshow/pages/viewer.php?ref=<?php echo $ref ?>&key=<?php echo $key ?>&size=<?php echo getval("size","") ?>&transition=<?php echo getval("transition","") ?>&width=<?php echo $width ?>&height=<?php echo $height ?>" target="_blank"><?php echo $lang["embedslideshow_directlinkopen"] ?></a></div>
 		<div class="clearerleft"></div>
 		</div>
 				

@@ -1,7 +1,4 @@
 ref,int(11),NO,PRI,,auto_increment
-name,varchar(200),YES,,,
+name,varchar(50),YES,,,
 allowed_extensions,TEXT,YES,,,
 order_by,int(11),YES,,,
-config_options,text,YES,,,
-tab_name,varchar(50),YES,,,
-push_metadata,int(11),YES,,,

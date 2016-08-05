@@ -1,7 +1,7 @@
 <?php
 include "../include/db.php";
-include_once "../include/general.php";
 include "../include/authenticate.php";
+include "../include/general.php";
 include "../include/resource_functions.php";
 include "../include/search_functions.php";
 if (!$enable_theme_category_edit){ die ('$enable_theme_category_edit=false');}
@@ -11,7 +11,6 @@ function save_themename()
 		global $baseurl, $link, $themename, $collection_column;
 		$sql="update collection set	" . $collection_column . "='" . getvalescaped("rename","") . "' where " . $collection_column . "='" . escape_check($themename)."'";
 		sql_query($sql);
-		hook("after_save_themename");
 		redirect("pages/" . $link);
 	}
 
@@ -20,7 +19,7 @@ $themecount=0;
 reset($_POST);reset($_GET);foreach (array_merge($_GET, $_POST) as $key=>$value) {
 	// only set necessary vars
 	if (substr($key,0,5)=="theme" && $value!=""){
-		$themes[$themecount]=rawurldecode($value);
+		$themes[$themecount]=urldecode($value);
 		$themecount++;
 		}
 	}
@@ -29,7 +28,6 @@ reset($_POST);reset($_GET);foreach (array_merge($_GET, $_POST) as $key=>$value) 
 # Work out theme name and level, also construct back link
 $link="themes.php?";
 $lastlevelchange=getvalescaped("lastlevelchange",1,true);
-if(!is_numeric($lastlevelchange)) {$lastlevelchange = 1;}
 $link.="lastlevelchange=" . $lastlevelchange . "&";
 for ($x=0;$x<$themecount;$x++)
 	{
@@ -64,7 +62,6 @@ if (getval("rename","")!="")
 		save_themename();
 	}
 
-hook("beforethemeeditheader");
 
 include "../include/header.php";
 
@@ -73,13 +70,10 @@ if (!checkperm("t")) {
 	exit;
 	} 
 
+?>
+<p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl . "/pages/" . $link?>">&lt;&nbsp;<?php echo $lang["backtothemes"]?></a></p>
+<?php
 
-$modal=(getval("modal","")=="true");
-if(!$modal)
-	{?>
-	<p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl . "/pages/" . $link?>"><?php echo LINK_CARET_BACK ?><?php echo $lang["backtothemes"]?></a></p>
-	<?php
-	}
 ?>
 <div class="BasicsBox">
 <h1><?php echo $lang["edit_theme_category"] ?></h1>
@@ -108,8 +102,6 @@ if(!$modal)
 			<label for="rename"><?php echo $lang["name"]?></label><input type=text class="stdwidth" name="rename" id="rename" value="<?php echo $themename?>" maxlength="100" />
 			<div class="clearerleft"> </div>
 		</div>
-		
-		<?php hook("morethemeeditoptions");?>
 
 		<div class="QuestionSubmit">
 			<label for="buttons"> </label>

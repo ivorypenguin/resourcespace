@@ -57,11 +57,9 @@ class ldapAuth
 	function connect()
 	{
 		global $lang;
-		$this->ldapconn = ldap_connect($this->ldapconfig['host'], $this->ldapconfig['port'])
+		$this->ldapconn = ldap_connect($this->ldapconfig['host'])
 	    	or die($lang['posixldapauth_could_not_connect_to_ldap_server']);
 		ldap_set_option($this->ldapconn, LDAP_OPT_PROTOCOL_VERSION, 3);
-		// set referals to 0 to search the entire AD! - Added April 2014
-		
 		if ($this->ldap_debug) { error_log( __FILE__ . " " . __METHOD__ . " " . __LINE__ . " Connected to LDAP Server " . $this->ldapconfig['host']); }
 		return 1;
 	}
@@ -85,26 +83,12 @@ class ldapAuth
 	* @return bool
 	* @access public
 	*/
-	function auth($username,$pass,$ldapType,$userContainer,$singleDomain=false)
+	function auth($username,$pass,$ldapType,$userContainer)
 	{
-		// for testing we will mod this so it searches rom the AD base dn, hopefully the referalls 
-		//  setting will enable this.
-		
 		global $lang;
-		if ($singleDomain) 
-		{
-			$username = $username . "@" . $this->ldapconfig['addomain'];
-		}
+
 		$this->userName = $username;
 		$this->ldappass = $pass;
-		
-		
-		
-		if ($ldapType == 1)
-		{
-			ldap_set_option($this->ldapconn, LDAP_OPT_REFERRALS, 0);
-		}
-		
 		
 		if ($this->ldap_debug) { error_log( __FILE__ . " " . __METHOD__ . " " . __LINE__ . " Attempting to Auth " . $this->userName); }
 		
@@ -112,12 +96,10 @@ class ldapAuth
 		{
 			// Active Directory, format is user@domain
 			$this->ldaprdn = $username ;//."@".$userContainer;	
-			if ($this->ldap_debug) { error_log( __FILE__ . " " . __METHOD__ . " " . __LINE__ . " Auth to AD with " . $this->ldaprdn); }
 			
 		} else {
 			// OD - requires full DN.
 			$this->ldaprdn = "uid=" . $this->userName  .",".$userContainer  .",". $this->ldapconfig['basedn'];
-			if ($this->ldap_debug) { error_log( __FILE__ . " " . __METHOD__ . " " . __LINE__ . " Auth to LDAP with " . $this->ldaprdn); }
 		}
 		
 		if (@ldap_bind($this->ldapconn, $this->ldaprdn, $this->ldappass)) {
@@ -127,56 +109,21 @@ class ldapAuth
 			{
 				// get the shortname from the username (ie user@domain becomes user)
 				$usercn = stristr($username,"@",true);
-				if ($this->ldap_debug) { error_log ("user cn = ". $usercn ); }
+				if ($this->ldap_debug) { echo "user cn = ". $usercn . "\r\n"; }
 				// set the search filter * attributes we want
-				
-				// removed to specify user principal name as this might be more reliable. April 2014
 				$filter="(samaccountname=".$usercn.")";
-				
-				//$filter="(userprincipalname=".$username.")";
 				$attributes=array("dn","cn");
 				
-				// search from the base dn down for the user:
-				if ($this->ldap_debug) { error_log( __FILE__ . " " . __METHOD__ . " " . __LINE__ . " Searching  " . $this->ldapconfig['basedn'] . " for " . $filter); }
-
+				// search
 				if (!($search = ldap_search($this->ldapconn, $this->ldapconfig['basedn'], $filter,$attributes))) {
 				     die($lang['posixldapauth_unable_to_search_ldap_server']);
 				}	
 				// get the info
 				$number_returned = ldap_count_entries($this->ldapconn, $search);
-				
-				if ($number_returned == 0) 
-				{
-					// Houston we have a problem, we have not managed to find the account even though we can bind with it !
-					// We are going to guess that samaccountname (pre windows 2000 logon name) is not the same as the 
-					// user portion of the userPrincipalName.
-					if ($this->ldap_debug) { error_log( __FILE__ . " " . __METHOD__ . " " . __LINE__ . " Num entries returned = " . $number_returned ); }
-					if ($this->ldap_debug) { error_log( __FILE__ . " " . __METHOD__ . " " . __LINE__ . " searching on userPrincipalName " . $username ); }
-					$filter="(userprincipalname=".$username.")";
-					
-					// search
-					if (!($search = ldap_search($this->ldapconn, $this->ldapconfig['basedn'], $filter,$attributes))) {
-					     die($lang['posixldapauth_unable_to_search_ldap_server']);
-					}	
-					// get the info
-					$number_returned = ldap_count_entries($this->ldapconn, $search);
-					if ($number_returned == 0) 
-					{
-						// we still have a problem
-						if ($this->ldap_debug) { error_log( __FILE__ . " " . __METHOD__ . " " . __LINE__ . " account not found with userPrincipalName " . $username ); }
-						// fail the auth
-						return 0;
-					}
-				}
-				
-				// we should definitly have the info now!
-				
 				$info = ldap_get_entries($this->ldapconn, $search);
-				
 				//print_r ($info);
 				// set the rdn
 				$this->ldaprdn = $info[0]["dn"];
-				
 			}
 	        return 1;
 	    } else {
@@ -271,15 +218,7 @@ class ldapAuth
 
 		$found = false;
 		
-		// set the gid for the relevant ldap type.
-		
-		if ($ldapType == 1) {
-			// escape the string for AD
-			$escGroupName = $this->escapeStrForAD($groupName); 		
-			$gid = "(&(objectCategory=group)(cn=" . $escGroupName . "))";
-		} else {
-			$gid = "(cn=" . $groupName . ")";
-		}	
+		$gid = "(cn=" . $groupName . ")";
 		//error_log(  __FILE__ . " " . __METHOD__ . " " . __LINE__ ." - memFieldType: ".$memFieldType);
 		
 		// check to see what type of directory we are using, and set parameters accordingly.
@@ -328,18 +267,14 @@ class ldapAuth
 			{
 				case 1:
 					$userField = "userName";
-					error_log(  __FILE__ . " " . __METHOD__ . " " . __LINE__ ." - Switching member field to userName ");
 					break;
 				case 2:
 					$userField = "ldaprdn";
-					error_log(  __FILE__ . " " . __METHOD__ . " " . __LINE__ ." - Switching member field to ldapRDN ");
 					break;
 				default:
 					error_log(  __FILE__ . " " . __METHOD__ . " " . __LINE__ ." - Unknown Member Field Type: ".$memFieldType);	
 			}			
 		}
-		
-		if ($this->ldap_debug) { error_log( __FILE__ . " " . __METHOD__ . " " . __LINE__ . " Group search filter =  " . $gid); }
 		
 		// search for the group
 		if (!($search = ldap_search($this->ldapconn, $this->ldapconfig['basedn'], $gid ,$attributes))) {
@@ -347,34 +282,29 @@ class ldapAuth
 			die($lang['posixldapauth_unable_to_search_ldap_server']);
 			
 		}
-		if ($this->ldap_debug) { error_log( __METHOD__ . " " . __LINE__ . " Group WAS Found " . $gid); }
+		if ($this->ldap_debug) { error_log( __FILE__ . " " . __METHOD__ . " " . __LINE__ . " Group WAS Found " . $gid); }
 		
 		$info = ldap_get_entries($this->ldapconn, $search);
 		
 		// cycle through the group memebers to see if we can find the user.
 		// we check each part of the returned array to find the member field identify as the array might not be in order!
 		// This also helps prevent it bombing if it can't find the member field identifier, ie it's been overridden wrongly.
-		if ($this->ldap_debug) { error_log(  __METHOD__ . " " . __LINE__ . " Searching for user  " . $this->$userField ); }
-		//echo "<pre>";
-		//print_r($info);
+		if ($this->ldap_debug) { error_log( __FILE__ . " " . __METHOD__ . " " . __LINE__ . " Searching for user  " . $this->$userField ); }
 		
 		foreach ($info as $level1) 
 		{
-			
 			if ( (isset ($level1[0])) && ($level1[0] == $memField) )
 			{
 				// we've found the members array, so cycle through them.
 				foreach ($level1[$memField] as $member)
 				{
-					if ($this->ldap_debug) { error_log( __METHOD__ . " " . __LINE__ . " Group Member Found " . $member ); }
+					if ($this->ldap_debug) { error_log( __FILE__ . " " . __METHOD__ . " " . __LINE__ . " Group Member Found " . $member ); }
 					// $this->$userfiled will be expanded to either $this->ldaprdn or $this->userName
 					if ($member == $this->$userField) { 
 						$found = true; 
-						if ($this->ldap_debug) { error_log( __METHOD__ . " " . __LINE__ . " MATCH FOUND " . $member . " : " . $this->$userField); }
+						if ($this->ldap_debug) { error_log( __FILE__ . " " . __METHOD__ . " " . __LINE__ . " MATCH FOUND " . $member . " : " . $this->$userField); }
 						}		
 				}
-			} else {
-				if ($this->ldap_debug) { error_log(  __METHOD__ . " " . __LINE__ . ": NO MEMBER FIELD FOUND IN GROUP"); }
 			}
 		}
 
@@ -382,7 +312,6 @@ class ldapAuth
 		{
 			return 1;
 		} else {
-			if ($this->ldap_debug) { error_log(  __METHOD__ . " " . __LINE__ . " User: " . $this->$userField ." NOT FOUND IN GROUP " . $gid); }
 			return 0;
 		}
 	}
@@ -409,21 +338,10 @@ class ldapAuth
 		// set the required parameters for each directory type:
 		if ($ldapType == 1)
 		{
-			// AD
 			$attributes = array("cn","dn");
 			$dn = $this->ldapconfig['basedn'];
 			$filter = "(&(objectCategory=group))";
-			//$groupContainer = "OU=Creative,OU=Staff,dc=shit,dc=int";
-			// Group Container override for AD
-			// This will enable a starting point in the AD to search down from.
-			if (($groupContainer != "") && ($groupContainer != null) && ($groupContainer != " ")) 
-			{
-				error_log(  __FILE__ . " " . __METHOD__ . " " . __LINE__ ." - Changed group DN to: ".$groupContainer);
-				$dn = $groupContainer;
-			} 
-
 		} else {
-			// LDAP
 			$attributes = array("cn","gidnumber");
 			
 			if (($groupContainer != "") && ($groupContainer != null) && ($groupContainer != " ")) 
@@ -431,13 +349,11 @@ class ldapAuth
 				error_log(  __FILE__ . " " . __METHOD__ . " " . __LINE__ ." - Changed group DN to: ".$groupContainer);
 				$dn = $groupContainer;
 			} else {
-				// OSX Mapping
 				$dn = "cn=groups," . $this->ldapconfig['basedn'];
 			}
 			$filter = "cn=*";
 			
 		}
-		
 		error_log(  __FILE__ . " " . __METHOD__ . " " . __LINE__ ." - ldap_search ( ". $dn . "," . $filter . ")");
 		//print_r($this->ldapconfig);
 		
@@ -459,10 +375,8 @@ class ldapAuth
 		
 		error_log(  __FILE__ . " " . __METHOD__ . " " . __LINE__ ." - ".$info["count"]." entries returned");
 		
-		$totalGroups = $info["count"];
-		
 		// create an array to return of each entry.
-		for ($i=0; $i < $totalGroups; $i++) 
+		for ($i=0; $i < $info["count"]; $i++) 
 		{
 			// map the attributes to the return array.
 	    	foreach ($attributes as $rField)
@@ -475,29 +389,6 @@ class ldapAuth
 		}
 		return $retGroups;
 		
-	}
-
-	
-	function escapeStrForAD($str) 
-	{
-		/* There are a number of characters that need to be escaped to construct the search filter. these are:
-			
-				ASCII character	Escape sequence substitute
-				*	\2a
-				(	\28
-				)	\29
-				\	\5c
-				NUL	\00
-				/	\2f		
-		
-		*/
-		$escaped = str_replace ( "\\","\\5c",$str );
-		$escaped = str_replace ( "(","\\28",$escaped );
-		$escaped = str_replace ( ")","\\29",$escaped );
-		$escaped = str_replace ( "*","\\2a",$escaped );
-		$escaped = str_replace ( "*","\\2a",$escaped );
-		
-		return $escaped;	
 	}
 	
 }

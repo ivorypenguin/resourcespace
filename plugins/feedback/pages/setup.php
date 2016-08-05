@@ -1,17 +1,7 @@
 <?php
 include "../../../include/db.php";
-include_once "../../../include/general.php";
 include "../../../include/authenticate.php"; if (!checkperm("a")) {exit ("Permission denied.");}
-
-# Make a folder for this
-if(!is_dir($storagedir . "/feedback"))
-    {
-    // If it does not exist, create it.
-    mkdir($storagedir . "/feedback", 0777);
-    }
-
-# Load config
-if (file_exists($storagedir . '/feedback/config.php')) {include $storagedir . '/feedback/config.php';}
+include "../../../include/general.php";
 
 function file_newname($path, $filename){
     if ($pos = strrpos($filename, '.')) {
@@ -38,14 +28,11 @@ if (!isset($feedback_prompt_text)) {$feedback_prompt_text="";}
 
 if (getval("submit","")!="" || getval("add","")!="")
 	{
-	if (file_exists($storagedir . '/feedback/results.csv'))
-	    {
-	    rename($storagedir . '/feedback/results.csv',$storagedir . '/feedback/'.file_newname($storagedir . '/feedback/','results.csv'));
-	    touch($storagedir . '/feedback/results.csv');
-	    chmod($storagedir . '/feedback/results.csv',0777);
-	    }
-	    
-	$f=fopen($storagedir . "/feedback/config.php","w");
+	rename('../data/results.csv','../data/'.file_newname('../data/','results.csv'));
+	touch('../data/results.csv');
+	chmod('../data/results.csv',0777);
+	
+	$f=fopen("../config/config.php","w");
 	fwrite($f,"<?php\n\n\$feedback_questions=array();");
 
 	fwrite($f,"\n\n\$feedback_prompt_text=\"" . str_replace("\"","\\\"",getval("feedback_prompt_text","")) . "\";\n\n");
@@ -92,7 +79,7 @@ if (getval("submit","")!="" || getval("add","")!="")
 
 	fwrite($f,"?>");
 	fclose($f);
-	redirect("plugins/feedback/pages/setup.php?nc=". time() . $add);exit();
+	redirect("plugins/feedback/pages/setup.php?nc=". time() . $add);
 	}
 
 
@@ -102,7 +89,7 @@ include "../../../include/header.php";
   <h2>&nbsp;</h2>
   <h1><?php echo $lang["feedback_user feedback_configuration"]?></h1>
 
-
+  <div class="VerticalNav">
  <form id="form1" name="form1" method="post" action="">
 
 <p><?php echo $lang["feedback_pop-up_prompt_box_text"]?><br />
@@ -146,7 +133,7 @@ include "../../../include/header.php";
 <input type="submit" name="submit" value="&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<?php echo $lang["save"]?>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;">   
 
 <br/><br/>
-<p><?php echo LINK_CARET_BACK ?><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/team/team_plugins.php"><?php echo $lang["feedback_back_to_plugin_manager"]?></a></p>
+<p>&lt;&nbsp;<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/team/team_plugins.php"><?php echo $lang["feedback_back_to_plugin_manager"]?></a></p>
 
 </form>
 </div>

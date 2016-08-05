@@ -1,15 +1,14 @@
 <?php
 include "../../../include/db.php";
-include_once "../../../include/general.php";
 include "../../../include/authenticate.php"; 
+include "../../../include/general.php";
 include("../../../include/resource_functions.php");
-include_once ("../../../include/collections_functions.php");
+include("../../../include/collections_functions.php");
 include("../../../include/search_functions.php");
-include_once("../include/general.php");
+include("../include/general.php");
 
 $ref=getvalescaped("ref","");
 $col=getvalescaped("col","");
-$previewpage=getvalescaped("previewpage",1,true);
 
 if ($col!=""){
 	$is_collection=true;
@@ -50,9 +49,9 @@ $restypes=getvalescaped("restypes","");
 if (strpos($search,"!")!==false) {$restypes="";}
 $archive=getvalescaped("archive",0,true);
 
-$default_sort_direction="DESC";
-if (substr($order_by,0,5)=="field"){$default_sort_direction="ASC";}
-$sort=getval("sort",$default_sort_direction);
+$default_sort="DESC";
+if (substr($order_by,0,5)=="field"){$default_sort="ASC";}
+$sort=getval("sort",$default_sort);
 
 
 
@@ -60,8 +59,8 @@ include "../../../include/header.php";
 
 // a unique id allows us to isolate this page's temporary files. 	
 $uniqid=uniqid($ref."-");
-
 $jpghttppath=get_annotate_file_path($realref,false,"jpg");
+
 
 ?>
 
@@ -117,7 +116,7 @@ var annotate_previewimage_prefix = "";
 			else {
 				$('#previewPageOptions').hide();
 			}
-			$.ajax("<?php echo $baseurl_short?>plugins/annotate/pages/annotate_pdf_gen.php?cleartmp=true&ref=<?php echo $ref?>&uniqid=<?php echo $uniqid?>&page=<?php echo $previewpage ?>",{complete: function(response){ $('#error2').html(response.responseText);}});
+			$.ajax("<?php echo $baseurl_short?>plugins/annotate/pages/annotate_pdf_gen.php?cleartmp=true&ref=<?php echo $ref?>&uniqid=<?php echo $uniqid?>",{complete: function(response){ $('#error2').html(response.responseText);}});
 		},
 		
 		
@@ -152,9 +151,9 @@ function loadIt() {
 <div class="BasicsBox" >
 
 <?php if (!$is_collection){?>
-<p><a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&annotate=true" onClick="return CentralSpaceLoad(this);"><?php echo LINK_CARET_BACK ?><?php echo $lang["backtoresourceview"]?></a></p>
+<p><a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&annotate=true" onClick="return CentralSpaceLoad(this);">&lt;&nbsp;<?php echo $lang["backtoresourceview"]?></a></p>
 <?php } else {?>
-<p><a href="<?php echo $baseurl_short?>pages/search.php?search=!collection<?php echo substr($ref,1)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>" onClick="return CentralSpaceLoad(this);"><?php echo LINK_CARET_BACK ?><?php echo $lang["backtoresults"]?></a></p>
+<p><a href="<?php echo $baseurl_short?>pages/search.php?search=!collection<?php echo substr($ref,1)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>" onClick="return CentralSpaceLoad(this);">&lt;&nbsp;<?php echo $lang["backtoresults"]?></a></p>
 <?php } ?>
 
 <h1><?php echo $lang["annotatepdfconfig"]?></h1>

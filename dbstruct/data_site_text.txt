@@ -1,0 +1,596 @@
+collection_public,introtext,"Public collections are created by other users.",1,en,,,
+all,searchpanel,"Search using descriptions, keywords and resource numbers",2,en,,,
+home,themes,"The very best resources, hand picked and grouped.",3,en,,,
+home,mycollections,"Organise, collaborate & share your resources. Use these tools to help you work more effectively.",4,en,,,
+home,help,"Help and advice to get the most out of ResourceSpace.",5,en,,,
+home,welcometitle,"Welcome to ResourceSpace",6,en,,,
+home,welcometext,"Your introductory text here.",7,en,,,
+themes,introtext,"Themes are groups of resources that have been selected by the administrators to provide an example of the resources available in the system.",8,en,,,
+edit,multiple,"Please select which fields you wish to overwrite. Fields you do not select will be left untouched.",9,en,,,
+team_archive,introtext,"To edit individual archive resources, simply search for the resource, and click edit in the ‘Resource Tool’ panel on the resource screen. All resources that are ready to be archived are listed Resources Pending list. From this list it is possible to add further information and transfer the resource record into the archive. ",10,en,,,
+research_request,introtext,"Our professional researchers are here to assist you in finding the very best resources for your projects. Complete this form as thoroughly as possible so we’re able to meet your criteria accurately. <br><br>A member of the research team will be assigned to your request. We’ll keep in contact via email throughout the process, and once we’ve completed the research you’ll receive an email with a link to all the resources that we recommend.  ",11,en,,,
+collection_manage,introtext,"Organise and manage your work by grouping resources together. Create ‘Collections’ to suit your way of working. You may want to group resources under projects that you are working on independently, share resources amongst a project team or simply keep your favourite resources together in one place. All the collections in your list appear in the ‘My Collections’ panel at the bottom of the screen.",12,en,,,
+collection_manage,findpublic,"Public collections are groups of resources made widely available by users of the system. Enter a collection ID, or all or part of a collection name or username to find public collections. Add them to your list of collections to access the resources.",13,en,,,
+team_home,introtext,"Welcome to the team centre. Use the links below to administer resources, respond to resource requests, manage themes and alter system settings.",14,en,,,
+help,introtext,"Get the most out of ResourceSpace. These guides will help you use the system and the resources more effectively. </p>
+
+
+
+<p>Use ""Themes"" to browse resources by theme or use the simple search box to search for specific resources.</p>
+
+
+<p><a href=""http://www.montala.net/downloads/resourcespace-GettingStarted.pdf"">Download the user guide (PDF file)</a>
+
+
+<p><a target=""_blank"" href=""http://wiki.resourcespace.org/index.php/Main_Page"">Online Documentation (Wiki)</a>",15,en,,,
+"terms and conditions","terms and conditions","Your terms and conditions go here.",16,en,,,
+contribute,introtext,"You can contribute your own resources. When you initially create a resource it is in the ""Pending Submission"" status. When you have uploaded your file and edited the fields, set the status field to ""Pending Review"". It will then be reviewed by the resources team.",17,en,,,
+done,user_password,"An e-mail containing your username and password has been sent.",18,en,,,
+user_password,introtext,"Enter your e-mail address and your username and password will be sent to you.",19,en,,,
+edit,batch,"",20,en,,,
+team_copy,introtext,"Enter the ID of the resource you would like to copy. Only the resource data will be copied - any uploaded file will not be copied.",21,en,,,
+delete,introtext,"Please enter your password to confirm that you would like to delete this resource.",22,en,,,
+team_report,introtext,"Please choose a report and a date range. The report can be opened in Microsoft Excel or similar spreadsheet application.",23,en,,,
+terms,introtext,"Before you proceed you must accept the terms and conditions.
+
+",24,en,,,
+download_progress,introtext,"Your download will start shortly. When your download completes, use the links below to continue.",25,en,,,
+view,storyextract,"Story extract:",26,en,,,
+contact,contact,"Your contact details here.",27,en,,,
+search_advanced,introtext,"<strong>Search Tip</strong><br>Any section that you leave blank, or unticked will include ALL those terms in the search. For example, if you leave all the country boxes empty, the search will return results from all those countries. If you select only ‘Africa’ then the results will ONLY contain resources from ‘Africa’. ",28,en,,,
+all,researchrequest,"Let our resources team find the resources you need.",29,en,,,
+done,research_request,"A member of the research team will be assigned to your request. We’ll keep in contact via email throughout the process, and once we’ve completed the research you’ll receive an email with a link to all the resources that we recommend.",30,en,,,
+done,collection_email,"An email containing a link to the collection has been sent to the users you specified. The collection has been added to their 'Collections' list.",31,en,,,
+done,resource_email,"An email containing a link to the resource has been sent to the users you specified.",32,en,,,
+themes,manage,"Organise and edit the themes available online. Themes are specially promoted collections. <br><br> <strong>1 To create a new entry under a Theme -  build a collection</strong><br> Choose <strong>My Collections</strong> from the main top menu and set up a brand new <strong>public</strong> collection. Remember to include a theme name during the setup. Use an existing theme name to group the collection under a current theme (make sure you type it exactly the same), or choose a new title to create a brand new theme. Never allow users to add/remove resources from themed collections. <br> <br><strong>2 To edit the content of an existing entry under a theme </strong><br> Choose <strong>edit collection</strong>. The items in that collection will appear in the <strong>My Collections</strong> panel at the bottom of the screen. Use the standard tools to edit, remove or add resources. <br> <br><strong>3 To alter a theme name or move a collection to appear under a different theme</strong><br> Choose <strong>edit properties</strong> and edit theme category or collection name. Use an existing theme name to group the collection under an current theme (make sure you type it exactly the same), or choose a new title to create a brand new theme. <br> <br><strong>4 To remove a collection from a theme </strong><br> Choose <strong>edit properties</strong> and delete the words in the theme category box. ",33,en,,,
+terms,terms,"Your terms and conditions go here.",34,en,,,
+done,resource_request,"Your request has been submitted and we will be in contact shortly.",35,en,,,
+user_request,introtext,"Please complete the form below to request a user account.",36,en,,,
+themes,findpublic,"Public collections are collections of resources that have been shared by other users.",37,en,,,
+done,user_request,"Your request for a user account has been sent. Your login details will be sent to you shortly.",38,en,,,
+about,about,"Your about text goes here.",39,en,,,
+team_content,introtext,,40,en,,,
+done,deleted,"The resource has been deleted.",41,en,,,
+upload,introtext,"",42,en,,,
+home,restrictedtitle,"<h1>Welcome to ResourceSpace</h1>",43,en,,,
+home,restrictedtext,"Please click on the link that you were e-mailed to access the resources selected for you.",44,en,,,
+resource_email,introtext,"Quickly share this resource with other users by email. A link is automatically sent out. You can also include any message as part of the email.",45,en,,,
+team_resource,introtext,"Add individual resources or batch upload resources. To edit individual resources, simply search for the resource, and click edit in the ‘Resource Tool’ panel on the resource screen.",46,en,,,
+team_user,introtext,"Use this section to add, remove and modify users.",47,en,,,
+team_research,introtext,"Organise and manage ‘Research Requests’. <br><br>Choose ‘edit research’ to review the request details and assign the research to a team member. It is possible to base a research request on a previous collection by entering the collection ID in the ‘edit’ screen. <br><br>Once the research request is assigned, choose ‘edit collection’ to add the research request to ‘My collection’ panel. Using the standard tools, it is then possible to add resources to the research. <br><br>Once the research is complete, choose ‘edit research’,  change the status to complete and an email is automatically  sent to the user who requested the research. The email contains a link to the research and it is also automatically added to their ‘My Collection’ panel.",48,en,,,
+collection_edit,introtext,"Organise and manage your work by grouping resources together. Create ‘Collections’ to suit your way of working.
+
+<br>
+
+All the collections in your list appear in the ‘My Collections’ panel at the bottom of the screen
+
+<br><br>
+
+<strong>Private Access</strong> allows only you and and selected users to see the collection. Ideal for grouping resources under projects that you are working on independently and share resources amongst a project team.
+
+<br><br>
+
+<strong>Public Access</strong> allows all users of the system to search and see the collection. Useful if you wish to share collections of resources that you think others would benefit from using.
+
+<br><br>
+
+You can choose whether you allow other users (public or users you have added to your private collection) to add and remove resources or simply view them for reference.",49,en,,,
+team_stats,introtext,"Charts are generated on demand based on live data. Tick the box to print all charts for your selected year.",50,en,,,
+resource_request,introtext,"Your request is almost complete. Please include the reason for your request so we can respond efficiently.",51,en,,,
+team_batch,introtext,"",52,en,,,
+team_batch_upload,introtext,"",53,en,,,
+team_batch_select,introtext,"",54,en,,,
+download_click,introtext,"To download the resource file, right click the link below and choose ""Save As..."". You will then be asked where you would like to save the file. To open the file in your browser simply click the link.",55,en,,,
+collection_manage,newcollection,"To create a new collection, enter a short name.",56,en,,,
+collection_email,introtext,"Please complete the form below. The recipients will receive an email containing links to the collections rather than file attachments so they can choose and download the appropriate resources.",57,en,,,
+all,footer,"Powered by <a target=""_blank"" href=""http://www.resourcespace.org/"">ResourceSpace</a>: Open Source Digital Asset Management",58,en,,,
+change_language,introtext,"Please select your language below.",59,en,,,
+all,searchpanel,"Search using descriptions, keywords and resource numbers",60,es,,,
+all,footer,"Accionado por el <a href=""http://www.resourcespace.org/"">ResourceSpace</a>",61,es,,,
+all,researchrequest,"Let our resources team find the resources you need.",62,es,,,
+delete,introtext,,68,es,,,
+contribute,introtext,"You can contribute your own resources. When you initially create a resource it is in the ""Pending Submission"" status. When you have uploaded your file and edited the fields, set the status field to ""Pending Review"". It will then be reviewed by the resources team.",69,es,,,
+done,deleted,"The resource has been deleted.",70,es,,,
+user_preferences,introtext,"Enter a new password below to change your password.",71,en,,,
+collection_manage,findpublic,"Public collections are groups of resources made widely available by users of the system. Enter a collection ID, or all or part of a collection name or username to find public collections. Add them to your list of collections to access the resources.",72,es,,,
+themes,findpublic,"Powered by <a href=""http://www.resourcespace.org/"">ResourceSpace</a>",73,es,,,
+login,welcomelogin,"Welcome to ResourceSpace, please log in...",74,en,,,
+all,footer,"Desarrollado por <a href=""http://www.resourcespace.org/"">ResourceSpace</a>",75,es,,,
+all,researchrequest,"Pídenos fotografías, vídeos o testimonios.",76,es,,,
+contact,contact,"Introduce aquí tus datos de contacto.",77,es,,,
+collection_manage,newcollection,"Para crear una nueva colección, introduce un nombre.",78,es,,,
+delete,introtext,"Por favor, introduce tu contraseña para confirmar que quieres borrar este contenido.",79,es,,,
+done,deleted,"El contenido ha sido borrado.",80,es,,,
+done,research_request,"Un miembro del equipo del SERGI se asignará a tu petición. Te mantendremos informado durante el proceso. Una vez tengamos los resultados de tu petición te enviaremos un correo electrónico con un enlace a los contenidos seleccionados.",81,es,,,
+all,searchpanel,"Busca por descripciones, palabras clave y códigos de contenido.",82,es,,,
+about,about,"Imágenes y Palabras pretende ser un lugar...",83,es,,,
+collection_edit,introtext,"Organiza tu trabajo agrupando recursos. Crea tantas colecciones como necesites.
+
+<br>
+
+Todas la colecciones aparecerán en tu panel ""Mis colecciones"" en la parte inferior de la pantalla.
+
+<br><br>
+
+<strong>Acceso privado</strong> sólo permite a ti y a los usuarios que selecciones a visualizar la colección. <br><br>
+
+<strong>Accesos público</strong> permite a todos los usuarios de la aplicación a visualizar la colección.
+
+<br><br>
+
+También puedes elegir qué usuarios podrán modificar la colección o simplemente podrán visualizarla.",84,es,,,
+collection_email,introtext,"Completa el formulario adjunto para enviar por mail esta colección. Recibirás un link con todo el material y podrás elegir lo que más se adapte a tus necesidades.",85,es,,,
+collection_manage,findpublic,"Las colecciones públicas son grupos de material disponible para los usuarios del sistema. Para encontrarlas debes introducir un identificador. Éste puede ser el nombre completo o parcial de la colección que te interese o bien el ID de usuario de la misma. Añádelo a tu lista de colecciones para acceder al material.
+
+
+
+",86,es,,,
+home,restrictedtitle,"<h1>Bienvenido al Panel de Control</h1>",87,es,,,
+home,themes,"Aquí encontrarás los materiales recogidos recientemente.",88,es,,,
+home,welcometext,,92,es,,,
+help,introtext,"Obtén el máximo rendimiento del Espacio de Material. Estas guías te ayudarán a usar el sistema con mayor efectividad.",93,es,,,
+home,welcometitle,"Bienvenida/o a Imágenes y Palabras, una herramienta que te permitirá buscar fotografías, vídeos y testimonios entre sus más de xxx materiales.",94,es,,,
+team_batch,introtext,"",95,es,,,
+team_home,introtext,"Bienvenido al Panel de Control. Utiliza los enlaces siguientes para gestionar materiales, responder a peticiones de materiales, gestionar temas o modificar configuraciones del sistema.",96,es,,,
+user_password,introtext,"Introduce tu dirección de e-mail y te enviaremos tu nombre de usuario y contraseña.",97,es,,,
+team_user,introtext,"Utiliza esta sección para añadir, eliminar o modificar usuarios.",98,es,,,
+collection_public,introtext,"Encuentra una colección pública",99,es,,,
+home,mycollections,"Esta herramienta te permite seleccionar, organizar y compartir tu material. ",100,es,,,
+collection_manage,introtext,"Organiza y controla tu trabajo agrupando material. Crea ""Colecciones"" que se ajusten a tus necesidades de trabajo. Podrías querer agrupar colecciones en proyectos con los que trabajas independientemente, compartirlas con un equipo o simplemente guardar tu material favorito en un sitio concreto. Todas estas opciones aparecerán en la pestaña ""Mis colecciones"" en un botón de tu pantalla.",101,es,,,
+done,collection_email,"Los usuarios que quieras pueden recibir un correo con un enlace a la colección que les envíes. Esta recopilación se añade a su ""Lista de Colecciones""",102,es,,,
+done,resource_request,"Tu petición ha sido enviada y en breve nos pondremos en contacto contigo",103,es,,,
+done,user_password,"Te hemos envíado un correo electrónico con tu ID de usuario y tu contraseña",104,es,,,
+done,user_request,"Tu solicitud para obtener una cuenta de usuario ha sido enviada. Muy pronto te enviaremos los detalles.",105,es,,,
+download_click,introtext,"Para bajar el archivo adjunto pincha en el enlace de abajo y elige ""Guardar como"". Te preguntarán dónde quieres guardar el archivo. Para abrir el archivo en tu navegador sólo tienes que pinchar el enlace.",106,es,,,
+download_progress,introtext,"La descarga comenzará en pocos segundos",107,es,,,
+edit,batch,"",108,es,,,
+edit,multiple,"Selecciona los campos que desees editar de la lista de abajo. Los que selecciones se sobreescribirán sobre el material que estés editando. Cualquier campo no selecciónado será ignorado.",109,es,,,
+home,help,,110,es,,,
+home,restrictedtext,"Por favor, pincha en el enlace que te envíamos a tu correo para acceder a los materiales seleccionados para ti",111,es,,,
+login,welcomelogin,"Bienvenido a Palabras y Fotografías",112,es,,,
+research_request,introtext,"Podemos ayudarte a encontrar el material que mejor se ajuste a tus necesidades. Completa el cuestionario tan minuciosamente como sea posible para que evaluemos los criterios que más te interesan. Estaremos en contacto por correo electrónico sobre la evolución del proceso y una vez hayamos completado la busqueda recibirás un mail con un enlace al material que te recomendamos",113,es,,,
+resource_email,introtext,"Comparte este material rápidamente vía mail. Se enviará automáticamente un enlace. Además puedes incluir texto informativo como parte del correo electrónico.",114,es,,,
+resource_request,introtext,"El material que has solicitado no esta disponible en Internet. La información que has requerido se incluirá automáticamente en el correo electrónico, si quieres puedes añadir cualquier comentario adicional.",115,es,,,
+search_advanced,introtext,"Búsqueda por Campos. Cualquier sección que dejes en blanco o no selecciones, incluirá todos esos términos en la búsqueda. Por ejemplo, si dejas todas las opciones de un país vacías, la búsqueda te dará resultados de todos esos países. Si seleccionas sólo África entonces los resultados sólo contendrán material de África.
+
+",116,es,,,
+team_archive,introtext,"Para editar materiales de archivo individualmente, simplemente busca por el material y pincha en ""Herramienta de Material"" en la misma pantalla. Todos los materiales listos para ser archivados serán listados en Material Pendiente de Lista. Desde esta lista es posible añadir información posteriormente y transferir el material grabado al archivo
+
+",117,es,,,
+view,storyextract,"Estracto de historia:",118,es,,,
+user_request,introtext,"Por favor completa el formulario adjunto para solicitar una cuenta de usuario.",119,es,,,
+team_research,introtext,"Organiza y controla “Criterios de Búsqueda”. Elige “Editar búsqueda” para examinar los detalles de la búsqueda y asignarle la investigación a un miembro del equipo. Es posible basar una búsqueda en una colección previa introduciendo el nombre de la misma en “Edit”. Una vez sean asignados los criterios de búsqueda, selecciona “Editar Colección” para añadir los criterios al panel “Mi colección”. Usando las herramientas estándar es posible añadir material a la búsqueda. Una vez se ha completado, selecciona “Editar búsqueda” y cambia el estado para recibir automáticamente un correo electrónico con la información solicitada. El mail contendrá un enlace a la búsqueda y además se añadirá automáticamente al panel “Mi colección”.",120,es,,,
+team_batch_select,introtext,"",121,es,,,
+team_batch_upload,introtext,"",122,es,,,
+team_resource,introtext,"Añade material individual o sube varios materiales simultáneamente. Para editar materiales individuales sólo tienes que buscar el material, y pinchar en editar en ""Herramienta de Material"" de la pantalla de material.",123,es,,,
+team_stats,introtext,"Los gráficos son generados a bajo demanda. Marca la casilla para imprimir todos los gráficos del años seleccionado.",124,es,,,
+terms,introtext,"Antes de iniciar el proceso de descarga debes aceptar los siguientes términos y condiciones de uso.
+
+",125,es,,,
+themes,findpublic,"Encuentra una colección pública introduciendo un término de búsqueda",126,es,,,
+upload,introtext,"",127,es,,,
+themes,manage,"Organiza y edita los temas disponibles en la red. Los temas aparecen organizados en colecciones. Para crear una nueva entrada e incluirla en un tema, debes pinchar en ""Construye una colección"" y elegir ""Mis Colecciones"" del menú principal. Recuerda incluir el nombre de un tema durante la configuración y crear una nueva colección. Puedes usar un nombre ya existente para agrupar la nueva colección en un apartado ya establecido (es importante asegurarse de que el nombre es exactamente el mismo) o elegir un nuevo título para crear una nueva categoría de temas. Nunca permitas a los usuarios que añadan o cambien materiales de las colecciones ya establecidas. Para editar el contenido de una entrada existente bajo un tema, elige “Editar una Colección”. Los iconos de esta colección aparecerán en el botón de la pantalla “Mis Colecciones”. Emplea las herramientas estándar para editar, mover o añadir material. Para cambiar el  nombre de un tema o mover una colección y que ésta aparezca ubicada en un tema diferente. Elige: “Editar Propiedades” y edita la categoría del tema o el nombre de la colección. Selecciona un nombre existente para el tema y así agruparlo en de las categorías existentes (asegúrate de que lo escribes exactamente igual), o elige un nuevo título para crear un nuevo tipo de tema. Para borrar una selección del tema. Elige: “Editar Propiedades” y borra las palabras de la caja de categorías del tema.",128,es,,,
+themes,introtext,"Los temas están formados por grupos con nuestros mejores materiales",129,es,,,
+team_copy,introtext,"Introduce el identificador del material que te gustaría copiar. Sólo se copiará el material señalado -no se copiará ningún archivo adjunto.",130,es,,,
+change_language,introtext,"Por favor, selecciona el idioma en el que deseas trabajar.",131,es,,,
+team_content,introtext,,133,es,,,
+team_report,introtext,"Por favor, elige un informe y un rango de fecha. El informe podrá abrirse en un documento de Excel o un documento de características similares.",134,es,,,
+change_password,introtext,"Por favor introduzca una nueva contraseña.",135,es,,,
+upload_swf,introtext,"",136,en,,,
+tag,introtext,"Help to improve search results by tagging resources. Say what you see, separated by spaces or commas... for example: dog, house, ball, birthday cake. Enter the full name of anyone visible in the photo and the location the photo was taken if known.",137,en,,,
+about,about,★サイトの説明を記述してください★,138,jp,,,
+download_click,introtext,"ファイルをダウンロードするには、リンク上で右クリックし""名前を付けてリンク先を保存""を選択します。 ファイルの保存先を聞かれます。ファイルを開くにはブラウザのファイルを開くのリンクをクリックします。",139,jp,,,
+home,restrictedtitle,<h1>★サイトの名称を記述してください★</h1>,140,jp,,,
+home,welcometitle,★ウェルカムメッセージのタイトルを記述してください★,141,jp,,,
+home,welcometext,★ウェルカムメッセージを記述してください★,142,jp,,,
+all,researchrequest,あなたが求めている写真画像を調査依頼してみてください。,143,jp,,,
+all,searchpanel,説明文、キーワード、リソース・ナンバーを使って検索してください。,144,jp,,,
+change_language,introtext,下記から言語を選択してください。,145,jp,,,
+change_password,introtext,あなたのパスワードを変更するために以下に新しいパスワードを入力してください。,146,jp,,,
+collection_edit,introtext,リソースを分類することによって、作品を組織化し、管理してください。あなたの流儀で作品に適したコレクションを作成してください。<br>画面の下部のマイコレクション・パネルに一覧が表示されます。<br><br>あなたと選ばれた人だけが参照できる<strong>プライベート・アクセス</strong>のコレクションです。あなたが単独あるいはプロジェクトチーム間でリソースを共有して作業する上でリソースのグループ化に最適です。<br><br><strong>公開アクセス</strong>のコレクションは全ユーザが検索と参照ができます。あなたがリソースのコレクションを共有すると、他の人は利益を得るでしょう。<br><br>あなたは、他のユーザ(あなたのプライベート・コレクションを公開もしくは追加したユーザ)にリソースを追加、削除可能とするか、または参照のみとするかを選択できます。,147,jp,,,
+contact,contact,★こちらにはあなたの連絡先を記入してください★,148,jp,,,
+search_advanced,introtext,"<strong>検索の技</strong><br>検索で空白のままにするか、またはチェックを入れなかったセクションはすべての用語を含んだものとして検索します。 例えば、国を空白にすると、検索はすべての国から結果を返すでしょう。 あなたがアフリカだけを選択すると、結果はアフリカからのリソースだけを含むでしょう。",149,jp,,,
+collection_email,introtext,"以下のフォームに記入して、このコレクションをメールしてください。 ユーザが適切なリソースを選んで、ダウンロードできるように、ファイル添付よりむしろリソースへのリンクを受け取るでしょう。",150,jp,,,
+collection_manage,findpublic,"公開のコレクションはシステムのユーザによって広く利用可能にされたリソースのグループです。 コレクションIDかコレクション名またはユーザ名のすべてまたは一部を入力して、公開のコレクションを見つけてください。 あなたのコレクションのリストにそれらを追加して、リソースにアクセスしてください。",151,jp,,,
+collection_manage,introtext,"リソースを分類することによって、作品を組織化して、管理してください。 あなたのやり方に合ったコレクションを作成してください。 あなたは、あなたが単独で取り組んでいるプロジェクトの下でリソースを分類したり、プロジェクト・チームでリソースを共有したり、または1つの場所で単にお気に入りのリソースを収集することができます。 あなたのすべてのコレクションがスクリーン下部のマイ・コレクションパネルに表示されます。",152,jp,,,
+home,help,本サイトを最大限に活用するためのヘルプと助言。,153,jp,,,
+home,mycollections,"リソースの組織化、共同化、共有化してください。 より効果的に働けるようにこれらのツールを活用してください。",154,jp,,,
+home,restrictedtext,あなたのために選択されたリソースにアクセスするためにメールされたリンクをクリックしてください。,155,jp,,,
+login,welcomelogin,★ウェルカムメッセージを記入してください★,156,jp,,,
+themes,findpublic,公開コレクションは他のユーザによって共有されたリソースのコレクションです。,157,jp,,,
+user_password,introtext,Eメールアドレスを入力してください。そうすれば、あなたのユーザ名とパスワードがあなたに送信されるでしょう。,158,jp,,,
+user_request,introtext,以下のフォームに記入して、ユーザアカウントを要求してください。,159,jp,,,
+view,storyextract,ストーリ抽出:,160,jp,,,
+collection_manage,newcollection,新規コレクションを作成するために短名称を入力してください。,161,jp,,,
+collection_public,introtext,他のユーザによって作成された公開コレクション。,162,jp,,,
+contribute,introtext,"あなたはあなた自身のリソースを投稿できます。 あなたがリソースを作成した直後は登録待ち状態にあります。 あなたのファイルをアップロードして、フィールドを編集後にはレビュー待ち状態に設定されます。 次にリソースチームによってレビューされるでしょう。",163,jp,,,
+delete,introtext,このリソースを削除するにはパスワードを入力して、確認してください。,164,jp,,,
+done,collection_email,"コレクションへのリンクを含むメールをあなたが指定したユーザに送りました。 コレクションは'コレクション'リストに加えられます。",165,jp,,,
+done,deleted,リソースは削除されました。,166,jp,,,
+done,research_request,"調査チームのメンバーがあなたの要求にアサインされるでしょう。 メールで私たちは途中経過をお知らせします。そして、私たちが調査を終了すると、あなたは私たちが推薦するすべてのリソースへのリンクをメールで受け取ります。",167,jp,,,
+done,resource_email,リソースへのリンクを含むメールをあなたが指定したユーザに送りました。,168,jp,,,
+done,resource_request,あなたの要求は受付しましたので、私たちはまもなく、連絡するでしょう。,169,jp,,,
+done,user_password,あなたのユーザ名とパスワードを含むメールを送りました。,170,jp,,,
+done,user_request,"ユーザアカウントを求めるあなたの要求を送りました。 まもなく、あなたのログイン詳細が送られるでしょう。",171,jp,,,
+download_progress,introtext,"あなたのダウンロードはまもなく、始まるでしょう。 ダウンロード完了後、継続するには以下のリンクを使用してください。",172,jp,,,
+edit,batch,"",173,jp,,,
+edit,multiple,"どのフィールドを上書きしたいかを選択してください。 あなたが選択しないフィールドはそのままの状態でおかれるでしょう。",174,jp,,,
+help,introtext,"本サイトを最大限に活用してください。 これらのガイドは、あなたが、より効果的にシステムとリソースを使用するのを助けるでしょう。 </p>    <p>テーマを使用して、テーマでリソースをブラウズするか、または単純検索を使用して、特定のリソースを検索してください。</p>   <p><a href=http://www.montala.net/downloads/ResourceSpace-GettingStarted.pdf>Download the user guide (PDF file)</a>   <p><a target=_blank href=http://wiki.resourcespace.org/index.php/Main_Page>Online Documentation (Wiki)</a>",175,jp,,,
+home,themes,精選され分類された最良のリソース,176,jp,,,
+research_request,introtext,"あなたのプロジェクトに、最も良いリソースを見つけるの手助けするために、私たちのプロの調査者がここにいます。 私たちが正確に評価基準を満たすことができるように、このフォームにできるだけ全てに記入してください。 <br><br>調査チームのメンバーがあなたの要求にアサインされるでしょう。 途中経過をメールで報告します、そして、私たちが調査を完了した後、私たちが推薦するすべてのリソースへのリンクをメールで受け取ってください。",177,jp,,,
+resource_email,introtext,"メールで素早く他のユーザとこのリソースを共有できます。 自動的にリンクを送信します。 また、あなたはメールの一部として任意のメッセージも入れることができます。",178,jp,,,
+resource_request,introtext,"ご要望のリソースはオンラインで利用可能ではありません。 リソース情報はメールに自動的に含まれていますが、望むなら、あなたは追加コメントを加えることができます。",179,jp,,,
+tag,introtext,"リソースにタグ付けをすることによって検索結果を改善できます。 例えば、空白かコンマによって分割された: 犬,家,ボール,バースデーケーキ。 写真に写っている人のフルネームや分かっている地名を入れてください。",180,jp,,,
+team_archive,introtext,"個々のアーカイブリソースを編集するために、リソースを単純検索してください、そして、リソーススクリーンの上のリソース・ツール パネルの編集をクリックしてください。 アーカイブされる準備ができているリソースが記載されたリソース・ペンディング リストです。 このリストから、アーカイブに詳細情報の追加と、リソース・レコードを移すのは可能です。",181,jp,,,
+team_batch,introtext,"",182,jp,,,
+team_batch_select,introtext,"",183,jp,,,
+team_batch_upload,introtext,"",184,jp,,,
+team_copy,introtext,"あなたがコピーしたいリソースのIDを入力してください。 リソースデータだけがコピーされるでしょう--アップロードされたファイルはコピーされないでしょう。",185,jp,,,
+team_home,introtext,"チームセンターへようこそ。 以下のリンクを使用して、リソースの管理、リソースの要求へ対応、テーマの管理、システム設定の変更をしてください。",186,jp,,,
+team_report,introtext,"レポートと日付の範囲を選んでください。 Microsoft Excelか同様のスプレッドシートアプリケーションでレポートを開くことができます。",187,jp,,,
+team_research,introtext,"調査要求の組織化と管理。 <Br><Br>調査の編集を選んで、要求の詳細を再検討して、調査をチームメンバーに割り当ててください。 編集画面にコレクションIDを入力することによって調査要求を以前のコレクションに基礎づけるのは可能です。 <Br><Br>調査要求がいったん割り当てられた後、コレクション編集を選んで、マイコレクションパネルに調査要求を加えてください。 標準のツールを使用して、そして、リソースを調査に追加するのは可能です。 <Br><Br>調査がいったん完了すると調査編集を選んで、ステータスを完了に変えてください。そうすれば、自動的に調査を要求したユーザにメールを送ります。 メールは調査へのリンクを含んでいます、そして、また、それは自動的に彼らのマイコレクションパネルに加えられます。",188,jp,,,
+team_resource,introtext,"個別にリソース追加かリソースをバッチでアップロードしてください。 個々のリソースを編集するには、単純検索でリソースを検索して、リソーススクリーン上のリソースツールパネルの編集をクリックします 。",189,jp,,,
+team_stats,introtext,"チャートはライブデータから要求に応じて作られます。 選択された年のすべてのチャートを印刷するにはチェックボックスをオンにします。",190,jp,,,
+team_user,introtext,ユーザの追加、削除、変更をするにはこのセクションを使用してください。,191,jp,,,
+terms,introtext,先に進めるためにはあなたは条件に同意しなければなりません。,192,jp,,,
+terms,terms,★使用条件を記入してください★,193,jp,,,
+"terms and conditions","terms and conditions",★使用条件を記入してください★,194,jp,,,
+themes,introtext,テーマはリソースのグループです。,195,jp,,,
+themes,manage,"オンラインで利用可能なテーマを組織化し、編集してください。 テーマは特に、推薦されたコレクションです。 <br><br> <strong>1 テーマの下に新規エントリー作成 -  コレクション構築</strong><br> メインのトップメニューから<strong>マイコレクション</strong>を選択し、 新規の<strong>公開</strong> コレクションを設定。 セットアップの間、忘れずにテーマ名を含んでください。 現在のテーマの下でコレクションを分類するのに既存のテーマ名を使用するか(全く同一)、または新しいタイトルを選んで、真新しいテーマを作成してください。 ユーザにテーマ化されたコレクションからリソースを追加/削除させないようにしてください。<br> <br><strong>2 テーマの下の既存のエントリーの内容を編集</strong><br><strong>コレクション編集</strong>を選択。 コレクションのアイテムは画面下部の<strong>マイコレクション</strong> パネルに表示されます。リソースの編集、削除、追加のために標準ツールを使用。<br> <br><strong>3 テーマ名の変更や別のテーマの下に表示されるようコレクションを移動</strong><br><strong>プロパティ編集</strong>を選択しテーマカテゴリやコレクション名を編集。現在のテーマの下でコレクションを分類するのに既存のテーマ名を使用するか(全く同一)、または新しいタイトルを選んで、真新しいテーマを作成してください。 <br> <br><strong>4 テーマからコレクション削除</strong><br><strong>プロパティ編集</strong>を選択しテーマカテゴリ欄の文字を削除。",196,jp,,,
+upload,introtext,"",197,jp,,,
+upload_swf,introtext,"",198,jp,,,
+collection_public,introtext,"Les collections publiques sont créées par d'autres utilisateurs",199,fr,,,
+all,searchpanel,"Recherchez en utilisant les descriptions, mots clés et numéros de documents",200,fr,,,
+home,themes,"Les meilleurs documents, sélectionnés et regroupés",201,fr,,,
+home,mycollections,"Organisez et échangez vos documents. Ces outils vous aident à travailler plus efficacement.",202,fr,,,
+home,help,"Aide et conseils pour obtenir le meilleur de ResourceSpace.",203,fr,,,
+home,welcometitle,"Bienvenue dans ResourceSpace",204,fr,,,
+home,welcometext,"Votre texte d'introduction ici.",205,fr,,,
+themes,introtext,"Les thèmes sont des groupes de ressources.",206,fr,,,
+edit,multiple,"Veuillez choisir les champs que vous souhaitez écraser. Les champs non sélectionnés resteront inchangés.",207,fr,,,
+team_archive,introtext,"Pour modifier un document archivé, recherchez simplement le document, et cliquez sur Modifier dans le panneau 'Outils de document' sur l'écran du document. Tous les documents qui sont prêts à être archivés sont listés dans la liste des documents en attente. Depuis cette liste, il est possible d'ajouter des informations supplémentaires et d'archiver le document.",208,fr,,,
+research_request,introtext,"Nos professionnels sont là pour vous assister dans la recherche des meilleurs documents pour vos projets. Remplissez ce formulaire aussi précisément que possible pour que nous soyons capables de répondre précisément à votre requête. <br/><br/> Un membre de notre équipe de recherche sera assigné à votre requête. Nous garderons le contact via e-mail tout au long du processus. Et une fois la recherche terminée, vous recevrez par e-mail un lien vers tous les documents que nous recommandons.  ",209,fr,,,
+collection_manage,introtext,"Organisez et gérez votre travail en groupant les documents. Créez des 'Collections' selon votre méthode de travail. Vous pouvez grouper les documents par projet, les partager avec l'équipe du projet, ou simplement conserver vos documents préférés en un seul endroit. Toutes vos collections sont listées dans le panneau 'Mes collections' en bas de l'écran.",210,fr,,,
+collection_manage,findpublic,"Les collections publiques sont des groupes de documents rendus disponibles pour tous par d'autres utilisateurs du système. Saisissez un numéro de collection, ou tout ou partie d'un nom de collection ou d'utilisateur pour trouver une collection publique. Ajoutez-les à votre liste de collections pour accéder à leur contenu.",211,fr,,,
+team_home,introtext,"Bienvenue dans l'espace équipe. Utilisez les liens ci-dessous pour administrer les documents, répondre aux requêtes de documents, gérer les thèmes et modifier les réglages du système.",212,fr,,,
+help,introtext,"Obtenez le meilleur de ResourceSpace. Ces guides vous aideront à utiliser le système et les documents plus efficacement. </p>
+
+
+
+<p>Utilisez le menu ""Thèmes"" pour parcourir les ressources par thème ou utilisez la recherche simple pour trouver des ressources spécifiques.</p>
+
+
+<p><a href=""http://www.montala.net/downloads/ResourceSpace-GettingStarted.pdf"">Téléchargez le guide utilisateur (fichier PDF) (anglais)</a>
+
+
+<p><a target=""_blank"" href=""http://wiki.resourcespace.org/index.php/Main_Page"">Documentation en ligne (Wiki) (anglais)</a>",213,fr,,,
+"terms and conditions","terms and conditions","Placez ici vos termes et conditions.",214,fr,,,
+contribute,introtext,"Vous pouvez proposer vos propres documents. Quand vous créez un nouveau document, son statut est ""En attente de soumission"". Quand vous avez déposé votre fichier et modifié les champs, affectez la valeur ""En attente de validation"" au champ statut. Votre document sera alors vérifié par l'équipe ressources.",215,fr,,,
+done,user_password,"Un mél contenant vos identifiant et mot de passe a été envoyé.",216,fr,,,
+user_password,introtext,"Saisissez votre adresse électronique pour recevoir vos identifiant et mot de passe.",217,fr,,,
+edit,batch,"",218,fr,,,
+team_copy,introtext,"Spécifiez le numéro du document que vous voulez copier. Seules les données du document seront copiées – aucun fichier ne sera copié.",219,fr,,,
+delete,introtext,"Veuillez saisir votre mot de passe afin de confirmer la suppression de ce document.",220,fr,,,
+team_report,introtext,"Veuillez choisir un type de rapport et une plage de dates. Le rapport peut être ouvert avec Microsoft Excel ou tout tableur similaire.",221,fr,,,
+terms,introtext,"Avant de continuer, vous devez accepter les termes et conditions.",222,fr,,,
+download_progress,introtext,"Votre téléchargement va démarrer rapidement. Quand le téléchargement sera terminé, utilisez les liens ci-dessous pour continuer.",223,fr,,,
+view,storyextract,"Historique d'extraction:",224,fr,,,
+contact,contact,"Placez les détails pour vous contacter ici.",225,fr,,,
+search_advanced,introtext,"<strong>Astuce de recherche</strong><br>Toute section que vous laissez vide ou décochée inclura TOUS les documents dans la recherche. Par exemple, si vous laissez vide le choix du pays, la recherche renverra des résultats de tous les pays. Si vous choisissez seulement 'Afrique' alors les résultats contiendront SEULEMENT des documents de l''Afrique'.",226,fr,,,
+all,researchrequest,"Laissez notre équipe documents trouver les documents dont vous avez besoin.",227,fr,,,
+done,research_request,"Un membre de l'équipe documents sera assigné à votre demande. Nous resterons en contact par mél au cours du processus, et une fois la recherche terminée, vous recevrez par mél un lien vers tous les documents que nous recommandons.",228,fr,,,
+done,collection_email,"Un mél contenant un lien vers la collection a été envoyé aux utilisateurs spécifiés. La collection a été ajoutée à leur liste de 'Collections'.",229,fr,,,
+done,resource_email,"Un mél contenant un lien vers le document a été envoyé aux utilisateurs spécifiés.",230,fr,,,
+themes,manage,"Organiser et gérer les thèmes disponibles. Les thèmes sont des collections particulièrement mises en avant.<br/><br/><strong>1. Pour créer une nouvelle entrée dans un thème – constuire une collection</strong><br/> Choisissez <strong>Mes collections</strong> depuis le menu principal et créez une nouvelle collection <strong>publique</strong>. Rapellez-vous d'inclure un nom de thème durant la création de la collection. Utilisez un nom de thème existant pour grouper la collection dans un thème déjà présent (assurez-vous de le saisir à l'identique), ou choisissez un nouveau nom pour créer un nouveau thème. N'autorisez jamais vos utilisateurs à ajouter / retirer des documents de collections thématiques.<br/><br/><strong>2. Pour modifier le contenu d'une collection thématique</strong><br/> Choisissez <strong>Modifier la collection</strong>. Les éléments dans cette collection apparaîtront dans le panneau <strong>Mes collections</strong> en bas de l'écran. Utilisez les outils standard pour modifier, retirer ou ajouter des documents.<br/><br/><strong>3. Pour modifier un nom de thème ou déplacer une collection pour qu'elle apparaisse dans un autre thème</strong><br/> Choisissez <strong>Modifier les propriétés</strong> et modifiez la catégorie du thème ou le nom de la collection. Utilisez un nom de thème existant pour grouper la collection dans un thème déjà présent (assurez-vous de le saisir à l'identique), ou choisissez un nouveau nom pour créer un nouveau thème.<br/><br/><strong>4. Pour retirer une collection d'un thème</strong><br/> Choisissez <strong>Modifier les propriétés</strong>et supprimez les mots dans le champ de catégorie du thème.",231,fr,,,
+terms,terms,"Placez ici vos termes et conditions.",232,fr,,,
+done,resource_request,"Votre requête a été soumise et vous serez contacté rapidement.",233,fr,,,
+user_request,introtext,"Veuillez compléter le formulaire ci-dessous pour demander un compte utilisateur.",234,fr,,,
+themes,findpublic,"Les collections publiques sont des collections de documents qui ont été partagées par d'autres utilisateurs.",235,fr,,,
+done,user_request,"Votre demande de compte utilisateur a été envoyée. Vos identifiant et mot de passe vous seront envoyés prochainement.",236,fr,,,
+about,about,"Placez ici votre texte d'à propos.",237,fr,,,
+team_content,introtext,,238,fr,,,
+done,deleted,"Le document a été supprimé.",239,fr,,,
+upload,introtext,"",240,fr,,,
+home,restrictedtitle,"<h1>Bienvenue dans ResourceSpace</h1>",241,fr,,,
+home,restrictedtext,"Veuillez cliquer sur le lien qui vous a été envoyé par mél pour accéder aux documents sélectionnés pour vous.",242,fr,,,
+resource_email,introtext,"Partagez rapidement par mél ce document avec d'autres utilisateurs. Un lien sera automatiquement envoyé. Vous pouvez aussi inclure un message dans le mél.",243,fr,,,
+team_resource,introtext,"Ajoutez un document individuel ou un ensemble de documents. Pour modifier individuellement les documents, rechercher simplement le document et cliquez sur Modifier dans le panneau 'Outils de document' sur l'écran du document..",244,fr,,,
+team_user,introtext,"Utilisez cette section pour ajouter, supprimer et modifier les utilisateurs.",245,fr,,,
+team_research,introtext,"Organisez et gérer les 'requêtes de recherche'. <br/><br/> Choisir 'Modifier la recherche' pour vérifier les détails de la requête et assigner la recherche à un membre de l'équipe. Il est possible de baser une requête de recherche sur une collection existante en saisissant le numéro de cette collection dans l'écran de modification.<br/><br/> Une fois la requête assignée, choisissez 'Modifier la collection' pour ajouter la requête de recherche au panneau 'Mes collections'. En utilisant les outils standard, il est alors possible d'ajouter des documents à la recherche. <br/><br/> Une fois que la recherche est terminée, choisissez 'Modifier la recherche', changez le statut pour 'terminée' ; un mél sera automatiquement envoyé à l'utilisateur qui a demandé la recherche. Le mél contient un lien vers la recherche et la recherche est automatiquement ajoutée aux collections de l'utilisateur.",246,fr,,,
+collection_edit,introtext,"Organisez et gérez votre travail en groupant les documents. Créez des 'Collections' pour correspondre à votre méthode de travail.<br/> Toutes vos collections apparaissent dans le panneau 'Mes Collections' en bas de l'écran <br/><br/> L'<strong>accès privé</strong> vous autorise, vous et les utilisateurs sélectionnés, à voir la collection. Idéal pour grouper les documents par projet sur lesquels vous travaillez et partager les documetns avec les membres de l'équipe. <br/><br/> L'<strong>accès public</strong> autorise tous les utilisateurs du système à voir et rechercher dans la collection. C'est utile si vous souhaitez partager des collections de documents que vous pensez bénéfiques pour d'autres utilisateurs. <br/><br/> Vous pouvez choisir si vous souhaitez ou non autoriser d'autres utilisateurs (tous, ou uniquement ceux que vous avez ajoutés à votre collection privée) à ajouter et retirer des documents ou simplement les visualiser pour référence.",247,fr,,,
+team_stats,introtext,"Les graphiques sont créés à la demande en fonction de données temps réel. Cochez la case pour imprimer tous les graphiques de l'année sélectionnée.",248,fr,,,
+resource_request,introtext,"La ressource que vous avez demandée n'est pas disponible en ligne. Les informations sur la ressource sont automatiquement insérées dans le mél, mais vous pouvez ajouter des commentaires additionnels si vous le souhaitez.",249,fr,,,
+team_batch,introtext,"",250,fr,,,
+team_batch_upload,introtext,"",251,fr,,,
+team_batch_select,introtext,"",252,fr,,,
+download_click,introtext,"Pour télécharger le fichier ressource, cliquez droit sur le lien ci-dessous et choisissez ""Enregistrer sous..."". Il vous sera alors demandé l'emplacement où vous souhaitez sauvegarder le fichier. Pour ouvrir le fichier dans votre navigateur, cliquez simplement sur le lien.",253,fr,,,
+collection_manage,newcollection,"Pour créer une nouvelle collection, entrez un nom court.",254,fr,,,
+collection_email,introtext,"Remplissez le formulaire ci-dessous pour envoyer cette collection par mél. Les utilisateurs recevront un lien vers la ressource plutôt que des fichiers attachés pour qu'ils puissent choisir et télécharger les ressources appropriées.",255,fr,,,
+all,footer,"Ce site utilise le système de gestion des actifs numériques <a href=""http://www.resourcespace.org/"">ResourceSpace</a>.",256,fr,,,
+change_language,introtext,"Veuillez sélectionner votre langue ci-dessous.",257,fr,,,
+change_password,introtext,"Saisissez un nouveau mot de passe ci-dessous pour changer votre mot de passe.",258,fr,,,
+login,welcomelogin,"Bienvenue dans ResourceSpace, veuillez vous identifier...",259,fr,,,
+all,emailresource,"[img_gfx/whitegry/titles/title.gif]<br>
+[fromusername] [lang_hasemailedyouaresource]<br><br>
+[message]<br><br>
+<a href=""[url]"">[embed_thumbnail]</a><br><br>
+[lang_clicktoviewresource]<br><a href=""[url]"">[resourcename] - [url]</a><br><br>
+[text_footer]
+",260,en,,,1
+all,emailnewresearchrequestwaiting,"[img_gfx/whitegry/titles/title.gif]<br>
+[username] ([userfullname] - [useremail])
+[lang_haspostedresearchrequest]<br><br>
+[lang_nameofproject]:[name]<br><br>
+[lang_descriptionofproject]:[description]<br><br>
+[lang_deadline]:[deadline]<br><br>
+[lang_contacttelephone]:[contact]<br><br>
+[lang_finaluse]: [finaluse]<br><br>
+[lang_shaperequired]: [shape]<br><br>
+[lang_noresourcesrequired]: [noresources]<br><br>
+<a href=""[url]"">[url]</a><br><br>
+<a href=""[teamresearchurl]"">[teamresearchurl]</a><br><br>
+[text_footer]
+",261,en,,,1
+all,emailresearchrequestassigned,"[img_gfx/whitegry/titles/title.gif]<br>
+[lang_researchrequestassignedmessage]<br><br>
+[text_footer]
+",262,en,,,1
+all,emailresearchrequestcomplete,"[img_gfx/whitegry/titles/title.gif]<br>
+[lang_researchrequestcompletemessage] <br><br> 
+[lang_clicklinkviewcollection] <br><br> 
+<a href=""[url]"">[url]</a><br><br>
+[text_footer]
+",263,en,,,1
+all,emailnotifyresourcessubmitted,"[img_gfx/whitegry/titles/title.gif]<br>
+[lang_userresourcessubmitted]
+[list] <br>
+[lang_viewalluserpending] <br><br> 
+<a href=""[url]"">[url]</a><br><br>
+[text_footer]
+",264,en,,,1
+all,emailnotifyresourcesunsubmitted,"[img_gfx/whitegry/titles/title.gif]<br>
+[lang_userresourcesunsubmitted]
+[list] <br>
+[lang_viewalluserpending] <br><br> 
+<a href=""[url]"">[url]</a><br><br>
+[text_footer]
+",265,en,,,1
+all,emaillogindetails,"[img_gfx/whitegry/titles/title.gif]<br>
+[welcome]<br><br> 
+[lang_newlogindetails]<br><br> 
+[lang_username] : [username] <br><br>
+[lang_password] : [password]<br><br>
+<a href=""[url]"">[url]</a><br><br>
+[text_footer]
+",266,en,,,1
+all,emailreminder,"[img_gfx/whitegry/titles/title.gif]<br>
+[lang_newlogindetails] <br><br>
+[lang_username] : [username] <br> 
+[lang_password]  : [password] <br><br>
+<a href=""[url]"">[url]</a><br><br>
+[text_footer]
+",267,en,,,1
+all,emailresourcerequest,"[img_gfx/whitegry/titles/title.gif]<br>
+[lang_username] : [username] <br>
+[list] <br>
+[details]<br><br>
+[lang_clicktoviewresource] <br><br>
+<a href=""[url]"">[url]</a>
+",268,en,,,1
+all,emailcollection,"[img_gfx/whitegry/titles/title.gif]<br>
+[fromusername] [lang_emailcollectionmessage] <br><br> 
+[lang_message] : [message]<br><br> 
+[lang_clicklinkviewcollection] [list]
+",269,en,,,1
+all,emailcollectionexternal,"[img_gfx/whitegry/titles/title.gif]<br>
+[fromusername] [lang_emailcollectionmessageexternal] <br><br> 
+[lang_message] : [message]<br><br> 
+[lang_clicklinkviewcollection] [list]
+",100123,en,,,1
+all,emailbulk,"[img_gfx/whitegry/titles/title.gif]<br><br>
+[text]<br><br>
+[text_footer]
+",270,en,,,1
+change_language,introtext,"Bitte wählen Sie Ihre Sprache aus:",271,de,,,0
+all,researchrequest,"Lassen Sie unser Team nach den benötigten Resourcen suchen.",272,de,,,0
+all,searchpanel,"Suche nach Beschreibung, Schlagworten und Ressourcen IDs",273,de,,,0
+about,about,"Ihr Text zu ""Über uns"" hier.",274,de,,,0
+change_password,introtext,"Neues Passwort unten eingeben, um es zu ändern.",275,de,,,0
+collection_edit,introtext,"Organisieren und verwalten Sie Ihre Arbeit, indem Sie Ressourcen in Gruppen zusammenstellen. Erstellen Sie Kollektionen wie Sie sie benötigen.
+
+<br>
+
+Alle Kollektionen in Ihrer Liste erscheinen im ""Meine Kollektionen"" Menü am unteren Ende des Fensters.
+
+<br><br>
+
+<strong>Privater Zugriff</strong> erlaubt nur Ihnen und ausgewählten Benutzern, die Kollektion zu anzusehen. Ideal, um Ressourcen für die eigene Arbeit zusammenzustellen und im Team weiterzugeben.
+
+<br><br>
+
+<strong>Öffentlicher Zugriff</strong> erlaubt allen Benutzern, die Kollektion zu finden und anzusehen.
+
+<br><br>
+
+Sie können aussuchen, ob Sie anderen Benutzern (öffentlicher Zugriff oder ausgewählte Benutzer beim privaten Zugriff) erlauben, Ressourcen hinzuzufügen oder zu löschen.",276,de,,,0
+collection_email,introtext,"Bitte füllen Sie das untenstehende Formular aus, um die Kollektion per E-Mail weiterzugeben. Der/die Benutzer werden statt eines Dateianhangs einen Link zu dieser Kollektion erhalten und können dann die passenden Ressourcen auswählen und herunterladen.",277,de,,,0
+collection_manage,findpublic,"Öffentliche Kollektionen sind für alle Benutzer zugängliche Gruppen von Ressourcen. Um öffentliche Kollektionen zu finden, geben Sie die ID, oder einen Teil des Kollektions- bzw. Benutzernamens ein. Fügen Sie dann die Kollektion zu Ihren Kollektionen hinzu, um auf die Ressourcen zuzugreifen.",278,de,,,0
+collection_manage,introtext,"Organisieren und verwalten Sie Ihre Arbeit, indem Sie Ressourcen in Gruppen zusammenstellen. Erstellen Sie Kollektionen wie Sie sie benötigen. Sie können Kollektionen an andere weitergeben oder einfach Gruppen von Ressourcen zusammen halten. Alle Kollektionen in Ihrer Liste finden Sie im ""Meine Kollektionen"" Menü am unteren Ende des Fensters.",279,de,,,0
+collection_manage,newcollection,"Um eine neue Kollektion zu erstellen, geben Sie bitte einen Kurznamen an.",280,de,,,0
+collection_public,introtext,"Öffentliche Kollektionen werden von anderen Benutzern erstellt und freigegeben.",281,de,,,0
+contact,contact,"Ihre Kontaktdaten hier.",282,de,,,0
+contribute,introtext,"Sie können Ihre eigenen Ressourcen hochladen. Wenn Sie eine Ressource erstellen, wird diese zunächst durch uns geprüft. Nachdem Sie die Datei hochgeladen und die Felder ausgefüllt haben, setzen Sie bitte den Status auf ""Benutzer-Beiträge: Überprüfung noch nicht erledigt"".",283,de,,,0
+delete,introtext,"Bitte geben Sie Ihr Passwort ein, um zu bestätigen, dass Sie diese Ressource löschen wollen.",284,de,,,0
+done,collection_email,"Eine E-Mail mit Link zur Kollektion wurde an die angegebenen Benutzer gesendet. Die Kollektion wurde zur Liste Ihrer Kollektionen hinzugefügt.",285,de,,,0
+done,deleted,"Die Ressource wurde gelöscht.",286,de,,,0
+done,research_request,"Ein Mitglied unseres Teams wird sich um Ihre Anfrage kümmern. Wir werden Sie per e-mail über den aktuellen Stand informieren. Wenn Ihre Anfrage bearbeitet ist, erhalten Sie eine e-mail mit einem Link zu den Ressourcen, die wir für Ihre Anfrage empfehlen.",287,de,,,0
+done,resource_email,"Eine E-Mail mit Link zur Ressource wurde an die angegebenen Benutzer gesendet.",288,de,,,0
+done,resource_request,"Ihre Anfrage wurde abgeschickt und wird in Kürze bearbeitet.",289,de,,,0
+done,user_password,"Eine E-Mail mit Ihrem Benutzernamen und Passwort wurde an Sie gesendet.",290,de,,,0
+done,user_request,"Ihre Anfrage nach einem Zugang wurde abgeschickt und wird in Kürze bearbeitet.",291,de,,,0
+download_click,introtext,"Um die Datei herunterzuladen, klicken Sie bitte mit der rechten Maustaste auf den untenstehenden Link und wählen Sie ""Speichern unter..."". Sie können dann auswählen an welchem Ort Sie die Datei abspeichern wollen. Um die Datei im Browser zu öffnen, klicken Sie den Link bitte mit der linken Maustaste.",292,de,,,0
+download_progress,introtext,"Ihr Download wird in Kürze starten. Nachdem der Download abgeschlossen ist, wählen Sie bitte einen der folgenden Links.",293,de,,,0
+edit,batch,"",294,de,,,0
+edit,multiple,"Bitte wählen Sie die Felder aus, die Sie verändern wollen. Felder, die Sie nicht anwählen, werden nicht verändert.",295,de,,,0
+help,introtext,"Diese Anleitungen helfen Ihnen, ResourceSpace und Ihre Medien effektiv zu nutzen.</p>
+<p>Benutzen Sie ""Themen"", um Ressourcen nach Themen zu erkunden oder nutzen Sie die Suche um spezifische Ressourcen zu finden.</p>
+<p><a href=""http://www.montala.net/downloads/resourcespace-GettingStarted.pdf"">User Guide</a> (PDF, englisch)<br /><a target=""_blank"" href=""http://wiki.resourcespace.org/index.php/Main_Page"">Online Dokumentation</a> (Wiki)</p>",296,de,,,0
+home,help,"Hilfe für die Arbeit mit ResourceSpace",297,de,,,0
+home,mycollections,"Hier können Sie Ihre Kollektionen organisieren, verwalten und weitergeben.",298,de,,,0
+home,restrictedtext,"Bitte klicken Sie auf den Link, den Sie per E-Mail erhalten haben, um auf die für Sie ausgesuchten Ressourcen zuzugreifen.",299,de,,,0
+home,restrictedtitle,"<h1>Willkommen bei ResourceSpace</h1>",300,de,,,0
+home,themes,"Von unserem Team vorausgewählte Bilder",301,de,,,0
+home,welcometext,"Ihr Einleitungstext hier",302,de,,,0
+home,welcometitle,"Willkommen bei ResourceSpace",303,de,,,0
+login,welcomelogin,"Willkommen bei ResourceSpace. Bitte loggen Sie sich ein...",304,de,,,0
+research_request,introtext,"Unser Team unterstützt Sie dabei, die optimalen Ressourcen für Ihre Projekte zu finden. Füllen Sie dieses Formular bitte möglichst vollständig aus, damit wir Ihre Anforderungen erfüllen können.
+<br /><br />
+Wir werden Sie kontinuierlich informieren. Sobald wir Ihre Anfrage bearbeitet haben, werden Sie eine E-Mail mit einem Link zu den von uns empfohlenen Bildern erhalten.",305,de,,,0
+resource_email,introtext,"Geben Sie dieses Bild per E-Mail weiter. Es wird ein Link versendet. Sie können außerdem eine persönliche Nachricht in die E-Mail einfügen.",306,de,,,0
+resource_request,introtext,"Die Ressource, die Sie herunterladen möchten, ist nicht online verfügbar. Die Informationen zur Ressource werden automatisch per E-Mail versendet. Zusätzlich können Sie weitere Bemerkungen hinzufügen.",307,de,,,0
+search_advanced,introtext,"<strong>Suchtipp</strong><br>
+Jeder Bereich, den Sie nicht ausfüllen / anklicken, liefert alle Ergebnisse aus dem Bereich.",308,de,,,0
+tag,introtext,"Verbessern Sie die Suchergebnisse, indem Sie Ressourcen taggen. Sagen Sie, was Sie sehen, getrennt durch Leerzeichen oder Komma... z.B.: Hund, Haus, Ball, Geburtstag, Kuchen. Geben Sie den vollen Namen von Personen in Fotos und die Ort der Aufnahme an, wenn bekannt.",309,de,,,0
+terms,introtext,"Sie müssen zuerst die Nutzungsbedingungen akzeptieren.
+
+",310,de,,,0
+terms,terms,"Ihre Nutzungsbedingungen hier.",311,de,,,0
+"terms and conditions","terms and conditions","Ihre Nutzungsbedingungen hier.",312,de,,,0
+themes,findpublic,"Öffentliche Kollektionen sind Kollektionen, die von anderen Benutzern freigegeben wurden.",313,de,,,0
+themes,introtext,"Themen sind von unserem Team zusammengestellte Gruppen von Ressourcen.",314,de,,,0
+user_password,introtext,"Bitte geben Sie Ihre E-Mail Adresse ein. Ihre Zugangsdaten werden dann an per E-Mail an Sie versendet.",315,de,,,0
+user_request,introtext,"Um einen Zugang anzufordern, füllen Sie bitte das untenstehende Formular aus.",316,de,,,0
+team_archive,introtext,"Um einzelne Ressourcen im Archiv zu bearbeiten, suchen Sie einfach nach den Ressourcen und klicken auf ""bearbeiten"" unter ""Ressourcen-Werkzeuge"". Alle Ressourcen, die archiviert werden sollen, werden in der Liste ""Archivierung noch nicht erledigt"" angezeigt. Von dieser Liste aus können Sie weitere Informationen ergänzen und die Ressource ins Archiv verschieben.",317,de,,,0
+team_batch,introtext,"",318,de,,,0
+team_batch_select,introtext,"",319,de,,,0
+team_batch_upload,introtext,"",320,de,,,0
+team_copy,introtext,"Geben Sie die ID der Ressource ein, die Sie kopieren möchten. Nur die Metadaten der Ressource werden kopiert – hochgeladene Dateien werden nicht kopiert.",321,de,,,0
+team_home,introtext,"Willkommen in der Administration. Bitte benutzen Sie die untenstehenden Links, um die Ressourcen zu verwalten, auf Ressourcenanfragen zu antworten, Themen zu verwalten und die Systemeinstellungen zu bearbeiten.",322,de,,,0
+team_report,introtext,"Bitte wählen Sie einen Bericht und einen Zeitraum. Der Bericht kann in Microsoft Excel oder einer anderen Tabellenkalkulation geöffnet werden.",323,de,,,0
+team_research,introtext,"Organisieren und verwalten Sie Ihre ""Ressourcenanfragen"".<br /><br />Wählen Sie ""Anfrage bearbeiten"", um die Details der Anfrage zu sehen und sie einem Teammitglied zuzuweisen. Es ist möglich, eine Antwort auf einer existierenden Kollektion aufzubauen. Geben Sie dazu die Kollektions-ID in der Ansicht zur Bearbeitung ein.<br /><br />Wenn die Ressourcenanfrage zugewiesen ist, wählen Sie ""Kollektion bearbeiten"", um die Anfrage zu Ihren Kollektionen hinzuzufügen. So können Sie Ressourcen zu dieser Kollektion hinzufügen.<br /><br />Wenn die Kollektion vollständig ist, wählen Sie ""Anfrage bearbeiten"", stellen Sie den Status auf ""abgeschlossen"" und eine E-Mail wird automatisch an den Anfrager geschickt. Diese E-Mail enthält einen Link zur erstellten Kollektion, welche außerdem automatisch zu den Kollektionen des Benutzers hinzugefügt wird.",324,de,,,0
+view,storyextract,Story:,325,de,,,0
+team_resource,introtext,"Fügen Sie einzelne Ressourcen hinzu oder nutzen Sie den Stapelupload. Um einzelne Ressourcen zu bearbeiten, suchen Sie nach der Ressource und wählen Sie ""bearbeiten"" unter den ""Ressourcen-Werkzeugen"".",326,de,,,0
+team_stats,introtext,"Statistiken werden auf Basis der aktuellsten Daten erstellt. Aktivieren Sie die Checkbox, um alle Statistiken für das gewählte Jahr auszugeben.",327,de,,,0
+team_user,introtext,"In diesem Bereich können Sie Benutzer hinzufügen, löschen und verändern.",328,de,,,0
+themes,manage,"Organisieren und bearbeiten Sie Ihre Themen. Themen sind besonders hervorgehobene Kollektionen. <br /><br /><strong>1 Um einen neuen Eintrag in einem Thema anzulegen, müssen Sie zuerst eine neue Kollektion anlegen</strong><br />Wählen Sie <strong>Meine Kollektionen</strong> aus der oberen Navigation und legen Sie eine neue <strong>öffentliche</strong> Kollektion an. Stellen Sie sicher, dass Sie einen Namen für Ihr Thema eingeben. Um die aktuelle Kollektion einem bestehenden Thema zuzuordnen, nutzen Sie einen bestehenden Themennamen. Wenn Sie einen noch nicht vergebenen Themennamen angeben, erstellen Sie ein neues Thema. <br /><br /><strong>2 Um den Inhalt eines bestehenden Themas zu ändern, </strong><br>wählen Sie <strong>'Kollektion bearbeiten'</strong>. Die Ressourcen in dieser Kollektion erscheinen unten im <strong>'Meine Kollektionen'</strong> Bereich. Nutzen Sie die Standardwerkzeuge um Resourcen zu bearbeiten, hizuzufügen oder zu löschen.<br /><br /><strong>3 Um eine Kollektion umzubenennen oder unter einem anderen Thema anzuzeigen,</strong><br />wählen Sie <strong>'bearbeiten'</strong> und bearbeiten Sie die Themenkategorie oder die Kollektionsnamen. <br /><br /><strong>4 Um eine Kollektion aus einem Thema zu entfernen,</strong><br>wählen Sie<strong> 'bearbeiten'</strong> und löschen Sie den Eintrag im Feld ""Themen-Kategorie"".",329,de,,,0
+upload,introtext,"",330,de,,,0
+upload_swf,introtext,"",331,de,,,0
+home,welcometitle,"Välkommen till ResourceSpace",332,sv,,,0
+home,welcometext,"Skriv en introduktion här …",333,sv,,,0
+all,footer,"<a target=""_blank"" href=""http://www.resourcespace.org/"">ResourceSpace</a>: Digital materialförvaltning (dam) med öppen källkod",334,sv,,,0
+all,searchpanel,"Sök efter material genom att ange beskrivning, nyckelord eller materialnr.",335,sv,,,0
+resource_email,introtext,"Dela snabbt och enkelt material med andra. Ett e-postmeddelande innehållande en webblänk till materialen skapas och skickas automatiskt. Du kan även lägga till ett eget meddelande.",336,sv,,,0
+home,themes,"De bästa materialen, speciellt utvalda och sorterade.",337,sv,,,0
+home,restrictedtitle,"<h1>Välkommen till ResourceSpace</h1>",338,sv,,,0
+about,about,"Din egen text för ’Om oss’ …",339,sv,,,0
+home,help,"Hjälp och tips som ser till att du får ut det mesta möjliga av ResourceSpace.",340,sv,,,0
+home,mycollections,"Organisera dina material och samarbeta med andra. De här verktygen hjälper dig att arbeta mer effektivt.",341,sv,,,0
+terms,terms,"Dina regler …",342,sv,,,0
+"terms and conditions","terms and conditions","Dina regler och villkor …",343,sv,,,0
+home,restrictedtext,"Klicka på webblänken som skickades till dig om du vill komma åt materialen som är utvalda för dig.",344,sv,,,0
+change_language,introtext,"Välj ditt önskade språk nedan.",345,sv,,,0
+all,researchrequest,"Låt vårt team hitta materialen du är ute efter.",346,sv,,,0
+change_password,introtext,"Skriv in ett nytt lösenord nedan om du vill byta lösenord.",347,sv,,,0
+contact,contact,"Dina kontaktuppgifter …",348,sv,,,0
+view,storyextract,Textutdrag:,349,sv,,,0
+team_home,introtext,"Välkommen till sidan Administration. Använd länkarna nedan om du vill administrera material, svara på förfrågningar, hantera teman och ändra systeminställningar.",350,sv,,,0
+themes,introtext,"Teman är grupper av material som har valts ut av administratörerna som exempel på vilka material som finns i systemet.",351,sv,,,0
+collection_manage,findpublic,"Gemensamma samlingar är grupper av material som har gjorts allmänt tillgängliga av användare i systemet. Skriv in ett samlingsnr, hela eller delar av samlingsnamnet, eller ett användarnamn när du vill söka efter en gemensam samling. Lägg till den hittade samlingen till din lista över samlingar om du vill kunna nå materialen enkelt.",352,sv,,,0
+collection_public,introtext,"Gemensamma samlingar är skapade av andra användare.",353,sv,,,0
+themes,findpublic,"Gemensamma samlingar är samlingar med material som har delats ut av andra användare.",354,sv,,,0
+help,introtext,"Få ut det mesta möjliga av ResourceSpace. Instruktionerna nedan hjälper dig att använda systemet och materialen effektivare.</p>
+
+<p>Använd Teman om du vill bläddra bland material per tema eller använd Enkel sökning om du vill söka efter specifikt material.</p>
+
+<p><a target=""_blank"" href=""http://www.montala.net/downloads/resourcespace-GettingStarted.pdf"">Hämta den engelska användarhandboken (pdf-fil)</a>
+
+<p><a target=""_blank"" href=""http://wiki.resourcespace.org/index.php/Main_Page"">Dokumentation på webben (engelskspråkig wiki)</a>",355,sv,,,0
+collection_email,introtext,"Dela snabbt och enkelt materialet i denna samling med andra. Ett e-postmeddelande innehållande en webblänk till samlingarna skapas och skickas automatiskt. Du kan även lägga till ett eget meddelande.",356,sv,,,0
+collection_edit,introtext,"Organisera och hantera dina material genom att dela upp dem i samlingar.
+
+<br>
+
+Du når alla dina samlingar från panelen <b>Mina&nbsp;samlingar</b> i nederkant av skärmen.
+
+<br><br>
+
+<strong>Privat åtkomst</strong> tillåter endast dig och dina utvalda användare att se samlingen. Idealiskt om du vill samla material i projekt som du jobbar med enskilt eller i en grupp.
+
+<br><br>
+
+<strong>Gemensam åtkomst</strong> tillåter alla interna användare att söka efter och se samlingen. Användbart om du vill dela materialet med andra som skulle kunna ha nytta av det. 
+
+<br><br>
+
+Du kan välja om du vill att de andra användarna ska kunna lägga till och ta bort material eller bara kunna visa materialen.",357,sv,,,0
+edit,multiple,"Markera de fält du vill uppdatera med ny information. Omarkerade fält lämnas oförändrade.",358,sv,,,0
+collection_manage,introtext,"Organisera och hantera ditt material genom att dela upp det i samlingar. Skapa samlingar för ett eget projekt, om du vill underlätta samarbetet i en projektgrupp eller om du vill samla dina favoriter på ett ställe. Du når alla dina samlingar från panelen <b>Mina&nbsp;samlingar</b> i nederkant av skärmen.",359,sv,,,0
+collection_manage,newcollection,"Fyll i ett samlingsnamn om du vill skapa en ny samling.",362,sv,,,0
+contribute,introtext,"Du kan bidra med eget material. När du först skapar materialet får det statusen ’Under registrering’. Överför en eller flera filer och fyll i fälten med relevant metadata. Sätt statusen till ’Väntande på granskning’ när du är klar.",363,sv,,,0
+delete,introtext,"Du måste ange ditt lösenord för att bekräfta att du vill ta bort det här materialet.",360,sv,,,0
+done,deleted,"Materialet har tagits bort.",361,sv,,,0
+done,collection_email,"Ett e-postmeddelande innehållande en webblänk har skickats till användarna du specificerade. Samlingen har lagts till i respektive användares panel <b>Mina&nbsp;samlingar</b>.",364,sv,,,0
+done,research_request,"En medlem av researchteamet kommer att få i uppdrag att besvara din researchförfrågan. Vi kommer att hålla kontakt genom e-post under arbetets gång. När vi har slutfört arbetet kommer du att få ett e-postmeddelande med en webblänk till alla material vi rekommenderar.",365,sv,,,0
+done,resource_email,"Ett e-postmeddelande innehållande en webblänk till materialen har skickats till användarna du specificerade.",366,sv,,,0
+done,resource_request,"Din begäran har mottagits och vi kommer att höra av oss inom kort.",367,sv,,,0
+done,user_password,"Ett e-postmeddelande innehållande ditt användarnamn och lösenord har skickats.",368,sv,,,0
+done,user_request,"Din ansökan om ett användarkonto har skickats. Dina inloggningsuppgifter kommer att skickas till dig inom kort.",369,sv,,,0
+download_click,introtext,"Högerklicka på länken nedan och välj <b>Spara&nbsp;som</b> om du vill hämta materialet. Du kommer att få frågan var du vill spara filen. Öppna filen i din webbläsare genom att klicka på webblänken.",370,sv,,,0
+download_progress,introtext,"Din hämtning startas inom kort. När hämtningen är klar kan du fortsätta genom att klicka på länkarna nedan.",371,sv,,,0
+edit,batch,"",372,sv,,,0
+team_resource,introtext,"Lägg till material ett och ett eller i grupp. Om du vill redigera ett material kan du enklast söka efter det och sedan klicka på <b>Redigera</b> på sidan som visar materialet.",373,sv,,,0
+login,welcomelogin,"Välkommen till ResourceSpace",374,sv,,,0
+user_request,introtext,"Fyll i formuläret nedan om du vill ansöka om ett användarkonto.",375,sv,,,0
+research_request,introtext,"Researchteamet hjälper dig att finna de bästa materialen till dina projekt. Fyll i formuläret nedan så noggrant som möjligt så att vi kan ge dig ett relevant svar. <br><br>En medlem av teamet kommer att få i uppdrag att besvara din researchförfrågan. Vi kommer att hålla kontakt genom e-post under arbetets gång. När vi har slutfört arbetet kommer du att få ett e-postmeddelande med en webblänk till alla material vi rekommenderar.",376,sv,,,0
+resource_request,introtext,"Din begäran är nästan slutförd. Ange anledningen till din begäran så att vi kan besvara den snabbt och effektivt.",377,sv,,,0
+search_advanced,introtext,"<strong>Söktips</strong><br>Ett avsnitt som du lämnar tomt eller omarkerat medför att <i>allt</i> inkluderas i sökningen. Om du till exempel lämnar alla länders kryssrutor omarkerade, begränsas sökningen inte med avseende på land. Om du däremot sedan markerar kryssrutan ’Sverige’ ger sökningen endast material från just Sverige.",378,sv,,,0
+tag,introtext,"Hjälp till att förbättra framtida sökresultat genom att förse materialen med relevant metadata. Ange till exempel nyckelord som beskrivning av vad du ser på en bild: kanin, hus, boll, födelsedagstårta. Separera nyckelorden med kommatecken eller mellanslag. Ange fullständiga namn på alla personer som förekommer på ett fotografi. Ange platsen för ett fotografi om den är känd.",379,sv,,,0
+user_password,introtext,"Fyll i din e-postadress och ditt användarnamn så kommer ett nytt lösenord att skickas till dig.",380,sv,,,0
+upload_swf,introtext,"",381,sv,,,0
+upload,introtext,"",382,sv,,,0
+themes,manage,"Organisera och redigera tillgängliga teman. Teman är grupper av material som har valts ut av administratörerna som exempel på vilka material som finns i systemet.<br><br><strong>Skapa teman</strong><br><Om du vill skapa ett nytt tema måste du först skapa en samling.<br>Gå till <b>Mina&nbsp;samlingar</b> och skapa en ny <strong>gemensam samling</strong>. Välj en temakategori från listan om du vill lägga till samlingen i en existerande temakategori eller ange ett nytt namn om du vill skapa en ny temakategori. Tillåt inte användare att lägga till/ta bort material från teman.<br><br><strong>Redigera teman</strong><br>Om du vill redigera materialen i ett existerande tema väljer du verktyget <strong>Välj samling</strong>. Materialen i samlingen blir då åtkomliga i panelen <b>Mina&nbsp;samlingar</b> i nederkanten av skärmen. Använd de vanliga verktygen om du vill redigera, lägga till eller ta bort material.<br><br><strong>Byta namn på teman och flytta samlingar</strong><br>Välj verktyget <strong>Redigera samling</strong>. Ange ett nytt namn i fältet Namn om du vill byta namn på temat. Välj en temakategori från listan om du vill flytta samlingen till en existerande temakategori eller ange ett nytt namn om du vill skapa en ny temakategori och flytta samlingen dit.<br><br><strong>Ta bort en samling från ett tema</strong><br>Välj verktyget <strong>Redigera samling</strong> och rensa fältet Temakategori och fältet där nya temakategorinamn anges.",383,sv,,,0
+terms,introtext,"Innan du kan fortsätta måste du acceptera reglerna och villkoren.",384,sv,,,0
+team_user,introtext,"Använd den här delen om du vill lägga till, ta bort eller redigera användare.",385,sv,,,0
+team_stats,introtext,"En statistikrapport kan skapas vid behov, baserad på aktuell data. Markera kryssrutan om du vill skriva ut all statistik för det valda året.",386,sv,,,0
+team_research,introtext,"Organisera och hantera researchförfrågningar.<br><br>Välj verktyget <b>Redigera researchförfrågan</b> om du vill granska förfrågan och tilldela en medlem i researchteamet uppdraget att besvara förfrågan. Med samma verktyg kan du lägga till en befintlig samling till researchen genom att ange samlingens nummer.<br><br>När en medlem har tilldelats researchen blir den tillgänglig för medlemmen i panelen <b>Mina&nbsp;samlingar</b>. Använd de vanliga verktygen om du vill lägga till material till researchen.<br><br>När researchen är slutförd väljer du återigen verktyget <b>Redigera researchförfrågan</b> och ändrar status till ’Besvarad’. När du klickar på <b>Spara</b> skickas automatiskt ett e-postmeddelande till användaren som skickade researchförfrågan. Meddelandet innehåller en webblänk som leder till researchen och den läggs också till i användarens panel<b>Mina&nbsp;samlingar</b>.",387,sv,,,0
+team_report,introtext,"Välj en rapport och en period. Rapporten kan öppnas i till exempel MS Excel eller LibreOffice Calc.",388,sv,,,0
+team_copy,introtext,"Ange numret för materialet du vill kopiera. Endast materialets metadata kommer att kopieras – eventuella filer kommer inte att kopieras.",389,sv,,,0
+team_batch_upload,introtext,"",390,sv,,,0
+team_batch_select,introtext,"",391,sv,,,0
+team_batch,introtext,"",392,sv,,,0
+team_archive,introtext,"Om du vill redigera ett arkiverat material gör du det enklast genom att söka efter det här och sedan klicka på <b>Redigera</b> på sidan som visar materialet. Alla material som väntar på arkivering kan enkelt nås från länken nedan. Lägg till eventuell relevant information innan du flyttar materialet till arkivet.",393,sv,,,0
+collection_email,introtextthemeshare,"Complete the form below to e-mail the themes in this theme category. The recipients will receive an email containing links to each of the themes.",,en,,,
+all,comments_policy,"",394,en,,,
+all,comments_removal_message,"",395,en,,,
+all,comments_flag_notification_email_subject,"",396,en,,,
+all,comments_flag_notification_email_body,"",397,en,,,
+team_home,introtext,"Welcome to the team center. Use the links below to administer resources, respond to resource requests, manage themes and alter system settings.",398,en-US,,,
+themes,manage,"Organize and edit the themes available online. Themes are specially promoted collections. <br><br> <strong>1 To create a new entry under a Theme -  build a collection</strong><br> Choose <strong>My Collections</strong> from the main top menu and set up a brand new <strong>public</strong> collection. Remember to include a theme name during the setup. Use an existing theme name to group the collection under a current theme (make sure you type it exactly the same), or choose a new title to create a brand new theme. Never allow users to add/remove resources from themed collections. <br> <br><strong>2 To edit the content of an existing entry under a theme </strong><br> Choose <strong>edit collection</strong>. The items in that collection will appear in the <strong>My Collections</strong> panel at the bottom of the screen. Use the standard tools to edit, remove or add resources. <br> <br><strong>3 To alter a theme name or move a collection to appear under a different theme</strong><br> Choose <strong>edit properties</strong> and edit theme category or collection name. Use an existing theme name to group the collection under an current theme (make sure you type it exactly the same), or choose a new title to create a brand new theme. <br> <br><strong>4 To remove a collection from a theme </strong><br> Choose <strong>edit properties</strong> and delete the words in the theme category box. ",399,en-US,,,
+collection_manage,introtext,"Organize and manage your work by grouping resources together. Create ‘Collections’ to suit your way of working. You may want to group resources under projects that you are working on independently, share resources amongst a project team or simply keep your favourite resources together in one place. All the collections in your list appear in the ‘My Collections’ panel at the bottom of the screen.",400,en-US,,,
+team_research,introtext,"Organize and manage ‘Research Requests’. <br><br>Choose ‘edit research’ to review the request details and assign the research to a team member. It is possible to base a research request on a previous collection by entering the collection ID in the ‘edit’ screen. <br><br>Once the research request is assigned, choose ‘edit collection’ to add the research request to ‘My collection’ panel. Using the standard tools, it is then possible to add resources to the research. <br><br>Once the research is complete, choose ‘edit research’,  change the status to complete and an email is automatically  sent to the user who requested the research. The email contains a link to the research and it is also automatically added to their ‘My Collection’ panel.",401,en-US,,,
+collection_edit,introtext,"Organize and manage your work by grouping resources together. Create ‘Collections’ to suit your way of working.
+
+<br>
+
+All the collections in your list appear in the ‘My Collections’ panel at the bottom of the screen
+
+<br><br>
+
+<strong>Private Access</strong> allows only you and and selected users to see the collection. Ideal for grouping resources under projects that you are working on independently and share resources amongst a project team.
+
+<br><br>
+
+<strong>Public Access</strong> allows all users of the system to search and see the collection. Useful if you wish to share collections of resources that you think others would benefit from using.
+
+<br><br>
+
+You can choose whether you allow other users (public or users you have added to your private collection) to add and remove resources or simply view them for reference.",402,en-US,,,
+all,emailnotifyresourcesapproved,"[img_gfx/whitegry/titles/title.gif]<br>
+[lang_userresourcesapproved]
+[list] <br>
+[lang_viewcontributedsubittedl] <br><br> 
+<a href=""[url]"">[url]</a><br><br>
+[text_footer]
+",403,en,,,1
+collection_email,introtextthemeshare,"Dela snabbt och enkelt alla teman i denna temakategori med andra. Ett e-postmeddelande innehållande en webblänk till respektive tema skapas och skickas automatiskt. Du kan även lägga till ett eget meddelande.",404,sv,,,
+all,emailcontactadmin,"[img_../gfx/whitegry/titles/title.gif]<br>[fromusername] ([emailfrom])[lang_contactadminemailtext]<br><br>[message]<br><br><a href=""[url]"">[embed_thumbnail]</a><br><br>[text_footer]",405,en,,,

@@ -1,13 +1,13 @@
 	
 
 #NewsBox {
-	width: 267px;
+	width: 160px;
 	height: 200px;
 	float: right;
     margin-left: 0px; 
-	margin-top: 10px;
-	padding: 2px 8px 0px 5px;
-	background-color: #346674;
+	margin-top: 20px;
+	padding: 25px 8px 0px 5px;
+	background-color: #B42529;
 	color: #FFFFFF;
 	background-image: none;
 	filter: none;
@@ -18,21 +18,10 @@
 	color: #FFFFFF;	
 }
 
-#title {
-color: #FFFFFF
-}
-
 #NewsDisplayBox {
 	font-size: 14px;
-        color: #FFFFFF;
 }
-
-
 #NewsBodyDisplay, #NewsBodyDisplay a:link, #NewsBodyDisplay a:visited{
 	font-size: 14px;
-        color: #FFFFFF;
-}
-
-#NewsBodyDisplay {
-		color:black;
+	color: #FFFFFF;	
 }

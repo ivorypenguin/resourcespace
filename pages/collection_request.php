@@ -1,20 +1,11 @@
 <?php
 include "../include/db.php";
-include_once "../include/general.php";
-include_once "../include/collections_functions.php";
-$ref=getval("ref","",true);
-$k=getvalescaped("k","");if ($k=="" || !check_access_key_collection($ref,$k)) {include "../include/authenticate.php";}
-
-if (!checkperm('q')){exit($lang["error-permissiondenied"]);}
-
+$k=getvalescaped("k","");if ($k=="") {include "../include/authenticate.php";} 
+include "../include/general.php";
+include "../include/collections_functions.php";
 include "../include/request_functions.php";
 
-if ($k!="" && (!isset($internal_share_access) || !$internal_share_access) && $prevent_external_requests)
-	{
-	echo "<script>window.location = '" .  $baseurl . "/login.php?error="  . (($allow_account_request)?"signin_required_request_account":"signin_required") . "'</script>";
-	exit();
-	}
-
+$ref=getval("ref","",true);
 $cinfo=get_collection($ref);
 $error=false;
 
@@ -22,15 +13,8 @@ if (getval("save","")!="")
 	{
 	if ($k!="" || $userrequestmode==0)
 		{
-		if ($k!="" && (getval("fullname","")=="" || getvalescaped("email","")==""))
-			{
-			$result=false; # Required fields not completed.
-			}
-		else
-			{
-			# Request mode 0 : Simply e-mail the request.
-			$result=email_collection_request($ref,getvalescaped("request",""));
-			}
+		# Request mode 0 : Simply e-mail the request.
+		$result=email_collection_request($ref,getvalescaped("request",""));
 		}
 	else
 		{
@@ -39,7 +23,7 @@ if (getval("save","")!="")
 		}
 	if ($result===false)
 		{
-		$error=$lang["requiredfields-general"];
+		$error=$lang["requiredfields"];
 		}
 	else
 		{
@@ -49,24 +33,13 @@ if (getval("save","")!="")
 include "../include/header.php";
 ?>
 
-<div class="BasicsBox">
-  <?php 
-  $backlink=getvalescaped("backlink","");
-  if($backlink!="")
-	{
-	?><p>
-	  <a href='<?php echo rawurldecode($backlink); ?>'><?php echo LINK_CARET_BACK ?><?php echo $lang['back']; ?></a>
-	</p>
-	<?php
-	}?>
-		
-		
+<div class="BasicsBox"> 
+  <h2>&nbsp;</h2>
   <h1><?php echo $lang["requestcollection"]?></h1>
   <p><?php echo text("introtext")?></p>
   
 	<form method="post" action="<?php echo $baseurl_short?>pages/collection_request.php">  
 	<input type=hidden name=ref value="<?php echo htmlspecialchars($ref) ?>">
-	<input type=hidden name="k" value="<?php echo htmlspecialchars($k) ?>">
 	
 	<div class="Question">
 	<label><?php echo $lang["collectionname"]?></label>
@@ -75,8 +48,6 @@ include "../include/header.php";
 	</div>
 
 	<?php 
-	hook('collectionrequestdetail','',array($cinfo['ref']));
-	
 	# Only ask for user details if this is an external share. Otherwise this is already known from the user record.
 	if ($k!="") { ?>
 	<div class="Question">
@@ -102,7 +73,7 @@ include "../include/header.php";
 	<?php } ?>
 	
 	<div class="Question">
-	<label for="requestreason"><?php echo $lang["requestreason"]?> <?php if ($resource_request_reason_required) { ?><sup>*</sup><?php } ?></label>
+	<label for="requestreason"><?php echo $lang["requestreason"]?> <sup>*</sup></label>
 	<textarea class="stdwidth" name="request" id="request" rows=5 cols=50><?php echo htmlspecialchars(getval("request","")) ?></textarea>
 	<div class="clearerleft"> </div>
 	</div>

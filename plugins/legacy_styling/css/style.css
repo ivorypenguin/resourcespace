@@ -51,12 +51,12 @@ h1, h2, .RecordPanel .Title {font: normal 1.5em Arial, Helvetica, sans-serif;}
 .ResourceAlign {width:162px;}
 .Question label, .QuestionSubmit label{	width: 190px;}
 #CentralSpaceLogin {width: 550px;}
-.FormHelp{margin: 0px 0px 10px 20%;}
+.FormHelp{margin: 0px 0px 10px 190px;}
 #searchbarrt
     {
     margin-top:0;    
     }
-.buttonsave{margin-right:20%;}
+
 
 #CollectionMenu{width: 166px;}
 .CollectionSpace{left: 199px;}
@@ -64,14 +64,4 @@ h1, h2, .RecordPanel .Title {font: normal 1.5em Arial, Helvetica, sans-serif;}
 .CollectionResourceAlign {width: 77px}
 
 .HomePanelPromotedIN {min-height: 130px;}
-
-#themeselect {
-width: 150px;
-font-family:inherit;
-margin-bottom:10px;
-}
-
-.checkboxes, .verticalcheckboxes {padding-left:190px;}
-.checkboxtext {width:170px;}
-
 

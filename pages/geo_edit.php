@@ -1,7 +1,7 @@
 <?php
 include "../include/db.php";
-include_once "../include/general.php";
 include "../include/authenticate.php"; 
+include "../include/general.php";
 include "../include/resource_functions.php";
 include "../include/header.php";
 
@@ -53,7 +53,7 @@ if (isset($_POST['submit']))
 <div class="RecordPanel">
 <div class="Title"><?php echo $lang['location-title']; ?></div>
 <?php if (!hook("customgeobacklink")) { ?>
-<p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $ref?>"><?php echo LINK_CARET_BACK ?><?php echo $lang['backtoresourceview']; ?></a></p>
+<p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $ref?>">&lt;&nbsp;<?php echo $lang['backtoresourceview']; ?></a></p>
 <?php } ?>
 
 <!-- Drag mode selector -->
@@ -178,7 +178,7 @@ hook("rendermapfooter");
 </form>
 
 </div>
-
+<div class="PanelShadow"></div>
 </div>
 <?php
 include "../include/footer.php";

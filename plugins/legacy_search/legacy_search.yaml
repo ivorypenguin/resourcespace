@@ -1,0 +1,4 @@
+name: legacy_search
+desc: Replaces do_search() with the slower pre-v6.0 version. For issues only.
+author: Montala Limited
+version: 1.0

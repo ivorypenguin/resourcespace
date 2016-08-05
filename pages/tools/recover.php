@@ -50,7 +50,7 @@ if (!(strlen($source_filestore_path) > 0)){
 
 
 include dirname(__FILE__) . "/../../include/db.php";
-include_once dirname(__FILE__) . "/../../include/general.php";
+include dirname(__FILE__) . "/../../include/general.php";
 include dirname(__FILE__) . "/../../include/resource_functions.php";
 include dirname(__FILE__) . "/../../include/image_processing.php";
 
@@ -154,16 +154,13 @@ foreach(array_keys($optionlists) as $thekey){
 	foreach($optionlists[$thekey] as $theval){
 		echo "value: $theval\n";
 		$valuelist .= ",$theval";
-
-        set_node(null,$thekey,escape_check(trim($theval)),null,null);
-
 	}
 
 	$valuelist = escape_check($valuelist);
 
-	//$query = "update resource_type_field set options = '$valuelist' where ref = '$thekey'";
+	$query = "update resource_type_field set options = '$valuelist' where ref = '$thekey'";
 	//echo "$query\n\n";
-	//sql_query($query);
+	sql_query($query);
 
 }
 
@@ -235,10 +232,6 @@ function populate_metadata_from_dump($id,$meta){
 	// nice to make the metadump files validate
 	$metadump = preg_replace('/([<\/])([a-z0-9]+):/i','$1$2',$metadump);
 	$metadump = preg_replace('/(resourcespace):(resourceid="\d+">)/i','$1$2',$metadump);
-	
-	# Fix an issue whereby the resourcespace namespace is not defined. Add a fake namespace to the header.
-	$metadump = str_replace("xmlns:dc","xmlns:resourcespace='http://www.resourcespace.org' xmlns:dc",$metadump);
-		
 	$metadump = stripInvalidXml($metadump);
 	//echo $metadump;
 	$xml = new SimpleXMLElement($metadump);

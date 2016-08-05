@@ -4383,9 +4383,9 @@ class TCPDF {
 			$this->write1DBarcode($barcode, 'C128', '', $cur_y + $line_width, '', (($this->footer_margin / 3) - $line_width), 0.3, $style, '');
 		}
 		if (empty($this->pagegroups)) {
-			$pagenumtxt = $this->getAliasNumPage().' / '.$this->getAliasNbPages();
+			$pagenumtxt = $this->l['w_page'].' '.$this->getAliasNumPage().' / '.$this->getAliasNbPages();
 		} else {
-			$pagenumtxt = $this->getPageNumGroupAlias().' / '.$this->getPageGroupAlias();
+			$pagenumtxt = $this->l['w_page'].' '.$this->getPageNumGroupAlias().' / '.$this->getPageGroupAlias();
 		}
 		$this->SetY($cur_y);
 		//Print page number
@@ -23824,7 +23824,7 @@ Putting 1 is equivalent to putting 0 and calling Ln() just after. Default value:
 								}
 							}
 						}
-						$tag['attribute']['src'] = htmlspecialchars_decode(rawurldecode($tag['attribute']['src']));
+						$tag['attribute']['src'] = htmlspecialchars_decode(urldecode($tag['attribute']['src']));
 						$type = $this->getImageFileType($tag['attribute']['src']);
 						$testscrtype = @parse_url($tag['attribute']['src']);
 						if (!isset($testscrtype['query']) OR empty($testscrtype['query'])) {
@@ -24302,7 +24302,7 @@ Putting 1 is equivalent to putting 0 and calling Ln() just after. Default value:
 						$tcpdf_method = $tag['attribute']['method'];
 						if (method_exists($this, $tcpdf_method)) {
 							if (isset($tag['attribute']['params']) AND (!empty($tag['attribute']['params']))) {
-								$params = unserialize(rawurldecode($tag['attribute']['params']));
+								$params = unserialize(urldecode($tag['attribute']['params']));
 								call_user_func_array(array($this, $tcpdf_method), $params);
 							} else {
 								$this->$tcpdf_method();
@@ -29482,7 +29482,7 @@ Putting 1 is equivalent to putting 0 and calling Ln() just after. Default value:
 								}
 							}
 						}
-						$img = rawurldecode($img);
+						$img = urldecode($img);
 						$testscrtype = @parse_url($img);
 						if (!isset($testscrtype['query']) OR empty($testscrtype['query'])) {
 							// convert URL to server path

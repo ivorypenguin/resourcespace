@@ -1,13 +1,12 @@
 #!/usr/bin/php
 <?php
 include(dirname(__FILE__) . "/../include/db.php");
-include_once(dirname(__FILE__) . "/../include/general.php");
+include(dirname(__FILE__) . "/../include/general.php");
 include(dirname(__FILE__) . "/../include/image_processing.php");
 include(dirname(__FILE__) . "/../include/resource_functions.php");
 
 
 $ignoremaxsize=false;
-$noimage=false;
 if ($argc >= 2)
 	{
 	$validargs=false;
@@ -22,11 +21,6 @@ if ($argc >= 2)
 	if (in_array('-ignoremaxsize',$argv) )
 		{
 		$ignoremaxsize=true;
-		$validargs=true;
-		}
-	if (in_array('-noimage',$argv) )
-		{
-		$noimage=true; # 
 		$validargs=true;
 		}
 	if (in_array('-clearlock',$argv))
@@ -138,9 +132,7 @@ if ($multiprocess)
 // We fetch the list of resources to process.
 global  $no_preview_extensions;
 $exclude="'" . implode("','",$no_preview_extensions) . "'";
-$condition="resource.has_image=0 and";
-if ($noimage) {$condition="";}
-$resources=sql_query("SELECT resource.ref, resource.file_extension, ifnull(resource.preview_attempts,1) preview_attempts, creation_date FROM resource WHERE $condition resource.ref>0 and (resource.preview_attempts<5 or resource.preview_attempts is NULL) and file_extension is not null and length(file_extension)>0 and lower(file_extension) not in (" . $exclude  . ")");
+$resources=sql_query("SELECT resource.ref, resource.file_extension, resource.preview_attempts, creation_date FROM resource WHERE resource.has_image = 0 and resource.archive<=0 and resource.ref>0 and (resource.preview_attempts<5 or resource.preview_attempts is NULL) and lower(file_extension) not in (" . $exclude  . ")");
 
 foreach($resources as $resource) // For each resources
   {
@@ -223,16 +215,14 @@ foreach($resources as $resource) // For each resources
 			
 		elseif ($resource['preview_attempts']<5 and $resource['file_extension']!="") 
 			{
-			if(!empty($resource['file_path'])){$ingested=false;}
-			else{$ingested=true;}
-
-			# Increment the preview count.
-			sql_query("update resource set preview_attempts=ifnull(preview_attempts,1) + 1 where ref='" . $resource['ref'] . "'");
-
-			create_previews($resource['ref'], false, $resource['file_extension'],false,false,-1,$ignoremaxsize,$ingested);
+			create_previews($resource['ref'], false, $resource['file_extension'],false,false,-1,$ignoremaxsize);
 			echo sprintf("Processed resource %d in %01.2f seconds.\n", $resource['ref'], microtime(true) - $start_time);
 			}
-
+		else
+			{
+			echo sprintf("Skipped resource " . $resource['ref'] . " - maximum attempts reached or nonexistent file extension. \n");
+			}
+			
 	  if ($multiprocess)
 	  	{
 	      // We exit in order to avoid fork bombing.

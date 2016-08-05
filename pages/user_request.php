@@ -1,6 +1,6 @@
 <?php
 include "../include/db.php";
-include_once "../include/general.php";
+include "../include/general.php";
 
 
 $error=false;
@@ -11,68 +11,17 @@ hook("preuserrequest");
 
 if (getval("save","")!="")
 	{
-	# Check for required fields
-
-	# Required fields (name, email) not set?
-	$missingFields = hook('replacemainrequired');
-	if (!is_array($missingFields))
-		{
-		$missingFields = array();
-		if (getval("name","")=="") { $missingFields[] = $lang["yourname"]; }
-		if (getval("email","")=="") { $missingFields[] = $lang["youremailaddress"]; }
-		}
-
-	# Add custom fields
-	$customContents="";
-	if (isset($custom_registration_fields))
-		{
-		$custom=explode(",",$custom_registration_fields);
-
-		# Required fields?
-		if (isset($custom_registration_required)) {$required=explode(",",$custom_registration_required);}
-
-		# Loop through custom fields
-		for ($n=0;$n<count($custom);$n++)
-			{
-			$custom_field_value = getval("custom" . $n,"");
-			$custom_field_sub_value_list = "";
-
-			for ($i=1; $i<=1000; $i++)		# check if there are sub values, i.e. custom<n>_<n> form fields, for example a bunch of checkboxes if custom type is set to "5"
-				{
-				$custom_field_sub_value = getval("custom" . $n . "_" . $i, "");
-				if ($custom_field_sub_value == "") continue;
-				$custom_field_sub_value_list .= ($custom_field_sub_value_list == "" ? "" : ", ") . $custom_field_sub_value;		# we have found a sub value so append to the list
-				}
-
-			if ($custom_field_sub_value_list != "")		# we found sub values
-				{
-				$customContents.=i18n_get_translated($custom[$n]) . ": " . i18n_get_translated($custom_field_sub_value_list) . "\n\n";		# append with list of all sub values found
-				}
-			elseif ($custom_field_value != "")		# if no sub values found then treat as normal field
-				{
-				$customContents.=i18n_get_translated($custom[$n]) . ": " . i18n_get_translated($custom_field_value) . "\n\n";		# there is a value so append it
-				}
-			elseif (isset($required) && in_array($custom[$n],$required))		# if the field was mandatory and a value or sub value(s) not set then we return false
-				{
-				$missingFields[] = $custom[$n];
-				}
-			}
-		}
-
-	if (!empty($missingFields))
-		{
-		$error=$lang["requiredfields"] . ' ' . i18n_get_translated(implode(', ', $missingFields), true);
-		}
 	# Check the anti-spam code is correct
-	elseif (!hook('replaceantispam_check') && getval("antispamcode","")!=md5(getval("antispam","")))
+	if (getval("antispamcode","")!=md5(getval("antispam","")))
 		{
-		$error=$lang["requiredantispam"];
+		$error=$lang["requiredfields"];
 		}
+	
 	# Check that the e-mail address doesn't already exist in the system
-	elseif (user_email_exists($user_email))
+	elseif (user_email_exists(getval("email","")))
 		{
 		# E-mail already exists
-		$error=$lang["accountemailalreadyexists"];$error_extra="<br/><a href=\"".$baseurl_short."pages/user_password.php?email=" . urlencode($user_email) . "\">" . $lang["forgottenpassword"] . "</a>";
+		$error=$lang["accountemailalreadyexists"];$error_extra="<br/><a href=\"".$baseurl_short."pages/user_password.php?email=" . urlencode(getval("email","")) . "\">" . $lang["forgottenpassword"] . "</a>";
 		}
 	else
 		{
@@ -94,36 +43,13 @@ if (getval("save","")!="")
 			}
 		else
 			{
-			$error=$try;
+			$error=$lang["requiredfields"];
 			}
 		}
 	}
 include "../include/header.php";
-
-if($login_background)
-	{
-    $backimageurl = "";
-    $dir = dirname(__FILE__) . "/../" . $homeanim_folder;
-    $d = scandir($dir);    
-	sort($d, SORT_NUMERIC);
-    foreach ($d as $f) 
-		{ 
-		if(preg_match("/[0-9]+\.(jpg)$/",$f))
-            {
-            $backimageurl= $baseurl_short . $homeanim_folder . "/" . $f;  
-            break;    
-            }
-        }
-	?>
-	<style>
-	#UICenter {
-		background-image: url('<?php echo $backimageurl; ?>');
-		}
-	</style>
-	<?php
-	}
 ?>
-<div id="login_box">
+
 <h1><?php echo $lang["requestuserlogin"]?></h1>
 <p><?php echo text("introtext")?></p>
 
@@ -149,11 +75,7 @@ if($login_background)
 if (isset($custom_registration_fields))
 	{
 	$custom=explode(",",$custom_registration_fields);
-	
-	if (isset($custom_registration_required))
-	{
-		$required=explode(",",$custom_registration_required);
-		}
+	$required=explode(",",$custom_registration_required);
 	
 	for ($n=0;$n<count($custom);$n++)
 		{
@@ -176,13 +98,9 @@ if (isset($custom_registration_fields))
 		else
 			{
 			?>
-			<div class="Question" id="Question<?php echo $n?>">
+			<div class="Question">
 			<label for="custom<?php echo $n?>"><?php echo htmlspecialchars(i18n_get_translated($custom[$n]))?>
-			<?php if (isset($required))
-			{
-				if (in_array($custom[$n],$required)) { ?><sup>*</sup><?php }
-				}
-				 ?>
+			<?php if (in_array($custom[$n],$required)) { ?><sup>*</sup><?php } ?>
 			</label>
 			
 			<?php if ($type==1) {  # Normal text box
@@ -289,19 +207,15 @@ $groups=get_registration_selectable_usergroups();
 <br />
 
 <?php
-if(!hook("replaceantispam"))
-	{
-	$code=rand(1000,9999);
-	?>
-	<input type="hidden" name="antispamcode" value="<?php echo md5($code)?>">
-	<div class="Question">
-	<label for="antispam"><?php echo $lang["enterantispamcode"] . " " . $code ?></label>
-	<input type=text name="antispam" id="antispam" class="stdwidth" value="">
-	<div class="clearerleft"> </div>
-	</div>
-	<?php
-	}
+$code=rand(1000,9999);
 ?>
+<input type="hidden" name="antispamcode" value="<?php echo md5($code)?>">
+<div class="Question">
+<label for="antispam"><?php echo $lang["enterantispamcode"] . " " . $code ?></label>
+<input type=text name="antispam" id="antispam" class="stdwidth" value="">
+<div class="clearerleft"> </div>
+</div>
+
 
 <div class="QuestionSubmit">
 <?php if ($error) { ?><div class="FormError">!! <?php echo $error ?> !!<?php echo $error_extra?></div><br /><?php } ?>
@@ -310,15 +224,9 @@ if(!hook("replaceantispam"))
 </div>
 </form>
 
-<?php
-if(!hook("replace_user_request_required_key"))
-	{
-	?>
-	<p><sup>*</sup> <?php echo $lang["requiredfield"] ?></p>
-	<?php
-	}
-?>
-</div><!-- end of login_box -->
+<p><sup>*</sup> <?php echo $lang["requiredfield"] ?></p>	
+
 <?php
 include "../include/footer.php";
+?>
 

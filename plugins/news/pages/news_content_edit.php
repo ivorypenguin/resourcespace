@@ -6,8 +6,8 @@
  * @subpackage Pages_Team
  */
 include dirname(__FILE__)."/../../../include/db.php";
-include_once dirname(__FILE__)."/../../../include/general.php";
 include dirname(__FILE__)."/../../../include/authenticate.php";if (!checkperm("o")) {exit ("Permission denied.");}
+include dirname(__FILE__)."/../../../include/general.php";
 include_once dirname(__FILE__)."/../inc/news_functions.php";
 
 $ref=getvalescaped("ref","",true);
@@ -35,7 +35,7 @@ $news=get_news($ref,"","");
 include dirname(__FILE__)."/../../../include/header.php";
 ?>
 
-<p><a href="news_edit.php?offset=<?php echo $offset?>&findtext=<?php echo $findtext?>"><?php echo LINK_CARET_BACK ?><?php echo $lang["news_manage"]?></a></p>
+<p><a href="news_edit.php?offset=<?php echo $offset?>&findtext=<?php echo $findtext?>">&lt;&nbsp;<?php echo $lang["news_manage"]?></a></p>
 
 <div class="BasicsBox">
 <h1><?php echo $lang["news_edit"]?></h1>

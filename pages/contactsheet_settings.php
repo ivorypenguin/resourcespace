@@ -1,24 +1,18 @@
 <?php
 include "../include/db.php";
-include_once "../include/general.php";
 include "../include/authenticate.php"; 
-include_once "../include/collections_functions.php";
+include "../include/general.php";
+include("../include/collections_functions.php");
 
 $collection=getvalescaped("ref","",true);
 $collectiondata= get_collection($collection);
 
-		
 include "../include/header.php";
 ?>
 
 <div class="BasicsBox" >
 <div class="BasicsBox" style="float:left;margin-bottom:0;" >
 <h1><?php echo $lang["contactsheetconfiguration"]?></h1>
-
-<?php
-# Check access
-if (!collection_readable($collection)) {echo($lang["no_access_to_collection"]);echo "</div></div>";include "../include/footer.php";exit();}
-?>
 
 <p><?php echo $lang["contactsheetintrotext"]?></p>
 
@@ -44,28 +38,18 @@ if (!collection_readable($collection)) {echo($lang["no_access_to_collection"]);e
 		{
 		document.getElementById('OrientationOptions').style.display='block';		
 		document.getElementById('ThumbnailOptions').style.display='none';
-		if (document.getElementById('size_options'))
-			{
-			document.getElementById('size_options').style.display='none';
-			}
-		
+		document.getElementById('size_options').style.display='none';
 		}
 	else if (jQuery('#sheetstyle').val()=='single')
 		{
 		document.getElementById('ThumbnailOptions').style.display='none';
-		if (document.getElementById('size_options'))
-			{
-			document.getElementById('size_options').style.display='block';
-			}
+		document.getElementById('size_options').style.display='block';
 		}
 	else if (jQuery('#sheetstyle').val()=='thumbnails')
 		{
 		document.getElementById('OrientationOptions').style.display='block';		
 		document.getElementById('ThumbnailOptions').style.display='block';
-		if (document.getElementById('size_options'))
-			{
-			document.getElementById('size_options').style.display='none';
-			}	
+		document.getElementById('size_options').style.display='none';
 		}
 	jQuery().rsContactSheet('revert');	
 		">

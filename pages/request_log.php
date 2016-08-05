@@ -1,7 +1,7 @@
 <?php
 include "../include/db.php";
-include_once "../include/general.php";
 include "../include/authenticate.php";if (!checkperm("R")) {exit ("Permission denied.");}
+include "../include/general.php";
 include "../include/resource_functions.php";
 include "../include/search_functions.php";
 
@@ -16,9 +16,9 @@ $restypes=getvalescaped("restypes","");
 if (strpos($search,"!")!==false) {$restypes="";}
 $archive=getvalescaped("archive",0,true);
 $starsearch=getvalescaped("starsearch","");
-$default_sort_direction="DESC";
-if (substr($order_by,0,5)=="field"){$default_sort_direction="ASC";}
-$sort=getval("sort",$default_sort_direction);
+$default_sort="DESC";
+if (substr($order_by,0,5)=="field"){$default_sort="ASC";}
+$sort=getval("sort",$default_sort);
 
 # next / previous resource browsing
 $go=getval("go","");
@@ -60,11 +60,11 @@ if ($go!="")
 include "../include/header.php";
 ?>
 <div class="BasicsBox">
-<p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo urlencode($ref)?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>"><?php echo LINK_CARET_BACK ?><?php echo $lang["backtoresourceview"]?></a></p>
+<p><a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo urlencode($ref)?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>">&lt;&nbsp;<?php echo $lang["backtoresourceview"]?></a></p>
 
 
 <div class="backtoresults">
-<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/request_log.php?ref=<?php echo urlencode($ref)?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>&k=<?php echo urlencode($k) ?>&go=previous&<?php echo hook("nextpreviousextraurl") ?>"><?php echo LINK_CARET_BACK ?><?php echo $lang["previousresult"]?></a>
+<a onClick="return CentralSpaceLoad(this,true);" href="<?php echo $baseurl_short?>pages/request_log.php?ref=<?php echo urlencode($ref)?>&search=<?php echo urlencode($search)?>&offset=<?php echo urlencode($offset)?>&order_by=<?php echo urlencode($order_by)?>&sort=<?php echo urlencode($sort)?>&archive=<?php echo urlencode($archive)?>&k=<?php echo urlencode($k) ?>&go=previous&<?php echo hook("nextpreviousextraurl") ?>">&lt;&nbsp;<?php echo $lang["previousresult"]?></a>
 <?php 
 hook("viewallresults");
 if ($k=="") { ?>

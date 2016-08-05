@@ -2,7 +2,7 @@
 
 function HookVideo_spliceViewAfterresourceactions()
 	{
-	global $videosplice_resourcetype,$resource,$lang,$config_windows,$resourcetoolsGT;
+	global $videosplice_resourcetype,$resource,$lang,$config_windows;
 	
 	if ($resource["resource_type"]!=$videosplice_resourcetype) {return false;} # Not the right type.
 
@@ -131,7 +131,7 @@ function HookVideo_spliceViewAfterresourceactions()
 
 ?>
 <li><a href="#" onClick="
-if (document.getElementById('videocut').style.display=='block') {document.getElementById('videocut').style.display='none';} else {document.getElementById('videocut').style.display='block';} return false;"><?php echo "<i class='fa fa-scissors'></i>&nbsp;" . $lang["action-cut"]?></a></li>
+if (document.getElementById('videocut').style.display=='block') {document.getElementById('videocut').style.display='none';} else {document.getElementById('videocut').style.display='block';} return false;">&gt;&nbsp;<?php echo $lang["action-cut"]?></a></li>
 <form id="videocut" style="<?php if (!(isset($preview) && $preview)) { ?>display:none;<?php } ?>padding:10px 0 3px 0;" method="post">
 
 <table>

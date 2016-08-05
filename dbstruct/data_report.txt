@@ -268,33 +268,3 @@ rl.type='c'
 and
 rl.date>=date('[from-y]-[from-m]-[from-d]') and rl.date<=adddate(date('[to-y]-[to-m]-[to-d]'),1)
 order by rl.date;"
-15,"Keywords used in searches (with no results counter)","
-      SELECT k.keyword AS 'Keyword',
-                  (
-                      SELECT sum(daily_stat.count)
-                         FROM daily_stat
-                       WHERE activity_type = 'Keyword usage'
-                           AND object_ref = k.ref
-                                  # Date conditions
-                           AND (daily_stat.year > [from-y] OR (daily_stat.year = [from-y] AND daily_stat.month > [from-m]) OR (daily_stat.year = [from-y] AND daily_stat.month = [from-m] AND daily_stat.day >= [from-d]))
-                           AND (daily_stat.year < [to-y] OR (daily_stat.year = [to-y] AND daily_stat.month < [to-m]) OR (daily_stat.year = [to-y] AND daily_stat.month = [to-m] AND daily_stat.day <= [to-d]))
-                  ) AS 'Searches',
-                  sum(d.count) AS 'No results searches'
-         FROM keyword AS k
-INNER JOIN daily_stat AS d
-       WHERE k.ref = d.object_ref 
-           AND d.activity_type = 'Keyword usage - no results found' 
-                  # Date conditions
-           AND (d.year > [from-y] OR (d.year = [from-y] AND d.month > [from-m]) OR (d.year = [from-y] AND d.month = [from-m] AND d.day >= [from-d]))
-           AND (d.year < [to-y] OR (d.year = [to-y] AND d.month < [to-m]) OR (d.year = [to-y] AND d.month = [to-m] AND d.day <= [to-d]))
-   GROUP BY k.ref
-   ORDER BY Searches DESC;"
-16,"Database statistics","
-select 
-(select count(*) from resource) as 'Total resources',
-(select count(*) from keyword) 'Total keywords',
-(select count(*) from resource_keyword) as 'Resource keyword relationships',
-(select count(*) from collection) as 'Total collections',
-(select count(*) from collection_resource) as 'Collection resource relationships',
-(select count(*) from user) as 'Total users';
-"

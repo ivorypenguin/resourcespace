@@ -1,2 +1,0 @@
-resource_node,1,resource_node,1,resource,A,1296,,,,BTREE,
-resource_node,1,resource_node,2,node,A,16206,,,,BTREE,

@@ -1,1 +1,0 @@
-sysvars,1,name,1,name,A,10,,,,BTREE,

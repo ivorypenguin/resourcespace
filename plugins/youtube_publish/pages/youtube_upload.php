@@ -1,6 +1,6 @@
 <?php
 include "../../../include/db.php";
-include_once "../../../include/general.php";
+include "../../../include/general.php";
 include "../../../include/authenticate.php";
 include "../../../include/search_functions.php";
 include "../../../include/resource_functions.php";
@@ -35,14 +35,14 @@ $restypes=getvalescaped("restypes","");
 $starsearch=getvalescaped("starsearch","");
 if (strpos($search,"!")!==false) {$restypes="";}
 $archive=getvalescaped("archive",0,true);
-$video_status=getval("video_status",'unlisted');
+$status=getval("status",'unlisted');
 $video_category = getvalescaped("video_category",""); // This is the uploading video category. There are only certain categories that are accepted. 
 if ($youtube_publish_url_field>0){$youtube_url=sql_value("select value from resource_data where resource='$ref' and resource_type_field=$youtube_publish_url_field", "");}
 $youtube_error=false;
 
-$default_sort_direction="DESC";
-if (substr($order_by,0,5)=="field"){$default_sort_direction="ASC";}
-$sort=getval("sort",$default_sort_direction);
+$default_sort="DESC";
+if (substr($order_by,0,5)=="field"){$default_sort="ASC";}
+$sort=getval("sort",$default_sort);
 
 if ($youtube_publish_client_id=="" || $youtube_publish_client_secret=="")
 		{
@@ -79,70 +79,69 @@ if ($go!="")
 			}
 		}
 	}
-        
-global $client,$youtube;
-list ($youtube_object, $youtubemessage) = youtube_publish_initialize();
 
-if(!$youtube_object){$youtube_error=$lang["youtube_access_failed"] . $youtubemessage;}
 
-else
-    {
-    $categories=youtube_upload_get_categories();
-    if(!is_array($categories)){$youtube_error=$lang["youtube_publish_category_error"] . $categories;}
-    }
+# Check we have an access token. If not, get one
+$youtube_access_token = sql_value("select youtube_access_token as value from user where ref='$userref'","");
+//$youtube_refresh_token = sql_value("select youtube_refresh_token as value from user where ref='$userref'","");
+if ($youtube_access_token=="")
+	{
+	# We don't have a token, do we have a code?
+	$code= getvalescaped('code',"");
+	if ($code=="")
+		{
+		# no? Then get a temp code, we will be returned to this page afterwards with it in the querystring
+		get_youtube_authorization_code();
+		exit();
+		}
+	else
+		{
+		// Use the code to get an access token
+		$access_token_response=get_youtube_access_token();
+		if (!$access_token_response){$youtube_error=$lang["youtube_access_failed"];}
+		}
+	}
 
 $youtube_username = sql_value("select youtube_username as value from user where ref='$userref'","");
+	
 						
-if($youtube_object && isset( $_POST['video_title'] ) && isset( $_POST['video_description'] ) ) 
+if( isset( $_POST['video_title'] ) && isset( $_POST['video_description'] ) ) 
 	{
 	$video_title = getvalescaped("video_title","");
 	$video_description = getval("video_description","");	
 	$video_keywords = getvalescaped("video_keywords","");
 	$filename=get_data_by_field($ref,$filename_field);
 	//Set values so that upload can be retried if for example the access token has expired and needed to be refreshed
-	
-	list ($uploadsuccess, $youtube_new_url) = upload_video();
-        if (!$uploadsuccess)
-                {
-                $youtube_error= $lang["youtube_publish_failedupload_error"] . ": " . $youtube_new_url;
-                }
-        else
-                {			
-                if ($youtube_publish_url_field>0)
-                        {
-                        if ($youtube_publish_allow_multiple)
-                                {
-                                if($youtube_publish_add_anchor)
-                                    {
-                                    $save_url = $youtube_url . "<br><a href=\"" . $youtube_new_url . "\" target=\"_blank\">" . $youtube_new_url . "</a>"; 
-                                    }
-                                else
-                                    {                                    
-                                    $save_url = $youtube_url . "," . $youtube_new_url;  
-                                    }
-                                
-                                update_field($ref,$youtube_publish_url_field,$save_url);
-                                $youtube_old_url = $youtube_url;
-                                $youtube_url = $youtube_url . "<br><a href=\"" . $youtube_new_url . "\" target=\"_blank\">" . $youtube_new_url . "</a>";
-                                }
-                        else
-                                {
-                                if($youtube_publish_add_anchor)
-                                    {
-                                    $save_url = "<a href=\"" . $youtube_new_url . "\" target=\"_blank\">" . $youtube_new_url . "</a>";   
-                                    }
-                                else
-                                    {                                    
-                                    $save_url = $youtube_new_url;  
-                                    }
-                                update_field($ref,$youtube_publish_url_field,$save_url);
-                                $youtube_old_url = $youtube_url;
-                                $youtube_url = $youtube_new_url;
-                                }
-                        }
-                resource_log($ref,'e',$youtube_publish_url_field?$youtube_publish_url_field:0,$lang["youtube_publish_log_share"],$fromvalue=$youtube_old_url,$tovalue=$save_url);
-                }			
-	    
+	$uploadsuccess=false;
+	$retry=-true;
+	while (!$uploadsuccess & $retry)
+		{
+		list ($uploadsuccess, $message, $retry) = upload_video($youtube_access_token);
+		if (!$uploadsuccess)
+			{
+			$youtube_access_token = sql_value("select youtube_access_token as value from user where ref='$userref'","");
+			}
+		else
+			{
+			$youtube_new_url = $message;
+			if ($youtube_publish_url_field>0)
+				{
+				if ($youtube_publish_allow_multiple)
+					{
+					update_field($ref,$youtube_publish_url_field,$youtube_url . "<br><a href=\"" . $youtube_new_url . "\" target=\"_blank\">" . $youtube_new_url . "</a>");
+					$youtube_old_url = $youtube_url;
+					$youtube_url = $youtube_url . "<br><a href=\"" . $youtube_new_url . "\" target=\"_blank\">" . $youtube_new_url . "</a>";
+					}
+				else
+					{
+					update_field($ref,$youtube_publish_url_field,"<a href=\"" . $youtube_new_url . "\" target=\"_blank\">" . $youtube_new_url . "</a>");
+					$youtube_old_url = $youtube_url;
+					$youtube_url = $youtube_new_url;
+					}
+				}
+			resource_log($ref,'e',$youtube_publish_url_field?$youtube_publish_url_field:0,$lang["youtube_publish_log_share"],$fromvalue=$youtube_old_url,$tovalue=$youtube_new_url);
+			}			
+		}
 		
 	
 	
@@ -170,7 +169,7 @@ foreach ($youtube_publish_keywords_fields as $youtube_publish_keywords_field)
 	$video_keywords.=$resource_keywords;
 	}
 
-
+		
 include "../../../include/header.php";
 
 
@@ -190,11 +189,11 @@ return false ;
 </script>
 
 
-<a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>" onClick="return CentralSpaceLoad(this,true);"><?php echo LINK_CARET_BACK ?><?php echo $lang["backtoresourceview"]?></a></p>
+<a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>" onClick="return CentralSpaceLoad(this,true);">&lt;&nbsp;<?php echo $lang["backtoresourceview"]?></a></p>
 
 
 <div class="backtoresults">
-<a class="prevLink" href="<?php echo $baseurl_short?>plugins/youtube_publish/pages/youtube_upload.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&go=previous&<?php echo hook("nextpreviousextraurl") ?>" onClick="return CentralSpaceLoad(this);"><?php echo LINK_CARET_BACK ?><?php echo $lang["previousresult"]?></a>
+<a class="prevLink" href="<?php echo $baseurl_short?>plugins/youtube_publish/pages/youtube_upload.php?ref=<?php echo $ref?>&search=<?php echo urlencode($search)?>&offset=<?php echo $offset?>&order_by=<?php echo $order_by?>&sort=<?php echo $sort?>&archive=<?php echo $archive?>&go=previous&<?php echo hook("nextpreviousextraurl") ?>" onClick="return CentralSpaceLoad(this);">&lt;&nbsp;<?php echo $lang["previousresult"]?></a>
 <?php 
 hook("viewallresults");
 ?>
@@ -227,7 +226,7 @@ else
 	if ($youtube_url!="")
 		{
 		echo $youtube_url;
-		if (!$youtube_publish_allow_multiple && !isset($youtube_new_url))
+		if (!$youtube_publish_allow_multiple)
 			{
 			echo "</p><div class=\"FormIncorrect\"><p><br>" . $lang["youtube_publish_alreadypublished"] . "</p></div>";
 			exit();
@@ -266,11 +265,11 @@ if ($youtube_username != '')
 	</div>	
 	<div class="Question" >
 	
-		<label for="video_status"><?php echo $lang["youtube_publish_access"] ?></label>
-		<select name="video_status">
-		<option value="public" <?php if ($video_status=="public") {echo "selected";} ?>><?php echo $lang["youtube_publish_public"] . "&nbsp;&nbsp;" ?></option>
-		<option value="private" <?php if ($video_status=="private") {echo "selected";} ?>><?php echo $lang["youtube_publish_private"] . "&nbsp;&nbsp;" ?></option>
-		<option value="unlisted" <?php if ($video_status=="unlisted") {echo "selected";} ?> ><?php echo $lang["youtube_publish_unlisted"] . "&nbsp;&nbsp;" ?></option>		
+		<label for="status"><?php echo $lang["youtube_publish_access"] ?></label>
+		<select name="status">
+		<option value="public" <?php if ($status=="public") {echo "selected";} ?>><?php echo $lang["youtube_publish_public"] . "&nbsp;&nbsp;" ?></option>
+		<option value="private" <?php if ($status=="private") {echo "selected";} ?>><?php echo $lang["youtube_publish_private"] . "&nbsp;&nbsp;" ?></option>
+		<option value="unlisted" <?php if ($status=="unlisted") {echo "selected";} ?> ><?php echo $lang["youtube_publish_unlisted"] . "&nbsp;&nbsp;" ?></option>		
 		
 		</select>
 		</p>
@@ -278,14 +277,23 @@ if ($youtube_username != '')
 	
 	<div class="Question" >
 	
-		<label for="video_category"><?php echo $lang["youtube_publish_category"] ?></label>
+		<label for="status"><?php echo $lang["youtube_publish_category"] ?></label>
 		<select name="video_category">
-		<?php
-		foreach($categories as $categoryid=>$categoryname)
-			{
-			echo "<option value='" . $categoryid . "' " . (($video_category==$categoryid)?"selected":"") . " >" . $categoryname . "</option>";
-			}
-			?>
+			<option value="Film" <?php if ($video_category=="Film") {echo "selected";} ?>><?php echo $lang["youtube_publish_film"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Autos" <?php if ($video_category=="Autos") {echo "selected";} ?>><?php echo $lang["youtube_publish_autos"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Music" <?php if ($video_category=="Music") {echo "selected";} ?>><?php echo $lang["youtube_publish_music"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Animals" <?php if ($video_category=="Animals") {echo "selected";} ?>><?php echo $lang["youtube_publish_animals"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Sports" <?php if ($video_category=="Sports") {echo "selected";} ?>><?php echo $lang["youtube_publish_sports"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Travel" <?php if ($video_category=="Travel") {echo "selected";} ?>><?php echo $lang["youtube_publish_travel"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Games" <?php if ($video_category=="Games") {echo "selected";} ?>><?php echo $lang["youtube_publish_games"] . "&nbsp;&nbsp;" ?></option>
+			<option value="People" <?php if ($video_category=="People") {echo "selected";} ?>><?php echo $lang["youtube_publish_people"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Comedy" <?php if ($video_category=="Comedy") {echo "selected";} ?>><?php echo $lang["youtube_publish_comedy"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Entertainment" <?php if ($video_category=="Entertainment") {echo "selected";} ?>><?php echo $lang["youtube_publish_entertainment"] . "&nbsp;&nbsp;" ?></option>
+			<option value="News" <?php if ($video_category=="News") {echo "selected";} ?>><?php echo $lang["youtube_publish_news"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Howto" <?php if ($video_category=="Howto") {echo "selected";} ?>><?php echo $lang["youtube_publish_howto"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Education" <?php if ($video_category=="Education") {echo "selected";} ?>><?php echo $lang["youtube_publish_education"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Tech" <?php if ($video_category=="Tech") {echo "selected";} ?>><?php echo $lang["youtube_publish_tech"] . "&nbsp;&nbsp;" ?></option>
+			<option value="Nonprofit" <?php if ($video_category=="Nonprofit") {echo "selected";} ?>><?php echo $lang["youtube_publish_nonprofit"] . "&nbsp;&nbsp;" ?></option>
 		</select>
 		</p>
 	</div>	
