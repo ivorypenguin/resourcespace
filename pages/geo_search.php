@@ -1,7 +1,7 @@
 <?php
 include "../include/db.php";
-include_once "../include/general.php";
 include "../include/authenticate.php"; 
+include "../include/general.php";
 include "../include/resource_functions.php";
 include "../include/header.php";
 
@@ -14,7 +14,7 @@ include "../include/header.php";
 <!-- Drag mode selector -->
 <div id="GeoDragMode">
 <?php echo $lang["geodragmode"] ?>:&nbsp;
-<input type="radio" name="dragmode" id="dragmodearea" checked="checked" onClick="control.point.activate()" /><label for="dragmodearea"><?php echo $lang["geodragmodeareaselect"] ?></label>
+<input type="radio" name="dragmode" id="dragmodearea" checked="checked" onClick="control.point.activate()" /><label for="dragmodearea"><?php echo $lang["geodragmodearea"] ?></label>
 &nbsp;&nbsp;
 <input type="radio" name="dragmode" id="dragmodepan" onClick="control.point.deactivate();" /><label for="dragmodepan"><?php echo $lang["geodragmodepan"] ?></label>
 </div>
@@ -49,22 +49,7 @@ notice: function (bounds) {
     SetCookie("geobound",map.getCenter().lon + "," + map.getCenter().lat + "," + map.getZoom()); 
     
     // Specially encoded search string to avoid keyword splitting
-    var url="<?php echo $baseurl_short?>pages/search.php?search=!geo" + (bl.lat + "b" + bl.lon + "t" + tr.lat + "b" + tr.lon).replace(/\-/gi,'m').replace(/\./gi,'p');
-
-<?php
-// Show results in a modal
-if($geo_search_modal_results)
-    {
-    ?>
-    ModalClose();
-    ModalLoad(url);
-
-    return;
-    <?php
-    }
-    ?>
-    window.location.href=url;
-	
+	window.location.href="<?php echo $baseurl_short?>pages/search.php?search=!geo" + (bl.lat + "b" + bl.lon + "t" + tr.lat + "b" + tr.lon).replace(/\-/gi,'m').replace(/\./gi,'p');
 }
     });map.addControl(control);
 jQuery('#UICenter').scroll(function() {

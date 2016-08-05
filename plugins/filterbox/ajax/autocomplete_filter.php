@@ -3,7 +3,7 @@
 
 include "../../../include/db.php";
 include "../../../include/authenticate.php";
-include_once "../../../include/general.php";
+include "../../../include/general.php";
 
 $search=getvalescaped("term","");
 

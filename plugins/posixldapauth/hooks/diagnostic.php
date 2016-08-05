@@ -14,8 +14,7 @@ echo "\r\n";
  
   
   
-$ldapConf['host']   = $ldapauth['ldapserver'];
-$ldapConf['port']   = $ldapauth['port'];
+$ldapConf['host'] = $ldapauth['ldapserver'];
 $ldapConf['basedn'] = $ldapauth['basedn'];
 
 //global $lang;

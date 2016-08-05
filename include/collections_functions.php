@@ -5,17 +5,10 @@
 if (!function_exists("get_user_collections")){
 function get_user_collections($user,$find="",$order_by="name",$sort="ASC",$fetchrows=-1,$auto_create=true)
 	{
-	global $usergroup;
 	# Returns a list of user collections.
 	$sql="";
 	$keysql="";
-	$extrasql="";
-	if ($find=="!shared")
-		{
-		# only return shared collections
-		$sql=" where (public='1' or c.ref in (select distinct collection from user_collection where user<>'$user' union select distinct collection from external_access_keys))";				
-		}
-	elseif (strlen($find)==1 && !is_numeric($find))
+	if (strlen($find)==1 && !is_numeric($find))
 		{
 		# A-Z search
 		$sql=" where c.name like '$find%'";
@@ -46,24 +39,13 @@ function get_user_collections($user,$find="",$order_by="name",$sort="ASC",$fetch
 		if ($sql==""){$sql=" where ";} else {$sql.=" and ";}	
    		$sql.=" (length(c.theme)=0 or c.theme is null) ";
    		}
-	global $anonymous_login,$username,$anonymous_user_session_collection;
- 	if (isset($anonymous_login) && ($username==$anonymous_login) && $anonymous_user_session_collection)
-   		{
-		// Anonymous user - only get the user's own collections that are for this session - although we can still join to get collections that have been specifically shared with the anonymous user 
-		if ($sql==""){$extrasql=" where ";} else {$extrasql.=" and ";}		
-		$rs_session=get_rs_session_id(true);			
-   		$extrasql.=" (c.session_id='" . $rs_session . "')";
-   		}
-
    
 	$order_sort="";
 	if ($order_by!="name"){$order_sort=" order by $order_by $sort";}
    
-	$return="select * from (select c.*,u.username,u.fullname,count(r.resource) count from user u join collection c on u.ref=c.user and c.user='$user' left outer join collection_resource r on c.ref=r.collection $sql $extrasql group by c.ref
+	$return="select * from (select c.*,u.username,u.fullname,count(r.resource) count from user u join collection c on u.ref=c.user and c.user='$user' left outer join collection_resource r on c.ref=r.collection $sql group by c.ref
 	union
-	select c.*,u.username,u.fullname,count(r.resource) count from user_collection uc join collection c on uc.collection=c.ref and uc.user='$user' and c.user<>'$user' left outer join collection_resource r on c.ref=r.collection left join user u on c.user=u.ref $sql group by c.ref
-	union
-	select c.*,u.username,u.fullname,count(r.resource) count from usergroup_collection gc join collection c on gc.collection=c.ref and gc.usergroup='$usergroup' and c.user<>'$user' left outer join collection_resource r on c.ref=r.collection left join user u on c.user=u.ref $sql group by c.ref) clist $keysql group by ref $order_sort";
+	select c.*,u.username,u.fullname,count(r.resource) count from user_collection uc join collection c on uc.collection=c.ref and uc.user='$user' and c.user<>'$user' left outer join collection_resource r on c.ref=r.collection left join user u on c.user=u.ref $sql group by c.ref) clist $keysql group by ref $order_sort";
 
 	$return=sql_query($return);
 	
@@ -96,33 +78,21 @@ function get_user_collections($user,$find="",$order_by="name",$sort="ASC",$fetch
 	}
 }	
 
-if (!function_exists("get_collection")){
 function get_collection($ref)
 	{
 	# Returns all data for collection $ref
-	$return=sql_query("select c.*, c.theme2, c.theme3, c.keywords, u.fullname, u.username, c.home_page_publish, c.home_page_text, c.home_page_image,c.session_id from collection c left outer join user u on u.ref = c.user where c.ref = '$ref'");
+	$return=sql_query("select c.*,c.theme2,c.theme3,c.keywords,u.fullname,c.home_page_publish,home_page_text,home_page_image from collection c left outer join user u on u.ref=c.user where c.ref='$ref'");
 	if (count($return)==0) {return false;} else 
 		{
 		$return=$return[0];
 		$return["users"]=join(", ",sql_array("select u.username value from user u,user_collection c where u.ref=c.user and c.collection='$ref' order by u.username"));
-		global $attach_user_smart_groups,$lang;
-		if($attach_user_smart_groups)
-			{
-			$return["groups"]=join(", ",sql_array("select concat('{$lang["groupsmart"]}: ',u.name) value from usergroup u,usergroup_collection c where u.ref=c.usergroup and c.collection='$ref' order by u.name"));
-			}
 			
-		global $userref,$k,$attach_user_smart_groups;
+		global $userref,$k;
 		$request_feedback=0;
 		if ($return["user"]!=$userref)
 			{
 			# If this is not the user's own collection, fetch the user_collection row so that the 'request_feedback' property can be returned.
 			$request_feedback=sql_value("select request_feedback value from user_collection where collection='$ref' and user='$userref'",0);
-			if(!$request_feedback && $attach_user_smart_groups && $k=="")
-				{
-				# try to set via usergroup_collection
-				global $usergroup;
-				$request_feedback=sql_value("select request_feedback value from usergroup_collection where collection='$ref' and usergroup=$usergroup",0);
-				}
 			}
 		if ($k!="")
 			{
@@ -133,13 +103,12 @@ function get_collection($ref)
 		$return["request_feedback"]=$request_feedback;
 		return $return;}
 	}
-}
 
 function get_collection_resources($collection)
 	{
 	# Returns all resources in collection
 	# For many cases (e.g. when displaying a collection for a user) a search is used instead so permissions etc. are honoured.
-	return sql_array("select resource value from collection_resource where collection='$collection' order by sortorder asc, date_added desc, resource desc"); 
+	return sql_array("select resource value from collection_resource where collection='$collection' order by sortorder asc, date_added desc"); 
 	}
 	
 function add_resource_to_collection($resource,$collection,$smartadd=false,$size="")
@@ -154,10 +123,7 @@ function add_resource_to_collection($resource,$collection,$smartadd=false,$size=
 			{
 			$archivestatus=sql_value("select archive as value from resource where ref='$resource'","");
 			if ($archivestatus<0 && !$collection_allow_not_approved_share) {global $lang; $lang["cantmodifycollection"]=$lang["notapprovedresources"] . $resource;return false;}
-			
-			// Check if user can share externally and has open access. We shouldn't add this if they can't share externally, have restricted access or only been granted access
-			if (!can_share_resource($resource)){return false;}
-			
+
 			# Set the flag so a warning appears.
 			global $collection_share_warning;
 			# Check to see if all shares have expired
@@ -172,9 +138,7 @@ function add_resource_to_collection($resource,$collection,$smartadd=false,$size=
 				{
 				# Insert a new access key entry for this resource/collection.
 				global $userref;
-				
-				sql_query("insert into external_access_keys(resource,access_key,user,collection,date,expires,access,usergroup) values ('$resource','" . escape_check($keys[$n]["access_key"]) . "','$userref','$collection',now()," . ($keys[$n]["expires"]==''?'null':"'" . escape_check($keys[$n]["expires"]) . "'") . ",'" . escape_check($keys[$n]["access"]) . "'," . (($keys[$n]["usergroup"]!="")?"'" . escape_check($keys[$n]["usergroup"]) ."'":"NULL") . ")");
-				
+				sql_query("insert into external_access_keys(resource,access_key,user,collection,date,expires,access) values ('$resource','" . escape_check($keys[$n]["access_key"]) . "','$userref','$collection',now()," . ($keys[$n]["expires"]==''?'null':"'" . escape_check($keys[$n]["expires"]) . "'") . ",'" . escape_check($keys[$n]["access"]) . "')");
 				#log this
 				collection_log($collection,"s",$resource, $keys[$n]["access_key"]);
 				}
@@ -182,15 +146,14 @@ function add_resource_to_collection($resource,$collection,$smartadd=false,$size=
 			}
 		
 		hook("Addtocollectionsuccess", "", array( "resourceId" => $resource, "collectionId" => $collection ) );
-		
-		if(!hook("addtocollectionsql", "", array( $resource,$collection, $size)))
-			{
-			sql_query("delete from collection_resource where resource='$resource' and collection='$collection'");
-			sql_query("insert into collection_resource(resource,collection,purchase_size) values ('$resource','$collection','$size')");
-			}
+		sql_query("delete from collection_resource where resource='$resource' and collection='$collection'");
+		sql_query("insert into collection_resource(resource,collection,purchase_size) values ('$resource','$collection','$size')");
 		
 		#log this
 		collection_log($collection,"a",$resource);
+		
+		
+
 		return true;
 		}
 	else
@@ -200,17 +163,13 @@ function add_resource_to_collection($resource,$collection,$smartadd=false,$size=
 		}
 	}
 
-function remove_resource_from_collection($resource,$collection,$smartadd=false,$size="")
+function remove_resource_from_collection($resource,$collection,$smartadd=false)
 	{
 	if (collection_writeable($collection)||$smartadd)
 		{	
 		hook("Removefromcollectionsuccess", "", array( "resourceId" => $resource, "collectionId" => $collection ) );
-		
-		if(!hook("removefromcollectionsql", "", array( $resource,$collection, $size)))
-			{
-			sql_query("delete from collection_resource where resource='$resource' and collection='$collection'");
-			sql_query("delete from external_access_keys where resource='$resource' and collection='$collection'");
-			}
+		sql_query("delete from collection_resource where resource='$resource' and collection='$collection'");
+		sql_query("delete from external_access_keys where resource='$resource' and collection='$collection'");
 		
 		#log this
 		collection_log($collection,"r",$resource);
@@ -227,113 +186,33 @@ function collection_writeable($collection)
 	{
 	# Returns true if the current user has write access to the given collection.
 	$collectiondata=get_collection($collection);
-	global $userref,$usergroup;
+	global $userref;
 	global $allow_smart_collections;
-	if ($allow_smart_collections && !isset($userref)){ 
+	if ($allow_smart_collections){ 
 		if (isset($collectiondata['savedsearch'])&&$collectiondata['savedsearch']!=null){
 			return false; // so "you cannot modify this collection"
 			}
 	}
-	
-	# Load a list of attached users
-	$attached=sql_array("select user value from user_collection where collection='$collection'");
-	$attached_groups=sql_array("select usergroup value from usergroup_collection where collection='$collection'");
-	
-	// Can edit if 
-	// - The user owns the collection (if we are anonymous user and are using session collections then this must also have the same session id )
-	// - The user has system setup access (needs to be able to sort out user issues)
-	// - Collection changes are allowed and :-
-	//    a) User is attached to the collection or
-	//    b) Collection is public or a theme and the user either has the 'h' permission or the collection is editable
-        
-		
-	global $usercollection,$username,$anonymous_login,$anonymous_user_session_collection, $rs_session;
-	debug("collection session : " . $collectiondata["session_id"]);
-	debug("collection user : " . $collectiondata["user"]);
-	debug("anonymous_login : " . $anonymous_login);
-	debug("userref : " . $userref);
-	debug("username : " . $username);
-	debug("anonymous_user_session_collection : " . (($anonymous_user_session_collection)?"TRUE":"FALSE"));
-		
-	$writable=($userref==$collectiondata["user"] && (!isset($anonymous_login) || $username!=$anonymous_login || !$anonymous_user_session_collection || $collectiondata["session_id"]==$rs_session))
-		|| 
-		(($collectiondata["allow_changes"]==1 || checkperm("h")) && ((in_array($userref,$attached) || in_array($usergroup,$attached_groups)) || $collectiondata["public"]==1))
-		|| checkperm("a");
-	return $writable;
-	
-	}
-	
-function collection_readable($collection)
-	{
-	# Returns true if the current user has read access to the given collection.
-
-	# Fetch collection details.
-	if (!is_numeric($collection)) {return false;}
-	$collectiondata=get_collection($collection);
-	
-	# Load a list of attached users
-	$attached=sql_array("select user value from user_collection where collection='$collection'");
-	$attached_groups=sql_array("select usergroup value from usergroup_collection where collection='$collection'");
-	global $userref,$usergroup;
-
-	global $ignore_collection_access, $collection_commenting;
-	# Access if collection_commenting is enabled and request feedback checked
-	# Access if it's a public collection (or theme)
-	# Access if k is not empty or option to ignore collection access is enabled and k is empty
-	if ($collection_commenting && $collectiondata['request_feedback'] == 1 || $collectiondata["public"]==1 || getval("k","")!="" || getval("k","")=="" && $ignore_collection_access)
-		{
-		return true;
-		}
-
-	# Perform these checks only if a user is logged in
-	global $userref;
-	if (is_numeric($userref))
-		{
-		# Access if:
-		#	- It's their collection
-		# 	- It's a public collection (or theme)
-		#	- They have the 'access and edit all collections' admin permission
-		# 	- They are attached to this collection
-		#   - Option to ignore collection access is enabled and k is empty
-		if($userref==$collectiondata["user"] || $collectiondata["public"]==1 || checkperm("h") || in_array($userref,$attached)  || in_array($usergroup,$attached_groups)|| /*(checkperm("R") && $request) ||*/ getval("k","")!="" || (getval("k","")=="" && $ignore_collection_access))
-			{
-			return true;
-			}
-
-		}
-
-	return false;
+	return $userref==$collectiondata["user"] || $collectiondata["allow_changes"]==1 || checkperm("h");
 	}
 	
 function set_user_collection($user,$collection)
 	{
-	global $usercollection,$username,$anonymous_login,$anonymous_user_session_collection;
-	if(!(isset($anonymous_login) && $username==$anonymous_login) || !$anonymous_user_session_collection)
-		{		
-		sql_query("update user set current_collection='$collection' where ref='$user'");
-		}
+	global $usercollection;
+	sql_query("update user set current_collection='$collection' where ref='$user'");
 	$usercollection=$collection;
 	}
 	
 if (!function_exists("create_collection")){	
 function create_collection($userid,$name,$allowchanges=0,$cant_delete=0)
 	{
-	global $username,$anonymous_login,$rs_session, $anonymous_user_session_collection;
-	if($username==$anonymous_login && $anonymous_user_session_collection)
-		{		
-		// We need to set a collection session_id for the anonymous user. Get session ID to create collection with this set
-		$rs_session=get_rs_session_id(true);
-		}
-	else
-		{	
-		$rs_session="";
-		}
-		
 	# Creates a new collection and returns the reference
-	sql_query("insert into collection (name,user,created,allow_changes,cant_delete,session_id) values ('" . escape_check($name) . "','$userid',now(),'$allowchanges','$cant_delete'," . (($rs_session=="")?"NULL":"'" . $rs_session . "'") . ")");
+	sql_query("insert into collection (name,user,created,allow_changes,cant_delete) values ('" . escape_check($name) . "','$userid',now(),'$allowchanges','$cant_delete')");
 	$ref=sql_insert_id();
 
-	index_collection($ref);	
+	index_collection($ref);
+	
+	
 	return $ref;
 	}	
 }
@@ -341,24 +220,11 @@ function create_collection($userid,$name,$allowchanges=0,$cant_delete=0)
 function delete_collection($ref)
 	{
 	# Deletes the collection with reference $ref
-	global $home_dash;
-	
-	hook("beforedeletecollection","",array($ref));
+	hook("beforedeletecollection");
 	sql_query("delete from collection where ref='$ref'");
 	sql_query("delete from collection_resource where collection='$ref'");
 	sql_query("delete from collection_keyword where collection='$ref'");
-	
-	if($home_dash)
-		{
-		// Delete any dash tiles pointing to this collection
-		$collection_dash_tiles=sql_array("select ref value from dash_tile WHERE link like '%search.php?search=!collection" . $ref . "&%'",0);
-		if(count($collection_dash_tiles)>0)
-			{
-			sql_query("delete from dash_tile WHERE ref in (" .  implode(",",$collection_dash_tiles) . ")");
-			sql_query("delete from user_dash_tile WHERE dash_tile in (" .  implode(",",$collection_dash_tiles) . ")");
-			}
-		}
-	// log this
+		#log this
 	collection_log($ref,"X",0, "");
 	}
 	
@@ -407,9 +273,10 @@ function search_public_collections($search="", $order_by="name", $sort="ASC", $e
 	    	{
 	    	   if (substr($keywords[$n],0,16)=="collectiontitle:") $newsearch.=" ".substr($keywords[$n],16);    // wildcard * - %
 	    	}
-
-        $newsearch = strpos($newsearch,'*')===false ? '%' . trim($newsearch) . '%' : str_replace('*', '%', trim($newsearch));
-        $sql="and c.name like '$newsearch'";
+	    	if (strpos($newsearch,"*")===false) $newsearch.="%";
+	    	else $newsearch=str_replace("*", "%", $newsearch);
+	    	$newsearch=trim($newsearch);
+	    	$sql="and c.name like '$newsearch'";
 	    	
 	    }
 	if (strlen($search)>1 || is_numeric($search))
@@ -435,11 +302,9 @@ function search_public_collections($search="", $order_by="name", $sort="ASC", $e
                 else
                     {
                     if (substr($keywords[$n],0,19)=="collectionkeywords:") $keywords[$n]=substr($keywords[$n],19);
-		    # Support field specific matching - discard the field identifier as not appropriate for collection searches.
-		    if (strpos($keywords[$n],":")!==false) {$keywords[$n]=substr($keywords[$n],strpos($keywords[$n],":")+1);echo $keywords[$n];}
                     $keyref=resolve_keyword($keywords[$n],false);
                     if ($keyref!==false) {$keyrefs[]=$keyref;}
-                    $keysql.="join collection_keyword k" . $n . " on k" . $n . ".collection=c.ref and (k" . $n . ".keyword='$keyref')";
+                    $keysql.="join collection_keyword k" . $n . " on k" . $n . ".collection=c.ref and (k" . $n . ".keyword='$keyref')";	
                     }
 			    //$keysql="or keyword in (" . join (",",$keyrefs) . ")";
 			    }
@@ -479,20 +344,22 @@ function search_public_collections($search="", $order_by="name", $sort="ASC", $e
 	# Run the query
 	if ($include_resources)
 		{    
-            return sql_query("select distinct c.*,u.username,u.fullname, count( DISTINCT cr.resource ) count from collection c left join collection_resource cr on c.ref=cr.collection left outer join user u on c.user=u.ref left outer join collection_keyword k on c.ref=k.collection $keysql where $sql_public $sql group by c.ref order by $order_by $sort");
+		 debug("select distinct c.*,u.username,u.fullname, group_concat(distinct cr.resource order by cr.rating desc,cr.date_added) resources, count( DISTINCT cr.resource ) count from collection c left join collection_resource cr on c.ref=cr.collection left outer join user u on c.user=u.ref left outer join collection_keyword k on c.ref=k.collection $keysql where $sql_public $sql group by c.ref order by $order_by $sort");
+            return sql_query("select distinct c.*,u.username,u.fullname, group_concat(distinct cr.resource order by cr.rating desc,cr.date_added) resources, count( DISTINCT cr.resource ) count from collection c left join collection_resource cr on c.ref=cr.collection left outer join user u on c.user=u.ref left outer join collection_keyword k on c.ref=k.collection $keysql where $sql_public $sql group by c.ref order by $order_by $sort");
            
 		}
 	else
 		{
 		    return sql_query("select distinct c.*,u.username,u.fullname from collection c left outer join user u on c.user=u.ref left outer join collection_keyword k on c.ref=k.collection $keysql where $sql_public $sql group by c.ref order by $order_by $sort");
+		    debug("restypes select distinct c.*,u.username,u.fullname from collection c left outer join user u on c.user=u.ref left outer join collection_keyword k on c.ref=k.collection $keysql where $sql_public $sql group by c.ref order by $order_by $sort");
 		}
 	}
 }
 
 
-function do_collections_search($search,$restypes,$archive=0,$order_by,$sort)
+function do_collections_search($search,$restypes,$archive=0)
     {
-    global $search_includes_themes, $search_includes_public_collections, $search_includes_user_collections, $userref, $collection_search_includes_resource_metadata;
+    global $search_includes_themes, $search_includes_public_collections, $search_includes_user_collections, $userref;
     $result=array();
     
     # Recognise a quoted search, which is a search for an exact string
@@ -515,22 +382,8 @@ function do_collections_search($search,$restypes,$archive=0,$order_by,$sort)
 
     if ($search_includes_themes_now || $search_includes_public_collections_now || $search_includes_user_collections_now)
         {
-        if ($collection_search_includes_resource_metadata)
-		{
-		# Include metadata from resources when searching - using a special search
-	        $collections=do_search("!contentscollection"
-				. ($search_includes_user_collections_now?'U':'')
-				. ($search_includes_public_collections_now?'P':'')
-				. ($search_includes_themes_now?'T':'')
-				. " " . $search,"",$order_by,0,-1,$sort);
-		}
-	else
-		{
-		# The old way - same search as when searching within publich collections.
-		$collections=search_public_collections($search,"theme","ASC",!$search_includes_themes_now,!$search_includes_public_collections_now,true,false, $search_includes_user_collections_now);
-		}
-	
-	
+        
+        $collections=search_public_collections($search,"theme","ASC",!$search_includes_themes_now,!$search_includes_public_collections_now,true,false, $search_includes_user_collections_now);
         $condensedcollectionsresults=array();
         $result=$collections;
 
@@ -547,17 +400,13 @@ function add_collection($user,$collection)
 	{
 	# Add a collection to a user's 'My Collections'
 	
-	// Don't add if we are anonymous - we can only have one collection
-	global $anonymous_login,$username,$anonymous_user_session_collection;
- 	if (isset($anonymous_login) && ($username==$anonymous_login) && $anonymous_user_session_collection)
-		{return false;}
-	
 	# Remove any existing collection first
 	remove_collection($user,$collection);
 	# Insert row
 	sql_query("insert into user_collection(user,collection) values ('$user','$collection')");
-	#log this
+			#log this
 	collection_log($collection,"S",0, sql_value ("select username as value from user where ref = $user",""));
+
 	}
 
 function remove_collection($user,$collection)
@@ -592,16 +441,15 @@ function index_collection($ref,$index_string='')
 	
 	// if an index string wasn't supplied, generate one
 	if (!strlen($index_string) > 0){
-		$indexarray = sql_query("select $indexfields from collection c left join user u on u.ref=c.user where c.ref = '$ref'");
+		$indexarray = sql_query("select $indexfields from collection c join user u on u.ref=c.user and c.ref = '$ref'");
 		for ($i=0; $i<count($indexarray); $i++){
-			$index_string = "," . implode(',',$indexarray[$i]);
+			$index_string = implode(' ',$indexarray[$i]);
 		} 
 	}
 
 	$keywords=split_keywords($index_string,true);
 	for ($n=0;$n<count($keywords);$n++)
 		{
-		if(trim($keywords[$n])==""){continue;}
 		$keyref=resolve_keyword($keywords[$n],true);
 		sql_query("insert into collection_keyword values ('$ref','$keyref')");
 		}
@@ -612,13 +460,10 @@ function index_collection($ref,$index_string='')
 
 function save_collection($ref)
 	{
-	global $theme_category_levels,$attach_user_smart_groups;
+	global $theme_category_levels;
 	
-	if (!collection_writeable($ref)) {return false;}
 	
 	$allow_changes=(getval("allow_changes","")!=""?1:0);
-
-    $public = getvalescaped('public', '', true);
 	
 	# Next line disabled as it seems incorrect to override the user's setting here. 20071217 DH.
 	#if ($theme!="") {$allow_changes=0;} # lock allow changes to off if this is a theme
@@ -626,10 +471,10 @@ function save_collection($ref)
 	# Update collection with submitted form data
 	if (!hook('modifysavecollection')) {
 	$sql="update collection set
-				name='" . rawurldecode(getvalescaped("name","")) . "',
+				name='" . getvalescaped("name","") . "',
 				".hook('savecollectionadditionalfields')."
 				keywords='" . getvalescaped("keywords","") . "',
-				public='" . $public . "',";
+				public='" . getvalescaped("public","",true) . "',";
 		
 		for($n=1;$n<=$theme_category_levels;$n++){
 			if ($n==1){$themeindex="";} else {$themeindex=$n;}
@@ -654,8 +499,6 @@ function save_collection($ref)
 			$sql.=",home_page_image='" . getvalescaped("home_page_image","") . "'";
 			}
 		}
-		$modified_sql=hook('morehomepagepublishsave',"",array($sql));
-		if(!empty($modified_sql)){$sql=$modified_sql;}
 		
 	    $sql.=" where ref='$ref'";
 
@@ -663,58 +506,27 @@ function save_collection($ref)
 	} # end replace hook - modifysavecollection
 	
 	index_collection($ref);
-
-    // Log changing access for this collection
-    // AC: save_collection() should be changed in terms of the way it works
-    // as it submits everything rather then just update only what is needed
-    collection_log($ref, 'A', 0, $public ? 'public' : 'private');
-
-	sql_query("delete from user_collection where collection='$ref'");
-	
-	if ($attach_user_smart_groups)
-		{
-		sql_query("delete from usergroup_collection where collection='$ref'");
-		}
-
-    # If 'users' is specified (i.e. access is private) then rebuild users list
-    $users=getvalescaped("users",false);
-	if (($users)!="")
-		{
-		# Build a new list and insert
-		$users=resolve_userlist_groups($users);
-		$ulist=array_unique(trim_array(explode(",",$users)));
-		$urefs=sql_array("select ref value from user where username in ('" . join("','",$ulist) . "')");
-		if (count($urefs)>0)
-			{
-			sql_query("insert into user_collection(collection,user) values ($ref," . join("),(" . $ref . ",",$urefs) . ")");
-			}
-		#log this
-		collection_log($ref,"S",0, join(", ",$ulist));
 		
-		if($attach_user_smart_groups)
+	# If 'users' is specified (i.e. access is private) then rebuild users list
+	$users=getvalescaped("users",false);
+	if ($users!==false)
+		{
+		sql_query("delete from user_collection where collection='$ref'");
+		#log this
+		collection_log($ref,"T",0, '#all_users');
+
+		if (($users)!="")
 			{
-			$groups=resolve_userlist_groups_smart($users);
-			$groupnames='';
-			if($groups!='')
+			# Build a new list and insert
+			$users=resolve_userlist_groups($users);
+			$ulist=array_unique(trim_array(explode(",",$users)));
+			$urefs=sql_array("select ref value from user where username in ('" . join("','",$ulist) . "')");
+			if (count($urefs)>0)
 				{
-				$groups=explode(",",$groups);
-				
-				if (count($groups)>0)
-					{ 
-					foreach ($groups as $group)
-						{
-						sql_query("insert into usergroup_collection(collection,usergroup) values ($ref,$group)");
-						// get the group name
-						if($groupnames!='')
-							{
-							$groupnames.=", ";
-							}
-							$groupnames.=sql_value("select name value from usergroup where ref={$group}","");
-						}
-					}
-				#log this
-				collection_log($ref,"S",0, $groupnames);
+				sql_query("insert into user_collection(collection,user) values ($ref," . join("),(" . $ref . ",",$urefs) . ")");
 				}
+			#log this
+			collection_log($ref,"S",0, join(", ",$ulist));
 			}
 		}
 		
@@ -727,11 +539,9 @@ function save_collection($ref)
 			for ($m=0;$m<count($rlist);$m++)
 				{
 				if ($rlist[$n]!=$rlist[$m]) # Don't relate a resource to itself
-					{ 
-						if (count(sql_query("SELECT 1 FROM resource_related WHERE resource='".$rlist[$n]."' and related='".$rlist[$m]."' LIMIT 1"))!=1) 
-							{
-							sql_query("insert into resource_related (resource,related) values ('" . $rlist[$n] . "','" . $rlist[$m] . "')");
-							}
+					{
+					sql_query("delete from resource_related where resource='" . $rlist[$n] . "' and related='" . $rlist[$m] . "'");
+					sql_query("insert into resource_related (resource,related) values ('" . $rlist[$n] . "','" . $rlist[$m] . "')");
 					}
 				}
 			}
@@ -747,11 +557,15 @@ function save_collection($ref)
 	# Delete all resources?
 	if (getval("deleteall","")!="" && !checkperm("D"))
 		{
-		
-		if(allow_multi_edit($ref)) {
-			delete_resources_in_collection($ref);
-		}
-
+		$resources=do_search("!collection" . $ref);
+		for ($n=0;$n<count($resources);$n++)
+			{
+			if (get_edit_access($resources[$n]["ref"]))
+				{
+				delete_resource($resources[$n]["ref"]);	
+				collection_log($ref,"D",$resources[$n]["ref"]);
+				}
+			}
 		}
 		
 	# Update limit count for saved search
@@ -820,12 +634,10 @@ function get_theme_headers($themes=array())
 	return $return;
 	}
 	
-if (!function_exists("themes_comparator")){
 function themes_comparator($a, $b)
 	{
 	return strnatcasecmp(i18n_get_collection_name($a), i18n_get_collection_name($b));
 	}
-}
 
 function collections_comparator($a, $b)
 	{
@@ -842,13 +654,9 @@ function get_themes($themes=array(""),$subthemes=false)
 	{	
 	$themes_order_by=getvalescaped("themes_order_by",getvalescaped("saved_themes_order_by","name"));
 	$sort=getvalescaped("sort",getvalescaped("saved_themes_sort","ASC"));	
-	global $themes_column_sorting,$themes_with_resources_only,$descthemesorder;
-	if (!$themes_column_sorting && !$descthemesorder)
-		{
-		$themes_order_by="name";
-		$sort="ASC";
-		} // necessary to avoid using a cookie that can't be changed if this is turned off.
-	$sort = ($descthemesorder)? "DESC" : $sort;
+	global $themes_column_sorting;
+	if (!$themes_column_sorting){$themes_order_by="name";$sort="ASC";} // necessary to avoid using a cookie that can't be changed if this is turned off.
+		
 	# Return a list of themes under a given header (theme category).
 	$sql="select *,(select count(*) from collection_resource cr where cr.collection=c.ref) c from collection c  where c.theme='" . escape_check($themes[0]) . "' ";
 	
@@ -874,17 +682,6 @@ function get_themes($themes=array(""),$subthemes=false)
 		else if ($sort=="DESC"){usort($collections,'collections_comparator_desc');}
 	}
 	
-	if ($themes_with_resources_only) {
-		$collections_orig = $collections;
-		$collections = array();
-		for ($i=0;$i<count($collections_orig);$i++) {
-			$resources = do_search('!collection'.$collections_orig[$i]['ref']);
-			if (count($resources) > 0) {
-				$collections[] = $collections_orig[$i];
-			}
-		}
-	}	
-
 	return $collections;
 	}
 }
@@ -892,129 +689,142 @@ function get_themes($themes=array(""),$subthemes=false)
 function get_smart_theme_headers()
 	{
 	# Returns a list of smart theme headers, which are basically fields with a 'smart theme name' set.
-	return sql_query("SELECT ref, name, smart_theme_name, type FROM resource_type_field WHERE length(smart_theme_name) > 0 ORDER BY smart_theme_name");
+	return sql_query("select ref,name,smart_theme_name,type from resource_type_field where length(smart_theme_name)>0 order by smart_theme_name");
 	}
 
-function get_smart_themes_nodes($field, $is_category_tree, $parent = null)
-    {
-    global $smart_themes_omit_archived, $themes_category_split_pages;
+if (!function_exists("get_smart_themes")){	
+function get_smart_themes($field,$node=0,$themebar=false)
+	{
+	# Returns a list of smart themes (which are really field options).
+	# The results are filtered so that only field options that are in use are returned.
+	
+	# Fetch field info
+	$fielddata=sql_query("select * from resource_type_field where ref='$field'");
+	if (count($fielddata)>0) {$fielddata=$fielddata[0];} else {return false;}
+	
+	# Return a list of keywords that are in use for this field
+    global $smart_themes_omit_archived;
+	$inuse=sql_array("select distinct k.keyword value from keyword k join resource_keyword rk on k.ref=rk.keyword ".(($smart_themes_omit_archived)?"join resource r on rk.resource=r.ref":"")." where resource_type_field='$field' and resource>0 ".(($smart_themes_omit_archived)?"and archive=0":""));
 
-    $return = array();
+	if ($fielddata["type"]==7)
+		{
+		# Category tree style view
+		$tree=explode("\n",$fielddata["options"]);
 
-    // Determine if this should cascade onto children for category tree type
-    $recursive = false;
-    if($is_category_tree && !$themes_category_split_pages)
-        {
-        $recursive = true;
-        }
+		$return=array();	
+		
+		global $themes_category_split_pages;
+		if ($themes_category_split_pages && !$themebar)
+			{
+			# Return one level only, unless grabbing for themebar
+			$levels=1;
+			}
+		else
+			{
+			# Return an infinite number of levels
+			$levels=-1;
+			}
+		$return=populate_smart_theme_tree_node($tree,$node,$return,0,$levels);
+		
+		# For each option, if it is in use, add it to the return list.
+		$out=array();
+		for ($n=0;$n<count($return);$n++)
+			{
+			# Prepare a 'tidied' local language version of the name to use for the comparison
+			# Only return items that are in use.
+			$tidy=escape_check(cleanse_string(trim(strtolower(str_replace("-"," ",htmlspecialchars_decode(i18n_get_collection_name($return[$n]))))),false));
+			if (in_array($tidy,$inuse))
+				{
+				$c=count($out);
+				$out[$c]["indent"]=$return[$n]["indent"];
+				$out[$c]["name"]=trim(htmlspecialchars_decode(i18n_get_collection_name($return[$n])));
+				$out[$c]["node"]=$return[$n]["node"];
+				$out[$c]["children"]=$return[$n]["children"];
+				}
+			}
+		return $out;
+		}
+	else
+		{
+		# Standard checkbox list or drop-down box
+		
+		# Fetch raw options list
+		$options=explode(",",$fielddata["options"]);
+		
+		# Tidy list so it matches the storage format used for keywords.
+		# The translated version is fetched as each option will be indexed in the local language version of each option.
+		$options_base=array();
+		for ($n=0;$n<count($options);$n++) {$options_base[$n]=escape_check(trim(strtolower(i18n_get_translated($options[$n]))));}
+		
+		# For each option, if it is in use, add it to the return list.
+		$return=array();
+		for ($n=0;$n<count($options);$n++)
+			{
+			#echo "<li>Looking for " . $options_base[$n] . " in " . join (",",$inuse);
+			if (in_array(str_replace("-"," ",$options_base[$n]),$inuse)) 		
+				{
+				$c=count($return);
+				$return[$c]["name"]=trim(i18n_get_translated($options[$n]));
+				$return[$c]["indent"]=0;
+				$return[$c]["node"]=0;
+				$return[$c]["children"]=0;
+				}
+			}
+		return $return;
+		}
+	}
+}
 
-    $nodes = get_nodes($field, ((0 == $parent) ? null : $parent), $recursive);
-
-    if(0 === count($nodes))
-        {
-        return $return;
-        }
-
-    // Return a list of keywords that are in use for this field
-    $keywords_in_use_sql = 'SELECT k.keyword AS `value` FROM keyword k JOIN resource_keyword rk ON k.ref = rk.keyword';
-    if($smart_themes_omit_archived)
-        {
-        $keywords_in_use_sql .= ' JOIN resource r ON rk.resource = r.ref';
-        }
-    $keywords_in_use_sql .= " WHERE resource_type_field = '{$field}' AND resource > 0";
-    if($smart_themes_omit_archived)
-        {
-        $keywords_in_use_sql .= " AND archive = 0";
-        }
-    $keywords_in_use_sql .= ' GROUP BY MD5(k.keyword)';
-    $keywords_in_use = sql_array($keywords_in_use_sql);
-
-    /*
-    Tidy list so it matches the storage format used for keywords
-    The translated version is fetched as each option will be indexed in the local language version of each option
-    */
-    $options_base = array();
-    for($n = 0; $n < count($nodes); $n++)
-        {
-        $options_base[$n] = escape_check(trim(mb_convert_case(i18n_get_translated($nodes[$n]['name']), MB_CASE_LOWER, 'UTF-8')));
-        }
-    
-    // For each option, if it is in use, add it to the return list
-    for($n = 0; $n < count($nodes); $n++)
-        {
-        //$cleaned_option_base = str_replace('-', ' ', $options_base[$n]);
-        $cleaned_option_base = preg_replace('/\W/',' ',$options_base[$n]);      // replace any non-word characters with a space
-        $cleaned_option_base = trim($cleaned_option_base);      // trim (just in case prepended / appended space characters)
-
-        if(!in_array($cleaned_option_base, $keywords_in_use))
-            {
-            continue;
-            }
-
-        $tree_node_depth    = 0;
-        $parent_node_to_use = 0;
-        $is_parent          = false;
-
-        if($is_category_tree)
-            {
-            if(is_parent_node($nodes[$n]['ref']))
-                {
-                $parent_node_to_use = $nodes[$n]['ref'];
-                $is_parent          = true;
-                }
-
-            $tree_node_depth = get_tree_node_level($nodes[$n]['ref']);
-
-            if(!is_null($parent) && is_parent_node($parent))
-                {
-                $tree_node_depth--;
-                }
-            }
-
-        $c                       = count($return);
-        $return[$c]['name']      = trim(i18n_get_translated($nodes[$n]['name']));
-        $return[$c]['indent']    = $tree_node_depth;
-        $return[$c]['node']      = $parent_node_to_use;
-        $return[$c]['is_parent'] = $is_parent;
-        $return[$c]['ref'] = $nodes[$n]['ref'];
-        }
-
-    return $return;
-    }
+function populate_smart_theme_tree_node($tree,$node,$return,$indent,$levels)
+	{
+	
+	# When displaying category trees as smart themes, this function is used to recursively
+	# parse each node adding items sequentially with an appropriate indent level.
+	for ($n=0;$n<count($tree);$n++)
+		{
+		$s=explode(",",$tree[$n]);
+		if (isset($s[1]) && $s[1]==$node)
+			{
+			# Add this node
+			$c=count($return);
+			$return[$c]["indent"]=$indent;
+			$return[$c]["name"]=$s[2];
+			$return[$c]["node"]=$n+1;
+			
+			# Add child count
+			$children=populate_smart_theme_tree_node($tree,$n+1,array(),0,1);
+			$return[$c]["children"]=count($children);
+			
+			if ($levels>0) {$levels--;}
+			if ($levels>0 || $levels==-1)
+				{
+				# Cascade
+				$return=populate_smart_theme_tree_node($tree,$n+1,$return,$indent+1,$levels);
+				}
+			}
+		}
+	return $return;
+	}
 
 if (!function_exists("email_collection")){
-function email_collection($colrefs,$collectionname,$fromusername,$userlist,$message,$feedback,$access=-1,$expires="",$useremail="",$from_name="",$cc="",$themeshare=false,$themename="",$themeurlsuffix="",$list_recipients=false, $add_internal_access=false,$group="")
+function email_collection($colrefs,$collectionname,$fromusername,$userlist,$message,$feedback,$access=-1,$expires="",$useremail="",$from_name="",$cc="",$themeshare=false,$themename="",$themeurlsuffix="")
 	{
 	# Attempt to resolve all users in the string $userlist to user references.
 	# Add $collection to these user's 'My Collections' page
 	# Send them an e-mail linking to this collection
 	#  handle multiple collections (comma seperated list)
-	global $baseurl,$email_from,$applicationname,$lang,$userref, $email_multi_collections,$usergroup,$attach_user_smart_groups;
+	global $baseurl,$email_from,$applicationname,$lang,$userref, $email_multi_collections ;
+	
 	if ($useremail==""){$useremail=$email_from;}
-	if ($group==""){$group=$usergroup;}
 	
 	if (trim($userlist)=="") {return ($lang["mustspecifyoneusername"]);}
 	$userlist=resolve_userlist_groups($userlist);
-	
-	if($attach_user_smart_groups && strpos($userlist,$lang["groupsmart"] . ": ")!==false){
-		$groups_users=resolve_userlist_groups_smart($userlist,true);
-		if($groups_users!=''){
-			if($userlist!=""){
-				$userlist=remove_groups_smart_from_userlist($userlist);
-				if($userlist!="")
-					{
-					$userlist.=",";
-					}
-			}
-			$userlist.=$groups_users;
-		}
-	}
-
 	$ulist=trim_array(explode(",",$userlist));
 	$emails=array();
 	$key_required=array();
 	if ($feedback) {$feedback=1;} else {$feedback=0;}
 	$reflist=trim_array(explode(",",$colrefs));
+	
 	$emails_keys=resolve_user_emails($ulist);
 	$emails=$emails_keys['emails'];
 	$key_required=$emails_keys['key_required'];
@@ -1028,25 +838,19 @@ function email_collection($colrefs,$collectionname,$fromusername,$userlist,$mess
 		
 		# Insert new user_collection row(s)
 		#loop through the collections
-		for ($nx1=0;$nx1<count($reflist);$nx1++)
-			{
-			#loop through the users
-			for ($nx2=0;$nx2<count($urefs);$nx2++)
+			for ($nx1=0;$nx1<count($reflist);$nx1++)
+			{	#loop through the users
+				for ($nx2=0;$nx2<count($urefs);$nx2++)
 				{
-				sql_query("insert into user_collection(collection,user,request_feedback) values ($reflist[$nx1], $urefs[$nx2], $feedback )");
-				if ($add_internal_access)
-					{		
-					foreach (get_collection_resources($reflist[$nx1]) as $resource)
-						{
-						if (get_edit_access($resource))
-							{
-							open_access_to_user($urefs[$nx2],$resource,$expires);
-							}
-						}
-					}
+		sql_query("insert into user_collection(collection,user,request_feedback) values ($reflist[$nx1], $urefs[$nx2], $feedback )");
+		if ($access == 0) {
+			foreach (get_collection_resources($reflist[$nx1]) as $resource)	{
+				open_access_to_user($urefs[$nx2],$resource,$expires);
+			}
+		}
 				
-				#log this
-				collection_log($reflist[$nx1],"S",0, sql_value ("select username as value from user where ref = $urefs[$nx2]",""));
+			#log this
+		collection_log($reflist[$nx1],"S",0, sql_value ("select username as value from user where ref = $urefs[$nx2]",""));
 
 				}
 			}
@@ -1126,7 +930,7 @@ function email_collection($colrefs,$collectionname,$fromusername,$userlist,$mess
 				# Do we need to add an external access key for this user (e-mail specified rather than username)?
 				if ($key_required[$nx1])
 					{
-					$k=generate_collection_access_key($reflist[$nx2],$feedback,$emails[$nx1],$access,$expires,$group);
+					$k=generate_collection_access_key($reflist[$nx2],$feedback,$emails[$nx1],$access,$expires);
 					$key="&k=". $k;
 					$emailcollectionmessageexternal=true;
 					}
@@ -1153,70 +957,37 @@ function email_collection($colrefs,$collectionname,$fromusername,$userlist,$mess
 		//$list.=$htmlbreak;	
 		$templatevars['list']=$list;
 		$templatevars['from_name']=$from_name;
-		if(isset($k)){
-			if($expires==""){
-				$templatevars['expires_date']=$lang["email_link_expires_never"];
-				$templatevars['expires_days']=$lang["email_link_expires_never"];
-			}
-			else{
-				$day_count=round((strtotime($expires)-strtotime('now'))/(60*60*24));
-				$templatevars['expires_date']=$lang['email_link_expires_date'].nicedate($expires);
-				$templatevars['expires_days']=$lang['email_link_expires_days'].$day_count;
-				if($day_count>1){
-					$templatevars['expires_days'].=" ".$lang['expire_days'].".";
-				}
-				else{
-					$templatevars['expires_days'].=" ".$lang['expire_day'].".";
-				}
-			}
-		}
-		else{
-			# Set empty expiration tempaltevars
-			$templatevars['expires_date']='';
-			$templatevars['expires_days']='';
-		}
 		if ($emailcollectionmessageexternal ){
 			$template=($themeshare)?"emailthemeexternal":"emailcollectionexternal";
 		}
 		else {
 			$template=($themeshare)?"emailtheme":"emailcollection";
 		}
-		if (count($emails > 1) && $list_recipients===true) {
-			$body = $lang["list-recipients"] ."\n". implode("\n",$emails) ."\n\n";
-			$templatevars['list-recipients']=$lang["list-recipients"] ."\n". implode("\n",$emails) ."\n\n";
-		}
-		else {
-			$body = "";
-		}
-		$body.=$templatevars['fromusername']." " . (($emailcollectionmessageexternal)?$externalmessage:$internalmessage) . "\n\n" . $templatevars['message']."\n\n" . $viewlinktext ."\n\n".$templatevars['list'];
+		$body=$templatevars['fromusername']." " . (($emailcollectionmessageexternal)?$externalmessage:$internalmessage) . "\n\n" . $templatevars['message']."\n\n" . $viewlinktext ."\n\n".$templatevars['list'];
 		#exit ($body . "<br>" . $viewlinktext);	
 		send_mail($emails[$nx1],$subject,$body,$fromusername,$useremail,$template,$templatevars,$from_name,$cc);
 		$viewlinktext=$origviewlinktext;
 		}
-	hook("additional_email_collection","",array($colrefs,$collectionname,$fromusername,$userlist,$message,$feedback,$access,$expires,$useremail,$from_name,$cc,$themeshare,$themename,$themeurlsuffix,$template,$templatevars));
+		
 	# Return an empty string (all OK).
 	return "";
 	}
 }	
 
 
-function generate_collection_access_key($collection,$feedback=0,$email="",$access=-1,$expires="",$group="")
+function generate_collection_access_key($collection,$feedback=0,$email="",$access=-1,$expires="")
 	{
 	# For each resource in the collection, create an access key so an external user can access each resource.
-	global $userref,$usergroup;
-	if ($group=="" || !checkperm("x")) {$group=$usergroup;} # Default to sharing with the permission of the current usergroup if not specified OR no access to alternative group selection.
+	global $userref;
 	$k=substr(md5($collection . "," . time()),0,10);
 	$r=get_collection_resources($collection);
 	for ($m=0;$m<count($r);$m++)
 		{
 		# Add the key to each resource in the collection
-		if(can_share_resource($r[$m]))
-			{
-			sql_query("insert into external_access_keys(resource,access_key,collection,user,usergroup,request_feedback,email,date,access,expires) values ('" . $r[$m] . "','$k','$collection','$userref','$group','$feedback','" . escape_check($email) . "',now(),$access," . (($expires=="")?"null":"'" . $expires . "'"). ");");
-			}
+		sql_query("insert into external_access_keys(resource,access_key,collection,user,request_feedback,email,date,access,expires) values ('" . $r[$m] . "','$k','$collection','$userref','$feedback','" . escape_check($email) . "',now(),$access," . (($expires=="")?"null":"'" . $expires . "'"). ");");
 		}
-	
-	hook("generate_collection_access_key","",array($collection,$k,$userref,$feedback,$email,$access,$expires,$group));
+		
+	hook("generate_collection_access_key","",array($collection,$k,$userref,$feedback,$email,$access,$expires));
 	return $k;
 	}
 	
@@ -1301,8 +1072,8 @@ function get_search_title($searchstring){
 function add_saved_search_items($collection)
 	{
 	# Adds resources from a search to the collection.
-	$results=do_search(getvalescaped("addsearch",""), getvalescaped("restypes",""), "relevance", getvalescaped("archive","",true),-1,'',false,getvalescaped("starsearch",""),false,false,getvalescaped("daylimit",""));
-
+	$results=do_search(getvalescaped("addsearch",""), getvalescaped("restypes",""), "relevance", getvalescaped("archive","",true),-1,'',false,'',false,false,getvalescaped("daylimit",""));
+	
 	# Check if this collection has already been shared externally. If it has, we must add a further entry
 	# for this specific resource, and warn the user that this has happened.
 	$keys=get_collection_external_access($collection);
@@ -1322,7 +1093,7 @@ function add_saved_search_items($collection)
 				{
 				$resource=$results[$r]["ref"];
 				$archivestatus=$results[$r]["archive"];
-				if ($archivestatus<0 && !$collection_allow_not_approved_share) {$resourcesnotadded[$resource] = $results[$r];continue;}
+				if ($archivestatus<0 && !$collection_allow_not_approved_share) {array_push($resourcesnotadded,$resource);continue;}
 				sql_query("insert into external_access_keys(resource,access_key,user,collection,date) values ('$resource','" . escape_check($keys[$n]["access_key"]) . "','$userref','$collection',now())");
 				#log this
 				collection_log($collection,"s",$resource, $keys[$n]["access_key"]);
@@ -1331,34 +1102,18 @@ function add_saved_search_items($collection)
 		}
 
 	if (is_array($results))
-		{
-		$modifyNotAdded = hook('modifynotaddedsearchitems', '', array($results, $resourcesnotadded));
-		if (is_array($modifyNotAdded))
-			$resourcesnotadded = $modifyNotAdded;
-
-		for ($n=0;$n<count($results);$n++)
-			{
-            $resource=$results[$n]["ref"];
-			if (!isset($resourcesnotadded[$resource]))
+                {
+                for ($n=0;$n<count($results);$n++)
+                        {
+                        $resource=$results[$n]["ref"];
+       			if (!in_array($resource,$resourcesnotadded))
 				{
 				sql_query("delete from collection_resource where resource='$resource' and collection='$collection'");
 				sql_query("insert into collection_resource(resource,collection) values ('$resource','$collection')");
 				}
-			}
-		}
-
-	if (!empty($resourcesnotadded))
-		{
-		# Translate to titles only for displaying them to the user
-		global $view_title_field;
-		$titles = array();
-		foreach ($resourcesnotadded as $resource)
-			{
-			$titles[] = i18n_get_translated($resource['field' . $view_title_field]);
-			}
-		return $titles;
-		}
-	return array();
+                        }
+                }
+	return $resourcesnotadded;
 	}
 
 if (!function_exists("allow_multi_edit")){
@@ -1369,7 +1124,7 @@ function allow_multi_edit($collection)
 	# also applies edit filter, since it uses get_resource_access
 
 	if (!is_array($collection)){ // collection is an array of resource data
-        $collection=do_search("!collection" . $collection);
+		$collection=do_search("!collection" . $collection);
 
 	}
 	for ($n=0;$n<count($collection);$n++){
@@ -1395,36 +1150,45 @@ function allow_multi_edit($collection)
 	}
 }	
 
-function get_theme_image($themes=array(),$collection="")
+function get_theme_image($themes=array())
 	{
 	# Returns an array of resource references that can be used as theme category images.
 	global $theme_images_number;
 	global $theme_category_levels;
-	# Resources that have been specifically chosen using the option on the collection comments page will be returned first based on order by.
-	
-	$sqlselect="select r.ref value from collection c join collection_resource cr on c.ref=cr.collection join resource r on cr.resource=r.ref where c.public=1 and c.theme='" . escape_check($themes[0]) . "' ";
-	$orderby=" order by cr.use_as_theme_thumbnail desc";
+	# First try to find resources that have been specifically chosen using the option on the collection comments page.
+	$sql="select r.ref value from collection c join collection_resource cr on c.ref=cr.collection join resource r on cr.resource=r.ref where c.theme='" . escape_check($themes[0]) . "' ";
 	for ($n=2;$n<=count($themes)+1;$n++){
 		if (isset($themes[$n-1])){
-			$sqlselect.=" and theme".$n."='" . escape_check($themes[$n-1]) . "' ";
+			$sql.=" and theme".$n."='" . escape_check($themes[$n-1]) . "' ";
 		} 
 		else {
 			if ($n<=$theme_category_levels){
-				# Resources in sub categories can be used but should be below those in the current category
-				$orderby.=", theme".$n . " ";
+				$sql.=" and (theme".$n."='' or theme".$n." is null) ";
 			}
 		}
 	} 
 
-	if($collection!="")
-		{
-		$sqlselect.=" and c.ref = '" . escape_check($collection) .  "'";
-		}
+	$sql.=" and r.has_image=1 and cr.use_as_theme_thumbnail=1 order by r.ref desc";
+	$chosen=sql_array($sql,0);
+	if (count($chosen)>0) {return $chosen;}
 	
-	$sqlselect.=" and r.has_image=1 ";
-	$orderby.=",r.hit_count desc,r.ref desc";
-	$sql = $sqlselect . $orderby . " limit " .$theme_images_number;
-	$images=sql_array($sql,0);	
+	# No chosen images? Manually choose a single image based on hit counts.
+	$sql="select r.ref value from collection c join collection_resource cr on c.ref=cr.collection join resource r on cr.resource=r.ref where c.theme='" . escape_check($themes[0]) . "' ";
+	for ($n=2;$n<=count($themes)+1;$n++){
+		if (isset($themes[$n-1])){
+			$sql.=" and theme".$n."='" . escape_check($themes[$n-1]) . "' ";
+		} 
+		else {
+			if ($n<=$theme_category_levels){
+			$sql.=" and (theme".$n."='' or theme".$n." is null) ";
+			}
+		}
+	} 
+	$sql.=" and r.has_image=1 order by r.hit_count desc limit " . $theme_images_number;
+	$images=sql_array($sql,0);
+
+	$tmp = hook("getthemeimage", "", array($themes)); if($tmp!==false and is_array($tmp) and count($tmp)>0) $images = $tmp;
+
 	if (count($images)>0) {return $images;}
 	return false;
 	}
@@ -1470,7 +1234,7 @@ function swap_collection_order($resource1,$resource2,$collection)
 	}
 
 function update_collection_order($neworder,$collection,$offset=0)
-	{	
+	{
 	if (!is_array($neworder)) {
 		exit ("Error: invalid input to update collection function.");
 	}
@@ -1603,24 +1367,13 @@ function send_collection_feedback($collection,$comment)
 	
 	
 	$cc=getval("email","");
-	get_config_option($user['ref'],'email_user_notifications', $send_email);
-	// Always send a mail for the feedback whatever the user preference, since the  feedback may be very long so can then refer to the CC'd email
-	if (filter_var($cc, FILTER_VALIDATE_EMAIL))
-		{
+	If (filter_var($cc, FILTER_VALIDATE_EMAIL)) {
 		send_mail($user["email"],$applicationname . ": " . $lang["collectionfeedback"] . " - " . $cinfo["name"],$body,"","","",NULL,"",$cc);
 		}
 	else
 		{
 		send_mail($user["email"],$applicationname . ": " . $lang["collectionfeedback"] . " - " . $cinfo["name"],$body);
 		}
-		
-	if(!$send_email)
-		{
-		// Add a system notification message as well if the user has not 'opted out'
-		global $userref;
-		message_add($user["ref"],$lang["collectionfeedback"] . " - " . $cinfo["name"] . "<br />" . $body,"",(isset($userref))?$userref:$user['ref'],MESSAGE_ENUM_NOTIFICATION_TYPE_SCREEN,60 * 60 *24 * 30);
-		}
-			
 	
 	# Cancel the feedback request for this resource.
 	/* - Commented out - as it may be useful to leave the feedback request in case the user wishes to leave
@@ -1666,23 +1419,23 @@ function collection_is_research_request($collection)
 }	
 
 if (!function_exists("add_to_collection_link")){
-function add_to_collection_link($resource,$search="",$extracode="",$size="",$class="")
+function add_to_collection_link($resource,$search="",$extracode="",$size="")
     {
     # Generates a HTML link for adding a resource to a collection
     global $lang;
 
-    return "<a class=\"addToCollection " . $class . "\" href=\"#\" title=\"" . $lang["addtocurrentcollection"] . "\" onClick=\"AddResourceToCollection(event,'" . $resource . "','" . $size . "');" . $extracode . "return false;\">";
+    return "<a class=\"addToCollection\" href=\"#\" title=\"" . $lang["addtocurrentcollection"] . "\" onClick=\"AddResourceToCollection(event,'" . $resource . "','" . $size . "');" . $extracode . "return false;\">";
 
     }
 }
 
 if (!function_exists("remove_from_collection_link")){		
-function remove_from_collection_link($resource,$search="",$class="")
+function remove_from_collection_link($resource,$search="")
     {
     # Generates a HTML link for removing a resource to a collection
     global $lang, $pagename;
 
-    return "<a class=\"removeFromCollection " . $class . "\" href=\"#\" title=\"" . $lang["removefromcurrentcollection"] . "\" onClick=\"RemoveResourceFromCollection(event,'" . $resource . "','" . $pagename . "');return false;\">";
+    return "<a class=\"removeFromCollection\" href=\"#\" title=\"" . $lang["removefromcurrentcollection"] . "\" onClick=\"RemoveResourceFromCollection('" . $resource . "','" . $pagename . "');return false;\">";
 
     }
 }
@@ -1691,16 +1444,17 @@ function change_collection_link($collection)
     {
     # Generates a HTML link for adding a changing the current collection
     global $lang;
-    return '<a onClick="ChangeCollection('.$collection.',\'\');return false;" href="collections.php?collection='.$collection.'">' . LINK_CARET . $lang["selectcollection"].'</a>';
+    return '<a onClick="return CollectionDivLoad(this);" href="collections.php?collection='.$collection.'">&gt;&nbsp;'.$lang["selectcollection"].'</a>';
+
     }
-if(!function_exists("get_collection_external_access")){
+
 function get_collection_external_access($collection)
 	{
 	# Return all external access given to a collection.
 	# Users, emails and dates could be multiple for a given access key, an in this case they are returned comma-separated.
-	return sql_query("select access_key,group_concat(DISTINCT user ORDER BY user SEPARATOR ', ') users,group_concat(DISTINCT email ORDER BY email SEPARATOR ', ') emails,max(date) maxdate,max(lastused) lastused,access,expires,usergroup from external_access_keys where collection='$collection' group by access_key order by date");
+	return sql_query("select access_key,group_concat(DISTINCT user ORDER BY user SEPARATOR ', ') users,group_concat(DISTINCT email ORDER BY email SEPARATOR ', ') emails,max(date) maxdate,max(lastused) lastused,access,expires from external_access_keys where collection='$collection' group by access_key order by date");
 	}
-}
+	
 function delete_collection_access_key($collection,$access_key)
 	{
 	# Get details for log
@@ -1717,10 +1471,6 @@ function collection_log($collection,$type,$resource,$notes = "")
 	global $userref;
 	$modifiedcollogtype=hook("modifycollogtype","",array($type,$resource));
 	if ($modifiedcollogtype) {$type=$modifiedcollogtype;}
-	
-	$modifiedcollognotes=hook("modifycollognotes","",array($type,$resource,$notes));
-	if ($modifiedcollognotes) {$notes=$modifiedcollognotes;}
-	
 	sql_query("insert into collection_log(date,user,collection,type,resource, notes) values (now()," . (($userref!="")?"'$userref'":"null") . ",'$collection','$type'," . (($resource!="")?"'$resource'":"null") . ", '$notes')");
 	}
 /*  Log entry types  
@@ -1739,8 +1489,6 @@ $lang["collectionlog-T"]="Stopped sharing collection with ";//  + notes field
 $lang["collectionlog-t"]="Stopped access to resource by ";//  + notes field
 $lang["collectionlog-X"]="Collection deleted";
 $lang["collectionlog-b"]="Batch transformed";
-$lang["collectionlog-A"]="Changed access to "; // +notes field
-$lang["collectionlog-Z"]="Collection downloaded";
 */
 function get_collection_log($collection, $fetchrows=-1)
 	{
@@ -1847,39 +1595,99 @@ function collection_set_themes($collection,$themearr)
 	}
 	
 function remove_all_resources_from_collection($ref){
-	// abstracts it out of save_collection()
+	// abstracts it out of save_collection() for use in collections_compact_style
 		# Remove all resources?
 	if (getval("removeall","")!="")
 		{
-		$removed_resources = sql_array('SELECT resource AS value FROM collection_resource WHERE collection = ' . $ref . ';');
-
-		// First log this for each resource (in case it was done by mistake)
-		foreach($removed_resources as $removed_resource_id)
-			{
-			collection_log($ref, 'r', $removed_resource_id, ' - Removed all resources from collection ID ' . $ref);
-			}
-
-		sql_query('DELETE FROM collection_resource WHERE collection = ' . $ref);
-		collection_log($ref, 'R', 0);
+		sql_query("delete from collection_resource where collection='$ref'");
+		collection_log($ref,"R",0);
 		}
 	}	
 
-if (!function_exists("get_home_page_promoted_collections")){
+
 function get_home_page_promoted_collections()
 	{
-	return sql_query("select collection.ref,collection.name,collection.home_page_publish,collection.home_page_text,collection.home_page_image,resource.thumb_height,resource.thumb_width, resource.resource_type, resource.file_extension from collection left outer join resource on collection.home_page_image=resource.ref where collection.public=1 and collection.home_page_publish=1 order by collection.ref desc");
+	return sql_query("select collection.ref,collection.home_page_publish,collection.home_page_text,collection.home_page_image,resource.thumb_height,resource.thumb_width from collection left outer join resource on collection.home_page_image=resource.ref where collection.public=1 and collection.home_page_publish=1 order by collection.ref desc");
 	}
+if (!function_exists("draw_compact_style_selector")){
+function draw_compact_style_selector($collection,$onhover=true){
+	
+	global $baseurl,
+	$baseurl_short,
+	$lang,
+	$pagename,
+	$collections,
+	$collections_compact_style,
+	$collections_compact_style_ajax,
+	$display,
+	$thumbs,
+	$collection_dropdown_user_access_mode,
+	$default_display,
+	$resources,
+	$n,
+	$userref,
+	$preview_all,
+	$show_edit_all_link,
+	$contact_sheet,
+	$allow_share,
+	$collection_purge,
+	$collection_download,
+	$usercollection,$result,
+	$collection_dropdown_user_access_mode,
+	$cinfo,
+	$feedback,
+	$colresult,
+	$m,$getthemes;	
+	//if(preg_match('/(Android|iPhone|iPad)/', $_SERVER['HTTP_USER_AGENT'])) { 
+	//	$collections_compact_style_ajax=false; // omit this optimization for mobile as the hover events it relies on sometimes cause the selector to not be loaded prior to clicking.
+	//}
+	if (!$onhover || !$collections_compact_style_ajax ){
+		include(dirname(__FILE__)."/../pages/collections_compact_style.php");
+		return;
+	}
+	
+	//draw a dummy selector and then ajax load options on hover
+	
+	$tag=$pagename."-coltools-".$collection;if ($pagename=="collections"){$tag.="_usercol";}
+	if ($pagename!="collections"){$hovertag="#CentralSpace";} 
+	if ($pagename=="collections"){$hovertag=".CollectBack";} 
+	
+	?>	<select readonly="readonly" <?php if ($pagename=="collections"){if ($collection_dropdown_user_access_mode){?>class="SearchWidthExp" style="margin:0;"<?php } else { ?> class="SearchWidth" style="margin:0;"<?php } } ?> class="ListDropdown" <?php if ($pagename=="search" && $display=="xlthumbs"){?>style="margin:-5px 0px 0px 5px"<?php } ?> <?php if ($pagename=="search" && ( $display=="thumbs" || $display=="smallthumbs")){?>style="margin:-5px 0px 0px 0px "<?php } ?> id="temp<?php echo urlencode($tag) ?>"><option id="tempoption<?php echo urlencode($tag) ?>"><?php echo $lang['select'];?></option></select>
+	<script>
+	<?php if (substr(getvalescaped("search",""),0,11)!="!collection" && $pagename=="search"){?>
+		jQuery('#temp<?php echo urlencode($tag) ?>').hover(function(){
+		<?php } ?>
+	jQuery('#tempoption<?php echo urlencode($tag) ?>').html('<?php echo $lang['loading']?>');
+	jQuery.ajax({
+		type: 'GET',
+		url:  '<?php echo $baseurl_short?>pages/collections_compact_style.php?collection=<?php echo urlencode($collection) ?>&pagename=<?php echo urlencode($pagename) ?>&colselectload=true',
+		success: function(msg){
+			if(msg != 0) {
+				jQuery('#temp<?php echo urlencode($tag) ?>').replaceWith(msg);
+				<?php if ($pagename=="collections"){?>jQuery('#collections-coltools-<?php echo $cinfo['ref']?>_usercol').clone().attr("id",'#collections-coltools-<?php echo $cinfo['ref']?>_usercolmin').attr('onChange',"colAction(jQuery(this).val());jQuery(this).prop('selectedIndex',0);").prependTo("#MinSearchItem");<?php } ?>
+			} 
+		}});
+	<?php if (substr(getvalescaped("search",""),0,11)!="!collection" && $pagename=="search"){?>
+		});
+	<?php } ?>
+	
+		
+		
+		</script>
+	
+	
+	<?php
+	
 }
-
+}
 
 function is_collection_approved($collection)
 		{
 		if (is_array($collection)){$result=$collection;}
-		else
-			{
+		else {
 			$result=do_search("!collection" . $collection,"","relevance",0,-1,"desc",false,"",false,"");
 			}	
-		if (!is_array($result) || count($result)==0){return true;}
+		if (!is_array($result)){return true;}
 		
 		$collectionstates=array();
 		global $collection_allow_not_approved_share;
@@ -1892,514 +1700,12 @@ function is_collection_approved($collection)
 		return array_unique($collectionstates);
 		}
 
-function edit_collection_external_access($key,$access=-1,$expires="",$group="")
+function edit_collection_external_access($key,$access=-1,$expires="")
 	{
-	global $userref,$usergroup;
-	if ($group=="" || !checkperm("x")) {$group=$usergroup;} # Default to sharing with the permission of the current usergroup if not specified OR no access to alternative group selection.
+	global $userref;
 	if ($key==""){return false;}
 	# Update the expiration and acccess
-	sql_query("update external_access_keys set access='$access', expires=" . (($expires=="")?"null":"'" . $expires . "'") . ",date=now(),usergroup='$group' where access_key='$key'");
-	hook("edit_collection_external_access","",array($key,$access,$expires,$group));
+	sql_query("update external_access_keys set access='$access', expires=" . (($expires=="")?"null":"'" . $expires . "'") . ",date=now() where access_key='$key'");	
 	return true;
 	}
 	
-function show_hide_collection($colref, $show=true, $user="")
-	{
-	global $userref;
-	if($user=="" || $user==$userref)
-		{
-		// Working with logged on user, use global variable 
-		$user=$userref;
-		global $hidden_collections;
-		}
-	else
-		{
-		//Get hidden collections for user
-		$hidden_collections=explode(",",sql_value("select hidden_collections from user where ref='$user'",""));
-		}
-		
-	if($show)
-		{
-		debug("Unhiding collection " . $colref . " from user " . $user);
-		if(($key = array_search($colref, $hidden_collections)) !== false)
-			{
-			unset($hidden_collections[$key]);
-			}
-		}
-	else
-		{
-		debug("Hiding collection " . $colref . " from user " . $user);
-		if(($key = array_search($colref, $hidden_collections)) === false) 
-			{
-			$hidden_collections[]=$colref;
-			}
-		}
-	sql_query("update user set hidden_collections ='" . implode(",",$hidden_collections) . "' where ref='$user'");
-	}
-	
-function get_session_collections($rs_session,$userref="",$create=false)
-	{
-	$extrasql="";
-	if($userref!="")
-		{
-		$extrasql="and user='" . $userref ."'";	
-		}
-	$collectionrefs=sql_array("select ref value from collection where session_id='" . $rs_session . "' " . $extrasql,"");
-	if(count($collectionrefs)<1 && $create)
-		{
-		$collectionrefs[0]=create_collection($userref,"My Collection",0,1); # Do not translate this string!	
-		}		
-	return $collectionrefs;	
-	}
-
-function update_collection_user($collection,$newuser)
-	{	
-	if (!collection_writeable($collection))
-		{debug("FAILED TO CHANGE COLLECTION USER " . $collection);return false;}
-		
-	sql_query("UPDATE collection SET user='$newuser' WHERE ref='$collection'");  
-	return true;	
-	}
-
-if(!function_exists("compile_collection_actions")){	
-function compile_collection_actions(array $collection_data, $top_actions, $resource_data=array())
-    {
-    global $baseurl_short, $lang, $k, $userrequestmode, $zipcommand, $collection_download, $contact_sheet,
-           $manage_collections_contact_sheet_link, $manage_collections_share_link, $allow_share,
-           $manage_collections_remove_link, $userref, $collection_purge, $show_edit_all_link, $result,
-           $edit_all_checkperms, $preview_all, $order_by, $sort, $archive, $contact_sheet_link_on_collection_bar,
-           $show_searchitemsdiskusage, $emptycollection, $remove_resources_link_on_collection_bar, $count_result,
-           $download_usage, $home_dash, $top_nav_upload_type, $pagename, $offset, $col_order_by, $find, $default_sort, $default_collection_sort, $starsearch, $restricted_share, $hidden_collections, $internal_share_access, $search, $usercollection, $geo_locate_collection;
-           
-	if(isset($search) && substr($search, 0, 11) == '!collection' && ($k == '' || $internal_share_access))
-		{ 
-		# Extract the collection number - this bit of code might be useful as a function
-    	$search_collection = explode(' ', $search);
-    	$search_collection = str_replace('!collection', '', $search_collection[0]);
-    	$search_collection = explode(',', $search_collection); // just get the number
-    	$search_collection = escape_check($search_collection[0]);
-    	}
-
-    $options = array();
-	$o=0;
-
-    if(empty($collection_data))
-        {
-        return $options;
-        }
-	
-	if(empty($order_by))
-    	{
-		$order_by = $default_collection_sort;
-		}
-	
-    if(!collection_is_research_request($collection_data['ref']) || !checkperm('r'))
-        {
-        if(!$top_actions && checkperm('s') && $pagename === 'collections')
-            {
-            // Manage My Collections
-            $data_attribute['url'] = $baseurl_short . 'pages/collection_manage.php';
-            $options[$o]['value']='manage_collections';
-            $options[$o]['label']=$lang['managemycollections'];
-            $options[$o]['data_attr']=$data_attribute;
-            $o++;
-
-            // Collection feedback
-            if(isset($collection_data['request_feedback']) && $collection_data['request_feedback'])
-                {
-                $data_attribute['url'] = sprintf('%spages/collection_feedback.php?collection=%s&k=%s',
-                    $baseurl_short,
-                    urlencode($collection_data['ref']),
-                    urlencode($k)
-                );
-                $options[$o]['value']='collection_feedback';
-				$options[$o]['label']=$lang['sendfeedback'];
-				$options[$o]['data_attr']=$data_attribute;
-				$o++;
-                }
-            }
-        }
-    else
-        {
-        $research = sql_value('SELECT ref value FROM research_request WHERE collection="' . $collection_data['ref'] . '";', 0);
-
-        // Manage research requests
-        $data_attribute['url'] = sprintf('%spages/team/team_research.php', $baseurl_short);
-        $options[$o]['value']='manage_research_requests';
-		$options[$o]['label']=$lang['manageresearchrequests'];
-		$options[$o]['data_attr']=$data_attribute;
-		$o++;
-
-        // Edit research requests
-        $data_attribute['url'] = sprintf('%spages/team/team_research_edit.php?ref=%s',
-            $baseurl_short,
-            urlencode($research)
-        );
-        $options[$o]['value']='edit_research_requests';
-		$options[$o]['label']=$lang['editresearchrequests'];
-		$options[$o]['data_attr']=$data_attribute;
-		$o++;
-        }
-
-    // Select collection option - not for collection bar
-    if($pagename != 'collections' && ($k == '' || $internal_share_access) && !checkperm('b')
-        && ($pagename == 'themes' || $pagename === 'collection_manage' || $pagename === 'resource_collection_list' || $top_actions)
-        && ((isset($search_collection) && isset($usercollection) && $search_collection != $usercollection) || !isset($search_collection))
-        && collection_readable($collection_data['ref'])
-    )
-        {
-        $options[$o]['value'] = 'select_collection';
-        $options[$o]['label'] = $lang['selectcollection'];
-        $o++;
-        }
-
-    // Edit Collection
-    if((($userref == $collection_data['user']) || (checkperm('h')))  && ($k == '' || $internal_share_access)) 
-        {
-        $extra_tag_attributes = sprintf('
-                data-url="%spages/collection_edit.php?ref=%s"
-            ',
-            $baseurl_short,
-            urlencode($collection_data['ref'])
-        );
-
-        $options[$o]['value']='edit_collection';
-		$options[$o]['label']=$lang['action-edit'];
-		$options[$o]['data_attr']=array();
-		$options[$o]['extra_tag_attributes']=$extra_tag_attributes;
-		$o++;
-        }
-
-    // Upload to collection
-    if(((checkperm('c') || checkperm('d')) && $collection_data['savedsearch'] == 0 && ($userref == $collection_data['user'] || $collection_data['allow_changes'] == 1 || checkperm('h'))) && ($k == '' || $internal_share_access))
-        {
-        $data_attribute['url'] = sprintf('%spages/edit.php?uploader=%s&ref=-%s&collection_add=%s',
-            $baseurl_short,
-            urlencode($top_nav_upload_type),
-            urlencode($userref),
-            urlencode($collection_data['ref'])
-        );
-
-        $options[$o]['value']='upload_collection';
-		$options[$o]['label']=$lang['action-upload-to-collection'];
-		$options[$o]['data_attr']=$data_attribute;
-		$o++;
-        }
-
-    // Home_dash is on, AND NOT Anonymous use, AND (Dash tile user (NOT with a managed dash) || Dash Tile Admin)
-    if(!$top_actions && $home_dash && ($k == '' || $internal_share_access) && checkPermission_dashcreate())
-        {
-        $data_attribute['url'] = sprintf('
-            %spages/dash_tile.php?create=true&tltype=srch&promoted_resource=true&freetext=true&all_users=1&link=/pages/search.php?search=!collection%s&order_by=%s&sort=%s
-            ',
-            $baseurl_short,
-            $collection_data['ref'],
-            $order_by,
-            $sort
-        );
-
-        $options[$o]['value']='save_collection_to_dash';
-		$options[$o]['label']=$lang['createnewdashtile'];
-		$options[$o]['data_attr']=$data_attribute;
-		$o++;
-        }
-
-    // Request all
-    if($count_result > 0)
-        {
-        # Ability to request a whole collection (only if user has restricted access to any of these resources)
-        $min_access = collection_min_access($result);
-        if($min_access != 0)
-            {
-            $data_attribute['url'] = sprintf('%spages/collection_request.php?ref=%s&k=%s',
-                $baseurl_short,
-                urlencode($collection_data['ref']),
-                urlencode($k)
-            );
-            $options[$o]['value']='request_all';
-            $options[$o]['label']=$lang['requestall'];
-            $options[$o]['data_attr']=$data_attribute;
-            $o++;
-            }
-        }
-	
-	if($geo_locate_collection)
-        {
-            $data_attribute['url'] = sprintf('%spages/geolocate_collection.php?ref=%s',
-                $baseurl_short,
-		urlencode($collection_data['ref'])
-            );
-            $options[$o]['value']='geolocatecollection';
-            $options[$o]['label']=$lang["geolocatecollection"];
-            $options[$o]['data_attr']=$data_attribute;
-            $o++;
-            
-        }
-	
-    // Download option
-    if($download_usage && ((isset($zipcommand) || $collection_download) && $count_result > 0))
-        {
-        $data_attribute['url'] = $baseurl_short . "pages/terms.php?k=" . urlencode($k) . "&url=pages/download_usage.php?collection=" . urlencode($collection_data['ref']) ."%26k=" . urlencode($k);
-        $options[$o]['value']='download_collection';
-		$options[$o]['label']=$lang['action-download'];
-		$options[$o]['data_attr']=$data_attribute;
-		$o++;
-        }
-    else if((isset($zipcommand) || $collection_download) && $count_result > 0)
-        {
-        $data_attribute['url'] = $baseurl_short . "pages/terms.php?k=" . urlencode($k) . "&url=pages/collection_download.php?collection=" . urlencode($collection_data['ref']) ."%26k=" . urlencode($k);
-        $options[$o]['value']='download_collection';
-		$options[$o]['label']=$lang['action-download'];
-		$options[$o]['data_attr']=$data_attribute;
-		$o++;
-        }
-
-    // Contact Sheet
-    if(0 < $count_result && ($k=="" || $internal_share_access) && $contact_sheet == true && ($manage_collections_contact_sheet_link || $contact_sheet_link_on_collection_bar))
-        {
-        $data_attribute = array(
-            'url' => sprintf('%spages/contactsheet_settings.php?ref=%s',
-                $baseurl_short,
-                urlencode($collection_data['ref'])
-            )
-        );
-
-        $options[$o]['value']='contact_sheet';
-		$options[$o]['label']=$lang['contactsheet'];
-		$options[$o]['data_attr']=$data_attribute;
-		$o++;
-        }
-
-    // Share
-    if(0 < $count_result && ($k=="" || $internal_share_access) && $manage_collections_share_link && $allow_share && (checkperm('v') || checkperm ('g') || (collection_min_access($collection_data['ref'])<=1 && $restricted_share))) 
-        {
-        $extra_tag_attributes = sprintf('
-                data-url="%spages/collection_share.php?ref=%s"
-            ',
-            $baseurl_short,
-            urlencode($collection_data['ref'])
-        );
-
-        $options[$o]['value']='share_collection';
-		$options[$o]['label']=$lang['share'];
-		$options[$o]['data_attr']=array();
-		$options[$o]['extra_tag_attributes']=$extra_tag_attributes;
-		$o++;
-        }
-
-    // Remove
-    if(($k=="" || $internal_share_access)
-        && $manage_collections_remove_link
-        && $userref != $collection_data['user']
-        && !checkperm('b')
-        && collection_readable($collection_data['ref'])
-    )
-        {
-        $options[$o]['value']='remove_collection';
-		$options[$o]['label']=$lang['action-remove'];
-		$o++;
-        }
-
-    // Delete
-    if(($k=="" || $internal_share_access) && (($userref == $collection_data['user']) || checkperm('h')) && ($collection_data['cant_delete'] == 0)) 
-        {
-        $options[$o]['value']='delete_collection';
-		$options[$o]['label']=$lang['action-delete'];
-		$o++;
-        }
-
-    // Collection Purge
-    if(($k=="" || $internal_share_access) && $collection_purge && isset($collections) && checkperm('e0') && $collection_data['cant_delete'] == 0)
-        {
-        $options[$o]['value']='purge_collection';
-		$options[$o]['label']=$lang['purgeanddelete'];
-		$o++;
-        }
-
-    // Collection log
-    if(($k=="" || $internal_share_access) && ($userref== $collection_data['user'] || (checkperm('h'))))
-        {
-        $extra_tag_attributes = sprintf('
-                data-url="%spages/collection_log.php?ref=%s"
-            ',
-            $baseurl_short,
-            urlencode($collection_data['ref'])
-        );
-
-        $options[$o]['value']='collection_log';
-		$options[$o]['label']=$lang['action-log'];
-		$options[$o]['data_attr']=array();
-		$options[$o]['extra_tag_attributes']=$extra_tag_attributes;
-		$o++;
-        }
-        
-    // View all
-    if(($k=="" || $internal_share_access) && (isset($collection_data["c"]) && $collection_data["c"]>0) || count($result) > 0)
-        {
-        $data_attribute['url'] =  $baseurl_short . 'pages/search.php?search=!collection' . urlencode($collection_data['ref']) . "&k=" . urlencode($k);
-        $options[$o]['value']='view_all_resources_in_collection';
-		$options[$o]['label']=$lang['view_all_resources'];
-		$options[$o]['data_attr']=$data_attribute;
-		$o++;
-        }
-
-    // work this out in one place to prevent multiple calls as function is expensive
-    $allow_multi_edit=allow_multi_edit(empty($resource_data) ? $collection_data['ref'] : $resource_data);
-
-    // Edit all
-    # If this collection is (fully) editable, then display an edit all link
-    if(($k=="" || $internal_share_access) && $show_edit_all_link && (count($result) > 0))
-        {
-        if(!$edit_all_checkperms || $allow_multi_edit)
-            {
-            $extra_tag_attributes = sprintf('
-                    data-url="%spages/edit.php?collection=%s"
-                ',
-                $baseurl_short,
-                urlencode($collection_data['ref'])
-            );
-
-            $options[$o]['value']='edit_all_in_collection';
-            $options[$o]['label']=$lang['edit_all_resources'];
-            $options[$o]['data_attr']=array();
-            $options[$o]['extra_tag_attributes']=$extra_tag_attributes;
-            $o++;
-            }
-        }
-
-    // Delete all
-    // Note: functionality moved from edit collection page
-    if(($k=="" || $internal_share_access) 
-		&& !$top_actions
-        && (count($result) != 0 || $count_result != 0)
-        && !(isset($allow_resource_deletion) && !$allow_resource_deletion)
-        && collection_writeable($collection_data['ref'])
-        && $allow_multi_edit
-        && !checkperm('D'))
-        {
-        $options[$o]['value']='delete_all_in_collection';
-		$options[$o]['label']=$lang['deleteallresourcesfromcollection'];
-		$o++;
-        }
-
-    // Preview all
-    if(count($result) != 0 && ($k=="" || $internal_share_access) && $preview_all)
-        {
-        $extra_tag_attributes = sprintf('
-                data-url="%spages/preview_all.php?ref=%s"
-            ',
-            $baseurl_short,
-            urlencode($collection_data['ref'])
-        );
-
-        $options[$o]['value']='preview_all';
-		$options[$o]['label']=$lang['preview_all'];
-		$options[$o]['data_attr']=array();
-		$options[$o]['extra_tag_attributes']=$extra_tag_attributes;
-		$o++;
-        }
-
-    // Remove all
-    if(0 < $count_result && ($k=="" || $internal_share_access) && isset($emptycollection) && $remove_resources_link_on_collection_bar && collection_writeable($collection_data['ref']))
-        {
-        $data_attribute['url'] = sprintf('%spages/collections.php?emptycollection=%s&removeall=true&submitted=removeall&ajax=true',
-            $baseurl_short,
-            urlencode($collection_data['ref'])
-        );
-
-        $options[$o]['value']     = 'empty_collection';
-		$options[$o]['label']     = $lang['emptycollection'];
-		$options[$o]['data_attr'] = $data_attribute;
-		$o++;
-        }
-    
-    // Edit Previews
-	if (($k=="" || $internal_share_access) && $count_result > 0 && ($userref == $collection_data['user'] || $collection_data['allow_changes'] == 1 || checkperm('h')) && $allow_multi_edit)
-		{
-		$main_pages   = array('search', 'collection_manage', 'collection_public', 'themes');
-		$back_to_page = (in_array($pagename, $main_pages) ? htmlspecialchars($pagename) : '');
-		$data_attribute['url'] = sprintf('%spages/collection_edit_previews.php?ref=%s&offset=%s&order_by=%s&col_order_by=<%s&sort=%s&find=%s&backto=%s',
-            $baseurl_short,
-            urlencode($collection_data['ref']),
-            urlencode($offset),
-            urlencode($order_by),
-            urlencode($col_order_by),
-            urlencode($sort),
-            urlencode($find),
-            $back_to_page
-        );
-
-        $options[$o]['value']     = 'edit_previews';
-		$options[$o]['label']     = $lang['editcollectionresources'];
-		$options[$o]['data_attr'] = $data_attribute;
-		$o++;
-		}
-
-    // Show disk usage
-    if(($k=="" || $internal_share_access) && !$top_actions && $show_searchitemsdiskusage && 0 < $count_result) 
-        {
-        $extra_tag_attributes = sprintf('
-                data-url="%spages/search_disk_usage.php?search=!collection%s&k=%s"
-            ',
-            $baseurl_short,
-            urlencode($collection_data['ref']),
-            urlencode($k)
-        );
-
-        $options[$o]['value']='search_items_disk_usage';
-		$options[$o]['label']=$lang['collection_disk_usage'];
-		$options[$o]['data_attr']=array();
-		$options[$o]['extra_tag_attributes']=$extra_tag_attributes;
-		$o++;
-        }
-
-    // CSV export of collection metadata
-    if(0 < $count_result 
-        && !$top_actions
-        && ($k =='' || $internal_share_access)
-        && collection_readable($collection_data['ref'])
-    )
-        {
-
-        $options[$o]['value']            = 'csv_export_results_metadata';
-		$options[$o]['label']            = $lang['csvExportResultsMetadata'];
-		$options[$o]['data_attr']['url'] = sprintf('%spages/csv_export_results_metadata.php?search=!collection%s&restype=%s&order_by=%s&archive=0&sort=%s&starsearch=%s',
-            $baseurl_short,
-            urlencode($collection_data['ref']),
-            isset($_COOKIE['restypes']) ? urlencode($_COOKIE['restypes']) : '',
-            urlencode($order_by),
-            urlencode($sort),
-            urlencode($starsearch)
-        );
-
-		$o++;
-    
-		// Hide Collection
-		$user_mycollection=sql_value("select ref value from collection where user={$userref} and name='My Collection' order by ref limit 1","");
-		// check that this collection is not hidden. use first in alphabetical order otherwise
-		if(in_array($user_mycollection,$hidden_collections)){
-			$hidden_collections_list=implode(",",array_filter($hidden_collections));
-			$user_mycollection=sql_value("select ref value from collection where user={$userref}" . ((trim($hidden_collections_list)!='')?" and ref not in(" . $hidden_collections_list . ")":"") . " order by ref limit 1","");
-		}
-		$extra_tag_attributes = sprintf('
-                data-mycol="%s"
-            ',
-            urlencode($user_mycollection)
-        );
-		
-		$options[$o]['value'] = 'hide_collection';
-		$options[$o]['label'] = $lang['hide_collection'];
-		$options[$o]['extra_tag_attributes']=$extra_tag_attributes;	
-		$o++;
-		}
-
-    // Add extra collection actions and manipulate existing actions through plugins
-    $modified_options = hook('render_actions_add_collection_option', '', array($top_actions,$options));
-    if(is_array($modified_options) && !empty($modified_options))
-		{
-        $options=$modified_options;
-        }
-
-    return $options;
-    }
-}

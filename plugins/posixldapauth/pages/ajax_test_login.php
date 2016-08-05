@@ -7,13 +7,11 @@
 $ldap_debug = true;
   
 $ldapConf['host'] = $_GET['server'];
-$ldapConf['port'] = $_GET['port'];
 $ldapConf['basedn'] = $_GET['basedn'];
-$ldapConf['addomain'] = $_GET['addomain'];
-$ldapConf['groupcont'] = $_GET['groupcont'];
 $ldapauth['ldaptype'] = $_GET['type'];
 if (isset($_GET['rootdn'])) { $ldapauth['rootdn'] = $_GET['rootdn']; }
 if (isset($_GET['rootpass'])) { $ldapauth['rootpass'] = $_GET['rootpass']; }
+if (isset($_GET['addomain'])) { $ldapauth['addomain'] = $_GET['addomain']; }
 
 // Language settings
 if (isset($_GET['lang_status_error'])) 
@@ -73,22 +71,18 @@ $status = true;
 
 if ($objLDAP->connect())
 {
-
 	$returnMessage['Connection Test'] = $lang['lang_passed '];
 	// we need to check for the kind of LDAP we are talking to here!
 	if ($ldapauth['ldaptype'] == 1 )
 	{
-	// we need to bind!
-	if (!$objLDAP->auth($ldapauth['rootdn'],$ldapauth['rootpass'],1,$ldapConf['addomain'],true))
+		// we need to bind!
+		if (!$objLDAP->auth($ldapauth['rootdn'],$ldapauth['rootpass'],1,$ldapauth['addomain']))
 		{
-		
-		$returnMessage["auth"] = $lang['lang_could_not_bind'];
-		$errmsg = true;
-		$status = false;
-		}
-	else
-		{
-		$returnMessage["AD Bind"] = $lang['lang_passed '];
+			$returnMessage["auth"] = $lang['lang_could_not_bind'];
+			$errmsg = true;
+			$status = false;
+		} else {
+			$returnMessage["AD Bind"] = $lang['lang_passed '];
 		}
 	}
 	

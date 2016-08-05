@@ -6,53 +6,39 @@
  *
  * @return array Containing the login details ('valid' determines whether or not the login succeeded).
  */
-
-if (!function_exists('hash'))
-    {
-    include dirname(__FILE__) . "/hash_functions.php";
-    }
-    
 function perform_login()
 	{
 	global $api, $scramble_key, $enable_remote_apis, $lang, $max_login_attempts_wait_minutes, $max_login_attempts_per_ip, $max_login_attempts_per_username, $global_cookies, $username, $password, $password_hash;
 	
-        
-    if (!$api && (strlen($password)==32 || strlen($password)==64) && getval("userkey","")!=md5($username . $scramble_key))
+    if (!$api && strlen($password)==32 && getval("userkey","")!=md5($username . $scramble_key))
 		{
 		exit("Invalid password."); # Prevent MD5s being entered directly while still supporting direct entry of plain text passwords (for systems that were set up prior to MD5 password encryption was added). If a special key is sent, which is the md5 hash of the username and the secret scramble key, then allow a login using the MD5 password hash as the password. This is for the 'log in as this user' feature.
 		}
-		
-	if (strlen($password)!=64)
+
+	if (strlen($password)!=32)
 		{
 		# Provided password is not a hash, so generate a hash.
-		//$password_hash=md5("RS" . $username . $password);
-		$password_hash=hash('sha256', md5("RS" . $username . $password));						
+		$password_hash=md5("RS" . $username . $password);
 		}
 	else
 		{
 		$password_hash=$password;
 		}
 
-	// ------- Automatic migration of md5 hashed or plain text passwords to SHA256 hashed passwords ------------
-	// This is necessary because older systems being upgraded may still have passwords stored using md5 hashes or even possibly stored in plain text.
-	// Updated March 2015 - select password_reset_hash to force dbstruct that will update password column varchar(100) if not already
-	$accountstoupdate=sql_query("select username, password, password_reset_hash from user where length(password)<>64");
-	foreach($accountstoupdate as $account)
-		{
-		$oldpassword=$account["password"];
-		if(strlen($oldpassword)!=32){$oldpassword=md5("RS" . $account["username"] . $oldpassword);} // Needed if we have a really old password, or if password has been manually reset in db for some reason
-		$new_password_hash=hash('sha256', $oldpassword);
-        sql_query("update user set password='" . $new_password_hash . "' where username='".escape_check($account["username"]) . "'");
-		}
+        /* ------- Automatic migration of plain text passwords to hashed passwords ------------
+        This is necessary because older (much older!) systems being upgraded may still have passwords stored locally in plain text.
+        */        
+        sql_query("update user set password=md5(concat('RS',username,password)) where username='".escape_check($username)."' and length(password)<>32");
+        
 	$ip=get_ip();
 
 	# This may change the $username, $password, and $password_hash
-        $externalresult=hook("externalauth","",array($username, $password)); #Attempt external auth if configured
+    hook("externalauth","",array($username, $password)); #Attempt external auth if configured
 
 	# Generate a new session hash.
 	$session_hash=generate_session_hash($password_hash);
 
-    # Check the provided credentials
+        # Check the provided credentials
 	$valid=sql_query("select ref,usergroup,account_expires from user where username='".escape_check($username)."' and password='".escape_check($password_hash)."'");
 
 	# Prepare result array
@@ -75,7 +61,6 @@ function perform_login()
 		$result['valid']=true;
 		$result['session_hash']=$session_hash;
 		$result['password_hash']=$password_hash;
-		$result['ref']=$userref;
 
 		# Update the user record.
 		# Omit updating session has if using an API, because we don't want API usage to log users out, and there is no 'session' to remember in such a case.
@@ -84,11 +69,7 @@ function perform_login()
 
 		# Log this
 		daily_stat("User session",$userref);
-		if (!$api)
-			{
-			/* sql_query("insert into resource_log(date,user,resource,type) values (now()," . (($userref!="")?"'$userref'":"null") . ",0,'l')"); */
-			log_activity(null,LOG_CODE_LOGGED_IN,$ip,"user","ref",($userref!="" ? $userref :"null"),null,'',($userref!="" ? $userref :"null"));
-			}
+		sql_query("insert into resource_log(date,user,resource,type) values (now()," . (($userref!="")?"'$userref'":"null") . ",0,'l')");
 
 		# Blank the IP address lockout counter for this IP
 		sql_query("delete from ip_lockout where ip='" . escape_check($ip) . "'");
@@ -97,8 +78,7 @@ function perform_login()
 		}
 
 	# Invalid login
-	if(isset($externalresult["error"])){$result['error']=$externalresult["error"];} // We may have been given a better error to display
-        else {$result['error']=$lang["loginincorrect"];}
+	$result['error']=$lang["loginincorrect"];
 
   hook("loginincorrect");
 
@@ -171,5 +151,5 @@ function generate_session_hash($password_hash)
 		}	
 		
 	}
-
-
+	
+?>

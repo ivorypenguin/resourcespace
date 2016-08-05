@@ -64,17 +64,14 @@ function ldapsetDisplayFields()
 		hideObject('trootdn');	
 		hideObject('trootpass');
 		hideObject('taddomain');
-		hideObject('tadusesingledomain');
 		showObject('tldapgroupcontainer');
 		showObject('tloginfield');
 	} else {
 		showObject('trootdn');
 		showObject('trootpass');
 		showObject('taddomain');
-		showObject('tadusesingledomain');
-		showObject('tldapgroupcontainer');
+		hideObject('tldapgroupcontainer');
 		hideObject('tloginfield');
-		hideObject('tldapusercontainer');
 		
 	}
 	return;
@@ -84,12 +81,10 @@ function testLdapConn()
 {
 	// This will test the LDAP connection:
 	var ldapServer = document.getElementById('ldapserver').value;
-	var ldapPort = document.getElementById('port').value;
 	var ldapType = getSelectedItemValue('ldaptype');
 	var basedn = document.getElementById('basedn').value;
 	var ldapusercontainer = document.getElementById('ldapusercontainer').value;
-	var ldapgroupcontainer = document.getElementById('ldapgroupcontainer').value;
-	var addressurl = "ajax_test_login.php?type="+ldapType+"&server="+ldapServer+"&port="+ldapPort+"&basedn="+basedn+"&usercont="+ldapusercontainer+"&groupcont="+ldapgroupcontainer;
+	var addressurl = "ajax_test_login.php?type="+ldapType+"&server="+ldapServer+"&basedn="+basedn+"&usercont="+ldapusercontainer;
 		
 	//check LDAP type:
 	if (ldapType == 0)

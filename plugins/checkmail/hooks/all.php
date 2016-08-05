@@ -1,21 +1,15 @@
 <?php 
 
-function HookCheckmailAllAdditional_title_pages_array(){
-        return array("upload");
-}
-function HookCheckmailAllAdditional_title_pages(){
-        global $pagename,$lang,$applicationname;
-        switch($pagename){
-			case "upload":
-				$url=explode("/",$_SERVER['REQUEST_URI']);
-				if($url[1]=="plugins" && $url[2]=="checkmail"){
-					$pagetitle=$lang['uploadviaemail'];
-				}
-                break;
-		}
-        if(isset($pagetitle)){
-                echo "<script language='javascript'>\n";
-                echo "document.title = \"$applicationname - $pagetitle\";\n";
-                echo "</script>";
-        }
+// for Prismpoint Portal compatibility
+function HookCheckmailAllUploadmenu(){
+	global $checkmail_users;
+	global $userref;
+	global $target;
+	global $bullet;
+	global $lang;
+	global $baseurl;
+	if (in_array($userref,$checkmail_users)){?>
+	<li><a onClick="return CentralSpaceLoad(this,true);" target="<?php echo $target?>" href="<?php echo $baseurl?>/plugins/checkmail/pages/upload.php"><?php echo $bullet?>&gt;&nbsp;<?php echo $lang["uploadviaemail"];?></a></li>
+	<?php
+	}
 }

@@ -5,15 +5,15 @@ function HookFilterboxSearchSearchaftersearchcookie()
 	global $filter_keywords, $perform_filter, $filter_pos, $search;
 	$filter_keywords=getvalescaped("filter_keywords","");
 	$filter_pos=getvalescaped("cursorpos","");
-	setcookie('filter', $filter_keywords, 0, '', '', false, true);
-	setcookie('filter_pos', $filter_pos, 0, '', '', false, true);
-	setcookie('original_search', $search, 0, '', '', false, true);
+	setcookie('filter', $filter_keywords);
+	setcookie('filter_pos', $filter_pos);
+	setcookie('original_search', $search);
 	$perform_filter=true;
 	}
 
 function HookFilterboxSearchDosearchmodifykeywords($keywords)
 	{
-	global $perform_filter, $filter_keywords, $filterbox_wildcard;
+	global $perform_filter, $filter_keywords;
 	if (!empty($perform_filter) && !empty($filter_keywords))
 		{
 		$perform_filter=false;
@@ -21,7 +21,7 @@ function HookFilterboxSearchDosearchmodifykeywords($keywords)
 		foreach ($filterArray as $filterKeyword)
 			{
 			$filterKeyword=  strtolower(trim($filterKeyword));
-			if ($filterbox_wildcard && !strpos($filterKeyword, '*'))
+			if (!strpos($filterKeyword, '*'))
 				$filterKeyword='*'.$filterKeyword.'*';
 			$keywords[]=$filterKeyword;
 			}

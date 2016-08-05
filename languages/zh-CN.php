@@ -125,7 +125,7 @@ $lang["resetarchivestatus"]="为存档的资料重新设立进程表";
 $lang["editallresources"]="编辑收藏夹中的资源";
 $lang["editresources"]="编辑资源";
 $lang["multieditnotallowed"]="不容许多项编辑";
-$lang["emailcollectiontitle"]="发送收藏夹";
+$lang["emailcollection"]="发送收藏夹";
 $lang["collectionname"]="收藏夹名称";
 $lang["collectionid"]="收藏夹编号";
 $lang["emailtousers"]="向用户发送资料<br><br><b>现有的用户</b> 输入用户名称以作搜索, 点击该用户以加入该用户<br><br><b>向未登记的用户发送</b> 输入电邮地址，然后按加入";
@@ -195,7 +195,7 @@ $lang["clearform"]="清除表格";
 $lang["similarresources"]="类似资源"; # e.g. 17 类似资源
 $lang["similarresource"]="类似资源"; # e.g. 1 类似资源
 $lang["nosimilarresources"]="未发现类似资源";
-$lang["emailresourcetitle"]="发送";
+$lang["emailresource"]="发送";
 $lang["resourcetitle"]="资源名称";
 $lang["filename"]="原有的档案名称";
 $lang["requestresource"]="资源搜索要求";
@@ -659,7 +659,7 @@ $lang["setup-successheader"]="Congratulations!";
 $lang["setup-successdetails"]="Your initial ResourceSpace setup is complete.  Be sure to check out 'include/default.config.php' for more configuration options.";
 $lang["setup-successnextsteps"]="Next Steps:";
 $lang["setup-successremovewrite"]="You can now remove write access to 'include/'.";
-$lang["setup-visitwiki"]='Visit the <a target="_blank" href="http://wiki.resourcespace.org/index.php/?title=main_Page">ResourceSpace Documentation Wiki</a> for more information about customizing your installation';
+$lang["setup-visitwiki"]='Visit the <a target="_blank" href="http://wiki.resourcespace.org/index.php/Main_Page">ResourceSpace Documentation Wiki</a> for more information about customizing your installation';
 $lang["setup-checkconfigwrite"]="Write access to config directory:";
 $lang["setup-checkstoragewrite"]="Write access to storage directory:";
 $lang["setup-welcome"]="Welcome to ResourceSpace";

@@ -1,6 +1,6 @@
 <?php
 include(dirname(__FILE__)."/../../../include/db.php");
-include_once(dirname(__FILE__)."/../../../include/general.php");
+include(dirname(__FILE__)."/../../../include/general.php");
 include(dirname(__FILE__)."/../../../include/search_functions.php");
 include(dirname(__FILE__)."/../../../include/collections_functions.php");
 include(dirname(__FILE__)."/rssfeed.php");
@@ -36,18 +36,18 @@ $day=getvalescaped("day","");
 if ($day!="") {$search=(($search=="")?"":join(", ",split_keywords($search)) . ", ") . "day:" . $day;}
 
 
-if (strpos($search,"!")===false) {setcookie("search",$search,0,'','',false,true);} # store the search in a cookie if not a special search
-$offset=getvalescaped("offset",0);if (strpos($search,"!")===false) {setcookie("saved_offset",$offset,0,'','',false,true);}
+if (strpos($search,"!")===false) {setcookie("search",$search);} # store the search in a cookie if not a special search
+$offset=getvalescaped("offset",0);if (strpos($search,"!")===false) {setcookie("saved_offset",$offset);}
 if ((!is_numeric($offset)) || ($offset<0)) {$offset=0;}
 
 ######## CAMILLO
 #$order_by=getvalescaped("order_by","relevance");if (strpos($search,"!")===false) {setcookie("saved_order_by",$order_by);}
-$order_by=getvalescaped("order_by","date");if (strpos($search,"!")===false) {setcookie("saved_order_by",$order_by,0,'','',false,true);}
+$order_by=getvalescaped("order_by","date");if (strpos($search,"!")===false) {setcookie("saved_order_by",$order_by);}
 ######## CAMILLO
 
-$display=getvalescaped("display","thumbs");setcookie("display",$display,0,'','',false,true);
-$per_page=getvalescaped("per_page",12);setcookie("per_page",$per_page,0,'','',false,true);
-$archive=getvalescaped("archive",0);if (strpos($search,"!")===false) {setcookie("saved_archive",$archive,0,'','',false,true);}
+$display=getvalescaped("display","thumbs");setcookie("display",$display);
+$per_page=getvalescaped("per_page",12);setcookie("per_page",$per_page);
+$archive=getvalescaped("archive",0);if (strpos($search,"!")===false) {setcookie("saved_archive",$archive);}
 $jumpcount=0;
 
 # fetch resource types from query string and generate a resource types cookie
@@ -62,7 +62,7 @@ else
 		{
 		if (substr($key,0,8)=="resource") {if ($restypes!="") {$restypes.=",";} $restypes.=substr($key,8);}
 		}
-	setcookie("restypes",$restypes,0,'','',false,true);
+	setcookie("restypes",$restypes);
 	
 	# This is a new search, log this activity
 	if ($archive==2) {daily_stat("Archive search",0);} else {daily_stat("Search",0);}
@@ -71,9 +71,9 @@ else
 # If returning to an old search, restore the page/order by
 if (!array_key_exists("search",$_GET))
 	{
-	$offset=getvalescaped("saved_offset",0);setcookie("saved_offset",$offset,0,'','',false,true);
-	$order_by=getvalescaped("saved_order_by","relevance");setcookie("saved_order_by",$order_by,0,'','',false,true);
-	$archive=getvalescaped("saved_archive",0);setcookie("saved_archive",$archive,0,'','',false,true);
+	$offset=getvalescaped("saved_offset",0);setcookie("saved_offset",$offset);
+	$order_by=getvalescaped("saved_order_by","relevance");setcookie("saved_order_by",$order_by);
+	$archive=getvalescaped("saved_archive",0);setcookie("saved_archive",$archive);
 	}
 
 $refs = array();

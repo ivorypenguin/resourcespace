@@ -1,10 +1,10 @@
 <?php
 include "../include/db.php";
-include_once "../include/general.php";
 include "../include/authenticate.php"; 
+include "../include/general.php";
 include "../include/resource_functions.php";
 include "../include/search_functions.php";
-include_once "../include/collections_functions.php";
+include "../include/collections_functions.php";
 
 if (getval("purchaseonaccount","")!="" && $userrequestmode==3)
 	{
@@ -31,6 +31,7 @@ if (getval("submit","")=="")
 	# ------------------- Show the size selection screen -----------------------
 	?>
 	<div class="BasicsBox"> 
+	  <h2>&nbsp;</h2>
 	  <h1><?php echo $lang["buynow"]?></h1>
 	  <p><?php echo $lang["buynowintro"]?></p>
 	   
@@ -93,16 +94,7 @@ if (getval("submit","")=="")
 	?>
 	</table>
 	<p>&nbsp;</p>
-	<?php hook("purchase_extra_options"); 
-	
-	// If we are anonymous, give the user an option to add an emailk address so they can receive confirmation of order
-	if((isset($anonymous_login) && ($username==$anonymous_login)) && isset($rs_session) && $anonymous_user_session_collection)
-		{
-		echo "<br />" . $lang["purchase_email_address"] . "<br />";
-		echo "<br /><input type=\"text\" name=\"email_confirmation\" ></input><br /><br />";
-		
-		}
-		?>
+	<?php hook("purchase_extra_options"); ?>
 	
 	<?php if ($showbuy) { ?>
 		<p><input type="submit" name="submit" value="&nbsp;&nbsp;&nbsp;<?php echo $lang["buynow"]?>&nbsp;&nbsp;&nbsp;"></p>
@@ -190,17 +182,17 @@ else
 		if (!hook("paymentgateway")) # Allow other payment gateways to be hooked in, instead of PayPal.
 			{
 			?>
-			<form name="_xclick" class="form" action="<?php echo $paypal_url . "/cgi-bin/webscr" ?>" method="post">
+			<form name="_xclick" class="form" action="<?php echo $paypal_url; ?>" method="post">
 			<input type="hidden" name="cmd" value="_cart">
 			<input type="hidden" name="upload" value="1">
 			<input type="hidden" name="business" value="<?php echo $payment_address ?>">
 			<input type="hidden" name="currency_code" value="<?php echo $payment_currency ?>">
 			<input type="hidden" name="cancel_return" value="<?php echo $baseurl?>">
 			<input type="hidden" name="notify_url" value="<?php echo $baseurl?>/pages/purchase_callback.php">
-			<input type="hidden" name="return" value="<?php echo $baseurl?>/pages/purchase_download.php?collection=<?php echo urlencode($usercollection) ?>&emailconfirmation=<?php echo urlencode(getval("email_confirmation","")); ?>">
+			<input type="hidden" name="return" value="<?php echo $baseurl?>/pages/purchase_download.php?collection=<?php echo urlencode($usercollection) ?>">
 			<input type="hidden" name="custom" value="<?php echo urlencode($usercollection) ?>">
 			<input type="hidden" name="charset" value="utf-8">
-			<?php echo $paypal ?>
+			<?php echo $paypal?>
 			<p><input type="submit" name="submit" value="&nbsp;&nbsp;&nbsp;<?php echo $lang["proceedtocheckout"]?>&nbsp;&nbsp;&nbsp;"></p>
 			</form>
 			<?php

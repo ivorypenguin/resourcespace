@@ -1,7 +1,5 @@
 name    : annotate
 author  : Tom Gleason
-version : 1.01
+version : 1
 desc    : Enables creation of jquery image annotations
 config_url: /plugins/annotate/pages/setup.php
-default_priority: 999
-category: Collaboration

@@ -1,7 +1,7 @@
 <?php 
 include "../../include/db.php";
-include_once "../../include/general.php"; 
 include "../../include/authenticate.php"; 
+include "../../include/general.php"; 
 include "../../include/resource_functions.php"; 
 
 if (!$metadata_report) {exit("This function is not enabled.");}
@@ -54,12 +54,11 @@ else
 
     # Create a temporary file (simulate download) and create a report for it.
     $tmpfile = write_metadata($image, $ref);
-    if ($tmpfile===false || !file_exists($tmpfile)){$tmpfile=$image;$donotdelete=true;}
     $command = $exiftool_fullpath . " -s -t -G --filename --exiftoolversion --filepermissions --NativeDigest --History --Directory " . escapeshellarg($tmpfile)." 2>&1";
     $report_simulated = run_command($command);
 
     # Remove the temporary file.
-    if (!isset($donotdelete)){unlink($tmpfile);}
+    unlink($tmpfile);
 
     # Process the report of the simulated download.
     $results_simulated = array();

@@ -82,9 +82,8 @@ function HookGrant_editEditeditbeforeheader()
 function HookGrant_editEditEditstatushide()
 	{
 	// Needed to prevent user changing the archive state, otherwise a user with temporary edit access to an active resource could change it from active to pending submission
-	global $status, $resource;
-	if(!checkperm("e" . $resource["archive"]))
-		{return true;}
+	global $status;
+	if(!checkperm("e" . $status)){return true;}
 	return false;
 	}
 	
@@ -131,7 +130,7 @@ function HookGrant_editEditReplacesubmitbuttons()
 						<td>" . (($grant_edituser['fullname']!="")?$grant_edituser['fullname']:$grant_edituser['username']) . "</td>
 						<td>" . (($grant_edituser['expiry']!="")?nicedate($grant_edituser['expiry']):$lang['never'])  . "</td>
 						<td><a href='#' onclick='if (confirm(\"" . $lang['grant_edit_delete_user'] . " " . (($grant_edituser['fullname']!="")?$grant_edituser['fullname']:$grant_edituser['username']) . "\")){remove_grant_edit(" . $grant_edituser['user'] . ");}'>&gt;&nbsp;" . $lang['action-delete']  . "</a></td>
-					  </tr>
+						</tr>
 					";
 				}		
 			?> 
@@ -141,7 +140,7 @@ function HookGrant_editEditReplacesubmitbuttons()
 		function remove_grant_edit(user)
 			{
 			jQuery.ajax({
-				async: true,
+				async: false,
 				url: '<?php echo $baseurl ?>/pages/edit.php',
 				type: 'POST',
 				data: { ref:'<?php echo $ref ?>', grant_edit_action:'delete', remove_user:user},

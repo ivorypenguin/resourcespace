@@ -8,8 +8,6 @@ foreach ($download_summary as $usage)
 	if (array_key_exists($usage["usageoption"],$download_usage_options))
 		{
 		$total+=$usage["c"];
-		} else if ($usage['usageoption'] == '-1') {
-			$total+=$usage['c'];
 		}
 	}
 	
@@ -29,7 +27,7 @@ foreach ($download_summary as $usage)
 <td width="20%"><?php echo $total ?></th>		
 </tr>
 </table>
-<?php if($total>0 && $download_usage && $usage['usageoption'] != '-1')	{ ?>
+<?php if($total>0)	{ ?>
 <table cellpadding="0" cellspacing="0">
 <tr><td colspan=2><?php echo $lang["usagebreakdown"] ?></td></tr>
 <?php foreach ($download_summary as $usage)

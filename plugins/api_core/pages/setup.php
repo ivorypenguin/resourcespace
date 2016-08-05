@@ -1,7 +1,7 @@
 <?php
 include "../../../include/db.php";
-include_once "../../../include/general.php";
 include "../../../include/authenticate.php"; if (!checkperm("a")) {exit ($lang['error-permissiondenied']);}
+include "../../../include/general.php";
 
 // whitelisting IPs
 
@@ -128,10 +128,10 @@ $current_whitelists=sql_query("select u.username,u.fullname,ug.name groupname,w.
 			
 		</div>
 	</form>
-</div>
 
 
-<?php include "../../../include/footer.php";
+
+
 
 
 

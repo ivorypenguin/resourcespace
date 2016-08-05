@@ -125,7 +125,7 @@ $lang["resetarchivestatus"]="Zresetuj status archiwalny wszystkich zasobów w ko
 $lang["editallresources"]="Edytuj wszystkie zasoby w kolekcji";
 $lang["editresources"]="Edytuj zasoby";
 $lang["multieditnotallowed"]="Multi-edycja niedozwolona - wszystkie zasoby nie są w tym samym statusie albo nie są tego samego typu.";
-$lang["emailcollectiontitle"]="Wyślij kolekcję E-mailem";
+$lang["emailcollection"]="Wyślij kolekcję E-mailem";
 $lang["collectionname"]="Nazwa kolekcji";
 $lang["collectionid"]="ID Kolekcji";
 $lang["emailtousers"]="E-mail to users<br><br><b>For existing users</b> start typing the user's name to search, click the user when found and then click plus<br><br><b>For non-registered users</b> type the e-mail address then click plus";
@@ -191,7 +191,7 @@ $lang["clearform"]="Wyczyść";
 $lang["similarresources"]="podobne zasoby"; # e.g. 17 similar resources
 $lang["similarresource"]="podobny zasób"; # e.g. 1 similar resource
 $lang["nosimilarresources"]="Brak pasujących zasobów";
-$lang["emailresourcetitle"]="E-mail";
+$lang["emailresource"]="E-mail";
 $lang["resourcetitle"]="Tytuł zasobu";
 $lang["filename"]="Oryginalna nazwa plik";
 $lang["requestresource"]="Zarządaj zasobu";
@@ -649,7 +649,7 @@ $lang["setup-successheader"]="Congratulations!";
 $lang["setup-successdetails"]="Your initial ResourceSpace setup is complete.  Be sure to check out 'include/default.config.php' for more configuration options.";
 $lang["setup-successnextsteps"]="Next steps:";
 $lang["setup-successremovewrite"]="You can now remove write access to 'include/'.";
-$lang["setup-visitwiki"]='Visit the <a target="_blank" href="http://wiki.resourcespace.org/index.php/?title=main_Page">ResourceSpace Documentation Wiki</a> for more information about customizing your installation';
+$lang["setup-visitwiki"]='Visit the <a target="_blank" href="http://wiki.resourcespace.org/index.php/Main_Page">ResourceSpace Documentation Wiki</a> for more information about customizing your installation';
 $lang["setup-checkconfigwrite"]="Write access to config directory:";
 $lang["setup-checkstoragewrite"]="Write access to storage directory:";
 $lang["setup-welcome"]="Witaj w Baza fotograficzna NTO";

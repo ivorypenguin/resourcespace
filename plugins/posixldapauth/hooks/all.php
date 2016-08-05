@@ -35,10 +35,6 @@ function HookPosixldapauthAllExternalauth($uname, $pword)
 		{
 			$ldapauth['ldapgroupcontainer'] = "";
 		}
-		if (!isset($ldapauth['port']))
-		{
-			$ldapauth['port'] = 389;
-		}
 		if (!isset($ldapauth['ldapmemberfield']))
 		{
 			$ldapauth['ldapmemberfield'] = "";	
@@ -72,15 +68,6 @@ function HookPosixldapauthAllExternalauth($uname, $pword)
 		// pass the config to the class
 		$ldapConf['host'] = $ldapauth['ldapserver'];
 		$ldapConf['basedn'] = $ldapauth['basedn'];
-		$ldapConf['addomain']	= $ldapauth['addomain'];
-		$ldapConf['port']	= $ldapauth['port'];
-		
-		if ($ldapauth['adusesingledomain']) {
-			$singleDomain=true;
-		} else {
-			$singleDomain=false;
-		}
-		
 		$objLdapAuth = new ldapAuth($ldapConf);	
 		if ($ldap_debug) { $objLdapAuth->ldap_debug = true; };
 		
@@ -89,7 +76,7 @@ function HookPosixldapauthAllExternalauth($uname, $pword)
 		{
 			
 			// see if we can bind with the username and password.
-			if($objLdapAuth->auth($uname,$pword,$ldapauth['ldaptype'],$ldapauth['ldapusercontainer'],$singleDomain))
+			if($objLdapAuth->auth($uname,$pword,$ldapauth['ldaptype'],$ldapauth['ldapusercontainer']))
 			{
 				if ($ldap_debug) { error_log( __FILE__ . " " . __METHOD__ . " " . __LINE__ . " auth to ldap server is successful ") ; }
 			
@@ -117,7 +104,7 @@ function HookPosixldapauthAllExternalauth($uname, $pword)
 					if ($ldap_debug) { error_log( __FILE__ . " " . __METHOD__ . " " . __LINE__ . "  User has allready been added to RS, updating password") ; }
 					// if we get here, the user has already been added to RS.
 					$username=$uname.$ldapauth['usersuffix'];
-					$password_hash = hash('sha256', md5('RS' . $username . $password));
+					$password_hash= md5("RS".$username.$password);
 					sql_query('update user set password="'.$password_hash.'" where username="'.$username.'"');
 					//          $password=sql_value('select password value from user where username="'.$uname.$ldapauth['usersuffix'].'"',"");
 					return true;
@@ -138,7 +125,7 @@ function HookPosixldapauthAllExternalauth($uname, $pword)
 					} else {
 						$nuser['email']="$uname@mail";
 					}
-					$nuser['password'] = hash('sha256', md5('RS' . $nuser['username'] . $password));
+					$nuser['password']=md5("RS". $nuser['username'].$password);
 					
 					// Set a var so that we can keep track of the group level as we scan the access groups.
 					$currentGroupLevel = 0;
@@ -190,57 +177,39 @@ function HookPosixldapauthAllExternalauth($uname, $pword)
 						}
 						
 						
-							// if we haven't managed to find a group match that is allowed to log into RS, then
-							// we return false!	- we ned to modify this to use the group set if group based is not enabled!
-							if (!($match)) return false;
-							// Create the user
-							if ($ldap_debug) { error_log(  __METHOD__ . " " . __LINE__ . "  Creating User: " . $nuser['username']) ; }
-							
-							// create the user and get a reference number back.
-							$ref=new_user($nuser['username']);
-							
-							if ($ldap_debug) { error_log(  __METHOD__ . " " . __LINE__ . "  User Ref: " . $ref) ; }
-							if (!$ref) 
-							{
-								if ($ldap_debug) { 
-									error_log( __FILE__ . " " . __METHOD__ . " " . __LINE__ . "  Group based User creation ref NOT RETURNED, SOMETHING WEIRD HAPPENED!"); 
-									}
-								return false; # Shouldn't ever get here.  Something strange happened
-							}
-							// Update with information from LDAP
-							sql_query('update user set password="'.$nuser['password'].
-								'", fullname="'.$nuser['fullname'].'", email="'.$nuser['email'].'", usergroup="'.
-								$nuser['usergroup'].'", comments="Auto create from LDAP" where ref="'.$ref.'"');
-								
-							$username=$nuser['username'];
-							$password=$nuser['password'];
-							$password_hash=$nuser['password'];
-	
-							// now unbind
-							$objLdapAuth->unBind();	
-							
-							if ($ldap_debug) { error_log(  __METHOD__ . " " . __LINE__ . "  returning true : successful user creation!") ; }
-							return true;
+						// if we haven't managed to find a group match that is allowed to log into RS, then
+						// we return false!	- we ned to modify this to use the group set if group based is not enabled!
+						if (!($match)) return false;
+						// Create the user
+						$ref=new_user($nuser['username']);
+						if (!$ref) return false; # Shouldn't ever get here.  Something strange happened
 						
-					} else {
-							// non group based user creation.
-		                    $ref=new_user($nuser['username']);
-		                   	if (!$ref) 
-							{
-								if ($ldap_debug) { 
-									error_log( __FILE__ . " " . __METHOD__ . " " . __LINE__ . "  NON Group based User creation ref NOT RETURNED, SOMETHING WEIRD HAPPENED!"); 
-								} 
-								return false; # Shouldn't ever get here.  Something strange happened
-							}
-		                    // Update with information from LDAP
-		                    sql_query('update user set password="'.$nuser['password'].
-		                            '", fullname="'.$nuser['fullname'].'", email="'.$nuser['email'].'", usergroup="'.
-		                            $ldapauth['newusergroup'].'", comments="Auto create from LDAP" where ref="'.$ref.'"');
-		
-		                    $username=$nuser['username'];
-		                    $password=$nuser['password'];
-					}	
-				}		
+						// Update with information from LDAP
+						sql_query('update user set password="'.$nuser['password'].
+							'", fullname="'.$nuser['fullname'].'", email="'.$nuser['email'].'", usergroup="'.
+							$nuser['usergroup'].'", comments="Auto create from LDAP" where ref="'.$ref.'"');
+							
+						$username=$nuser['username'];
+						$password=$nuser['password'];
+
+
+						// now unbind
+						$objLdapAuth->unBind();	
+						return true;
+					}
+				}	else {
+						// non group based user creation.
+	                    $ref=new_user($nuser['username']);
+	                    if (!$ref) return false; # Shouldn't ever get here.  Something strange happened
+	
+	                    // Update with information from LDAP
+	                    sql_query('update user set password="'.$nuser['password'].
+	                            '", fullname="'.$nuser['fullname'].'", email="'.$nuser['email'].'", usergroup="'.
+	                            $ldapauth['newusergroup'].'", comments="Auto create from LDAP" where ref="'.$ref.'"');
+	
+	                    $username=$nuser['username'];
+	                    $password=$nuser['password'];
+				}			
 			} else {					
 				// username / password is wrong!
 				return false;
@@ -253,6 +222,9 @@ function HookPosixldapauthAllExternalauth($uname, $pword)
 function HookPosixldapauthAllAdditionalheaderjs(){
     global $baseurl,$baseurl_short;?>
     <script type="text/javascript" src="<?php echo $baseurl?>/plugins/posixldapauth/pages/ldap_functions.js" language="javascript"></script>
-    
+    <script type=\"text/javascript\">
+        status_error_in = '" . preg_replace("/\r?\n/", "\\n", addslashes($lang['posixldapauth_status_error_in'])) . "';
+        server_error = '" . preg_replace("/\r?\n/", "\\n", addslashes($lang['posixldapauth_server_error'])) . "';
+    </script>
 <?php
 }

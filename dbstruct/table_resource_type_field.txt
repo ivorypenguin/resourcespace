@@ -2,6 +2,7 @@ ref,int(11),NO,PRI,,auto_increment
 name,varchar(50),YES,,,
 title,varchar(400),YES,,,
 type,int(11),YES,,,
+options,text,YES,,,
 order_by,int(11),NO,,0,
 keywords_index,int(11),NO,,0,
 partial_index,int(11),NO,,0,

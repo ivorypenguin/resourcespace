@@ -1,8 +1,8 @@
 <?php
 
 include_once "../../../include/db.php";
-include_once "../../../include/general.php";
 include_once "../../../include/authenticate.php";
+include_once "../../../include/general.php";
 include_once "../../../include/resource_functions.php";
 
 
@@ -15,11 +15,10 @@ $width=getvalescaped('width','');
 $height=getvalescaped('height','');
 $text=getvalescaped('text','');
 $text=str_replace("<br />\n"," ",$text);// remove the breaks added by get.php
-$page = getvalescaped('page', 1);
+	
 $id=getvalescaped('id','');
 $preview_width=getvalescaped('pw','');
 $preview_height=getvalescaped('ph','');
-
 
 $oldtext=sql_value("select note value from annotate_notes where ref='$ref' and note_id='$id'","");
 if ($oldtext!=""){
@@ -31,7 +30,7 @@ sql_query("delete from annotate_notes where ref='$ref' and note_id='$id'");
 
 if (substr($text,0,strlen($username))!=$username){$text=$username.": ".$text;}
 
-sql_query("insert into annotate_notes (ref,top_pos,left_pos,width,height,preview_width,preview_height,note,user,page) values ('$ref','$top','$left','$width','$height','$preview_width','$preview_height','$text','$userref',$page) ");
+sql_query("insert into annotate_notes (ref,top_pos,left_pos,width,height,preview_width,preview_height,note,user) values ('$ref','$top','$left','$width','$height','$preview_width','$preview_height','$text','$userref') ");
 
 $annotateid = sql_insert_id();
 echo $annotateid;

@@ -1,3 +1,0 @@
-node,int(11),NO,,NULL,
-keyword,int(11),NO,,NULL,
-position,int(11),YES,,0,

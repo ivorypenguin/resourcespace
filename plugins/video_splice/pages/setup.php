@@ -1,7 +1,7 @@
 <?php
 include "../../../include/db.php";
-include_once "../../../include/general.php";
 include "../../../include/authenticate.php"; if (!checkperm("u")) {exit ("Permission denied.");}
+include "../../../include/general.php";
 
 if (getval("submit","")!="")
 	{
@@ -11,20 +11,43 @@ if (getval("submit","")!="")
 	$f=fopen("../config/config.php","w");
 	fwrite($f,"<?php \$videosplice_resourcetype='$resourcetype'; \$videosplice_parent_field=$videosplice_parent_field_set; ?>");
 	fclose($f);
-	redirect("pages/team/team_plugins.php");
+	redirect("pages/team/team_home.php");
 	}
 
-	
-$plugin_name = 'video_splice';
-$page_heading = $lang['videospliceconfiguration'];
+include "../../../include/header.php";
 
-$page_def[]= config_add_single_rtype_select("videosplice_resourcetype",$lang["video_resource_type"]);
-$page_def[]= config_add_single_ftype_select("videosplice_parent_field",$lang["parent_resource_field"]);
+$fields=sql_query("select ref,title from resource_type_field order by resource_type,order_by");
+$resource_types=get_resource_types();
+?>
+<div class="BasicsBox"> 
+  <h2>&nbsp;</h2>
+  <h1><?php echo $lang["videospliceconfiguration"]?></h1>
+
+  <div class="VerticalNav">
+ <form id="form1" name="form1" method="post" action="">
+
+<p><?php echo $lang["specify_resource_type"]?></p>
+   <p><label for="resourcetype"><?php echo $lang["video_resource_type"]?>:</label>
+   
+   <select name="resourcetype">
+   <?php foreach ($resource_types as $rt) { ?>
+   <option value="<?php echo $rt["ref"] ?>" <?php if ($rt["ref"]==$videosplice_resourcetype) {echo "selected"; } ?>><?php echo $rt["name"] ?></option>
+   <?php } ?>
+   </select>
+	</p>
+
+<p><?php echo $lang["specify_parent_field"]?></p>
+   <p><label for="videosplice_parent_field"><?php echo $lang["parent_resource_field"]?>:</label>
+   
+   <select name="videosplice_parent_field">
+   <?php foreach ($fields as $field) { ?>
+   <option value="<?php echo $field["ref"] ?>" <?php if ($field["ref"]==$videosplice_parent_field) {echo "selected"; } ?>><?php echo lang_or_i18n_get_translated($field["title"],"fieldtitle-") ?></option>
+   <?php } ?>
+   </select>
+	</p>
+
+<input type="submit" name="submit" value="<?php echo $lang["save"]?>">   
 
 
-// Do the page generation ritual
-$upload_status = config_gen_setup_post($page_def, $plugin_name);
-include '../../../include/header.php';
-config_gen_setup_html($page_def, $plugin_name, $upload_status, $page_heading);
-include '../../../include/footer.php';
-
+</form>
+</div>

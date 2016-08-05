@@ -1,7 +1,7 @@
 <?php
 include "../../../include/db.php";
-include_once "../../../include/general.php";
 include "../../../include/authenticate.php"; if (!checkperm("r")) {exit ("Permission denied.");}
+include "../../../include/general.php";
 include "../../../include/resource_functions.php";
 
 $ref=getvalescaped("ref","");
@@ -65,7 +65,7 @@ else
 include "../../../include/header.php";
 ?>
 <div class="BasicsBox">
-<p><a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $resource ?>"  onClick="return CentralSpaceLoad(this,true);"><?php echo LINK_CARET_BACK ?><?php echo $lang["backtoresourceview"]?></a></p>
+<p><a href="<?php echo $baseurl_short?>pages/view.php?ref=<?php echo $resource ?>"  onClick="return CentralSpaceLoad(this,true);">&lt;&nbsp;<?php echo $lang["backtoresourceview"]?></a></p>
 
 <h1><?php echo ($ref=="new"?$lang["new_license"]:$lang["edit_license"]) ?></h1>
 

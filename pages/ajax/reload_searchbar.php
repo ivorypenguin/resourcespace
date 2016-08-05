@@ -26,13 +26,3 @@ else
 
 
 include_once('../../include/searchbar.php');
-?>
-<script type="text/javascript">
-      jQuery(document).ready(function() { 
-      
-      if (typeof AdditionalJs == 'function') {   
-        AdditionalJs();  
-      }
-  
-      });
-  </script>
